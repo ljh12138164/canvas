@@ -1,5 +1,10 @@
-const Editor = () => {
-  return <div>11</div>;
-};
+"use client";
 
+import { forwardRef } from "react";
+
+const Editor = forwardRef<HTMLDivElement>((_, ref) => {
+  return <div ref={ref}>11</div>;
+});
+
+Editor.displayName = "Editor";
 export default Editor;
