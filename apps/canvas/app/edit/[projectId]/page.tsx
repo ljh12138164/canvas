@@ -1,51 +1,33 @@
 "use client";
-
-import { ReactElement, RefObject, useEffect, useRef } from "react";
-import { useCanvas } from "@/hook/useCanvas";
+import React, { useEffect, useRef } from "react";
 import * as fabric from "fabric"; // v6
-import Editor from "@/app/_components/edit/Editor";
-interface EditProjectIdPageProps {
-  params: {
-    projectId: string;
-  };
-}
-const EditProjectIdPage = ({ params }: EditProjectIdPageProps) => {
-  const { init } = useCanvas();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const editorRef = useRef<HTMLDivElement>(null);
+import { useCanvas } from "@/hook/useCanvas";
 
-  const divref = useRef<HTMLDivElement>(null);
+const FabricJSCanvas = () => {
+  const canvasEl = useRef<HTMLCanvasElement>(null);
+  const constainEl = useRef<HTMLDivElement>(null);
+  const { init } = useCanvas();
   useEffect(() => {
-    if (editorRef.current) {
-      console.log(editorRef.current);
-    }
-    if (canvasRef.current) {
-      const canvas = canvasRef.current.getContext("2d");
-      canvas?.beginPath();
-      canvas?.moveTo(0, 0);
-      canvas?.lineTo(100, 0);
-      canvas?.lineTo(100, 100);
-      canvas?.lineTo(0, 100);
-      canvas?.stroke();
-      // init({
-      //   initCanvas: canvas,
-      //   initContainer: divref.current!,
-      // });
+    if (fabric.Canvas) {
+      const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement);
+      init({
+        initCanvas: canvas,
+        initContainer: constainEl.current as HTMLDivElement,
+      });
+      return () => {
+        canvas.dispose();
+      };
     }
   }, [init]);
-  // useEffect(() => {
-  //   const options = {};
-  //   const canvas = new fabric.Canvas(canvasRef.current!, options);
-  //   // make the fabric.Canvas instance available to your app
-  //   console.log(canvas);
-  // }, []);
   return (
-    <div ref={divref}>
-      <Editor ref={editorRef}></Editor>
-      {params.projectId}
-      <canvas width={300} height={300} ref={canvasRef}></canvas>
+    <div
+      className="h-[100dvh] flex flex-col"
+      style={{ scrollbarWidth: "none" }}
+    >
+      <div ref={constainEl} className="flex-1 h-full">
+        <canvas ref={canvasEl} />;
+      </div>
     </div>
   );
 };
-
-export default EditProjectIdPage;
+export default FabricJSCanvas;

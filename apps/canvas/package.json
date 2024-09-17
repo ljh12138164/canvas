@@ -9,11 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/fabric": "^5.3.9",
+    "@tanstack/react-query": "^5.56.2",
     "fabric": "^6.4.2",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "zustand": "5.0.0-rc.2"
   },
   "devDependencies": {
     "@types/node": "^20",
