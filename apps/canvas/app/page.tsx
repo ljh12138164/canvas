@@ -1,11 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
+import Editor from "./_components/edit/Editor";
 
 export default function Home() {
-  const ramdom = Math.random() * 100;
-  return (
-    <div>
-      <Link href={`edit/${ramdom}`}>55555555</Link>
-    </div>
-  );
+  return <Editor></Editor>;
 }
