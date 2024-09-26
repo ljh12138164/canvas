@@ -10,9 +10,9 @@ const useCanvas = () => {
       initContainer: HTMLDivElement;
     }) => {
       const initRect = new fabric.Rect({
-        width: 1050,
-        height: 700,
-        name: "rect",
+        width: 1200,
+        height: 800,
+        name: "board",
         fill: "white",
         selectable: false,
         hasControls: false,
@@ -21,8 +21,17 @@ const useCanvas = () => {
           blur: 5,
         }),
       });
+
+      const rect = new fabric.Rect({
+        width: 300,
+        height: 300,
+        name: "rect",
+        fill: "black",
+      });
       initCanvas.add(initRect);
+      initCanvas.add(rect);
       initCanvas.centerObject(initRect);
+      initCanvas.centerObject(rect);
       initCanvas.width = initContainer.offsetWidth;
       initCanvas.height = initContainer.offsetHeight;
       //溢出不显示
