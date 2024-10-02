@@ -7,6 +7,8 @@ import useResponse from "@/hook/useResponse";
 import NavBar from "../_components/EditComponents/NavBar";
 import SiderBar from "../_components/EditComponents/SiderBar";
 import ToolBar from "../_components/EditComponents/ToolBar";
+import { Tool } from "@/Type/Edit";
+import { useMemoizedFn } from "ahooks";
 FabricObject.prototype.set({
   transparentCorners: false,
   cornerColor: "#FFF",
@@ -16,7 +18,20 @@ FabricObject.prototype.set({
   borderOpacityWhenMoving: 1,
   cornerStorkeColor: "#3b82f6",
 });
+
 export default function Home() {
+  const [tool, setTool] = useState<Tool>(Tool.Layout);
+  const onChangeActive = useMemoizedFn((tools: Tool) => {
+    if (tools === tool) {
+      return setTool(Tool.Select);
+    }
+    if (tools === Tool.Draw) {
+      //TODO: 清空画布
+    }
+    if (tool === Tool.Draw) {
+    }
+    setTool(tools);
+  });
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
   const containEl = useRef<HTMLDivElement>(null);
@@ -47,12 +62,15 @@ export default function Home() {
         scrollbarWidth: "none",
       }}
     >
-      <NavBar></NavBar>
+      <NavBar activeTool={tool} onChangeTool={onChangeActive}></NavBar>
       <div
         ref={containEl}
-        className="h-[96dvh] absolute left-0 top-[3rem] flex xl:w-full w-[110dvw] transition-all duration-100 ease-in-out"
+        className="h-[90dvh] absolute left-0 top-[4rem] flex xl:w-full w-[110dvw] transition-all duration-100 ease-in-out"
       >
-        <SiderBar></SiderBar>
+        <SiderBar
+          acitiveTool={tool}
+          onChangeActiveTool={onChangeActive}
+        ></SiderBar>
         <main className="flex flex-col relative flex-1 overflow-auto">
           <ToolBar></ToolBar>
           <canvas ref={canvasEl}></canvas>

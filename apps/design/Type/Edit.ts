@@ -1,0 +1,20 @@
+export enum Tool {
+  Layout,
+  Image,
+  Pencil,
+  Presentation,
+  Settings,
+  Shapes,
+  Sparkles,
+  Type,
+  //
+  Select,
+  Draw,
+  Fill,
+  StrokeColor,
+  StrokeWidth,
+  Font,
+  Opacity,
+  Filter,
+  RemoveBg,
+}
