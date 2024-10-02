@@ -7,8 +7,9 @@ import useResponse from "@/hook/useResponse";
 import NavBar from "../_components/EditComponents/NavBar";
 import SiderBar from "../_components/EditComponents/SiderBar";
 import ToolBar from "../_components/EditComponents/ToolBar";
-import { Tool } from "@/Type/Edit";
+import { Tool } from "@/types/Edit";
 import { useMemoizedFn } from "ahooks";
+import ShapeSidle from "../_components/EditComponents/ShapeSidle";
 FabricObject.prototype.set({
   transparentCorners: false,
   cornerColor: "#FFF",
@@ -63,15 +64,19 @@ export default function Home() {
       }}
     >
       <NavBar activeTool={tool} onChangeTool={onChangeActive}></NavBar>
-      <div
-        ref={containEl}
-        className="h-[90dvh] absolute left-0 top-[4rem] flex xl:w-full w-[110dvw] transition-all duration-100 ease-in-out"
-      >
+      <div className="h-[90dvh] absolute left-0 top-[4rem] flex xl:w-full w-[110dvw] transition-all duration-100 ease-in-out">
         <SiderBar
           acitiveTool={tool}
           onChangeActiveTool={onChangeActive}
         ></SiderBar>
-        <main className="flex flex-col relative flex-1 overflow-auto">
+        <ShapeSidle
+          activeTool={tool}
+          onChangeActive={onChangeActive}
+        ></ShapeSidle>
+        <main
+          className="flex flex-col relative flex-1 overflow-auto"
+          ref={containEl}
+        >
           <ToolBar></ToolBar>
           <canvas ref={canvasEl}></canvas>
         </main>

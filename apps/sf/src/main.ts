@@ -1,9 +1,13 @@
-var divideArray = function (nums) {
-  let map = new Map();
-  for (let i = 0; i < nums.length; i++) {
-    if (!map.get(nums[i])) map.set(nums[i], 1);
-    else map.set(nums[i], map.get(nums[i]) + 1);
+var removeDuplicates = function (s: string): string {
+  const arr: string[] = [];
+  for (let i = 0; i < s.length; i++) {
+    if (arr.length) {
+      if (arr?.at(-1) === s[i]) arr.pop();
+      else arr.push(s[i]);
+    } else {
+      arr.push(s[i]);
+    }
   }
-  return [...map.values()].filter((item) => item % 2 === 0).length === 0;
+  return arr.join("");
 };
-console.log(divideArray([3, 2, 3, 2, 2, 2]));
+console.log(removeDuplicates("abbaca"));

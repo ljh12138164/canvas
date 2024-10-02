@@ -49,7 +49,7 @@ const useResponse = ({ canvas, contain }: ResponseProps) => {
         }
         //设置画布位置
         viewportTransform[4] =
-          canvas.width / 2 - workspace.x * viewportTransform?.[0];
+          canvas.width / 2 - workspace.x * viewportTransform?.[0] - 30;
         //@ts-ignore
         viewportTransform[5] =
           canvas.height / 2 - workspace.y * viewportTransform?.[3];

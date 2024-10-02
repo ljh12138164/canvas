@@ -17,7 +17,7 @@ import {
   LuUndo2,
 } from "react-icons/lu";
 import Logo from "../Comand/Logo";
-import { Tool } from "../../../Type/Edit";
+import { Tool } from "../../../types/Edit";
 interface NavBarProps {
   activeTool: Tool;
   onChangeTool: (tool: Tool) => void;

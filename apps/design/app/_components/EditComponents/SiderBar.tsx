@@ -9,7 +9,7 @@ import {
   LuType,
 } from "react-icons/lu";
 import SiderBarItem from "./SiderBarItem";
-import { Tool } from "@/Type/Edit";
+import { Tool } from "@/types/Edit";
 interface SiderBarProps {
   acitiveTool: Tool;
   onChangeActiveTool: (tool: Tool) => void;
@@ -18,7 +18,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
   return (
     <aside
       id="editSider"
-      className="w-[100px] z-[55] absolute left-0 top-0 bg-white h-full border-r border-t-black border-slate-200 overflow-y-auto"
+      className="w-[100px] z-[55]  bg-white h-full border-r border-t-black border-slate-200 overflow-y-auto"
     >
       <ul className="flex flex-col">
         <SiderBarItem
