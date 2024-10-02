@@ -10,8 +10,8 @@ const useCanvas = () => {
       initContainer: HTMLDivElement;
     }) => {
       const initRect = new fabric.Rect({
-        width: 1200,
-        height: 800,
+        width: 500,
+        height: 600,
         name: "board",
         fill: "white",
         selectable: false,
@@ -23,8 +23,8 @@ const useCanvas = () => {
       });
 
       const rect = new fabric.Rect({
-        width: 300,
-        height: 300,
+        width: 50,
+        height: 50,
         name: "rect",
         fill: "black",
       });
