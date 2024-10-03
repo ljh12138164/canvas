@@ -1,7 +1,8 @@
-import { useCallback } from "react";
+import { useMemoizedFn } from "ahooks";
 import * as fabric from "fabric";
+
 const useCanvas = () => {
-  const init = useCallback(
+  const init = useMemoizedFn(
     ({
       initCanvas,
       initContainer,
@@ -39,6 +40,7 @@ const useCanvas = () => {
     },
     []
   );
+
   return { init };
 };
 
