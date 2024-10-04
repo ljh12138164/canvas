@@ -12,7 +12,7 @@ const useCanvas = () => {
     }) => {
       const initRect = new fabric.Rect({
         width: 500,
-        height: 600,
+        height: 700,
         name: "board",
         fill: "white",
         selectable: false,
@@ -37,8 +37,7 @@ const useCanvas = () => {
       initCanvas.height = initContainer.offsetHeight;
       //溢出不显示
       initCanvas.clipPath = initRect;
-    },
-    []
+    }
   );
 
   return { init };
