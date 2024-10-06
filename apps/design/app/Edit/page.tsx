@@ -13,12 +13,17 @@ import {
   DIAMOD_OPTION,
   DIAMOD_WIDTH,
   Edit,
+  FILL_COLOR,
   RECTANGLE_OPTION,
+  STROKE_COLOR,
+  STROKE_WIDTH,
   Tool,
   TRIANGLE_OPTION,
 } from "@/types/Edit";
 import { useMemoizedFn } from "ahooks";
 import ShapeSidle from "../_components/EditComponents/ShapeSidle";
+import useCanvasEvent from "@/hook/useCanvasEvent";
+import Tools from "../_components/EditComponents/Tools";
 FabricObject.prototype.set({
   transparentCorners: false,
   cornerColor: "#FFF",
@@ -28,7 +33,24 @@ FabricObject.prototype.set({
   borderOpacityWhenMoving: 1,
   cornerStorkeColor: "#3b82f6",
 });
-const buildEditor = (canvas: fabric.Canvas): Edit => {
+interface buildEditorProps {
+  canvas: fabric.Canvas;
+  fillColor: string;
+  strokeColor: string;
+  strokeWidth: number;
+  setFillColor: (color: string) => void;
+  setStrokeColor: (color: string) => void;
+  setStrokeWidth: (width: number) => void;
+}
+const buildEditor = ({
+  canvas,
+  fillColor,
+  setFillColor,
+  strokeColor,
+  setStrokeColor,
+  strokeWidth,
+  setStrokeWidth,
+}: buildEditorProps): Edit => {
   const getWorkspace = () =>
     canvas
       .getObjects()
@@ -43,6 +65,40 @@ const buildEditor = (canvas: fabric.Canvas): Edit => {
     // canvas.centerObject(object);
   };
   return {
+    strokeColor,
+    strokeWidth,
+    fillColor,
+    canvas,
+    //颜色
+    setFillColor: (color: string) => {
+      setFillColor(color);
+      canvas.getActiveObjects()?.forEach((obj) => {
+        obj.set({ fill: color });
+      });
+    },
+    // 线条宽度
+    setStrokeWidth: (width: number) => {
+      setStrokeWidth(width);
+      canvas.getActiveObjects()?.forEach((obj) => {
+        obj.set({ strokeWidth: width });
+      });
+    },
+    setStrokeColor: (color: string) => {
+      setStrokeColor(color);
+      canvas.getActiveObjects()?.forEach((obj) => {
+        //如果是文本
+
+        if (
+          obj.type === "text" ||
+          obj.type === "i-text" ||
+          obj.type === "textbox"
+        ) {
+          obj.set({ fill: color });
+          return;
+        }
+        obj.set({ stroke: color });
+      });
+    },
     //园
     addCircle: () => {
       const circle = new fabric.Circle({
@@ -122,9 +178,20 @@ const buildEditor = (canvas: fabric.Canvas): Edit => {
 export default function Home() {
   const { init } = useCanvas();
   const [tool, setTool] = useState<Tool>(Tool.Layout);
-
+  //实例对象
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
+  //选择的对象
+  const [_, setSelectedObject] = useState<fabric.Object[] | null>(null);
+  //颜色形状初始化
+  const [fillColor, setFillColor] = useState<string>(FILL_COLOR);
+  const [strokeColor, setStrokeColor] = useState<string>(STROKE_COLOR);
+  const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH);
+
+  useCanvasEvent({
+    canvas,
+    setSelectedObject,
+  });
 
   const onChangeActive = useMemoizedFn((tools: Tool) => {
     if (tools === tool) {
@@ -139,8 +206,18 @@ export default function Home() {
   });
 
   const editor = useMemo(() => {
-    if (canvas) return buildEditor(canvas);
-  }, [canvas]);
+    if (canvas)
+      return buildEditor({
+        canvas,
+        fillColor,
+        strokeColor,
+        strokeWidth,
+        setFillColor,
+        setStrokeColor,
+        setStrokeWidth,
+      });
+    return undefined;
+  }, [canvas, fillColor, strokeColor, strokeWidth]);
 
   const containEl = useRef<HTMLDivElement>(null);
   const canvasEl = useRef<HTMLCanvasElement>(null);
@@ -180,11 +257,16 @@ export default function Home() {
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></ShapeSidle>
+        <Tools
+          editor={editor}
+          activeTool={tool}
+          onChangeActiveTool={onChangeActive}
+          key={JSON.stringify(editor?.canvas.getActiveObject())}
+        ></Tools>
         <main
           className="flex flex-col relative flex-1 overflow-hidden"
           ref={containEl}
         >
-          <ToolBar></ToolBar>
           <canvas ref={canvasEl}></canvas>
         </main>
       </div>

@@ -26,7 +26,7 @@ const NavBar = ({ activeTool, onChangeTool }: NavBarProps) => {
   return (
     <nav className="w-full text-xl font-medium h-[4rem] bg-white flex items-center px-4 border-b border-gray-200 justify-center  xl:justify-start">
       <Logo></Logo>
-      <div className="ml-4 w-full flex gap-4 h-full items-center  ">
+      <div className="ml-4 w-full flex gap-4 h-full items-center ">
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button size="sm" variant="ghost" className="font-bold text-xl">
@@ -34,13 +34,13 @@ const NavBar = ({ activeTool, onChangeTool }: NavBarProps) => {
               <LuChevronDown size={20} className="ml-2"></LuChevronDown>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="min-w-60">
+          <DropdownMenuContent align="start" className="min-w-60 z-[1000]">
             <DropdownMenuItem
               onClick={() => {}}
-              className="flex items-center gap-2 px-4"
+              className="flex items-center gap-2 px-4 "
             >
               <CiFileOn size={30}></CiFileOn>
-              <div>
+              <div className="z-[1000]">
                 <p>打开</p>
                 <p className="text-xs  opacity-45">请选择json文件</p>
               </div>

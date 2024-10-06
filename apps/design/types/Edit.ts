@@ -1,3 +1,4 @@
+import * as Fabric from "fabric";
 export enum Tool {
   Layout,
   Image,
@@ -19,6 +20,13 @@ export enum Tool {
   RemoveBg,
 }
 export interface Edit {
+  strokeColor: string;
+  strokeWidth: number;
+  fillColor: string;
+  canvas: Fabric.Canvas;
+  setFillColor: (color: string) => void;
+  setStrokeWidth: (width: number) => void;
+  setStrokeColor: (color: string) => void;
   addCircle: () => void;
   addRectangle: () => void;
   addTriangle: () => void;
