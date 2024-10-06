@@ -1,4 +1,31 @@
 import * as Fabric from "fabric";
+import * as material from "material-colors";
+//颜色预设
+export const colors = [
+  material.red[500],
+  material.pink[500],
+  material.purple[500],
+  material.deepPurple[500],
+  material.indigo[500],
+  material.blue[500],
+  material.lightBlue[500],
+  material.cyan[500],
+  material.teal[500],
+  material.green[500],
+  material.lightGreen[500],
+  material.lime[500],
+  material.yellow[500],
+  material.amber[500],
+  material.orange[500],
+  material.deepOrange[500],
+  material.brown[500],
+  material.blueGrey[500],
+  "transparent",
+  //没有的
+  material.grey[500],
+  material.black,
+  material.white,
+];
 export enum Tool {
   Layout,
   Image,
@@ -20,6 +47,7 @@ export enum Tool {
   RemoveBg,
 }
 export interface Edit {
+  selectedObject: Fabric.Object[] | null;
   strokeColor: string;
   strokeWidth: number;
   fillColor: string;

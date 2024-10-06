@@ -1,12 +1,7 @@
 "use client";
-import * as fabric from "fabric";
-import { FabricObject } from "fabric";
-import { useEffect, useMemo, useRef, useState } from "react";
 import useCanvas from "@/hook/useCanvas";
+import useCanvasEvent from "@/hook/useCanvasEvent";
 import useResponse from "@/hook/useResponse";
-import NavBar from "../_components/EditComponents/NavBar";
-import SiderBar from "../_components/EditComponents/SiderBar";
-import ToolBar from "../_components/EditComponents/ToolBar";
 import {
   CRICLE_OPTION,
   DIAMOD_HEGHT,
@@ -21,9 +16,14 @@ import {
   TRIANGLE_OPTION,
 } from "@/types/Edit";
 import { useMemoizedFn } from "ahooks";
+import * as fabric from "fabric";
+import { FabricObject } from "fabric";
+import { useEffect, useMemo, useRef, useState } from "react";
+import NavBar from "../_components/EditComponents/NavBar";
 import ShapeSidle from "../_components/EditComponents/ShapeSidle";
-import useCanvasEvent from "@/hook/useCanvasEvent";
+import SiderBar from "../_components/EditComponents/SiderBar";
 import Tools from "../_components/EditComponents/Tools";
+import ColorSoiberbar from "../_components/EditComponents/ColorSiberbar";
 FabricObject.prototype.set({
   transparentCorners: false,
   cornerColor: "#FFF",
@@ -38,6 +38,7 @@ interface buildEditorProps {
   fillColor: string;
   strokeColor: string;
   strokeWidth: number;
+  selectedObject: fabric.Object[] | null;
   setFillColor: (color: string) => void;
   setStrokeColor: (color: string) => void;
   setStrokeWidth: (width: number) => void;
@@ -50,6 +51,7 @@ const buildEditor = ({
   setStrokeColor,
   strokeWidth,
   setStrokeWidth,
+  selectedObject,
 }: buildEditorProps): Edit => {
   const getWorkspace = () =>
     canvas
@@ -69,12 +71,14 @@ const buildEditor = ({
     strokeWidth,
     fillColor,
     canvas,
+    selectedObject,
     //颜色
     setFillColor: (color: string) => {
       setFillColor(color);
       canvas.getActiveObjects()?.forEach((obj) => {
         obj.set({ fill: color });
       });
+      canvas.renderAll();
     },
     // 线条宽度
     setStrokeWidth: (width: number) => {
@@ -182,7 +186,9 @@ export default function Home() {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
   //选择的对象
-  const [_, setSelectedObject] = useState<fabric.Object[] | null>(null);
+  const [selectedObject, setSelectedObject] = useState<fabric.Object[] | null>(
+    null
+  );
   //颜色形状初始化
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);
   const [strokeColor, setStrokeColor] = useState<string>(STROKE_COLOR);
@@ -215,9 +221,10 @@ export default function Home() {
         setFillColor,
         setStrokeColor,
         setStrokeWidth,
+        selectedObject,
       });
     return undefined;
-  }, [canvas, fillColor, strokeColor, strokeWidth]);
+  }, [canvas, fillColor, strokeColor, strokeWidth, selectedObject]);
 
   const containEl = useRef<HTMLDivElement>(null);
   const canvasEl = useRef<HTMLCanvasElement>(null);
@@ -257,6 +264,11 @@ export default function Home() {
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></ShapeSidle>
+        <ColorSoiberbar
+          editor={editor}
+          activeTool={tool}
+          onChangeActive={onChangeActive}
+        ></ColorSoiberbar>
         <Tools
           editor={editor}
           activeTool={tool}
