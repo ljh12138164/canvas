@@ -28,7 +28,7 @@ const TextSidebar = ({
       <ToolSiderbar title="字体" description="插入字体"></ToolSiderbar>
       <ScrollArea>
         <div className=" p-4 border-b space-y-4">
-          <Button className="w-full" onClick={() => editor?.addText("你好")}>
+          <Button className="w-full" onClick={() => editor?.addText("Hello")}>
             添加一个字体盒
           </Button>
           <Button
@@ -36,9 +36,9 @@ const TextSidebar = ({
             size="lg"
             variant="secondary"
             onClick={() =>
-              editor?.addText("你好", {
+              editor?.addText("Hello", {
                 fontSize: 80,
-                fontWeight: 700,
+                fontWeight: "bold",
               })
             }
           >
@@ -49,7 +49,7 @@ const TextSidebar = ({
             size="lg"
             variant="secondary"
             onClick={() =>
-              editor?.addText("你好", {
+              editor?.addText("Hello", {
                 fontSize: 32,
               })
             }
@@ -61,7 +61,7 @@ const TextSidebar = ({
             size="lg"
             variant="secondary"
             onClick={() =>
-              editor?.addText("你好", {
+              editor?.addText("Hello", {
                 fontSize: 16,
               })
             }

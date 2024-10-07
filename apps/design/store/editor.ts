@@ -5,6 +5,8 @@ import {
   DIAMOD_OPTION,
   DIAMOD_WIDTH,
   Edit,
+  FONT_FAMILY,
+  FONT_WEIGHT,
   OPACITY,
   RECTANGLE_OPTION,
   STROKE_DASH_ARRAY,
@@ -13,6 +15,7 @@ import {
   TRIANGLE_OPTION,
 } from "@/types/Edit";
 import * as fabric from "fabric";
+export type FontWeightType = "normal" | "bold";
 interface buildEditorProps {
   canvas: fabric.Canvas;
   fillColor: string;
@@ -22,6 +25,8 @@ interface buildEditorProps {
   selectedObject: fabric.Object[] | null;
   opacity: number;
   fontFamily: string;
+  fontWeight: FontWeightType;
+  setFontWeight: (fontWeight: FontWeightType) => void;
   setFontFamily: (fontFamily: string) => void;
   setOpacity: (opacity: number) => void;
   setStrokeDashArray: (type: number[]) => void;
@@ -38,6 +43,8 @@ export const buildEditor = ({
   strokeDashArray,
   opacity,
   fontFamily,
+  fontWeight,
+  setFontWeight,
   setFontFamily,
   setOpacity,
   setStrokeDashArray,
@@ -67,14 +74,33 @@ export const buildEditor = ({
     strokeDashArray,
     opacity,
     fontFamily,
-    setFontFamily: (fontFamily) => {
-      setFontFamily(fontFamily);
+    fontWeight,
+    setFontFamily: (value: string) => {
+      setFontFamily(value);
       canvas?.getActiveObjects()?.forEach((item) => {
         if (isText(item)) {
-          item.set({ fontFamily });
+          item.set({ fontFamily: value });
         }
       });
       canvas.renderAll();
+    },
+    changeFontWeight: (value: FontWeightType) => {
+      setFontWeight(value);
+      canvas?.getActiveObjects()?.forEach((item) => {
+        if (isText(item)) {
+          item.set({ fontWeight: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    getActiveStrokeWeight: () => {
+      const value =
+        canvas?.getActiveObjects()?.[0]?.get("fontWeight") || FONT_WEIGHT;
+      setFontWeight(value as FontWeightType);
+      return value;
+    },
+    getActiveFontFamily: () => {
+      return canvas?.getActiveObjects()?.[0]?.get("fontFamily") || FONT_FAMILY;
     },
     addText: (text, options) => {
       const textObj = new fabric.Textbox(text, {

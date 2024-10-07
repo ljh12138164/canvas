@@ -5,6 +5,7 @@ import useResponse from "@/hook/useResponse";
 import {
   FILL_COLOR,
   FONT_FAMILY,
+  FONT_WEIGHT,
   OPACITY,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
@@ -20,7 +21,7 @@ import NavBar from "../_components/EditComponents/NavBar";
 import ShapeSidle from "../_components/EditComponents/ShapeSidle";
 import SiderBar from "../_components/EditComponents/SiderBar";
 import Tools from "../_components/EditComponents/Tools";
-import { buildEditor } from "@/store/editor";
+import { buildEditor, FontWeightType } from "@/store/editor";
 import TextSidebar from "../_components/EditComponents/TextSidebar";
 FabricObject.prototype.set({
   transparentCorners: false,
@@ -53,6 +54,7 @@ export default function Home() {
 
   //字体
   const [fontFamily, setFontFamily] = useState<string>(FONT_FAMILY);
+  const [fontWeight, setFontWeight] = useState<FontWeightType>(FONT_WEIGHT);
 
   useCanvasEvent({
     canvas,
@@ -84,6 +86,8 @@ export default function Home() {
         strokeDashArray,
         opacity,
         fontFamily,
+        fontWeight,
+        setFontWeight,
         setFontFamily,
         setOpacity,
         setFillColor,
@@ -101,6 +105,7 @@ export default function Home() {
     strokeDashArray,
     opacity,
     fontFamily,
+    fontWeight,
   ]);
 
   const containEl = useRef<HTMLDivElement>(null);

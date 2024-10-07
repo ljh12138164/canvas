@@ -1,14 +1,15 @@
 import { cn } from "@/lib/utils";
 import type { Edit } from "@/types/Edit";
-import { FILL_COLOR, STROKE_COLOR, Tool } from "@/types/Edit";
+import { FILL_COLOR, fonts, STROKE_COLOR, Tool } from "@/types/Edit";
 
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Slider } from "@/components/ui/slider";
 import { useMemoizedFn } from "ahooks";
 import ColorPicker from "./ColorPicker";
 import StokeWidth from "./StokeWidth";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
-import { Slider } from "@/components/ui/slider";
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
@@ -20,6 +21,7 @@ const obj = {
   [Tool.StrokeColor]: "描边颜色",
   [Tool.StrokeWidth]: "边框宽度",
   [Tool.Opacity]: "透明度",
+  [Tool.FontFamily]: "字体类型",
   "": "",
 };
 const ColorSoiberbar = ({
@@ -36,7 +38,8 @@ const ColorSoiberbar = ({
       activeTool === Tool.Fill ||
       activeTool === Tool.StrokeColor ||
       activeTool === Tool.StrokeWidth ||
-      activeTool === Tool.Opacity
+      activeTool === Tool.Opacity ||
+      activeTool === Tool.FontFamily
     )
       return activeTool;
     return "";
@@ -49,7 +52,7 @@ const ColorSoiberbar = ({
       )}
     >
       <ToolSiderbar
-        title="颜色"
+        title={obj[onShow()] || ""}
         description={`更改${obj[onShow()] || ""}`}
       ></ToolSiderbar>
       <ScrollArea>
@@ -86,6 +89,29 @@ const ColorSoiberbar = ({
                 editor?.changeOpacty(value[0]);
               }}
             />
+          )}
+          {onShow() === Tool.FontFamily && (
+            <section className="space-y-2 pb-[5rem]">
+              {fonts.map((item: string) => {
+                return (
+                  <Button
+                    key={item}
+                    variant="ghost"
+                    style={{
+                      fontFamily: item,
+                      fontSize: "16px",
+                      padding: "8px 16px",
+                    }}
+                    onClick={() => {
+                      editor?.setFontFamily(item);
+                    }}
+                    className={`w-full h-16 justify-start text-left ${editor?.fontFamily === item && "border-blue-500 border-2"}`}
+                  >
+                    {item}
+                  </Button>
+                );
+              })}
+            </section>
           )}
         </div>
       </ScrollArea>

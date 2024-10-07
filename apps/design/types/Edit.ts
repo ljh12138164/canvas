@@ -1,3 +1,4 @@
+import { FontWeightType } from "@/store/editor";
 import * as Fabric from "fabric";
 import * as material from "material-colors";
 //颜色预设
@@ -42,6 +43,7 @@ export enum Tool {
   StrokeColor,
   StrokeWidth,
   Font,
+  FontFamily,
   Opacity,
   Filter,
   RemoveBg,
@@ -55,16 +57,20 @@ export interface Edit {
   opacity: number;
   strokeDashArray: number[];
   fontFamily: string;
-  setFontFamily: (fontFamily: string) => void;
+  fontWeight: FontWeightType;
   addText: (text: string, option?: Fabric.Textbox | {}) => void;
-  getOpacty: () => number;
-  changeOpacty: (opacity: number) => void;
   bringForward: () => void;
-  sendBackwards: () => void;
+  changeOpacty: (opacity: number) => void;
   changeStokeDashArray: (value: number[]) => void;
+  sendBackwards: () => void;
+  changeFontWeight: (weight: FontWeightType) => void;
+  getOpacty: () => number;
+  getActiveFontFamily: () => string;
   getActiveStrokeWidth: () => number;
+  getActiveStrokeWeight: () => number | string;
   getActiveStokeColor: () => string;
   getActiveStokeDashArray: () => number[];
+  setFontFamily: (fontFamily: string) => void;
   setFillColor: (color: string) => void;
   setStrokeWidth: (width: number) => void;
   setStrokeColor: (color: string) => void;
@@ -84,6 +90,7 @@ export const STROKE_DASH_ARRAY = [];
 export const OPACITY = 0;
 export const FONT_FAMILY = "Arial";
 export const FONT_SIZE = 32;
+export const FONT_WEIGHT = "normal";
 
 export const CRICLE_OPTION = {
   radius: 100,
@@ -130,3 +137,23 @@ export const TEXTBOX_OPTION = {
   fontSize: FONT_SIZE,
   fontFamily: FONT_FAMILY,
 };
+export const fonts = [
+  "Arial",
+  "Arial Black",
+  "Verdana",
+  "Hevetica",
+  "Tahoma",
+  "Trebuchet MS",
+  "Times New Roman",
+  "Georgia",
+  "Garamond",
+  "Courier New",
+  "Brush Script MT",
+  "Palatino",
+  "Bookman",
+  "Comic Sans MS",
+  "Impact",
+  "Lucida Sans Unicode",
+  "Geneva",
+  "Lucida Grande",
+];

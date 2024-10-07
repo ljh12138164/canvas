@@ -2,14 +2,14 @@ import TooltipComponents from "@/components/shadui-Components/Tooltip";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Edit, Tool } from "@/types/Edit";
-import { useState } from "react";
 import { BsBorderWidth, BsTransparency } from "react-icons/bs";
-import { LuArrowDown, LuArrowUp } from "react-icons/lu";
+import { LuArrowDown, LuArrowUp, LuBold, LuChevronDown } from "react-icons/lu";
 interface ToolBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
   onChangeActiveTool: (tool: Tool) => void;
 }
+
 const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
   const selectedObject = editor?.canvas?.getActiveObject();
   //获取属性
@@ -20,9 +20,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
   //获取颜色和
   const fillColor = getProperty("fill");
   const storkeColor = editor?.getActiveStokeColor();
-
-  const fillColor2 = editor?.fillColor;
-  const [properties, setProperties] = useState({ fillColor });
+  //字体
   if (!editor?.selectedObject?.length) {
     return (
       <section className="h-[3rem] p-2 bg-white items-center flex w-full z-[50]" />
@@ -92,6 +90,56 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
               className={cn(activeTool === Tool.StrokeWidth && "bg-gray-100")}
             >
               <BsBorderWidth className="size-4"></BsBorderWidth>
+            </Button>
+          </TooltipComponents>
+        )}
+        {textYype && (
+          <TooltipComponents
+            label="字体"
+            side="bottom"
+            sideOffset={5}
+            key={Tool.FontFamily}
+          >
+            <Button
+              onClick={() => {
+                onChangeActiveTool(Tool.FontFamily);
+              }}
+              size="icon"
+              variant="ghost"
+              className={cn(
+                "w-auto",
+                activeTool === Tool.FontFamily && "bg-gray-100"
+              )}
+            >
+              <div className="max-w-[100px] truncate px-2">
+                {editor?.getActiveFontFamily()}
+              </div>
+              <LuChevronDown className="size-4"></LuChevronDown>
+            </Button>
+          </TooltipComponents>
+        )}
+        {textYype && (
+          <TooltipComponents
+            label="加粗"
+            side="bottom"
+            sideOffset={5}
+            key={"blod"}
+          >
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => {
+                const activefontWeight = editor?.getActiveStrokeWeight();
+                console.log(activefontWeight);
+                if (activefontWeight === "normal")
+                  editor?.changeFontWeight("bold");
+                if (activefontWeight === "bold") {
+                  editor?.changeFontWeight("normal");
+                }
+              }}
+              className={`${editor?.getActiveStrokeWeight() === "bold" && "bg-gray-100"}`}
+            >
+              <LuBold className="size-4"></LuBold>
             </Button>
           </TooltipComponents>
         )}
