@@ -46,12 +46,12 @@ interface buildEditorProps {
 const buildEditor = ({
   canvas,
   fillColor,
-  setFillColor,
   strokeColor,
-  setStrokeColor,
   strokeWidth,
-  setStrokeWidth,
   selectedObject,
+  setStrokeColor,
+  setFillColor,
+  setStrokeWidth,
 }: buildEditorProps): Edit => {
   const getWorkspace = () =>
     canvas
@@ -72,6 +72,13 @@ const buildEditor = ({
     fillColor,
     canvas,
     selectedObject,
+    getActiveStokeColor: () => {
+      const selectedObj = selectedObject?.[0];
+      if (!selectedObj) {
+        return fillColor;
+      }
+      return selectedObj.get("stroke") || strokeColor;
+    },
     //颜色
     setFillColor: (color: string) => {
       setFillColor(color);
@@ -86,12 +93,12 @@ const buildEditor = ({
       canvas.getActiveObjects()?.forEach((obj) => {
         obj.set({ strokeWidth: width });
       });
+      canvas.renderAll();
     },
     setStrokeColor: (color: string) => {
       setStrokeColor(color);
       canvas.getActiveObjects()?.forEach((obj) => {
         //如果是文本
-
         if (
           obj.type === "text" ||
           obj.type === "i-text" ||
@@ -102,11 +109,14 @@ const buildEditor = ({
         }
         obj.set({ stroke: color });
       });
+      canvas.renderAll();
     },
     //园
     addCircle: () => {
       const circle = new fabric.Circle({
         ...CRICLE_OPTION,
+        fill: fillColor,
+        stroke: strokeColor,
       });
       center(circle);
       canvas.add(circle);
@@ -117,6 +127,8 @@ const buildEditor = ({
     addRectangle: () => {
       const rect = new fabric.Rect({
         ...RECTANGLE_OPTION,
+        fill: fillColor,
+        stroke: strokeColor,
       });
       center(rect);
       canvas.add(rect);
@@ -126,6 +138,8 @@ const buildEditor = ({
     addSoftRectangle: () => {
       const rectangle = new fabric.Rect({
         ...RECTANGLE_OPTION,
+        fill: fillColor,
+        stroke: strokeColor,
         rx: 10,
         ry: 10,
       });
@@ -137,6 +151,8 @@ const buildEditor = ({
     addTriangle: () => {
       const triangle = new fabric.Triangle({
         ...TRIANGLE_OPTION,
+        fill: fillColor,
+        stroke: strokeColor,
       });
       center(triangle);
       canvas.add(triangle);
@@ -145,6 +161,8 @@ const buildEditor = ({
     addRotateTriangle: () => {
       const triangle = new fabric.Triangle({
         ...TRIANGLE_OPTION,
+        fill: fillColor,
+        stroke: strokeColor,
         //180反转
         angle: 180,
       });
@@ -171,6 +189,8 @@ const buildEditor = ({
         ],
         {
           ...DIAMOD_OPTION,
+          fill: fillColor,
+          stroke: strokeColor,
         }
       );
       center(diamod);
@@ -197,6 +217,8 @@ export default function Home() {
   useCanvasEvent({
     canvas,
     setSelectedObject,
+    tool,
+    setTool,
   });
 
   const onChangeActive = useMemoizedFn((tools: Tool) => {
@@ -254,7 +276,7 @@ export default function Home() {
       }}
     >
       <NavBar activeTool={tool} onChangeTool={onChangeActive}></NavBar>
-      <div className="h-[90dvh] absolute left-0 top-[4rem] flex xl:w-full w-[110dvw] transition-all duration-100 ease-in-out">
+      <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
         <SiderBar
           acitiveTool={tool}
           onChangeActiveTool={onChangeActive}
@@ -269,17 +291,16 @@ export default function Home() {
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></ColorSoiberbar>
-        <Tools
-          editor={editor}
-          activeTool={tool}
-          onChangeActiveTool={onChangeActive}
-          key={JSON.stringify(editor?.canvas.getActiveObject())}
-        ></Tools>
-        <main
-          className="flex flex-col relative flex-1 overflow-hidden"
-          ref={containEl}
-        >
-          <canvas ref={canvasEl}></canvas>
+        <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
+          <Tools
+            editor={editor}
+            activeTool={tool}
+            onChangeActiveTool={onChangeActive}
+            key={JSON.stringify(editor?.canvas.getActiveObject())}
+          ></Tools>
+          <section className="flex flex-col relative flex-1 " ref={containEl}>
+            <canvas ref={canvasEl}></canvas>
+          </section>
         </main>
       </div>
     </div>

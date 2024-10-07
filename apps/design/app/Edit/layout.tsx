@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <html lang="cn">
       <body>
-        <section className="h-[100dvh] overflow-hidden">{children}</section>
+        <section className="h-[100dvh]">{children}</section>
       </body>
     </html>
   );

@@ -19,6 +19,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
     <aside
       id="editSider"
       className="w-[100px] z-[55]  bg-white h-full border-r border-t-black border-slate-200 overflow-y-auto"
+      style={{ flexBasis: "100px" }}
     >
       <ul className="flex flex-col">
         <SiderBarItem

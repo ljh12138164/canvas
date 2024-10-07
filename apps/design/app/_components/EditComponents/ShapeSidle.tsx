@@ -24,9 +24,10 @@ const ShapeSidle = ({
   return (
     <aside
       className={cn(
-        "z-[100] bg-white border-r relative transition w-[300px] h-full flex flex-col",
+        "z-[100] bg-white  relative transition  h-full flex flex-col",
         activeTool === Tool.Shapes ? "visible" : "hidden"
       )}
+      style={{ flexBasis: "300px" }}
     >
       <ToolSiderbar title="形状" description="选择形状工具"></ToolSiderbar>
       <ScrollArea>

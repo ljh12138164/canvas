@@ -6,6 +6,7 @@
     "dev": "turbo dev",
     "dev:design": "turbo --filter=design dev",
     "dev:sf": "turbo --filter=sf dev",
+    "dev:threes": "turbo --filter=threes dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

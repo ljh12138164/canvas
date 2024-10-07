@@ -6,7 +6,7 @@ const ToolSiderbarClose = ({ onClose }: ToolSiderbarCloseProps) => {
   return (
     <button
       onClick={onClose}
-      className="absolute top-2 right-2 z-10 p-1 rounded-full bg-white shadow-md group"
+      className="absolute top-[45%] right-[-7.5%] z-10 p-1 h-[3rem] rounded-r-lg bg-white border-slate-900 border-l-white  group"
     >
       <LuChevronsLeft className="size-4 text-black group-hover:opacity-70 transition"></LuChevronsLeft>
     </button>

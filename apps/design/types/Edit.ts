@@ -52,6 +52,7 @@ export interface Edit {
   strokeWidth: number;
   fillColor: string;
   canvas: Fabric.Canvas;
+  getActiveStokeColor: () => string;
   setFillColor: (color: string) => void;
   setStrokeWidth: (width: number) => void;
   setStrokeColor: (color: string) => void;
