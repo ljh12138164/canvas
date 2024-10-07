@@ -3,10 +3,11 @@ import type { Edit } from "@/types/Edit";
 import { FILL_COLOR, STROKE_COLOR, Tool } from "@/types/Edit";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useMemoizedFn } from "ahooks";
+import ColorPicker from "./ColorPicker";
+import StokeWidth from "./StokeWidth";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
-import ColorPicker from "./ColorPicker";
-import { useMemoizedFn } from "ahooks";
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
@@ -16,6 +17,7 @@ interface ColorSoiberbarProps {
 const obj = {
   [Tool.Fill]: "填充颜色",
   [Tool.StrokeColor]: "描边颜色",
+  [Tool.StrokeWidth]: "边框宽度",
   "": "",
 };
 const ColorSoiberbar = ({
@@ -28,7 +30,11 @@ const ColorSoiberbar = ({
   const stokevalue = editor?.strokeColor || STROKE_COLOR;
 
   const onShow = useMemoizedFn(() => {
-    if (activeTool === Tool.Fill || activeTool === Tool.StrokeColor)
+    if (
+      activeTool === Tool.Fill ||
+      activeTool === Tool.StrokeColor ||
+      activeTool === Tool.StrokeWidth
+    )
       return activeTool;
     return "";
   });
@@ -45,21 +51,26 @@ const ColorSoiberbar = ({
       ></ToolSiderbar>
       <ScrollArea>
         <div className="p-4 space-y-4">
-          {onShow() === Tool.Fill || (
+          {onShow() === Tool.Fill && (
             <ColorPicker
               value={value}
               key={Tool.Fill}
-              onChange={(color) => editor?.setStrokeColor(color)}
-            ></ColorPicker>
-          )}
-          {onShow() === Tool.StrokeColor || (
-            <ColorPicker
-              value={stokevalue}
               onChange={(color) => {
                 editor?.setFillColor(color);
               }}
+            ></ColorPicker>
+          )}
+          {onShow() === Tool.StrokeColor && (
+            <ColorPicker
+              value={stokevalue}
+              onChange={(color) => {
+                editor?.setStrokeColor(color);
+              }}
               key={Tool.StrokeColor}
             ></ColorPicker>
+          )}
+          {onShow() === Tool.StrokeWidth && (
+            <StokeWidth key={Tool.StrokeWidth} editor={editor}></StokeWidth>
           )}
         </div>
       </ScrollArea>

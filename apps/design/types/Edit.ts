@@ -52,7 +52,13 @@ export interface Edit {
   strokeWidth: number;
   fillColor: string;
   canvas: Fabric.Canvas;
+  strokeDashArray: number[];
+  bringForward: () => void;
+  sendBackwards: () => void;
+  changeStokeDashArray: (value: number[]) => void;
+  getActiveStrokeWidth: () => number;
   getActiveStokeColor: () => string;
+  getActiveStokeDashArray: () => number[];
   setFillColor: (color: string) => void;
   setStrokeWidth: (width: number) => void;
   setStrokeColor: (color: string) => void;
@@ -68,6 +74,8 @@ export const STROKE_COLOR = "rgba(0,0,0,1)";
 export const DIAMOD_WIDTH = 300;
 export const DIAMOD_HEGHT = 300;
 export const STROKE_WIDTH = 2;
+export const STROKE_DASH_ARRAY = [];
+
 export const CRICLE_OPTION = {
   radius: 100,
   left: 100,

@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Edit, Tool } from "@/types/Edit";
 import { useState } from "react";
+import { BsBorderWidth } from "react-icons/bs";
+import { LuArrowDown, LuArrowUp } from "react-icons/lu";
 interface ToolBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
@@ -67,6 +69,49 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                   : "2px solid black",
               }}
             />
+          </Button>
+        </TooltipComponents>
+        <TooltipComponents
+          label="边框宽度"
+          side="bottom"
+          sideOffset={5}
+          key={Tool.StrokeWidth}
+        >
+          <Button
+            onClick={() => onChangeActiveTool(Tool.StrokeWidth)}
+            size="icon"
+            variant="ghost"
+            className={cn(activeTool === Tool.StrokeWidth && "bg-gray-100")}
+          >
+            <BsBorderWidth className="size-4"></BsBorderWidth>
+          </Button>
+        </TooltipComponents>
+        <TooltipComponents
+          label="显示在前面"
+          side="bottom"
+          sideOffset={5}
+          key={"back"}
+        >
+          <Button
+            onClick={() => editor?.bringForward()}
+            size="icon"
+            variant="ghost"
+          >
+            <LuArrowUp className="size-4"></LuArrowUp>
+          </Button>
+        </TooltipComponents>
+        <TooltipComponents
+          label="显示在后面"
+          side="bottom"
+          sideOffset={5}
+          key={Tool.StrokeWidth}
+        >
+          <Button
+            onClick={() => editor?.sendBackwards()}
+            size="icon"
+            variant="ghost"
+          >
+            <LuArrowDown className="size-4"></LuArrowDown>
           </Button>
         </TooltipComponents>
       </div>
