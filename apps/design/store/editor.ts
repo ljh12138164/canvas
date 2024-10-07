@@ -1,12 +1,15 @@
+import { isText } from "@/lib/utils";
 import {
   CRICLE_OPTION,
   DIAMOD_HEGHT,
   DIAMOD_OPTION,
   DIAMOD_WIDTH,
   Edit,
+  OPACITY,
   RECTANGLE_OPTION,
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
+  TEXTBOX_OPTION,
   TRIANGLE_OPTION,
 } from "@/types/Edit";
 import * as fabric from "fabric";
@@ -17,6 +20,10 @@ interface buildEditorProps {
   strokeWidth: number;
   strokeDashArray: number[];
   selectedObject: fabric.Object[] | null;
+  opacity: number;
+  fontFamily: string;
+  setFontFamily: (fontFamily: string) => void;
+  setOpacity: (opacity: number) => void;
   setStrokeDashArray: (type: number[]) => void;
   setFillColor: (color: string) => void;
   setStrokeColor: (color: string) => void;
@@ -29,6 +36,10 @@ export const buildEditor = ({
   strokeWidth,
   selectedObject,
   strokeDashArray,
+  opacity,
+  fontFamily,
+  setFontFamily,
+  setOpacity,
   setStrokeDashArray,
   setStrokeColor,
   setFillColor,
@@ -54,6 +65,44 @@ export const buildEditor = ({
     canvas,
     selectedObject,
     strokeDashArray,
+    opacity,
+    fontFamily,
+    setFontFamily: (fontFamily) => {
+      setFontFamily(fontFamily);
+      canvas?.getActiveObjects()?.forEach((item) => {
+        if (isText(item)) {
+          item.set({ fontFamily });
+        }
+      });
+      canvas.renderAll();
+    },
+    addText: (text, options) => {
+      const textObj = new fabric.Textbox(text, {
+        ...TEXTBOX_OPTION,
+        ...options,
+        fill: fillColor,
+      });
+      canvas.add(textObj);
+      center(textObj);
+      canvas.add(textObj);
+      canvas.setActiveObject(textObj);
+    },
+    changeOpacty: (opacity: number) => {
+      setOpacity(opacity);
+      canvas.getActiveObjects().forEach((item) => {
+        item.set({
+          opacity,
+        });
+      });
+      canvas.renderAll();
+    },
+    getOpacty: () => {
+      const selected = selectedObject?.[0];
+      if (!selected) {
+        return OPACITY;
+      }
+      return selected?.get("opacity") || OPACITY;
+    },
     //前后
     bringForward: () => {
       canvas
@@ -139,6 +188,7 @@ export const buildEditor = ({
         ...CRICLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
+        opacity,
       });
       center(circle);
       canvas.add(circle);
@@ -151,6 +201,7 @@ export const buildEditor = ({
         ...RECTANGLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
+        opacity,
       });
       center(rect);
       canvas.add(rect);
@@ -162,6 +213,7 @@ export const buildEditor = ({
         ...RECTANGLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
+        opacity,
         rx: 10,
         ry: 10,
       });
@@ -175,6 +227,7 @@ export const buildEditor = ({
         ...TRIANGLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
+        opacity,
       });
       center(triangle);
       canvas.add(triangle);
@@ -187,6 +240,7 @@ export const buildEditor = ({
         stroke: strokeColor,
         //180反转
         angle: 180,
+        opacity,
       });
       center(triangle);
       canvas.add(triangle);
@@ -213,6 +267,7 @@ export const buildEditor = ({
           ...DIAMOD_OPTION,
           fill: fillColor,
           stroke: strokeColor,
+          opacity,
         }
       );
       center(diamod);

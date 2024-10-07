@@ -4,6 +4,8 @@ import useCanvasEvent from "@/hook/useCanvasEvent";
 import useResponse from "@/hook/useResponse";
 import {
   FILL_COLOR,
+  FONT_FAMILY,
+  OPACITY,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
@@ -19,6 +21,7 @@ import ShapeSidle from "../_components/EditComponents/ShapeSidle";
 import SiderBar from "../_components/EditComponents/SiderBar";
 import Tools from "../_components/EditComponents/Tools";
 import { buildEditor } from "@/store/editor";
+import TextSidebar from "../_components/EditComponents/TextSidebar";
 FabricObject.prototype.set({
   transparentCorners: false,
   cornerColor: "#FFF",
@@ -46,6 +49,10 @@ export default function Home() {
   //边框形状
   const [strokeDashArray, setStrokeDashArray] =
     useState<number[]>(STROKE_DASH_ARRAY);
+  const [opacity, setOpacity] = useState<number>(OPACITY);
+
+  //字体
+  const [fontFamily, setFontFamily] = useState<string>(FONT_FAMILY);
 
   useCanvasEvent({
     canvas,
@@ -75,6 +82,10 @@ export default function Home() {
         strokeWidth,
         selectedObject,
         strokeDashArray,
+        opacity,
+        fontFamily,
+        setFontFamily,
+        setOpacity,
         setFillColor,
         setStrokeColor,
         setStrokeWidth,
@@ -88,6 +99,8 @@ export default function Home() {
     strokeWidth,
     selectedObject,
     strokeDashArray,
+    opacity,
+    fontFamily,
   ]);
 
   const containEl = useRef<HTMLDivElement>(null);
@@ -128,6 +141,11 @@ export default function Home() {
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></ShapeSidle>
+        <TextSidebar
+          editor={editor}
+          activeTool={tool}
+          onChangeActive={onChangeActive}
+        ></TextSidebar>
         <ColorSoiberbar
           editor={editor}
           activeTool={tool}

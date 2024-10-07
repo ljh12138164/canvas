@@ -12,7 +12,7 @@ const useCanvas = () => {
     }) => {
       const initRect = new fabric.Rect({
         width: 800,
-        height: 1200,
+        height: 1100,
         name: "board",
         fill: "white",
         selectable: false,

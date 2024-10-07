@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Edit, Tool } from "@/types/Edit";
 import { useState } from "react";
-import { BsBorderWidth } from "react-icons/bs";
+import { BsBorderWidth, BsTransparency } from "react-icons/bs";
 import { LuArrowDown, LuArrowUp } from "react-icons/lu";
 interface ToolBarProps {
   editor: Edit | undefined;
@@ -28,6 +28,11 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
       <section className="h-[3rem] p-2 bg-white items-center flex w-full z-[50]" />
     );
   }
+  const seltectedObject = editor?.canvas?.getActiveObjects()[0];
+  const textYype =
+    seltectedObject?.type === "textbox" ||
+    seltectedObject?.type === "i-text" ||
+    seltectedObject?.type === "text";
   return (
     <section className="h-[3rem] p-2 space-x-4 bg-white items-center flex w-full z-[50]">
       <div className="flex items-center h-full justify-center gap-2">
@@ -49,43 +54,47 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
             />
           </Button>
         </TooltipComponents>
-        <TooltipComponents
-          label="边框颜色"
-          side="bottom"
-          sideOffset={5}
-          key={Tool.StrokeColor}
-        >
-          <Button
-            onClick={() => onChangeActiveTool(Tool.StrokeColor)}
-            size="icon"
-            variant="ghost"
-            className={cn(activeTool === Tool.StrokeColor && "bg-gray-100")}
+        {!textYype && (
+          <TooltipComponents
+            label="边框颜色"
+            side="bottom"
+            sideOffset={5}
+            key={Tool.StrokeColor}
           >
-            <div
-              className={`rounded-small size-4 border bg-white `}
-              style={{
-                border: storkeColor
-                  ? `2px solid ${storkeColor}`
-                  : "2px solid black",
-              }}
-            />
-          </Button>
-        </TooltipComponents>
-        <TooltipComponents
-          label="边框宽度"
-          side="bottom"
-          sideOffset={5}
-          key={Tool.StrokeWidth}
-        >
-          <Button
-            onClick={() => onChangeActiveTool(Tool.StrokeWidth)}
-            size="icon"
-            variant="ghost"
-            className={cn(activeTool === Tool.StrokeWidth && "bg-gray-100")}
+            <Button
+              onClick={() => onChangeActiveTool(Tool.StrokeColor)}
+              size="icon"
+              variant="ghost"
+              className={cn(activeTool === Tool.StrokeColor && "bg-gray-100")}
+            >
+              <div
+                className={`rounded-small size-4 border bg-white `}
+                style={{
+                  border: storkeColor
+                    ? `2px solid ${storkeColor}`
+                    : "2px solid black",
+                }}
+              />
+            </Button>
+          </TooltipComponents>
+        )}
+        {!textYype && (
+          <TooltipComponents
+            label="边框宽度"
+            side="bottom"
+            sideOffset={5}
+            key={Tool.StrokeWidth}
           >
-            <BsBorderWidth className="size-4"></BsBorderWidth>
-          </Button>
-        </TooltipComponents>
+            <Button
+              onClick={() => onChangeActiveTool(Tool.StrokeWidth)}
+              size="icon"
+              variant="ghost"
+              className={cn(activeTool === Tool.StrokeWidth && "bg-gray-100")}
+            >
+              <BsBorderWidth className="size-4"></BsBorderWidth>
+            </Button>
+          </TooltipComponents>
+        )}
         <TooltipComponents
           label="显示在前面"
           side="bottom"
@@ -104,7 +113,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
           label="显示在后面"
           side="bottom"
           sideOffset={5}
-          key={Tool.StrokeWidth}
+          key={"end"}
         >
           <Button
             onClick={() => editor?.sendBackwards()}
@@ -112,6 +121,21 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
             variant="ghost"
           >
             <LuArrowDown className="size-4"></LuArrowDown>
+          </Button>
+        </TooltipComponents>
+        <TooltipComponents
+          label="透明度"
+          side="bottom"
+          sideOffset={5}
+          key={Tool.Opacity}
+        >
+          <Button
+            onClick={() => onChangeActiveTool(Tool.Opacity)}
+            size="icon"
+            variant="ghost"
+            className={cn(activeTool === Tool.Opacity && "bg-gray-100")}
+          >
+            <BsTransparency className="size-4"></BsTransparency>
           </Button>
         </TooltipComponents>
       </div>

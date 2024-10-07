@@ -52,7 +52,13 @@ export interface Edit {
   strokeWidth: number;
   fillColor: string;
   canvas: Fabric.Canvas;
+  opacity: number;
   strokeDashArray: number[];
+  fontFamily: string;
+  setFontFamily: (fontFamily: string) => void;
+  addText: (text: string, option?: Fabric.Textbox | {}) => void;
+  getOpacty: () => number;
+  changeOpacty: (opacity: number) => void;
   bringForward: () => void;
   sendBackwards: () => void;
   changeStokeDashArray: (value: number[]) => void;
@@ -73,8 +79,11 @@ export const FILL_COLOR = "rgba(0,0,0,1)";
 export const STROKE_COLOR = "rgba(0,0,0,1)";
 export const DIAMOD_WIDTH = 300;
 export const DIAMOD_HEGHT = 300;
-export const STROKE_WIDTH = 2;
+export const STROKE_WIDTH = 0;
 export const STROKE_DASH_ARRAY = [];
+export const OPACITY = 0;
+export const FONT_FAMILY = "Arial";
+export const FONT_SIZE = 32;
 
 export const CRICLE_OPTION = {
   radius: 100,
@@ -112,4 +121,12 @@ export const DIAMOD_OPTION = {
   strokeWidth: STROKE_WIDTH,
   width: 200,
   height: 200,
+};
+export const TEXTBOX_OPTION = {
+  // type: "textbox",
+  left: 100,
+  top: 100,
+  fill: FILL_COLOR,
+  fontSize: FONT_SIZE,
+  fontFamily: FONT_FAMILY,
 };

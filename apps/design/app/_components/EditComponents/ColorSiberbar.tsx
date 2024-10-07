@@ -8,6 +8,7 @@ import ColorPicker from "./ColorPicker";
 import StokeWidth from "./StokeWidth";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
+import { Slider } from "@/components/ui/slider";
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
@@ -18,6 +19,7 @@ const obj = {
   [Tool.Fill]: "填充颜色",
   [Tool.StrokeColor]: "描边颜色",
   [Tool.StrokeWidth]: "边框宽度",
+  [Tool.Opacity]: "透明度",
   "": "",
 };
 const ColorSoiberbar = ({
@@ -33,7 +35,8 @@ const ColorSoiberbar = ({
     if (
       activeTool === Tool.Fill ||
       activeTool === Tool.StrokeColor ||
-      activeTool === Tool.StrokeWidth
+      activeTool === Tool.StrokeWidth ||
+      activeTool === Tool.Opacity
     )
       return activeTool;
     return "";
@@ -71,6 +74,18 @@ const ColorSoiberbar = ({
           )}
           {onShow() === Tool.StrokeWidth && (
             <StokeWidth key={Tool.StrokeWidth} editor={editor}></StokeWidth>
+          )}
+          {onShow() === Tool.Opacity && (
+            <Slider
+              max={1}
+              min={0}
+              key={Tool.Opacity}
+              value={[editor?.getOpacty() || 0]}
+              step={0.01}
+              onValueChange={(value) => {
+                editor?.changeOpacty(value[0]);
+              }}
+            />
           )}
         </div>
       </ScrollArea>

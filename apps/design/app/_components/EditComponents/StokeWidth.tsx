@@ -7,12 +7,13 @@ interface StokeWidthProps {
   editor: Edit | undefined;
 }
 const StokeWidth = ({ editor }: StokeWidthProps) => {
-  const stokeWidth = editor?.getActiveStrokeWidth() || STROKE_WIDTH;
+  const stokeWidth = editor?.getActiveStrokeWidth() ?? STROKE_WIDTH;
   return (
     <Fragment>
       <Label className="text-sm">边框宽度</Label>
       <Slider
         value={[stokeWidth]}
+        min={0}
         max={10}
         step={0.01}
         onValueChange={(values) => {

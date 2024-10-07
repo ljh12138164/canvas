@@ -43,9 +43,9 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
           <SiderBarItem
             icon={LuType}
             label="文本"
-            isActive={acitiveTool === Tool.Type}
+            isActive={acitiveTool === Tool.Font}
             onClick={() => {
-              onChangeActiveTool(Tool.Type);
+              onChangeActiveTool(Tool.Font);
             }}
           />
           <SiderBarItem
