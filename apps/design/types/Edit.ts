@@ -44,6 +44,10 @@ export enum Tool {
   StrokeWidth,
   Font,
   FontFamily,
+  FontStyle,
+  FontThought,
+  FontUnderline,
+  FontItalic,
   Opacity,
   Filter,
   RemoveBg,
@@ -58,12 +62,24 @@ export interface Edit {
   strokeDashArray: number[];
   fontFamily: string;
   fontWeight: FontWeightType;
+  fontThought: boolean;
+  fontUnderline: boolean;
+  fontItalics: FontStyle;
+  fontAlign: Fabric.Textbox["textAlign"];
   addText: (text: string, option?: Fabric.Textbox | {}) => void;
   bringForward: () => void;
+  getActiveFontLineThrough: () => boolean;
+  getActiveFontUnderline: () => boolean;
+  getActiveFontItalic: () => FontStyle;
+  getActiveFontAlign: () => Fabric.Textbox["textAlign"];
+  changeFontAlign: (value: Fabric.Textbox["textAlign"]) => void;
+  changeFontLineThrough: (value: boolean) => void;
+  changeFontUnderline: (value: boolean) => void;
+  changeFontItalic: (value: FontStyle) => void;
   changeOpacty: (opacity: number) => void;
   changeStokeDashArray: (value: number[]) => void;
-  sendBackwards: () => void;
   changeFontWeight: (weight: FontWeightType) => void;
+  sendBackwards: () => void;
   getOpacty: () => number;
   getActiveFontFamily: () => string;
   getActiveStrokeWidth: () => number;
@@ -91,6 +107,10 @@ export const OPACITY = 0;
 export const FONT_FAMILY = "Arial";
 export const FONT_SIZE = 32;
 export const FONT_WEIGHT = "normal";
+export const FONT_THOUGHT = false;
+export const FONT_UNDERLINE = false;
+export const FONT_ITALICS = "normal";
+export const FONT_ALIGN = "left";
 
 export const CRICLE_OPTION = {
   radius: 100,
@@ -120,6 +140,7 @@ export const TRIANGLE_OPTION = {
   width: 200,
   height: 200,
 };
+export type FontStyle = "normal" | "italic";
 export const DIAMOD_OPTION = {
   left: 100,
   top: 100,

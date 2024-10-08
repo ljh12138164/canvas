@@ -7,6 +7,7 @@ import {
   Edit,
   FONT_FAMILY,
   FONT_WEIGHT,
+  FontStyle,
   OPACITY,
   RECTANGLE_OPTION,
   STROKE_DASH_ARRAY,
@@ -26,6 +27,14 @@ interface buildEditorProps {
   opacity: number;
   fontFamily: string;
   fontWeight: FontWeightType;
+  fontThought: boolean;
+  fontItalics: FontStyle;
+  fontUnderline: boolean;
+  fontAlign: fabric.Textbox["textAlign"];
+  setFontAlign: (fontAlign: fabric.Textbox["textAlign"]) => void;
+  setFontUnderline: (fontUnderline: boolean) => void;
+  setFontItalics: (fontItalics: FontStyle) => void;
+  setFontThickness: (fontThickness: boolean) => void;
   setFontWeight: (fontWeight: FontWeightType) => void;
   setFontFamily: (fontFamily: string) => void;
   setOpacity: (opacity: number) => void;
@@ -44,6 +53,14 @@ export const buildEditor = ({
   opacity,
   fontFamily,
   fontWeight,
+  fontThought,
+  fontItalics,
+  fontUnderline,
+  fontAlign,
+  setFontAlign,
+  setFontUnderline,
+  setFontItalics,
+  setFontThickness,
   setFontWeight,
   setFontFamily,
   setOpacity,
@@ -75,11 +92,70 @@ export const buildEditor = ({
     opacity,
     fontFamily,
     fontWeight,
+    fontThought,
+    fontItalics,
+    fontUnderline,
+    fontAlign,
+    changeFontAlign: (value: fabric.Textbox["textAlign"]) => {
+      setFontAlign(value);
+      canvas?.getActiveObjects()?.forEach((item) => {
+        if (isText(item)) {
+          item.set({ textAlign: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    getActiveFontAlign: () => {
+      const value = canvas?.getActiveObjects()?.[0]?.get("textAlign") || "left";
+      setFontAlign(value);
+      return value;
+    },
+    //
+    getActiveFontItalic: () => {
+      const value =
+        canvas?.getActiveObjects()?.[0]?.get("fontStyle") || "normal";
+      setFontItalics(value);
+      return value;
+    },
+    getActiveFontUnderline: () => {
+      const value = canvas?.getActiveObjects()?.[0]?.get("underline") || false;
+      setFontUnderline(value);
+      return value;
+    },
+    changeFontItalic: (value: FontStyle) => {
+      setFontItalics(value);
+      canvas?.getActiveObjects()?.forEach((item) => {
+        if (isText(item)) {
+          item.set({ fontStyle: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    changeFontUnderline: (value: boolean) => {
+      setFontUnderline(value);
+      canvas?.getActiveObjects()?.forEach((item) => {
+        if (isText(item)) {
+          item.set({ underline: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    //
     setFontFamily: (value: string) => {
       setFontFamily(value);
       canvas?.getActiveObjects()?.forEach((item) => {
         if (isText(item)) {
           item.set({ fontFamily: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    //斜体
+    changeFontLineThrough: (value: boolean) => {
+      setFontThickness(value);
+      canvas?.getActiveObjects()?.forEach((item) => {
+        if (isText(item)) {
+          item.set({ linethrough: value });
         }
       });
       canvas.renderAll();
@@ -92,6 +168,12 @@ export const buildEditor = ({
         }
       });
       canvas.renderAll();
+    },
+    getActiveFontLineThrough: () => {
+      const value =
+        canvas?.getActiveObjects()?.[0]?.get("linethrough") || false;
+      setFontThickness(value);
+      return value;
     },
     getActiveStrokeWeight: () => {
       const value =

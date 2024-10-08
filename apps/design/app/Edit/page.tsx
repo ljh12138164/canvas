@@ -4,8 +4,13 @@ import useCanvasEvent from "@/hook/useCanvasEvent";
 import useResponse from "@/hook/useResponse";
 import {
   FILL_COLOR,
+  FONT_ALIGN,
   FONT_FAMILY,
+  FONT_ITALICS,
+  FONT_THOUGHT,
+  FONT_UNDERLINE,
   FONT_WEIGHT,
+  FontStyle,
   OPACITY,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
@@ -55,6 +60,11 @@ export default function Home() {
   //字体
   const [fontFamily, setFontFamily] = useState<string>(FONT_FAMILY);
   const [fontWeight, setFontWeight] = useState<FontWeightType>(FONT_WEIGHT);
+  const [fontThought, setFontThickness] = useState<boolean>(FONT_THOUGHT);
+  const [fontUnderline, setFontUnderline] = useState<boolean>(FONT_UNDERLINE);
+  const [fontItalics, setFontItalics] = useState<FontStyle>(FONT_ITALICS);
+  const [fontAlign, setFontAlign] =
+    useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
 
   useCanvasEvent({
     canvas,
@@ -87,6 +97,14 @@ export default function Home() {
         opacity,
         fontFamily,
         fontWeight,
+        fontThought,
+        fontItalics,
+        fontUnderline,
+        fontAlign,
+        setFontAlign,
+        setFontUnderline,
+        setFontItalics,
+        setFontThickness,
         setFontWeight,
         setFontFamily,
         setOpacity,
@@ -106,6 +124,10 @@ export default function Home() {
     opacity,
     fontFamily,
     fontWeight,
+    fontThought,
+    fontItalics,
+    fontUnderline,
+    fontAlign,
   ]);
 
   const containEl = useRef<HTMLDivElement>(null);
