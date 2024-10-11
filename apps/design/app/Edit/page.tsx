@@ -7,6 +7,7 @@ import {
   FONT_ALIGN,
   FONT_FAMILY,
   FONT_ITALICS,
+  FONT_SIZE,
   FONT_THOUGHT,
   FONT_UNDERLINE,
   FONT_WEIGHT,
@@ -28,6 +29,8 @@ import SiderBar from "../_components/EditComponents/SiderBar";
 import Tools from "../_components/EditComponents/Tools";
 import { buildEditor, FontWeightType } from "@/store/editor";
 import TextSidebar from "../_components/EditComponents/TextSidebar";
+import ImageSiderbar from "../_components/EditComponents/ImageSiderbar";
+import { useToast } from "@/hooks/use-toast";
 FabricObject.prototype.set({
   transparentCorners: false,
   cornerColor: "#FFF",
@@ -65,7 +68,9 @@ export default function Home() {
   const [fontItalics, setFontItalics] = useState<FontStyle>(FONT_ITALICS);
   const [fontAlign, setFontAlign] =
     useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
+  const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
 
+  const toast = useToast();
   useCanvasEvent({
     canvas,
     setSelectedObject,
@@ -101,6 +106,8 @@ export default function Home() {
         fontItalics,
         fontUnderline,
         fontAlign,
+        fontSize,
+        setFontSize,
         setFontAlign,
         setFontUnderline,
         setFontItalics,
@@ -128,6 +135,7 @@ export default function Home() {
     fontItalics,
     fontUnderline,
     fontAlign,
+    fontSize,
   ]);
 
   const containEl = useRef<HTMLDivElement>(null);
@@ -173,6 +181,11 @@ export default function Home() {
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></TextSidebar>
+        <ImageSiderbar
+          editor={editor}
+          activeTool={tool}
+          onChangeActive={onChangeActive}
+        ></ImageSiderbar>
         <ColorSoiberbar
           editor={editor}
           activeTool={tool}

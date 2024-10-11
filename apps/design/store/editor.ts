@@ -1,3 +1,4 @@
+import { ToastProps } from "@/components/ui/toast";
 import { isText } from "@/lib/utils";
 import {
   CRICLE_OPTION,
@@ -6,6 +7,7 @@ import {
   DIAMOD_WIDTH,
   Edit,
   FONT_FAMILY,
+  FONT_SIZE,
   FONT_WEIGHT,
   FontStyle,
   OPACITY,
@@ -16,6 +18,7 @@ import {
   TRIANGLE_OPTION,
 } from "@/types/Edit";
 import * as fabric from "fabric";
+import toast from "react-hot-toast";
 export type FontWeightType = "normal" | "bold";
 interface buildEditorProps {
   canvas: fabric.Canvas;
@@ -31,6 +34,8 @@ interface buildEditorProps {
   fontItalics: FontStyle;
   fontUnderline: boolean;
   fontAlign: fabric.Textbox["textAlign"];
+  fontSize: number;
+  setFontSize: (fontSize: number) => void;
   setFontAlign: (fontAlign: fabric.Textbox["textAlign"]) => void;
   setFontUnderline: (fontUnderline: boolean) => void;
   setFontItalics: (fontItalics: FontStyle) => void;
@@ -57,6 +62,8 @@ export const buildEditor = ({
   fontItalics,
   fontUnderline,
   fontAlign,
+  fontSize,
+  setFontSize,
   setFontAlign,
   setFontUnderline,
   setFontItalics,
@@ -74,7 +81,6 @@ export const buildEditor = ({
       .getObjects()
       //@ts-ignore
       .find((item: fabric.SerializedObjectProps) => item.name === "board");
-
   const center = (object: fabric.Object) => {
     const workspace = getWorkspace();
     //居中
@@ -82,6 +88,12 @@ export const buildEditor = ({
     canvas._centerObject(object, centers as fabric.Point);
     // canvas.centerObject(object);
   };
+  const addToCanvas = (object: fabric.Object) => {
+    center(object);
+    canvas.add(object);
+    canvas.setActiveObject(object);
+  };
+
   return {
     strokeColor,
     strokeWidth,
@@ -96,8 +108,42 @@ export const buildEditor = ({
     fontItalics,
     fontUnderline,
     fontAlign,
+    fontSize,
+    addImage: async (value: string) => {
+      // toast.loading("添加中...");
+      const workspace = getWorkspace();
+      const img = await fabric.FabricImage.fromURL(value, {
+        crossOrigin: "anonymous",
+      });
+      img.scaleToWidth(workspace?.width || 0);
+      img.scaleToHeight(workspace?.height || 0);
+      addToCanvas(img);
+      toast.success("添加成功");
+    },
+    delete: () => {
+      canvas?.getActiveObjects().forEach((item) => canvas.remove(item));
+      canvas.discardActiveObject();
+      canvas.renderAll();
+    },
+    getActiveFontSize: () => {
+      const value =
+        canvas?.getActiveObjects()?.[0]?.get("fontSize") || FONT_SIZE;
+      setFontAlign(value);
+      return value;
+    },
+    changeFontSize: (value: number) => {
+      if (value < 0) return;
+      setFontSize(value);
+      canvas?.getActiveObjects()?.forEach((item) => {
+        if (isText(item)) {
+          item.set({ fontSize: value });
+        }
+      });
+      canvas.renderAll();
+    },
     changeFontAlign: (value: fabric.Textbox["textAlign"]) => {
       setFontAlign(value);
+
       canvas?.getActiveObjects()?.forEach((item) => {
         if (isText(item)) {
           item.set({ textAlign: value });
@@ -296,7 +342,6 @@ export const buildEditor = ({
         ...CRICLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
-        opacity,
       });
       center(circle);
       canvas.add(circle);
@@ -309,7 +354,6 @@ export const buildEditor = ({
         ...RECTANGLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
-        opacity,
       });
       center(rect);
       canvas.add(rect);
@@ -321,7 +365,6 @@ export const buildEditor = ({
         ...RECTANGLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
-        opacity,
         rx: 10,
         ry: 10,
       });
@@ -335,7 +378,6 @@ export const buildEditor = ({
         ...TRIANGLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
-        opacity,
       });
       center(triangle);
       canvas.add(triangle);
@@ -348,7 +390,6 @@ export const buildEditor = ({
         stroke: strokeColor,
         //180反转
         angle: 180,
-        opacity,
       });
       center(triangle);
       canvas.add(triangle);
@@ -375,7 +416,6 @@ export const buildEditor = ({
           ...DIAMOD_OPTION,
           fill: fillColor,
           stroke: strokeColor,
-          opacity,
         }
       );
       center(diamod);

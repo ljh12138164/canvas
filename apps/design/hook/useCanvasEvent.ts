@@ -43,13 +43,13 @@ const useCanvasEvent = ({
         setSelectedObject([]);
       });
     }
-    return () => {
-      if (canvas) {
-        canvas.off("selection:created");
-        canvas.off("selection:updated");
-        canvas.off("selection:cleared");
-      }
-    };
+    // return () => {
+    //   if (canvas) {
+    //     canvas.off("selection:created");
+    //     canvas.off("selection:updated");
+    //     canvas.off("selection:cleared");
+    //   }
+    // };
   }, [canvas, setSelectedObject, tool, setTool]);
 };
 

@@ -10,6 +10,15 @@ const useCanvas = () => {
       initCanvas: fabric.Canvas;
       initContainer: HTMLDivElement;
     }) => {
+      fabric.FabricObject.prototype.set({
+        cornerColor: "#FFF",
+        cornerStyle: "circle",
+        borderColor: "#3b82f6",
+        borderScaleFactor: 1.5,
+        transparentCorners: false,
+        borderOpacityWhenMoving: 1,
+        cornerStrokeColor: "#3b82f6",
+      });
       const initRect = new fabric.Rect({
         width: 800,
         height: 1100,

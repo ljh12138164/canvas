@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,7 +14,26 @@ export default function RootLayout({
   return (
     <html lang="cn">
       <body>
-        <section className="h-[100dvh] overflow-hidden">{children}</section>
+        <section className="h-[100dvh] overflow-hidden">
+          {children}
+          <Toaster
+            position="top-center"
+            gutter={12}
+            containerStyle={{ margin: "8px" }}
+            toastOptions={{
+              success: { duration: 3000 },
+              error: { duration: 5500 },
+              loading: { duration: 2000 },
+              style: {
+                fontSize: "16px",
+                maxWidth: "500px",
+                padding: "16px 24px",
+                backgroundColor: "white",
+                zIndex: 10,
+              },
+            }}
+          ></Toaster>
+        </section>
       </body>
     </html>
   );

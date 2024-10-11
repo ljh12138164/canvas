@@ -10,6 +10,7 @@ import {
   FaBold,
   FaItalic,
   FaStrikethrough,
+  FaTrash,
   FaUnderline,
 } from "react-icons/fa6";
 import { LuArrowDown, LuArrowUp, LuChevronDown } from "react-icons/lu";
@@ -293,7 +294,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
           )}
           {textYype && (
             <div className="flex item-center  h-full justify-center">
-              <FontSizeInput></FontSizeInput>
+              <FontSizeInput editor={editor}></FontSizeInput>
             </div>
           )}
         </section>
@@ -339,6 +340,16 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
               className={cn(activeTool === Tool.Opacity && "bg-gray-100")}
             >
               <BsTransparency className="size-4"></BsTransparency>
+            </Button>
+          </TooltipComponents>
+          <TooltipComponents
+            label="删除"
+            side="bottom"
+            sideOffset={5}
+            key={Tool.Delete}
+          >
+            <Button onClick={() => editor.delete()} size="icon" variant="ghost">
+              <FaTrash className="size-4"></FaTrash>
             </Button>
           </TooltipComponents>
         </section>

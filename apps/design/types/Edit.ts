@@ -51,7 +51,9 @@ export enum Tool {
   Opacity,
   Filter,
   RemoveBg,
+  Delete,
 }
+//返回
 export interface Edit {
   selectedObject: Fabric.Object[] | null;
   strokeColor: string;
@@ -66,10 +68,14 @@ export interface Edit {
   fontUnderline: boolean;
   fontItalics: FontStyle;
   fontAlign: Fabric.Textbox["textAlign"];
+  fontSize: number;
+  addImage: (url: string) => void;
+  delete: () => void;
   addText: (text: string, option?: Fabric.Textbox | {}) => void;
   bringForward: () => void;
   getActiveFontLineThrough: () => boolean;
   getActiveFontUnderline: () => boolean;
+  getActiveFontSize: () => number;
   getActiveFontItalic: () => FontStyle;
   getActiveFontAlign: () => Fabric.Textbox["textAlign"];
   changeFontAlign: (value: Fabric.Textbox["textAlign"]) => void;
@@ -79,6 +85,7 @@ export interface Edit {
   changeOpacty: (opacity: number) => void;
   changeStokeDashArray: (value: number[]) => void;
   changeFontWeight: (weight: FontWeightType) => void;
+  changeFontSize: (size: number) => void;
   sendBackwards: () => void;
   getOpacty: () => number;
   getActiveFontFamily: () => string;

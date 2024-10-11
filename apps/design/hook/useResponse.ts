@@ -15,11 +15,11 @@ const useResponse = ({ canvas, contain }: ResponseProps) => {
     if (canvas && contain) {
       resizeObserver = new ResizeObserver(async (entries) => {
         //设置画布大小
-        canvas.setWidth(entries[0].contentRect.width);
-        canvas.setHeight(entries[0].contentRect.height);
+        canvas.width = entries[0].contentRect.width;
+        canvas.height = entries[0].contentRect.height;
 
         // 获取画布中心
-        const center = canvas.getCenter();
+        const center = canvas.getCenterPoint();
         //缩放比例
         const zoomRation = 0.85;
         //画布对象
@@ -37,7 +37,7 @@ const useResponse = ({ canvas, contain }: ResponseProps) => {
 
         const zoom = zoomRation * scale;
         canvas.setViewportTransform(fabric.iMatrix.concat() as fabric.TMat2D);
-        canvas.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
+        canvas.zoomToPoint(new fabric.Point(center.x, center.y), zoom);
         const workspace = localWorkspace.getCenterPoint();
         const viewportTransform = canvas.viewportTransform;
         if (
