@@ -1,11 +1,14 @@
 import { cn } from "@/lib/utils";
 import type { Edit } from "@/types/Edit";
-import { Tool } from "@/types/Edit";
+import { IMAGE_BLUSK, Tool } from "@/types/Edit";
 
-import { useImageQuery } from "@/api/getImage/useQuery";
+import { useImageQuery } from "@/api/Image/useQuery";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { uploadImageclound } from "@/lib/api/image";
 import Image from "next/image";
 import Link from "next/link";
+import { useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { LuAlertTriangle, LuLoader } from "react-icons/lu";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
@@ -21,6 +24,28 @@ const ImageSiderbar = ({
   editor,
 }: ImageSiderbarProps) => {
   const { getImageLoading, imageData, getImageError } = useImageQuery();
+  const fileRef = useRef<HTMLInputElement | null>(null);
+  const [uploadImage, setUploadImage] = useState(false);
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploadImage(true);
+    toast.loading("上传图片中...");
+    try {
+      if (e.target.files?.[0]) {
+        const url = await uploadImageclound(e.target.files?.[0]);
+        toast.dismiss();
+        if (editor) {
+          editor.addImage(IMAGE_BLUSK + url);
+        }
+      }
+    } catch (error) {
+      toast.dismiss();
+      console.error(error);
+      toast.error("上传失败");
+    } finally {
+      setUploadImage(false);
+    }
+  };
+
   return (
     <aside
       className={cn(
@@ -30,19 +55,26 @@ const ImageSiderbar = ({
       style={{ flexBasis: "300px" }}
     >
       <ToolSiderbar title="图片" description="插入图片"></ToolSiderbar>
-      {getImageLoading && (
-        <div className="flex justify-center items-center flex-1">
-          <LuLoader className="size-4 text-muted-foreground animate-spin"></LuLoader>
+      <ScrollArea className="scroll-mt-12">
+        <div className="h-16  relative  border-b-2  flex items-center justify-center border-black/10 px-4 py-2">
+          <button
+            onClick={() => {
+              if (!uploadImage) fileRef.current?.click();
+            }}
+            disabled={uploadImage}
+            className={`flex items-center justify-center bg-blue-500 w-full h-full rounded-md  cursor-pointer ${uploadImage && " opacity-50"}`}
+          >
+            <p className="text-white font-medium">上传图片</p>
+            <input
+              accept="image/gif, image/jpeg, image/png"
+              type="file"
+              className="hidden"
+              ref={fileRef}
+              onChange={handleFileChange}
+            />
+          </button>
         </div>
-      )}
-      {getImageError && (
-        <div className="flex flex-col gap-y-4 justify-center items-center flex-1">
-          <LuAlertTriangle className="size-4  text-muted-foreground"></LuAlertTriangle>
-          <p className=" text-muted-foreground text-xs">获取图片失败</p>
-        </div>
-      )}
-      <ScrollArea>
-        <div className="p-4 pb-20 grid grid-cols-2 gap-4">
+        <div className="p-4 pb-20 grid grid-cols-2 gap-4 mt-4">
           {imageData &&
             imageData.map((item) => {
               return (
@@ -73,6 +105,17 @@ const ImageSiderbar = ({
             })}
         </div>
       </ScrollArea>
+      {getImageLoading && (
+        <div className="flex justify-center items-center h-full">
+          <LuLoader className="size-4 text-muted-foreground animate-spin"></LuLoader>
+        </div>
+      )}
+      {getImageError && (
+        <div className="flex flex-col gap-y-4 justify-center items-center flex-1">
+          <LuAlertTriangle className="size-4  text-muted-foreground"></LuAlertTriangle>
+          <p className=" text-muted-foreground text-xs">获取图片失败</p>
+        </div>
+      )}
       <ToolSiderbarClose
         onClose={() => onChangeActive(Tool.Select)}
       ></ToolSiderbarClose>

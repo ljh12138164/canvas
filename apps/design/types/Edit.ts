@@ -69,6 +69,7 @@ export interface Edit {
   fontItalics: FontStyle;
   fontAlign: Fabric.Textbox["textAlign"];
   fontSize: number;
+  imageLoading: boolean;
   addImage: (url: string) => void;
   delete: () => void;
   addText: (text: string, option?: Fabric.Textbox | {}) => void;
@@ -118,6 +119,8 @@ export const FONT_THOUGHT = false;
 export const FONT_UNDERLINE = false;
 export const FONT_ITALICS = "normal";
 export const FONT_ALIGN = "left";
+export const IMAGE_BLUSK =
+  "https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/";
 
 export const CRICLE_OPTION = {
   radius: 100,

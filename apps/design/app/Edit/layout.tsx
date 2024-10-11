@@ -21,9 +21,9 @@ export default function RootLayout({
             gutter={12}
             containerStyle={{ margin: "8px" }}
             toastOptions={{
-              success: { duration: 3000 },
+              success: { duration: 2000 },
               error: { duration: 5500 },
-              loading: { duration: 2000 },
+              loading: { duration: 10000 },
               style: {
                 fontSize: "16px",
                 maxWidth: "500px",

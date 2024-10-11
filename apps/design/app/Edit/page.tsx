@@ -70,7 +70,8 @@ export default function Home() {
     useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
 
-  const toast = useToast();
+  const [imageLoading, setImageLoading] = useState<boolean>(false);
+
   useCanvasEvent({
     canvas,
     setSelectedObject,
@@ -107,6 +108,8 @@ export default function Home() {
         fontUnderline,
         fontAlign,
         fontSize,
+        imageLoading,
+        setImageLoading,
         setFontSize,
         setFontAlign,
         setFontUnderline,
@@ -136,6 +139,7 @@ export default function Home() {
     fontUnderline,
     fontAlign,
     fontSize,
+    imageLoading,
   ]);
 
   const containEl = useRef<HTMLDivElement>(null);

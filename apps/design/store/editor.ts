@@ -1,4 +1,3 @@
-import { ToastProps } from "@/components/ui/toast";
 import { isText } from "@/lib/utils";
 import {
   CRICLE_OPTION,
@@ -35,6 +34,8 @@ interface buildEditorProps {
   fontUnderline: boolean;
   fontAlign: fabric.Textbox["textAlign"];
   fontSize: number;
+  imageLoading: boolean;
+  setImageLoading: (imageLoading: boolean) => void;
   setFontSize: (fontSize: number) => void;
   setFontAlign: (fontAlign: fabric.Textbox["textAlign"]) => void;
   setFontUnderline: (fontUnderline: boolean) => void;
@@ -63,6 +64,8 @@ export const buildEditor = ({
   fontUnderline,
   fontAlign,
   fontSize,
+  imageLoading,
+  setImageLoading,
   setFontSize,
   setFontAlign,
   setFontUnderline,
@@ -109,12 +112,18 @@ export const buildEditor = ({
     fontUnderline,
     fontAlign,
     fontSize,
+    imageLoading,
     addImage: async (value: string) => {
-      // toast.loading("添加中...");
+      console.log("sc");
+      toast.loading("添加中...");
+      setImageLoading(true);
       const workspace = getWorkspace();
       const img = await fabric.FabricImage.fromURL(value, {
         crossOrigin: "anonymous",
       });
+      toast.dismiss();
+      setImageLoading(false);
+
       img.scaleToWidth(workspace?.width || 0);
       img.scaleToHeight(workspace?.height || 0);
       addToCanvas(img);

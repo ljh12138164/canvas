@@ -16,4 +16,5 @@ const image = new Hono().get("/", async (c) => {
     data: response,
   });
 });
+
 export default image;
