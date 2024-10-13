@@ -52,14 +52,12 @@ export function createFilter(value: string) {
       break;
     case "invert":
       effect = new fabric.filters.Invert();
-
       break;
     case "technicolor":
       effect = new fabric.filters.Technicolor();
       break;
     case "pixelate":
       effect = new fabric.filters.Pixelate();
-
       break;
     case "blur":
       effect = new fabric.filters.Blur({

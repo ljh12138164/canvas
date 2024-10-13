@@ -1,15 +1,13 @@
 import {
   LuLayout,
   LuImage,
-  // LuPencil,
-  // LuPresentation,
   LuSettings,
   LuShapes,
-  LuSparkles,
+  LuPencil,
   LuType,
 } from "react-icons/lu";
 import SiderBarItem from "./SiderBarItem";
-import { Tool } from "@/types/Edit";
+import { Edit, Tool } from "@/types/Edit";
 import { ScrollArea } from "@/components/ui/scroll-area";
 interface SiderBarProps {
   acitiveTool: Tool;
@@ -56,7 +54,14 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
               onChangeActiveTool(Tool.Shapes);
             }}
           />
-
+          <SiderBarItem
+            icon={LuPencil}
+            label="绘画"
+            isActive={acitiveTool === Tool.Draw}
+            onClick={() => {
+              onChangeActiveTool(Tool.Draw);
+            }}
+          />
           <SiderBarItem
             icon={LuSettings}
             label="设置"

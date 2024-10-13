@@ -51,6 +51,7 @@ export enum Tool {
   Filter,
   RemoveBg,
   Delete,
+  Copy,
 }
 //返回
 export interface Edit {
@@ -70,6 +71,9 @@ export interface Edit {
   fontSize: number;
   imageLoading: boolean;
   imageFilter: string;
+  copy: () => void;
+  disableDraw: () => void;
+  enableDraw: () => void;
   getActiveFilter: () => string;
   changeImageFilter: (filter: string) => void;
   addImage: (url: string) => void;
@@ -111,7 +115,7 @@ export const FILL_COLOR = "rgba(0,0,0,1)";
 export const STROKE_COLOR = "rgba(0,0,0,1)";
 export const DIAMOD_WIDTH = 300;
 export const DIAMOD_HEGHT = 300;
-export const STROKE_WIDTH = 0;
+export const STROKE_WIDTH = 1;
 export const STROKE_DASH_ARRAY = [];
 export const OPACITY = 0;
 export const FONT_FAMILY = "Arial";
@@ -190,8 +194,31 @@ export const fonts = [
   "Geneva",
   "Lucida Grande",
 ];
-
-export const filters = [
+export type Filter =
+  | "none"
+  | "polaroid"
+  | "sepia"
+  | "kodachrome"
+  | "contrast"
+  | "brightness"
+  | "brownie"
+  | "vintage"
+  | "grayscale"
+  | "invert"
+  | "technicolor"
+  | "pixelate"
+  | "blur"
+  | "sharpen"
+  | "emboss"
+  | "removecolor"
+  | "blackwhite"
+  | "vibrance"
+  | "blendcolor"
+  | "huerotation"
+  | "resize"
+  | "saturation"
+  | "gamma";
+export const filters: Filter[] = [
   "none",
   "polaroid",
   "sepia",

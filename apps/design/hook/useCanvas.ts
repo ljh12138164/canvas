@@ -1,3 +1,4 @@
+import { STROKE_COLOR, STROKE_WIDTH } from "@/types/Edit";
 import { useMemoizedFn } from "ahooks";
 import * as fabric from "fabric";
 
@@ -19,6 +20,11 @@ const useCanvas = () => {
         borderOpacityWhenMoving: 1,
         cornerStrokeColor: "#3b82f6",
       });
+      //初始化画布笔画
+      initCanvas.freeDrawingBrush = new fabric.PencilBrush(initCanvas);
+      initCanvas.freeDrawingBrush.width = STROKE_WIDTH;
+      initCanvas.freeDrawingBrush.color = STROKE_COLOR;
+
       const initRect = new fabric.Rect({
         width: 800,
         height: 1100,

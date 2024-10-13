@@ -1,6 +1,7 @@
 "use client";
 import useCanvas from "@/hook/useCanvas";
 import useCanvasEvent from "@/hook/useCanvasEvent";
+import { useClipboard } from "@/hook/useCliph";
 import useResponse from "@/hook/useResponse";
 import { buildEditor, FontWeightType } from "@/store/editor";
 import {
@@ -21,7 +22,6 @@ import {
 } from "@/types/Edit";
 import { useMemoizedFn } from "ahooks";
 import * as fabric from "fabric";
-import { FabricObject } from "fabric";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ColorSoiberbar from "../_components/EditComponents/ColorSiberbar";
 import ImageSiderbar from "../_components/EditComponents/ImageSiderbar";
@@ -30,8 +30,6 @@ import ShapeSidle from "../_components/EditComponents/ShapeSidle";
 import SiderBar from "../_components/EditComponents/SiderBar";
 import TextSidebar from "../_components/EditComponents/TextSidebar";
 import Tools from "../_components/EditComponents/Tools";
-import { createFilter } from "@/lib/utils";
-import { useClipboard } from "@/hook/useCliph";
 
 export default function Home() {
   const { init } = useCanvas();
@@ -71,16 +69,18 @@ export default function Home() {
     setSelectedObject,
     setTool,
   });
-  useClipboard({ canvas });
+  const { copy } = useClipboard({ canvas });
 
   const onChangeActive = useMemoizedFn((tools: Tool) => {
-    if (tools === tool) {
-      return setTool(Tool.Select);
-    }
     if (tools === Tool.Draw) {
       //TODO: 清空画布
+      editor?.enableDraw();
     }
     if (tool === Tool.Draw) {
+      editor?.disableDraw();
+    }
+    if (tools === tool) {
+      return setTool(Tool.Select);
     }
     setTool(tools);
   });
@@ -104,6 +104,7 @@ export default function Home() {
         fontSize,
         imageLoading,
         imageFilter,
+        copy,
         setImageFilter,
         setImageLoading,
         setFontSize,
@@ -137,6 +138,7 @@ export default function Home() {
     fontSize,
     imageLoading,
     imageFilter,
+    copy,
   ]);
 
   const containEl = useRef<HTMLDivElement>(null);

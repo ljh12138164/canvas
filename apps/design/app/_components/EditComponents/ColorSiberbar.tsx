@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
-import type { Edit } from "@/types/Edit";
+import type { Edit, Filter } from "@/types/Edit";
 import { FILL_COLOR, filters, fonts, STROKE_COLOR, Tool } from "@/types/Edit";
 import { useMemoizedFn } from "ahooks";
 import ColorPicker from "./ColorPicker";
@@ -22,7 +22,34 @@ const obj = {
   [Tool.Opacity]: "透明度",
   [Tool.FontFamily]: "字体类型",
   [Tool.Filter]: "滤镜",
+  [Tool.Draw]: "画笔",
   "": "",
+};
+//滤镜名称
+const filterItem = {
+  none: "无",
+  polaroid: "偏振",
+  sepia: "棕褐色",
+  kodachrome: "彩色胶片",
+  contrast: "对比度",
+  brightness: "亮度",
+  brownie: "棕褐色",
+  vintage: "复古",
+  grayscale: "灰度",
+  invert: "反色",
+  technicolor: "科技",
+  pixelate: "像素化",
+  blur: "模糊",
+  sharpen: "锐化",
+  emboss: "滤波",
+  removecolor: "去色",
+  blackwhite: "黑白",
+  vibrance: "饱和度",
+  blendcolor: "混合颜色",
+  huerotation: "色调旋转",
+  resize: "调整大小",
+  saturation: "饱和度",
+  gamma: "伽马",
 };
 const ColorSoiberbar = ({
   activeTool,
@@ -39,7 +66,8 @@ const ColorSoiberbar = ({
       activeTool === Tool.StrokeWidth ||
       activeTool === Tool.Opacity ||
       activeTool === Tool.FontFamily ||
-      activeTool === Tool.Filter
+      activeTool === Tool.Filter ||
+      activeTool === Tool.Draw
     )
       return activeTool;
     return "";
@@ -74,6 +102,7 @@ const ColorSoiberbar = ({
               value={stokevalue}
               onChange={(color) => {
                 editor?.setStrokeColor(color);
+                
               }}
               key={Tool.StrokeColor}
             ></ColorPicker>
@@ -118,22 +147,32 @@ const ColorSoiberbar = ({
           )}
           {onShow() === Tool.Filter && (
             <section className="flex flex-col gap-2 pb-12">
-              {filters.map((item: string) => {
+              {filters.map((item: Filter) => {
                 return (
                   <Button
                     key={item}
                     variant="outline"
                     onClick={() => {
-                      console.log(item);
                       editor?.changeImageFilter(item);
                     }}
                     className={`w-full h-16  justify-start text-left ${check(item) && " border-blue-500 border-2"}`}
                   >
-                    {item}
+                    {filterItem[item]}
                   </Button>
                 );
               })}
             </section>
+          )}
+          {onShow() === Tool.Draw && (
+            <>
+              <ColorPicker
+                value={stokevalue}
+                onChange={(color) => {
+                  editor?.setStrokeColor(color);
+                }}
+                key={Tool.Draw}
+              ></ColorPicker>
+            </>
           )}
         </div>
       </ScrollArea>

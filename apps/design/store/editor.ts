@@ -5,7 +5,6 @@ import {
   DIAMOD_OPTION,
   DIAMOD_WIDTH,
   Edit,
-  filters,
   FONT_FAMILY,
   FONT_SIZE,
   FONT_WEIGHT,
@@ -37,6 +36,7 @@ interface buildEditorProps {
   fontSize: number;
   imageLoading: boolean;
   imageFilter: string;
+  copy: () => void;
   setImageFilter: (imageFilter: string) => void;
   setImageLoading: (imageLoading: boolean) => void;
   setFontSize: (fontSize: number) => void;
@@ -69,6 +69,7 @@ export const buildEditor = ({
   fontSize,
   imageLoading,
   imageFilter,
+  copy,
   setImageFilter,
   setImageLoading,
   setFontSize,
@@ -119,6 +120,20 @@ export const buildEditor = ({
     fontSize,
     imageFilter,
     imageLoading,
+    copy,
+    enableDraw: () => {
+      canvas.discardActiveObject();
+      canvas.renderAll();
+      canvas.isDrawingMode = true;
+
+      if (canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.width = strokeWidth;
+        canvas.freeDrawingBrush.color = strokeColor;
+      }
+    },
+    disableDraw: () => {
+      canvas.isDrawingMode = false;
+    },
     getActiveFilter: () => {
       let value =
         canvas?.getActiveObjects()?.[0]?.get("filters")?.[0]?.type || "none";

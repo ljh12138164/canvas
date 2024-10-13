@@ -13,9 +13,10 @@ import {
   FaTrash,
   FaUnderline,
 } from "react-icons/fa6";
-import { LuArrowDown, LuArrowUp, LuChevronDown } from "react-icons/lu";
+import { LuArrowDown, LuArrowUp, LuChevronDown, LuCopy } from "react-icons/lu";
 import { TbColorFilter } from "react-icons/tb";
 import FontSizeInput from "./FontSizeInput";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 interface ToolBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
@@ -42,8 +43,8 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
   const textYype = isText(seltectedObject);
   const isImage = selectedObject?.type === "image";
   return (
-    <section className="h-[3rem] p-2 space-x-4 bg-white items-center flex w-full z-[50]">
-      <div className="flex items-center h-full justify-center gap-2 w-full">
+    <ScrollArea className="h-[3.3rem]  p-[0.1rem]  space-x-4 bg-white items-center flex w-full z-[50]">
+      <div className="flex items-center h-full  gap-2 w-full  overflow-y-hidden">
         <section className="flex items-center gap-2">
           {!isImage && (
             <TooltipComponents
@@ -363,6 +364,22 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
             </Button>
           </TooltipComponents>
           <TooltipComponents
+            label="复制"
+            side="bottom"
+            sideOffset={5}
+            key={Tool.Copy}
+          >
+            <Button
+              onClick={() => {
+                editor?.copy();
+              }}
+              size="icon"
+              variant="ghost"
+            >
+              <LuCopy className="size-4"></LuCopy>
+            </Button>
+          </TooltipComponents>
+          <TooltipComponents
             label="删除"
             side="bottom"
             sideOffset={5}
@@ -374,7 +391,8 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
           </TooltipComponents>
         </section>
       </div>
-    </section>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 };
 
