@@ -70,6 +70,8 @@ export interface Edit {
   fontAlign: Fabric.Textbox["textAlign"];
   fontSize: number;
   imageLoading: boolean;
+  getActiveFilter: () => string;
+  changeImageFilter: (filter: string) => void;
   addImage: (url: string) => void;
   delete: () => void;
   addText: (text: string, option?: Fabric.Textbox | {}) => void;
@@ -187,4 +189,30 @@ export const fonts = [
   "Lucida Sans Unicode",
   "Geneva",
   "Lucida Grande",
+];
+
+export const filters = [
+  "none",
+  "polaroid",
+  "sepia",
+  "kodachrome",
+  "contrast",
+  "brightness",
+  "brownie",
+  "vintage",
+  "grayscale",
+  "invert",
+  "technicolor",
+  "pixelate",
+  "blur",
+  "sharpen",
+  "emboss",
+  "removecolor",
+  "blackwhite",
+  "vibrance",
+  "blendcolor",
+  "huerotation",
+  "resize",
+  "saturation",
+  "gamma",
 ];

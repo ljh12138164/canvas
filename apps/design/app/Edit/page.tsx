@@ -2,6 +2,7 @@
 import useCanvas from "@/hook/useCanvas";
 import useCanvasEvent from "@/hook/useCanvasEvent";
 import useResponse from "@/hook/useResponse";
+import { buildEditor, FontWeightType } from "@/store/editor";
 import {
   FILL_COLOR,
   FONT_ALIGN,
@@ -23,23 +24,13 @@ import * as fabric from "fabric";
 import { FabricObject } from "fabric";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ColorSoiberbar from "../_components/EditComponents/ColorSiberbar";
+import ImageSiderbar from "../_components/EditComponents/ImageSiderbar";
 import NavBar from "../_components/EditComponents/NavBar";
 import ShapeSidle from "../_components/EditComponents/ShapeSidle";
 import SiderBar from "../_components/EditComponents/SiderBar";
-import Tools from "../_components/EditComponents/Tools";
-import { buildEditor, FontWeightType } from "@/store/editor";
 import TextSidebar from "../_components/EditComponents/TextSidebar";
-import ImageSiderbar from "../_components/EditComponents/ImageSiderbar";
-import { useToast } from "@/hooks/use-toast";
-FabricObject.prototype.set({
-  transparentCorners: false,
-  cornerColor: "#FFF",
-  cornerStyle: "circle",
-  borderColor: "#3b82f6",
-  borderScaleFactor: 1.5,
-  borderOpacityWhenMoving: 1,
-  cornerStorkeColor: "#3b82f6",
-});
+import Tools from "../_components/EditComponents/Tools";
+import { createFilter } from "@/lib/utils";
 
 export default function Home() {
   const { init } = useCanvas();
@@ -69,8 +60,9 @@ export default function Home() {
   const [fontAlign, setFontAlign] =
     useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
-
+  //图片
   const [imageLoading, setImageLoading] = useState<boolean>(false);
+  const [imageFilter, setImageFilter] = useState<string>("none");
 
   useCanvasEvent({
     canvas,
@@ -90,7 +82,7 @@ export default function Home() {
     }
     setTool(tools);
   });
-
+  //编辑器
   const editor = useMemo(() => {
     if (canvas)
       return buildEditor({
@@ -109,6 +101,8 @@ export default function Home() {
         fontAlign,
         fontSize,
         imageLoading,
+        imageFilter,
+        setImageFilter,
         setImageLoading,
         setFontSize,
         setFontAlign,
@@ -140,6 +134,7 @@ export default function Home() {
     fontAlign,
     fontSize,
     imageLoading,
+    imageFilter,
   ]);
 
   const containEl = useRef<HTMLDivElement>(null);

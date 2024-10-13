@@ -1,6 +1,6 @@
 import TooltipComponents from "@/components/shadui-Components/Tooltip";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, isText } from "@/lib/utils";
 import { Edit, Tool } from "@/types/Edit";
 import { BsBorderWidth, BsTransparency } from "react-icons/bs";
 import {
@@ -14,6 +14,7 @@ import {
   FaUnderline,
 } from "react-icons/fa6";
 import { LuArrowDown, LuArrowUp, LuChevronDown } from "react-icons/lu";
+import { TbColorFilter } from "react-icons/tb";
 import FontSizeInput from "./FontSizeInput";
 interface ToolBarProps {
   editor: Edit | undefined;
@@ -38,32 +39,32 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
     );
   }
   const seltectedObject = editor?.canvas?.getActiveObjects()[0];
-  const textYype =
-    seltectedObject?.type === "textbox" ||
-    seltectedObject?.type === "i-text" ||
-    seltectedObject?.type === "text";
+  const textYype = isText(seltectedObject);
+  const isImage = selectedObject?.type === "image";
   return (
     <section className="h-[3rem] p-2 space-x-4 bg-white items-center flex w-full z-[50]">
       <div className="flex items-center h-full justify-center gap-2 w-full">
         <section className="flex items-center gap-2">
-          <TooltipComponents
-            label="颜色"
-            side="bottom"
-            sideOffset={5}
-            key={Tool.Fill}
-          >
-            <Button
-              onClick={() => onChangeActiveTool(Tool.Fill)}
-              size="icon"
-              variant="ghost"
-              className={cn(activeTool === Tool.Fill && "bg-gray-100")}
+          {!isImage && (
+            <TooltipComponents
+              label="颜色"
+              side="bottom"
+              sideOffset={5}
+              key={Tool.Fill}
             >
-              <div
-                className={`rounded-small size-4 border `}
-                style={{ backgroundColor: fillColor ? fillColor : "black" }}
-              />
-            </Button>
-          </TooltipComponents>
+              <Button
+                onClick={() => onChangeActiveTool(Tool.Fill)}
+                size="icon"
+                variant="ghost"
+                className={cn(activeTool === Tool.Fill && "bg-gray-100")}
+              >
+                <div
+                  className={`rounded-small size-4 border `}
+                  style={{ backgroundColor: fillColor ? fillColor : "black" }}
+                />
+              </Button>
+            </TooltipComponents>
+          )}
           {!textYype && (
             <TooltipComponents
               label="边框颜色"
@@ -289,6 +290,25 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 className={`${editor?.getActiveFontAlign() === "right" && "bg-gray-100"}`}
               >
                 <FaAlignRight className="size-4"></FaAlignRight>
+              </Button>
+            </TooltipComponents>
+          )}
+          {isImage && (
+            <TooltipComponents
+              label="过滤器"
+              side="bottom"
+              sideOffset={5}
+              key={Tool.Filter}
+            >
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => {
+                  onChangeActiveTool(Tool.Filter);
+                }}
+                className={`${activeTool === Tool.Filter && "bg-gray-100"}`}
+              >
+                <TbColorFilter className="size-4"></TbColorFilter>
               </Button>
             </TooltipComponents>
           )}

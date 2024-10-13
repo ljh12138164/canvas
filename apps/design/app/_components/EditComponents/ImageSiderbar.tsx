@@ -43,6 +43,8 @@ const ImageSiderbar = ({
       toast.error("上传失败");
     } finally {
       setUploadImage(false);
+      //修改bug：上传图片后，input的value会变成null，导致无法再次上传同一张图片
+      e.target.value = "";
     }
   };
 
@@ -61,7 +63,7 @@ const ImageSiderbar = ({
             onClick={() => {
               if (!uploadImage) fileRef.current?.click();
             }}
-            disabled={uploadImage}
+            disabled={uploadImage || editor?.imageLoading}
             className={`flex items-center justify-center bg-blue-500 w-full h-full rounded-md  cursor-pointer ${uploadImage && " opacity-50"}`}
           >
             <p className="text-white font-medium">上传图片</p>
@@ -79,9 +81,11 @@ const ImageSiderbar = ({
             imageData.map((item) => {
               return (
                 <button
+                  disabled={uploadImage || editor?.imageLoading}
                   key={item.id}
                   onClick={() => {
-                    editor?.addImage(item.urls.regular);
+                    if (!uploadImage || editor?.imageLoading)
+                      editor?.addImage(item.urls.regular);
                   }}
                   className="relative w-full  h-[100px]  hover:opacity-75 transition bg-muted rounded-sm overflow-hidden group border"
                 >

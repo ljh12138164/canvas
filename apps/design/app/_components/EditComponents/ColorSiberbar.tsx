@@ -1,10 +1,9 @@
-import { cn } from "@/lib/utils";
-import type { Edit } from "@/types/Edit";
-import { FILL_COLOR, fonts, STROKE_COLOR, Tool } from "@/types/Edit";
-
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib/utils";
+import type { Edit } from "@/types/Edit";
+import { FILL_COLOR, filters, fonts, STROKE_COLOR, Tool } from "@/types/Edit";
 import { useMemoizedFn } from "ahooks";
 import ColorPicker from "./ColorPicker";
 import StokeWidth from "./StokeWidth";
@@ -22,6 +21,7 @@ const obj = {
   [Tool.StrokeWidth]: "边框宽度",
   [Tool.Opacity]: "透明度",
   [Tool.FontFamily]: "字体类型",
+  [Tool.Filter]: "滤镜",
   "": "",
 };
 const ColorSoiberbar = ({
@@ -32,22 +32,25 @@ const ColorSoiberbar = ({
   //颜色
   const value = editor?.fillColor || FILL_COLOR;
   const stokevalue = editor?.strokeColor || STROKE_COLOR;
-
   const onShow = useMemoizedFn(() => {
     if (
       activeTool === Tool.Fill ||
       activeTool === Tool.StrokeColor ||
       activeTool === Tool.StrokeWidth ||
       activeTool === Tool.Opacity ||
-      activeTool === Tool.FontFamily
+      activeTool === Tool.FontFamily ||
+      activeTool === Tool.Filter
     )
       return activeTool;
     return "";
   });
+  const check = useMemoizedFn((item: string) => {
+    return (editor?.getActiveFilter() || "none").toLowerCase() === item;
+  });
   return (
     <aside
       className={cn(
-        "z-[100] bg-white border-r relative transition w-[300px] h-full flex flex-col",
+        "z-[100] bg-white border-r-2  border-black/100 relative transition w-[300px] h-full flex flex-col",
         onShow() ? "visible" : "hidden"
       )}
     >
@@ -106,6 +109,25 @@ const ColorSoiberbar = ({
                       editor?.setFontFamily(item);
                     }}
                     className={`w-full h-16 justify-start text-left ${editor?.fontFamily === item && "border-blue-500 border-2"}`}
+                  >
+                    {item}
+                  </Button>
+                );
+              })}
+            </section>
+          )}
+          {onShow() === Tool.Filter && (
+            <section className="flex flex-col gap-2 pb-12">
+              {filters.map((item: string, index: number) => {
+                return (
+                  <Button
+                    key={item}
+                    variant="outline"
+                    onClick={() => {
+                      console.log(item);
+                      editor?.changeImageFilter(item);
+                    }}
+                    className={`w-full h-16  justify-start text-left ${check(item) && " border-blue-500 border-2"}`}
                   >
                     {item}
                   </Button>

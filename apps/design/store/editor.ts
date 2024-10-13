@@ -1,10 +1,11 @@
-import { isText } from "@/lib/utils";
+import { createFilter, isText } from "@/lib/utils";
 import {
   CRICLE_OPTION,
   DIAMOD_HEGHT,
   DIAMOD_OPTION,
   DIAMOD_WIDTH,
   Edit,
+  filters,
   FONT_FAMILY,
   FONT_SIZE,
   FONT_WEIGHT,
@@ -35,6 +36,8 @@ interface buildEditorProps {
   fontAlign: fabric.Textbox["textAlign"];
   fontSize: number;
   imageLoading: boolean;
+  imageFilter: string;
+  setImageFilter: (imageFilter: string) => void;
   setImageLoading: (imageLoading: boolean) => void;
   setFontSize: (fontSize: number) => void;
   setFontAlign: (fontAlign: fabric.Textbox["textAlign"]) => void;
@@ -65,6 +68,8 @@ export const buildEditor = ({
   fontAlign,
   fontSize,
   imageLoading,
+  imageFilter,
+  setImageFilter,
   setImageLoading,
   setFontSize,
   setFontAlign,
@@ -113,8 +118,34 @@ export const buildEditor = ({
     fontAlign,
     fontSize,
     imageLoading,
+    getActiveFilter: () => {
+      let value =
+        canvas?.getActiveObjects()?.[0]?.get("filters")?.[0]?.type || "none";
+      if (value === "Convolute") {
+        if (
+          canvas?.getActiveObjects()?.[0]?.get("filters")?.[0].matrix[0] === 0
+        )
+          value = "sharpen";
+        else value = "emboss";
+      }
+
+      setImageFilter(value);
+
+      return value || "none";
+    },
+    changeImageFilter: (filter: string) => {
+      setImageFilter(filter);
+      canvas.getActiveObjects().forEach((item: fabric.Object) => {
+        if (item.type === "image") {
+          const imageObj = item as fabric.FabricImage;
+          const effect = createFilter(filter);
+          imageObj.filters = effect ? [effect] : [];
+          imageObj.applyFilters();
+          canvas.renderAll();
+        }
+      });
+    },
     addImage: async (value: string) => {
-      console.log("sc");
       toast.loading("添加中...");
       setImageLoading(true);
       const workspace = getWorkspace();
