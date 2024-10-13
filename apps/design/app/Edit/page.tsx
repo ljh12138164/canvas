@@ -31,6 +31,7 @@ import SiderBar from "../_components/EditComponents/SiderBar";
 import TextSidebar from "../_components/EditComponents/TextSidebar";
 import Tools from "../_components/EditComponents/Tools";
 import { createFilter } from "@/lib/utils";
+import { useClipboard } from "@/hook/useCliph";
 
 export default function Home() {
   const { init } = useCanvas();
@@ -66,10 +67,11 @@ export default function Home() {
 
   useCanvasEvent({
     canvas,
-    setSelectedObject,
     tool,
+    setSelectedObject,
     setTool,
   });
+  useClipboard({ canvas });
 
   const onChangeActive = useMemoizedFn((tools: Tool) => {
     if (tools === tool) {

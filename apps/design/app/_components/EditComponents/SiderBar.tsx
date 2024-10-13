@@ -56,14 +56,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
               onChangeActiveTool(Tool.Shapes);
             }}
           />
-          <SiderBarItem
-            icon={LuSparkles}
-            label="ai"
-            isActive={acitiveTool === Tool.Sparkles}
-            onClick={() => {
-              onChangeActiveTool(Tool.Sparkles);
-            }}
-          />
+
           <SiderBarItem
             icon={LuSettings}
             label="设置"

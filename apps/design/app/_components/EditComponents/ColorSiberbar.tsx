@@ -50,7 +50,7 @@ const ColorSoiberbar = ({
   return (
     <aside
       className={cn(
-        "z-[100] bg-white border-r-2  border-black/100 relative transition w-[300px] h-full flex flex-col",
+        "z-[100] bg-white border-r-2  border-black/10 relative transition w-[300px] h-full flex flex-col",
         onShow() ? "visible" : "hidden"
       )}
     >
@@ -118,7 +118,7 @@ const ColorSoiberbar = ({
           )}
           {onShow() === Tool.Filter && (
             <section className="flex flex-col gap-2 pb-12">
-              {filters.map((item: string, index: number) => {
+              {filters.map((item: string) => {
                 return (
                   <Button
                     key={item}

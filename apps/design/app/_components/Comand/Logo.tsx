@@ -2,7 +2,10 @@ import Link from "next/link";
 
 const Logo = () => {
   return (
-    <Link href="/" className="h-12 w-12 cursor-pointer">
+    <Link
+      href="/"
+      className="h-12 w-12 cursor-pointer flex items-center justify-center"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="40"

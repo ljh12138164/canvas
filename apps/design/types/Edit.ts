@@ -34,7 +34,6 @@ export enum Tool {
   Presentation,
   Settings,
   Shapes,
-  Sparkles,
   Type,
   //
   Select,
@@ -70,6 +69,7 @@ export interface Edit {
   fontAlign: Fabric.Textbox["textAlign"];
   fontSize: number;
   imageLoading: boolean;
+  imageFilter: string;
   getActiveFilter: () => string;
   changeImageFilter: (filter: string) => void;
   addImage: (url: string) => void;

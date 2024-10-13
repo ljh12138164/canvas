@@ -117,6 +117,7 @@ export const buildEditor = ({
     fontUnderline,
     fontAlign,
     fontSize,
+    imageFilter,
     imageLoading,
     getActiveFilter: () => {
       let value =
