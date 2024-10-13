@@ -9,6 +9,7 @@ import ColorPicker from "./ColorPicker";
 import StokeWidth from "./StokeWidth";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
+import { Separator } from "@/components/ui/separator";
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
@@ -78,7 +79,7 @@ const ColorSoiberbar = ({
   return (
     <aside
       className={cn(
-        "z-[100] bg-white border-r-2  border-black/10 relative transition w-[300px] h-full flex flex-col",
+        "z-[600] bg-white border-r-2 pb-24 border-black/10 relative transition w-[300px] h-full flex flex-col",
         onShow() ? "visible" : "hidden"
       )}
     >
@@ -86,7 +87,7 @@ const ColorSoiberbar = ({
         title={obj[onShow()] || ""}
         description={`更改${obj[onShow()] || ""}`}
       ></ToolSiderbar>
-      <ScrollArea>
+      <ScrollArea className="z-[601]">
         <div className="p-4 space-y-4">
           {onShow() === Tool.Fill && (
             <ColorPicker
@@ -102,7 +103,6 @@ const ColorSoiberbar = ({
               value={stokevalue}
               onChange={(color) => {
                 editor?.setStrokeColor(color);
-                
               }}
               key={Tool.StrokeColor}
             ></ColorPicker>
@@ -165,10 +165,26 @@ const ColorSoiberbar = ({
           )}
           {onShow() === Tool.Draw && (
             <>
+              <div className=" pb-6  pt-2 w-full flex mb-2   justify-center gap-4 flex-col">
+                <p>
+                  画笔粗细<span>({editor?.drawWidth || 1}px)</span>
+                </p>
+                <Slider
+                  step={0.5}
+                  key={Tool.Draw}
+                  min={1}
+                  max={20}
+                  value={[editor?.drawWidth || 1]}
+                  onValueChange={(value) => {
+                    editor?.setDrewWidth(value[0]);
+                  }}
+                ></Slider>
+              </div>
+              <Separator></Separator>
               <ColorPicker
-                value={stokevalue}
+                value={editor?.drewColor || STROKE_COLOR}
                 onChange={(color) => {
-                  editor?.setStrokeColor(color);
+                  editor?.setDrewColor(color);
                 }}
                 key={Tool.Draw}
               ></ColorPicker>

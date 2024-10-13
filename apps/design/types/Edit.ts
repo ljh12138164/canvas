@@ -71,7 +71,11 @@ export interface Edit {
   fontSize: number;
   imageLoading: boolean;
   imageFilter: string;
+  drewColor: string;
+  drawWidth: number;
+  setDrewWidth: (width: number) => void;
   copy: () => void;
+  setDrewColor: (color: string) => void;
   disableDraw: () => void;
   enableDraw: () => void;
   getActiveFilter: () => string;

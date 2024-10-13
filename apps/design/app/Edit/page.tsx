@@ -63,6 +63,9 @@ export default function Home() {
   const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [imageFilter, setImageFilter] = useState<string>("none");
 
+  //画布操作
+  const [drewColor, setDrewColor] = useState<string>(STROKE_COLOR);
+  const [drawWidth, setDrawWidth] = useState<number>(STROKE_WIDTH);
   useCanvasEvent({
     canvas,
     tool,
@@ -104,6 +107,10 @@ export default function Home() {
         fontSize,
         imageLoading,
         imageFilter,
+        drewColor,
+        drawWidth,
+        setDrawWidth,
+        setDrewColor,
         copy,
         setImageFilter,
         setImageLoading,
@@ -138,6 +145,8 @@ export default function Home() {
     fontSize,
     imageLoading,
     imageFilter,
+    drewColor,
+    drawWidth,
     copy,
   ]);
 

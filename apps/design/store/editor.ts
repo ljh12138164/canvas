@@ -36,6 +36,10 @@ interface buildEditorProps {
   fontSize: number;
   imageLoading: boolean;
   imageFilter: string;
+  drewColor: string;
+  drawWidth: number;
+  setDrawWidth: (drawWidth: number) => void;
+  setDrewColor: (drewColor: string) => void;
   copy: () => void;
   setImageFilter: (imageFilter: string) => void;
   setImageLoading: (imageLoading: boolean) => void;
@@ -69,6 +73,10 @@ export const buildEditor = ({
   fontSize,
   imageLoading,
   imageFilter,
+  drewColor,
+  setDrewColor,
+  drawWidth,
+  setDrawWidth,
   copy,
   setImageFilter,
   setImageLoading,
@@ -120,6 +128,8 @@ export const buildEditor = ({
     fontSize,
     imageFilter,
     imageLoading,
+    drewColor,
+    drawWidth,
     copy,
     enableDraw: () => {
       canvas.discardActiveObject();
@@ -131,6 +141,19 @@ export const buildEditor = ({
         canvas.freeDrawingBrush.color = strokeColor;
       }
     },
+    setDrewColor: (color: string) => {
+      if (canvas.freeDrawingBrush?.color) {
+        setDrewColor(color);
+        canvas.freeDrawingBrush.color = color;
+      }
+    },
+    setDrewWidth: (width: number) => {
+      if (canvas.freeDrawingBrush?.color) {
+        setDrawWidth(width);
+        canvas.freeDrawingBrush.width = width;
+      }
+    },
+
     disableDraw: () => {
       canvas.isDrawingMode = false;
     },

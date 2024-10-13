@@ -1,14 +1,14 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tool } from "@/types/Edit";
 import {
-  LuLayout,
   LuImage,
+  LuLayout,
+  LuPencil,
   LuSettings,
   LuShapes,
-  LuPencil,
   LuType,
 } from "react-icons/lu";
 import SiderBarItem from "./SiderBarItem";
-import { Edit, Tool } from "@/types/Edit";
-import { ScrollArea } from "@/components/ui/scroll-area";
 interface SiderBarProps {
   acitiveTool: Tool;
   onChangeActiveTool: (tool: Tool) => void;
