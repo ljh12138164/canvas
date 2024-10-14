@@ -52,77 +52,11 @@ export enum Tool {
   RemoveBg,
   Delete,
   Copy,
+  zoomResize,
+  zoomIn,
+  zoomOut,
 }
 //返回
-export interface Edit {
-  selectedObject: Fabric.Object[] | null;
-  strokeColor: string;
-  strokeWidth: number;
-  fillColor: string;
-  canvas: Fabric.Canvas;
-  opacity: number;
-  strokeDashArray: number[];
-  fontFamily: string;
-  fontWeight: FontWeightType;
-  fontThought: boolean;
-  fontUnderline: boolean;
-  fontItalics: FontStyle;
-  fontAlign: Fabric.Textbox["textAlign"];
-  fontSize: number;
-  imageLoading: boolean;
-  imageFilter: string;
-  drewColor: string;
-  drawWidth: number;
-  canvasWidth: number;
-  canvasHeight: number;
-  canvasColor: string;
-  authZoom: () => Promise<void>;
-  setCanvasColor: (color: string) => void;
-  getWorkspace: () => Fabric.FabricObject | null;
-  changeSize: (size: { width: number; height: number }) => Promise<void>;
-  changeBackground: (color: string) => void;
-  setDrewWidth: (width: number) => void;
-  copy: () => void;
-  setDrewColor: (color: string) => void;
-  disableDraw: () => void;
-  enableDraw: () => void;
-  getActiveFilter: () => string;
-  changeImageFilter: (filter: string) => void;
-  addImage: (url: string) => void;
-  delete: () => void;
-  addText: (text: string, option?: Fabric.Textbox | {}) => void;
-  bringForward: () => void;
-  getActiveFontLineThrough: () => boolean;
-  getActiveFontUnderline: () => boolean;
-  getActiveFontSize: () => number;
-  getActiveFontItalic: () => FontStyle;
-  getActiveFontAlign: () => Fabric.Textbox["textAlign"];
-  changeFontAlign: (value: Fabric.Textbox["textAlign"]) => void;
-  changeFontLineThrough: (value: boolean) => void;
-  changeFontUnderline: (value: boolean) => void;
-  changeFontItalic: (value: FontStyle) => void;
-  changeOpacty: (opacity: number) => void;
-  changeStokeDashArray: (value: number[]) => void;
-  changeFontWeight: (weight: FontWeightType) => void;
-  changeFontSize: (size: number) => void;
-  sendBackwards: () => void;
-  getOpacty: () => number;
-  getActiveFontFamily: () => string;
-  getActiveStrokeWidth: () => number;
-  getActiveStrokeWeight: () => number | string;
-  getActiveStokeColor: () => string;
-  getActiveStokeDashArray: () => number[];
-  setFontFamily: (fontFamily: string) => void;
-  setFillColor: (color: string) => void;
-  setStrokeWidth: (width: number) => void;
-  setStrokeColor: (color: string) => void;
-  addCircle: () => void;
-  addRectangle: () => void;
-  addTriangle: () => void;
-  addRotateTriangle: () => void;
-  addSoftRectangle: () => void;
-  addDiamod: () => void;
-}
 export const FILL_COLOR = "rgba(0,0,0,1)";
 export const STROKE_COLOR = "rgba(0,0,0,1)";
 export const DIAMOD_WIDTH = 300;

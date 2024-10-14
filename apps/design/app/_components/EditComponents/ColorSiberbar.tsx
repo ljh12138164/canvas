@@ -4,25 +4,22 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
-import type { Edit, Filter } from "@/types/Edit";
+import type { Filter } from "@/types/Edit";
 import {
   CANVAS_COLOR,
-  CANVAS_HEIGHT,
-  CANVAS_WIDTH,
   FILL_COLOR,
   filters,
   fonts,
   STROKE_COLOR,
   Tool,
 } from "@/types/Edit";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemoizedFn } from "ahooks";
 import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
 import ColorPicker from "./ColorPicker";
 import StokeWidth from "./StokeWidth";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
+import { Edit } from "@/store/editor";
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
@@ -236,7 +233,7 @@ const ColorSoiberbar = ({
                 <input
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                   type="number"
-                  value={editor.canvasWidth}
+                  value={editor?.canvasWidth}
                   name="width"
                   placeholder="请输入宽度"
                   onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {

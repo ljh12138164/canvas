@@ -33,6 +33,7 @@ import ShapeSidle from "../_components/EditComponents/ShapeSidle";
 import SiderBar from "../_components/EditComponents/SiderBar";
 import TextSidebar from "../_components/EditComponents/TextSidebar";
 import Tools from "../_components/EditComponents/Tools";
+import Footer from "../_components/EditComponents/Footer";
 
 export default function Home() {
   const { init } = useCanvas();
@@ -235,6 +236,7 @@ export default function Home() {
           >
             <canvas ref={canvasEl}></canvas>
           </section>
+          <Footer editor={editor}></Footer>
         </main>
       </div>
     </div>

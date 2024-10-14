@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import type { Edit } from "@/types/Edit";
 import { IMAGE_BLUSK, Tool } from "@/types/Edit";
 
 import { useImageQuery } from "@/api/Image/useQuery";
@@ -12,6 +11,7 @@ import toast from "react-hot-toast";
 import { LuAlertTriangle, LuLoader } from "react-icons/lu";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
+import { Edit } from "@/store/editor";
 
 interface ImageSiderbarProps {
   editor: Edit | undefined;

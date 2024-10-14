@@ -4,7 +4,6 @@ import {
   DIAMOD_HEGHT,
   DIAMOD_OPTION,
   DIAMOD_WIDTH,
-  Edit,
   FONT_FAMILY,
   FONT_SIZE,
   FONT_WEIGHT,
@@ -19,6 +18,7 @@ import {
 import * as fabric from "fabric";
 import toast from "react-hot-toast";
 export type FontWeightType = "normal" | "bold";
+//输入
 interface buildEditorProps {
   canvas: fabric.Canvas;
   fillColor: string;
@@ -62,6 +62,78 @@ interface buildEditorProps {
   setFillColor: (color: string) => void;
   setStrokeColor: (color: string) => void;
   setStrokeWidth: (width: number) => void;
+}
+//返回
+export interface Edit {
+  selectedObject: fabric.Object[] | null;
+  strokeColor: string;
+  strokeWidth: number;
+  fillColor: string;
+  canvas: fabric.Canvas;
+  opacity: number;
+  strokeDashArray: number[];
+  fontFamily: string;
+  fontWeight: FontWeightType;
+  fontThought: boolean;
+  fontUnderline: boolean;
+  fontItalics: FontStyle;
+  fontAlign: fabric.Textbox["textAlign"];
+  fontSize: number;
+  imageLoading: boolean;
+  imageFilter: string;
+  drewColor: string;
+  drawWidth: number;
+  canvasWidth: number;
+  canvasHeight: number;
+  canvasColor: string;
+  zoomIn: () => void;
+  zoomOut: () => void;
+  authZoom: () => Promise<void>;
+  setCanvasColor: (color: string) => void;
+  getWorkspace: () => fabric.FabricObject | null;
+  changeSize: (size: { width: number; height: number }) => Promise<void>;
+  changeBackground: (color: string) => void;
+  setDrewWidth: (width: number) => void;
+  copy: () => void;
+  setDrewColor: (color: string) => void;
+  disableDraw: () => void;
+  enableDraw: () => void;
+  getActiveFilter: () => string;
+  changeImageFilter: (filter: string) => void;
+  addImage: (url: string) => void;
+  delete: () => void;
+  addText: (text: string, option?: fabric.Textbox) => void;
+  bringForward: () => void;
+  getActiveFontLineThrough: () => boolean;
+  getActiveFontUnderline: () => boolean;
+  getActiveFontSize: () => number;
+  getActiveFontItalic: () => FontStyle;
+  getActiveFontAlign: () => fabric.Textbox["textAlign"];
+  changeFontAlign: (value: fabric.Textbox["textAlign"]) => void;
+  changeFontLineThrough: (value: boolean) => void;
+  changeFontUnderline: (value: boolean) => void;
+  changeFontItalic: (value: FontStyle) => void;
+  changeOpacty: (opacity: number) => void;
+  changeStokeDashArray: (value: number[]) => void;
+  changeFontWeight: (weight: FontWeightType) => void;
+  changeFontSize: (size: number) => void;
+  sendBackwards: () => void;
+  getOpacty: () => number;
+  getActiveFontFamily: () => string;
+  getActiveStrokeWidth: () => number;
+  getActiveStrokeWeight: () => number | string;
+  getActiveStokeColor: () => string;
+  getActiveStokeDashArray: () => number[];
+  setFontFamily: (fontFamily: string) => void;
+  setFillColor: (color: string) => void;
+  setStrokeWidth: (width: number) => void;
+  setStrokeColor: (color: string) => void;
+  addCircle: () => void;
+  addRectangle: () => void;
+  addTriangle: () => void;
+  addRotateTriangle: () => void;
+  addSoftRectangle: () => void;
+  addDiamod: () => void;
 }
 export const buildEditor = ({
   canvas,
@@ -150,6 +222,19 @@ export const buildEditor = ({
     canvasWidth,
     setCanvasColor,
     authZoom,
+    zoomIn: () => {
+      let zoomRatio = canvas.getZoom();
+      zoomRatio += 0.05;
+      const center = canvas.getCenterPoint();
+      canvas.zoomToPoint(center, zoomRatio > 1 ? 1 : zoomRatio);
+    },
+    zoomOut: () => {
+      let zoomRatio = canvas.getZoom();
+      zoomRatio -= 0.05;
+      const center = canvas.getCenterPoint();
+      //防止过小
+      canvas.zoomToPoint(center, zoomRatio < 0.2 ? 0.2 : zoomRatio);
+    },
     getWorkspace: () => getWorkspace(),
     changeSize: async (size: { width: number; height: number }) => {
       const workspace = getWorkspace();
