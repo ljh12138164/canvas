@@ -73,6 +73,14 @@ export interface Edit {
   imageFilter: string;
   drewColor: string;
   drawWidth: number;
+  canvasWidth: number;
+  canvasHeight: number;
+  canvasColor: string;
+  authZoom: () => Promise<void>;
+  setCanvasColor: (color: string) => void;
+  getWorkspace: () => Fabric.FabricObject | null;
+  changeSize: (size: { width: number; height: number }) => Promise<void>;
+  changeBackground: (color: string) => void;
   setDrewWidth: (width: number) => void;
   copy: () => void;
   setDrewColor: (color: string) => void;
@@ -129,6 +137,10 @@ export const FONT_THOUGHT = false;
 export const FONT_UNDERLINE = false;
 export const FONT_ITALICS = "normal";
 export const FONT_ALIGN = "left";
+export const CANVAS_WIDTH = 800;
+export const CANVAS_HEIGHT = 1100;
+export const CANVAS_COLOR = "#ffffff";
+
 export const IMAGE_BLUSK =
   "https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/";
 

@@ -36,7 +36,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
   //字体
   if (!editor?.selectedObject?.length) {
     return (
-      <section className="h-[3rem] p-2 bg-white items-center flex w-full z-[50]" />
+      <section className="h-[3.3rem]  p-[0.1rem] space-x-4 bg-white items-center flex w-full z-[50]" />
     );
   }
   const seltectedObject = editor?.canvas?.getActiveObjects()[0];

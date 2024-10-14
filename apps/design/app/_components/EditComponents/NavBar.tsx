@@ -26,7 +26,7 @@ const NavBar = ({ activeTool, onChangeTool }: NavBarProps) => {
   return (
     <nav className="w-full text-xl font-medium h-[4rem] bg-white flex items-center px-4 border-b border-gray-200 justify-center  xl:justify-start">
       <Logo></Logo>
-      <div className="ml-4 w-full flex gap-4 h-full items-center ">
+      <div className="ml-4 w-full flex gap-4 h-[4rem] items-center ">
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button size="sm" variant="ghost" className="font-bold text-xl">

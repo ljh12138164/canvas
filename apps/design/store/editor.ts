@@ -38,6 +38,13 @@ interface buildEditorProps {
   imageFilter: string;
   drewColor: string;
   drawWidth: number;
+  canvasWidth: number;
+  canvasHeight: number;
+  canvasColor: string;
+  setCanvasHeight: (canvasHeight: number) => void;
+  setCanvasColor: (canvasColor: string) => void;
+  setCanvasWidth: (canvasWidth: number) => void;
+  authZoom: () => Promise<void>;
   setDrawWidth: (drawWidth: number) => void;
   setDrewColor: (drewColor: string) => void;
   copy: () => void;
@@ -74,8 +81,15 @@ export const buildEditor = ({
   imageLoading,
   imageFilter,
   drewColor,
-  setDrewColor,
   drawWidth,
+  canvasWidth,
+  canvasHeight,
+  canvasColor,
+  setCanvasHeight,
+  setCanvasColor,
+  setCanvasWidth,
+  authZoom,
+  setDrewColor,
   setDrawWidth,
   copy,
   setImageFilter,
@@ -97,7 +111,8 @@ export const buildEditor = ({
     canvas
       .getObjects()
       //@ts-ignore
-      .find((item: fabric.SerializedObjectProps) => item.name === "board");
+      .find((item: fabric.SerializedObjectProps) => item.name === "board") ||
+    null;
   const center = (object: fabric.Object) => {
     const workspace = getWorkspace();
     //居中
@@ -130,6 +145,33 @@ export const buildEditor = ({
     imageLoading,
     drewColor,
     drawWidth,
+    canvasColor,
+    canvasHeight,
+    canvasWidth,
+    setCanvasColor,
+    authZoom,
+    getWorkspace: () => getWorkspace(),
+    changeSize: async (size: { width: number; height: number }) => {
+      const workspace = getWorkspace();
+      if (workspace) {
+        setCanvasWidth(size.width);
+        setCanvasHeight(size.height);
+        workspace.width = size.width;
+        workspace.height = size.height;
+      }
+      await authZoom();
+      canvas.renderAll();
+      //TODO: 保存
+    },
+    changeBackground: (color: string) => {
+      const workspace = getWorkspace();
+      if (workspace) {
+        setCanvasColor(color);
+        workspace.fill = color;
+      }
+      canvas.renderAll();
+      //TODO: 保存
+    },
     copy,
     enableDraw: () => {
       canvas.discardActiveObject();

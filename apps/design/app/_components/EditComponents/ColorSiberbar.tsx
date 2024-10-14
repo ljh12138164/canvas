@@ -1,15 +1,28 @@
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import type { Edit, Filter } from "@/types/Edit";
-import { FILL_COLOR, filters, fonts, STROKE_COLOR, Tool } from "@/types/Edit";
+import {
+  CANVAS_COLOR,
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  FILL_COLOR,
+  filters,
+  fonts,
+  STROKE_COLOR,
+  Tool,
+} from "@/types/Edit";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemoizedFn } from "ahooks";
+import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
 import ColorPicker from "./ColorPicker";
 import StokeWidth from "./StokeWidth";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
-import { Separator } from "@/components/ui/separator";
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
@@ -24,9 +37,10 @@ const obj = {
   [Tool.FontFamily]: "字体类型",
   [Tool.Filter]: "滤镜",
   [Tool.Draw]: "画笔",
+  [Tool.Settings]: "设置",
   "": "",
 };
-//滤镜名称
+
 const filterItem = {
   none: "无",
   polaroid: "偏振",
@@ -60,6 +74,14 @@ const ColorSoiberbar = ({
   //颜色
   const value = editor?.fillColor || FILL_COLOR;
   const stokevalue = editor?.strokeColor || STROKE_COLOR;
+
+  const initColor = useMemo(() => {
+    return editor?.getWorkspace()?.fill ?? "#ffffff";
+  }, [editor]);
+  useEffect(() => {
+    editor?.setCanvasColor(initColor as string);
+  }, [editor, initColor]);
+
   const onShow = useMemoizedFn(() => {
     if (
       activeTool === Tool.Fill ||
@@ -68,7 +90,8 @@ const ColorSoiberbar = ({
       activeTool === Tool.Opacity ||
       activeTool === Tool.FontFamily ||
       activeTool === Tool.Filter ||
-      activeTool === Tool.Draw
+      activeTool === Tool.Draw ||
+      activeTool === Tool.Settings
     )
       return activeTool;
     return "";
@@ -87,7 +110,7 @@ const ColorSoiberbar = ({
         title={obj[onShow()] || ""}
         description={`更改${obj[onShow()] || ""}`}
       ></ToolSiderbar>
-      <ScrollArea className="z-[601]">
+      <ScrollArea className="z-[601] h-full">
         <div className="p-4 space-y-4">
           {onShow() === Tool.Fill && (
             <ColorPicker
@@ -189,6 +212,59 @@ const ColorSoiberbar = ({
                 key={Tool.Draw}
               ></ColorPicker>
             </>
+          )}
+          {onShow() === Tool.Settings && (
+            <form className="flex flex-col gap-2">
+              <div className="space-y-2">
+                <Label htmlFor="hight">高度</Label>
+                <input
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                  type="number"
+                  name="hight"
+                  value={editor?.canvasHeight}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    editor?.changeSize({
+                      width: editor.canvasWidth,
+                      height: +e.target.value,
+                    });
+                  }}
+                  placeholder="高度"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="width">宽度</Label>
+                <input
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                  type="number"
+                  value={editor.canvasWidth}
+                  name="width"
+                  placeholder="请输入宽度"
+                  onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                    await editor?.changeSize({
+                      width: +e.target.value,
+                      height: editor.canvasHeight,
+                    });
+                  }}
+                />
+              </div>
+              <Button
+                onClick={async () => {
+                  await editor?.changeSize({ width: 800, height: 1100 });
+                }}
+                type="button"
+                className="w-full"
+              >
+                重置
+              </Button>
+              <div className="p-4">
+                <ColorPicker
+                  value={editor?.canvasColor || CANVAS_COLOR}
+                  onChange={(color) => {
+                    editor?.changeBackground(color);
+                  }}
+                ></ColorPicker>
+              </div>
+            </form>
           )}
         </div>
       </ScrollArea>

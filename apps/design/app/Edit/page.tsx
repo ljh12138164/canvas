@@ -5,6 +5,9 @@ import { useClipboard } from "@/hook/useCliph";
 import useResponse from "@/hook/useResponse";
 import { buildEditor, FontWeightType } from "@/store/editor";
 import {
+  CANVAS_COLOR,
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
   FILL_COLOR,
   FONT_ALIGN,
   FONT_FAMILY,
@@ -66,6 +69,11 @@ export default function Home() {
   //画布操作
   const [drewColor, setDrewColor] = useState<string>(STROKE_COLOR);
   const [drawWidth, setDrawWidth] = useState<number>(STROKE_WIDTH);
+  //画布大小
+  const [canvasWidth, setCanvasWidth] = useState<number>(CANVAS_WIDTH);
+  const [canvasHeight, setCanvasHeight] = useState<number>(CANVAS_HEIGHT);
+  //画布颜色
+  const [canvasColor, setCanvasColor] = useState<string>(CANVAS_COLOR);
   useCanvasEvent({
     canvas,
     tool,
@@ -76,7 +84,6 @@ export default function Home() {
 
   const onChangeActive = useMemoizedFn((tools: Tool) => {
     if (tools === Tool.Draw) {
-      //TODO: 清空画布
       editor?.enableDraw();
     }
     if (tool === Tool.Draw) {
@@ -87,6 +94,8 @@ export default function Home() {
     }
     setTool(tools);
   });
+  const { authZoom } = useResponse({ canvas, contain });
+
   //编辑器
   const editor = useMemo(() => {
     if (canvas)
@@ -109,6 +118,13 @@ export default function Home() {
         imageFilter,
         drewColor,
         drawWidth,
+        canvasWidth,
+        canvasHeight,
+        canvasColor,
+        setCanvasHeight,
+        setCanvasColor,
+        setCanvasWidth,
+        authZoom,
         setDrawWidth,
         setDrewColor,
         copy,
@@ -148,11 +164,14 @@ export default function Home() {
     drewColor,
     drawWidth,
     copy,
+    authZoom,
+    canvasWidth,
+    canvasHeight,
+    canvasColor,
   ]);
 
   const containEl = useRef<HTMLDivElement>(null);
   const canvasEl = useRef<HTMLCanvasElement>(null);
-  useResponse({ canvas, contain });
   useEffect(() => {
     if (!canvasEl.current) return;
     const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement, {
