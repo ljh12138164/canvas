@@ -1,7 +1,15 @@
-import { FontWeightType } from "@/store/editor";
-import * as Fabric from "fabric";
 import * as material from "material-colors";
 //颜色预设
+export const JSON_KEY = [
+  "name",
+  "gradientAngle",
+  "selectable",
+  "hasControls",
+  "linkData",
+  "editable",
+  "extensionType",
+  "extension",
+];
 export const colors = [
   material.red[500],
   material.pink[500],

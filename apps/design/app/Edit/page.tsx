@@ -17,6 +17,7 @@ import {
   FONT_UNDERLINE,
   FONT_WEIGHT,
   FontStyle,
+  JSON_KEY,
   OPACITY,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
@@ -35,6 +36,7 @@ import TextSidebar from "../_components/EditComponents/TextSidebar";
 import Tools from "../_components/EditComponents/Tools";
 import Footer from "../_components/EditComponents/Footer";
 import useHistoty from "@/hook/useHistory";
+import useKeyBoard from "@/hook/useKeyBoard";
 
 export default function Home() {
   const { init } = useCanvas();
@@ -76,7 +78,9 @@ export default function Home() {
   const [canvasHeight, setCanvasHeight] = useState<number>(CANVAS_HEIGHT);
   //画布颜色
   const [canvasColor, setCanvasColor] = useState<string>(CANVAS_COLOR);
-  const { save } = useHistoty({ canvas });
+  const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } =
+    useHistoty({ canvas });
+
   useCanvasEvent({
     canvas,
     tool,
@@ -84,8 +88,15 @@ export default function Home() {
     setSelectedObject,
     setTool,
   });
-  const { copy } = useClipboard({ canvas });
-
+  const { copy, pasty } = useClipboard({ canvas });
+  useKeyBoard({
+    canvas,
+    undo,
+    redo,
+    save,
+    copy,
+    pasty,
+  });
   const onChangeActive = useMemoizedFn((tools: Tool) => {
     if (tools === Tool.Draw) {
       editor?.enableDraw();
@@ -125,6 +136,14 @@ export default function Home() {
         canvasWidth,
         canvasHeight,
         canvasColor,
+        canvasHistory: canvasHistory.current,
+        pasty,
+        save,
+        canRedo,
+        canUndo,
+        undo,
+        redo,
+        setHitoryIndex,
         setCanvasHeight,
         setCanvasColor,
         setCanvasWidth,
@@ -167,15 +186,24 @@ export default function Home() {
     imageFilter,
     drewColor,
     drawWidth,
-    copy,
-    authZoom,
     canvasWidth,
     canvasHeight,
     canvasColor,
+    canvasHistory,
+    pasty,
+    save,
+    canRedo,
+    canUndo,
+    undo,
+    redo,
+    setHitoryIndex,
+    copy,
+    authZoom,
   ]);
 
   const containEl = useRef<HTMLDivElement>(null);
   const canvasEl = useRef<HTMLCanvasElement>(null);
+  //初始化
   useEffect(() => {
     if (!canvasEl.current) return;
     const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement, {
@@ -189,10 +217,15 @@ export default function Home() {
     });
     setCanvas(canvas);
     setContain(containEl.current);
+
+    //初始化
+    const currentState = canvas.toObject(JSON_KEY);
+    canvasHistory.current = [currentState];
+    setHitoryIndex(0);
     return () => {
       canvas.dispose();
     };
-  }, [init]);
+  }, [init, setHitoryIndex, canvasHistory]);
   return (
     <div
       className="h-full w-full flex flex-col items-center relative bg-slate-100"
@@ -200,7 +233,11 @@ export default function Home() {
         scrollbarWidth: "none",
       }}
     >
-      <NavBar activeTool={tool} onChangeTool={onChangeActive}></NavBar>
+      <NavBar
+        editor={editor}
+        activeTool={tool}
+        onChangeTool={onChangeActive}
+      ></NavBar>
       <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
         <SiderBar
           acitiveTool={tool}

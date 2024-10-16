@@ -41,6 +41,14 @@ interface buildEditorProps {
   canvasWidth: number;
   canvasHeight: number;
   canvasColor: string;
+  canvasHistory: fabric.FabricObject[];
+  pasty: () => void;
+  save: (skip?: boolean) => void;
+  canRedo: () => boolean;
+  canUndo: () => boolean;
+  undo: () => void;
+  redo: () => void;
+  setHitoryIndex: (index: number) => void;
   setCanvasHeight: (canvasHeight: number) => void;
   setCanvasColor: (canvasColor: string) => void;
   setCanvasWidth: (canvasWidth: number) => void;
@@ -86,6 +94,14 @@ export interface Edit {
   canvasWidth: number;
   canvasHeight: number;
   canvasColor: string;
+  canvasHistory: fabric.FabricObject[];
+  pasty: () => void;
+  saveAll: (skip?: boolean) => void;
+  canRedo: () => boolean;
+  canUndo: () => boolean;
+  undo: () => void;
+  redo: () => void;
+  setHitoryIndex: (index: number) => void;
   zoomIn: () => void;
   zoomOut: () => void;
   authZoom: () => Promise<void>;
@@ -102,7 +118,7 @@ export interface Edit {
   changeImageFilter: (filter: string) => void;
   addImage: (url: string) => void;
   delete: () => void;
-  addText: (text: string, option?: fabric.Textbox) => void;
+  addText: (text: string, option?: fabric.Textbox | object) => void;
   bringForward: () => void;
   getActiveFontLineThrough: () => boolean;
   getActiveFontUnderline: () => boolean;
@@ -157,6 +173,14 @@ export const buildEditor = ({
   canvasWidth,
   canvasHeight,
   canvasColor,
+  canvasHistory,
+  pasty,
+  save,
+  canRedo,
+  canUndo,
+  undo,
+  redo,
+  setHitoryIndex,
   setCanvasHeight,
   setCanvasColor,
   setCanvasWidth,
@@ -220,6 +244,13 @@ export const buildEditor = ({
     canvasColor,
     canvasHeight,
     canvasWidth,
+    canvasHistory,
+    pasty,
+    canRedo,
+    canUndo,
+    undo,
+    redo,
+    setHitoryIndex,
     setCanvasColor,
     authZoom,
     zoomIn: () => {
@@ -246,7 +277,7 @@ export const buildEditor = ({
       }
       await authZoom();
       canvas.renderAll();
-      //TODO: 保存
+      save();
     },
     changeBackground: (color: string) => {
       const workspace = getWorkspace();
@@ -255,7 +286,7 @@ export const buildEditor = ({
         workspace.fill = color;
       }
       canvas.renderAll();
-      //TODO: 保存
+      save();
     },
     copy,
     enableDraw: () => {
@@ -280,7 +311,7 @@ export const buildEditor = ({
         canvas.freeDrawingBrush.width = width;
       }
     },
-
+    saveAll: () => save(),
     disableDraw: () => {
       canvas.isDrawingMode = false;
     },

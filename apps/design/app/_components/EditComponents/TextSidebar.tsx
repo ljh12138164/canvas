@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
-import type { Edit } from "@/types/Edit";
 import { Tool } from "@/types/Edit";
 
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Edit } from "@/store/editor";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
-import { Button } from "@/components/ui/button";
 
 interface TextSidebarProps {
   editor: Edit | undefined;
