@@ -34,6 +34,7 @@ import SiderBar from "../_components/EditComponents/SiderBar";
 import TextSidebar from "../_components/EditComponents/TextSidebar";
 import Tools from "../_components/EditComponents/Tools";
 import Footer from "../_components/EditComponents/Footer";
+import useHistoty from "@/hook/useHistory";
 
 export default function Home() {
   const { init } = useCanvas();
@@ -75,9 +76,11 @@ export default function Home() {
   const [canvasHeight, setCanvasHeight] = useState<number>(CANVAS_HEIGHT);
   //画布颜色
   const [canvasColor, setCanvasColor] = useState<string>(CANVAS_COLOR);
+  const { save } = useHistoty({ canvas });
   useCanvasEvent({
     canvas,
     tool,
+    save,
     setSelectedObject,
     setTool,
   });

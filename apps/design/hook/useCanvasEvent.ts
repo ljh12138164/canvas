@@ -6,6 +6,7 @@ interface CanvasEventProps {
   setSelectedObject: (object: fabric.Object[]) => void;
   tool: Tool;
   setTool: (tool: Tool) => void;
+  save: () => void;
 }
 
 /***
@@ -14,13 +15,24 @@ interface CanvasEventProps {
  */
 const useCanvasEvent = ({
   canvas,
-  setSelectedObject,
   tool,
+  save,
+  setSelectedObject,
   setTool,
 }: CanvasEventProps) => {
   useEffect(() => {
     if (canvas) {
       //创建
+      canvas.on("object:added", () => {
+        save();
+      });
+      //
+      canvas.on("object:removed", () => {
+        save();
+      });
+      canvas.on("object:modified", () => {
+        save();
+      });
       canvas.on("selection:created", (e) => {
         setSelectedObject(e.selected || []);
       });
@@ -43,14 +55,7 @@ const useCanvasEvent = ({
         setSelectedObject([]);
       });
     }
-    // return () => {
-    //   if (canvas) {
-    //     canvas.off("selection:created");
-    //     canvas.off("selection:updated");
-    //     canvas.off("selection:cleared");
-    //   }
-    // };
-  }, [canvas, setSelectedObject, tool, setTool]);
+  }, [canvas, setSelectedObject, tool, setTool, save]);
 };
 
 export default useCanvasEvent;
