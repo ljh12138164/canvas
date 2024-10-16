@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Edit, STROKE_WIDTH } from "@/types/Edit";
+import { Edit } from "@/store/editor";
+import { STROKE_WIDTH } from "@/types/Edit";
 import { Fragment } from "react";
 interface StokeWidthProps {
   editor: Edit | undefined;

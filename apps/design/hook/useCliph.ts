@@ -1,6 +1,5 @@
 import { useMemoizedFn } from "ahooks";
 import * as fabric from "fabric";
-import { useRef } from "react";
 import toast from "react-hot-toast";
 interface UserClipboard {
   canvas: fabric.Canvas | null;
@@ -17,12 +16,17 @@ export const useClipboard = ({ canvas }: UserClipboard) => {
       value.top = value.top + 10 * (index + 1);
       value.evented = true;
       clipboard.push(value);
-      canvas?.add(value);
-      canvas?.setActiveObject(value);
+      toast.success("复制成功");
     });
-    canvas?.requestRenderAll();
-    toast.success("复制成功");
     // }
   });
-  return { copy };
+  const pasty = () => {
+    if (clipboard.length === 0) return;
+    clipboard.forEach((value) => {
+      canvas?.add(value);
+      canvas?.setActiveObject(value);
+      canvas?.requestRenderAll();
+    });
+  };
+  return { copy, pasty };
 };

@@ -373,6 +373,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
             <Button
               onClick={() => {
                 editor?.copy();
+                editor?.pasty();
               }}
               size="icon"
               variant="ghost"

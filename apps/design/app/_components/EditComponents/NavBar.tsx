@@ -14,15 +14,18 @@ import {
   LuDownload,
   LuFile,
   LuMousePointerClick,
+  LuRedo2,
   LuUndo2,
 } from "react-icons/lu";
 import Logo from "../Comand/Logo";
 import { Tool } from "../../../types/Edit";
+import { Edit } from "@/store/editor";
 interface NavBarProps {
+  editor: Edit | undefined;
   activeTool: Tool;
   onChangeTool: (tool: Tool) => void;
 }
-const NavBar = ({ activeTool, onChangeTool }: NavBarProps) => {
+const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
   return (
     <nav className="w-full text-xl font-medium h-[4rem] bg-white flex items-center px-4 border-b border-gray-200 justify-center  xl:justify-start">
       <Logo></Logo>
@@ -62,12 +65,28 @@ const NavBar = ({ activeTool, onChangeTool }: NavBarProps) => {
         </TooltipComponents>
         <TooltipComponents label="撤销">
           <Button
+            disabled={!editor?.canUndo()}
             variant={"ghost"}
             size={"icon"}
-            onClick={() => {}}
+            onClick={() => {
+              editor?.undo();
+            }}
             className=""
           >
             <LuUndo2 size="20"></LuUndo2>
+          </Button>
+        </TooltipComponents>
+        <TooltipComponents label="重做">
+          <Button
+            disabled={!editor?.canRedo()}
+            variant={"ghost"}
+            size={"icon"}
+            onClick={() => {
+              editor?.redo();
+            }}
+            className=""
+          >
+            <LuRedo2 size="20"></LuRedo2>
           </Button>
         </TooltipComponents>
         <Separator orientation="vertical" className="mx-2 h-[60%]" />

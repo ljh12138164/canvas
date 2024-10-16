@@ -24,7 +24,7 @@ const useCanvas = () => {
       initCanvas.freeDrawingBrush = new fabric.PencilBrush(initCanvas);
       initCanvas.freeDrawingBrush.width = STROKE_WIDTH;
       initCanvas.freeDrawingBrush.color = STROKE_COLOR;
-
+      //画布
       const initRect = new fabric.Rect({
         width: 800,
         height: 1100,
@@ -38,6 +38,7 @@ const useCanvas = () => {
         }),
       });
 
+      //TODO: 欢迎文字
       const rect = new fabric.Rect({
         width: 50,
         height: 50,
