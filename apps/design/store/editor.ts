@@ -1,4 +1,9 @@
-import { createFilter, isText } from "@/lib/utils";
+import {
+  createFilter,
+  downloadImage,
+  isText,
+  transformToTest,
+} from "@/lib/utils";
 import {
   CRICLE_OPTION,
   DIAMOD_HEGHT,
@@ -8,6 +13,7 @@ import {
   FONT_SIZE,
   FONT_WEIGHT,
   FontStyle,
+  JSON_KEY,
   OPACITY,
   RECTANGLE_OPTION,
   STROKE_DASH_ARRAY,
@@ -95,6 +101,11 @@ export interface Edit {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
+  savePng: () => void;
+  saveSvg: () => void;
+  savejpg: () => void;
+  saveJson: () => void;
+  loadFromJson: (json: string) => void;
   pasty: () => void;
   saveAll: (skip?: boolean) => void;
   canRedo: () => boolean;
@@ -209,6 +220,63 @@ export const buildEditor = ({
       //@ts-ignore
       .find((item: fabric.SerializedObjectProps) => item.name === "board") ||
     null;
+  const genertateSaveOption = () => {
+    const { width, height, left, top } = getWorkspace() as fabric.Rect;
+    return {
+      width: width,
+      height: height,
+      left: left,
+      top: top,
+      multiplier: 1,
+    };
+  };
+
+  const savePng = () => {
+    const option = genertateSaveOption();
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const dataUrl = canvas.toDataURL({ ...option, format: "png" });
+    downloadImage(dataUrl, "png");
+    authZoom();
+  };
+  const saveSvg = () => {
+    const option = genertateSaveOption();
+    const newoption = {
+      ...option,
+      width: option.width.toString(),
+      height: option.height.toString(),
+      left: option.left.toString(),
+      top: option.top.toString(),
+    };
+    const dataUrl = canvas.toSVG({ ...newoption });
+    downloadImage(
+      `data:image/svg+xml;charset=utf-8,${encodeURIComponent(dataUrl)}`,
+      "svg"
+    );
+    authZoom();
+  };
+  const savejpg = () => {
+    const option = genertateSaveOption();
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const dataUrl = canvas.toDataURL({ ...option, format: "png" });
+    downloadImage(dataUrl, "jpg");
+    authZoom();
+  };
+  const saveJson = () => {
+    const dataUrl = canvas.toObject(JSON_KEY);
+    transformToTest(dataUrl);
+    const fileString = `data:text/json;charset=utf-8,${encodeURIComponent(
+      JSON.stringify(dataUrl, null, "\t")
+    )}`;
+    downloadImage(fileString, "json");
+    authZoom();
+  };
+
+  const loadFromJson = async (json: string) => {
+    const data = JSON.parse(json);
+    await canvas.loadFromJSON(data);
+    authZoom();
+  };
+
   const center = (object: fabric.Object) => {
     const workspace = getWorkspace();
     //居中
@@ -245,6 +313,11 @@ export const buildEditor = ({
     canvasHeight,
     canvasWidth,
     canvasHistory,
+    savePng,
+    saveSvg,
+    savejpg,
+    saveJson,
+    loadFromJson,
     pasty,
     canRedo,
     canUndo,

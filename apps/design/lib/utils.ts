@@ -3,7 +3,7 @@ import * as fabric from "fabric";
 import { FabricObject } from "fabric";
 import { RGBColor } from "react-color";
 import { twMerge } from "tailwind-merge";
-
+import { nanoid } from "nanoid";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -120,4 +120,26 @@ export function createFilter(value: string) {
       return;
   }
   return effect;
+}
+
+export function downloadImage(file: string, type: string) {
+  const a = document.createElement("a");
+  a.href = file;
+  a.download = `${nanoid()}.${type}`;
+  document.body.appendChild(a);
+  a.click();
+
+  a.remove();
+}
+//@ts-ignore
+type Test = { objects: fabric.Object[] }[];
+export function transformToTest(objects: any) {
+  if (!objects) return;
+  [objects].forEach((item: any) => {
+    if (item?.objects) {
+      transformToTest(item.objects);
+    } else {
+      item.type === "text" && item.type === "textbox";
+    }
+  });
 }
