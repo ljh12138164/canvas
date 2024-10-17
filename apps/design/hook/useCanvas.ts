@@ -49,8 +49,8 @@ const useCanvas = () => {
       initCanvas.add(rect);
       initCanvas.centerObject(initRect);
       initCanvas.centerObject(rect);
-      initCanvas.width = initContainer.offsetWidth;
-      initCanvas.height = initContainer.offsetHeight;
+      initCanvas.setWidth(initContainer.offsetWidth);
+      initCanvas.setHeight(initContainer.offsetHeight);
       //溢出不显示
       initCanvas.clipPath = initRect;
     }

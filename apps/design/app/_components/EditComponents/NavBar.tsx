@@ -20,12 +20,25 @@ import {
 import Logo from "../Comand/Logo";
 import { Tool } from "../../../types/Edit";
 import { Edit } from "@/store/editor";
+import { useFilePicker } from "use-file-picker";
 interface NavBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
   onChangeTool: (tool: Tool) => void;
 }
 const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
+  const { openFilePicker } = useFilePicker({
+    accept: ".json",
+    onFilesSelected: ({ plainFiles }) => {
+      const file = plainFiles[0];
+      const reader = new FileReader();
+      reader.readAsText(file, "UTF-8");
+      reader.onload = () => {
+        const json = reader.result;
+        editor?.loadFromJson(json as string);
+      };
+    },
+  });
   return (
     <nav className="w-full text-xl font-medium h-[4rem] bg-white flex items-center px-4 border-b border-gray-200 justify-center  xl:justify-start">
       <Logo></Logo>
@@ -39,7 +52,9 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="min-w-60 z-[1000]">
             <DropdownMenuItem
-              onClick={() => {}}
+              onClick={() => {
+                openFilePicker();
+              }}
               className="flex items-center gap-2 px-4 "
             >
               <CiFileOn size={30}></CiFileOn>
@@ -106,8 +121,11 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
                 <LuDownload size="18"></LuDownload>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-40">
-              <DropdownMenuItem className="flex items-center gap-2">
+            <DropdownMenuContent align="end" className="min-w-40 z-[1000]">
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => editor?.saveJson()}
+              >
                 <LuFile size={20}></LuFile>
                 <div className="flex flex-col">
                   <p className="text-xs font-bold">JSON</p>
@@ -116,7 +134,10 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
                   </p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => editor?.savePng()}
+              >
                 <LuFile size={20}></LuFile>
                 <div className="flex flex-col">
                   <p className="text-xs font-bold">PNG</p>
@@ -125,7 +146,10 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
                   </p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => editor?.savejpg()}
+              >
                 <LuFile size={20}></LuFile>
                 <div className="flex flex-col">
                   <p className="text-xs font-bold">JPG</p>
@@ -134,7 +158,10 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
                   </p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => editor?.saveSvg()}
+              >
                 <LuFile size={20}></LuFile>
                 <div className="flex flex-col">
                   <p className="text-xs font-bold">SVG</p>

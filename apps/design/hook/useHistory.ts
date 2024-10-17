@@ -10,11 +10,9 @@ const useHistoty = ({ canvas }: HistoryProps) => {
   const canvasHistory = useRef<farbir.FabricObject[]>([]);
   const skipSave = useRef(false);
   const canUndo = useMemoizedFn(() => {
-    console.log(historyIndex, canvasHistory.current.length);
     return historyIndex > 0;
   });
   const canRedo = useMemoizedFn(() => {
-    console.log(historyIndex, canvasHistory.current.length - 1);
     return historyIndex < canvasHistory.current.length - 1;
   });
   const save = useMemoizedFn((skip = false) => {
@@ -57,7 +55,7 @@ const useHistoty = ({ canvas }: HistoryProps) => {
       // 加载上一步的json
       await canvas?.loadFromJSON(nextState);
       canvas?.renderAll();
-      setHitoryIndex((prev) => prev - 1);
+      setHitoryIndex((prev) => prev + 1);
       skipSave.current = false;
     }
   });

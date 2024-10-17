@@ -28,8 +28,13 @@ const useKeyBoard = ({
       canvas?.remove(...canvas.getActiveObjects());
       canvas?.discardActiveObject();
     }
+    if (e.key === "Delete") {
+      canvas?.remove(...canvas.getActiveObjects());
+      canvas?.discardActiveObject();
+    }
     if (isCtrl) {
       e.preventDefault();
+
       if (e.key === "z") {
         undo();
       }
@@ -44,6 +49,19 @@ const useKeyBoard = ({
       }
       if (e.key === "v") {
         pasty();
+      }
+      if (e.key === "a") {
+        e.preventDefault();
+        canvas?.discardActiveObject();
+        const allObject = canvas
+          ?.getObjects()
+          //@ts-ignore
+          .filter((item) => item.name !== "board");
+
+        canvas?.setActiveObject(
+          new fabric.ActiveSelection(allObject, { canvas })
+        );
+        canvas?.renderAll();
       }
     }
   });
