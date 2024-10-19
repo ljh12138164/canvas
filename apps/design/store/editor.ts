@@ -230,14 +230,7 @@ export const buildEditor = ({
       multiplier: 1,
     };
   };
-
-  const savePng = () => {
-    const option = genertateSaveOption();
-    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-    const dataUrl = canvas.toDataURL({ ...option, format: "png" });
-    downloadImage(dataUrl, "png");
-    authZoom();
-  };
+  // 保存svg
   const saveSvg = () => {
     const option = genertateSaveOption();
     const newoption = {
@@ -247,13 +240,59 @@ export const buildEditor = ({
       left: option.left.toString(),
       top: option.top.toString(),
     };
-    const dataUrl = canvas.toSVG({ ...newoption });
-    downloadImage(
-      `data:image/svg+xml;charset=utf-8,${encodeURIComponent(dataUrl)}`,
-      "svg"
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+
+    // 将画布中的图片转换为内联数据URL
+    canvas.getObjects().forEach((obj) => {
+      if (obj.type === "image" && obj.get("src")) {
+        const originalSrc = obj.get("src");
+        const img = new Image();
+        img.src = originalSrc;
+        const canvas = document.createElement("canvas");
+        canvas.width = obj.width;
+        canvas.height = obj.height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, obj.width, obj.height);
+        const dataURL = canvas.toDataURL("image/png");
+        obj?.set("src", dataURL);
+      }
+    });
+
+    const dataUrl = canvas.toSVG({
+      ...newoption,
+      viewBox: {
+        x: Number(newoption.left),
+        y: Number(newoption.top),
+        width: Number(newoption.width),
+        height: Number(newoption.height),
+      },
+      encoding: "UTF-8",
+      suppressPreamble: false,
+    });
+
+    // 替换可能导致错误的字符
+    const cleanedSvg = dataUrl.replace(
+      /&(?!amp;|lt;|gt;|quot;|#39;)/g,
+      "&amp;"
     );
+
+    const svgBlob = new Blob([cleanedSvg], {
+      type: "image/svg+xml;charset=utf-8",
+    });
+    const svgUrl = URL.createObjectURL(svgBlob);
+    downloadImage(svgUrl, "svg");
+    URL.revokeObjectURL(svgUrl);
     authZoom();
   };
+
+  const savePng = () => {
+    const option = genertateSaveOption();
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const dataUrl = canvas.toDataURL({ ...option, format: "png" });
+    downloadImage(dataUrl, "png");
+    authZoom();
+  };
+
   const savejpg = () => {
     const option = genertateSaveOption();
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
