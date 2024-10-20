@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { auth } from "@/auth";
+import { protectServer } from "@/lib/utils";
 
 export default async function Home() {
-  const session = await auth();
-  console.log(session);
+  await protectServer();
   return (
     <div className="h-[100dvh] flex items-center justify-center">
-      <Link href={"/Edit"}>{JSON.stringify(session)}</Link>
+      <Link href={"/Edit"}>成功登录</Link>
     </div>
   );
 }

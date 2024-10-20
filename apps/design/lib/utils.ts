@@ -4,6 +4,9 @@ import { FabricObject } from "fabric";
 import { RGBColor } from "react-color";
 import { twMerge } from "tailwind-merge";
 import { nanoid } from "nanoid";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -137,7 +140,18 @@ export function transformToTest(objects: any) {
     if (item?.objects) {
       transformToTest(item.objects);
     } else {
+      //@ts-ignore
       item.type === "text" && item.type === "textbox";
     }
   });
+}
+/*
+ *
+ * 检查是否登录
+ */
+export async function protectServer() {
+  const session = await auth();
+  if (!session) {
+    redirect("/sign-in");
+  }
 }

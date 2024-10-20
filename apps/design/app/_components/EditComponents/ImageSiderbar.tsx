@@ -4,6 +4,8 @@ import { IMAGE_BLUSK, Tool } from "@/types/Edit";
 import { useImageQuery } from "@/api/Image/useQuery";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { uploadImageclound } from "@/lib/api/image";
+import { Edit } from "@/store/editor";
+import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -11,17 +13,19 @@ import toast from "react-hot-toast";
 import { LuAlertTriangle, LuLoader } from "react-icons/lu";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
-import { Edit } from "@/store/editor";
+export type SessionSupabase = Session & { supabaseAccessToken: string };
 
 interface ImageSiderbarProps {
   editor: Edit | undefined;
   activeTool: Tool;
   onChangeActive: (tool: Tool) => void;
+  session: SessionSupabase;
 }
 const ImageSiderbar = ({
   activeTool,
   onChangeActive,
   editor,
+  session,
 }: ImageSiderbarProps) => {
   const { getImageLoading, imageData, getImageError } = useImageQuery();
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -31,16 +35,18 @@ const ImageSiderbar = ({
     toast.loading("上传图片中...");
     try {
       if (e.target.files?.[0]) {
-        const url = await uploadImageclound(e.target.files?.[0]);
+        const url = await uploadImageclound({
+          file: e.target.files?.[0],
+          session,
+        });
         toast.dismiss();
         if (editor) {
           editor.addImage(IMAGE_BLUSK + url);
         }
       }
-    } catch (error) {
+    } catch (_) {
+      console.error(_);
       toast.dismiss();
-      console.log(error.message);
-      console.error(error);
       toast.error("上传失败");
     } finally {
       setUploadImage(false);
