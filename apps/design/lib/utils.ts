@@ -128,11 +128,9 @@ export function downloadImage(file: string, type: string) {
   a.download = `${nanoid()}.${type}`;
   document.body.appendChild(a);
   a.click();
-
   a.remove();
 }
 //@ts-ignore
-type Test = { objects: fabric.Object[] }[];
 export function transformToTest(objects: any) {
   if (!objects) return;
   [objects].forEach((item: any) => {
