@@ -11,8 +11,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   adapter: SupabaseAdapter({
-    url: process.env.SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    url: "https://osdawghfaoyysblfsexp.supabase.co",
+    secret: process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
   }),
   callbacks: {
     async session({ session, user }) {

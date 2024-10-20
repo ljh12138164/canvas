@@ -39,6 +39,7 @@ const ImageSiderbar = ({
       }
     } catch (error) {
       toast.dismiss();
+      console.log(error.message);
       console.error(error);
       toast.error("上传失败");
     } finally {
