@@ -13,3 +13,5 @@ export const supabaseClient = async (session: SessionSupabase) => {
   });
   return supabase;
 };
+
+export const supabase = createClient(supabaseUrl, supabaseKey!);
