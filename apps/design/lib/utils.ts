@@ -151,7 +151,9 @@ export function transformToTest(objects: any) {
  */
 export async function protectServer() {
   const session = await auth();
+  console.log(session);
   if (!session) {
     redirect("/sign-in");
   }
+  return session;
 }
