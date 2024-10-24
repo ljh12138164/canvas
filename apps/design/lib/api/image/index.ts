@@ -1,13 +1,8 @@
-import { auth } from "@/auth";
 import { supabase } from "@/database/supbash";
-import { Session } from "next-auth";
 /**
  * @description 检查session
  * @returns supabaseClient
  */
-export const checkSession = async (): Promise<Session | null> => {
-  return await auth();
-};
 
 /**
  * @description 上传图片到云端
@@ -33,7 +28,7 @@ export const uploadImageclound = async ({ file }: UploadImageClound) => {
  * @param image 图片路径
  * @returns 图片路径
  */
-interface DeleteImageClound extends Session {
+interface DeleteImageClound {
   image: string;
 }
 export const deleteImageClound = async ({ image }: DeleteImageClound) => {
