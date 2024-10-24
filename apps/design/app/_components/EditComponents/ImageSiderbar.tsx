@@ -19,13 +19,11 @@ interface ImageSiderbarProps {
   editor: Edit | undefined;
   activeTool: Tool;
   onChangeActive: (tool: Tool) => void;
-  session: SessionSupabase;
 }
 const ImageSiderbar = ({
   activeTool,
   onChangeActive,
   editor,
-  session,
 }: ImageSiderbarProps) => {
   const { getImageLoading, imageData, getImageError } = useImageQuery();
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -37,7 +35,6 @@ const ImageSiderbar = ({
       if (e.target.files?.[0]) {
         const url = await uploadImageclound({
           file: e.target.files?.[0],
-          session,
         });
         toast.dismiss();
         if (editor) {

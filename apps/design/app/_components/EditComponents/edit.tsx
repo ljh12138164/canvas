@@ -41,7 +41,7 @@ import { useWindowEvent } from "@/hook/useWindowEvent";
 import { Session } from "next-auth";
 export type SessionSupabase = Session & { supabaseAccessToken: string };
 
-export default function Home({ session }: { session: SessionSupabase }) {
+export default function Home() {
   const { init } = useCanvas();
   const [tool, setTool] = useState<Tool>(Tool.Layout);
   //实例对象
@@ -258,7 +258,6 @@ export default function Home({ session }: { session: SessionSupabase }) {
           onChangeActive={onChangeActive}
         ></TextSidebar>
         <ImageSiderbar
-          session={session}
           editor={editor}
           activeTool={tool}
           onChangeActive={onChangeActive}

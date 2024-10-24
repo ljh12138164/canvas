@@ -6,7 +6,11 @@ import { twMerge } from "tailwind-merge";
 import { nanoid } from "nanoid";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { hashSync } from "bcryptjs";
 
+export function hashPassword(password: string) {
+  return hashSync(password, 10);
+}
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -151,7 +155,6 @@ export function transformToTest(objects: any) {
  */
 export async function protectServer() {
   const session = await auth();
-  console.log(session);
   if (!session) {
     redirect("/sign-in");
   }
