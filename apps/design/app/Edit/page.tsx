@@ -1,8 +1,7 @@
-import { protectServer } from "@/lib/utils";
 import Edit from "@/app/_components/EditComponents/edit";
-import { SessionSupabase } from "@/database/supbash";
+import { checkSession } from "@/lib/api/image";
 export default async function Home() {
-  const session = (await protectServer()) as SessionSupabase;
+  const session = await checkSession();
   console.log(session);
-  return <Edit session={session} />;
+  return <Edit />;
 }

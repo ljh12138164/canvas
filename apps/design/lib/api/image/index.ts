@@ -1,31 +1,23 @@
 import { auth } from "@/auth";
-import { SessionSupabase, supabaseClient } from "@/database/supbash";
+import { supabase } from "@/database/supbash";
+import { Session } from "next-auth";
 /**
  * @description 检查session
  * @returns supabaseClient
  */
-export const checkSession = async (): Promise<SessionSupabase | null> => {
-  return (await auth()) as SessionSupabase | null;
+export const checkSession = async (): Promise<Session | null> => {
+  return await auth();
 };
-interface Session {
-  session: SessionSupabase | null;
-}
+
 /**
  * @description 上传图片到云端
  * @param file 文件
  * @returns 图片路径
  */
-interface UploadImageClound extends Session {
+interface UploadImageClound {
   file: File;
 }
-export const uploadImageclound = async ({
-  file,
-  session,
-}: UploadImageClound) => {
-  if (!session) {
-    throw new Error("未登录");
-  }
-  const supabase = await supabaseClient(session);
+export const uploadImageclound = async ({ file }: UploadImageClound) => {
   const fileName = `${Math.random()}-${file.name}`.replace("/", "");
   const { data, error } = await supabase.storage
     .from("UPLOAD_IMG")
@@ -44,17 +36,7 @@ export const uploadImageclound = async ({
 interface DeleteImageClound extends Session {
   image: string;
 }
-export const deleteImageClound = async ({
-  image,
-  session,
-}: DeleteImageClound) => {
-  if (!session) {
-    throw new Error("未登录");
-  }
-  const supabase = await supabaseClient(session);
-  if (!supabase) {
-    throw new Error("未登录");
-  }
+export const deleteImageClound = async ({ image }: DeleteImageClound) => {
   const { data, error } = await supabase.storage
     .from("UPLOAD_IMG")
     .remove([image]);
