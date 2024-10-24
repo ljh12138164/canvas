@@ -1,7 +1,6 @@
+import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
-import { zValidator } from "@hono/zod-validator";
-import { createUsersTable } from "@/lib/api/sign";
 //模范请求
 const user = new Hono().post(
   "/",
@@ -16,11 +15,7 @@ const user = new Hono().post(
   async (c) => {
     const { name, email, password } = c.req.valid("json");
     // 创建用户
-    const user = await createUsersTable({
-      name,
-      email,
-      password,
-    });
+    const user = {};
     return c.json(user, 200);
   }
 );
