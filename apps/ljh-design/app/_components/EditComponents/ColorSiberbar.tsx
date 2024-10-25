@@ -184,7 +184,7 @@ const ColorSoiberbar = ({
             </section>
           )}
           {onShow() === Tool.Draw && (
-            <>
+            <section>
               <div className=" pb-6  pt-2 w-full flex mb-2   justify-center gap-4 flex-col">
                 <p>
                   画笔粗细<span>({editor?.drawWidth || 1}px)</span>
@@ -196,7 +196,7 @@ const ColorSoiberbar = ({
                   max={20}
                   value={[editor?.drawWidth || 1]}
                   onValueChange={(value) => {
-                    editor?.setDrewWidth(value[0]);
+                    editor?.setDrewWidths(value[0]);
                   }}
                 ></Slider>
               </div>
@@ -204,11 +204,12 @@ const ColorSoiberbar = ({
               <ColorPicker
                 value={editor?.drewColor || STROKE_COLOR}
                 onChange={(color) => {
-                  editor?.setDrewColor(color);
+                  editor?.setDrewColors(color);
                 }}
+                noshow={true}
                 key={Tool.Draw}
               ></ColorPicker>
-            </>
+            </section>
           )}
           {onShow() === Tool.Settings && (
             <form className="flex flex-col gap-2">

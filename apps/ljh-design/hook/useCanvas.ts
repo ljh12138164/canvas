@@ -39,16 +39,25 @@ const useCanvas = () => {
       });
 
       //TODO: 欢迎文字
+      const welcomeText = new fabric.Text("欢迎使用", {
+        fill: "black",
+        fontFamily: "Arial",
+        fontSize: 60,
+        name: "welcome",
+      });
       const rect = new fabric.Rect({
         width: 50,
         height: 50,
         name: "rect",
         fill: "black",
       });
+
       initCanvas.add(initRect);
       initCanvas.add(rect);
+      initCanvas.add(welcomeText);
       initCanvas.centerObject(initRect);
       initCanvas.centerObject(rect);
+      initCanvas.centerObject(welcomeText);
       initCanvas.setWidth(initContainer.offsetWidth);
       initCanvas.setHeight(initContainer.offsetHeight);
       //溢出不显示
