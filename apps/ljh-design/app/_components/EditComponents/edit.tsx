@@ -245,16 +245,16 @@ export default function Home() {
           acitiveTool={tool}
           onChangeActiveTool={onChangeActive}
         ></SiderBar>
-        <ShapeSidle
-          editor={editor}
-          activeTool={tool}
-          onChangeActive={onChangeActive}
-        ></ShapeSidle>
         <TextSidebar
           editor={editor}
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></TextSidebar>
+        <ShapeSidle
+          editor={editor}
+          activeTool={tool}
+          onChangeActive={onChangeActive}
+        ></ShapeSidle>
         <ImageSiderbar
           editor={editor}
           activeTool={tool}

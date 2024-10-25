@@ -25,6 +25,10 @@ import * as fabric from "fabric";
 import toast from "react-hot-toast";
 export type FontWeightType = "normal" | "bold";
 //输入
+
+export interface InitFabicObject extends fabric.FabricObject {
+  name: string;
+}
 interface buildEditorProps {
   canvas: fabric.Canvas;
   fillColor: string;
@@ -117,12 +121,12 @@ export interface Edit {
   zoomOut: () => void;
   authZoom: () => Promise<void>;
   setCanvasColor: (color: string) => void;
-  getWorkspace: () => fabric.FabricObject | null;
+  getWorkspace: () => InitFabicObject;
   changeSize: (size: { width: number; height: number }) => Promise<void>;
   changeBackground: (color: string) => void;
-  setDrewWidth: (width: number) => void;
+  setDrewWidths: (width: number) => void;
   copy: () => void;
-  setDrewColor: (color: string) => void;
+  setDrewColors: (color: string) => void;
   disableDraw: () => void;
   enableDraw: () => void;
   getActiveFilter: () => string;
@@ -217,9 +221,11 @@ export const buildEditor = ({
   const getWorkspace = () =>
     canvas
       .getObjects()
-      //@ts-ignore
-      .find((item: fabric.SerializedObjectProps) => item.name === "board") ||
-    null;
+      .find(
+        (item: InitFabicObject | fabric.FabricObject) =>
+          (item as InitFabicObject).name === "board"
+      );
+
   const genertateSaveOption = () => {
     const { width, height, left, top } = getWorkspace() as fabric.Rect;
     return {
@@ -378,7 +384,7 @@ export const buildEditor = ({
       //防止过小
       canvas.zoomToPoint(center, zoomRatio < 0.2 ? 0.2 : zoomRatio);
     },
-    getWorkspace: () => getWorkspace(),
+    getWorkspace: () => getWorkspace() as InitFabicObject,
     changeSize: async (size: { width: number; height: number }) => {
       const workspace = getWorkspace();
       if (workspace) {
@@ -411,13 +417,13 @@ export const buildEditor = ({
         canvas.freeDrawingBrush.color = strokeColor;
       }
     },
-    setDrewColor: (color: string) => {
+    setDrewColors: (color: string) => {
       if (canvas.freeDrawingBrush?.color) {
-        setDrewColor(color);
         canvas.freeDrawingBrush.color = color;
+        setDrewColor(color);
       }
     },
-    setDrewWidth: (width: number) => {
+    setDrewWidths: (width: number) => {
       if (canvas.freeDrawingBrush?.color) {
         setDrawWidth(width);
         canvas.freeDrawingBrush.width = width;
@@ -437,9 +443,6 @@ export const buildEditor = ({
           value = "sharpen";
         else value = "emboss";
       }
-
-      setImageFilter(value);
-
       return value || "none";
     },
     changeImageFilter: (filter: string) => {
@@ -477,7 +480,6 @@ export const buildEditor = ({
     getActiveFontSize: () => {
       const value =
         canvas?.getActiveObjects()?.[0]?.get("fontSize") || FONT_SIZE;
-      setFontAlign(value);
       return value;
     },
     changeFontSize: (value: number) => {
@@ -502,19 +504,16 @@ export const buildEditor = ({
     },
     getActiveFontAlign: () => {
       const value = canvas?.getActiveObjects()?.[0]?.get("textAlign") || "left";
-      setFontAlign(value);
       return value;
     },
     //
     getActiveFontItalic: () => {
       const value =
         canvas?.getActiveObjects()?.[0]?.get("fontStyle") || "normal";
-      setFontItalics(value);
       return value;
     },
     getActiveFontUnderline: () => {
       const value = canvas?.getActiveObjects()?.[0]?.get("underline") || false;
-      setFontUnderline(value);
       return value;
     },
     changeFontItalic: (value: FontStyle) => {
@@ -567,13 +566,11 @@ export const buildEditor = ({
     getActiveFontLineThrough: () => {
       const value =
         canvas?.getActiveObjects()?.[0]?.get("linethrough") || false;
-      setFontThickness(value);
       return value;
     },
     getActiveStrokeWeight: () => {
       const value =
         canvas?.getActiveObjects()?.[0]?.get("fontWeight") || FONT_WEIGHT;
-      setFontWeight(value as FontWeightType);
       return value;
     },
     getActiveFontFamily: () => {
@@ -585,9 +582,7 @@ export const buildEditor = ({
         ...options,
         fill: fillColor,
       });
-      canvas.add(textObj);
-      center(textObj);
-      canvas.add(textObj);
+      addToCanvas(textObj);
       canvas.setActiveObject(textObj);
     },
     changeOpacty: (opacity: number) => {

@@ -13,7 +13,7 @@ import {
   FaTrash,
   FaUnderline,
 } from "react-icons/fa6";
-import { LuArrowDown, LuArrowUp, LuChevronDown, LuCopy } from "react-icons/lu";
+import { LuArrowDown, LuArrowUp, LuCopy } from "react-icons/lu";
 import { TbColorFilter } from "react-icons/tb";
 import FontSizeInput from "./FontSizeInput";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -108,7 +108,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
               </Button>
             </TooltipComponents>
           )}
-          {textYype && (
+          {/* {textYype && (
             <TooltipComponents
               label="字体"
               side="bottom"
@@ -132,7 +132,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 <LuChevronDown className="size-4"></LuChevronDown>
               </Button>
             </TooltipComponents>
-          )}
+          )} */}
           {textYype && (
             <TooltipComponents
               label="删除线"
@@ -142,9 +142,8 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
             >
               <Button
                 onClick={() => {
-                  editor?.changeFontLineThrough(
-                    !editor.getActiveFontLineThrough()
-                  );
+                  const value = !editor.getActiveFontLineThrough();
+                  editor?.changeFontLineThrough(value);
                 }}
                 size="icon"
                 variant="ghost"
@@ -159,7 +158,6 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
               </Button>
             </TooltipComponents>
           )}
-          {/* // */}
           {textYype && (
             <TooltipComponents
               label="下划线"
@@ -169,7 +167,8 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
             >
               <Button
                 onClick={() => {
-                  editor?.changeFontUnderline(!editor.getActiveFontUnderline());
+                  const value = !editor?.getActiveFontUnderline();
+                  editor?.changeFontUnderline(value);
                 }}
                 size="icon"
                 variant="ghost"
@@ -193,10 +192,11 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
             >
               <Button
                 onClick={() => {
-                  console.log(editor.getActiveFontItalic());
-                  if (editor.getActiveFontItalic() === "normal")
-                    editor?.changeFontItalic("italic");
-                  else editor?.changeFontItalic("normal");
+                  const value =
+                    editor?.getActiveFontItalic() === "normal"
+                      ? "italic"
+                      : "normal";
+                  editor?.changeFontItalic(value);
                 }}
                 size="icon"
                 variant="ghost"
@@ -223,7 +223,6 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 variant="ghost"
                 onClick={() => {
                   const activefontWeight = editor?.getActiveStrokeWeight();
-                  console.log(activefontWeight);
                   if (activefontWeight === "normal")
                     editor?.changeFontWeight("bold");
                   if (activefontWeight === "bold") {
@@ -236,7 +235,6 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
               </Button>
             </TooltipComponents>
           )}
-          {/*  */}
           {textYype && (
             <TooltipComponents
               label="水平向左"
@@ -295,6 +293,11 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
               </Button>
             </TooltipComponents>
           )}
+          {textYype && (
+            <div className="flex item-center  h-full justify-center">
+              <FontSizeInput editor={editor}></FontSizeInput>
+            </div>
+          )}
           {isImage && (
             <TooltipComponents
               label="过滤器"
@@ -313,11 +316,6 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 <TbColorFilter className="size-4"></TbColorFilter>
               </Button>
             </TooltipComponents>
-          )}
-          {textYype && (
-            <div className="flex item-center  h-full justify-center">
-              <FontSizeInput editor={editor}></FontSizeInput>
-            </div>
           )}
         </section>
         <section className="flex items-center gap-2 ml-auto">

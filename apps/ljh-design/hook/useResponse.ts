@@ -1,3 +1,4 @@
+import { InitFabicObject } from "@/store/editor";
 import * as fabric from "fabric";
 import { useCallback, useEffect } from "react";
 interface ResponseProps {
@@ -24,8 +25,7 @@ const useResponse = ({ canvas, contain }: ResponseProps) => {
     //画布对象
     const localWorkspace = canvas
       .getObjects()
-      //@ts-ignore
-      .find((item: fabric.SerializedObjectProps) => item.name === "board");
+      .find((item) => (item as InitFabicObject).name === "board");
     // 缩放
 
     if (!localWorkspace) return;
