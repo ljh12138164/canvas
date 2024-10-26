@@ -5,7 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "dev:design": "turbo --filter=design dev",
-    "dev:jebi": "turbo --filter=jebi dev",
+    "dev:jebet": "turbo --filter=jebet dev",
     "dev:sf": "turbo --filter=sf dev",
     "dev:threes": "turbo --filter=threes dev",
     "lint": "turbo lint",
