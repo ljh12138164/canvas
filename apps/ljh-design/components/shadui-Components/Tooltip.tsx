@@ -21,8 +21,11 @@ const TooltipComponents = ({
   alignOffset,
 }: TooltipProps) => {
   return (
+    // @ts-ignore
     <TooltipProvider>
+      {/* @ts-ignore */}
       <Tooltip delayDuration={100}>
+        {/* @ts-ignore */}
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent
           className="text-white bg-slate-800 border-slate-800 z-[1000]"

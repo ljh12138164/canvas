@@ -4,16 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useSignUp } from "@/lib/react-query/useSignUp";
+import { jwtEncode } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { hashSync } from "bcryptjs";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
-import * as jose from "jose";
 import { z } from "zod";
-import { User } from "@supabase/supabase-js";
-import { jwtEncode } from "@/lib/utils";
 const schema = z.object({
   accoute: z.string().min(5, {
     message: "账号长度至少为5位",

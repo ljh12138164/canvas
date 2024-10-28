@@ -1,6 +1,6 @@
 import Edit from "@/app/_components/EditComponents/edit";
 import { Toaster } from "react-hot-toast";
-import { Providers } from "../_provide/providers";
+import { Providers } from "@/app/_provide/providers";
 export default async function Home() {
   return (
     <section className="h-[100dvh] overflow-hidden">

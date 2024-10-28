@@ -1,4 +1,4 @@
-import { client } from "@/lib/api/hono";
+import { client } from "@/api/hono";
 import { useQuery } from "@tanstack/react-query";
 
 export const useImageQuery = () => {

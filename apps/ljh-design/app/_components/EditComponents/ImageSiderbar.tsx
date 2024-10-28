@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Tool } from "@/types/Edit";
-import { useImageQuery } from "@/api/Image/useQuery";
+import { useImageQuery } from "@/api/useQuery/useQuery";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Edit } from "@/store/editor";
 import Image from "next/image";

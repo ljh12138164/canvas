@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Providers } from "../_provide/providers";
+import { Providers } from "@/app/_provide/providers";
+import type { ReactNode } from "react";
 export const metadata: Metadata = {
   title: "编辑器",
   description: "编辑器",
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="cn">
