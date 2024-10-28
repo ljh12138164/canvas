@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Providers } from "../_provide/providers";
 export const metadata: Metadata = {
   title: "编辑器",
   description: "编辑器",
@@ -11,7 +12,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="cn">
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
