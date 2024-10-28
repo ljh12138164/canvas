@@ -3,15 +3,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { useSignUp } from "@/lib/react-query/useSignUp";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { hashSync } from "bcryptjs";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
+import * as jose from "jose";
 import { z } from "zod";
+import { User } from "@supabase/supabase-js";
+import { jwtEncode } from "@/lib/utils";
 const schema = z.object({
-  email: z.string().email({ message: "请输入正确的电子邮件地址" }),
-  password: z.string().min(3, { message: "密码长度至少为3位" }).max(20, {
-    message: "密码长度最多为20位",
+  accoute: z.string().min(5, {
+    message: "账号长度至少为5位",
+  }),
+  password: z.string().min(6, { message: "密码长度至少为6位" }).max(16, {
+    message: "密码长度最多为16位",
   }),
   name: z.string().min(2, { message: "用户名长度至少为2位" }).optional(),
 });
@@ -19,19 +27,54 @@ const schema = z.object({
 const SignIn = () => {
   const [login, setLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const { signUpMutate, signUpPending } = useSignUp();
+  useEffect(() => {}, []);
+  const { register, handleSubmit, formState } = useForm<z.infer<typeof schema>>(
+    {
+      resolver: zodResolver(schema),
+      defaultValues: {
+        name: "",
+        accoute: "",
+        password: "",
+      },
+    }
+  );
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    if (login) {
+      console.log(login);
+    } else {
+      data.password = hashSync(data.password, 10);
+      if (data.name)
+        signUpMutate(
+          data as {
+            accoute: string;
+            password: string;
+            name: string;
+          },
+          {
+            onSuccess: async (user) => {
+              toast.success("注册成功");
 
-  const { register, handleSubmit, formState, setError } = useForm<
-    z.infer<typeof schema>
-  >({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-  });
-  const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log(data);
+              // 创建 JWT
+              const token = await jwtEncode({
+                //@ts-ignore
+                id: user?.id as string,
+                //@ts-ignore
+                name: user?.name as string,
+                //@ts-ignore
+                account: user?.account as string,
+              });
+
+              // 将 token 存储在本地存储中
+              localStorage.setItem("token", token);
+            },
+            onError: (err) => {
+              console.error(err);
+              toast.error("注册失败");
+            },
+          }
+        );
+    }
   };
   return (
     <Card className="w-full h-full p-8">
@@ -60,13 +103,13 @@ const SignIn = () => {
             </div>
             <div>
               <Input
-                {...register("email")}
-                placeholder="电子邮件"
-                className={`${formState.errors.email && "border-red-500"}`}
+                {...register("accoute")}
+                placeholder="账户"
+                className={`${formState.errors.accoute && "border-red-500"}`}
               />
-              {formState.errors.email && (
+              {formState.errors?.accoute && (
                 <span className="text-red-500 text-sm">
-                  {formState.errors.email.message}
+                  {formState.errors?.accoute.message}
                 </span>
               )}
             </div>
@@ -98,8 +141,14 @@ const SignIn = () => {
                 </span>
               )}
             </div>
-            <Button type="submit" className="w-full mt-2.5">
-              {login ? "登录" : "注册"}
+            <Button
+              type="submit"
+              className="w-full mt-2.5"
+              disabled={signUpPending}
+            >
+              {login
+                ? `登录${signUpPending ? "中..." : ""}`
+                : `注册${signUpPending ? "中..." : ""}`}
             </Button>
           </form>
           <Separator className="mt-6" />

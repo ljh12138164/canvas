@@ -15,6 +15,7 @@ export const useSignUp = () => {
   } = useMutation<ResonseType, Error, RequestTtpe>({
     mutationFn: async (json) => {
       const res = await client.api.user.$post({ json });
+      if (res.status === 400) throw new Error(JSON.stringify(res.json()));
       return res.json();
     },
   });

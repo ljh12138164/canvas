@@ -9,16 +9,21 @@ const user = new Hono().post(
     "json",
     z.object({
       name: z.string(),
-      email: z.string().email(),
+      accoute: z.string().min(5),
       password: z.string(),
     })
   ),
   async (c) => {
-    const { name, email, password } = c.req.valid("json");
-    createUser({ name, account: email, password });
-    // 创建用户
-    const user = {};
-    return c.json(user, 200);
+    try {
+      const { name, accoute, password } = c.req.valid("json");
+      const user = await createUser({ name, account: accoute, password });
+      if (!user) throw new Error("注册失败");
+
+      return c.json(user, 200);
+    } catch (error) {
+      console.error(error);
+      return c.json({ message: "注册失败" }, 400);
+    }
   }
 );
 

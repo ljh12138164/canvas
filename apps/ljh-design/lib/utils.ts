@@ -2,9 +2,9 @@ import { clsx, type ClassValue } from "clsx";
 import * as fabric from "fabric";
 import { FabricObject } from "fabric";
 import { RGBColor } from "react-color";
+import * as jose from "jose";
 import { twMerge } from "tailwind-merge";
 import { nanoid } from "nanoid";
-import { redirect } from "next/navigation";
 import { hashSync } from "bcryptjs";
 
 export function hashPassword(password: string) {
@@ -142,9 +142,17 @@ export function transformToTest(objects: any) {
   [objects].forEach((item: any) => {
     if (item?.objects) {
       transformToTest(item.objects);
-    } else {
-      //@ts-ignore
-      item.type === "text" && item.type === "textbox";
     }
   });
+}
+
+export async function jwtEncode(payload: any) {
+  const JWT_SECRET = new TextEncoder().encode(
+    process.env.NEXT_PUBLIC_JWT_SECRET!
+  );
+  const token = await new jose.SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("30d")
+    .sign(JWT_SECRET);
+  return token;
 }

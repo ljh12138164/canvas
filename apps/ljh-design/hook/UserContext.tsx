@@ -1,24 +1,27 @@
-import { User } from "@/types/user";
-import { createContext, useContext, useEffect, useState } from "react";
-import jwt from "jsonwebtoken";
+import { User } from "@supabase/supabase-js";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { getCurrentUser } from "@/lib/api/sign";
+import { redirect } from "next/navigation";
 
 const UserContexts = createContext<User | null>(null);
-export const UserContext = ({ children }: { children: React.ReactNode }) => {
+export const UserContext = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
-    const user = localStorage.getItem("ljh-design-user");
-    if (user) {
-      const decoded = jwt.verify(
-        JSON.parse(user),
-        process.env.NEXT_PUBLIC_JWT_SECRET!
-      );
-      if (decoded) {
-        setUser(decoded as User);
+    async function getUser() {
+      const user = await getCurrentUser();
+      // setUser(user);
+      if (user && window.location.pathname === "/sign-in") {
+        redirect("/");
       }
-    } else {
-      // redirect("/sign-in");
     }
-  }, []);
+    getUser();
+  }, [user]);
   return <UserContexts.Provider value={user}>{children}</UserContexts.Provider>;
 };
 
