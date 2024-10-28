@@ -1,4 +1,4 @@
-import { createUser } from "@/lib/api/sign";
+import { createUser } from "@/api/supabase/sign";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";

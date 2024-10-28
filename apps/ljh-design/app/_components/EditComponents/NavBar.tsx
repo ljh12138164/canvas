@@ -43,7 +43,9 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
     <nav className="w-full text-xl font-medium h-[4rem] bg-white flex items-center px-4 border-b border-gray-200 justify-center  xl:justify-start">
       <Logo></Logo>
       <div className="ml-4 w-full flex gap-4 h-[4rem] items-center ">
+        {/* @ts-ignore */}
         <DropdownMenu modal={false}>
+          {/* @ts-ignore */}
           <DropdownMenuTrigger asChild>
             <Button size="sm" variant="ghost" className="font-bold text-xl">
               文件
@@ -110,7 +112,9 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
           <div className="text-xs text-muted-foreground">保存成功</div>
         </div>
         <div className="ml-auto flex items-center gap-x-4">
+          {/* @ts-ignore */}
           <DropdownMenu modal={false}>
+            {/* @ts-ignore */}
             <DropdownMenuTrigger asChild>
               <Button
                 variant={"ghost"}

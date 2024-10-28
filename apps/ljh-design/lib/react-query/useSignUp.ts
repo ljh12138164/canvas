@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { client } from "../api/hono";
+import { client } from "../../api/hono";
 import { InferRequestType, InferResponseType } from "hono";
 
 //请求 响应类型

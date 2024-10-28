@@ -3,14 +3,13 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Edit } from "@/store/editor";
 import { STROKE_WIDTH } from "@/types/Edit";
-import { Fragment } from "react";
 interface StokeWidthProps {
   editor: Edit | undefined;
 }
 const StokeWidth = ({ editor }: StokeWidthProps) => {
   const stokeWidth = editor?.getActiveStrokeWidth() ?? STROKE_WIDTH;
   return (
-    <Fragment>
+    <>
       <Label className="text-sm">边框宽度</Label>
       <Slider
         value={[stokeWidth]}
@@ -40,7 +39,7 @@ const StokeWidth = ({ editor }: StokeWidthProps) => {
           <div className="w-full border-black rounded-full border-4 border-dashed"></div>
         </Button>
       </section>
-    </Fragment>
+    </>
   );
 };
 

@@ -5,7 +5,7 @@ export default async function Home() {
   return (
     <Providers>
       <div className="h-[100dvh] flex items-center justify-center">
-        <Link href={"/board/Edit"}>成功登录</Link>
+        <Link href={"/Edit"}>成功登录</Link>
       </div>
     </Providers>
   );
