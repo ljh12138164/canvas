@@ -136,7 +136,6 @@ export function downloadImage(file: string, type: string) {
   a.click();
   a.remove();
 }
-//@ts-ignore
 export function transformToTest(objects: any) {
   if (!objects) return;
   [objects].forEach((item: any) => {
