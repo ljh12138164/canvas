@@ -1,11 +1,15 @@
-import Link from "next/link";
 import { Providers } from "@/app/_provide/providers";
+import SiderBar from "../_components/Board/SiderBar";
+import NavBar from "../_components/Board/Navbar";
 
 export default async function Home() {
   return (
     <Providers>
-      <div className="h-[100dvh] flex items-center justify-center">
-        <Link href={"/Edit"}>成功登录</Link>
+      <div className="bg-muted h-full">
+        <SiderBar />
+        <div className="lg:pl-[300px] flex flex-col h-full">
+          <NavBar />
+        </div>
       </div>
     </Providers>
   );
