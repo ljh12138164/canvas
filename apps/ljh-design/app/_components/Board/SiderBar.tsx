@@ -3,9 +3,10 @@ import SiderBarRoutes from "./SiderBarRoutes";
 
 const SiderBar = () => {
   return (
-    <aside className="hidden bg-slate-200 transition-all duration-300s lg:flex fixed flex-col w-[300px] left-0 shrink-0 h-full">
-      <div className="m-2 ">
+    <aside className="hidden bg-muted transition-all duration-300s lg:flex fixed flex-col w-[300px] left-0 shrink-0 h-full">
+      <div className="m-2 flex items-center gap-x-4">
         <Logo />
+        <span className="text-xl font-semibold text-primary">ljh-design</span>
       </div>
       <SiderBarRoutes></SiderBarRoutes>
     </aside>

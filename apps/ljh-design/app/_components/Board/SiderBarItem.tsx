@@ -20,7 +20,7 @@ const SiderBarItem = ({
       href={href}
       onClick={onClick}
       className={cn(
-        "flex items-center px-3 py-3 rounded-xl bg-transparent hover:bg-white transition",
+        "flex items-center px-3 py-3 rounded-xl bg-transparent hover:bg-white duration-300 transition",
         isActive ? "bg-white" : ""
       )}
     >
