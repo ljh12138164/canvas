@@ -18,31 +18,9 @@ const SiderBarRoutes = () => {
             href="/"
             label="Home"
             Icon={Home}
-            isActive={pathname === "/"}
+            isActive={pathname === "/board"}
             onClick={() => {
-              redirect("/");
-            }}
-          ></SiderBarItem>
-        </li>
-        <li className="px-4 my-1 w-full">
-          <SiderBarItem
-            href="/"
-            label="Home"
-            Icon={Home}
-            isActive={pathname === "/"}
-            onClick={() => {
-              redirect("/");
-            }}
-          ></SiderBarItem>
-        </li>
-        <li className="px-4 my-1 w-full">
-          <SiderBarItem
-            href="/"
-            label="Home"
-            Icon={Home}
-            isActive={pathname === "/"}
-            onClick={() => {
-              redirect("/");
+              redirect("/board");
             }}
           ></SiderBarItem>
         </li>
