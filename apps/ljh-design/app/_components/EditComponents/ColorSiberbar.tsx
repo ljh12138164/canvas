@@ -23,6 +23,7 @@ import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
 import { Edit } from "@/types/Edit";
 import ImageSetting from "./ImageSetting";
+import FilterSetting from "./FilterSetting";
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
@@ -69,7 +70,7 @@ const ColorSoiberbar = ({
     <aside
       className={cn(
         "z-[600] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col",
-        onShow() ? "visible" : "hidden",
+        onShow() ? "visible" : "hidden"
       )}
     >
       <ToolSiderbar
@@ -162,6 +163,10 @@ const ColorSoiberbar = ({
                 );
               })}
             </section>
+          )}
+          {/* 滤镜设置 */}
+          {onShow() === Tool.FilterSetting && (
+            <FilterSetting item={editor?.getActiveFilter()}></FilterSetting>
           )}
           {onShow() === Tool.Draw && (
             <section>

@@ -1,9 +1,314 @@
 import * as material from "material-colors";
 import * as fabric from "fabric";
+export type TBlendMode =
+  | "multiply"
+  | "add"
+  | "difference"
+  | "screen"
+  | "subtract"
+  | "darken"
+  | "lighten"
+  | "overlay"
+  | "exclusion"
+  | "tint";
+export type TResizeType = "bilinear" | "hermite" | "sliceHack" | "lanczos";
+
 export interface InitFabicObject extends fabric.Object {
   name: string;
 }
+interface ColorFilterProps {
+  type: "color";
+  title: string;
+  value?: (value: string) => fabric.filters.BaseFilter<string, any>;
+}
+interface OptionFilterProps {
+  type: "option";
+  title: string;
+  options: {
+    title: string;
+    value: TBlendMode | TResizeType;
+  }[];
+  value?: (
+    value: TBlendMode | TResizeType
+  ) => fabric.filters.BaseFilter<string, any>;
+}
+interface SiderProps {
+  type: "slider";
+  title: string;
+  value?: (value: number) => fabric.filters.BaseFilter<string, any>;
+  min: number;
+  max: number;
+  step: number;
+}
+interface CheckboxProps {
+  title: string;
+  type: "checkbox";
+  value?: (value: boolean) => fabric.filters.BaseFilter<string, any>;
+}
+interface CanFilterChangeType {
+  name: string;
+  title: string;
+  change: (SiderProps | CheckboxProps | ColorFilterProps | OptionFilterProps)[];
+}
+export const CanfilterSetting: CanFilterChangeType[] = [
+  {
+    name: "contrast",
+    title: "对比度",
+    change: [
+      {
+        type: "slider",
+        title: "对比度强度",
+        value: (value: number) =>
+          new fabric.filters.Contrast({ contrast: value }),
+        min: 0,
+        max: 1,
+        step: 0.1,
+      },
+    ],
+  },
+  {
+    name: "brightness",
+    title: "亮度",
+    change: [
+      {
+        type: "slider",
+        title: "亮度强度",
+        value: (value: number) =>
+          new fabric.filters.Brightness({ brightness: value }),
+        min: 0,
+        max: 1,
+        step: 0.1,
+      },
+    ],
+  },
+  {
+    name: "blur",
+    title: "模糊",
+    change: [
+      {
+        type: "slider",
+        title: "模糊强度",
+        value: (value: number) => new fabric.filters.Blur({ blur: value }),
+        min: 0,
+        max: 1,
+        step: 0.1,
+      },
+    ],
+  },
+  {
+    name: "sharpen",
+    title: "锐化",
+    change: [
+      {
+        type: "slider",
+        title: "锐化强度",
+        value: (value: number) =>
+          new fabric.filters.Convolute({
+            matrix: [
+              0,
+              -value / 4,
+              0,
+              -value / 4,
+              value,
+              -value / 4,
+              0,
+              -value / 4,
+              0,
+            ],
+          }),
+        min: 0,
+        max: 10,
+        step: 1,
+      },
+    ],
+  },
+  {
+    name: "emboss",
+    title: "浮雕",
+    change: [
+      {
+        type: "slider",
+        title: "浮雕强度",
+        value: (value: number) =>
+          new fabric.filters.Convolute({
+            matrix: [value, value, value, value, 0, -value, -value, -value, 0],
+          }),
+        min: 0,
+        max: 2,
+        step: 0.1,
+      },
+    ],
+  },
+  {
+    name: "removecolor",
+    title: "去色",
+    change: [
+      {
+        type: "checkbox",
+        title: "使用alpha通道",
+        value: (value: boolean) =>
+          new fabric.filters.RemoveColor({ useAlpha: value }),
+      },
+      {
+        type: "slider",
+        title: "去色范围",
+        value: (value: number) =>
+          new fabric.filters.RemoveColor({ distance: value }),
+        min: 0,
+        max: 1,
+        step: 0.1,
+      },
+    ],
+  },
+  {
+    name: "blendcolor",
+    title: "混合颜色",
+    change: [
+      {
+        type: "color",
+        title: "混合颜色",
 
+        value: (value: string) =>
+          new fabric.filters.BlendColor({ color: value }),
+      },
+      {
+        type: "option",
+        title: "混合模式",
+        options: [
+          { title: "乘法", value: "multiply" },
+          { title: "加法", value: "add" },
+          { title: "差值", value: "difference" },
+          { title: "屏幕", value: "screen" },
+          { title: "减法", value: "subtract" },
+          { title: "加深", value: "darken" },
+          { title: "变亮", value: "lighten" },
+          { title: "覆盖", value: "overlay" },
+          { title: "排除", value: "exclusion" },
+          { title: "色调", value: "tint" },
+        ],
+        value: (value) =>
+          new fabric.filters.BlendColor({ mode: value as TBlendMode }),
+      },
+    ],
+  },
+  {
+    name: "saturation",
+    title: "饱和度",
+    change: [
+      {
+        type: "slider",
+        title: "饱和度强度",
+        value: (value: number) =>
+          new fabric.filters.Saturation({ saturation: value }),
+        min: 0,
+        max: 1,
+        step: 0.1,
+      },
+    ],
+  },
+  {
+    name: "resize",
+    title: "调整大小",
+    change: [
+      /**
+       * Resize type
+       * for webgl resizeType is just lanczos, for canvas2d can be:
+       * bilinear, hermite, sliceHack, lanczos.
+       * @default
+       */
+      // declare resizeType: ResizeOwnProps['resizeType'];
+      {
+        type: "option",
+        title: "调整大小类型",
+        options: [
+          { title: "双线性", value: "bilinear" },
+          { title: "lanczos", value: "lanczos" },
+          { title: "hermite", value: "hermite" },
+          { title: "sliceHack", value: "sliceHack" },
+        ],
+      },
+      /**
+       * Scale factor for resizing, x axis
+       * @param {Number} scaleX
+       * @default
+       */
+      // declare scaleX: ResizeOwnProps['scaleX'];
+      {
+        type: "slider",
+        title: "调整大小x轴",
+        min: 0,
+        max: 100,
+        step: 1,
+      },
+      /**
+       * Scale factor for resizing, y axis
+       * @param {Number} scaleY
+       * @default
+       */
+      // declare scaleY: ResizeOwnProps['scaleY'];
+      {
+        type: "slider",
+        title: "调整大小y轴",
+        min: 0,
+        max: 100,
+        step: 1,
+      },
+      /**
+       * LanczosLobes parameter for lanczos filter, valid for resizeType lanczos
+       * @param {Number} lanczosLobes
+       * @default
+       */
+      // declare lanczosLobes: ResizeOwnProps['lanczosLobes'];
+      {
+        type: "slider",
+        title: "",
+        min: 0,
+        max: 10,
+        step: 1,
+      },
+    ],
+  },
+  {
+    name: "huerotation",
+    title: "色调旋转",
+    change: [
+      {
+        type: "slider",
+        title: "色调旋转强度",
+        min: 0,
+        max: 1,
+        step: 0.1,
+      },
+    ],
+  },
+  {
+    name: "gamma",
+    title: "伽马",
+    change: [
+      {
+        type: "slider",
+        title: "伽马强度1",
+        min: 0,
+        max: 10,
+        step: 1,
+      },
+      {
+        type: "slider",
+        title: "伽马强度2",
+        min: 0,
+        max: 10,
+        step: 1,
+      },
+      {
+        type: "slider",
+        title: "伽马强度3",
+        min: 0,
+        max: 10,
+        step: 1,
+      },
+    ],
+  },
+];
 export const Font: {
   name: string;
   fontSize: string;
@@ -330,6 +635,7 @@ export interface Edit {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
+  changeImageFilterSetting: (filter: string, value: number) => void;
   cleanFilter: () => void;
   deleteImageFilter: (filter: string) => void;
   savePng: () => void;
@@ -424,7 +730,7 @@ export const FilterItem = {
   emboss: "滤波",
   removecolor: "去色",
   blackwhite: "黑白",
-  vibrance: "饱和度",
+  vibrance: "色彩",
   blendcolor: "混合颜色",
   huerotation: "色调旋转",
   resize: "调整大小",
