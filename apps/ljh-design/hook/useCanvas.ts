@@ -1,6 +1,6 @@
-import { STROKE_COLOR, STROKE_WIDTH } from "@/types/Edit";
-import { useMemoizedFn } from "ahooks";
-import * as fabric from "fabric";
+import { STROKE_COLOR, STROKE_WIDTH } from '@/types/Edit';
+import { useMemoizedFn } from 'ahooks';
+import * as fabric from 'fabric';
 
 const useCanvas = () => {
   const init = useMemoizedFn(
@@ -12,13 +12,13 @@ const useCanvas = () => {
       initContainer: HTMLDivElement;
     }) => {
       fabric.FabricObject.prototype.set({
-        cornerColor: "#FFF",
-        cornerStyle: "circle",
-        borderColor: "#3b82f6",
+        cornerColor: '#FFF',
+        cornerStyle: 'circle',
+        borderColor: '#3b82f6',
         borderScaleFactor: 1.5,
         transparentCorners: false,
         borderOpacityWhenMoving: 1,
-        cornerStrokeColor: "#3b82f6",
+        cornerStrokeColor: '#3b82f6',
       });
       //初始化画布笔画
       initCanvas.freeDrawingBrush = new fabric.PencilBrush(initCanvas);
@@ -28,28 +28,29 @@ const useCanvas = () => {
       const initRect = new fabric.Rect({
         width: 800,
         height: 1100,
-        name: "board",
-        fill: "white",
+        name: 'board',
+        fill: 'white',
         selectable: false,
         hasControls: false,
         shadow: new fabric.Shadow({
-          color: "rgba(0,0,0,0.8)",
+          color: 'rgba(0,0,0,0.8)',
           blur: 5,
         }),
       });
+      //添加滤镜数组
+      fabric.FabricImage.prototype.filtersArray = [];
 
-      //TODO: 欢迎文字
-      const welcomeText = new fabric.Text("欢迎使用", {
-        fill: "black",
-        fontFamily: "Arial",
+      const welcomeText = new fabric.FabricText('欢迎使用', {
+        fill: 'black',
+        fontFamily: 'Arial',
         fontSize: 60,
-        name: "welcome",
+        name: 'welcome',
       });
       const rect = new fabric.Rect({
         width: 50,
         height: 50,
-        name: "rect",
-        fill: "black",
+        name: 'rect',
+        fill: 'black',
       });
 
       initCanvas.add(initRect);

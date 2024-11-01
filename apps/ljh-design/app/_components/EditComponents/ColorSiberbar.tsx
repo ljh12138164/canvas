@@ -8,10 +8,12 @@ import type { Filter } from "@/types/Edit";
 import {
   CANVAS_COLOR,
   FILL_COLOR,
+  FilterItem,
   filters,
   fonts,
   STROKE_COLOR,
   Tool,
+  ToolItem,
 } from "@/types/Edit";
 import { useMemoizedFn } from "ahooks";
 import { useEffect, useMemo } from "react";
@@ -19,50 +21,15 @@ import ColorPicker from "./ColorPicker";
 import StokeWidth from "./StokeWidth";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
-import { Edit } from "@/store/editor";
+import { Edit } from "@/types/Edit";
+import ImageSetting from "./ImageSetting";
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
   activeTool: Tool;
   onChangeActive: (tool: Tool) => void;
 }
-const obj = {
-  [Tool.Fill]: "填充颜色",
-  [Tool.StrokeColor]: "描边颜色",
-  [Tool.StrokeWidth]: "边框宽度",
-  [Tool.Opacity]: "透明度",
-  [Tool.FontFamily]: "字体类型",
-  [Tool.Filter]: "滤镜",
-  [Tool.Draw]: "画笔",
-  [Tool.Settings]: "设置",
-  "": "",
-};
 
-const filterItem = {
-  none: "无",
-  polaroid: "偏振",
-  sepia: "棕褐色",
-  kodachrome: "彩色胶片",
-  contrast: "对比度",
-  brightness: "亮度",
-  brownie: "棕褐色",
-  vintage: "复古",
-  grayscale: "灰度",
-  invert: "反色",
-  technicolor: "科技",
-  pixelate: "像素化",
-  blur: "模糊",
-  sharpen: "锐化",
-  emboss: "滤波",
-  removecolor: "去色",
-  blackwhite: "黑白",
-  vibrance: "饱和度",
-  blendcolor: "混合颜色",
-  huerotation: "色调旋转",
-  resize: "调整大小",
-  saturation: "饱和度",
-  gamma: "伽马",
-};
 const ColorSoiberbar = ({
   activeTool,
   onChangeActive,
@@ -88,24 +55,27 @@ const ColorSoiberbar = ({
       activeTool === Tool.FontFamily ||
       activeTool === Tool.Filter ||
       activeTool === Tool.Draw ||
-      activeTool === Tool.Settings
+      activeTool === Tool.Settings ||
+      activeTool === Tool.FilterSetting
     )
       return activeTool;
     return "";
   });
+  //检查滤镜是否选中
   const check = useMemoizedFn((item: string) => {
-    return (editor?.getActiveFilter() || "none").toLowerCase() === item;
+    return editor?.getActiveFilter() === item;
   });
   return (
     <aside
       className={cn(
-        "z-[600] bg-white border-r-2 pb-24 border-black/10 relative transition w-[300px] h-full flex flex-col",
-        onShow() ? "visible" : "hidden"
+        "z-[600] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col",
+        onShow() ? "visible" : "hidden",
       )}
     >
       <ToolSiderbar
-        title={obj[onShow()] || ""}
-        description={`更改${obj[onShow()] || ""}`}
+        front={onShow() === Tool.FilterSetting}
+        title={ToolItem[onShow() as keyof typeof ToolItem] || ""}
+        description={`更改${ToolItem[onShow() as keyof typeof ToolItem] || ""}`}
       ></ToolSiderbar>
       <ScrollArea className="z-[601] h-full">
         <div className="p-4 space-y-4">
@@ -165,6 +135,7 @@ const ColorSoiberbar = ({
               })}
             </section>
           )}
+          {/* 滤镜 */}
           {onShow() === Tool.Filter && (
             <section className="flex flex-col gap-2 pb-12">
               {filters.map((item: Filter) => {
@@ -173,11 +144,20 @@ const ColorSoiberbar = ({
                     key={item}
                     variant="outline"
                     onClick={() => {
-                      editor?.changeImageFilter(item);
+                      if (check(item)) {
+                        editor?.cleanFilter();
+                      } else {
+                        editor?.changeImageFilter(item);
+                      }
                     }}
-                    className={`w-full h-16  justify-start text-left ${check(item) && " border-blue-500 border-2"}`}
+                    className={`w-full h-16 relative  justify-start text-left ${check(item) && "border-blue-500 border-2"}`}
                   >
-                    {filterItem[item]}
+                    {FilterItem[item]}
+                    <ImageSetting
+                      activeTool={activeTool}
+                      onChangeActive={onChangeActive}
+                      isShow={check(item) && item !== "none"}
+                    ></ImageSetting>
                   </Button>
                 );
               })}

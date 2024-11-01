@@ -1,19 +1,23 @@
 import type { NextConfig } from "next";
-
 const nextConfig: NextConfig = {
-  /* config options here */
+  // 图片配置
   images: {
-    domains: [
-      "joxicbgouobvvfdxavbc.supabase.co",
-      "osdawghfaoyysblfsexp.supabase.co",
-    ],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "joxicbgouobvvfdxavbc.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "osdawghfaoyysblfsexp.supabase.co",
+      },
     ],
   },
+
 };
 
 export default nextConfig;

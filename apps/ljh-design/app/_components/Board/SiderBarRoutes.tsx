@@ -1,5 +1,4 @@
 "use client";
-
 import { Separator } from "@/components/ui/separator";
 import SiderBarItem from "./SiderBarItem";
 import { Home } from "lucide-react";
