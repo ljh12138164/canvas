@@ -9,7 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import ShapeTool from "./ShapeTool";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
-import { Edit } from "@/store/editor";
+import { Edit } from "@/types/Edit";
 
 interface ShapeSidleProps {
   editor: Edit | undefined;

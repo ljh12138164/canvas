@@ -1,7 +1,7 @@
 import TooltipComponents from "@/components/shadui-Components/Tooltip";
 import { Button } from "@/components/ui/button";
 import { cn, isText } from "@/lib/utils";
-import { Tool } from "@/types/Edit";
+import { Tool, Edit } from "@/types/Edit";
 import { BsBorderWidth, BsTransparency } from "react-icons/bs";
 import {
   FaAlignCenter,
@@ -13,11 +13,10 @@ import {
   FaTrash,
   FaUnderline,
 } from "react-icons/fa6";
-import { LuArrowDown, LuArrowUp, LuCopy } from "react-icons/lu";
+import { LuArrowDown, LuArrowUp, LuChevronDown, LuCopy } from "react-icons/lu";
 import { TbColorFilter } from "react-icons/tb";
 import FontSizeInput from "./FontSizeInput";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Edit } from "@/store/editor";
 interface ToolBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
@@ -108,7 +107,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
               </Button>
             </TooltipComponents>
           )}
-          {/* {textYype && (
+          {textYype && (
             <TooltipComponents
               label="字体"
               side="bottom"
@@ -123,7 +122,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 variant="ghost"
                 className={cn(
                   "w-auto",
-                  activeTool === Tool.FontFamily && "bg-gray-100"
+                  activeTool === Tool.FontFamily && "bg-gray-100",
                 )}
               >
                 <div className="max-w-[100px] truncate px-2">
@@ -132,7 +131,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 <LuChevronDown className="size-4"></LuChevronDown>
               </Button>
             </TooltipComponents>
-          )} */}
+          )}
           {textYype && (
             <TooltipComponents
               label="删除线"
@@ -149,7 +148,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 variant="ghost"
                 className={cn(
                   "w-auto",
-                  editor?.getActiveFontLineThrough() && "bg-gray-100"
+                  editor?.getActiveFontLineThrough() && "bg-gray-100",
                 )}
               >
                 <div className="px-2">
@@ -174,7 +173,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 variant="ghost"
                 className={cn(
                   "w-auto",
-                  editor?.getActiveFontUnderline() && "bg-gray-100"
+                  editor?.getActiveFontUnderline() && "bg-gray-100",
                 )}
               >
                 <div className="px-2">
@@ -202,7 +201,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 variant="ghost"
                 className={cn(
                   "w-auto",
-                  editor?.getActiveFontItalic() === "italic" && "bg-gray-100"
+                  editor?.getActiveFontItalic() === "italic" && "bg-gray-100",
                 )}
               >
                 <div className="px-2">

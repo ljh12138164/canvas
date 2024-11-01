@@ -1,9 +1,10 @@
-import unsplash from "@/lib/unsplash";
-import { Hono } from "hono";
+import unsplash from '@/api/unsplash';
+import { Hono } from 'hono';
+// 获取图片
 const DEFALUT_COUNT = 20;
-const DEFALUT_COLLECTION_IDS = ["317099"];
+const DEFALUT_COLLECTION_IDS = ['317099'];
 
-const image = new Hono().get("/", async (c) => {
+const image = new Hono().get('/', async (c) => {
   const image = await unsplash.photos.getRandom({
     collectionIds: DEFALUT_COLLECTION_IDS,
     count: DEFALUT_COUNT,

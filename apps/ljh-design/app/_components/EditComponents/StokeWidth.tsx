@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Edit } from "@/store/editor";
+import { Edit } from "@/types/Edit";
 import { STROKE_WIDTH } from "@/types/Edit";
 interface StokeWidthProps {
   editor: Edit | undefined;

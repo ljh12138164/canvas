@@ -3,7 +3,7 @@ import useCanvas from "@/hook/useCanvas";
 import useCanvasEvent from "@/hook/useCanvasEvent";
 import { useClipboard } from "@/hook/useCliph";
 import useResponse from "@/hook/useResponse";
-import { buildEditor, FontWeightType } from "@/store/editor";
+import { buildEditor } from "@/store/editor";
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -17,6 +17,7 @@ import {
   FONT_UNDERLINE,
   FONT_WEIGHT,
   FontStyle,
+  FontWeightType,
   JSON_KEY,
   OPACITY,
   STROKE_COLOR,
@@ -47,7 +48,7 @@ export default function Home() {
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
   //选择的对象
   const [selectedObject, setSelectedObject] = useState<fabric.Object[] | null>(
-    null
+    null,
   );
   //颜色形状初始化
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);

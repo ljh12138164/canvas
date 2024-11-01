@@ -14,3 +14,4 @@ const ShapeTool = ({ Icon, onClick, iconClassName }: ShapeToolProps) => {
 };
 
 export default ShapeTool;
+  

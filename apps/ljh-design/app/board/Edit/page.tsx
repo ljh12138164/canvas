@@ -1,4 +1,4 @@
-import Edit from "@/app/_components/EditComponents/edit";
+import Edit from "@/app/_components/EditComponents/Edit";
 import { Toaster } from "react-hot-toast";
 import { Providers } from "@/app/_provide/providers";
 export default async function Home() {

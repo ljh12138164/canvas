@@ -1,18 +1,23 @@
 import {
   createFilter,
   downloadImage,
+  Effect,
   isText,
   transformToTest,
 } from "@/lib/utils";
 import {
+  buildEditorProps,
   CRICLE_OPTION,
   DIAMOD_HEGHT,
   DIAMOD_OPTION,
   DIAMOD_WIDTH,
+  Edit,
   FONT_FAMILY,
   FONT_SIZE,
   FONT_WEIGHT,
   FontStyle,
+  FontWeightType,
+  InitFabicObject,
   JSON_KEY,
   OPACITY,
   RECTANGLE_OPTION,
@@ -21,151 +26,22 @@ import {
   TEXTBOX_OPTION,
   TRIANGLE_OPTION,
 } from "@/types/Edit";
+
 import * as fabric from "fabric";
 import toast from "react-hot-toast";
-export type FontWeightType = "normal" | "bold";
 //输入
 
-export interface InitFabicObject extends fabric.FabricObject {
+interface FilterArrayEffect {
   name: string;
+  effect: Effect;
 }
-interface buildEditorProps {
-  canvas: fabric.Canvas;
-  fillColor: string;
-  strokeColor: string;
-  strokeWidth: number;
-  strokeDashArray: number[];
-  selectedObject: fabric.Object[] | null;
-  opacity: number;
-  fontFamily: string;
-  fontWeight: FontWeightType;
-  fontThought: boolean;
-  fontItalics: FontStyle;
-  fontUnderline: boolean;
-  fontAlign: fabric.Textbox["textAlign"];
-  fontSize: number;
-  imageLoading: boolean;
-  imageFilter: string;
-  drewColor: string;
-  drawWidth: number;
-  canvasWidth: number;
-  canvasHeight: number;
-  canvasColor: string;
-  canvasHistory: fabric.FabricObject[];
-  pasty: () => void;
-  save: (skip?: boolean) => void;
-  canRedo: () => boolean;
-  canUndo: () => boolean;
-  undo: () => void;
-  redo: () => void;
-  setHitoryIndex: (index: number) => void;
-  setCanvasHeight: (canvasHeight: number) => void;
-  setCanvasColor: (canvasColor: string) => void;
-  setCanvasWidth: (canvasWidth: number) => void;
-  authZoom: () => Promise<void>;
-  setDrawWidth: (drawWidth: number) => void;
-  setDrewColor: (drewColor: string) => void;
-  copy: () => void;
-  setImageFilter: (imageFilter: string) => void;
-  setImageLoading: (imageLoading: boolean) => void;
-  setFontSize: (fontSize: number) => void;
-  setFontAlign: (fontAlign: fabric.Textbox["textAlign"]) => void;
-  setFontUnderline: (fontUnderline: boolean) => void;
-  setFontItalics: (fontItalics: FontStyle) => void;
-  setFontThickness: (fontThickness: boolean) => void;
-  setFontWeight: (fontWeight: FontWeightType) => void;
-  setFontFamily: (fontFamily: string) => void;
-  setOpacity: (opacity: number) => void;
-  setStrokeDashArray: (type: number[]) => void;
-  setFillColor: (color: string) => void;
-  setStrokeColor: (color: string) => void;
-  setStrokeWidth: (width: number) => void;
+//返回fabric类型
+declare module "fabric" {
+  interface FabricImage {
+    filtersArray: FilterArrayEffect[];
+  }
 }
-//返回
-export interface Edit {
-  selectedObject: fabric.Object[] | null;
-  strokeColor: string;
-  strokeWidth: number;
-  fillColor: string;
-  canvas: fabric.Canvas;
-  opacity: number;
-  strokeDashArray: number[];
-  fontFamily: string;
-  fontWeight: FontWeightType;
-  fontThought: boolean;
-  fontUnderline: boolean;
-  fontItalics: FontStyle;
-  fontAlign: fabric.Textbox["textAlign"];
-  fontSize: number;
-  imageLoading: boolean;
-  imageFilter: string;
-  drewColor: string;
-  drawWidth: number;
-  canvasWidth: number;
-  canvasHeight: number;
-  canvasColor: string;
-  canvasHistory: fabric.FabricObject[];
-  savePng: () => void;
-  saveSvg: () => void;
-  savejpg: () => void;
-  saveJson: () => void;
-  loadFromJson: (json: string) => void;
-  pasty: () => void;
-  saveAll: (skip?: boolean) => void;
-  canRedo: () => boolean;
-  canUndo: () => boolean;
-  undo: () => void;
-  redo: () => void;
-  setHitoryIndex: (index: number) => void;
-  zoomIn: () => void;
-  zoomOut: () => void;
-  authZoom: () => Promise<void>;
-  setCanvasColor: (color: string) => void;
-  getWorkspace: () => InitFabicObject;
-  changeSize: (size: { width: number; height: number }) => Promise<void>;
-  changeBackground: (color: string) => void;
-  setDrewWidths: (width: number) => void;
-  copy: () => void;
-  setDrewColors: (color: string) => void;
-  disableDraw: () => void;
-  enableDraw: () => void;
-  getActiveFilter: () => string;
-  changeImageFilter: (filter: string) => void;
-  addImage: (url: string) => void;
-  delete: () => void;
-  addText: (text: string, option?: fabric.Textbox | object) => void;
-  bringForward: () => void;
-  getActiveFontLineThrough: () => boolean;
-  getActiveFontUnderline: () => boolean;
-  getActiveFontSize: () => number;
-  getActiveFontItalic: () => FontStyle;
-  getActiveFontAlign: () => fabric.Textbox["textAlign"];
-  changeFontAlign: (value: fabric.Textbox["textAlign"]) => void;
-  changeFontLineThrough: (value: boolean) => void;
-  changeFontUnderline: (value: boolean) => void;
-  changeFontItalic: (value: FontStyle) => void;
-  changeOpacty: (opacity: number) => void;
-  changeStokeDashArray: (value: number[]) => void;
-  changeFontWeight: (weight: FontWeightType) => void;
-  changeFontSize: (size: number) => void;
-  sendBackwards: () => void;
-  getOpacty: () => number;
-  getActiveFontFamily: () => string;
-  getActiveStrokeWidth: () => number;
-  getActiveStrokeWeight: () => number | string;
-  getActiveStokeColor: () => string;
-  getActiveStokeDashArray: () => number[];
-  setFontFamily: (fontFamily: string) => void;
-  setFillColor: (color: string) => void;
-  setStrokeWidth: (width: number) => void;
-  setStrokeColor: (color: string) => void;
-  addCircle: () => void;
-  addRectangle: () => void;
-  addTriangle: () => void;
-  addRotateTriangle: () => void;
-  addSoftRectangle: () => void;
-  addDiamod: () => void;
-}
+
 export const buildEditor = ({
   canvas,
   fillColor,
@@ -218,14 +94,15 @@ export const buildEditor = ({
   setFillColor,
   setStrokeWidth,
 }: buildEditorProps): Edit => {
+  //获取画布工作区
   const getWorkspace = () =>
     canvas
       .getObjects()
       .find(
         (item: InitFabicObject | fabric.FabricObject) =>
-          (item as InitFabicObject).name === "board"
+          (item as InitFabicObject).name === "board",
       );
-
+  //生成保存选项
   const genertateSaveOption = () => {
     const { width, height, left, top } = getWorkspace() as fabric.Rect;
     return {
@@ -279,7 +156,7 @@ export const buildEditor = ({
     // 替换可能导致错误的字符
     const cleanedSvg = dataUrl.replace(
       /&(?!amp;|lt;|gt;|quot;|#39;)/g,
-      "&amp;"
+      "&amp;",
     );
 
     const svgBlob = new Blob([cleanedSvg], {
@@ -290,7 +167,7 @@ export const buildEditor = ({
     URL.revokeObjectURL(svgUrl);
     authZoom();
   };
-
+  //保存png
   const savePng = () => {
     const option = genertateSaveOption();
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
@@ -298,7 +175,7 @@ export const buildEditor = ({
     downloadImage(dataUrl, "png");
     authZoom();
   };
-
+  //保存jpg
   const savejpg = () => {
     const option = genertateSaveOption();
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
@@ -306,22 +183,23 @@ export const buildEditor = ({
     downloadImage(dataUrl, "jpg");
     authZoom();
   };
+  //保存json
   const saveJson = () => {
     const dataUrl = canvas.toObject(JSON_KEY);
     transformToTest(dataUrl);
     const fileString = `data:text/json;charset=utf-8,${encodeURIComponent(
-      JSON.stringify(dataUrl, null, "\t")
+      JSON.stringify(dataUrl, null, "\t"),
     )}`;
     downloadImage(fileString, "json");
     authZoom();
   };
-
+  //加载json
   const loadFromJson = async (json: string) => {
     const data = JSON.parse(json);
     await canvas.loadFromJSON(data);
     authZoom();
   };
-
+  //居中
   const center = (object: fabric.Object) => {
     const workspace = getWorkspace();
     //居中
@@ -329,12 +207,13 @@ export const buildEditor = ({
     canvas._centerObject(object, centers as fabric.Point);
     // canvas.centerObject(object);
   };
+  //添加到画布
   const addToCanvas = (object: fabric.Object) => {
     center(object);
     canvas.add(object);
     canvas.setActiveObject(object);
   };
-
+  //返回编辑器方法
   return {
     strokeColor,
     strokeWidth,
@@ -434,28 +313,41 @@ export const buildEditor = ({
       canvas.isDrawingMode = false;
     },
     getActiveFilter: () => {
-      let value =
-        canvas?.getActiveObjects()?.[0]?.get("filters")?.[0]?.type || "none";
-      if (value === "Convolute") {
-        if (
-          canvas?.getActiveObjects()?.[0]?.get("filters")?.[0].matrix[0] === 0
-        )
-          value = "sharpen";
-        else value = "emboss";
+      const value = canvas?.getActiveObjects()?.[0];
+      if (value instanceof fabric.FabricImage) {
+        return value.filtersArray[0]?.name || "none";
       }
-      return value || "none";
+      return "none";
     },
+    //改变图片滤镜
     changeImageFilter: (filter: string) => {
       setImageFilter(filter);
-      canvas.getActiveObjects().forEach((item: fabric.Object) => {
+      canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
         if (item.type === "image") {
           const imageObj = item as fabric.FabricImage;
-          const effect = createFilter(filter);
-          imageObj.filters = effect ? [effect] : [];
+          //创建滤镜
+          const effects = createFilter(filter);
+          imageObj.filtersArray = [{ name: filter, effect: effects }];
+          imageObj.filters = effects ? [effects] : [];
+          // 多种滤镜
           imageObj.applyFilters();
           canvas.renderAll();
         }
       });
+    },
+    // 删除滤镜
+    deleteImageFilter: (filter: string) => {
+      canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
+        if (item.type === "image") {
+          const imageObj = item as fabric.FabricImage;
+          imageObj.filtersArray = imageObj.filtersArray.filter(
+            (item) => item.name !== filter,
+          );
+          imageObj.applyFilters();
+          canvas.renderAll();
+        }
+      });
+      setImageFilter("none");
     },
     addImage: async (value: string) => {
       toast.loading("添加中...");
@@ -584,6 +476,7 @@ export const buildEditor = ({
       });
       addToCanvas(textObj);
       canvas.setActiveObject(textObj);
+      canvas.renderAll();
     },
     changeOpacty: (opacity: number) => {
       setOpacity(opacity);
@@ -619,7 +512,16 @@ export const buildEditor = ({
 
       canvas.renderAll();
     },
-
+    cleanFilter: () => {
+      setImageFilter("none");
+      canvas.getActiveObjects().forEach((item) => {
+        if (item.type === "image") {
+          (item as fabric.FabricImage).filters = [];
+          (item as fabric.FabricImage).applyFilters();
+        }
+      });
+      canvas.renderAll();
+    },
     changeStokeDashArray: (type) => {
       setStrokeDashArray(type);
       canvas.getActiveObjects().forEach((obj) => {
@@ -760,7 +662,7 @@ export const buildEditor = ({
           ...DIAMOD_OPTION,
           fill: fillColor,
           stroke: strokeColor,
-        }
+        },
       );
       center(diamod);
       canvas.add(diamod);
