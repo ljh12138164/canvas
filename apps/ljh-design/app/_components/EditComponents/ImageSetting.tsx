@@ -16,7 +16,7 @@ const ImageSetting = ({ isShow, onChangeActive }: ImageSettingProps) => {
       }}
       onClick={(e) => {
         e.stopPropagation();
-        onChangeActive(Tool.Filter);
+        onChangeActive(Tool.FilterSetting);
       }}
     >
       <LuSettings className="h-full w-full"></LuSettings>

@@ -48,7 +48,7 @@ export function createFilter(value: string): Effect {
       break;
     // 对比度
     case "contrast":
-      effect = new fabric.filters.Contrast({ contrast: 0.5 });
+      effect = new fabric.filters.Contrast({ contrast: 0.1 });
       break;
     // 亮度
     case "brightness":
@@ -80,7 +80,7 @@ export function createFilter(value: string): Effect {
       break;
     // 模糊
     case "blur":
-      effect = new fabric.filters.Blur({ blur: 0.1 });
+      effect = new fabric.filters.Blur({ blur: 0.5 });
       break;
     // 锐化
     case "sharpen":
@@ -96,44 +96,50 @@ export function createFilter(value: string): Effect {
       break;
     case "removecolor":
       effect = new fabric.filters.RemoveColor({
-        threshold: 0.2,
+        // 设置要移除的颜色
+        color: "#222",
+        // 设置距离
         distance: 0.5,
+        // 使用alpha通道
+        useAlpha: true,
       });
       break;
     // 黑白
     case "blackwhite":
-      effect = new fabric.filters.BlackWhite({
-        threshold: 0.2,
-        distance: 0.5,
-      });
+      effect = new fabric.filters.BlackWhite();
       break;
     // 饱和度
     case "vibrance":
       effect = new fabric.filters.Vibrance({
-        vibrance: 1,
+        vibrance: 10,
       });
       break;
     // 混合
     case "blendcolor":
       effect = new fabric.filters.BlendColor({
-        color: "#00ff00",
+        color: "red",
         mode: "multiply",
       });
       break;
     // 色相
     case "huerotation":
       effect = new fabric.filters.HueRotation({
-        rotation: 0.5,
+        rotation: 1,
       });
       break;
     // 调整大小
     case "resize":
-      effect = new fabric.filters.Resize();
+      effect = new fabric.filters.Resize({
+        resizeType: "bilinear",
+        scaleX: 20,
+        scaleY: 360,
+        lanczosLobes: 3,
+      });
       break;
     // 饱和度
     case "saturation":
       effect = new fabric.filters.Saturation({
-        saturation: 0.7,
+        saturation: 1,
       });
       break;
     // 伽马

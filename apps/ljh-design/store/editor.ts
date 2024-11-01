@@ -100,7 +100,7 @@ export const buildEditor = ({
       .getObjects()
       .find(
         (item: InitFabicObject | fabric.FabricObject) =>
-          (item as InitFabicObject).name === "board",
+          (item as InitFabicObject).name === "board"
       );
   //生成保存选项
   const genertateSaveOption = () => {
@@ -156,7 +156,7 @@ export const buildEditor = ({
     // 替换可能导致错误的字符
     const cleanedSvg = dataUrl.replace(
       /&(?!amp;|lt;|gt;|quot;|#39;)/g,
-      "&amp;",
+      "&amp;"
     );
 
     const svgBlob = new Blob([cleanedSvg], {
@@ -188,7 +188,7 @@ export const buildEditor = ({
     const dataUrl = canvas.toObject(JSON_KEY);
     transformToTest(dataUrl);
     const fileString = `data:text/json;charset=utf-8,${encodeURIComponent(
-      JSON.stringify(dataUrl, null, "\t"),
+      JSON.stringify(dataUrl, null, "\t")
     )}`;
     downloadImage(fileString, "json");
     authZoom();
@@ -335,13 +335,16 @@ export const buildEditor = ({
         }
       });
     },
+    changeImageFilterSetting: (filter: string, value: number) => {
+      console.log(filter, value);
+    },
     // 删除滤镜
     deleteImageFilter: (filter: string) => {
       canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
         if (item.type === "image") {
           const imageObj = item as fabric.FabricImage;
           imageObj.filtersArray = imageObj.filtersArray.filter(
-            (item) => item.name !== filter,
+            (item) => item.name !== filter
           );
           imageObj.applyFilters();
           canvas.renderAll();
@@ -516,6 +519,7 @@ export const buildEditor = ({
       setImageFilter("none");
       canvas.getActiveObjects().forEach((item) => {
         if (item.type === "image") {
+          (item as fabric.FabricImage).filtersArray = [];
           (item as fabric.FabricImage).filters = [];
           (item as fabric.FabricImage).applyFilters();
         }
@@ -662,7 +666,7 @@ export const buildEditor = ({
           ...DIAMOD_OPTION,
           fill: fillColor,
           stroke: strokeColor,
-        },
+        }
       );
       center(diamod);
       canvas.add(diamod);

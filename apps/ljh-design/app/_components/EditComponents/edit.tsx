@@ -40,7 +40,7 @@ import useHistoty from "@/hook/useHistory";
 import useKeyBoard from "@/hook/useKeyBoard";
 import { useWindowEvent } from "@/hook/useWindowEvent";
 
-export default function Home() {
+export default function Edit() {
   const { init } = useCanvas();
   const [tool, setTool] = useState<Tool>(Tool.Layout);
   //实例对象
@@ -48,7 +48,7 @@ export default function Home() {
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
   //选择的对象
   const [selectedObject, setSelectedObject] = useState<fabric.Object[] | null>(
-    null,
+    null
   );
   //颜色形状初始化
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { InitFabicObject } from "@/types/Edit";
 import * as fabric from "fabric";
 import { useEvent } from "react-use";
 interface UseKeyBoardProps {
@@ -55,8 +55,7 @@ const useKeyBoard = ({
         canvas?.discardActiveObject();
         const allObject = canvas
           ?.getObjects()
-          //@ts-ignore
-          .filter((item) => item.name !== "board");
+          .filter((item) => (item as InitFabicObject).name !== "board");
 
         canvas?.setActiveObject(
           new fabric.ActiveSelection(allObject, { canvas })
