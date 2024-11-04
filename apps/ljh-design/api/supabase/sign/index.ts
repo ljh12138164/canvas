@@ -28,6 +28,21 @@ export const createUser = async (user: SignUpUser): Promise<User | null> => {
   return data;
 };
 
-export async function getCurrentUser() {
-  return false;
+export async function getCurrentUser({
+  userId,
+}: {
+  userId: string;
+}): Promise<User | undefined> {
+  const { data, error } = await supabase
+    .from("user")
+    .select("id, name, account, image ,created_at")
+    .eq("id", userId)
+    .single();
+  if (error?.message) {
+    throw new Error(error.message);
+  }
+  if (!data) {
+    throw new Error("出错");
+  }
+  return data;
 }

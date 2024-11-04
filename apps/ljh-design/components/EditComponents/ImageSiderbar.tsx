@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { ImageBox } from "./ImageBox";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
-import { useImageQuery } from "@/api/useQuery/useQuery";
+import { useImageQuery } from "@/api/useQuery/useImageQuery";
 import { LuAlertTriangle, LuLoader } from "react-icons/lu";
 interface ImageSiderbarProps {
   editor: Edit | undefined;
@@ -55,7 +55,7 @@ const ImageSiderbar = ({
     <aside
       className={cn(
         "z-[100] bg-white  relative transition  h-full flex flex-col",
-        activeTool === Tool.Image ? "visible" : "hidden",
+        activeTool === Tool.Image ? "visible" : "hidden"
       )}
       style={{ flexBasis: "300px" }}
     >

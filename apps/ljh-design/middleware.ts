@@ -1,6 +1,8 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { jwtDecode } from "./lib/sign";
+//受保护的路由
 const protectedRoutes = ["/board"];
+//登录后跳转
 const publicRoutes = ["/board/sign-in"];
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
@@ -9,7 +11,8 @@ export default async function middleware(req: NextRequest) {
   //解密
   const payload = await jwtDecode(cookie);
   if (protectedRoutes.includes(path) && !payload) {
-    return NextResponse.redirect("/board/sign-in");
+    //没有登录
+    return NextResponse.redirect(new URL("/board/sign-in", req.url));
   }
   if (publicRoutes.includes(path) && payload) {
     return NextResponse.redirect(new URL("/board", req.url));
