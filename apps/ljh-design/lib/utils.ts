@@ -94,6 +94,7 @@ export function createFilter(value: string): Effect {
         matrix: [1, 1, 1, 1, 0.7, -1, -1, -1, -1],
       });
       break;
+    // 移除颜色
     case "removecolor":
       effect = new fabric.filters.RemoveColor({
         // 设置要移除的颜色
@@ -119,6 +120,7 @@ export function createFilter(value: string): Effect {
       effect = new fabric.filters.BlendColor({
         color: "red",
         mode: "multiply",
+        alpha: 1,
       });
       break;
     // 色相
@@ -131,8 +133,8 @@ export function createFilter(value: string): Effect {
     case "resize":
       effect = new fabric.filters.Resize({
         resizeType: "bilinear",
-        scaleX: 20,
-        scaleY: 360,
+        scaleX: 1,
+        scaleY: 1,
         lanczosLobes: 3,
       });
       break;
@@ -182,3 +184,14 @@ export function transformToTest(objects: any) {
 //     .sign(JWT_SECRET);
 //   return token;
 // }
+export function debounce(fn: () => void, delay: number = 300) {
+  let timeoutId: NodeJS.Timeout;
+  return function (this: any, ...args: any[]) {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      // @ts-ignore
+      fn.apply(this, args);
+    }, delay);
+  };
+}

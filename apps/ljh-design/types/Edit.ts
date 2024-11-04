@@ -1,5 +1,6 @@
 import * as material from "material-colors";
 import * as fabric from "fabric";
+import { Effect } from "@/lib/utils";
 export type TBlendMode =
   | "multiply"
   | "add"
@@ -12,35 +13,50 @@ export type TBlendMode =
   | "exclusion"
   | "tint";
 export type TResizeType = "bilinear" | "hermite" | "sliceHack" | "lanczos";
-
+export type TGrayscaleMode = "average" | "lightness" | "luminosity";
+export type ResizeOwnProps = {
+  resizeType: TResizeType;
+  scaleX: number;
+  scaleY: number;
+  lanczosLobes: number;
+};
 export interface InitFabicObject extends fabric.Object {
   name: string;
 }
-interface ColorFilterProps {
+export interface ColorFilterProps {
+  id: string;
+  name: string;
   type: "color";
   title: string;
   value?: (value: string) => fabric.filters.BaseFilter<string, any>;
 }
-interface OptionFilterProps {
+export interface OptionFilterProps {
+  id: string;
+  name: string;
   type: "option";
   title: string;
   options: {
     title: string;
-    value: TBlendMode | TResizeType;
+    value: TBlendMode | TResizeType | TGrayscaleMode;
   }[];
   value?: (
-    value: TBlendMode | TResizeType
+    value: TBlendMode | TResizeType | TGrayscaleMode,
   ) => fabric.filters.BaseFilter<string, any>;
 }
-interface SiderProps {
+export interface SiderProps {
+  id: string;
   type: "slider";
+  index?: number;
+  name: string;
   title: string;
   value?: (value: number) => fabric.filters.BaseFilter<string, any>;
   min: number;
   max: number;
   step: number;
 }
-interface CheckboxProps {
+export interface CheckboxProps {
+  id: string;
+  name: string;
   title: string;
   type: "checkbox";
   value?: (value: boolean) => fabric.filters.BaseFilter<string, any>;
@@ -48,130 +64,158 @@ interface CheckboxProps {
 interface CanFilterChangeType {
   name: string;
   title: string;
+  multiply?: (value: any) => fabric.filters.BaseFilter<string, any>;
   change: (SiderProps | CheckboxProps | ColorFilterProps | OptionFilterProps)[];
 }
+export const canfilterArr = [
+  "contrast",
+  "brightness",
+  "blur",
+  "removecolor",
+  "blendcolor",
+  "pixelate",
+  "saturation",
+  "resize",
+  "huerotation",
+  "invert",
+  "gamma",
+  "vibrance",
+  "grayscale",
+];
 export const CanfilterSetting: CanFilterChangeType[] = [
+  // ok
   {
     name: "contrast",
     title: "对比度",
     change: [
       {
+        id: "contrast",
+        name: "contrast",
         type: "slider",
         title: "对比度强度",
         value: (value: number) =>
           new fabric.filters.Contrast({ contrast: value }),
         min: 0,
         max: 1,
-        step: 0.1,
+        step: 0.01,
       },
     ],
   },
+  // ok
   {
     name: "brightness",
     title: "亮度",
     change: [
       {
+        id: "brightness",
+        name: "brightness",
         type: "slider",
         title: "亮度强度",
         value: (value: number) =>
           new fabric.filters.Brightness({ brightness: value }),
         min: 0,
         max: 1,
-        step: 0.1,
+        step: 0.01,
       },
     ],
   },
+  // ok
   {
     name: "blur",
     title: "模糊",
     change: [
       {
+        id: "blur",
+        name: "blur",
         type: "slider",
         title: "模糊强度",
         value: (value: number) => new fabric.filters.Blur({ blur: value }),
         min: 0,
         max: 1,
-        step: 0.1,
+        step: 0.01,
       },
     ],
   },
   {
-    name: "sharpen",
-    title: "锐化",
+    name: "vibrance",
+    title: "色彩",
     change: [
       {
+        id: "vibrance",
+        name: "vibrance",
         type: "slider",
-        title: "锐化强度",
+        title: "色彩强度",
         value: (value: number) =>
-          new fabric.filters.Convolute({
-            matrix: [
-              0,
-              -value / 4,
-              0,
-              -value / 4,
-              value,
-              -value / 4,
-              0,
-              -value / 4,
-              0,
-            ],
-          }),
+          new fabric.filters.Vibrance({ vibrance: value }),
         min: 0,
-        max: 10,
+        max: 100,
         step: 1,
-      },
-    ],
-  },
-  {
-    name: "emboss",
-    title: "浮雕",
-    change: [
-      {
-        type: "slider",
-        title: "浮雕强度",
-        value: (value: number) =>
-          new fabric.filters.Convolute({
-            matrix: [value, value, value, value, 0, -value, -value, -value, 0],
-          }),
-        min: 0,
-        max: 2,
-        step: 0.1,
       },
     ],
   },
   {
     name: "removecolor",
     title: "去色",
+    multiply: (obj: { useAlpha: boolean; distance: number; color: string }) =>
+      new fabric.filters.RemoveColor(obj),
     change: [
       {
+        id: "useAlpha",
+        name: "useAlpha",
         type: "checkbox",
         title: "使用alpha通道",
-        value: (value: boolean) =>
-          new fabric.filters.RemoveColor({ useAlpha: value }),
       },
       {
+        id: "distance",
+        name: "distance",
         type: "slider",
         title: "去色范围",
-        value: (value: number) =>
-          new fabric.filters.RemoveColor({ distance: value }),
         min: 0,
         max: 1,
-        step: 0.1,
+        step: 0.01,
+      },
+      {
+        id: "color",
+        name: "color",
+        type: "color",
+        title: "去色",
+      },
+    ],
+  },
+  {
+    name: "pixelate",
+    title: "像素化",
+    change: [
+      {
+        id: "blocksize",
+        name: "blocksize",
+        type: "slider",
+        title: "像素化强度",
+        min: 1,
+        max: 500,
+        step: 1,
+        value: (value: number) =>
+          new fabric.filters.Pixelate({ blocksize: value }),
       },
     ],
   },
   {
     name: "blendcolor",
     title: "混合颜色",
+    multiply: (obj: { color: string; mode: TBlendMode }) =>
+      new fabric.filters.BlendColor(obj),
     change: [
       {
+        id: "color",
+        name: "color",
         type: "color",
         title: "混合颜色",
-
         value: (value: string) =>
           new fabric.filters.BlendColor({ color: value }),
       },
       {
+        id: "mode",
+        name: "mode",
         type: "option",
         title: "混合模式",
         options: [
@@ -189,6 +233,15 @@ export const CanfilterSetting: CanFilterChangeType[] = [
         value: (value) =>
           new fabric.filters.BlendColor({ mode: value as TBlendMode }),
       },
+      {
+        id: "alpha",
+        name: "alpha",
+        type: "slider",
+        title: "alpha等级",
+        min: 0,
+        max: 1,
+        step: 0.01,
+      },
     ],
   },
   {
@@ -196,73 +249,81 @@ export const CanfilterSetting: CanFilterChangeType[] = [
     title: "饱和度",
     change: [
       {
+        id: "saturation",
+        name: "saturation",
         type: "slider",
         title: "饱和度强度",
         value: (value: number) =>
           new fabric.filters.Saturation({ saturation: value }),
         min: 0,
         max: 1,
-        step: 0.1,
+        step: 0.01,
       },
     ],
   },
   {
+    name: "grayscale",
+    title: "灰度",
+    change: [
+      {
+        id: "mode",
+        name: "mode",
+        type: "option",
+        title: "灰度模式",
+        options: [
+          { title: "平均", value: "average" },
+          { title: "亮度", value: "lightness" },
+          { title: "光度", value: "luminosity" },
+        ],
+        value: (value: TBlendMode | TResizeType | TGrayscaleMode) =>
+          new fabric.filters.Grayscale({ mode: value as TGrayscaleMode }),
+      },
+    ],
+  },
+
+  {
     name: "resize",
     title: "调整大小",
+    multiply: (obj: ResizeOwnProps) => new fabric.filters.Resize(obj),
     change: [
-      /**
-       * Resize type
-       * for webgl resizeType is just lanczos, for canvas2d can be:
-       * bilinear, hermite, sliceHack, lanczos.
-       * @default
-       */
-      // declare resizeType: ResizeOwnProps['resizeType'];
       {
+        id: "resizeType",
+        name: "resizeType",
         type: "option",
         title: "调整大小类型",
         options: [
           { title: "双线性", value: "bilinear" },
-          { title: "lanczos", value: "lanczos" },
-          { title: "hermite", value: "hermite" },
-          { title: "sliceHack", value: "sliceHack" },
+          { title: "兰索斯", value: "lanczos" },
+          { title: "插值", value: "hermite" },
+          { title: "切片", value: "sliceHack" },
         ],
       },
-      /**
-       * Scale factor for resizing, x axis
-       * @param {Number} scaleX
-       * @default
-       */
-      // declare scaleX: ResizeOwnProps['scaleX'];
       {
+        id: "scaleX",
+        name: "scaleX",
         type: "slider",
         title: "调整大小x轴",
         min: 0,
-        max: 100,
-        step: 1,
+        max: 1,
+        step: 0.01,
       },
-      /**
-       * Scale factor for resizing, y axis
-       * @param {Number} scaleY
-       * @default
-       */
-      // declare scaleY: ResizeOwnProps['scaleY'];
+
       {
+        id: "scaleY",
+        name: "scaleY",
         type: "slider",
         title: "调整大小y轴",
         min: 0,
-        max: 100,
-        step: 1,
+        max: 1,
+        step: 0.01,
       },
-      /**
-       * LanczosLobes parameter for lanczos filter, valid for resizeType lanczos
-       * @param {Number} lanczosLobes
-       * @default
-       */
-      // declare lanczosLobes: ResizeOwnProps['lanczosLobes'];
+
       {
+        id: "lanczosLobes",
+        name: "lanczosLobes",
         type: "slider",
-        title: "",
-        min: 0,
+        title: "滤波器",
+        min: 1,
         max: 10,
         step: 1,
       },
@@ -273,19 +334,28 @@ export const CanfilterSetting: CanFilterChangeType[] = [
     title: "色调旋转",
     change: [
       {
+        id: "rotation",
+        name: "rotation",
         type: "slider",
         title: "色调旋转强度",
         min: 0,
         max: 1,
-        step: 0.1,
+        step: 0.01,
+        value: (value: number) =>
+          new fabric.filters.HueRotation({ rotation: value }),
       },
     ],
   },
   {
     name: "gamma",
     title: "伽马",
+    multiply: (obj: { gamma: [number, number, number] }) =>
+      new fabric.filters.Gamma(obj),
     change: [
       {
+        id: "gamma",
+        name: "gamma0",
+        index: 0,
         type: "slider",
         title: "伽马强度1",
         min: 0,
@@ -293,6 +363,9 @@ export const CanfilterSetting: CanFilterChangeType[] = [
         step: 1,
       },
       {
+        id: "gamma",
+        name: "gamma1",
+        index: 1,
         type: "slider",
         title: "伽马强度2",
         min: 0,
@@ -300,11 +373,34 @@ export const CanfilterSetting: CanFilterChangeType[] = [
         step: 1,
       },
       {
+        id: "gamma",
+        name: "gamma2",
+        index: 2,
         type: "slider",
         title: "伽马强度3",
         min: 0,
         max: 10,
         step: 1,
+      },
+    ],
+  },
+  {
+    name: "invert",
+    title: "反色",
+    multiply: (obj: { invert: boolean; alpha: boolean }) =>
+      new fabric.filters.Invert(obj),
+    change: [
+      {
+        id: "invert",
+        name: "invert",
+        type: "checkbox",
+        title: "反色",
+      },
+      {
+        id: "alpha",
+        name: "alpha",
+        type: "checkbox",
+        title: "使用alpha通道",
       },
     ],
   },
@@ -364,6 +460,7 @@ export const JSON_KEY = [
   "editable",
   "extensionType",
   "extension",
+  "filtersArray",
 ];
 export const colors = [
   material.red[500],
@@ -421,7 +518,6 @@ export enum Tool {
   FilterSetting,
 }
 export type FontWeightType = "normal" | "bold";
-
 //返回
 export const FILL_COLOR = "rgba(0,0,0,1)";
 export const STROKE_COLOR = "rgba(0,0,0,1)";
@@ -597,7 +693,7 @@ export interface buildEditorProps {
   setDrawWidth: (drawWidth: number) => void;
   setDrewColor: (drewColor: string) => void;
   copy: () => void;
-  setImageFilter: (imageFilter: string) => void;
+  setImageFilter: (imageFilter: string[]) => void;
   setImageLoading: (imageLoading: boolean) => void;
   setFontSize: (fontSize: number) => void;
   setFontAlign: (fontAlign: fabric.Textbox["textAlign"]) => void;
@@ -635,7 +731,10 @@ export interface Edit {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
-  changeImageFilterSetting: (filter: string, value: number) => void;
+  getActiveFilterIndex: (filter: string) => number;
+  fixImageSize: (imageObj: fabric.FabricImage) => void;
+  changeImageFilterSetting: (filter: string, value: Effect | null) => void;
+  getActiveFilterEffect: (filter: string) => Effect | null;
   cleanFilter: () => void;
   deleteImageFilter: (filter: string) => void;
   savePng: () => void;
@@ -662,7 +761,7 @@ export interface Edit {
   setDrewColors: (color: string) => void;
   disableDraw: () => void;
   enableDraw: () => void;
-  getActiveFilter: () => string;
+  getActiveFilter: () => string[];
   changeImageFilter: (filter: string) => void;
   addImage: (url: string) => void;
   delete: () => void;

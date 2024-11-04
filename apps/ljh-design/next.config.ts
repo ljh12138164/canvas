@@ -17,12 +17,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  server: {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
-    port: 8200,
-  },
 };
 
 export default nextConfig;

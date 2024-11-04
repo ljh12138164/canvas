@@ -48,7 +48,7 @@ export default function Edit() {
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
   //选择的对象
   const [selectedObject, setSelectedObject] = useState<fabric.Object[] | null>(
-    null
+    null,
   );
   //颜色形状初始化
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);
@@ -80,8 +80,10 @@ export default function Edit() {
   const [canvasHeight, setCanvasHeight] = useState<number>(CANVAS_HEIGHT);
   //画布颜色
   const [canvasColor, setCanvasColor] = useState<string>(CANVAS_COLOR);
+  const { authZoom } = useResponse({ canvas, contain });
+
   const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } =
-    useHistoty({ canvas });
+    useHistoty({ canvas, authZoom, setImageFilter });
 
   useCanvasEvent({
     canvas,
@@ -112,12 +114,10 @@ export default function Edit() {
     }
     setTool(tools);
   });
-  const { authZoom } = useResponse({ canvas, contain });
-
   //编辑器
   const editor = useMemo(() => {
-    if (canvas)
-      return buildEditor({
+    if (canvas) {
+      const value = buildEditor({
         canvas,
         fillColor,
         strokeColor,
@@ -169,6 +169,8 @@ export default function Edit() {
         setStrokeWidth,
         setStrokeDashArray,
       });
+      return value;
+    }
     return undefined;
   }, [
     canvas,

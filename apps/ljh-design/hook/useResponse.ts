@@ -1,4 +1,4 @@
-import { InitFabicObject } from "@/store/editor";
+import { InitFabicObject } from "@/types/Edit";
 import * as fabric from "fabric";
 import { useCallback, useEffect } from "react";
 interface ResponseProps {
