@@ -1,0 +1,143 @@
+"filename", "language", "JSON", "Markdown", "YAML", "TypeScript", "JSON with Comments", "JavaScript", "TypeScript JSX", "CSS", "XML", "HTML", "comment", "blank", "total"
+"f:\study\design\canvas\README.md", "Markdown", 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 7
+"f:\study\design\canvas\apps\jebet\README.md", "Markdown", 0, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 51
+"f:\study\design\canvas\apps\jebet\components.json", "JSON", 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20
+"f:\study\design\canvas\apps\jebet\eslint.config.js", "JavaScript", 0, 0, 0, 0, 0, 28, 0, 0, 0, 0, 0, 2, 30
+"f:\study\design\canvas\apps\jebet\index.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 1, 21
+"f:\study\design\canvas\apps\jebet\package.json", "JSON", 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 64
+"f:\study\design\canvas\apps\jebet\postcss.config.js", "JavaScript", 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 1, 7
+"f:\study\design\canvas\apps\jebet\public\vite.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1
+"f:\study\design\canvas\apps\jebet\src\assets\react.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1
+"f:\study\design\canvas\apps\jebet\src\components\auth\SignInContain.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 44, 0, 0, 0, 0, 3, 47
+"f:\study\design\canvas\apps\jebet\src\components\command\Logo.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 3, 24
+"f:\study\design\canvas\apps\jebet\src\components\shadui\DottedSeparator.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 44, 0, 0, 0, 0, 2, 46
+"f:\study\design\canvas\apps\jebet\src\components\ui\accordion.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 49, 0, 0, 0, 0, 7, 56
+"f:\study\design\canvas\apps\jebet\src\components\ui\alert-dialog.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 126, 0, 0, 0, 0, 14, 140
+"f:\study\design\canvas\apps\jebet\src\components\ui\aspect-ratio.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 6
+"f:\study\design\canvas\apps\jebet\src\components\ui\avatar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 43, 0, 0, 0, 0, 6, 49
+"f:\study\design\canvas\apps\jebet\src\components\ui\badge.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 31, 0, 0, 0, 0, 6, 37
+"f:\study\design\canvas\apps\jebet\src\components\ui\breadcrumb.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 105, 0, 0, 0, 0, 11, 116
+"f:\study\design\canvas\apps\jebet\src\components\ui\button.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 6, 62
+"f:\study\design\canvas\apps\jebet\src\components\ui\calendar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 5, 71
+"f:\study\design\canvas\apps\jebet\src\components\ui\card.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 68, 0, 0, 0, 0, 9, 77
+"f:\study\design\canvas\apps\jebet\src\components\ui\chart.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 326, 0, 0, 0, 2, 36, 364
+"f:\study\design\canvas\apps\jebet\src\components\ui\checkbox.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 4, 29
+"f:\study\design\canvas\apps\jebet\src\components\ui\dialog.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 108, 0, 0, 0, 0, 13, 121
+"f:\study\design\canvas\apps\jebet\src\components\ui\input-otp.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 62, 0, 0, 0, 0, 8, 70
+"f:\study\design\canvas\apps\jebet\src\components\ui\input.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 4, 24
+"f:\study\design\canvas\apps\jebet\src\components\ui\separator.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 26, 0, 0, 0, 0, 4, 30
+"f:\study\design\canvas\apps\jebet\src\components\ui\sheet.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 125, 0, 0, 0, 0, 16, 141
+"f:\study\design\canvas\apps\jebet\src\components\ui\sidebar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 696, 0, 0, 0, 12, 54, 762
+"f:\study\design\canvas\apps\jebet\src\components\ui\skeleton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 3, 16
+"f:\study\design\canvas\apps\jebet\src\components\ui\tabs.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 47, 0, 0, 0, 0, 7, 54
+"f:\study\design\canvas\apps\jebet\src\components\ui\textarea.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 5, 25
+"f:\study\design\canvas\apps\jebet\src\components\ui\tooltip.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 7, 31
+"f:\study\design\canvas\apps\jebet\src\hooks\use-mobile.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 5, 20
+"f:\study\design\canvas\apps\jebet\src\index.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 85, 0, 0, 0, 1, 86
+"f:\study\design\canvas\apps\jebet\src\lib\utils.ts", "TypeScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+"f:\study\design\canvas\apps\jebet\src\main.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 40, 0, 0, 0, 1, 3, 44
+"f:\study\design\canvas\apps\jebet\src\page\auth\SignIn.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 46, 0, 0, 0, 2, 3, 51
+"f:\study\design\canvas\apps\jebet\src\page\error\Index.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 2, 6
+"f:\study\design\canvas\apps\jebet\src\vite-env.d.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2
+"f:\study\design\canvas\apps\jebet\tailwind.config.js", "JavaScript", 0, 0, 0, 0, 0, 89, 0, 0, 0, 0, 1, 1, 91
+"f:\study\design\canvas\apps\jebet\tsconfig.app.json", "JSON", 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 29
+"f:\study\design\canvas\apps\jebet\tsconfig.app.tsbuildinfo", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"f:\study\design\canvas\apps\jebet\tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 1, 18
+"f:\study\design\canvas\apps\jebet\tsconfig.node.json", "JSON", 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 24
+"f:\study\design\canvas\apps\jebet\tsconfig.node.tsbuildinfo", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"f:\study\design\canvas\apps\jebet\vite.config.ts", "TypeScript", 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 2, 13
+"f:\study\design\canvas\apps\ljh-design\.eslintrc.json", "JSON with Comments", 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 1, 8
+"f:\study\design\canvas\apps\ljh-design\README.md", "Markdown", 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 37
+"f:\study\design\canvas\apps\ljh-design\api\hono.ts", "TypeScript", 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 1, 1, 5
+"f:\study\design\canvas\apps\ljh-design\api\supabase\Image\index.ts", "TypeScript", 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 14, 1, 42
+"f:\study\design\canvas\apps\ljh-design\api\supabase\board\index.ts", "TypeScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 4, 2, 11
+"f:\study\design\canvas\apps\ljh-design\api\supabase\sign\index.ts", "TypeScript", 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 1, 3, 34
+"f:\study\design\canvas\apps\ljh-design\api\unsplash\index.ts", "TypeScript", 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 1, 2, 9
+"f:\study\design\canvas\apps\ljh-design\api\useQuery\useQuery.ts", "TypeScript", 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 2, 26
+"f:\study\design\canvas\apps\ljh-design\app\(pages)\board\Edit\layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 0, 2, 18
+"f:\study\design\canvas\apps\ljh-design\app\(pages)\board\Edit\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 1, 30
+"f:\study\design\canvas\apps\ljh-design\app\(pages)\board\layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 0, 3, 19
+"f:\study\design\canvas\apps\ljh-design\app\(pages)\board\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 2, 21
+"f:\study\design\canvas\apps\ljh-design\app\(pages)\board\sign-in\layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 2, 21
+"f:\study\design\canvas\apps\ljh-design\app\(pages)\board\sign-in\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 2, 32
+"f:\study\design\canvas\apps\ljh-design\app\_provide\providers.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 2, 7
+"f:\study\design\canvas\apps\ljh-design\app\_provide\query-provide.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 14, 7, 51
+"f:\study\design\canvas\apps\ljh-design\app\api\[[...route]]\image.ts", "TypeScript", 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 1, 3, 23
+"f:\study\design\canvas\apps\ljh-design\app\api\[[...route]]\route.ts", "TypeScript", 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 4, 16
+"f:\study\design\canvas\apps\ljh-design\app\api\[[...route]]\user.ts", "TypeScript", 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 1, 1, 52
+"f:\study\design\canvas\apps\ljh-design\app\globals.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 83, 0, 0, 0, 6, 89
+"f:\study\design\canvas\apps\ljh-design\app\layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 3, 20
+"f:\study\design\canvas\apps\ljh-design\app\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 2, 13
+"f:\study\design\canvas\apps\ljh-design\app\public\favicon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 1, 15
+"f:\study\design\canvas\apps\ljh-design\components.json", "JSON", 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20
+"f:\study\design\canvas\apps\ljh-design\components\Board\BoardMain.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 2, 6
+"f:\study\design\canvas\apps\ljh-design\components\Board\Navbar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 3, 14
+"f:\study\design\canvas\apps\ljh-design\components\Board\SiderBar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 3, 17
+"f:\study\design\canvas\apps\ljh-design\components\Board\SiderBarItem.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 34, 0, 0, 0, 0, 2, 36
+"f:\study\design\canvas\apps\ljh-design\components\Board\SiderBarRoutes.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 3, 32
+"f:\study\design\canvas\apps\ljh-design\components\Comand\Logo.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 3, 21
+"f:\study\design\canvas\apps\ljh-design\components\Comand\UserButton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 31, 0, 0, 0, 3, 3, 37
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\ColorPicker.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 2, 3, 37
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\ColorSiberbar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 281, 0, 0, 0, 4, 5, 290
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\Edit.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 269, 0, 0, 0, 12, 9, 290
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\FilterSetting.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 192, 0, 0, 0, 23, 4, 219
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\FontSizeInput.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 37, 0, 0, 0, 0, 2, 39
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\Footer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 60, 0, 0, 0, 0, 2, 62
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\ImageBox.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 42, 0, 0, 0, 0, 3, 45
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\ImageSetting.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 34, 0, 0, 0, 0, 2, 36
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\ImageSiderbar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 92, 0, 0, 0, 9, 4, 105
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\NavBar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 180, 0, 0, 0, 4, 1, 185
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\ShapeSidle.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 72, 0, 0, 0, 0, 5, 77
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\ShapeTool.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 2, 17
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\SiderBar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 78, 0, 0, 0, 0, 2, 80
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\SiderBarItem.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 0, 2, 34
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\StokeWidth.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 45, 0, 0, 0, 0, 2, 47
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\TextSidebar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 3, 59
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\ToolSiberbarClose.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 2, 17
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\ToolSiderbar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 33, 0, 0, 0, 0, 3, 36
+"f:\study\design\canvas\apps\ljh-design\components\EditComponents\Tools.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 392, 0, 0, 0, 3, 4, 399
+"f:\study\design\canvas\apps\ljh-design\components\Sign\SignIn.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 148, 0, 0, 0, 0, 5, 153
+"f:\study\design\canvas\apps\ljh-design\components\shadui-Components\Tooltip.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 40, 0, 0, 0, 3, 2, 45
+"f:\study\design\canvas\apps\ljh-design\components\ui\Avatar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 38, 0, 0, 0, 0, 7, 45
+"f:\study\design\canvas\apps\ljh-design\components\ui\button.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 58, 0, 0, 0, 0, 6, 64
+"f:\study\design\canvas\apps\ljh-design\components\ui\card.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 91, 0, 0, 0, 0, 9, 100
+"f:\study\design\canvas\apps\ljh-design\components\ui\checkbox.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 26, 0, 0, 0, 1, 5, 32
+"f:\study\design\canvas\apps\ljh-design\components\ui\dropdown-menu.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 216, 0, 0, 0, 3, 20, 239
+"f:\study\design\canvas\apps\ljh-design\components\ui\input.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 21, 0, 0, 0, 1, 5, 27
+"f:\study\design\canvas\apps\ljh-design\components\ui\label.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 6, 28
+"f:\study\design\canvas\apps\ljh-design\components\ui\scroll-area.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 57, 0, 0, 0, 0, 8, 65
+"f:\study\design\canvas\apps\ljh-design\components\ui\select.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 170, 0, 0, 0, 6, 14, 190
+"f:\study\design\canvas\apps\ljh-design\components\ui\separator.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 6, 35
+"f:\study\design\canvas\apps\ljh-design\components\ui\slider.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 6, 31
+"f:\study\design\canvas\apps\ljh-design\components\ui\tooltip.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 9, 38
+"f:\study\design\canvas\apps\ljh-design\database\supbash.ts", "TypeScript", 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+"f:\study\design\canvas\apps\ljh-design\hook\useCanvas.ts", "TypeScript", 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 4, 6, 73
+"f:\study\design\canvas\apps\ljh-design\hook\useCanvasEvent.ts", "TypeScript", 0, 0, 0, 52, 0, 0, 0, 0, 0, 0, 7, 3, 62
+"f:\study\design\canvas\apps\ljh-design\hook\useCliph.ts", "TypeScript", 0, 0, 0, 36, 0, 0, 0, 0, 0, 0, 0, 3, 39
+"f:\study\design\canvas\apps\ljh-design\hook\useHistory.ts", "TypeScript", 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 10, 4, 71
+"f:\study\design\canvas\apps\ljh-design\hook\useKeyBoard.ts", "TypeScript", 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 0, 4, 70
+"f:\study\design\canvas\apps\ljh-design\hook\useResponse.ts", "TypeScript", 0, 0, 0, 62, 0, 0, 0, 0, 0, 0, 12, 5, 79
+"f:\study\design\canvas\apps\ljh-design\hook\useWindowEvent.ts", "TypeScript", 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 2, 8
+"f:\study\design\canvas\apps\ljh-design\lib\react-query\index.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\study\design\canvas\apps\ljh-design\lib\react-query\useSignUp.ts", "TypeScript", 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 1, 3, 24
+"f:\study\design\canvas\apps\ljh-design\lib\sign\index.ts", "TypeScript", 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 3, 30
+"f:\study\design\canvas\apps\ljh-design\lib\types\index.ts", "TypeScript", 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 2, 32
+"f:\study\design\canvas\apps\ljh-design\lib\unsplash.ts", "TypeScript", 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 2, 8
+"f:\study\design\canvas\apps\ljh-design\lib\utils.ts", "TypeScript", 0, 0, 0, 155, 0, 0, 0, 0, 0, 0, 28, 5, 188
+"f:\study\design\canvas\apps\ljh-design\middleware.ts", "TypeScript", 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 2, 1, 19
+"f:\study\design\canvas\apps\ljh-design\next.config.ts", "TypeScript", 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 1, 2, 23
+"f:\study\design\canvas\apps\ljh-design\package.json", "JSON", 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 81
+"f:\study\design\canvas\apps\ljh-design\postcss.config.mjs", "JavaScript", 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 1, 2, 9
+"f:\study\design\canvas\apps\ljh-design\public.d.ts", "TypeScript", 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"f:\study\design\canvas\apps\ljh-design\store\EditorStore.ts", "TypeScript", 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 1, 13
+"f:\study\design\canvas\apps\ljh-design\store\editor.ts", "TypeScript", 0, 0, 0, 680, 0, 0, 0, 0, 0, 0, 37, 13, 730
+"f:\study\design\canvas\apps\ljh-design\store\index.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"f:\study\design\canvas\apps\ljh-design\tailwind.config.ts", "TypeScript", 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 1, 64
+"f:\study\design\canvas\apps\ljh-design\tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 33, 0, 0, 0, 0, 0, 0, 1, 34
+"f:\study\design\canvas\apps\ljh-design\types\Edit.ts", "TypeScript", 0, 0, 0, 821, 0, 0, 0, 0, 0, 0, 8, 11, 840
+"f:\study\design\canvas\apps\ljh-design\types\user.ts", "TypeScript", 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+"f:\study\design\canvas\package.json", "JSON", 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 25
+"f:\study\design\canvas\pnpm-lock.yaml", "YAML", 0, 0, 6813, 0, 0, 0, 0, 0, 0, 0, 0, 1631, 8444
+"f:\study\design\canvas\pnpm-workspace.yaml", "YAML", 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4
+"f:\study\design\canvas\turbo.json", "JSON", 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 19
+"Total", "-", 271, 67, 6816, 2404, 57, 129, 5513, 168, 16, 20, 245, 2250, 17956

@@ -1,7 +1,7 @@
 import { Providers } from "@/app/_provide/providers";
-import SiderBar from "../_components/Board/SiderBar";
-import NavBar from "../_components/Board/Navbar";
-import BoardMain from "../_components/Board/BoardMain";
+import SiderBar from "@/components/Board/SiderBar";
+import NavBar from "@/components/Board/Navbar";
+import BoardMain from "@/components/Board/BoardMain";
 
 export default async function Home() {
   return (

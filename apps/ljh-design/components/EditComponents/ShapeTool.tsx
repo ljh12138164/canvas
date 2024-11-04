@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import { cn } from "../../../lib/utils";
+import { cn } from "@/lib/utils";
 interface ShapeToolProps {
   Icon: IconType;
   onClick: () => void;
@@ -14,4 +14,3 @@ const ShapeTool = ({ Icon, onClick, iconClassName }: ShapeToolProps) => {
 };
 
 export default ShapeTool;
-  

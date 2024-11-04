@@ -39,11 +39,11 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
   // 初始化颜色
   const [color, setColor] = useState<string | null>(
     // @ts-ignore
-    effect?.color as string | null,
+    effect?.color as string | null
   );
   const defalutValue = (
     item: SiderProps | CheckboxProps | ColorFilterProps | OptionFilterProps,
-    index: number | undefined,
+    index: number | undefined
   ) => {
     if (index === undefined)
       // @ts-ignore
@@ -70,7 +70,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
         // @ts-ignore
         filter?.multiply({
           [start]: Object.values(value).map((item) => +item),
-        }),
+        })
       );
     } else {
       // @ts-ignore
@@ -92,7 +92,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
             editor?.changeImageFilterSetting(
               filter.name,
               //@ts-ignore
-              filter.change[0].value(value[0]),
+              filter.change[0].value(value[0])
             );
           }}
         ></Slider>
@@ -100,11 +100,11 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
       {filter?.change.length === 1 && filter?.change[0].type === "option" && (
         //@ts-ignore
         <Select
-          onValueChange={(value) => {
+          onValueChange={(value: string) => {
             editor?.changeImageFilterSetting(
               filter.name,
               //@ts-ignore
-              filter.change[0].value(value),
+              filter.change[0].value(value)
             );
           }}
         >
@@ -184,7 +184,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
                   //@ts-ignore
                   <Select
                     {...register(item.name)}
-                    onValueChange={(value) => {
+                    onValueChange={(value: string) => {
                       setValue(item.name, value);
                       handleChange();
                     }}

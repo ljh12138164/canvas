@@ -28,14 +28,14 @@ import {
 import { useMemoizedFn } from "ahooks";
 import * as fabric from "fabric";
 import { useEffect, useMemo, useRef, useState } from "react";
-import ColorSoiberbar from "@/app/_components/EditComponents/ColorSiberbar";
-import ImageSiderbar from "@/app/_components/EditComponents/ImageSiderbar";
-import NavBar from "@/app/_components/EditComponents/NavBar";
-import ShapeSidle from "@/app/_components/EditComponents/ShapeSidle";
-import SiderBar from "@/app/_components/EditComponents/SiderBar";
-import TextSidebar from "@/app/_components/EditComponents/TextSidebar";
-import Tools from "@/app/_components/EditComponents/Tools";
-import Footer from "@/app/_components/EditComponents/Footer";
+import ColorSoiberbar from "@/components/EditComponents/ColorSiberbar";
+import ImageSiderbar from "@/components/EditComponents/ImageSiderbar";
+import NavBar from "@/components/EditComponents/NavBar";
+import ShapeSidle from "@/components/EditComponents/ShapeSidle";
+import SiderBar from "@/components/EditComponents/SiderBar";
+import TextSidebar from "@/components/EditComponents/TextSidebar";
+import Tools from "@/components/EditComponents/Tools";
+import Footer from "@/components/EditComponents/Footer";
 import useHistoty from "@/hook/useHistory";
 import useKeyBoard from "@/hook/useKeyBoard";
 import { useWindowEvent } from "@/hook/useWindowEvent";
@@ -48,7 +48,7 @@ export default function Edit() {
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
   //选择的对象
   const [selectedObject, setSelectedObject] = useState<fabric.Object[] | null>(
-    null,
+    null
   );
   //颜色形状初始化
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);
@@ -70,7 +70,7 @@ export default function Edit() {
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
   //图片
   const [imageLoading, setImageLoading] = useState<boolean>(false);
-  const [imageFilter, setImageFilter] = useState<string>("none");
+  const [imageFilter, setImageFilter] = useState<string[]>([]);
 
   //画布操作
   const [drewColor, setDrewColor] = useState<string>(STROKE_COLOR);
@@ -83,7 +83,7 @@ export default function Edit() {
   const { authZoom } = useResponse({ canvas, contain });
 
   const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } =
-    useHistoty({ canvas, authZoom, setImageFilter });
+    useHistoty({ canvas, authZoom });
 
   useCanvasEvent({
     canvas,
