@@ -1,4 +1,4 @@
-import { useImageQuery } from "@/api/useQuery/useQuery";
+import { useImageQuery } from "@/api/useQuery/useImageQuery";
 import Image from "next/image";
 import Link from "next/link";
 import { Edit } from "@/types/Edit";

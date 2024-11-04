@@ -1,13 +1,12 @@
-import { User } from "@/types/user";
 import { create } from "zustand";
 
 interface userStore {
-  user: User | undefined;
-  changeUser: (user: User) => void;
+  userIdStore: string | undefined;
+  changeUserId: (userId: string | undefined) => void;
 }
 export const useuserStore = create<userStore>((set) => ({
-  user: undefined,
-  changeUser: (user: User) => {
-    set({ user });
+  userIdStore: undefined,
+  changeUserId: (userId) => {
+    return set({ userIdStore: userId });
   },
 }));

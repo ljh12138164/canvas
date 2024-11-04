@@ -1,5 +1,7 @@
+"use client";
+
 const BoardMain = () => {
-  return <>5</>;
+  return <></>;
 };
 
 export default BoardMain;
