@@ -33,27 +33,11 @@ const router = createBrowserRouter([
 ]);
 const container = document.getElementById("root")!;
 const root = createRoot(container);
-// 👇 将渲染操作放入 mount 函数，子应用初始化时会自动执行
-window.mount = () => {
-  root.render(
-    <QueryClientProvider client={queryclinet}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <ErrorBoundary fallback={<Index />}>
-        <RouterProvider
-          router={router}
-          fallbackElement={<div>Loading...</div>}
-        />
-      </ErrorBoundary>
-    </QueryClientProvider>
-  );
-};
-
-// 👇 将卸载操作放入 unmount 函数，就是上面步骤2中的卸载函数
-window.unmount = () => {
-  root.unmount();
-};
-
-// 如果不在微前端环境，则直接执行mount渲染
-if (!window.__MICRO_APP_ENVIRONMENT__) {
-  window.mount();
-}
+root.render(
+  <QueryClientProvider client={queryclinet}>
+    <ReactQueryDevtools initialIsOpen={false} />
+    <ErrorBoundary fallback={<Index />}>
+      <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
+    </ErrorBoundary>
+  </QueryClientProvider>
+);

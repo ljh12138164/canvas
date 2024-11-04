@@ -174,16 +174,6 @@ export function transformToTest(objects: any) {
   });
 }
 
-// export async function jwtEncode(payload: any) {
-//   const JWT_SECRET = new TextEncoder().encode(
-//     process.env.NEXT_PUBLIC_JWT_SECRET!
-//   );
-//   const token = await new jose.SignJWT(payload)
-//     .setProtectedHeader({ alg: 'HS256' })
-//     .setExpirationTime('30d')
-//     .sign(JWT_SECRET);
-//   return token;
-// }
 export function debounce(fn: () => void, delay: number = 300) {
   let timeoutId: NodeJS.Timeout;
   return function (this: any, ...args: any[]) {

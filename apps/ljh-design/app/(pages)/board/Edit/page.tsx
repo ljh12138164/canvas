@@ -1,9 +1,12 @@
-import SignIn from "@/app/_components/Sign/SignIn";
 import { Toaster } from "react-hot-toast";
-
-export default async function SignInPage() {
+import { Providers } from "@/app/_provide/providers";
+import Edit from "@/components/EditComponents/Edit";
+export default async function Home() {
   return (
     <section className="h-[100dvh] overflow-hidden">
+      <Providers>
+        <Edit />
+      </Providers>
       <Toaster
         position="top-center"
         gutter={12}
@@ -20,12 +23,7 @@ export default async function SignInPage() {
             zIndex: 10,
           },
         }}
-      />
-      <main className="w-full h-full flex items-center justify-center">
-        <div className="w-full h-full md:h-auto md:w-[420px]">
-          <SignIn />
-        </div>
-      </main>
+      ></Toaster>
     </section>
   );
 }

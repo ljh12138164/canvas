@@ -4,9 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useSignUp } from "@/lib/react-query/useSignUp";
-// import { jwtEncode } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { hashSync } from "bcryptjs";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -35,13 +34,12 @@ const SignIn = () => {
         accoute: "",
         password: "",
       },
-    },
+    }
   );
   const onSubmit = async (data: z.infer<typeof schema>) => {
     if (login) {
       console.log(login);
     } else {
-      // data.password = hashSync(data.password, 10);
       if (data.name)
         signUpMutate(
           data as {
@@ -52,25 +50,13 @@ const SignIn = () => {
           {
             onSuccess: async () => {
               toast.success("注册成功");
-
-              // // 创建 JWT
-              // const token = await jwtEncode({
-              //   //@ts-ignore
-              //   id: user?.id as string,
-              //   //@ts-ignore
-              //   name: user?.name as string,
-              //   //@ts-ignore
-              //   account: user?.account as string,
-              // });
-
-              // // 将 token 存储在本地存储中
-              // localStorage.setItem("token", token);
+              redirect("/board");
             },
             onError: (err) => {
               console.error(err);
               toast.error("注册失败");
             },
-          },
+          }
         );
     }
   };

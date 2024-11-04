@@ -40,7 +40,7 @@ export interface OptionFilterProps {
     value: TBlendMode | TResizeType | TGrayscaleMode;
   }[];
   value?: (
-    value: TBlendMode | TResizeType | TGrayscaleMode,
+    value: TBlendMode | TResizeType | TGrayscaleMode
   ) => fabric.filters.BaseFilter<string, any>;
 }
 export interface SiderProps {
@@ -672,7 +672,7 @@ export interface buildEditorProps {
   fontAlign: fabric.Textbox["textAlign"];
   fontSize: number;
   imageLoading: boolean;
-  imageFilter: string;
+  imageFilter: string[];
   drewColor: string;
   drawWidth: number;
   canvasWidth: number;
@@ -724,13 +724,14 @@ export interface Edit {
   fontAlign: fabric.Textbox["textAlign"];
   fontSize: number;
   imageLoading: boolean;
-  imageFilter: string;
+  imageFilter: string[];
   drewColor: string;
   drawWidth: number;
   canvasWidth: number;
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
+
   getActiveFilterIndex: (filter: string) => number;
   fixImageSize: (imageObj: fabric.FabricImage) => void;
   changeImageFilterSetting: (filter: string, value: Effect | null) => void;
