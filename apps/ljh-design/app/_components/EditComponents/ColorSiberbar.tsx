@@ -6,6 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import type { Filter } from "@/types/Edit";
 import {
+  canfilterArr,
   CANVAS_COLOR,
   FILL_COLOR,
   FilterItem,
@@ -16,7 +17,7 @@ import {
   ToolItem,
 } from "@/types/Edit";
 import { useMemoizedFn } from "ahooks";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ColorPicker from "./ColorPicker";
 import StokeWidth from "./StokeWidth";
 import ToolSiderbarClose from "./ToolSiberbarClose";
@@ -39,14 +40,15 @@ const ColorSoiberbar = ({
   //颜色
   const value = editor?.fillColor || FILL_COLOR;
   const stokevalue = editor?.strokeColor || STROKE_COLOR;
+  const filterRef = useRef<HTMLDivElement | null>(null);
+  const [filterSetting, setFilterSetting] = useState<string>("");
 
   const initColor = useMemo(() => {
     return editor?.getWorkspace()?.fill ?? "#ffffff";
   }, [editor]);
   useEffect(() => {
     editor?.setCanvasColor(initColor as string);
-  }, [editor, initColor]);
-
+  }, [editor, initColor, filterRef]);
   const onShow = useMemoizedFn(() => {
     if (
       activeTool === Tool.Fill ||
@@ -62,18 +64,23 @@ const ColorSoiberbar = ({
       return activeTool;
     return "";
   });
+  useEffect(() => {
+    filterRef?.current?.scrollIntoView({ behavior: "smooth" });
+  }, [filterRef]);
   //检查滤镜是否选中
   const check = useMemoizedFn((item: string) => {
-    return editor?.getActiveFilter() === item;
+    if (item === "none" && editor?.getActiveFilter().length === 0) return true;
+    return editor?.getActiveFilter().includes(item) || false;
   });
   return (
     <aside
       className={cn(
         "z-[600] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col",
-        onShow() ? "visible" : "hidden"
+        onShow() ? "visible" : "hidden",
       )}
     >
       <ToolSiderbar
+        onChangeActive={onChangeActive}
         front={onShow() === Tool.FilterSetting}
         title={ToolItem[onShow() as keyof typeof ToolItem] || ""}
         description={`更改${ToolItem[onShow() as keyof typeof ToolItem] || ""}`}
@@ -145,8 +152,15 @@ const ColorSoiberbar = ({
                     key={item}
                     variant="outline"
                     onClick={() => {
-                      if (check(item)) {
+                      if (item === "none") {
                         editor?.cleanFilter();
+                      } else if (
+                        check(item) &&
+                        editor?.getActiveFilter().length === 1
+                      ) {
+                        editor?.cleanFilter();
+                      } else if (check(item)) {
+                        editor?.deleteImageFilter(item);
                       } else {
                         editor?.changeImageFilter(item);
                       }
@@ -154,11 +168,22 @@ const ColorSoiberbar = ({
                     className={`w-full h-16 relative  justify-start text-left ${check(item) && "border-blue-500 border-2"}`}
                   >
                     {FilterItem[item]}
-                    <ImageSetting
-                      activeTool={activeTool}
-                      onChangeActive={onChangeActive}
-                      isShow={check(item) && item !== "none"}
-                    ></ImageSetting>
+                    {check(item) && (
+                      <div className=" absolute top-0 right-0 bg-indigo-600 text-white text-xs px-2 duration-300">
+                        {editor &&
+                          item !== "none" &&
+                          editor?.getActiveFilterIndex(item) + 1}
+                      </div>
+                    )}
+                    {canfilterArr.includes(item) && (
+                      <ImageSetting
+                        filter={item}
+                        setFilterSetting={setFilterSetting}
+                        activeTool={activeTool}
+                        onChangeActive={onChangeActive}
+                        isShow={check(item) && item !== "none"}
+                      ></ImageSetting>
+                    )}
                   </Button>
                 );
               })}
@@ -166,7 +191,10 @@ const ColorSoiberbar = ({
           )}
           {/* 滤镜设置 */}
           {onShow() === Tool.FilterSetting && (
-            <FilterSetting item={editor?.getActiveFilter()}></FilterSetting>
+            <FilterSetting
+              editor={editor}
+              filterSetting={filterSetting}
+            ></FilterSetting>
           )}
           {onShow() === Tool.Draw && (
             <section>

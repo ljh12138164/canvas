@@ -4,8 +4,15 @@ interface ImageSettingProps {
   isShow: boolean;
   onChangeActive: (tool: Tool) => void;
   activeTool: Tool;
+  filter: string;
+  setFilterSetting: (filter: string) => void;
 }
-const ImageSetting = ({ isShow, onChangeActive }: ImageSettingProps) => {
+const ImageSetting = ({
+  isShow,
+  filter,
+  onChangeActive,
+  setFilterSetting,
+}: ImageSettingProps) => {
   return (
     <div
       className={` absolute top-[50%] right-[5%] translate-y-[-50%] transition-all duration-300 ease-in-out size-6 hover:bg-slate-200 rounded-full p-1 ${
@@ -17,6 +24,7 @@ const ImageSetting = ({ isShow, onChangeActive }: ImageSettingProps) => {
       onClick={(e) => {
         e.stopPropagation();
         onChangeActive(Tool.FilterSetting);
+        setFilterSetting(filter);
       }}
     >
       <LuSettings className="h-full w-full"></LuSettings>

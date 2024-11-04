@@ -1,5 +1,6 @@
 import {
   createFilter,
+  debounce,
   downloadImage,
   Effect,
   isText,
@@ -100,7 +101,7 @@ export const buildEditor = ({
       .getObjects()
       .find(
         (item: InitFabicObject | fabric.FabricObject) =>
-          (item as InitFabicObject).name === "board"
+          (item as InitFabicObject).name === "board",
       );
   //生成保存选项
   const genertateSaveOption = () => {
@@ -156,7 +157,7 @@ export const buildEditor = ({
     // 替换可能导致错误的字符
     const cleanedSvg = dataUrl.replace(
       /&(?!amp;|lt;|gt;|quot;|#39;)/g,
-      "&amp;"
+      "&amp;",
     );
 
     const svgBlob = new Blob([cleanedSvg], {
@@ -188,7 +189,7 @@ export const buildEditor = ({
     const dataUrl = canvas.toObject(JSON_KEY);
     transformToTest(dataUrl);
     const fileString = `data:text/json;charset=utf-8,${encodeURIComponent(
-      JSON.stringify(dataUrl, null, "\t")
+      JSON.stringify(dataUrl, null, "\t"),
     )}`;
     downloadImage(fileString, "json");
     authZoom();
@@ -212,6 +213,11 @@ export const buildEditor = ({
     center(object);
     canvas.add(object);
     canvas.setActiveObject(object);
+  };
+  const fixImageSize = (imageObj: fabric.FabricImage) => {
+    const workspace = getWorkspace();
+    imageObj.scaleToWidth(workspace?.width || 0);
+    imageObj.scaleToHeight(workspace?.height || 0);
   };
   //返回编辑器方法
   return {
@@ -315,42 +321,89 @@ export const buildEditor = ({
     getActiveFilter: () => {
       const value = canvas?.getActiveObjects()?.[0];
       if (value instanceof fabric.FabricImage) {
-        return value.filtersArray[0]?.name || "none";
+        return value.filtersArray.length > 0
+          ? value.filtersArray.map((item) => item.name)
+          : [];
       }
-      return "none";
+      return [];
     },
+    getActiveFilterIndex: (filter: string) => {
+      const value = canvas?.getActiveObjects()?.[0];
+      if (value instanceof fabric.FabricImage) {
+        return value.filtersArray.findIndex((item) => item.name === filter);
+      }
+      return -1;
+    },
+    getActiveFilterEffect: (filter: string) => {
+      const value = canvas?.getActiveObjects()?.[0];
+      if (value instanceof fabric.FabricImage) {
+        return (
+          value.filtersArray.find((item) => item.name === filter)?.effect ||
+          null
+        );
+      }
+      return null;
+    },
+    fixImageSize,
     //改变图片滤镜
     changeImageFilter: (filter: string) => {
-      setImageFilter(filter);
+      setImageFilter([...imageFilter, filter]);
       canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
         if (item.type === "image") {
           const imageObj = item as fabric.FabricImage;
           //创建滤镜
           const effects = createFilter(filter);
-          imageObj.filtersArray = [{ name: filter, effect: effects }];
-          imageObj.filters = effects ? [effects] : [];
+          imageObj.filtersArray.push({ name: filter, effect: effects });
+          // @ts-ignore
+          imageObj.filters = imageObj.filtersArray[0]?.effect
+            ? imageObj.filtersArray.map((item) => item.effect)
+            : [];
+          fixImageSize(imageObj);
           // 多种滤镜
           imageObj.applyFilters();
           canvas.renderAll();
+          save();
         }
       });
     },
-    changeImageFilterSetting: (filter: string, value: number) => {
-      console.log(filter, value);
+    //改变滤镜参数
+    changeImageFilterSetting: (filter: string, value: Effect) => {
+      if (!value) return;
+      canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
+        if (item.type === "image") {
+          const imageObj = item as fabric.FabricImage;
+          imageObj.filtersArray = [
+            ...imageObj.filtersArray.filter((item) => item.name !== filter),
+            { name: filter, effect: value },
+          ];
+          // @ts-ignore
+          imageObj.filters = imageObj.filtersArray[0]?.effect
+            ? imageObj.filtersArray.map((item) => item.effect)
+            : [];
+          imageObj.applyFilters();
+          canvas.renderAll();
+          debounce(save);
+        }
+      });
     },
     // 删除滤镜
     deleteImageFilter: (filter: string) => {
+      setImageFilter([...imageFilter].filter((item) => item !== filter));
+
       canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
         if (item.type === "image") {
           const imageObj = item as fabric.FabricImage;
           imageObj.filtersArray = imageObj.filtersArray.filter(
-            (item) => item.name !== filter
+            (item) => item.name !== filter,
           );
+          imageObj.filters = imageObj.filtersArray[0]?.effect
+            ? [imageObj.filtersArray[0]?.effect]
+            : [];
           imageObj.applyFilters();
           canvas.renderAll();
         }
       });
-      setImageFilter("none");
+      setImageFilter([]);
     },
     addImage: async (value: string) => {
       toast.loading("添加中...");
@@ -516,7 +569,7 @@ export const buildEditor = ({
       canvas.renderAll();
     },
     cleanFilter: () => {
-      setImageFilter("none");
+      setImageFilter([]);
       canvas.getActiveObjects().forEach((item) => {
         if (item.type === "image") {
           (item as fabric.FabricImage).filtersArray = [];
@@ -666,7 +719,7 @@ export const buildEditor = ({
           ...DIAMOD_OPTION,
           fill: fillColor,
           stroke: strokeColor,
-        }
+        },
       );
       center(diamod);
       canvas.add(diamod);

@@ -37,7 +37,6 @@ const TextSidebar = ({
               }}
               variant="outline"
               onClick={() => {
-                console.log(item);
                 editor?.addText(item.name, {
                   fontSize: +item.fontSize.slice(0, 2),
                   fontWeight: item.fontWeight,

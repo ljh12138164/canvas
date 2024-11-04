@@ -1,14 +1,14 @@
-import TooltipComponents from '@/components/shadui-Components/Tooltip';
-import { Button } from '@/components/ui/button';
+import TooltipComponents from "@/components/shadui-Components/Tooltip";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Separator } from '@/components/ui/separator';
-import { CiFileOn } from 'react-icons/ci';
-import { BsCloudCheck } from 'react-icons/bs';
+} from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
+import { CiFileOn } from "react-icons/ci";
+import { BsCloudCheck } from "react-icons/bs";
 import {
   LuChevronDown,
   LuDownload,
@@ -16,10 +16,10 @@ import {
   LuMousePointerClick,
   LuRedo2,
   LuUndo2,
-} from 'react-icons/lu';
-import Logo from '../Comand/Logo';
-import { Tool, Edit } from '@/types/Edit';
-import { useFilePicker } from 'use-file-picker';
+} from "react-icons/lu";
+import Logo from "../Comand/Logo";
+import { Tool, Edit } from "@/types/Edit";
+import { useFilePicker } from "use-file-picker";
 interface NavBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
@@ -27,11 +27,11 @@ interface NavBarProps {
 }
 const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
   const { openFilePicker } = useFilePicker({
-    accept: '.json',
+    accept: ".json",
     onFilesSelected: ({ plainFiles }) => {
       const file = plainFiles[0];
       const reader = new FileReader();
-      reader.readAsText(file, 'UTF-8');
+      reader.readAsText(file, "UTF-8");
       reader.onload = () => {
         const json = reader.result;
         editor?.loadFromJson(json as string);
@@ -69,12 +69,12 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
         <Separator orientation="vertical" className="mx-2 h-[60%]" />
         <TooltipComponents label="预览">
           <Button
-            variant={'ghost'}
-            size={'icon'}
+            variant={"ghost"}
+            size={"icon"}
             onClick={() => {
               onChangeTool(Tool.Select);
             }}
-            className={`${activeTool === Tool.Select && 'bg-gray-100'}`}
+            className={`${activeTool === Tool.Select && "bg-gray-100"}`}
           >
             <LuMousePointerClick size="20" />
           </Button>
@@ -82,8 +82,8 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
         <TooltipComponents label="撤销">
           <Button
             disabled={!editor?.canUndo()}
-            variant={'ghost'}
-            size={'icon'}
+            variant={"ghost"}
+            size={"icon"}
             onClick={() => {
               editor?.undo();
             }}
@@ -95,8 +95,8 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
         <TooltipComponents label="重做">
           <Button
             disabled={!editor?.canRedo()}
-            variant={'ghost'}
-            size={'icon'}
+            variant={"ghost"}
+            size={"icon"}
             onClick={() => {
               editor?.redo();
             }}
@@ -116,8 +116,8 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
             {/* @ts-ignore */}
             <DropdownMenuTrigger asChild>
               <Button
-                variant={'ghost'}
-                size={'sm'}
+                variant={"ghost"}
+                size={"sm"}
                 className="w-20 font-bold flex items-center justify-center gap-2"
               >
                 <p>导出</p>
@@ -180,5 +180,5 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
     </nav>
   );
 };
-NavBar.displayName = 'EditNavBar';
+NavBar.displayName = "EditNavBar";
 export default NavBar;
