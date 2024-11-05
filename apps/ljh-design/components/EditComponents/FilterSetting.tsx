@@ -20,6 +20,7 @@ import {
 } from "@/types/Edit";
 import { useEffect, useState } from "react";
 import { ChromePicker } from "react-color";
+
 import { useForm } from "react-hook-form";
 interface FilterSettingProps {
   editor: Edit | undefined;
@@ -37,13 +38,11 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
     },
   });
   // 初始化颜色
-  const [color, setColor] = useState<string | null>(
-    // @ts-ignore
-    effect?.color as string | null
-  );
+  // @ts-ignore
+  const [color, setColor] = useState<string>(effect?.color || "#000");
   const defalutValue = (
     item: SiderProps | CheckboxProps | ColorFilterProps | OptionFilterProps,
-    index: number | undefined
+    index: number | undefined,
   ) => {
     if (index === undefined)
       // @ts-ignore
@@ -70,7 +69,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
         // @ts-ignore
         filter?.multiply({
           [start]: Object.values(value).map((item) => +item),
-        })
+        }),
       );
     } else {
       // @ts-ignore
@@ -92,7 +91,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
             editor?.changeImageFilterSetting(
               filter.name,
               //@ts-ignore
-              filter.change[0].value(value[0])
+              filter.change[0].value(value[0]),
             );
           }}
         ></Slider>
@@ -104,7 +103,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
             editor?.changeImageFilterSetting(
               filter.name,
               //@ts-ignore
-              filter.change[0].value(value)
+              filter.change[0].value(value),
             );
           }}
         >
@@ -166,19 +165,16 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
                   ></input>
                 )}
                 {item.type === "color" && (
-                  <>
-                    {/* //@ts-ignore */}
-                    <ChromePicker
-                      //@ts-ignore
-                      color={color}
-                      className="border rounded-lg"
-                      onChange={(color) => {
-                        handleChange();
-                        setValue(item.name, color.hex);
-                        setColor(color.hex);
-                      }}
-                    />
-                  </>
+                  // @ts-ignore
+                  <ChromePicker
+                    color={color}
+                    className="border rounded-lg"
+                    onChange={(color) => {
+                      handleChange();
+                      setValue(item.name, color.hex);
+                      setColor(color.hex);
+                    }}
+                  />
                 )}
                 {item.type === "option" && (
                   //@ts-ignore

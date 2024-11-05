@@ -1,13 +1,12 @@
-import { UserQuery } from "@/types/user";
 import UserButton from "../Comand/UserButton";
 interface NavBarProps {
-  userHook: UserQuery;
+  userId: string;
 }
-const NavBar = ({ userHook }: NavBarProps) => {
+const NavBar = ({ userId }: NavBarProps) => {
   return (
     <nav className="bg-muted flex p-4 items-center h-[60px] w-full">
       <div className="ml-auto">
-        <UserButton userHook={userHook} />
+        <UserButton userId={userId} />
       </div>
     </nav>
   );

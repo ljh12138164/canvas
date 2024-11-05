@@ -1,11 +1,18 @@
 import { Toaster } from "react-hot-toast";
 import { Providers } from "@/app/_provide/providers";
 import Edit from "@/components/EditComponents/Edit";
+import { cookies } from "next/headers";
+import { jwtDecode } from "@/lib/sign";
+import { redirect } from "next/navigation";
 export default async function Home() {
+  const cookieStore = (await cookies()).get("token")?.value;
+  const userId = await jwtDecode(cookieStore);
+  if (!userId) redirect("/board/sign-in");
+
   return (
     <section className="h-[100dvh] overflow-hidden">
       <Providers>
-        <Edit />
+        <Edit userId={userId?.userid} />
       </Providers>
       <Toaster
         position="top-center"

@@ -269,6 +269,7 @@ const ColorSoiberbar = ({
               </Button>
               <div className="p-4">
                 <ColorPicker
+                  noshow={true}
                   value={editor?.canvasColor || CANVAS_COLOR}
                   onChange={(color) => {
                     editor?.changeBackground(color);

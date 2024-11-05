@@ -11,3 +11,9 @@ export interface UserQuery {
   isLoading: boolean;
   error: Error | null;
 }
+
+export interface UserImage {
+  id: string;
+  imageId: string;
+  url: string;
+}

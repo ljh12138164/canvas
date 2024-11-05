@@ -1,6 +1,5 @@
 import {
   createFilter,
-  debounce,
   downloadImage,
   Effect,
   isText,
@@ -57,6 +56,7 @@ export const buildEditor = ({
   fontItalics,
   fontUnderline,
   fontAlign,
+  userId,
   fontSize,
   imageLoading,
   imageFilter,
@@ -101,7 +101,7 @@ export const buildEditor = ({
       .getObjects()
       .find(
         (item: InitFabicObject | fabric.FabricObject) =>
-          (item as InitFabicObject).name === "board"
+          (item as InitFabicObject).name === "board",
       );
   //生成保存选项
   const genertateSaveOption = () => {
@@ -157,7 +157,7 @@ export const buildEditor = ({
     // 替换可能导致错误的字符
     const cleanedSvg = dataUrl.replace(
       /&(?!amp;|lt;|gt;|quot;|#39;)/g,
-      "&amp;"
+      "&amp;",
     );
 
     const svgBlob = new Blob([cleanedSvg], {
@@ -176,6 +176,7 @@ export const buildEditor = ({
     downloadImage(dataUrl, "png");
     authZoom();
   };
+
   //保存jpg
   const savejpg = () => {
     const option = genertateSaveOption();
@@ -189,7 +190,7 @@ export const buildEditor = ({
     const dataUrl = canvas.toObject(JSON_KEY);
     transformToTest(dataUrl);
     const fileString = `data:text/json;charset=utf-8,${encodeURIComponent(
-      JSON.stringify(dataUrl, null, "\t")
+      JSON.stringify(dataUrl, null, "\t"),
     )}`;
     downloadImage(fileString, "json");
     authZoom();
@@ -280,16 +281,20 @@ export const buildEditor = ({
       }
       await authZoom();
       canvas.renderAll();
-      save();
+      if (!userId) {
+        save();
+      }
     },
     changeBackground: (color: string) => {
+      setCanvasColor(color);
       const workspace = getWorkspace();
       if (workspace) {
-        setCanvasColor(color);
         workspace.fill = color;
       }
       canvas.renderAll();
-      save();
+      if (!userId) {
+        save();
+      }
     },
     copy,
     enableDraw: () => {
@@ -314,7 +319,6 @@ export const buildEditor = ({
         canvas.freeDrawingBrush.width = width;
       }
     },
-    saveAll: () => save(),
     disableDraw: () => {
       canvas.isDrawingMode = false;
     },
@@ -362,7 +366,6 @@ export const buildEditor = ({
           // 多种滤镜
           imageObj.applyFilters();
           canvas.renderAll();
-          save();
         }
       });
     },
@@ -382,7 +385,6 @@ export const buildEditor = ({
             : [];
           imageObj.applyFilters();
           canvas.renderAll();
-          debounce(save);
         }
       });
     },
@@ -394,7 +396,7 @@ export const buildEditor = ({
         if (item.type === "image") {
           const imageObj = item as fabric.FabricImage;
           imageObj.filtersArray = imageObj.filtersArray.filter(
-            (item) => item.name !== filter
+            (item) => item.name !== filter,
           );
           imageObj.filters = imageObj.filtersArray[0]?.effect
             ? [imageObj.filtersArray[0]?.effect]
@@ -719,7 +721,7 @@ export const buildEditor = ({
           ...DIAMOD_OPTION,
           fill: fillColor,
           stroke: strokeColor,
-        }
+        },
       );
       center(diamod);
       canvas.add(diamod);

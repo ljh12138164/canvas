@@ -11,6 +11,7 @@ const ColorPicker = ({ value, onChange, noshow = false }: ColorPickerProps) => {
     <div className="w-full space-y-4">
       {/* @ts-ignore */}
       <ChromePicker
+        disableAlpha
         color={value}
         className="border rounded-lg"
         onChangeComplete={(color) => {
@@ -18,12 +19,12 @@ const ColorPicker = ({ value, onChange, noshow = false }: ColorPickerProps) => {
           onChange(formatColor);
         }}
       />
-
       {!noshow && (
         // @ts-ignore
         <CirclePicker
           color={value}
           onChangeComplete={(color) => {
+            console.log(color);
             const formatColor = rgbaObjToString(color.rgb);
             onChange(formatColor);
           }}

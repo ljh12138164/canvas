@@ -5,11 +5,7 @@ import { RGBColor } from "react-color";
 // import * as jose from 'jose';
 import { twMerge } from "tailwind-merge";
 import { nanoid } from "nanoid";
-import { hashSync } from "bcryptjs";
 
-export function hashPassword(password: string) {
-  return hashSync(password, 10);
-}
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

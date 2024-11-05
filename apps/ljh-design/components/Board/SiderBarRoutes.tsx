@@ -14,7 +14,7 @@ const SiderBarRoutes = () => {
       <ul className="flex flex-col gap-y-1">
         <li className="px-4 my-1 w-full ">
           <SiderBarItem
-            href="/"
+            href="/board  "
             label="Home"
             Icon={Home}
             isActive={pathname === "/board"}
