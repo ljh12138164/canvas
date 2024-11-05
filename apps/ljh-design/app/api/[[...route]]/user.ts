@@ -1,4 +1,4 @@
-import { createUser } from "@/api/supabase/sign";
+import { createUser, signIn } from "@/api/supabase/sign";
 import { jwtEncode } from "@/lib/sign";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
@@ -6,17 +6,17 @@ import { deleteCookie } from "hono/cookie";
 import { hashSync } from "bcryptjs";
 import { setCookie } from "hono/cookie";
 import { z } from "zod";
-//模范请求
 const user = new Hono()
+  //注册
   .post(
-    "/",
+    "/sign-up",
     zValidator(
       "json",
       z.object({
         name: z.string().min(2).max(10),
         accoute: z.string().min(5).max(10),
         password: z.string(),
-      })
+      }),
     ),
     async (c) => {
       try {
@@ -38,14 +38,48 @@ const user = new Hono()
           expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         });
         return c.json(user, 200);
-      } catch (error) {
-        console.error(error);
-        return c.json({ message: "注册失败" }, 400);
+      } catch {
+        return c.json({ message: "账号已存在" }, 400);
       }
-    }
+    },
   )
+  //退出
   .post("/sign-out", async (c) => {
     deleteCookie(c, "token");
     return c.json({ message: "退出成功" }, 200);
-  });
+  })
+  //登录
+  .post(
+    "/sign-in",
+    zValidator(
+      "json",
+      z.object({
+        account: z.string().min(5),
+        password: z
+          .string()
+          .min(6, "密码长度至少为6位")
+          .max(16, "密码长度最多为16位"),
+      }),
+    ),
+    async (c) => {
+      const { account, password } = c.req.valid("json");
+      try {
+        const user = await signIn({ account, password });
+        if (!user) return c.json({ message: "账号或密码错误" }, 400);
+        //设置cookie
+        const token = await jwtEncode({
+          userid: user.id,
+          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        });
+        setCookie(c, "token", token, {
+          httpOnly: true,
+          secure: true,
+          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        });
+        return c.json(user, 200);
+      } catch (error) {
+        return c.json({ message: error }, 400);
+      }
+    },
+  );
 export default user;

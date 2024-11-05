@@ -40,7 +40,7 @@ export interface OptionFilterProps {
     value: TBlendMode | TResizeType | TGrayscaleMode;
   }[];
   value?: (
-    value: TBlendMode | TResizeType | TGrayscaleMode
+    value: TBlendMode | TResizeType | TGrayscaleMode,
   ) => fabric.filters.BaseFilter<string, any>;
 }
 export interface SiderProps {
@@ -679,6 +679,7 @@ export interface buildEditorProps {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
+  userId: string | undefined;
   pasty: () => void;
   save: (skip?: boolean) => void;
   canRedo: () => boolean;
@@ -731,7 +732,6 @@ export interface Edit {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
-
   getActiveFilterIndex: (filter: string) => number;
   fixImageSize: (imageObj: fabric.FabricImage) => void;
   changeImageFilterSetting: (filter: string, value: Effect | null) => void;
@@ -744,7 +744,7 @@ export interface Edit {
   saveJson: () => void;
   loadFromJson: (json: string) => void;
   pasty: () => void;
-  saveAll: (skip?: boolean) => void;
+
   canRedo: () => boolean;
   canUndo: () => boolean;
   undo: () => void;
@@ -837,3 +837,8 @@ export const FilterItem = {
   saturation: "饱和度",
   gamma: "伽马",
 };
+
+export enum ImageType {
+  Cloud,
+  Recommend,
+}

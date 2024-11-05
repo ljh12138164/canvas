@@ -3,8 +3,9 @@ import * as fabric from "fabric";
 import { useEffect } from "react";
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
-  setSelectedObject: (object: fabric.Object[]) => void;
+  userId: string | undefined;
   tool: Tool;
+  setSelectedObject: (object: fabric.Object[]) => void;
   setTool: (tool: Tool) => void;
   save: () => void;
 }
@@ -16,6 +17,7 @@ interface CanvasEventProps {
 const useCanvasEvent = ({
   canvas,
   tool,
+  userId,
   save,
   setSelectedObject,
   setTool,
@@ -24,13 +26,19 @@ const useCanvasEvent = ({
     if (canvas) {
       //创建
       canvas.on("object:added", () => {
-        save();
+        if (!userId) {
+          save();
+        }
       });
       canvas.on("object:removed", () => {
-        save();
+        if (!userId) {
+          save();
+        }
       });
       canvas.on("object:modified", () => {
-        save();
+        if (!userId) {
+          save();
+        }
       });
       canvas.on("selection:created", (e) => {
         setSelectedObject(e.selected || []);
@@ -55,7 +63,7 @@ const useCanvasEvent = ({
         setSelectedObject([]);
       });
     }
-  }, [canvas, setSelectedObject, tool, setTool, save]);
+  }, [canvas, setSelectedObject, tool, setTool, save, userId]);
 };
 
 export default useCanvasEvent;

@@ -12,6 +12,7 @@ import { BsCloudCheck } from "react-icons/bs";
 import {
   LuChevronDown,
   LuDownload,
+  LuEye,
   LuFile,
   LuMousePointerClick,
   LuRedo2,
@@ -20,12 +21,16 @@ import {
 import Logo from "../Comand/Logo";
 import { Tool, Edit } from "@/types/Edit";
 import { useFilePicker } from "use-file-picker";
+import { useRouter } from "next/navigation";
+import UserButton from "../Comand/UserButton";
 interface NavBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
   onChangeTool: (tool: Tool) => void;
+  userId: string | undefined;
 }
-const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
+const NavBar = ({ activeTool, onChangeTool, editor, userId }: NavBarProps) => {
+  const router = useRouter();
   const { openFilePicker } = useFilePicker({
     accept: ".json",
     onFilesSelected: ({ plainFiles }) => {
@@ -67,7 +72,7 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
         <Separator orientation="vertical" className="mx-2 h-[60%]" />
-        <TooltipComponents label="预览">
+        <TooltipComponents label="选择">
           <Button
             variant={"ghost"}
             size={"icon"}
@@ -77,6 +82,11 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
             className={`${activeTool === Tool.Select && "bg-gray-100"}`}
           >
             <LuMousePointerClick size="20" />
+          </Button>
+        </TooltipComponents>
+        <TooltipComponents label="预览">
+          <Button variant={"ghost"} size={"icon"}>
+            <LuEye size="20" />
           </Button>
         </TooltipComponents>
         <TooltipComponents label="撤销">
@@ -106,10 +116,21 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
           </Button>
         </TooltipComponents>
         <Separator orientation="vertical" className="mx-2 h-[60%]" />
-        <div className="flex items-center gap-2 opacity-70">
-          <BsCloudCheck size={20} />
-          <div className="text-xs text-muted-foreground">保存成功</div>
-        </div>
+        {userId ? (
+          <div className="flex items-center gap-2 opacity-70">
+            <BsCloudCheck size={20} />
+            <div className="text-xs text-muted-foreground">保存成功</div>
+          </div>
+        ) : (
+          <p
+            className="text-xs text-muted-foreground cursor-pointer"
+            onClick={() => {
+              router.push("/board/sign-in");
+            }}
+          >
+            登录后可保存到云端
+          </p>
+        )}
         <div className="ml-auto flex items-center gap-x-4">
           {/* @ts-ignore */}
           <DropdownMenu modal={false}>
@@ -175,6 +196,7 @@ const NavBar = ({ activeTool, onChangeTool, editor }: NavBarProps) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          {!userId && userId && <UserButton userId={userId}></UserButton>}
         </div>
       </div>
     </nav>

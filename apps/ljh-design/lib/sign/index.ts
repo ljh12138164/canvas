@@ -8,7 +8,7 @@ type Payload = {
 
 export function jwtEncode(payload: Payload) {
   const JWT_SECRET = new TextEncoder().encode(
-    process.env.NEXT_PUBLIC_JWT_SECRET
+    process.env.NEXT_PUBLIC_JWT_SECRET,
   );
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
@@ -20,10 +20,10 @@ interface DecodeResult extends JWTPayload {
   expiresAt: Date;
 }
 export async function jwtDecode(
-  token: string = ""
+  token: string = "",
 ): Promise<DecodeResult | null> {
   const JWT_SECRET = new TextEncoder().encode(
-    process.env.NEXT_PUBLIC_JWT_SECRET
+    process.env.NEXT_PUBLIC_JWT_SECRET,
   );
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET, {
@@ -31,7 +31,6 @@ export async function jwtDecode(
     });
     return payload as DecodeResult;
   } catch {
-    console.error("解码失败");
     return null;
   }
 }

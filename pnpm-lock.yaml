@@ -202,6 +202,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.56.2
         version: 5.59.16(react@19.0.0-rc-69d4b800-20241021)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.59.16
+        version: 5.59.16(@tanstack/react-query@5.59.16(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
       '@types/bcryptjs':
         specifier: ^2.4.3
         version: 2.4.6
@@ -223,6 +226,9 @@ importers:
       ahooks:
         specifier: ^3.8.1
         version: 3.8.1(react@19.0.0-rc-69d4b800-20241021)
+      await-to-js:
+        specifier: ^3.0.0
+        version: 3.0.0
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -332,58 +338,6 @@ importers:
       typescript:
         specifier: ^5
         version: 5.6.3
-
-  main/mainapp:
-    dependencies:
-      '@micro-zoe/micro-app':
-        specifier: 1.0.0-rc.13
-        version: 1.0.0-rc.13
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      react-router:
-        specifier: ^6.27.0
-        version: 6.27.0(react@18.3.1)
-      react-router-dom:
-        specifier: ^6.23.1
-        version: 6.27.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.13.0
-        version: 9.13.0
-      '@types/react':
-        specifier: ^18.3.12
-        version: 18.3.12
-      '@types/react-dom':
-        specifier: ^18.3.1
-        version: 18.3.1
-      '@vitejs/plugin-react':
-        specifier: ^4.3.3
-        version: 4.3.3(vite@5.4.10(@types/node@20.17.1))
-      eslint:
-        specifier: ^9.13.0
-        version: 9.13.0(jiti@1.21.6)
-      eslint-plugin-react-hooks:
-        specifier: ^5.0.0
-        version: 5.0.0(eslint@9.13.0(jiti@1.21.6))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.14
-        version: 0.4.14(eslint@9.13.0(jiti@1.21.6))
-      globals:
-        specifier: ^15.11.0
-        version: 15.11.0
-      typescript:
-        specifier: ~5.6.2
-        version: 5.6.3
-      typescript-eslint:
-        specifier: ^8.11.0
-        version: 8.11.0(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
-      vite:
-        specifier: ^5.4.10
-        version: 5.4.10(@types/node@20.17.1)
 
 packages:
 
@@ -868,9 +822,6 @@ packages:
   '@mapbox/node-pre-gyp@1.0.11':
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
     hasBin: true
-
-  '@micro-zoe/micro-app@1.0.0-rc.13':
-    resolution: {integrity: sha512-2FA2dpYFAIKwoNtDABrGB3TpVWkqfi3wxxbtfRPkomEhiWLZyth7mocY1TjpUCIcNNiIxdfz42ebZA0tK+6dkw==}
 
   '@next/env@15.0.1':
     resolution: {integrity: sha512-lc4HeDUKO9gxxlM5G2knTRifqhsY6yYpwuHspBZdboZe0Gp+rZHBNNSIjmQKDJIdRXiXGyVnSD6gafrbQPvILQ==}
@@ -1891,6 +1842,10 @@ packages:
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
+
+  await-to-js@3.0.0:
+    resolution: {integrity: sha512-zJAaP9zxTcvTHRlejau3ZOY4V7SRpiByf3/dxx2uyKxxor19tpmpV2QRsTKikckwhaPmr2dVpxxMr7jOCYVp5g==}
+    engines: {node: '>=6.0.0'}
 
   axe-core@4.10.2:
     resolution: {integrity: sha512-RE3mdQ7P3FRSe7eqCWoeQ/Z9QXrtniSjp1wUjt5nRC3WIpz5rSCve6o3fsZ2aCpJtrZjSZgjwXAoTO5k4tEI0w==}
@@ -4507,8 +4462,6 @@ snapshots:
       - supports-color
     optional: true
 
-  '@micro-zoe/micro-app@1.0.0-rc.13': {}
-
   '@next/env@15.0.1': {}
 
   '@next/eslint-plugin-next@15.0.1':
@@ -5444,6 +5397,12 @@ snapshots:
       '@tanstack/react-query': 5.59.16(react@18.3.1)
       react: 18.3.1
 
+  '@tanstack/react-query-devtools@5.59.16(@tanstack/react-query@5.59.16(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)':
+    dependencies:
+      '@tanstack/query-devtools': 5.58.0
+      '@tanstack/react-query': 5.59.16(react@19.0.0-rc-69d4b800-20241021)
+      react: 19.0.0-rc-69d4b800-20241021
+
   '@tanstack/react-query@5.59.16(react@18.3.1)':
     dependencies:
       '@tanstack/query-core': 5.59.16
@@ -5873,6 +5832,8 @@ snapshots:
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.0.0
+
+  await-to-js@3.0.0: {}
 
   axe-core@4.10.2: {}
 

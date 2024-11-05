@@ -3,44 +3,66 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { useSignUp } from "@/lib/react-query/useSignUp";
+import { useSignIn, useSignUp } from "@/hook/query/useUserQuery";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { z } from "zod";
+
 const schema = z.object({
+  // 设置name为可选，且可以为空字符串
+  name: z
+    .string()
+    .min(2, "用户名长度至少为2位")
+    .optional()
+    .nullable()
+    .or(z.literal("")),
   accoute: z.string().min(5, {
     message: "账号长度至少为5位",
   }),
-  password: z.string().min(6, { message: "密码长度至少为6位" }).max(16, {
-    message: "密码长度最多为16位",
-  }),
-  name: z.string().min(2, { message: "用户名长度至少为2位" }).optional(),
+  password: z
+    .string()
+    .min(6, "密码长度至少为6位")
+    .max(16, "密码长度最多为16位"),
 });
 
 const SignIn = () => {
   const [login, setLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const routers = useRouter();
   const { signUpMutate, signUpPending } = useSignUp();
-  useEffect(() => {}, []);
-  const { register, handleSubmit, formState } = useForm<z.infer<typeof schema>>(
-    {
-      resolver: zodResolver(schema),
-      defaultValues: {
-        name: "",
-        accoute: "",
-        password: "",
-      },
-    }
-  );
+  const { signInMutate, signInPending } = useSignIn();
+  const { register, handleSubmit, formState, setError } = useForm<
+    z.infer<typeof schema>
+  >({
+    resolver: zodResolver(schema),
+  });
   const onSubmit = async (data: z.infer<typeof schema>) => {
     if (login) {
-      console.log(login);
+      toast.loading("登录中...");
+      signInMutate(
+        {
+          account: data.accoute,
+          password: data.password,
+        },
+        {
+          onSuccess: () => {
+            toast.dismiss();
+            toast.success("登录成功");
+            routers.push("/board");
+          },
+          onError: (err) => {
+            toast.dismiss();
+            toast.error(err.message);
+          },
+        },
+      );
     } else {
-      if (data.name)
+      if (data.name) {
+        toast.loading("注册中...");
         signUpMutate(
           data as {
             accoute: string;
@@ -49,15 +71,19 @@ const SignIn = () => {
           },
           {
             onSuccess: async () => {
+              toast.dismiss();
               toast.success("注册成功");
-              redirect("/board");
+              routers.push("/board");
             },
-            onError: (err) => {
-              console.error(err);
+            onError: () => {
+              toast.dismiss();
               toast.error("注册失败");
             },
-          }
+          },
         );
+      } else {
+        setError("name", { message: "用户名不能为空" });
+      }
     }
   };
   return (
@@ -128,7 +154,7 @@ const SignIn = () => {
             <Button
               type="submit"
               className="w-full mt-2.5"
-              disabled={signUpPending}
+              disabled={signUpPending || signInPending}
             >
               {login
                 ? `登录${signUpPending ? "中..." : ""}`
@@ -136,7 +162,6 @@ const SignIn = () => {
             </Button>
           </form>
           <Separator className="mt-6" />
-
           <p
             className=" cursor-pointer text-blue-500 text-sm text-center"
             onClick={() => setLogin(!login)}

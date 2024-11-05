@@ -40,7 +40,7 @@ import useHistoty from "@/hook/useHistory";
 import useKeyBoard from "@/hook/useKeyBoard";
 import { useWindowEvent } from "@/hook/useWindowEvent";
 
-export default function Edit() {
+export default function Edit({ userId }: { userId: string | undefined }) {
   const { init } = useCanvas();
   const [tool, setTool] = useState<Tool>(Tool.Layout);
   //实例对象
@@ -48,7 +48,7 @@ export default function Edit() {
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
   //选择的对象
   const [selectedObject, setSelectedObject] = useState<fabric.Object[] | null>(
-    null
+    null,
   );
   //颜色形状初始化
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);
@@ -81,7 +81,7 @@ export default function Edit() {
   //画布颜色
   const [canvasColor, setCanvasColor] = useState<string>(CANVAS_COLOR);
   const { authZoom } = useResponse({ canvas, contain });
-
+  //画布颜色
   const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } =
     useHistoty({ canvas, authZoom });
 
@@ -89,11 +89,13 @@ export default function Edit() {
     canvas,
     tool,
     save,
+    userId,
     setSelectedObject,
     setTool,
   });
   const { copy, pasty } = useClipboard({ canvas });
   useKeyBoard({
+    userId,
     canvas,
     undo,
     redo,
@@ -140,6 +142,7 @@ export default function Edit() {
         canvasHeight,
         canvasColor,
         canvasHistory: canvasHistory.current,
+        userId,
         pasty,
         save,
         canRedo,
@@ -195,6 +198,7 @@ export default function Edit() {
     canvasHeight,
     canvasColor,
     canvasHistory,
+    userId,
     pasty,
     save,
     canRedo,
@@ -239,6 +243,7 @@ export default function Edit() {
       }}
     >
       <NavBar
+        userId={userId}
         editor={editor}
         activeTool={tool}
         onChangeTool={onChangeActive}
@@ -259,6 +264,7 @@ export default function Edit() {
           onChangeActive={onChangeActive}
         ></ShapeSidle>
         <ImageSiderbar
+          userId={userId}
           editor={editor}
           activeTool={tool}
           onChangeActive={onChangeActive}
