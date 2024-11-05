@@ -4,6 +4,7 @@ import Edit from "@/components/EditComponents/Edit";
 import { cookies } from "next/headers";
 import { jwtDecode } from "@/lib/sign";
 import { redirect } from "next/navigation";
+// TODO: 读取画布内容
 export default async function Home() {
   const cookieStore = (await cookies()).get("token")?.value;
   const userId = await jwtDecode(cookieStore);
