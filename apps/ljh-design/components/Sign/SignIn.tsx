@@ -58,7 +58,7 @@ const SignIn = () => {
             toast.dismiss();
             toast.error(err.message);
           },
-        },
+        }
       );
     } else {
       if (data.name) {
@@ -79,7 +79,7 @@ const SignIn = () => {
               toast.dismiss();
               toast.error("注册失败");
             },
-          },
+          }
         );
       } else {
         setError("name", { message: "用户名不能为空" });

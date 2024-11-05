@@ -1,4 +1,5 @@
 import { supabase } from "@/database/supbash";
+import { Board } from "@/types/board";
 import { UserImage } from "@/types/user";
 interface GetUserImage {
   userId: string;
@@ -25,5 +26,27 @@ export const getUserImage = async ({
     .eq("id", userId);
   console.log(data, error);
   if (error) throw new Error(error.message);
+  return data;
+};
+
+interface CreateBoard {
+  id: string;
+  name: string;
+  json: string;
+  width: number;
+  height: number;
+}
+/**
+ * 创建看板
+ * @returns
+ */
+export const createBoard = async (board: CreateBoard): Promise<Board> => {
+  const { data, error } = await supabase
+    .from("board")
+    .insert([board])
+    .select("*")
+    .single();
+  if (error) throw new Error(error.message);
+
   return data;
 };
