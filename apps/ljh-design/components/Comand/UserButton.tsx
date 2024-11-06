@@ -9,7 +9,7 @@ import { useSignOut, useUserQuery } from "@/hook/query/useUserQuery";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { LuLogOut } from "react-icons/lu";
-import { RiLoader2Fill } from "react-icons/ri";
+import { Skeleton } from "../ui/skeleton";
 interface UserButtonProps {
   userId: string;
 }
@@ -20,15 +20,13 @@ const UserButton = ({ userId }: UserButtonProps) => {
   return (
     <>
       {isLoading ? (
-        <div className="flex justify-center items-center p-[2px] rounded-full">
-          <RiLoader2Fill className="size-6 animate-spin text-indigo-500" />
-        </div>
+        <Skeleton className="size-10 rounded-full"></Skeleton>
       ) : (
         //  @ts-ignore
         <DropdownMenu modal={false}>
           {/* @ts-ignore */}
           <DropdownMenuTrigger>
-            <Avatar className="size-10 hover:opacity-80 transition ">
+            <Avatar className="size-10 hover:opacity-80 transition-all duration-300 ">
               <AvatarImage alt="用户头像" src={data?.image} />
               <AvatarFallback>{data?.name}</AvatarFallback>
             </Avatar>

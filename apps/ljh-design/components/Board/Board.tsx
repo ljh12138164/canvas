@@ -4,11 +4,11 @@ import NavBar from "@/components/Board/Navbar";
 import BoardMain from "@/components/Board/BoardMain";
 const Board = ({ userId }: { userId: string }) => {
   return (
-    <div className="bg-muted h-full">
+    <div className="bg-muted h-[100vh]">
       <SiderBar />
       <div className="lg:pl-[300px] flex flex-col h-full">
         <NavBar userId={userId} />
-        <main className="px-2 py-4 bg-white">
+        <main className="px-2 py-4 bg-white flex-1">
           <BoardMain userId={userId}></BoardMain>
         </main>
       </div>
