@@ -1,9 +1,17 @@
 import SignIn from "@/components/Sign/SignIn";
 import { Toaster } from "react-hot-toast";
-
+import { inter, myFont } from "@/lib/font";
+import { cookies } from "next/headers";
+import { jwtDecode } from "@/lib/sign";
+import { redirect } from "next/navigation";
 export default async function SignInPage() {
+  const cookieStore = (await cookies()).get("token")?.value;
+  const userId = await jwtDecode(cookieStore);
+  if (userId) redirect("/board");
   return (
-    <section className="h-[100dvh] overflow-hidden">
+    <section
+      className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden`}
+    >
       {/* @ts-ignore */}
       <Toaster
         position="top-center"

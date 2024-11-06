@@ -1,7 +1,7 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
 import SiderBarItem from "./SiderBarItem";
-import { Home } from "lucide-react";
+import { Home, User } from "lucide-react";
 import { redirect, usePathname } from "next/navigation";
 
 const SiderBarRoutes = () => {
@@ -12,12 +12,21 @@ const SiderBarRoutes = () => {
         <Separator />
       </div>
       <ul className="flex flex-col gap-y-1">
-        <li className="px-4 my-1 w-full ">
+        <li className="px-4 my-1 w-full flex flex-col gap-6">
           <SiderBarItem
             href="/board  "
-            label="Home"
+            label="主页"
             Icon={Home}
             isActive={pathname === "/board"}
+            onClick={() => {
+              redirect("/board");
+            }}
+          ></SiderBarItem>
+          <SiderBarItem
+            href="/board/user"
+            label="用户"
+            Icon={User}
+            isActive={pathname === "/board/user"}
             onClick={() => {
               redirect("/board");
             }}
