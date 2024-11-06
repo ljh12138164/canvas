@@ -1,4 +1,5 @@
 import { client } from "@/api/hono";
+import { Board } from "@/types/board";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { isArray } from "lodash";
@@ -37,7 +38,11 @@ export const useBoardQuery = () => {
   });
   return { data, isPending, error };
 };
-
+/**
+ * 编辑器画布
+ * @param id
+ * @returns
+ */
 export const useBoardEditQuery = ({ id }: { id: string }) => {
   const router = useRouter();
   const { data, isLoading, error } = useQuery<
@@ -59,6 +64,28 @@ export const useBoardEditQuery = ({ id }: { id: string }) => {
         router.push("/board");
       }
       return data;
+    },
+  });
+  return { data, isLoading, error };
+};
+/**
+ *
+ */
+export const useBoardUserQuery = ({ userid }: { userid: string }) => {
+  const { data, isLoading, error } = useQuery<Board[], Error>({
+    queryKey: [userid],
+    queryFn: async () => {
+      const response = await client.api.board[":userid"].$get({
+        param: { userid },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        toast.dismiss();
+        toast.error("获取失败,重试中...");
+        throw new Error("获取失败");
+      }
+      if (Array.isArray(data)) return data;
+      throw new Error("获取失败");
     },
   });
   return { data, isLoading, error };

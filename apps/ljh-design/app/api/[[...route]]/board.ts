@@ -1,4 +1,4 @@
-import { createBoard, getBoard } from "@/api/supabase/board";
+import { createBoard, getBoard, getUserBoard } from "@/api/supabase/board";
 import { jwtDecode } from "@/lib/sign";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
@@ -14,7 +14,7 @@ const board = new Hono()
         json: z.string(),
         width: z.number(),
         height: z.number(),
-      }),
+      })
     ),
     async (c) => {
       const token = getCookie(c, "token");
@@ -34,7 +34,7 @@ const board = new Hono()
       } catch {
         return c.json({ message: "创建失败" }, 500);
       }
-    },
+    }
   )
   .get("/:id", async (c) => {
     try {
@@ -48,6 +48,19 @@ const board = new Hono()
       return c.json(board);
     } catch (error) {
       console.log(error);
+      return c.json({ message: "获取失败" }, 400);
+    }
+  })
+  .get("/:userid", async (c) => {
+    const { userid } = c.req.param();
+    const token = getCookie(c, "token");
+    if (!token) return c.json({ message: "请先登录" }, 401);
+    const user = await jwtDecode(token);
+    if (!user) return c.json({ message: "请先登录" }, 401);
+    try {
+      const board = await getUserBoard({ userid });
+      return c.json(board);
+    } catch {
       return c.json({ message: "获取失败" }, 400);
     }
   });

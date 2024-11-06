@@ -66,3 +66,21 @@ export const getBoard = async ({ id, userid }: GetBoard): Promise<Board[]> => {
   if (error) throw new Error(error.message);
   return data;
 };
+interface GetUserBoard {
+  userid: string;
+}
+/**
+ * 获取用户看板
+ * @returns
+ *
+ */
+export const getUserBoard = async ({
+  userid,
+}: GetUserBoard): Promise<Board[]> => {
+  const { data, error } = await supabase
+    .from("board")
+    .select("*")
+    .eq("userId", userid);
+  if (error) throw new Error(error.message);
+  return data;
+};
