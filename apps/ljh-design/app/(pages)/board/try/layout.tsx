@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "编辑器",
-  description: "编辑器",
+  title: "画布试用",
+  description: "LJH Design 画布试用",
 };
 
 export default function RootLayout({

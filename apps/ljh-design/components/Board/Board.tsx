@@ -9,7 +9,7 @@ const Board = ({ userId }: { userId: string }) => {
       <div className="lg:pl-[300px] flex flex-col h-full">
         <NavBar userId={userId} />
         <main className="px-2 py-4 bg-white">
-          <BoardMain></BoardMain>
+          <BoardMain userId={userId}></BoardMain>
         </main>
       </div>
     </div>

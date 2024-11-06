@@ -24,7 +24,6 @@ export const getUserImage = async ({
     .from("userImage")
     .select("*")
     .eq("id", userId);
-  console.log(data, error);
   if (error) throw new Error(error.message);
   return data;
 };
@@ -48,5 +47,22 @@ export const createBoard = async (board: CreateBoard): Promise<Board> => {
     .single();
   if (error) throw new Error(error.message);
 
+  return data;
+};
+interface GetBoard {
+  id: string;
+  userid: string;
+}
+/**
+ * 获取看板数据
+ * @returns
+ */
+export const getBoard = async ({ id, userid }: GetBoard): Promise<Board[]> => {
+  const { data, error } = await supabase
+    .from("board")
+    .select("*")
+    .eq("id", id)
+    .eq("userId", userid);
+  if (error) throw new Error(error.message);
   return data;
 };

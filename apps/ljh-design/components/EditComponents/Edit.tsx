@@ -39,8 +39,20 @@ import Footer from "@/components/EditComponents/Footer";
 import useHistoty from "@/hook/useHistory";
 import useKeyBoard from "@/hook/useKeyBoard";
 import { useWindowEvent } from "@/hook/useWindowEvent";
+import { useBoardEditQuery } from "@/hook/query/useBoardQuery";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
-export default function Edit({ userId }: { userId: string | undefined }) {
+export default function Edit({
+  userId,
+  params,
+}: {
+  userId: string | undefined;
+  params: string;
+}) {
+  const { data, isLoading, error } = useBoardEditQuery({ id: params });
+  console.log(data);
+  const router = useRouter();
   const { init } = useCanvas();
   const [tool, setTool] = useState<Tool>(Tool.Layout);
   //实例对象
@@ -236,60 +248,71 @@ export default function Edit({ userId }: { userId: string | undefined }) {
     };
   }, [init, setHitoryIndex, canvasHistory]);
   return (
-    <div
-      className="h-full w-full flex flex-col items-center relative bg-slate-100"
-      style={{
-        scrollbarWidth: "none",
-      }}
-    >
-      <NavBar
-        userId={userId}
-        editor={editor}
-        activeTool={tool}
-        onChangeTool={onChangeActive}
-      ></NavBar>
-      <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
-        <SiderBar
-          acitiveTool={tool}
-          onChangeActiveTool={onChangeActive}
-        ></SiderBar>
-        <TextSidebar
-          editor={editor}
-          activeTool={tool}
-          onChangeActive={onChangeActive}
-        ></TextSidebar>
-        <ShapeSidle
-          editor={editor}
-          activeTool={tool}
-          onChangeActive={onChangeActive}
-        ></ShapeSidle>
-        <ImageSiderbar
-          userId={userId}
-          editor={editor}
-          activeTool={tool}
-          onChangeActive={onChangeActive}
-        ></ImageSiderbar>
-        <ColorSoiberbar
-          editor={editor}
-          activeTool={tool}
-          onChangeActive={onChangeActive}
-        ></ColorSoiberbar>
-        <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
-          <Tools
+    <>
+      {!isLoading && !error && (
+        <div
+          className="h-full w-full flex flex-col items-center relative bg-slate-100"
+          style={{
+            scrollbarWidth: "none",
+          }}
+        >
+          <NavBar
+            userId={userId}
             editor={editor}
             activeTool={tool}
-            onChangeActiveTool={onChangeActive}
-            key={JSON.stringify(editor?.canvas.getActiveObject())}
-          ></Tools>
-          <section
-            className="flex flex-col relative flex-1 overflow-hidden"
-            ref={containEl}
-          >
-            <canvas ref={canvasEl}></canvas>
-          </section>
-          <Footer editor={editor}></Footer>
-        </main>
-      </div>
-    </div>
+            onChangeTool={onChangeActive}
+          ></NavBar>
+          <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
+            <SiderBar
+              acitiveTool={tool}
+              onChangeActiveTool={onChangeActive}
+            ></SiderBar>
+            <TextSidebar
+              editor={editor}
+              activeTool={tool}
+              onChangeActive={onChangeActive}
+            ></TextSidebar>
+            <ShapeSidle
+              editor={editor}
+              activeTool={tool}
+              onChangeActive={onChangeActive}
+            ></ShapeSidle>
+            <ImageSiderbar
+              userId={userId}
+              editor={editor}
+              activeTool={tool}
+              onChangeActive={onChangeActive}
+            ></ImageSiderbar>
+            <ColorSoiberbar
+              editor={editor}
+              activeTool={tool}
+              onChangeActive={onChangeActive}
+            ></ColorSoiberbar>
+            <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
+              <Tools
+                editor={editor}
+                activeTool={tool}
+                onChangeActiveTool={onChangeActive}
+                key={JSON.stringify(editor?.canvas.getActiveObject())}
+              ></Tools>
+              <section
+                className="flex flex-col relative flex-1 overflow-hidden"
+                ref={containEl}
+              >
+                <canvas ref={canvasEl}></canvas>
+              </section>
+              <Footer editor={editor}></Footer>
+            </main>
+          </div>
+        </div>
+      )}
+      {isLoading && <div>加载中</div>}
+      {error && (
+        <div>
+          加载失败
+          <Button onClick={() => router.refresh()}>返回</Button>
+        </div>
+      )}
+    </>
   );
 }
