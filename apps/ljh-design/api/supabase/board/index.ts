@@ -29,7 +29,7 @@ export const getUserImage = async ({
 };
 
 interface CreateBoard {
-  id: string;
+  userId: string;
   name: string;
   json: string;
   width: number;

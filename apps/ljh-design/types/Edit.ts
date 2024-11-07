@@ -40,7 +40,7 @@ export interface OptionFilterProps {
     value: TBlendMode | TResizeType | TGrayscaleMode;
   }[];
   value?: (
-    value: TBlendMode | TResizeType | TGrayscaleMode,
+    value: TBlendMode | TResizeType | TGrayscaleMode
   ) => fabric.filters.BaseFilter<string, any>;
 }
 export interface SiderProps {

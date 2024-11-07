@@ -24,7 +24,6 @@ const ColorPicker = ({ value, onChange, noshow = false }: ColorPickerProps) => {
         <CirclePicker
           color={value}
           onChangeComplete={(color) => {
-            console.log(color);
             const formatColor = rgbaObjToString(color.rgb);
             onChange(formatColor);
           }}

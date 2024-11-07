@@ -28,13 +28,12 @@ const image = new Hono()
     async (c) => {
       try {
         const { userId } = c.req.valid("json");
-        console.log(userId);
         const data = await getUserImage({ userId });
         return c.json(data);
       } catch {
         return c.json({ message: "获取图片失败" }, 400);
       }
-    },
+    }
   );
 
 export default image;

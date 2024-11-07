@@ -5,7 +5,7 @@ import { InferRequestType, InferResponseType } from "hono";
 import { isArray } from "lodash";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-type ResponseType = InferResponseType<typeof client.api.board.$post>;
+export type ResponseType = InferResponseType<typeof client.api.board.$post>;
 type RequestType = InferRequestType<typeof client.api.board.$post>["json"];
 
 type EditResponseType = InferResponseType<
@@ -19,7 +19,7 @@ type EditRequestType = InferRequestType<
  * @returns
  */
 export const useBoardQuery = () => {
-  const { data, isPending, error } = useMutation<
+  const { mutate, isPending, error } = useMutation<
     ResponseType,
     Error,
     RequestType
@@ -36,7 +36,7 @@ export const useBoardQuery = () => {
       toast.error("创建失败");
     },
   });
-  return { data, isPending, error };
+  return { mutate, isPending, error };
 };
 /**
  * 编辑器画布
@@ -75,13 +75,13 @@ export const useBoardUserQuery = ({ userid }: { userid: string }) => {
   const { data, isLoading, error } = useQuery<Board[], Error>({
     queryKey: [userid],
     queryFn: async () => {
-      const response = await client.api.board[":userid"].$get({
-        param: { userid },
+      const response = await client.api.board.getBoard.$post({
+        json: { userid },
       });
       const data = await response.json();
       if (!response.ok) {
         toast.dismiss();
-        toast.error("获取失败,重试中...");
+        toast.error("获取失败,正在重试中...");
         throw new Error("获取失败");
       }
       if (Array.isArray(data)) return data;
