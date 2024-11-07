@@ -5,15 +5,16 @@ import { cookies } from "next/headers";
 import { jwtDecode } from "@/lib/sign";
 import { redirect } from "next/navigation";
 import { inter, myFont } from "@/lib/font";
-interface Params {
+
+type Params = Promise<{
   Id: string;
-}
+}>;
 // TODO: 读取画布内容
 export default async function Home({ params }: { params: Params }) {
+  const { Id } = await params;
   const cookieStore = (await cookies()).get("token")?.value;
   const userId = await jwtDecode(cookieStore);
   if (!userId) redirect("/board/sign-in");
-  const { Id } = await params;
   return (
     <section
       className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden`}

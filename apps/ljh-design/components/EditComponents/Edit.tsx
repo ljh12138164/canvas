@@ -50,8 +50,7 @@ export default function Edit({
   userId: string | undefined;
   params: string;
 }) {
-  const { data, isLoading, error } = useBoardEditQuery({ id: params });
-  console.log(data);
+  const { isLoading, error } = useBoardEditQuery({ id: params });
   const router = useRouter();
   const { init } = useCanvas();
   const [tool, setTool] = useState<Tool>(Tool.Layout);
@@ -60,7 +59,7 @@ export default function Edit({
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
   //选择的对象
   const [selectedObject, setSelectedObject] = useState<fabric.Object[] | null>(
-    null,
+    null
   );
   //颜色形状初始化
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);

@@ -8,7 +8,7 @@ export default async function Home() {
   const userId = await jwtDecode(cookieStore);
   if (!userId) redirect("/board/sign-in");
   return (
-    <main className={`${inter.className} ${myFont.variable}`}>
+    <main className={`${inter.className} ${myFont.variable} min-w-[380px]`}>
       <Board userId={userId?.userid}></Board>;
     </main>
   );
