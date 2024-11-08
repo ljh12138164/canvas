@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import { Providers } from "@/app/_provide/providers";
+import type { Metadata } from 'next';
+import { Providers } from '@/app/_provide/providers';
 export const metadata: Metadata = {
-  title: "编辑器",
-  description: "编辑器",
+  title: '登录',
+  description: '登录',
 };
 
 export default function RootLayout({

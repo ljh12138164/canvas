@@ -39,6 +39,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "data-fns": "^1.1.0",
+    "dayjs": "^1.11.13",
     "fabric": "^6.4.3",
     "hono": "^4.6.3",
     "jose": "^5.9.6",

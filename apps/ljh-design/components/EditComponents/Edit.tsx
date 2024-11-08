@@ -1,9 +1,21 @@
-"use client";
-import useCanvas from "@/hook/useCanvas";
-import useCanvasEvent from "@/hook/useCanvasEvent";
-import { useClipboard } from "@/hook/useCliph";
-import useResponse from "@/hook/useResponse";
-import { buildEditor } from "@/store/editor";
+'use client';
+import ColorSoiberbar from '@/components/EditComponents/ColorSiberbar';
+import Footer from '@/components/EditComponents/Footer';
+import ImageSiderbar from '@/components/EditComponents/ImageSiderbar';
+import NavBar from '@/components/EditComponents/NavBar';
+import ShapeSidle from '@/components/EditComponents/ShapeSidle';
+import SiderBar from '@/components/EditComponents/SiderBar';
+import TextSidebar from '@/components/EditComponents/TextSidebar';
+import Tools from '@/components/EditComponents/Tools';
+import { useBoardEditQuery } from '@/hook/query/useBoardQuery';
+import useCanvas from '@/hook/useCanvas';
+import useCanvasEvent from '@/hook/useCanvasEvent';
+import { useClipboard } from '@/hook/useCliph';
+import useHistoty from '@/hook/useHistory';
+import useKeyBoard from '@/hook/useKeyBoard';
+import useResponse from '@/hook/useResponse';
+import { useWindowEvent } from '@/hook/useWindowEvent';
+import { buildEditor } from '@/store/editor';
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -24,24 +36,13 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
   Tool,
-} from "@/types/Edit";
-import { useMemoizedFn } from "ahooks";
-import * as fabric from "fabric";
-import { useEffect, useMemo, useRef, useState } from "react";
-import ColorSoiberbar from "@/components/EditComponents/ColorSiberbar";
-import ImageSiderbar from "@/components/EditComponents/ImageSiderbar";
-import NavBar from "@/components/EditComponents/NavBar";
-import ShapeSidle from "@/components/EditComponents/ShapeSidle";
-import SiderBar from "@/components/EditComponents/SiderBar";
-import TextSidebar from "@/components/EditComponents/TextSidebar";
-import Tools from "@/components/EditComponents/Tools";
-import Footer from "@/components/EditComponents/Footer";
-import useHistoty from "@/hook/useHistory";
-import useKeyBoard from "@/hook/useKeyBoard";
-import { useWindowEvent } from "@/hook/useWindowEvent";
-import { useBoardEditQuery } from "@/hook/query/useBoardQuery";
-import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
+} from '@/types/Edit';
+import { useMemoizedFn } from 'ahooks';
+import * as fabric from 'fabric';
+import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Button } from '../ui/button';
 
 export default function Edit({
   userId,
@@ -50,7 +51,7 @@ export default function Edit({
   userId: string | undefined;
   params: string;
 }) {
-  const { isLoading, error } = useBoardEditQuery({ id: params });
+  const { isLoading, error, data } = useBoardEditQuery({ id: params });
   const router = useRouter();
   const { init } = useCanvas();
   const [tool, setTool] = useState<Tool>(Tool.Layout);
@@ -77,7 +78,7 @@ export default function Edit({
   const [fontUnderline, setFontUnderline] = useState<boolean>(FONT_UNDERLINE);
   const [fontItalics, setFontItalics] = useState<FontStyle>(FONT_ITALICS);
   const [fontAlign, setFontAlign] =
-    useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
+    useState<fabric.Textbox['textAlign']>(FONT_ALIGN);
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
   //图片
   const [imageLoading, setImageLoading] = useState<boolean>(false);
@@ -248,11 +249,11 @@ export default function Edit({
   }, [init, setHitoryIndex, canvasHistory]);
   return (
     <>
-      {!isLoading && !error && (
+      {!isLoading && !error && data?.length && (
         <div
-          className="h-full w-full flex flex-col items-center relative bg-slate-100"
+          className='h-full w-full flex flex-col items-center relative bg-slate-100'
           style={{
-            scrollbarWidth: "none",
+            scrollbarWidth: 'none',
           }}
         >
           <NavBar
@@ -261,7 +262,7 @@ export default function Edit({
             activeTool={tool}
             onChangeTool={onChangeActive}
           ></NavBar>
-          <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
+          <div className='h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out'>
             <SiderBar
               acitiveTool={tool}
               onChangeActiveTool={onChangeActive}
@@ -287,7 +288,7 @@ export default function Edit({
               activeTool={tool}
               onChangeActive={onChangeActive}
             ></ColorSoiberbar>
-            <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
+            <main className='flex-1 h-full w-full flex flex-col overflow-hidden'>
               <Tools
                 editor={editor}
                 activeTool={tool}
@@ -295,7 +296,7 @@ export default function Edit({
                 key={JSON.stringify(editor?.canvas.getActiveObject())}
               ></Tools>
               <section
-                className="flex flex-col relative flex-1 overflow-hidden"
+                className='flex flex-col relative flex-1 overflow-hidden'
                 ref={containEl}
               >
                 <canvas ref={canvasEl}></canvas>
@@ -305,7 +306,24 @@ export default function Edit({
           </div>
         </div>
       )}
-      {isLoading && <div>加载中</div>}
+      {!isLoading && (
+        <main className='h-full w-full flex items-center justify-center'>
+          <Loader2 className='animate-spin text-blue-700' />
+        </main>
+        // <div className='h-full w-full flex flex-col '>
+        //   <div className='w-full h-[64px] ' />
+        //   <div className='w-full grid grid-cols-[99px,1fr] h-full'>
+        //     <div className=' h-full'></div>
+        //     <div className='flex'>
+        //       <div className='flex flex-col'>
+        //         <div className='h-[52px]'></div>
+        //         <div className='flex-1 '></div>
+        //         <div className='h-[52px]'></div>
+        //       </div>
+        //     </div>
+        //   </div>
+        // </div>
+      )}
       {error && (
         <div>
           加载失败
