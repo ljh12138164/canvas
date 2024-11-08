@@ -1,50 +1,140 @@
-"use client";
-import { useBoardUserQuery } from "@/hook/query/useBoardQuery";
-import { Button } from "../ui/button";
-import { useQueryClient } from "@tanstack/react-query";
-import { Loader } from "lucide-react";
-import { ScrollArea } from "../ui/scroll-area";
-import BoardCreate from "./BoardCreate";
-import BoardItem from "./BoardItem";
-
+'use client';
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { useBoardUserQuery } from '@/hook/query/useBoardQuery';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
+import { Button } from '../ui/button';
+import { ScrollArea } from '../ui/scroll-area';
+import BoardCreate from './BoardCreate';
+import BoardItem from './BoardItem';
+import { LuLoader2 } from 'react-icons/lu';
+import { useRouter } from 'next/navigation';
+import { Skeleton } from '../ui/skeleton';
 const BoardMain = ({ userId }: { userId: string }) => {
-  const { data, error, isLoading } = useBoardUserQuery({ userid: userId });
+  const footerRef = useRef<HTMLTableSectionElement>(null);
+  const {
+    data,
+    error,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isFetching,
+  } = useBoardUserQuery({
+    userid: userId,
+  });
   const query = useQueryClient();
+  const router = useRouter();
+  useEffect(() => {
+    if (!hasNextPage || !footerRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) fetchNextPage();
+      },
+      {
+        rootMargin: '-5px',
+      }
+    );
+    observer.observe(footerRef.current);
+    return () => observer?.disconnect();
+  }, [hasNextPage, fetchNextPage]);
   return (
-    <ScrollArea className="w-full h-full overflow-auto ">
+    <ScrollArea className='w-full h-full overflow-auto '>
       {isLoading && (
-        <div className="w-full h-full flex justify-center items-center text-5xl">
-          <Loader className="animate-spin" />
-        </div>
+        <>
+          <Skeleton className='w-full h-[200px]' />
+          <div className='h-[28px]' />
+          <div className='flex flex-col gap-2'>
+            <Skeleton className='w-full h-[96px]' />
+            <Skeleton className='w-full h-[96px]' />
+            <Skeleton className='w-full h-[96px]' />
+          </div>
+        </>
       )}
-      {!isLoading && !error && <BoardCreate userId={userId} />}
-      {error && <div className="h-[200px]"></div>}
-      <div className=" flex flex-col  gap-2 h-[calc(100dvh-300px)]   text-5xl">
+      {!isLoading && !error && (
+        <BoardCreate userId={userId} data={data?.pages || []} />
+      )}
+      {error && <div className='h-[200px]'></div>}
+      <div className=' flex flex-col  gap-2 h-[calc(100dvh-300px)]   text-5xl'>
         {error && (
           <Button
-            variant="outline"
-            className=" w-fit text-black px-6 py-4 m-auto"
+            variant='outline'
+            className=' w-fit text-black px-6 py-4 m-auto'
             onClick={() => query.invalidateQueries({ queryKey: [userId] })}
           >
             重试
           </Button>
         )}
-        {!isLoading && !data?.length && !error && (
-          <p className="text-xl text-muted-foreground flex items-center justify-center h-full flex-col gap-2">
+        {!isLoading && !data?.pages.length && !error && (
+          <p className='text-xl text-muted-foreground flex items-center justify-center h-full flex-col gap-2'>
             <span>还没有创建画布</span>
             <span>😢😢😢</span>
           </p>
         )}
-        {!isLoading && !error && data?.length && (
-          <p className="text-[1rem] x px-2 font-bold mt-3 text-muted-foreground">
+        {!isLoading && !error && data?.pages.length && (
+          <p className='text-[1rem] x px-2 font-bold mt-3 text-muted-foreground'>
             面板列表
           </p>
         )}
-        {data && (
-          <section className="flex flex-col gap-2 md:text-[1rem] text-[0.8rem]">
-            {data?.map((item) => <BoardItem key={item.id} board={item} />)}
-          </section>
-        )}
+        <ScrollArea>
+          {data?.pages.length && (
+            <div
+              onClick={(e) => {
+                if (isFetching) e.stopPropagation();
+              }}
+            >
+              <Table className={isFetching ? 'opacity-50' : ''}>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className='w-[50px]'>名称</TableHead>
+                    <TableHead className='w-[100px]'>尺寸</TableHead>
+                    <TableHead className='w-[100px]'>创建时间</TableHead>
+                    <TableHead className='w-[50px]'>操作</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {data?.pages.map((item) =>
+                    item.map((item) => (
+                      <TableRow
+                        onClick={() => {
+                          if (!isFetching)
+                            router.push(`/board/Edit/${item.id}`);
+                        }}
+                        key={item.id}
+                        className='h-20 cursor-pointer'
+                      >
+                        <BoardItem board={item} userId={userId} />
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+          <footer
+            className='h-12 flex items-center justify-center'
+            ref={footerRef}
+          >
+            {hasNextPage && !isFetchingNextPage && (
+              <p className='text-muted-foreground text-sm'>加载更多...</p>
+            )}
+            {isFetchingNextPage && (
+              <p className='text-muted-foreground text-sm flex flex-col items-center gap-2'>
+                <LuLoader2 className='size-4 animate-spin mr-2' />
+                <span>加载中...</span>
+              </p>
+            )}
+            {!hasNextPage && !isLoading && (
+              <p className='text-muted-foreground text-sm'>没有更多了</p>
+            )}
+          </footer>
+        </ScrollArea>
       </div>
     </ScrollArea>
   );

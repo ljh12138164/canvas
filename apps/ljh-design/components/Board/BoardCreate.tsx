@@ -1,8 +1,9 @@
-import { useBoardQuery, useBoardUserQuery } from "@/hook/query/useBoardQuery";
-import { Loader2 } from "lucide-react";
-import { useRef } from "react";
-import { FaArrowRight, FaStar } from "react-icons/fa6";
-import { Button } from "../ui/button";
+import { useBoardQuery } from '@/hook/query/useBoardQuery';
+import { BoardResponse } from '@/types/board';
+import { Loader2 } from 'lucide-react';
+import { useRef } from 'react';
+import { FaArrowRight, FaStar } from 'react-icons/fa6';
+import { Button } from '../ui/button';
 import {
   Dialog,
   DialogClose,
@@ -12,11 +13,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import BoardCreateFrom from "./BoardCreateFrom";
+} from '../ui/dialog';
+import BoardCreateFrom from './BoardCreateFrom';
 
-const BoardCreate = ({ userId }: { userId: string }) => {
-  const { data } = useBoardUserQuery({ userid: userId });
+const BoardCreate = ({
+  userId,
+  data,
+}: {
+  userId: string;
+  data: BoardResponse[][];
+}) => {
   const { mutate, isPending } = useBoardQuery();
   const ref = useRef<HTMLButtonElement>(null);
   return (
@@ -31,7 +37,7 @@ const BoardCreate = ({ userId }: { userId: string }) => {
         </header>
         <main className="flex flex-col justify-center gap-2">
           <div className="text-white text-2xl ">
-            {data?.length ? "创建你的画布以开始使用" : "创建第一个画布"}
+            {data?.length ? '创建你的画布以开始使用' : '创建第一个画布'}
           </div>
           <span>
             {/* @ts-ignore */}
@@ -48,14 +54,14 @@ const BoardCreate = ({ userId }: { userId: string }) => {
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px] rounded-lg ">
                 <DialogHeader>
-                  <DialogTitle>创建表单</DialogTitle>
+                  <DialogTitle>创建画布</DialogTitle>
                   <DialogDescription>创建你的画布</DialogDescription>
                 </DialogHeader>
                 <BoardCreateFrom
+                  type="create"
                   userId={userId}
-                  mutate={mutate}
+                  mutate={mutate as any}
                   closeref={ref}
-                  boardData={data || []}
                 >
                   <DialogFooter className="mt-6 flex gap-1">
                     {/* @ts-ignore */}
@@ -68,7 +74,7 @@ const BoardCreate = ({ userId }: { userId: string }) => {
                       {isPending ? (
                         <Loader2 className="animate-spin" />
                       ) : (
-                        "创建"
+                        '创建'
                       )}
                     </Button>
                   </DialogFooter>

@@ -1,8 +1,8 @@
-import { Providers } from "@/app/_provide/providers";
-import type { Metadata } from "next";
+import { Providers } from '@/app/_provide/providers';
+import type { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: "LJH Design ",
-  description: "LJH Design ",
+  title: 'LJH Design ',
+  description: 'LJH Design',
 };
 
 export default function RootLayout({
