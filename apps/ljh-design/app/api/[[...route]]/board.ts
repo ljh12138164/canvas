@@ -140,7 +140,7 @@ const board = new Hono()
       }
     }
   )
-  .patch(
+  .post(
     "/:id",
     zValidator("param", z.object({ id: z.string() })),
     zValidator(
