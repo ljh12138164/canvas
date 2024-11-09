@@ -8,6 +8,7 @@ import type { Filter } from "@/types/Edit";
 import {
   canfilterArr,
   CANVAS_COLOR,
+  Edit,
   FILL_COLOR,
   FilterItem,
   filters,
@@ -16,15 +17,13 @@ import {
   Tool,
   ToolItem,
 } from "@/types/Edit";
-import { useMemoizedFn } from "ahooks";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ColorPicker from "./ColorPicker";
+import FilterSetting from "./FilterSetting";
+import ImageSetting from "./ImageSetting";
 import StokeWidth from "./StokeWidth";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
-import { Edit } from "@/types/Edit";
-import ImageSetting from "./ImageSetting";
-import FilterSetting from "./FilterSetting";
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
@@ -43,13 +42,12 @@ const ColorSoiberbar = ({
   const filterRef = useRef<HTMLDivElement | null>(null);
   const [filterSetting, setFilterSetting] = useState<string>("");
 
-  const initColor = useMemo(() => {
-    return editor?.getWorkspace()?.fill ?? "#ffffff";
-  }, [editor]);
+  const initColor = editor?.getWorkspace()?.fill ?? "#ffffff";
+
   useEffect(() => {
     editor?.setCanvasColor(initColor as string);
   }, [editor, initColor, filterRef]);
-  const onShow = useMemoizedFn(() => {
+  const onShow = () => {
     if (
       activeTool === Tool.Fill ||
       activeTool === Tool.StrokeColor ||
@@ -63,20 +61,20 @@ const ColorSoiberbar = ({
     )
       return activeTool;
     return "";
-  });
+  };
   useEffect(() => {
     filterRef?.current?.scrollIntoView({ behavior: "smooth" });
   }, [filterRef]);
   //检查滤镜是否选中
-  const check = useMemoizedFn((item: string) => {
+  const check = (item: string) => {
     if (item === "none" && editor?.getActiveFilter().length === 0) return true;
     return editor?.getActiveFilter().includes(item) || false;
-  });
+  };
   return (
     <aside
       className={cn(
         "z-[600] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col",
-        onShow() ? "visible" : "hidden",
+        onShow() ? "visible" : "hidden"
       )}
     >
       <ToolSiderbar

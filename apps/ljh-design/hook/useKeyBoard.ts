@@ -23,7 +23,7 @@ const useKeyBoard = ({
     const isCtrl = e.ctrlKey || e.metaKey;
     const isBackspace = e.key === "Backspace";
     const isinput = ["INPUT", "TEXTAREA"].includes(
-      (e.target as HTMLElement)?.tagName,
+      (e.target as HTMLElement)?.tagName
     );
     if (isinput) return;
     if (isBackspace) {
@@ -42,7 +42,7 @@ const useKeyBoard = ({
       if (e.key === "y") {
         redo();
       }
-      if (e.key === "s" && !userId) {
+      if (e.key === "s" && userId) {
         save(true);
       }
       if (e.key === "c") {
@@ -59,7 +59,7 @@ const useKeyBoard = ({
           .filter((item) => (item as InitFabicObject).name !== "board");
 
         canvas?.setActiveObject(
-          new fabric.ActiveSelection(allObject, { canvas }),
+          new fabric.ActiveSelection(allObject, { canvas })
         );
         canvas?.renderAll();
       }

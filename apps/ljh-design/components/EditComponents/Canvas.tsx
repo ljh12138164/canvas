@@ -1,4 +1,3 @@
-"use client";
 import ColorSoiberbar from "@/components/EditComponents/ColorSiberbar";
 import Footer from "@/components/EditComponents/Footer";
 import ImageSiderbar from "@/components/EditComponents/ImageSiderbar";
@@ -7,14 +6,15 @@ import ShapeSidle from "@/components/EditComponents/ShapeSidle";
 import SiderBar from "@/components/EditComponents/SiderBar";
 import TextSidebar from "@/components/EditComponents/TextSidebar";
 import Tools from "@/components/EditComponents/Tools";
+import { useBoardAutoSaveQuery } from "@/hook/query/useBoardQuery";
 import useCanvas from "@/hook/useCanvas";
 import useCanvasEvent from "@/hook/useCanvasEvent";
 import { useClipboard } from "@/hook/useCliph";
 import useHistoty from "@/hook/useHistory";
-import useKeyBoard from "@/hook/useKeyBoard";
 import useResponse from "@/hook/useResponse";
 import { useWindowEvent } from "@/hook/useWindowEvent";
 import { buildEditor } from "@/store/editor";
+import { Board } from "@/types/board";
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -38,9 +38,16 @@ import {
 } from "@/types/Edit";
 import * as fabric from "fabric";
 import { useEffect, useRef, useState } from "react";
-
-export default function TryEdit({ userId }: { userId: string | undefined }) {
+const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
+  const debounceMutate = (data: {
+    json: string;
+    width: number;
+    height: number;
+  }) => {
+    mutate({ ...data, userId });
+  };
   const { init } = useCanvas();
+  const { mutate } = useBoardAutoSaveQuery({ id: data.id });
   const [tool, setTool] = useState<Tool>(Tool.Layout);
   //实例对象
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -82,26 +89,26 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
   const { authZoom } = useResponse({ canvas, contain });
   //画布颜色
   const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } =
-    useHistoty({ canvas, authZoom });
+    useHistoty({ canvas, authZoom, debounceMutate });
 
   useCanvasEvent({
     canvas,
     tool,
-    save,
     userId,
+    save,
     setSelectedObject,
     setTool,
   });
   const { copy, pasty } = useClipboard({ canvas });
-  useKeyBoard({
-    userId,
-    canvas,
-    undo,
-    redo,
-    save,
-    copy,
-    pasty,
-  });
+  // useKeyBoard({
+  //   userId,
+  //   canvas,
+  //   undo,
+  //   redo,
+  //   save,
+  //   copy,
+  //   pasty,
+  // });
   useWindowEvent();
   const onChangeActive = (tools: Tool) => {
     if (tools === Tool.Draw) {
@@ -175,7 +182,6 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
     }
     return undefined;
   };
-
   const containEl = useRef<HTMLDivElement>(null);
   const canvasEl = useRef<HTMLCanvasElement>(null);
   //初始化
@@ -200,7 +206,8 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
     return () => {
       canvas.dispose();
     };
-  }, [init, setHitoryIndex, canvasHistory]);
+  }, [init, setHitoryIndex, canvasHistory, data]);
+
   return (
     <div
       className="h-full w-full flex flex-col items-center relative bg-slate-100"
@@ -258,4 +265,6 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
       </div>
     </div>
   );
-}
+};
+
+export default Canvas;

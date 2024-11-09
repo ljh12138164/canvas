@@ -6,6 +6,7 @@ export interface Board {
   json: string;
   height: number;
   url?: string;
+  isTemplate?: boolean;
   width: number;
 }
 

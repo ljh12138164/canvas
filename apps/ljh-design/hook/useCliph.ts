@@ -1,4 +1,3 @@
-import { useMemoizedFn } from "ahooks";
 import * as fabric from "fabric";
 import { useRef } from "react";
 import toast from "react-hot-toast";
@@ -9,7 +8,7 @@ interface UserClipboard {
 export const useClipboard = ({ canvas }: UserClipboard) => {
   const clipboard = useRef<fabric.FabricObject[]>([]);
 
-  const copy = useMemoizedFn(async () => {
+  const copy = async () => {
     toast.dismiss();
     clipboard.current = [];
     canvas?.getActiveObjects()?.forEach(async (item, index) => {
@@ -20,8 +19,8 @@ export const useClipboard = ({ canvas }: UserClipboard) => {
       clipboard.current.push(value);
     });
     toast.success("复制成功");
-  });
-  const pasty = useMemoizedFn(() => {
+  };
+  const pasty = () => {
     if (clipboard.current.length === 0) return;
     clipboard.current.forEach(async (item, index, arr) => {
       const value = await item.clone();
@@ -33,6 +32,6 @@ export const useClipboard = ({ canvas }: UserClipboard) => {
       canvas?.setActiveObject(value);
       canvas?.requestRenderAll();
     });
-  });
+  };
   return { copy, pasty };
 };
