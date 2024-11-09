@@ -36,7 +36,7 @@ export default function Edit({
   if (data?.length) {
     return (
       <>
-        <Canvas data={data[0]} userId={userId} />
+        <Canvas userId={userId} data={data[0]} />
         {/* // <div className='h-full w-full flex flex-col '>
         //   <div className='w-full h-[64px] ' />
         //   <div className='w-full grid grid-cols-[99px,1fr] h-full'>

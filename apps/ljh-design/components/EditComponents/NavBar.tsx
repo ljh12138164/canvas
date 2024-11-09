@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { Edit, Tool } from "@/types/Edit";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { BsCloudCheck } from "react-icons/bs";
 import { CiFileOn } from "react-icons/ci";
 import {
@@ -30,7 +30,6 @@ interface NavBarProps {
   userId: string | undefined;
 }
 const NavBar = ({ activeTool, onChangeTool, editor, userId }: NavBarProps) => {
-  const router = useRouter();
   const { openFilePicker } = useFilePicker({
     accept: ".json",
     onFilesSelected: ({ plainFiles }) => {
@@ -125,7 +124,7 @@ const NavBar = ({ activeTool, onChangeTool, editor, userId }: NavBarProps) => {
           <p
             className="text-xs text-muted-foreground cursor-pointer"
             onClick={() => {
-              router.push("/board/sign-in");
+              redirect("/board/sign-in");
             }}
           >
             登录后可保存到云端

@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { isArray } from "lodash";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 export type ResponseType = InferResponseType<typeof client.api.board.$post>;
 type RequestType = InferRequestType<typeof client.api.board.$post>["json"];
@@ -23,11 +23,11 @@ type DeleteResponseType = InferResponseType<
 >;
 
 type AutoSaveResponseType = InferResponseType<
-  (typeof client.api.board)[":id"]["$patch"],
+  (typeof client.api.board)[":id"]["$post"],
   200
 >;
 type AutoSaveRequestType = InferRequestType<
-  (typeof client.api.board)[":id"]["$patch"]
+  (typeof client.api.board)[":id"]["$post"]
 >["json"];
 
 /**
@@ -60,9 +60,8 @@ export const useBoardEditQuery = ({
   id: string;
   userId: string;
 }) => {
-  const router = useRouter();
   const { data, isLoading, error } = useQuery<Board[], Error, Board[]>({
-    queryKey: [id],
+    queryKey: ["project", id],
     queryFn: async () => {
       const response = await client.api.board[":id"].$get({
         param: { id },
@@ -76,7 +75,7 @@ export const useBoardEditQuery = ({
       ) {
         toast.dismiss();
         toast.error("看板不存在");
-        router.push("/board");
+        redirect("/board");
       }
       return data as Board[];
     },
@@ -193,7 +192,8 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
     AutoSaveRequestType
   >({
     mutationFn: async (board) => {
-      const response = await client.api.board[":id"].$patch({
+      console.log(id);
+      const response = await client.api.board[":id"].$post({
         param: { id },
         json: { ...board },
       });
@@ -201,7 +201,7 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [id] });
+      queryClient.invalidateQueries({ queryKey: ["project", id] });
     },
   });
   return { mutate, isPending, error };
