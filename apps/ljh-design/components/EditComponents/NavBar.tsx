@@ -7,8 +7,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { CiFileOn } from "react-icons/ci";
+import { Edit, Tool } from "@/types/Edit";
+import { useRouter } from "next/navigation";
 import { BsCloudCheck } from "react-icons/bs";
+import { CiFileOn } from "react-icons/ci";
 import {
   LuChevronDown,
   LuDownload,
@@ -18,10 +20,8 @@ import {
   LuRedo2,
   LuUndo2,
 } from "react-icons/lu";
-import Logo from "../Comand/Logo";
-import { Tool, Edit } from "@/types/Edit";
 import { useFilePicker } from "use-file-picker";
-import { useRouter } from "next/navigation";
+import Logo from "../Comand/Logo";
 import UserButton from "../Comand/UserButton";
 interface NavBarProps {
   editor: Edit | undefined;

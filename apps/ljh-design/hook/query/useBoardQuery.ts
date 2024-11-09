@@ -1,21 +1,34 @@
-import { client } from '@/api/hono';
-import { Board, BoardResponse } from '@/types/board';
-import { PAGE_SIZE } from '@/types/Edit';
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { InferRequestType, InferResponseType } from 'hono';
-import { isArray } from 'lodash';
-import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
+import { client } from "@/api/hono";
+import { Board, BoardResponse } from "@/types/board";
+import { PAGE_SIZE } from "@/types/Edit";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { InferRequestType, InferResponseType } from "hono";
+import { isArray } from "lodash";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 export type ResponseType = InferResponseType<typeof client.api.board.$post>;
-type RequestType = InferRequestType<typeof client.api.board.$post>['json'];
+type RequestType = InferRequestType<typeof client.api.board.$post>["json"];
 
 type UpdateResponseType = InferResponseType<
-  (typeof client.api.board)['editBoard']['$post']
+  (typeof client.api.board)["editBoard"]["$post"]
 >;
 
 type DeleteResponseType = InferResponseType<
-  (typeof client.api.board)['deleteBoard']['$post']
+  (typeof client.api.board)["deleteBoard"]["$post"]
 >;
+
+type AutoSaveResponseType = InferResponseType<
+  (typeof client.api.board)[":id"]["$patch"],
+  200
+>;
+type AutoSaveRequestType = InferRequestType<
+  (typeof client.api.board)[":id"]["$patch"]
+>["json"];
 
 /**
  * 创建看板
@@ -29,7 +42,7 @@ export const useBoardQuery = () => {
   >({
     mutationFn: async (board) => {
       const response = await client.api.board.$post({ json: board });
-      if (!response.ok) throw new Error('创建失败');
+      if (!response.ok) throw new Error("创建失败");
       return response.json();
     },
   });
@@ -40,12 +53,21 @@ export const useBoardQuery = () => {
  * @param id
  * @returns
  */
-export const useBoardEditQuery = ({ id }: { id: string }) => {
+export const useBoardEditQuery = ({
+  id,
+  userId,
+}: {
+  id: string;
+  userId: string;
+}) => {
   const router = useRouter();
   const { data, isLoading, error } = useQuery<Board[], Error, Board[]>({
     queryKey: [id],
     queryFn: async () => {
-      const response = await client.api.board[':id'].$get({ param: { id } });
+      const response = await client.api.board[":id"].$get({
+        param: { id },
+        query: { userId },
+      });
       const data = await response.json();
       if (
         !response.ok ||
@@ -53,8 +75,8 @@ export const useBoardEditQuery = ({ id }: { id: string }) => {
         !isArray(data)
       ) {
         toast.dismiss();
-        toast.error('看板不存在');
-        router.push('/board');
+        toast.error("看板不存在");
+        router.push("/board");
       }
       return data as Board[];
     },
@@ -81,7 +103,7 @@ export const useBoardUserQuery = ({ userid }: { userid: string }) => {
       const response = await client.api.board.getBoard.$post({
         json: { userid, pageParam: pageParam as number },
       });
-      if (!response.ok) throw new Error('获取失败');
+      if (!response.ok) throw new Error("获取失败");
       const data = await response.json();
       return data;
     },
@@ -122,7 +144,7 @@ export const useBoardUpdateQuery = (id: string) => {
       const response = await client.api.board.editBoard.$post({
         json: { id, ...board },
       });
-      if (!response.ok) throw new Error('更新失败');
+      if (!response.ok) throw new Error("更新失败");
       return response.json();
     },
   });
@@ -143,16 +165,43 @@ export const useBoardDeleteQuery = () => {
       const response = await client.api.board.deleteBoard.$post({
         json: { id },
       });
-      if (!response.ok) throw new Error('删除失败');
+      if (!response.ok) throw new Error("删除失败");
       return response.json();
     },
     onSuccess: () => {
       toast.dismiss();
-      toast.success('删除成功');
+      toast.success("删除成功");
     },
     onError: () => {
       toast.dismiss();
-      toast.error('删除失败');
+      toast.error("删除失败");
+    },
+  });
+  return { mutate, isPending, error };
+};
+
+/**
+ * 自动保存看板
+ * @param id
+ * @returns
+ */
+export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
+  const queryClient = useQueryClient();
+  const { mutate, isPending, error } = useMutation<
+    AutoSaveResponseType,
+    Error,
+    AutoSaveRequestType
+  >({
+    mutationFn: async (board) => {
+      const response = await client.api.board[":id"].$patch({
+        param: { id },
+        json: { ...board },
+      });
+      if (!response.ok) throw new Error("更新失败");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [id] });
     },
   });
   return { mutate, isPending, error };

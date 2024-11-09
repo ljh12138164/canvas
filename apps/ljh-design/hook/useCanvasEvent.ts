@@ -7,7 +7,7 @@ interface CanvasEventProps {
   tool: Tool;
   setSelectedObject: (object: fabric.Object[]) => void;
   setTool: (tool: Tool) => void;
-  save: () => void;
+  save: (skip?: boolean, des?: string) => void;
 }
 
 /***
@@ -26,18 +26,18 @@ const useCanvasEvent = ({
     if (canvas) {
       //创建
       canvas.on("object:added", () => {
-        if (!userId) {
-          save();
+        if (userId) {
+          save(false, "创建图形");
         }
       });
       canvas.on("object:removed", () => {
-        if (!userId) {
-          save();
+        if (userId) {
+          save(false, "删除图形");
         }
       });
       canvas.on("object:modified", () => {
-        if (!userId) {
-          save();
+        if (userId) {
+          save(false, "修改图形");
         }
       });
       canvas.on("selection:created", (e) => {
@@ -63,7 +63,8 @@ const useCanvasEvent = ({
         setSelectedObject([]);
       });
     }
-  }, [canvas, setSelectedObject, tool, setTool, save, userId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canvas, setSelectedObject, tool, setTool, userId]);
 };
 
 export default useCanvasEvent;
