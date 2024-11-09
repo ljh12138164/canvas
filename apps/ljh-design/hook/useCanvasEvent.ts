@@ -1,6 +1,6 @@
-import { Tool } from "@/types/Edit";
-import * as fabric from "fabric";
-import { useEffect } from "react";
+import { Tool } from '@/types/Edit';
+import * as fabric from 'fabric';
+import { useEffect } from 'react';
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
   userId: string | undefined;
@@ -25,30 +25,32 @@ const useCanvasEvent = ({
   useEffect(() => {
     if (canvas) {
       //创建
-      canvas.on("object:added", () => {
+      canvas.on('object:added', () => {
         if (userId) {
-          save(false, "创建图形");
+          save();
         }
       });
-      canvas.on("object:removed", () => {
+      canvas.on('object:removed', () => {
         if (userId) {
-          save(false, "删除图形");
+          save();
         }
       });
-      canvas.on("object:modified", () => {
+      canvas.on('object:modified', (e) => {
+        console.log(e);
+
         if (userId) {
-          save(false, "修改图形");
+          save();
         }
       });
-      canvas.on("selection:created", (e) => {
+      canvas.on('selection:created', (e) => {
         setSelectedObject(e.selected || []);
       });
       //更新
-      canvas.on("selection:updated", (e) => {
+      canvas.on('selection:updated', (e) => {
         setSelectedObject(e.selected || []);
       });
       //删除
-      canvas.on("selection:cleared", () => {
+      canvas.on('selection:cleared', () => {
         if (
           tool == Tool.Font ||
           tool === Tool.Fill ||
@@ -63,8 +65,9 @@ const useCanvasEvent = ({
         setSelectedObject([]);
       });
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvas, setSelectedObject, tool, setTool, userId]);
+  }, [canvas]);
 };
 
 export default useCanvasEvent;
