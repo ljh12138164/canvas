@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { Slider } from "@/components/ui/slider";
-import { cn } from "@/lib/utils";
-import type { Filter } from "@/types/Edit";
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { Slider } from '@/components/ui/slider';
+import { cn } from '@/lib/utils';
+import type { Filter } from '@/types/Edit';
 import {
   canfilterArr,
   CANVAS_COLOR,
@@ -16,14 +16,14 @@ import {
   STROKE_COLOR,
   Tool,
   ToolItem,
-} from "@/types/Edit";
-import { useEffect, useRef, useState } from "react";
-import ColorPicker from "./ColorPicker";
-import FilterSetting from "./FilterSetting";
-import ImageSetting from "./ImageSetting";
-import StokeWidth from "./StokeWidth";
-import ToolSiderbarClose from "./ToolSiberbarClose";
-import ToolSiderbar from "./ToolSiderbar";
+} from '@/types/Edit';
+import { useEffect, useRef, useState } from 'react';
+import ColorPicker from './ColorPicker';
+import FilterSetting from './FilterSetting';
+import ImageSetting from './ImageSetting';
+import StokeWidth from './StokeWidth';
+import ToolSiderbarClose from './ToolSiberbarClose';
+import ToolSiderbar from './ToolSiderbar';
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
@@ -40,9 +40,9 @@ const ColorSoiberbar = ({
   const value = editor?.fillColor || FILL_COLOR;
   const stokevalue = editor?.strokeColor || STROKE_COLOR;
   const filterRef = useRef<HTMLDivElement | null>(null);
-  const [filterSetting, setFilterSetting] = useState<string>("");
+  const [filterSetting, setFilterSetting] = useState<string>('');
 
-  const initColor = editor?.getWorkspace()?.fill ?? "#ffffff";
+  const initColor = editor?.getWorkspace()?.fill ?? '#ffffff';
 
   useEffect(() => {
     editor?.setCanvasColor(initColor as string);
@@ -60,31 +60,31 @@ const ColorSoiberbar = ({
       activeTool === Tool.FilterSetting
     )
       return activeTool;
-    return "";
+    return '';
   };
   useEffect(() => {
-    filterRef?.current?.scrollIntoView({ behavior: "smooth" });
+    filterRef?.current?.scrollIntoView({ behavior: 'smooth' });
   }, [filterRef]);
   //检查滤镜是否选中
   const check = (item: string) => {
-    if (item === "none" && editor?.getActiveFilter().length === 0) return true;
+    if (item === 'none' && editor?.getActiveFilter().length === 0) return true;
     return editor?.getActiveFilter().includes(item) || false;
   };
   return (
     <aside
       className={cn(
-        "z-[600] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col",
-        onShow() ? "visible" : "hidden"
+        'z-[600] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col',
+        onShow() ? 'visible' : 'hidden'
       )}
     >
       <ToolSiderbar
         onChangeActive={onChangeActive}
         front={onShow() === Tool.FilterSetting}
-        title={ToolItem[onShow() as keyof typeof ToolItem] || ""}
-        description={`更改${ToolItem[onShow() as keyof typeof ToolItem] || ""}`}
+        title={ToolItem[onShow() as keyof typeof ToolItem] || ''}
+        description={`更改${ToolItem[onShow() as keyof typeof ToolItem] || ''}`}
       ></ToolSiderbar>
-      <ScrollArea className="z-[601] h-full">
-        <div className="p-4 space-y-4">
+      <ScrollArea className='z-[601] h-full'>
+        <div className='p-4 space-y-4'>
           {onShow() === Tool.Fill && (
             <ColorPicker
               value={value}
@@ -119,21 +119,21 @@ const ColorSoiberbar = ({
             />
           )}
           {onShow() === Tool.FontFamily && (
-            <section className="space-y-2 pb-[5rem]">
+            <section className='space-y-2 pb-[5rem]'>
               {fonts.map((item: string) => {
                 return (
                   <Button
                     key={item}
-                    variant="ghost"
+                    variant='ghost'
                     style={{
                       fontFamily: item,
-                      fontSize: "16px",
-                      padding: "8px 16px",
+                      fontSize: '16px',
+                      padding: '8px 16px',
                     }}
                     onClick={() => {
                       editor?.setFontFamily(item);
                     }}
-                    className={`w-full h-16 justify-start text-left ${editor?.fontFamily === item && "border-blue-500 border-2"}`}
+                    className={`w-full h-16 justify-start text-left ${editor?.fontFamily === item && 'border-blue-500 border-2'}`}
                   >
                     {item}
                   </Button>
@@ -143,15 +143,18 @@ const ColorSoiberbar = ({
           )}
           {/* 滤镜 */}
           {onShow() === Tool.Filter && (
-            <section className="flex flex-col gap-2 pb-12">
+            <section className='flex flex-col gap-2 pb-12'>
               {filters.map((item: Filter) => {
                 return (
                   <Button
                     key={item}
-                    variant="outline"
+                    variant='outline'
                     onClick={() => {
-                      if (item === "none") {
-                        editor?.cleanFilter();
+                      if (item === 'none' && !check(item)) {
+                        const isClear = window.confirm('是否清除滤镜');
+                        if (isClear) {
+                          editor?.cleanFilter();
+                        }
                       } else if (
                         check(item) &&
                         editor?.getActiveFilter().length === 1
@@ -163,13 +166,13 @@ const ColorSoiberbar = ({
                         editor?.changeImageFilter(item);
                       }
                     }}
-                    className={`w-full h-16 relative  justify-start text-left ${check(item) && "border-blue-500 border-2"}`}
+                    className={`w-full h-16 relative  justify-start text-left ${check(item) && 'border-blue-500 border-2'}`}
                   >
                     {FilterItem[item]}
                     {check(item) && (
-                      <div className=" absolute top-0 right-0 bg-indigo-600 text-white text-xs px-2 duration-300">
+                      <div className=' absolute top-0 right-0 bg-indigo-600 text-white text-xs px-2 duration-300'>
                         {editor &&
-                          item !== "none" &&
+                          item !== 'none' &&
                           editor?.getActiveFilterIndex(item) + 1}
                       </div>
                     )}
@@ -179,7 +182,7 @@ const ColorSoiberbar = ({
                         setFilterSetting={setFilterSetting}
                         activeTool={activeTool}
                         onChangeActive={onChangeActive}
-                        isShow={check(item) && item !== "none"}
+                        isShow={check(item) && item !== 'none'}
                       ></ImageSetting>
                     )}
                   </Button>
@@ -196,7 +199,7 @@ const ColorSoiberbar = ({
           )}
           {onShow() === Tool.Draw && (
             <section>
-              <div className=" pb-6  pt-2 w-full flex mb-2   justify-center gap-4 flex-col">
+              <div className=' pb-6  pt-2 w-full flex mb-2   justify-center gap-4 flex-col'>
                 <p>
                   画笔粗细<span>({editor?.drawWidth || 1}px)</span>
                 </p>
@@ -223,13 +226,13 @@ const ColorSoiberbar = ({
             </section>
           )}
           {onShow() === Tool.Settings && (
-            <form className="flex flex-col gap-2">
-              <div className="space-y-2">
-                <Label htmlFor="hight">高度</Label>
+            <form className='flex flex-col gap-2'>
+              <div className='space-y-2'>
+                <Label htmlFor='hight'>高度</Label>
                 <input
-                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                  type="number"
-                  name="hight"
+                  className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+                  type='number'
+                  name='hight'
                   value={editor?.canvasHeight}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     editor?.changeSize({
@@ -237,17 +240,17 @@ const ColorSoiberbar = ({
                       height: +e.target.value,
                     });
                   }}
-                  placeholder="高度"
+                  placeholder='高度'
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="width">宽度</Label>
+              <div className='space-y-2'>
+                <Label htmlFor='width'>宽度</Label>
                 <input
-                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                  type="number"
+                  className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
+                  type='number'
                   value={editor?.canvasWidth}
-                  name="width"
-                  placeholder="请输入宽度"
+                  name='width'
+                  placeholder='请输入宽度'
                   onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                     await editor?.changeSize({
                       width: +e.target.value,
@@ -260,12 +263,12 @@ const ColorSoiberbar = ({
                 onClick={async () => {
                   await editor?.changeSize({ width: 800, height: 1100 });
                 }}
-                type="button"
-                className="w-full"
+                type='button'
+                className='w-full'
               >
                 重置
               </Button>
-              <div className="p-4">
+              <div className='p-4'>
                 <ColorPicker
                   noshow={true}
                   value={editor?.canvasColor || CANVAS_COLOR}

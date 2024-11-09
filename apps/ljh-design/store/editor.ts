@@ -4,7 +4,7 @@ import {
   Effect,
   isText,
   transformToTest,
-} from "@/lib/utils";
+} from '@/lib/utils';
 import {
   buildEditorProps,
   CRICLE_OPTION,
@@ -25,10 +25,10 @@ import {
   STROKE_WIDTH,
   TEXTBOX_OPTION,
   TRIANGLE_OPTION,
-} from "@/types/Edit";
+} from '@/types/Edit';
 
-import * as fabric from "fabric";
-import toast from "react-hot-toast";
+import * as fabric from 'fabric';
+import toast from 'react-hot-toast';
 //输入
 
 interface FilterArrayEffect {
@@ -36,7 +36,7 @@ interface FilterArrayEffect {
   effect: Effect;
 }
 //返回fabric类型
-declare module "fabric" {
+declare module 'fabric' {
   interface FabricImage {
     filtersArray: FilterArrayEffect[];
   }
@@ -101,7 +101,7 @@ export const buildEditor = ({
       .getObjects()
       .find(
         (item: InitFabicObject | fabric.FabricObject) =>
-          (item as InitFabicObject).name === "board"
+          (item as InitFabicObject).name === 'board'
       );
   //生成保存选项
   const genertateSaveOption = () => {
@@ -128,17 +128,17 @@ export const buildEditor = ({
 
     // 将画布中的图片转换为内联数据URL
     canvas.getObjects().forEach((obj) => {
-      if (obj.type === "image" && obj.get("src")) {
-        const originalSrc = obj.get("src");
+      if (obj.type === 'image' && obj.get('src')) {
+        const originalSrc = obj.get('src');
         const img = new Image();
         img.src = originalSrc;
-        const canvas = document.createElement("canvas");
+        const canvas = document.createElement('canvas');
         canvas.width = obj.width;
         canvas.height = obj.height;
-        const ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext('2d');
         ctx?.drawImage(img, 0, 0, obj.width, obj.height);
-        const dataURL = canvas.toDataURL("image/png");
-        obj?.set("src", dataURL);
+        const dataURL = canvas.toDataURL('image/png');
+        obj?.set('src', dataURL);
       }
     });
 
@@ -150,21 +150,21 @@ export const buildEditor = ({
         width: Number(newoption.width),
         height: Number(newoption.height),
       },
-      encoding: "UTF-8",
+      encoding: 'UTF-8',
       suppressPreamble: false,
     });
 
     // 替换可能导致错误的字符
     const cleanedSvg = dataUrl.replace(
       /&(?!amp;|lt;|gt;|quot;|#39;)/g,
-      "&amp;"
+      '&amp;'
     );
 
     const svgBlob = new Blob([cleanedSvg], {
-      type: "image/svg+xml;charset=utf-8",
+      type: 'image/svg+xml;charset=utf-8',
     });
     const svgUrl = URL.createObjectURL(svgBlob);
-    downloadImage(svgUrl, "svg");
+    downloadImage(svgUrl, 'svg');
     URL.revokeObjectURL(svgUrl);
     authZoom();
   };
@@ -172,8 +172,8 @@ export const buildEditor = ({
   const savePng = () => {
     const option = genertateSaveOption();
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-    const dataUrl = canvas.toDataURL({ ...option, format: "png" });
-    downloadImage(dataUrl, "png");
+    const dataUrl = canvas.toDataURL({ ...option, format: 'png' });
+    downloadImage(dataUrl, 'png');
     authZoom();
   };
 
@@ -181,8 +181,8 @@ export const buildEditor = ({
   const savejpg = () => {
     const option = genertateSaveOption();
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-    const dataUrl = canvas.toDataURL({ ...option, format: "png" });
-    downloadImage(dataUrl, "jpg");
+    const dataUrl = canvas.toDataURL({ ...option, format: 'png' });
+    downloadImage(dataUrl, 'jpg');
     authZoom();
   };
   //保存json
@@ -190,9 +190,9 @@ export const buildEditor = ({
     const dataUrl = canvas.toObject(JSON_KEY);
     transformToTest(dataUrl);
     const fileString = `data:text/json;charset=utf-8,${encodeURIComponent(
-      JSON.stringify(dataUrl, null, "\t")
+      JSON.stringify(dataUrl, null, '\t')
     )}`;
-    downloadImage(fileString, "json");
+    downloadImage(fileString, 'json');
     authZoom();
   };
   //加载json
@@ -282,7 +282,7 @@ export const buildEditor = ({
       await authZoom();
       canvas.renderAll();
       if (userId) {
-        save(false, "改变画布大小");
+        save(false, '改变画布大小');
       }
     },
     changeBackground: (color: string) => {
@@ -293,7 +293,7 @@ export const buildEditor = ({
       }
       canvas.renderAll();
       if (userId) {
-        save(false, "改变画布背景");
+        save(false, '改变画布背景');
       }
     },
     copy,
@@ -323,11 +323,13 @@ export const buildEditor = ({
       canvas.isDrawingMode = false;
     },
     getActiveFilter: () => {
-      const value = canvas?.getActiveObjects()?.[0];
-      if (value instanceof fabric.FabricImage) {
-        return value.filtersArray.length > 0
-          ? value.filtersArray.map((item) => item.name)
-          : [];
+      if (canvas?.getActiveObjects()?.[0]) {
+        const value = canvas?.getActiveObjects()?.[0];
+        if (value instanceof fabric.FabricImage) {
+          return value.filtersArray.length > 0
+            ? value.filtersArray.map((item) => item.name)
+            : [];
+        }
       }
       return [];
     },
@@ -353,7 +355,7 @@ export const buildEditor = ({
     changeImageFilter: (filter: string) => {
       setImageFilter([...imageFilter, filter]);
       canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
-        if (item.type === "image") {
+        if (item.type === 'image') {
           const imageObj = item as fabric.FabricImage;
           //创建滤镜
           const effects = createFilter(filter);
@@ -363,6 +365,8 @@ export const buildEditor = ({
             ? imageObj.filtersArray.map((item) => item.effect)
             : [];
           fixImageSize(imageObj);
+
+          save();
           // 多种滤镜
           imageObj.applyFilters();
           canvas.renderAll();
@@ -373,7 +377,7 @@ export const buildEditor = ({
     changeImageFilterSetting: (filter: string, value: Effect) => {
       if (!value) return;
       canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
-        if (item.type === "image") {
+        if (item.type === 'image') {
           const imageObj = item as fabric.FabricImage;
           imageObj.filtersArray = [
             ...imageObj.filtersArray.filter((item) => item.name !== filter),
@@ -393,7 +397,7 @@ export const buildEditor = ({
       setImageFilter([...imageFilter].filter((item) => item !== filter));
 
       canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
-        if (item.type === "image") {
+        if (item.type === 'image') {
           const imageObj = item as fabric.FabricImage;
           imageObj.filtersArray = imageObj.filtersArray.filter(
             (item) => item.name !== filter
@@ -408,11 +412,11 @@ export const buildEditor = ({
       setImageFilter([]);
     },
     addImage: async (value: string) => {
-      toast.loading("添加中...");
+      toast.loading('添加中...');
       setImageLoading(true);
       const workspace = getWorkspace();
       const img = await fabric.FabricImage.fromURL(value, {
-        crossOrigin: "anonymous",
+        crossOrigin: 'anonymous',
       });
       toast.dismiss();
       setImageLoading(false);
@@ -420,7 +424,7 @@ export const buildEditor = ({
       img.scaleToWidth(workspace?.width || 0);
       img.scaleToHeight(workspace?.height || 0);
       addToCanvas(img);
-      toast.success("添加成功");
+      toast.success('添加成功');
     },
     delete: () => {
       canvas?.getActiveObjects().forEach((item) => canvas.remove(item));
@@ -429,7 +433,7 @@ export const buildEditor = ({
     },
     getActiveFontSize: () => {
       const value =
-        canvas?.getActiveObjects()?.[0]?.get("fontSize") || FONT_SIZE;
+        canvas?.getActiveObjects()?.[0]?.get('fontSize') || FONT_SIZE;
       return value;
     },
     changeFontSize: (value: number) => {
@@ -442,7 +446,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
-    changeFontAlign: (value: fabric.Textbox["textAlign"]) => {
+    changeFontAlign: (value: fabric.Textbox['textAlign']) => {
       setFontAlign(value);
 
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -453,17 +457,17 @@ export const buildEditor = ({
       canvas.renderAll();
     },
     getActiveFontAlign: () => {
-      const value = canvas?.getActiveObjects()?.[0]?.get("textAlign") || "left";
+      const value = canvas?.getActiveObjects()?.[0]?.get('textAlign') || 'left';
       return value;
     },
     //
     getActiveFontItalic: () => {
       const value =
-        canvas?.getActiveObjects()?.[0]?.get("fontStyle") || "normal";
+        canvas?.getActiveObjects()?.[0]?.get('fontStyle') || 'normal';
       return value;
     },
     getActiveFontUnderline: () => {
-      const value = canvas?.getActiveObjects()?.[0]?.get("underline") || false;
+      const value = canvas?.getActiveObjects()?.[0]?.get('underline') || false;
       return value;
     },
     changeFontItalic: (value: FontStyle) => {
@@ -515,16 +519,16 @@ export const buildEditor = ({
     },
     getActiveFontLineThrough: () => {
       const value =
-        canvas?.getActiveObjects()?.[0]?.get("linethrough") || false;
+        canvas?.getActiveObjects()?.[0]?.get('linethrough') || false;
       return value;
     },
     getActiveStrokeWeight: () => {
       const value =
-        canvas?.getActiveObjects()?.[0]?.get("fontWeight") || FONT_WEIGHT;
+        canvas?.getActiveObjects()?.[0]?.get('fontWeight') || FONT_WEIGHT;
       return value;
     },
     getActiveFontFamily: () => {
-      return canvas?.getActiveObjects()?.[0]?.get("fontFamily") || FONT_FAMILY;
+      return canvas?.getActiveObjects()?.[0]?.get('fontFamily') || FONT_FAMILY;
     },
     addText: (text, options) => {
       const textObj = new fabric.Textbox(text, {
@@ -550,7 +554,7 @@ export const buildEditor = ({
       if (!selected) {
         return OPACITY;
       }
-      return selected?.get("opacity") || OPACITY;
+      return selected?.get('opacity') || OPACITY;
     },
     //前后
     bringForward: () => {
@@ -573,7 +577,7 @@ export const buildEditor = ({
     cleanFilter: () => {
       setImageFilter([]);
       canvas.getActiveObjects().forEach((item) => {
-        if (item.type === "image") {
+        if (item.type === 'image') {
           (item as fabric.FabricImage).filtersArray = [];
           (item as fabric.FabricImage).filters = [];
           (item as fabric.FabricImage).applyFilters();
@@ -584,7 +588,7 @@ export const buildEditor = ({
     changeStokeDashArray: (type) => {
       setStrokeDashArray(type);
       canvas.getActiveObjects().forEach((obj) => {
-        obj.set("strokeDashArray", type);
+        obj.set('strokeDashArray', type);
       });
       canvas.renderAll();
     },
@@ -593,21 +597,21 @@ export const buildEditor = ({
       if (!selectedObj) {
         return STROKE_DASH_ARRAY;
       }
-      return selectedObj.get("strokeDashArray") || STROKE_DASH_ARRAY;
+      return selectedObj.get('strokeDashArray') || STROKE_DASH_ARRAY;
     },
     getActiveStrokeWidth: () => {
       const selectedObj = selectedObject?.[0];
       if (!selectedObj) {
         return STROKE_WIDTH;
       }
-      return selectedObj.get("strokeWidth") || STROKE_WIDTH;
+      return selectedObj.get('strokeWidth') || STROKE_WIDTH;
     },
     getActiveStokeColor: () => {
       const selectedObj = selectedObject?.[0];
       if (!selectedObj) {
         return fillColor;
       }
-      return selectedObj.get("stroke") || strokeColor;
+      return selectedObj.get('stroke') || strokeColor;
     },
     //颜色
     setFillColor: (color: string) => {
@@ -630,9 +634,9 @@ export const buildEditor = ({
       canvas.getActiveObjects()?.forEach((obj) => {
         //如果是文本
         if (
-          obj.type === "text" ||
-          obj.type === "i-text" ||
-          obj.type === "textbox"
+          obj.type === 'text' ||
+          obj.type === 'i-text' ||
+          obj.type === 'textbox'
         ) {
           obj.set({ fill: color });
           return;

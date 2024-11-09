@@ -1,0 +1,16 @@
+{
+  "name": "api",
+  "scripts": {
+    "start": "vercel dev --listen=8000 ",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.5",
+    "@types/bun": "^1.1.13",
+    "hono": "^4.6.9",
+    "next": "^15.0.3"
+  },
+  "devDependencies": {
+    "vercel": "^32.4.1"
+  }
+}

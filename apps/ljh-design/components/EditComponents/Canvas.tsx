@@ -1,20 +1,20 @@
-import ColorSoiberbar from "@/components/EditComponents/ColorSiberbar";
-import Footer from "@/components/EditComponents/Footer";
-import ImageSiderbar from "@/components/EditComponents/ImageSiderbar";
-import NavBar from "@/components/EditComponents/NavBar";
-import ShapeSidle from "@/components/EditComponents/ShapeSidle";
-import SiderBar from "@/components/EditComponents/SiderBar";
-import TextSidebar from "@/components/EditComponents/TextSidebar";
-import Tools from "@/components/EditComponents/Tools";
-import { useBoardAutoSaveQuery } from "@/hook/query/useBoardQuery";
-import useCanvas from "@/hook/useCanvas";
-import useCanvasEvent from "@/hook/useCanvasEvent";
-import { useClipboard } from "@/hook/useCliph";
-import useHistoty from "@/hook/useHistory";
-import useResponse from "@/hook/useResponse";
-import { useWindowEvent } from "@/hook/useWindowEvent";
-import { buildEditor } from "@/store/editor";
-import { Board } from "@/types/board";
+import ColorSoiberbar from '@/components/EditComponents/ColorSiberbar';
+import Footer from '@/components/EditComponents/Footer';
+import ImageSiderbar from '@/components/EditComponents/ImageSiderbar';
+import NavBar from '@/components/EditComponents/NavBar';
+import ShapeSidle from '@/components/EditComponents/ShapeSidle';
+import SiderBar from '@/components/EditComponents/SiderBar';
+import TextSidebar from '@/components/EditComponents/TextSidebar';
+import Tools from '@/components/EditComponents/Tools';
+import { useBoardAutoSaveQuery } from '@/hook/query/useBoardQuery';
+import useCanvas from '@/hook/useCanvas';
+import useCanvasEvent from '@/hook/useCanvasEvent';
+import { useClipboard } from '@/hook/useCliph';
+import useHistoty from '@/hook/useHistory';
+import useResponse from '@/hook/useResponse';
+import { useWindowEvent } from '@/hook/useWindowEvent';
+import { buildEditor } from '@/store/editor';
+import { Board } from '@/types/board';
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -35,9 +35,9 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
   Tool,
-} from "@/types/Edit";
-import * as fabric from "fabric";
-import { useEffect, useRef, useState } from "react";
+} from '@/types/Edit';
+import * as fabric from 'fabric';
+import { useEffect, useRef, useState } from 'react';
 const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
   const debounceMutate = (data: {
     json: string;
@@ -72,7 +72,7 @@ const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
   const [fontUnderline, setFontUnderline] = useState<boolean>(FONT_UNDERLINE);
   const [fontItalics, setFontItalics] = useState<FontStyle>(FONT_ITALICS);
   const [fontAlign, setFontAlign] =
-    useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
+    useState<fabric.Textbox['textAlign']>(FONT_ALIGN);
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
   //图片
   const [imageLoading, setImageLoading] = useState<boolean>(false);
@@ -210,9 +210,9 @@ const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
 
   return (
     <div
-      className="h-full w-full flex flex-col items-center relative bg-slate-100"
+      className='h-full w-full flex flex-col items-center relative bg-slate-100'
       style={{
-        scrollbarWidth: "none",
+        scrollbarWidth: 'none',
       }}
     >
       <NavBar
@@ -221,7 +221,7 @@ const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
         activeTool={tool}
         onChangeTool={onChangeActive}
       ></NavBar>
-      <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
+      <div className='h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out'>
         <SiderBar
           acitiveTool={tool}
           onChangeActiveTool={onChangeActive}
@@ -247,7 +247,7 @@ const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></ColorSoiberbar>
-        <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
+        <main className='flex-1 h-full w-full flex flex-col overflow-hidden'>
           <Tools
             editor={editor()}
             activeTool={tool}
@@ -255,7 +255,7 @@ const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
             key={JSON.stringify(editor()?.canvas.getActiveObject())}
           ></Tools>
           <section
-            className="flex flex-col relative flex-1 overflow-hidden"
+            className='flex flex-col relative flex-1 overflow-hidden'
             ref={containEl}
           >
             <canvas ref={canvasEl}></canvas>

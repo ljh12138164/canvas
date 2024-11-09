@@ -1,20 +1,20 @@
-"use client";
-import ColorSoiberbar from "@/components/EditComponents/ColorSiberbar";
-import Footer from "@/components/EditComponents/Footer";
-import ImageSiderbar from "@/components/EditComponents/ImageSiderbar";
-import NavBar from "@/components/EditComponents/NavBar";
-import ShapeSidle from "@/components/EditComponents/ShapeSidle";
-import SiderBar from "@/components/EditComponents/SiderBar";
-import TextSidebar from "@/components/EditComponents/TextSidebar";
-import Tools from "@/components/EditComponents/Tools";
-import useCanvas from "@/hook/useCanvas";
-import useCanvasEvent from "@/hook/useCanvasEvent";
-import { useClipboard } from "@/hook/useCliph";
-import useHistoty from "@/hook/useHistory";
-import useKeyBoard from "@/hook/useKeyBoard";
-import useResponse from "@/hook/useResponse";
-import { useWindowEvent } from "@/hook/useWindowEvent";
-import { buildEditor } from "@/store/editor";
+'use client';
+import ColorSoiberbar from '@/components/EditComponents/ColorSiberbar';
+import Footer from '@/components/EditComponents/Footer';
+import ImageSiderbar from '@/components/EditComponents/ImageSiderbar';
+import NavBar from '@/components/EditComponents/NavBar';
+import ShapeSidle from '@/components/EditComponents/ShapeSidle';
+import SiderBar from '@/components/EditComponents/SiderBar';
+import TextSidebar from '@/components/EditComponents/TextSidebar';
+import Tools from '@/components/EditComponents/Tools';
+import useCanvas from '@/hook/useCanvas';
+import useCanvasEvent from '@/hook/useCanvasEvent';
+import { useClipboard } from '@/hook/useCliph';
+import useHistoty from '@/hook/useHistory';
+import useKeyBoard from '@/hook/useKeyBoard';
+import useResponse from '@/hook/useResponse';
+import { useWindowEvent } from '@/hook/useWindowEvent';
+import { buildEditor } from '@/store/editor';
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -35,9 +35,9 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
   Tool,
-} from "@/types/Edit";
-import * as fabric from "fabric";
-import { useEffect, useRef, useState } from "react";
+} from '@/types/Edit';
+import * as fabric from 'fabric';
+import { useEffect, useRef, useState } from 'react';
 
 export default function TryEdit({ userId }: { userId: string | undefined }) {
   const { init } = useCanvas();
@@ -65,7 +65,7 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
   const [fontUnderline, setFontUnderline] = useState<boolean>(FONT_UNDERLINE);
   const [fontItalics, setFontItalics] = useState<FontStyle>(FONT_ITALICS);
   const [fontAlign, setFontAlign] =
-    useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
+    useState<fabric.Textbox['textAlign']>(FONT_ALIGN);
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
   //图片
   const [imageLoading, setImageLoading] = useState<boolean>(false);
@@ -103,22 +103,8 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
     pasty,
   });
   useWindowEvent();
-  const onChangeActive = (tools: Tool) => {
-    if (tools === Tool.Draw) {
-      editor()?.enableDraw();
-    }
-    if (tool === Tool.Draw) {
-      editor()?.disableDraw();
-    }
-    if (tools === tool) {
-      return setTool(Tool.Select);
-    }
-    setTool(tools);
-  };
-  //编辑器
-  const editor = () => {
-    if (canvas) {
-      const value = buildEditor({
+  const editor = canvas
+    ? buildEditor({
         canvas,
         fillColor,
         strokeColor,
@@ -170,11 +156,22 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
         setStrokeColor,
         setStrokeWidth,
         setStrokeDashArray,
-      });
-      return value;
+      })
+    : undefined;
+
+  const onChangeActive = (tools: Tool) => {
+    if (tools === Tool.Draw) {
+      editor?.enableDraw();
     }
-    return undefined;
+    if (tool === Tool.Draw) {
+      editor?.disableDraw();
+    }
+    if (tools === tool) {
+      return setTool(Tool.Select);
+    }
+    setTool(tools);
   };
+  //编辑器
 
   const containEl = useRef<HTMLDivElement>(null);
   const canvasEl = useRef<HTMLCanvasElement>(null);
@@ -201,59 +198,60 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
       canvas.dispose();
     };
   }, [init, setHitoryIndex, canvasHistory]);
+
   return (
     <div
-      className="h-full w-full flex flex-col items-center relative bg-slate-100"
+      className='h-full w-full flex flex-col items-center relative bg-slate-100'
       style={{
-        scrollbarWidth: "none",
+        scrollbarWidth: 'none',
       }}
     >
       <NavBar
         userId={userId}
-        editor={editor()}
+        editor={editor}
         activeTool={tool}
         onChangeTool={onChangeActive}
       ></NavBar>
-      <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
+      <div className='h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out'>
         <SiderBar
           acitiveTool={tool}
           onChangeActiveTool={onChangeActive}
         ></SiderBar>
         <TextSidebar
-          editor={editor()}
+          editor={editor}
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></TextSidebar>
         <ShapeSidle
-          editor={editor()}
+          editor={editor}
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></ShapeSidle>
         <ImageSiderbar
           userId={userId}
-          editor={editor()}
+          editor={editor}
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></ImageSiderbar>
         <ColorSoiberbar
-          editor={editor()}
+          editor={editor}
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></ColorSoiberbar>
-        <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
+        <main className='flex-1 h-full w-full flex flex-col overflow-hidden'>
           <Tools
-            editor={editor()}
+            editor={editor}
             activeTool={tool}
             onChangeActiveTool={onChangeActive}
-            key={JSON.stringify(editor()?.canvas.getActiveObject())}
+            key={JSON.stringify(editor?.canvas.getActiveObject())}
           ></Tools>
           <section
-            className="flex flex-col relative flex-1 overflow-hidden"
+            className='flex flex-col relative flex-1 overflow-hidden'
             ref={containEl}
           >
             <canvas ref={canvasEl}></canvas>
           </section>
-          <Footer editor={editor()}></Footer>
+          <Footer editor={editor}></Footer>
         </main>
       </div>
     </div>

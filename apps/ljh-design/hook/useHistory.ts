@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
-import * as farbir from "fabric";
-import { JSON_KEY } from "@/types/Edit";
+import { useRef, useState } from 'react';
+import * as farbir from 'fabric';
+import { JSON_KEY } from '@/types/Edit';
 interface HistoryProps {
   canvas: farbir.Canvas | null;
   authZoom: () => Promise<void>;
