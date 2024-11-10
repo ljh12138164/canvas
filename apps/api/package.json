@@ -13,9 +13,9 @@
     }
   },
   "scripts": {
-    "api": "vercel dev --listen=8000",
-    "build": "vite build && tsc",
-    "deploy": "vercel"
+    "api": "vercel dev",
+    "deploy": "vercel",
+    "builds": "vite build && tsc"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.4.1",
