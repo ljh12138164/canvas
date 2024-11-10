@@ -2,6 +2,8 @@ import SignInContain from "@/components/auth/SignInContain";
 import Logo from "@/components/command/Logo";
 import { Button } from "@/components/ui/button";
 import styled from "styled-components";
+import { client } from "../../server";
+import { useEffect } from "react";
 const Main = styled.main`
   background-color: #f5f5f5;
   min-height: 100vh;
@@ -30,6 +32,12 @@ const MainContainer = styled.div`
   }
 `;
 const SignIn = () => {
+  useEffect(() => {
+    (async () => {
+      const data = await client.api.jebt.$get();
+      console.log(data);
+    })();
+  }, []);
   return (
     <Main>
       <Section>

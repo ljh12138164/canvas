@@ -1,11 +1,11 @@
 {
   "name": "api",
   "scripts": {
-    "start": "vercel dev --listen=8000",
+    "dev": "pnpm run dev:api",
+    "dev:api": "vercel dev --listen=8000",
     "deploy": "vercel"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.4",
     "hono": "^4.6.9"
   },
   "devDependencies": {
