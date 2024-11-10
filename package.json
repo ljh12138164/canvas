@@ -3,10 +3,11 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "turbo dev --color",
     "dev:api": "turbo --filter=api dev",
+    "build:api": "turbo --filter=api build",
     "dev:design": "turbo --filter=design dev",
-    "dev:jebet": "turbo --filter=jebet dev && turbo --filter=api dev",
+    "dev:jebet": "turbo --filter=jebet dev",
     "build:design": "turbo --filter=design build",
     "build:jebet": "turbo --filter=jebet build",
     "lint": "turbo lint",
@@ -15,7 +16,6 @@
   "devDependencies": {
     "turbo": "^2.0.14"
   },
-  "packageManager": "pnpm@8.15.6",
   "engines": {
     "node": ">=18"
   },

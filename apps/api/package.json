@@ -1,8 +1,20 @@
 {
   "name": "api",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/api.js",
+  "exports": {
+    ".": {
+      "import": "./dist/api.js",
+      "require": "./dist/api.umd.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "dev": "pnpm run dev:api",
-    "dev:api": "vercel dev --listen=8000",
+    "api": "vercel dev --listen=8000",
+    "build": "vite build && tsc",
     "deploy": "vercel"
   },
   "dependencies": {
@@ -11,6 +23,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "vercel": "^32.4.1"
+    "vercel": "^32.4.1",
+    "vite": "^5.4.9"
   }
 }
