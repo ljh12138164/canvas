@@ -4,10 +4,11 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "dev:main": "turbo --filter=mainapp dev",
+    "dev:api": "turbo --filter=api dev",
     "dev:design": "turbo --filter=design dev",
-    "dev:jebet": "turbo --filter=jebet dev",
+    "dev:jebet": "turbo --filter=jebet dev && turbo --filter=api dev",
     "build:design": "turbo --filter=design build",
+    "build:jebet": "turbo --filter=jebet build",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
