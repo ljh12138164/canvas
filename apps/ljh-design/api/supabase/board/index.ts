@@ -112,7 +112,6 @@ export const updateBoard = async ({
     .eq("id", id)
     .eq("userId", userId)
     .select("*");
-  console.log(data, error);
   if (error || !data) throw new Error(error?.message || "更新失败");
 
   return data[0];
@@ -162,7 +161,6 @@ export const authSaveBoard = async ({
     .eq("id", id)
     .eq("userId", userId)
     .select("*");
-  console.log(data, error);
   if (error || data.length === 0) throw new Error(error?.message || "更新失败");
   return data[0];
 };
