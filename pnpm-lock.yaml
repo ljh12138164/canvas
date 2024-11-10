@@ -31,6 +31,9 @@ importers:
       vercel:
         specifier: ^32.4.1
         version: 32.7.2
+      vite:
+        specifier: ^5.4.9
+        version: 5.4.10(@types/node@14.18.33)
 
   apps/jebet:
     dependencies:
@@ -73,6 +76,9 @@ importers:
       '@types/node':
         specifier: ^20
         version: 20.17.1
+      api:
+        specifier: workspace:*
+        version: link:../api
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -9663,6 +9669,15 @@ snapshots:
       d3-shape: 3.2.0
       d3-time: 3.1.0
       d3-timer: 3.0.1
+
+  vite@5.4.10(@types/node@14.18.33):
+    dependencies:
+      esbuild: 0.21.5
+      postcss: 8.4.47
+      rollup: 4.24.1
+    optionalDependencies:
+      '@types/node': 14.18.33
+      fsevents: 2.3.3
 
   vite@5.4.10(@types/node@20.17.1):
     dependencies:
