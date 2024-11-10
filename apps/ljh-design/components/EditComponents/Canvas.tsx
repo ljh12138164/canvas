@@ -49,7 +49,6 @@ const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
 
   const debounceMutate = useMemoizedFn(
     (data: { json: string; width: number; height: number }) => {
-      console.log(data);
       mutate({ ...data, userId });
     }
   );

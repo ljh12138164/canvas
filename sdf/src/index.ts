@@ -5,5 +5,3 @@ export const app = new Hono()
   .basePath("/api")
   .route("/board", board)
   .route("/jebt", jebt);
-
-export type App = typeof app;

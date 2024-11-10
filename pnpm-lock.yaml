@@ -18,15 +18,9 @@ importers:
 
   apps/api:
     dependencies:
-      '@hono/node-server':
-        specifier: ^1.13.5
-        version: 1.13.5(hono@4.6.9)
-      '@types/bun':
-        specifier: ^1.1.13
-        version: 1.1.13
-      '@types/next':
-        specifier: ^9.0.0
-        version: 9.0.0(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
+      '@supabase/supabase-js':
+        specifier: ^2.45.4
+        version: 2.45.6
       hono:
         specifier: ^4.6.9
         version: 4.6.9
@@ -367,52 +361,6 @@ importers:
         specifier: ^5
         version: 5.6.3
 
-  apps/test:
-    dependencies:
-      hono:
-        specifier: ^4.6.9
-        version: 4.6.9
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.13.0
-        version: 9.13.0
-      '@types/react':
-        specifier: ^18.3.12
-        version: 18.3.12
-      '@types/react-dom':
-        specifier: ^18.3.1
-        version: 18.3.1
-      '@vitejs/plugin-react':
-        specifier: ^4.3.3
-        version: 4.3.3(vite@5.4.10(@types/node@20.17.1))
-      eslint:
-        specifier: ^9.13.0
-        version: 9.13.0(jiti@1.21.6)
-      eslint-plugin-react-hooks:
-        specifier: ^5.0.0
-        version: 5.0.0(eslint@9.13.0(jiti@1.21.6))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.14
-        version: 0.4.14(eslint@9.13.0(jiti@1.21.6))
-      globals:
-        specifier: ^15.11.0
-        version: 15.11.0
-      typescript:
-        specifier: ~5.6.2
-        version: 5.6.3
-      typescript-eslint:
-        specifier: ^8.11.0
-        version: 8.11.0(eslint@9.13.0(jiti@1.21.6))(typescript@5.6.3)
-      vite:
-        specifier: ^5.4.10
-        version: 5.4.10(@types/node@20.17.1)
-
 packages:
 
   '@alloc/quick-lru@5.2.0':
@@ -744,12 +692,6 @@ packages:
 
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
-
-  '@hono/node-server@1.13.5':
-    resolution: {integrity: sha512-lSo+CFlLqAFB4fX7ePqI9nauEn64wOfJHAfc9duYFTvAG3o416pC0nTGeNjuLHchLedH+XyWda5v79CVx1PIjg==}
-    engines: {node: '>=18.14.1'}
-    peerDependencies:
-      hono: ^4
 
   '@hono/zod-validator@0.4.1':
     resolution: {integrity: sha512-I8LyfeJfvVmC5hPjZ2Iij7RjexlgSBT7QJudZ4JvNPLxn0JQ3sqclz2zydlwISAnw21D2n4LQ0nfZdoiv9fQQA==}
@@ -1702,9 +1644,6 @@ packages:
   '@types/bcryptjs@2.4.6':
     resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
 
-  '@types/bun@1.1.13':
-    resolution: {integrity: sha512-KmQxSBgVWCl6RSuerlLGZlIWfdxkKqat0nxN61+qu4y1KDn0Ll3j7v1Pl8GnaL3a/U6GGWVTJh75ap62kR1E8Q==}
-
   '@types/d3-array@3.2.1':
     resolution: {integrity: sha512-Y2Jn2idRrLzUfAKV2LyRImR+y4oa2AntrgID95SHJxuMUrkNXmanDSed71sRNZysveJVt1hLLemQZIady0FpEg==}
 
@@ -1753,15 +1692,8 @@ packages:
   '@types/material-colors@1.2.3':
     resolution: {integrity: sha512-h3nILlri5e4lAs6KgO1FLVG+LarWLqQ6U5PhuVxdMd75J5QlOneNBrWwLcNOIEocJq5dWgzriK5g9HgiPEVhSA==}
 
-  '@types/next@9.0.0':
-    resolution: {integrity: sha512-gnBXM8rP1mnCgT1uE2z8SnpFTKRWReJlhbZLZkOLq/CH1ifvTNwjIVtXvsywTy1dwVklf+y/MB0Eh6FOa94yrg==}
-    deprecated: This is a stub types definition. next provides its own type definitions, so you do not need this installed.
-
   '@types/node@14.18.33':
     resolution: {integrity: sha512-qelS/Ra6sacc4loe/3MSjXNL1dNQ/GjxNHVzuChwMfmk7HuycRLVQN2qNY3XahK+fZc5E2szqQSKUyAF0E+2bg==}
-
-  '@types/node@20.12.14':
-    resolution: {integrity: sha512-scnD59RpYD91xngrQQLGkE+6UrHUPzeKZWhhjBSa3HSkwjbQc38+q3RoIVEwxQGRw3M+j5hpNAM+lgV3cVormg==}
 
   '@types/node@20.17.1':
     resolution: {integrity: sha512-j2VlPv1NnwPJbaCNv69FO/1z4lId0QmGvpT41YxitRtWlg96g/j8qcv2RKsLKe2F6OJgyXhupN1Xo17b2m139Q==}
@@ -2115,9 +2047,6 @@ packages:
 
   buffer-equal-constant-time@1.0.1:
     resolution: {integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==}
-
-  bun-types@1.1.34:
-    resolution: {integrity: sha512-br5QygTEL/TwB4uQOb96Ky22j4Gq2WxWH/8Oqv20fk5HagwKXo/akB+LiYgSfzexCt6kkcUaVm+bKiPl71xPvw==}
 
   busboy@1.6.0:
     resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
@@ -4519,9 +4448,6 @@ packages:
   unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
 
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
-
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
@@ -5103,10 +5029,6 @@ snapshots:
       react-dom: 19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021)
 
   '@floating-ui/utils@0.2.8': {}
-
-  '@hono/node-server@1.13.5(hono@4.6.9)':
-    dependencies:
-      hono: 4.6.9
 
   '@hono/zod-validator@0.4.1(hono@4.6.7)(zod@3.23.8)':
     dependencies:
@@ -6283,10 +6205,6 @@ snapshots:
 
   '@types/bcryptjs@2.4.6': {}
 
-  '@types/bun@1.1.13':
-    dependencies:
-      bun-types: 1.1.34
-
   '@types/d3-array@3.2.1': {}
 
   '@types/d3-color@3.1.3': {}
@@ -6327,24 +6245,7 @@ snapshots:
 
   '@types/material-colors@1.2.3': {}
 
-  '@types/next@9.0.0(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)':
-    dependencies:
-      next: 15.0.1(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@opentelemetry/api'
-      - '@playwright/test'
-      - babel-plugin-macros
-      - babel-plugin-react-compiler
-      - react
-      - react-dom
-      - sass
-
   '@types/node@14.18.33': {}
-
-  '@types/node@20.12.14':
-    dependencies:
-      undici-types: 5.26.5
 
   '@types/node@20.17.1':
     dependencies:
@@ -6895,11 +6796,6 @@ snapshots:
   buffer-crc32@0.2.13: {}
 
   buffer-equal-constant-time@1.0.1: {}
-
-  bun-types@1.1.34:
-    dependencies:
-      '@types/node': 20.12.14
-      '@types/ws': 8.5.12
 
   busboy@1.6.0:
     dependencies:
@@ -9639,8 +9535,6 @@ snapshots:
       has-bigints: 1.0.2
       has-symbols: 1.0.3
       which-boxed-primitive: 1.0.2
-
-  undici-types@5.26.5: {}
 
   undici-types@6.19.8: {}
 
