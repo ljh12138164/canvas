@@ -1,4 +1,4 @@
-import supabase from "@/server/supabase";
+import supabase from "@/server/supabase/design";
 import { compareSync } from "bcryptjs";
 import { User } from "@/types/design/user";
 
