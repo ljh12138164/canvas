@@ -1,8 +1,8 @@
-import { error401 } from "@/libs/error";
-import { checkoutCookie, jwtEncode } from "@/libs/sign-in";
-import { createUser, getCurrentUser, signIn } from "@/server/design";
+import { error401 } from "../../../libs/error";
+import { checkoutCookie, jwtEncode } from "../../../libs/sign-in";
+import { createUser, getCurrentUser, signIn } from "../../../server/design";
 import { zValidator } from "@hono/zod-validator";
-import { hashSync } from "bcryptjs";
+import * as bcrypt from "bcryptjs";
 import { Hono } from "hono";
 import { deleteCookie } from "hono/cookie";
 import { z } from "zod";
@@ -20,7 +20,7 @@ const user = new Hono()
     async (c) => {
       try {
         const { name, accoute, password } = c.req.valid("json");
-        const hashPassword = hashSync(password, 10);
+        const hashPassword = bcrypt.hashSync(password, 10);
         const user = await createUser({
           name,
           account: accoute,

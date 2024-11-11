@@ -2,7 +2,6 @@ import SignInContain from "@/components/auth/SignInContain";
 import Logo from "@/components/command/Logo";
 import { Button } from "@/components/ui/button";
 import styled from "styled-components";
-import { client } from "../../server";
 import { useEffect } from "react";
 const Main = styled.main`
   background-color: #f5f5f5;
@@ -33,10 +32,7 @@ const MainContainer = styled.div`
 `;
 const SignIn = () => {
   useEffect(() => {
-    (async () => {
-      const data = await client.$get();
-      console.log(data);
-    })();
+    console.log(data);
   }, []);
   return (
     <Main>

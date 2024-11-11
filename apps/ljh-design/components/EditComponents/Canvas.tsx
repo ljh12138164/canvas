@@ -40,17 +40,18 @@ import {
 } from "@/types/Edit";
 import { useMemoizedFn } from "ahooks";
 import * as fabric from "fabric";
+import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
 const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
   const initWidth = useRef(data.width);
   const initHeight = useRef(data.height);
   const initState = useRef(data.json);
-  const { mutate } = useBoardAutoSaveQuery({ id: data.id });
+  const { mutate, isPending } = useBoardAutoSaveQuery({ id: data.id });
 
   const debounceMutate = useMemoizedFn(
-    (data: { json: string; width: number; height: number }) => {
+    debounce((data: { json: string; width: number; height: number }) => {
       mutate({ ...data, userId });
-    }
+    }, 1000)
   );
   const { init } = useCanvas({
     initWidth: initWidth,
@@ -233,6 +234,7 @@ const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
       }}
     >
       <NavBar
+        isPending={isPending}
         userId={userId}
         editor={editor()}
         activeTool={tool}

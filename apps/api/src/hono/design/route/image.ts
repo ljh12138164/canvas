@@ -1,14 +1,14 @@
-import { getUserImage } from '@/server/design';
-import unsplash from '@/libs/unsplash';
-import { zValidator } from '@hono/zod-validator';
-import { Hono } from 'hono';
-import { z } from 'zod';
+import { getUserImage } from "../../../server/design";
+import unsplash from "../../../libs/unsplash";
+import { zValidator } from "@hono/zod-validator";
+import { Hono } from "hono";
+import { z } from "zod";
 // 获取图片
 const DEFALUT_COUNT = 20;
-const DEFALUT_COLLECTION_IDS = ['317099'];
+const DEFALUT_COLLECTION_IDS = ["317099"];
 
 const image = new Hono()
-  .get('/', async (c) => {
+  .get("/", async (c) => {
     const image = await unsplash.photos.getRandom({
       collectionIds: DEFALUT_COLLECTION_IDS,
       count: DEFALUT_COUNT,
@@ -23,15 +23,15 @@ const image = new Hono()
     });
   })
   .post(
-    '/userImage',
-    zValidator('json', z.object({ userId: z.string() })),
+    "/userImage",
+    zValidator("json", z.object({ userId: z.string() })),
     async (c) => {
       try {
-        const { userId } = c.req.valid('json');
+        const { userId } = c.req.valid("json");
         const data = await getUserImage({ userId });
         return c.json(data);
       } catch {
-        return c.json({ message: '获取图片失败' }, 400);
+        return c.json({ message: "获取图片失败" }, 400);
       }
     }
   );
