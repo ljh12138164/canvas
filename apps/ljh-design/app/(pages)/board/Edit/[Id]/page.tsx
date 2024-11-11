@@ -1,25 +1,19 @@
-import { Toaster } from 'react-hot-toast';
 import { Providers } from '@/app/_provide/providers';
 import Edit from '@/components/EditComponents/Edit';
-import { cookies } from 'next/headers';
-import { jwtDecode } from '@/lib/sign';
-import { redirect } from 'next/navigation';
 import { inter, myFont } from '@/lib/font';
+import { Toaster } from 'react-hot-toast';
 
 type Params = Promise<{
   Id: string;
 }>;
 export default async function Home({ params }: { params: Params }) {
   const { Id } = await params;
-  const cookieStore = (await cookies()).get('token')?.value;
-  const userId = await jwtDecode(cookieStore);
-  if (!userId) redirect('/board/sign-in');
   return (
     <section
       className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden`}
     >
       <Providers>
-        <Edit params={Id} userId={userId?.userid} />
+        <Edit params={Id} />
       </Providers>
       <Toaster
         position='top-center'

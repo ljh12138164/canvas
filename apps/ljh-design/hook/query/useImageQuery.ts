@@ -1,4 +1,4 @@
-import { client } from "@/api/hono";
+import { client } from "@/server";
 import { useQuery } from "@tanstack/react-query";
 
 export const useImageQuery = () => {
@@ -9,7 +9,7 @@ export const useImageQuery = () => {
   } = useQuery({
     queryKey: ["image"],
     queryFn: async () => {
-      const response = await client.api.image.$get();
+      const response = await client.image.$get();
       if (!response.ok) {
         throw new Error("请求错误");
       }
