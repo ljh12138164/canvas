@@ -1,6 +1,6 @@
-import { Board, BoardResponse } from "@/types/design/board";
-import supabase from "@/server/supabase/design";
-import { UserImage } from "@/types/design/user";
+import { Board, BoardResponse } from "../../../types/design/board";
+import { UserImage } from "../../../types/design/user";
+import { supabaseDesign } from "../../../server";
 interface GetUserImage {
   userId: string;
 }
@@ -9,7 +9,7 @@ interface GetUserImage {
  * @returns
  */
 export const getBoardData = async () => {
-  const { data, error } = await supabase.from("board").select("*");
+  const { data, error } = await supabaseDesign.from("board").select("*");
   return { data, error };
 };
 
@@ -20,7 +20,7 @@ export const getBoardData = async () => {
 export const getUserImage = async ({
   userId,
 }: GetUserImage): Promise<UserImage[]> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseDesign
     .from("userImage")
     .select("*")
     .eq("id", userId);
@@ -40,7 +40,7 @@ interface CreateBoard {
  * @returns
  */
 export const createBoard = async (board: CreateBoard): Promise<Board> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseDesign
     .from("board")
     .insert([board])
     .select("*")
@@ -58,7 +58,7 @@ interface GetBoard {
  * @returns
  */
 export const getBoard = async ({ id, userid }: GetBoard): Promise<Board[]> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseDesign
     .from("board")
     .select("*")
     .eq("id", id)
@@ -81,7 +81,7 @@ export const getUserBoard = async ({
 }: GetUserBoard): Promise<BoardResponse[]> => {
   const start = pageParam * 7;
   const end = start + 7;
-  const { data, error, count } = await supabase
+  const { data, error, count } = await supabaseDesign
     .from("board")
     .select("*", {
       count: "exact",
@@ -105,7 +105,7 @@ export const updateBoard = async ({
   userId,
   ...board
 }: UpdateBoard): Promise<Board> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseDesign
     .from("board")
     .update([board])
     .eq("id", id)
@@ -126,7 +126,7 @@ export const deleteBoard = async ({
   id: string;
   userid: string;
 }) => {
-  const { error } = await supabase
+  const { error } = await supabaseDesign
     .from("board")
     .delete()
     .eq("id", id)
@@ -154,7 +154,7 @@ export const authSaveBoard = async ({
   userId,
   ...board
 }: AuthSaveBoard): Promise<Board> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseDesign
     .from("board")
     .update([board])
     .eq("id", id)

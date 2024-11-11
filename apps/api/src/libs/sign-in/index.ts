@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/server/design";
+import { getCurrentUser } from "../../server/design";
 import { Context } from "hono";
 import { JWTPayload, SignJWT, jwtVerify } from "jose";
 

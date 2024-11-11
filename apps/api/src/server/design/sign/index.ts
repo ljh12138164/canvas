@@ -1,6 +1,6 @@
-import supabase from "@/server/supabase/design";
-import { compareSync } from "bcryptjs";
-import { User } from "@/types/design/user";
+import { supabaseDesign } from "../../../server";
+import * as bcrypt from "bcryptjs";
+import { User } from "../../../types/design/user";
 
 interface SignUpUser {
   name: string;
@@ -13,7 +13,7 @@ export const createUser = async (user: SignUpUser): Promise<User | null> => {
   if (!user.image)
     user.image =
       "https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/CarbonUserAvatarFilled.png";
-  const { data, error } = await supabase
+  const { data, error } = await supabaseDesign
     .from("user")
     .insert([user])
     .select("id, name, account, image ,created_at")
@@ -32,7 +32,7 @@ export async function getCurrentUser({
 }: {
   userId: string;
 }): Promise<User | undefined> {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseDesign
     .from("user")
     .select("id, name, account, image ,created_at")
     .eq("id", userId)
@@ -54,7 +54,7 @@ export const signIn = async ({
   account,
   password,
 }: SignInUser): Promise<User | null> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseDesign
     .from("user")
     .select("*")
     .eq("account", account);
@@ -64,7 +64,7 @@ export const signIn = async ({
   if (data?.length === 0) {
     throw new Error("未找到用户");
   }
-  const comparePassword = compareSync(password, data[0].password);
+  const comparePassword = bcrypt.compareSync(password, data[0].password);
   if (!comparePassword) {
     throw new Error("账号或密码错误");
   }

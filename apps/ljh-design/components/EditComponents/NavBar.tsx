@@ -9,7 +9,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Edit, Tool } from "@/types/Edit";
 import { redirect } from "next/navigation";
-import { BsCloudCheck } from "react-icons/bs";
+import { BsCloud, BsCloudCheck } from "react-icons/bs";
 import { CiFileOn } from "react-icons/ci";
 import {
   LuChevronDown,
@@ -23,13 +23,21 @@ import {
 import { useFilePicker } from "use-file-picker";
 import Logo from "../Comand/Logo";
 import UserButton from "../Comand/UserButton";
+import { Fragment } from "react";
 interface NavBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
   onChangeTool: (tool: Tool) => void;
   userId: string | undefined;
+  isPending: boolean;
 }
-const NavBar = ({ activeTool, onChangeTool, editor, userId }: NavBarProps) => {
+const NavBar = ({
+  activeTool,
+  onChangeTool,
+  editor,
+  userId,
+  isPending,
+}: NavBarProps) => {
   const { openFilePicker } = useFilePicker({
     accept: ".json",
     onFilesSelected: ({ plainFiles }) => {
@@ -117,8 +125,17 @@ const NavBar = ({ activeTool, onChangeTool, editor, userId }: NavBarProps) => {
         <Separator orientation="vertical" className="mx-2 h-[60%]" />
         {userId ? (
           <div className="flex items-center gap-2 opacity-70">
-            <BsCloudCheck size={20} />
-            <div className="text-xs text-muted-foreground">保存成功</div>
+            {isPending ? (
+              <Fragment>
+                <BsCloud size={20} />
+                <p className="text-xs text-muted-foreground">保存中</p>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <BsCloudCheck size={20} />
+                <div className="text-xs text-muted-foreground">保存成功</div>
+              </Fragment>
+            )}
           </div>
         ) : (
           <p
@@ -195,7 +212,7 @@ const NavBar = ({ activeTool, onChangeTool, editor, userId }: NavBarProps) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {!userId && userId && <UserButton userId={userId}></UserButton>}
+          {userId && <UserButton></UserButton>}
         </div>
       </div>
     </nav>

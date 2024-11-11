@@ -18,10 +18,7 @@
     "declarationDir": "dist",
     "jsx": "react-jsx",
     "noEmit": false,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["src"]
 }

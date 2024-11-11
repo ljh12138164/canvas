@@ -1,4 +1,4 @@
-import { checkoutCookie } from "@/libs/sign-in";
+import { checkoutCookie } from "../../../libs/sign-in";
 import {
   authSaveBoard,
   createBoard,
@@ -6,7 +6,7 @@ import {
   getBoard,
   getUserBoard,
   updateBoard,
-} from "@/server/design/board";
+} from "../../../server/design/board";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
