@@ -1,34 +1,56 @@
-import { client } from "@/api/hono";
-import { getCurrentUser } from "@/api/supabase/sign";
+import { getLocalToken } from "@/lib/sign";
+import { client } from "@/server";
 import { User } from "@/types/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
+import { redirect } from "next/navigation";
 // 登录接口
 type ResonseType = InferResponseType<
-  (typeof client.api.user)["sign-in"]["$post"]
+  (typeof client.user)["sign-in"]["$post"],
+  200
 >;
 type RequestTtpe = InferRequestType<
-  (typeof client.api.user)["sign-in"]["$post"]
+  (typeof client.user)["sign-in"]["$post"]
 >["json"];
 // 登录接口
 type SignUpResponseType = InferResponseType<
-  (typeof client.api.user)["sign-up"]["$post"]
+  (typeof client.user)["sign-up"]["$post"],
+  200
 >;
 type SignUpRequestType = InferRequestType<
-  (typeof client.api.user)["sign-up"]["$post"]
+  (typeof client.user)["sign-up"]["$post"]
 >["json"];
 // 退出登录接口
 type SignOutResponseType = InferResponseType<
-  (typeof client.api.user)["sign-out"]["$post"]
+  (typeof client.user)["sign-out"]["$post"]
 >;
 // 获取用户图片接口
 type GetUserImageQuery = InferResponseType<
-  (typeof client.api.image)["userImage"]["$post"]
+  (typeof client.image)["userImage"]["$post"]
 >;
-export const useUserQuery = (userId: string) => {
+
+/**
+ * 获取用户信息
+ * @param userId
+ * @returns
+ */
+export const useUserQuery = () => {
   const { data, isLoading, error } = useQuery<User | undefined, Error>({
     queryKey: ["user"],
-    queryFn: () => getCurrentUser({ userId }),
+    queryFn: async () => {
+      const token = await getLocalToken();
+      if (!token) redirect("/sign-in");
+      const res = await client.user["message"].$get({
+        header: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        redirect("/sign-in");
+      }
+      const json = await res.json();
+      return json;
+    },
   });
   return { data, isLoading, error };
 };
@@ -44,7 +66,15 @@ export const useSignIn = () => {
     error: signInError,
   } = useMutation<ResonseType, Error, RequestTtpe>({
     mutationFn: async (data) => {
-      const res = await client.api.user["sign-in"].$post({ json: data });
+      const token = await getLocalToken();
+      const res = await client.user["sign-in"].$post(
+        { json: data },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (res.status === 400) throw new Error("账号或密码错误");
       const json = await res.json();
       return json;
@@ -63,7 +93,15 @@ export const useSignUp = () => {
     error: signUpError,
   } = useMutation<SignUpResponseType, Error, SignUpRequestType>({
     mutationFn: async (data) => {
-      const res = await client.api.user["sign-up"].$post({ json: data });
+      const token = await getLocalToken();
+      const res = await client.user["sign-up"].$post(
+        { json: data },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (res.status === 400) throw new Error("账号已存在");
       const json = await res.json();
       return json;
@@ -82,8 +120,7 @@ export const useSignOut = () => {
     error: signOutError,
   } = useMutation<SignOutResponseType, Error>({
     mutationFn: async () => {
-      const res = await client.api.user["sign-out"].$post();
-
+      const res = await client.user["sign-out"].$post();
       const json = await res.json();
       return json;
     },
@@ -98,9 +135,18 @@ export const useGetUserImage = (userId: string) => {
   const { data, isLoading, error } = useQuery<GetUserImageQuery, Error>({
     queryKey: ["userImage", userId],
     queryFn: async () => {
-      const res = await client.api.image["userImage"].$post({
-        json: { userId },
-      });
+      const token = await getLocalToken();
+      if (!token) redirect("/sign-in");
+      const res = await client.image["userImage"].$post(
+        {
+          json: { userId },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (res.status === 400) throw new Error("获取图片失败");
       const json = await res.json();
       return json;

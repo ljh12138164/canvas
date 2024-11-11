@@ -26,7 +26,6 @@ import {
   TEXTBOX_OPTION,
   TRIANGLE_OPTION,
 } from '@/types/Edit';
-
 import * as fabric from 'fabric';
 import toast from 'react-hot-toast';
 //输入

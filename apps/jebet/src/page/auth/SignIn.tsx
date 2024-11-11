@@ -34,7 +34,7 @@ const MainContainer = styled.div`
 const SignIn = () => {
   useEffect(() => {
     (async () => {
-      const data = await client.api.jebt.$get();
+      const data = await client.$get();
       console.log(data);
     })();
   }, []);

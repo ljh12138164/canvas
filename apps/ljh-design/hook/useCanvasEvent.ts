@@ -1,6 +1,6 @@
-import { Tool } from '@/types/Edit';
-import * as fabric from 'fabric';
-import { useEffect } from 'react';
+import { Tool } from "@/types/Edit";
+import * as fabric from "fabric";
+import { useEffect } from "react";
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
   userId: string | undefined;
@@ -25,32 +25,30 @@ const useCanvasEvent = ({
   useEffect(() => {
     if (canvas) {
       //创建
-      canvas.on('object:added', () => {
+      canvas.on("object:added", () => {
         if (userId) {
           save();
         }
       });
-      canvas.on('object:removed', () => {
+      canvas.on("object:removed", () => {
         if (userId) {
           save();
         }
       });
-      canvas.on('object:modified', (e) => {
-        console.log(e);
-
+      canvas.on("object:modified", () => {
         if (userId) {
           save();
         }
       });
-      canvas.on('selection:created', (e) => {
+      canvas.on("selection:created", (e) => {
         setSelectedObject(e.selected || []);
       });
       //更新
-      canvas.on('selection:updated', (e) => {
+      canvas.on("selection:updated", (e) => {
         setSelectedObject(e.selected || []);
       });
       //删除
-      canvas.on('selection:cleared', () => {
+      canvas.on("selection:cleared", () => {
         if (
           tool == Tool.Font ||
           tool === Tool.Fill ||
