@@ -53,7 +53,7 @@ export const UserImageBox = ({
           <LuLoader className="size-4 text-muted-foreground animate-spin"></LuLoader>
         </div>
       )}
-      {error && (
+      {error && !isLoading && (
         <div className="flex flex-col gap-y-4 justify-center items-center flex-1">
           <LuAlertTriangle className="size-4  text-muted-foreground"></LuAlertTriangle>
           <p className=" text-muted-foreground text-xs">获取图片失败</p>

@@ -4,8 +4,9 @@ import { lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css";
+import { Toaster } from "react-hot-toast";
 import Index from "./page/error/Index";
+import "./index.css";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const SignIn = lazy(() => import("./page/auth/SignIn"));
@@ -39,5 +40,22 @@ root.render(
     <ErrorBoundary fallback={<Index />}>
       <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
     </ErrorBoundary>
+    <Toaster
+      position="top-center"
+      gutter={12}
+      containerStyle={{ margin: "8px" }}
+      toastOptions={{
+        success: { duration: 2000 },
+        error: { duration: 5500 },
+        loading: { duration: 10000 },
+        style: {
+          fontSize: "16px",
+          maxWidth: "500px",
+          padding: "16px 24px",
+          backgroundColor: "white",
+          zIndex: 10,
+        },
+      }}
+    ></Toaster>
   </QueryClientProvider>
 );

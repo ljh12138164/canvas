@@ -9,6 +9,7 @@ const Logo = () => {
     >
       <Image
         width={48}
+        quality={75}
         height={48}
         src="https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/favicon.ico"
         alt="logo"

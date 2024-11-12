@@ -2,29 +2,16 @@
 
 import { useBoardEditQuery } from "@/hook/query/useBoardQuery";
 
-import Link from "next/link";
+import useUser from "@/hook/useUser";
 import { Loader2, TriangleAlert } from "lucide-react";
+import Link from "next/link";
+import LoginProtect from "../Sign/LoginProtect";
 import { Button } from "../ui/button";
 import Canvas from "./Canvas";
-import LoginProtect, { useUserId } from "../Sign/LoginProtect";
-import { useEffect } from "react";
-import { redirect } from "next/navigation";
-import { getLocalToken, jwtDecode } from "@/lib/sign";
 
 export default function Edit({ params }: { params: string }) {
-  const { userId, isLoading: isLoadingUserId, setUserId } = useUserId();
-
-  useEffect(() => {
-    (async () => {
-      const token = await getLocalToken();
-      if (!token) redirect("/board/sign-in");
-      const user = await jwtDecode(token);
-      if (!user) redirect("/board/sign-in");
-      setUserId(user.userid);
-    })();
-  }, [isLoadingUserId, userId, setUserId]);
+  const { userId, isLoading: isLoadingUserId } = useUser();
   const { isLoading, error, data } = useBoardEditQuery({ id: params, userId });
-
   return (
     <LoginProtect>
       {(isLoading || isLoadingUserId) && (
