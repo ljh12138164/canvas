@@ -31,9 +31,7 @@ const MainContainer = styled.div`
   }
 `;
 const SignIn = () => {
-  useEffect(() => {
-    console.log(data);
-  }, []);
+  useEffect(() => {}, []);
   return (
     <Main>
       <Section>
