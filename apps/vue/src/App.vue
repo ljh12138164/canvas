@@ -1,20 +1,4 @@
-<script lang="tsx" setup>
-import { hc } from "hono/client";
-import type { App } from "api";
-import { onMounted } from "vue";
-
-const client = hc<App>("http://localhost:8400");
-onMounted(() => {
-  const a = client.api.ws.$ws(0);
-  a.onmessage = (e) => {
-    console.log(e);
-  };
-  a.onopen = () => {
-    console.log("open");
-  };
-  a.send("hello");
-});
-</script>
+<script lang="tsx" setup></script>
 <template>
   <div class="content">
     <h1>Rsbuild with Vue</h1>
