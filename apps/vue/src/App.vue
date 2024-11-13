@@ -1,4 +1,16 @@
-<script lang="tsx" setup></script>
+<script lang="tsx" setup>
+import { hc } from "hono/client";
+import type app from "api";
+
+const client = hc<typeof app>("http://localhost:8000");
+const ws = client.api.ws.ws.$ws(0);
+
+ws.addEventListener("open", () => {
+  setInterval(() => {
+    ws.send(new Date().toString());
+  }, 1000);
+});
+</script>
 <template>
   <div class="content">
     <h1>Rsbuild with Vue</h1>

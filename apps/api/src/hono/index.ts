@@ -6,7 +6,7 @@ import { jebt } from "./jebt";
 import { vue } from "./vue";
 // 跨域
 import { cors } from "hono/cors";
-// 升级websocket
+import ws from "./ws";
 
 const app = new Hono()
   .use(
@@ -24,17 +24,8 @@ const app = new Hono()
   .route("/board", board)
   .route("/jebt", jebt)
   .route("/form", form)
-  .route("/vue", vue);
+  .route("/vue", vue)
+  .route("/ws", ws);
 
 export type App = typeof app;
 export default app;
-// serve(
-//   {
-//     fetch: app.fetch,
-//     port: 8000,
-//   },
-//   (info) => {
-//     console.log(info);
-//     console.log(`Server is running on http://localhost:${info.port}`);
-//   }
-// );
