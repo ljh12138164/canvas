@@ -15,9 +15,9 @@
   "scripts": {
     "dev": "pnpm run api",
     "api": "rimraf dist && vite build && tsc&&vercel dev --listen=8000",
-    "websocket:api": "rimraf dist && tsc&&vercel dev --listen=8000",
+    "websocket:api": "vercel dev --listen=8000",
     "deploy": "vercel",
-    "local": "bun test/index.ts"
+    "local": "bun run --hot test/index.tsx"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.6",
