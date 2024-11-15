@@ -5,7 +5,13 @@ import { RGBColor } from "react-color";
 // import * as jose from 'jose';
 import { twMerge } from "tailwind-merge";
 import { nanoid } from "nanoid";
-
+import { Board } from "@/types/board";
+import localforage from "localforage";
+localforage.config({
+  name: "ljh-design",
+  version: 1.0,
+  storeName: "ljh-design",
+});
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -153,6 +159,11 @@ export function createFilter(value: string): Effect {
   return effect;
 }
 
+/**
+ * ## 下载文件
+ * @param file
+ * @param type
+ */
 export function downloadImage(file: string, type: string) {
   const a = document.createElement("a");
   a.href = file;
@@ -161,6 +172,12 @@ export function downloadImage(file: string, type: string) {
   a.click();
   a.remove();
 }
+
+/**
+ * 转化
+ * @param objects
+ * @returns
+ */
 export function transformToTest(objects: any) {
   if (!objects) return;
   [objects].forEach((item: any) => {
@@ -169,15 +186,47 @@ export function transformToTest(objects: any) {
     }
   });
 }
-
-export function debounce(fn: () => void, delay: number = 300) {
-  let timeoutId: NodeJS.Timeout;
-  return function (this: any, ...args: any[]) {
-    clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(() => {
-      // @ts-ignore
-      fn.apply(this, args);
-    }, delay);
-  };
+interface IndexDBChanagePros {
+  type: "add" | "delete" | "edit";
+  data?: Board;
+  deletItem?: string;
+  editData?: Board;
+}
+/**
+ *
+ */
+export function indexDBChange({
+  type,
+  data,
+  deletItem,
+  editData,
+}: IndexDBChanagePros) {
+  if (type === "delete" && deletItem) {
+    return localforage.removeItem(deletItem);
+  }
+  if (type === "add" && data) {
+    return localforage.setItem(data.id, data);
+  }
+  if (type === "edit" && editData) {
+    localforage.removeItem(editData.id);
+    return localforage.setItem(editData.id, editData);
+  }
+}
+/**
+ *
+ */
+export async function getIndexDB() {
+  const arr: Board[] = [];
+  await localforage.iterate((res: Board) => {
+    arr.push(res);
+  });
+  return arr;
+}
+/**
+ *
+ * @param id
+ * @returns
+ */
+export async function getTryBoardById(id: string) {
+  return await localforage.getItem<Board>(id);
 }

@@ -29,7 +29,7 @@ interface NavBarProps {
   activeTool: Tool;
   onChangeTool: (tool: Tool) => void;
   userId: string | undefined;
-  isPending: boolean;
+  isPending?: boolean;
 }
 const NavBar = ({
   activeTool,

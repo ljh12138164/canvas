@@ -1,20 +1,22 @@
-'use client';
-import ColorSoiberbar from '@/components/EditComponents/ColorSiberbar';
-import Footer from '@/components/EditComponents/Footer';
-import ImageSiderbar from '@/components/EditComponents/ImageSiderbar';
-import NavBar from '@/components/EditComponents/NavBar';
-import ShapeSidle from '@/components/EditComponents/ShapeSidle';
-import SiderBar from '@/components/EditComponents/SiderBar';
-import TextSidebar from '@/components/EditComponents/TextSidebar';
-import Tools from '@/components/EditComponents/Tools';
-import useCanvas from '@/hook/useCanvas';
-import useCanvasEvent from '@/hook/useCanvasEvent';
-import { useClipboard } from '@/hook/useCliph';
-import useHistoty from '@/hook/useHistory';
-import useKeyBoard from '@/hook/useKeyBoard';
-import useResponse from '@/hook/useResponse';
-import { useWindowEvent } from '@/hook/useWindowEvent';
-import { buildEditor } from '@/store/editor';
+"use client";
+import ColorSoiberbar from "@/components/EditComponents/ColorSiberbar";
+import Footer from "@/components/EditComponents/Footer";
+import ImageSiderbar from "@/components/EditComponents/ImageSiderbar";
+import NavBar from "@/components/EditComponents/NavBar";
+import ShapeSidle from "@/components/EditComponents/ShapeSidle";
+import SiderBar from "@/components/EditComponents/SiderBar";
+import TextSidebar from "@/components/EditComponents/TextSidebar";
+import Tools from "@/components/EditComponents/Tools";
+import useCanvas from "@/hook/useCanvas";
+import useCanvasEvent from "@/hook/useCanvasEvent";
+import { useClipboard } from "@/hook/useCliph";
+import useHistoty from "@/hook/useHistory";
+import useKeyBoard from "@/hook/useKeyBoard";
+import useResponse from "@/hook/useResponse";
+import { useWindowEvent } from "@/hook/useWindowEvent";
+import { getTryBoardById } from "@/lib/utils";
+import { buildEditor } from "@/store/editor";
+import { Board } from "@/types/board";
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -35,12 +37,34 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
   Tool,
-} from '@/types/Edit';
-import * as fabric from 'fabric';
-import { useEffect, useRef, useState } from 'react';
+} from "@/types/Edit";
+import { useMemoizedFn } from "ahooks";
+import * as fabric from "fabric";
+import { debounce } from "lodash";
+import { useEffect, useRef, useState } from "react";
 
-export default function TryEdit({ userId }: { userId: string | undefined }) {
-  const { init } = useCanvas({});
+export default function TryEdit({
+  userId,
+  id,
+}: {
+  userId: string | undefined;
+  id: string;
+}) {
+  const defaultData = useRef<Board | null>(null);
+  (async () => {
+    const data = await getTryBoardById(id);
+    defaultData.current = data;
+  })();
+  const { init } = useCanvas({
+    initHeight: defaultData.current?.height,
+    initWidth: defaultData.current?.width,
+  });
+  const debounceMutate = useMemoizedFn(
+    (data: { json: string; width: number; height: number }) =>
+      debounce(() => {
+        console.log("save");
+      }, 300)
+  );
   const [tool, setTool] = useState<Tool>(Tool.Layout);
   //实例对象
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -64,7 +88,7 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
   const [fontUnderline, setFontUnderline] = useState<boolean>(FONT_UNDERLINE);
   const [fontItalics, setFontItalics] = useState<FontStyle>(FONT_ITALICS);
   const [fontAlign, setFontAlign] =
-    useState<fabric.Textbox['textAlign']>(FONT_ALIGN);
+    useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
   //图片
   const [imageLoading, setImageLoading] = useState<boolean>(false);
@@ -199,9 +223,9 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
 
   return (
     <div
-      className='h-full w-full flex flex-col items-center relative bg-slate-100'
+      className="h-full w-full flex flex-col items-center relative bg-slate-100"
       style={{
-        scrollbarWidth: 'none',
+        scrollbarWidth: "none",
       }}
     >
       <NavBar
@@ -210,7 +234,7 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
         activeTool={tool}
         onChangeTool={onChangeActive}
       ></NavBar>
-      <div className='h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out'>
+      <div className="h-full w-full flex-1 flex  transition-all duration-100 ease-in-out">
         <SiderBar
           acitiveTool={tool}
           onChangeActiveTool={onChangeActive}
@@ -236,7 +260,7 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></ColorSoiberbar>
-        <main className='flex-1 h-full w-full flex flex-col overflow-hidden'>
+        <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
           <Tools
             editor={editor}
             activeTool={tool}
@@ -244,7 +268,7 @@ export default function TryEdit({ userId }: { userId: string | undefined }) {
             key={JSON.stringify(editor?.canvas.getActiveObject())}
           ></Tools>
           <section
-            className='flex flex-col relative flex-1 overflow-hidden'
+            className="flex flex-col relative flex-1 overflow-hidden"
             ref={containEl}
           >
             <canvas ref={canvasEl}></canvas>

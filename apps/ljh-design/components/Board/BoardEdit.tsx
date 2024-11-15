@@ -1,7 +1,8 @@
-import { useBoardUpdateQuery } from '@/hook/query/useBoardQuery';
-import { BoardResponse } from '@/types/board';
-import { useRef } from 'react';
-import { Button } from '../ui/button';
+import { useBoardUpdateQuery } from "@/hook/query/useBoardQuery";
+import { Board, BoardResponse } from "@/types/board";
+import { UseMutateFunction } from "@tanstack/react-query";
+import { useRef } from "react";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogClose,
@@ -11,26 +12,27 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog';
-import BoardCreateFrom from './BoardCreateFrom';
-import { UseMutateFunction } from '@tanstack/react-query';
+} from "../ui/dialog";
+import BoardCreateFrom from "./BoardCreateFrom";
 
 const BoardEdit = ({
   children,
   id,
   data,
+  setChange,
   userId,
 }: {
   children: React.ReactNode;
-  data: BoardResponse;
-  userId: string;
+  data: Board;
+  userId: string | undefined;
   id: string;
+  setChange?: (change: boolean) => void;
 }) => {
   const ref = useRef<HTMLButtonElement>(null);
   const { mutate, isPending } = useBoardUpdateQuery(id);
 
   return (
-    <div>
+    <div onClick={(e) => e.stopPropagation()}>
       {/* @ts-ignore */}
       <Dialog>
         {/* @ts-ignore */}
@@ -41,6 +43,7 @@ const BoardEdit = ({
             <DialogDescription>编辑你的画布</DialogDescription>
           </DialogHeader>
           <BoardCreateFrom
+            setChange={setChange}
             type="edit"
             defaultValues={data}
             userId={userId}

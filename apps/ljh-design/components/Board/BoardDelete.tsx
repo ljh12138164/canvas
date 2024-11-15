@@ -1,5 +1,5 @@
-import { Board } from '@/types/board';
-import { Button } from '../ui/button';
+import { Board } from "@/types/board";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogClose,
@@ -8,28 +8,32 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog';
-import { useBoardDeleteQuery } from '@/hook/query/useBoardQuery';
-import { useRef } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
+} from "../ui/dialog";
+import { useBoardDeleteQuery } from "@/hook/query/useBoardQuery";
+import { useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import { indexDBChange } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 const BoardDelete = ({
   children,
   board,
   userId,
+  setChange,
   id,
 }: {
   children: React.ReactNode;
-  userId: string;
+  userId: string | undefined;
   board: Board;
+  setChange?: (res: boolean) => void;
   id: string;
 }) => {
   const { mutate, isPending } = useBoardDeleteQuery();
   const closeRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
   return (
-    <>
+    <section onClick={(e) => e.stopPropagation()}>
       {/* @ts-ignore */}
       <Dialog>
         {/* @ts-ignore */}
@@ -49,19 +53,31 @@ const BoardDelete = ({
               className="w-full"
               onClick={(e) => {
                 e.stopPropagation();
-                mutate(
-                  { id },
-                  {
-                    onSuccess: () => {
-                      closeRef.current?.click();
-                      queryClient.invalidateQueries({ queryKey: [userId] });
-                    },
+                if (userId) {
+                  mutate(
+                    { id },
+                    {
+                      onSuccess: () => {
+                        closeRef.current?.click();
+                        queryClient.invalidateQueries({ queryKey: [userId] });
+                      },
+                    }
+                  );
+                } else {
+                  toast.success("删除成功");
+                  indexDBChange({
+                    type: "delete",
+                    deletItem: board.id,
+                  });
+                  if (setChange) {
+                    setChange(true);
                   }
-                );
+                  closeRef.current?.click();
+                }
               }}
               disabled={isPending}
             >
-              {isPending ? <Loader2 className="size-4 animate-spin" /> : '确定'}
+              {isPending ? <Loader2 className="size-4 animate-spin" /> : "确定"}
             </Button>
             {/* @ts-ignore */}
             <DialogClose asChild>
@@ -79,7 +95,7 @@ const BoardDelete = ({
           </footer>
         </DialogContent>
       </Dialog>
-    </>
+    </section>
   );
 };
 

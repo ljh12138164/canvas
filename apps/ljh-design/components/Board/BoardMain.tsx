@@ -62,7 +62,7 @@ const BoardMain = () => {
             </>
           )}
           {!isLoading && !error && (
-            <BoardCreate userId={userId} data={data?.pages || []} />
+            <BoardCreate userId={userId} data={(data?.pages || []) as any} />
           )}
           {error && <div className="h-[200px]"></div>}
           <div className=" flex flex-col  gap-2 h-[calc(100dvh-300px)]   text-5xl">

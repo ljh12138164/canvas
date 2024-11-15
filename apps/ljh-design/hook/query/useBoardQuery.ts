@@ -12,6 +12,7 @@ import { InferRequestType, InferResponseType } from "hono";
 import { isArray } from "lodash";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
+
 export type ResponseType = InferResponseType<typeof client.board.$post>;
 type RequestType = InferRequestType<typeof client.board.$post>["json"];
 
