@@ -2,13 +2,14 @@ import { Toaster } from "react-hot-toast";
 import { Providers } from "@/app/_provide/providers";
 import { inter, myFont } from "@/lib/font";
 import TryEdit from "@/components/EditComponents/TryEdit";
-export default async function Home() {
+export default async function Home({ params }: { params: { id: string } }) {
+  const { id } = await params;
   return (
     <section
       className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden`}
     >
       <Providers>
-        <TryEdit userId={undefined} />
+        <TryEdit userId={undefined} id={id} />
       </Providers>
       <Toaster
         position="top-center"

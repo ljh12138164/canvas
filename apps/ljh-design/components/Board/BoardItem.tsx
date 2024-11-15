@@ -1,24 +1,26 @@
-import { BoardResponse } from '@/types/board';
-import dayjs from 'dayjs';
-import { CiFileOn } from 'react-icons/ci';
-import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
-import { IoMenu } from 'react-icons/io5';
-import TooltipComponents from '../shadui-Components/Tooltip';
-import { Button } from '../ui/button';
+import { Board } from "@/types/board";
+import dayjs from "dayjs";
+import { CiFileOn } from "react-icons/ci";
+import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
+import { IoMenu } from "react-icons/io5";
+import TooltipComponents from "../shadui-Components/Tooltip";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import { TableCell } from '../ui/table';
-import BoardEdit from './BoardEdit';
-import BoardDelete from './BoardDelete';
+} from "../ui/dropdown-menu";
+import { TableCell } from "../ui/table";
+import BoardDelete from "./BoardDelete";
+import BoardEdit from "./BoardEdit";
 const BoardItem = ({
   board,
+  setChange,
   userId,
 }: {
-  board: BoardResponse;
-  userId: string;
+  board: Board;
+  setChange?: (change: boolean) => void;
+  userId: string | undefined;
 }) => {
   return (
     <>
@@ -35,7 +37,7 @@ const BoardItem = ({
       <TableCell className="max-w-[100px] text-ellipsis">
         <TooltipComponents
           align="start"
-          label={board.width + 'x' + board.height}
+          label={board.width + "x" + board.height}
         >
           <span className="text-ellipsis block overflow-hidden">
             {board.width}x{board.height}
@@ -49,7 +51,7 @@ const BoardItem = ({
           label={new Date(board.created_at).toLocaleString()}
         >
           <span className="text-ellipsis block overflow-hidden">
-            {dayjs(board.created_at).format('MM-DD HH:mm')}
+            {dayjs(board.created_at).format("MM-DD HH:mm")}
           </span>
         </TooltipComponents>
       </TableCell>
@@ -61,7 +63,12 @@ const BoardItem = ({
             <IoMenu className="size-6 cursor-pointer hover:text-blue-700 transition-colors" />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="flex flex-col gap-2 w-full">
-            <BoardEdit userId={userId} data={board} id={board.id}>
+            <BoardEdit
+              setChange={setChange}
+              userId={userId}
+              data={board}
+              id={board.id}
+            >
               <Button
                 variant="ghost"
                 className="w-full"
@@ -73,7 +80,12 @@ const BoardItem = ({
                 <span>编辑</span>
               </Button>
             </BoardEdit>
-            <BoardDelete id={board.id} board={board} userId={userId}>
+            <BoardDelete
+              setChange={setChange}
+              id={board.id}
+              board={board}
+              userId={userId}
+            >
               <Button
                 variant="ghost"
                 className="w-full"

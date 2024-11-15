@@ -4,8 +4,8 @@ import { useMemoizedFn } from "ahooks";
 import { RefObject } from "react";
 
 interface CanvasProps {
-  initWidth?: RefObject<number>;
-  initHeight?: RefObject<number>;
+  initWidth?: RefObject<number> | number;
+  initHeight?: RefObject<number> | number;
 }
 const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
   const init = useMemoizedFn(

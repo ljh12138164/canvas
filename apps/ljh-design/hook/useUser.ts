@@ -15,12 +15,12 @@ const useUser = () => {
       const token = await getLocalToken();
       if (!token) {
         toast.error("请先登录");
-        redirect("/board/sign");
+        redirect("/board/sign-in");
       }
       const user = await jwtDecode(token);
       if (!user) {
         toast.error("请先登录");
-        redirect("/board/sign");
+        redirect("/board/sign-in");
       }
       authStore.setState({ userId: user.userid, isLoading: false });
     })();

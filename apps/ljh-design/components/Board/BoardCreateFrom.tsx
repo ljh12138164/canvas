@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, indexDBChange } from "@/lib/utils";
 import { BoardResponse } from "@/types/board";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseMutateFunction, useQueryClient } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { nanoid } from "nanoid";
 export interface Board {
   id: string;
   name: string;
@@ -35,9 +36,10 @@ const zod = z.object({
 interface BoardCreateFromProps {
   type: "create" | "edit";
   children: React.ReactNode;
-  defaultValues?: BoardResponse;
+  defaultValues?: any;
   closeref: RefObject<HTMLButtonElement | null>;
-  userId: string;
+  userId: string | undefined;
+  setChange?: (change: boolean) => void;
   mutate:
     | UseMutateFunction<
         BoardResponse,
@@ -55,6 +57,7 @@ const BoardCreateFrom = ({
   type,
   children,
   closeref,
+  setChange,
   userId,
   mutate,
   defaultValues,
@@ -75,27 +78,70 @@ const BoardCreateFrom = ({
         },
   });
   const onSubmit = (data: z.infer<typeof zod>) => {
-    query.invalidateQueries({ queryKey: [userId] });
-    toast.loading("创建中");
-    if (mutate) {
-      mutate(
-        { ...data, json: "" },
-        {
-          onSuccess: () => {
-            query.invalidateQueries({ queryKey: [userId] });
-            toast.dismiss();
-            toast.success(type === "create" ? "创建成功" : "更新成功");
-            if (closeref?.current) {
-              closeref.current.click();
-            }
+    if (userId) {
+      query.invalidateQueries({ queryKey: [userId] });
+      toast.loading("创建中");
+      if (mutate) {
+        mutate(
+          { ...data, json: "" },
+          {
+            onSuccess: () => {
+              query.invalidateQueries({ queryKey: [userId] });
+              toast.dismiss();
+              toast.success(type === "create" ? "创建成功" : "更新成功");
+              if (closeref?.current) {
+                closeref.current.click();
+              }
+            },
+            onError: (error) => {
+              console.log(error);
+              toast.dismiss();
+              toast.error(type === "create" ? "创建失败" : "更新失败");
+            },
+          }
+        );
+      }
+    } else {
+      if (type === "create") {
+        toast.loading("创建中");
+        // TODO: INDEXDB
+        indexDBChange({
+          type: "add",
+          data: {
+            ...data,
+            id: nanoid(),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            json: "",
           },
-          onError: (error) => {
-            console.log(error);
-            toast.dismiss();
-            toast.error(type === "create" ? "创建失败" : "更新失败");
-          },
+        });
+        if (setChange) {
+          setChange(true);
         }
-      );
+        toast.dismiss();
+        toast.success("创建成功");
+        if (closeref?.current) {
+          closeref.current.click();
+        }
+      } else {
+        toast.loading("修改中...");
+        indexDBChange({
+          type: "edit",
+          editData: {
+            ...defaultValues,
+            ...data,
+            updated_at: new Date().toISOString(),
+          },
+        });
+        if (setChange) {
+          setChange(true);
+        }
+        toast.dismiss();
+        toast.success("修改成功");
+        if (closeref?.current) {
+          closeref.current.click();
+        }
+      }
     }
   };
   return (
