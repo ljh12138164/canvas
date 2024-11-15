@@ -31,8 +31,12 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       initCanvas.freeDrawingBrush.color = STROKE_COLOR;
       //画布
       const initRect = new fabric.Rect({
-        width: initWidth?.current || 800,
-        height: initHeight?.current || 1100,
+        width:
+          typeof initWidth === "number" ? initWidth : initWidth?.current || 800,
+        height:
+          typeof initHeight === "number"
+            ? initHeight
+            : initHeight?.current || 1100,
         name: "board",
         fill: "white",
         selectable: false,
