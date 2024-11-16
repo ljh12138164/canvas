@@ -1,6 +1,6 @@
-import { JSON_KEY } from "@/types/Edit";
-import { Canvas } from "fabric";
-import { RefObject, useEffect, useRef } from "react";
+import { JSON_KEY } from '@/types/Edit';
+import { Canvas } from 'fabric';
+import { RefObject, useEffect, useRef } from 'react';
 
 type UseLoadingStateProps = {
   authZoom: () => void;

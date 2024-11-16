@@ -55,7 +55,6 @@ export const buildEditor = ({
   fontItalics,
   fontUnderline,
   fontAlign,
-  userId,
   fontSize,
   imageLoading,
   imageFilter,
@@ -280,9 +279,7 @@ export const buildEditor = ({
       }
       await authZoom();
       canvas.renderAll();
-      if (userId) {
-        save(false, '改变画布大小');
-      }
+      save();
     },
     changeBackground: (color: string) => {
       setCanvasColor(color);
@@ -291,9 +288,7 @@ export const buildEditor = ({
         workspace.fill = color;
       }
       canvas.renderAll();
-      if (userId) {
-        save(false, '改变画布背景');
-      }
+      save();
     },
     copy,
     enableDraw: () => {

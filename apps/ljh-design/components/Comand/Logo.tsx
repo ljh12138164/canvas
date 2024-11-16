@@ -1,18 +1,18 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
-const Logo = () => {
+const Logo = ({ to }: { to: string }) => {
   return (
     <Link
-      href="/"
-      className="h-12 w-12 cursor-pointer flex items-center justify-center"
+      href={to || '/'}
+      className='h-12 w-12 cursor-pointer flex items-center justify-center'
     >
       <Image
         width={48}
         quality={75}
         height={48}
-        src="https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/favicon.ico"
-        alt="logo"
+        src='https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/favicon.ico'
+        alt='logo'
       />
     </Link>
   );
