@@ -44,7 +44,6 @@ const ChangeUserData = ({ data }: { data: User }) => {
       setError("password", { message: "两次密码不一致" });
       return;
     }
-    console.log(data);
   }
   function changeImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];

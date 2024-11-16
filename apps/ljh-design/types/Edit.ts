@@ -679,9 +679,8 @@ export interface buildEditorProps {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
-  userId: string | undefined;
   pasty: () => void;
-  save: (skip?: boolean, des?: string) => void;
+  save: (skip?: boolean) => void;
   canRedo: () => boolean;
   canUndo: () => boolean;
   undo: () => void;
@@ -744,7 +743,6 @@ export interface Edit {
   saveJson: () => void;
   loadFromJson: (json: string) => void;
   pasty: () => void;
-
   canRedo: () => boolean;
   canUndo: () => boolean;
   undo: () => void;

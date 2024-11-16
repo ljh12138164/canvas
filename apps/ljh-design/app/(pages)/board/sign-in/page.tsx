@@ -1,11 +1,8 @@
 import SignIn from '@/components/Sign/SignIn';
-import { inter, myFont } from '@/lib/font';
 import { Toaster } from 'react-hot-toast';
 export default async function SignInPage() {
   return (
-    <section
-      className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden`}
-    >
+    <section>
       <Toaster
         position='top-center'
         gutter={12}

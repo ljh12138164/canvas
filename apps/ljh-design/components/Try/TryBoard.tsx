@@ -30,7 +30,6 @@ const TryBoard = () => {
         redirect("/board");
       }
       const data = await getIndexDB();
-      console.log(data);
       setData(data as Board[]);
       setLoading(false);
     })();
