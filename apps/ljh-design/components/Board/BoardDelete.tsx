@@ -1,3 +1,4 @@
+"use client";
 import { Board } from "@/types/board";
 import { Button } from "../ui/button";
 import {

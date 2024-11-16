@@ -1,4 +1,5 @@
 import { Providers } from "@/app/_provide/providers";
+import TrySider from "@/components/Try/TrySider";
 import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 export const metadata: Metadata = {
@@ -15,7 +16,22 @@ export default function RootLayout({
     <html lang="cn">
       <body>
         <Providers>
-          {children}
+          <div className="h-full w-full">
+            <div className="lg:pl-[300px] flex flex-col h-full">
+              {/* 头部 */}
+              <div className="h-[60px] bg-slate-50">
+                <TrySider></TrySider>
+              </div>
+              <main
+                className="px-2 py-4 bg-white flex-1 min-w-[380px] overflow-hidden"
+                style={{
+                  scrollbarWidth: "none",
+                }}
+              >
+                {children}
+              </main>
+            </div>
+          </div>
           <Toaster
             position="top-center"
             gutter={12}

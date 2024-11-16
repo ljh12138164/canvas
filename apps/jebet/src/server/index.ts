@@ -1,3 +1,4 @@
-import { Jebt } from "api";
+import type { App } from "api";
+import { hc } from "hono/client";
 
-export const client = Jebt;
+export const client = hc<App>("localhost:8000").api.jebt;

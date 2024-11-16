@@ -1,3 +1,4 @@
+"use client";
 import { useBoardQuery } from "@/hook/query/useBoardQuery";
 import { Board } from "@/types/board";
 import { Loader2 } from "lucide-react";
