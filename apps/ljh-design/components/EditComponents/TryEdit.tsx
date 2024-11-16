@@ -1,23 +1,23 @@
-'use client';
-import ColorSoiberbar from '@/components/EditComponents/ColorSiberbar';
-import Footer from '@/components/EditComponents/Footer';
-import ImageSiderbar from '@/components/EditComponents/ImageSiderbar';
-import NavBar from '@/components/EditComponents/NavBar';
-import ShapeSidle from '@/components/EditComponents/ShapeSidle';
-import SiderBar from '@/components/EditComponents/SiderBar';
-import TextSidebar from '@/components/EditComponents/TextSidebar';
-import Tools from '@/components/EditComponents/Tools';
-import useCanvas from '@/hook/useCanvas';
-import useCanvasEvent from '@/hook/useCanvasEvent';
-import { useClipboard } from '@/hook/useCliph';
-import useHistoty from '@/hook/useHistory';
-import useKeyBoard from '@/hook/useKeyBoard';
-import useResponse from '@/hook/useResponse';
-import { useWindowEvent } from '@/hook/useWindowEvent';
-import { getTryBoardById, indexDBChange } from '@/lib/utils';
-import { useLoading } from '@/hook/useLoding';
-import { buildEditor } from '@/store/editor';
-import { Board } from '@/types/board';
+"use client";
+import ColorSoiberbar from "@/components/EditComponents/ColorSiberbar";
+import Footer from "@/components/EditComponents/Footer";
+import ImageSiderbar from "@/components/EditComponents/ImageSiderbar";
+import NavBar from "@/components/EditComponents/NavBar";
+import ShapeSidle from "@/components/EditComponents/ShapeSidle";
+import SiderBar from "@/components/EditComponents/SiderBar";
+import TextSidebar from "@/components/EditComponents/TextSidebar";
+import Tools from "@/components/EditComponents/Tools";
+import useCanvas from "@/hook/useCanvas";
+import useCanvasEvent from "@/hook/useCanvasEvent";
+import { useClipboard } from "@/hook/useCliph";
+import useHistoty from "@/hook/useHistory";
+import useKeyBoard from "@/hook/useKeyBoard";
+import { useLoading } from "@/hook/useLoding";
+import useResponse from "@/hook/useResponse";
+import { useWindowEvent } from "@/hook/useWindowEvent";
+import { getTryBoardById, indexDBChange } from "@/lib/utils";
+import { buildEditor } from "@/store/editor";
+import { Board } from "@/types/board";
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -38,28 +38,17 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
   Tool,
-} from '@/types/Edit';
-import { useMemoizedFn } from 'ahooks';
-import * as fabric from 'fabric';
-import { debounce } from 'lodash';
-import { redirect } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
+} from "@/types/Edit";
+import { useMemoizedFn } from "ahooks";
+import * as fabric from "fabric";
+import { debounce } from "lodash";
+import { redirect } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 
-export default function TryEdit({ id }: { id: string }) {
-  const defaultData = useRef<Board | null>(null);
-  const defaultJson = useRef<string>('');
-  useEffect(() => {
-    (async () => {
-      const data = await getTryBoardById(id);
-      if (!data) {
-        toast.error('数据不存在');
-        redirect('/try/board');
-      }
-      defaultData.current = data;
-      defaultJson.current = data.json;
-    })();
-  }, [id]);
+export default function TryEdit({ id, data }: { id: string; data: Board }) {
+  const defaultData = useRef<Board>(data);
+  const defaultJson = useRef<string>(data.json);
   const { init } = useCanvas({
     initHeight: defaultData.current?.height,
     initWidth: defaultData.current?.width,
@@ -70,11 +59,11 @@ export default function TryEdit({ id }: { id: string }) {
       setIsPending(true);
       const dataed = await getTryBoardById(id);
       if (!dataed) {
-        toast.error('数据不存在');
-        redirect('/try/board');
+        toast.error("数据不存在");
+        redirect("/try/board");
       }
       indexDBChange({
-        type: 'edit',
+        type: "edit",
         editData: {
           ...dataed,
           ...data,
@@ -107,7 +96,7 @@ export default function TryEdit({ id }: { id: string }) {
   const [fontUnderline, setFontUnderline] = useState<boolean>(FONT_UNDERLINE);
   const [fontItalics, setFontItalics] = useState<FontStyle>(FONT_ITALICS);
   const [fontAlign, setFontAlign] =
-    useState<fabric.Textbox['textAlign']>(FONT_ALIGN);
+    useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
   //图片
   const [imageLoading, setImageLoading] = useState<boolean>(false);
@@ -235,7 +224,8 @@ export default function TryEdit({ id }: { id: string }) {
     return () => {
       canvas.dispose();
     };
-  }, [init, setHitoryIndex, canvasHistory]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   useLoading({
     authZoom,
     canvas,
@@ -245,9 +235,9 @@ export default function TryEdit({ id }: { id: string }) {
   });
   return (
     <div
-      className='h-full w-full flex flex-col items-center relative bg-slate-100'
+      className="h-full w-full flex flex-col items-center relative bg-slate-100"
       style={{
-        scrollbarWidth: 'none',
+        scrollbarWidth: "none",
       }}
     >
       <NavBar
@@ -257,7 +247,7 @@ export default function TryEdit({ id }: { id: string }) {
         activeTool={tool}
         onChangeTool={onChangeActive}
       ></NavBar>
-      <div className='h-full w-full flex-1 flex  transition-all duration-100 ease-in-out'>
+      <div className="h-full w-full flex-1 flex  transition-all duration-100 ease-in-out">
         <SiderBar
           acitiveTool={tool}
           onChangeActiveTool={onChangeActive}
@@ -283,7 +273,7 @@ export default function TryEdit({ id }: { id: string }) {
           activeTool={tool}
           onChangeActive={onChangeActive}
         ></ColorSoiberbar>
-        <main className='flex-1 h-full w-full flex flex-col overflow-hidden'>
+        <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
           <Tools
             editor={editor}
             activeTool={tool}
@@ -291,7 +281,7 @@ export default function TryEdit({ id }: { id: string }) {
             key={JSON.stringify(editor?.canvas.getActiveObject())}
           ></Tools>
           <section
-            className='flex flex-col relative flex-1 overflow-hidden'
+            className="flex flex-col relative flex-1 overflow-hidden"
             ref={containEl}
           >
             <canvas ref={canvasEl}></canvas>

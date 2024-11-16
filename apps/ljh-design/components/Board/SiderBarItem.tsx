@@ -6,22 +6,14 @@ interface SiderBarItemProps {
   Icon: LucideIcon;
   href: string;
   isActive?: boolean;
-  onClick: () => void;
 }
-const SiderBarItem = ({
-  label,
-  Icon,
-  href,
-  isActive,
-  onClick,
-}: SiderBarItemProps) => {
+const SiderBarItem = ({ label, Icon, href, isActive }: SiderBarItemProps) => {
   return (
     <Link
       href={href}
-      onClick={onClick}
       className={cn(
         "flex items-center px-3 py-3 rounded-xl bg-transparent hover:bg-white duration-300 transition",
-        isActive ? "bg-white" : ""
+        isActive ? "text-blue-500 border-l-[3px] border-blue-500" : ""
       )}
     >
       <section className="flex items-center gap-x-2">

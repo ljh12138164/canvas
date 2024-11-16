@@ -1,6 +1,6 @@
-import { JSON_KEY } from '@/types/Edit';
-import { Canvas } from 'fabric';
-import { RefObject, useEffect, useRef } from 'react';
+import { JSON_KEY } from "@/types/Edit";
+import { Canvas } from "fabric";
+import { RefObject, useEffect, useRef } from "react";
 
 type UseLoadingStateProps = {
   authZoom: () => void;
@@ -22,7 +22,7 @@ export const useLoading = ({
     if (!inititaized.current && canvas && initState.current) {
       canvas.loadFromJSON(JSON.parse(initState.current), () => {
         authZoom();
-        const currentState = canvas.toObject(JSON_KEY);
+        const currentState = canvas.toObject(JSON_KEY) as Canvas;
         canvasHistory.current = [currentState];
         setHistoryIndex(0);
       });
