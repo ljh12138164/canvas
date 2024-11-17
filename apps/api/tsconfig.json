@@ -20,5 +20,5 @@
     "noEmit": false,
     "baseUrl": "."
   },
-  "include": ["src", "api.d.ts"]
+  "include": ["src"]
 }
