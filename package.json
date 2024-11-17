@@ -5,7 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev --color",
     "dev:api": "turbo --filter=api dev",
-    "dev:form": "turbo --filter=api --filter=form dev",
+    "dev:note": "turbo --filter=api --filter=note dev",
     "dev:design": "turbo --filter=api --filter=design dev",
     "dev:jebet": "turbo --filter=api --filter=jebet dev",
     "build:design": "turbo --filter=design build",
