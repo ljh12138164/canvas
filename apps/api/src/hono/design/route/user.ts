@@ -2,8 +2,8 @@ import { error401 } from "../../../libs/error";
 import { checkoutCookie, jwtEncode } from "../../../libs/sign-in";
 import { createUser, getCurrentUser, signIn } from "../../../server/design";
 import { zValidator } from "@hono/zod-validator";
-import * as bcrypt from "bcryptjs";
 import { Hono } from "hono";
+import md5 from "blueimp-md5";
 import { deleteCookie } from "hono/cookie";
 import { z } from "zod";
 const user = new Hono()
@@ -20,7 +20,7 @@ const user = new Hono()
     async (c) => {
       try {
         const { name, accoute, password } = c.req.valid("json");
-        const hashPassword = bcrypt.hashSync(password, 10);
+        const hashPassword = md5(password);
         const user = await createUser({
           name,
           account: accoute,
@@ -60,7 +60,6 @@ const user = new Hono()
       try {
         const user = await signIn({ account, password });
         if (!user) return c.json({ message: "账号或密码错误" }, 400);
-        //设置cookie
         const token = await jwtEncode({
           userid: user.id,
           expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
@@ -68,6 +67,7 @@ const user = new Hono()
 
         return c.json({ user, token }, 200);
       } catch (error) {
+        console.log(error);
         return c.json({ message: error }, 400);
       }
     }

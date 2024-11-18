@@ -4,8 +4,8 @@ export interface Board {
   created_at?: string;
   updated_at: string;
   json: string;
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
   url?: string;
   isTemplate?: boolean;
 }

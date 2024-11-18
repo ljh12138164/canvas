@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev --color",
+    "dev": "turbo dev",
     "dev:api": "turbo --filter=api dev",
     "dev:note": "turbo --filter=api --filter=note dev",
     "dev:design": "turbo --filter=api --filter=design dev",

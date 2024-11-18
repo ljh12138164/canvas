@@ -29,7 +29,7 @@ export const getUserImage = async ({
 };
 
 interface CreateBoard {
-  userId: string;
+  userId?: string;
   name: string;
   json?: string;
   width: number;
@@ -161,5 +161,24 @@ export const authSaveBoard = async ({
     .eq("userId", userId)
     .select("*");
   if (error || data.length === 0) throw new Error(error?.message || "更新失败");
+  return data[0];
+};
+/**
+ * 复制看板
+ * @returns
+ */
+export const copyBoard = async ({
+  userId,
+  board,
+}: {
+  board: CreateBoard;
+  userId: string;
+}): Promise<Board> => {
+  const { data, error } = await supabaseDesign
+    .from("board")
+    .insert([{ ...board, userId }])
+    .select("*");
+  console.log(data, error);
+  if (error) throw new Error(error.message);
   return data[0];
 };

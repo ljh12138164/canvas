@@ -1,4 +1,4 @@
-import { Hono } from "hono";
-export const note = new Hono().get("/", (c) => {
-  return c.json({ message: "Hello World" });
-});
+import { Hono } from 'hono';
+import { editor } from './route/editor';
+
+export const note = new Hono().route('/editor', editor);
