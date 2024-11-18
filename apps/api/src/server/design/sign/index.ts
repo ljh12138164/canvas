@@ -1,6 +1,6 @@
 import { supabaseDesign } from "../../../server";
-import * as bcrypt from "bcryptjs";
 import { User } from "../../../types/design/user";
+import md5 from "blueimp-md5";
 
 interface SignUpUser {
   name: string;
@@ -64,8 +64,8 @@ export const signIn = async ({
   if (data?.length === 0) {
     throw new Error("未找到用户");
   }
-  const comparePassword = bcrypt.compareSync(password, data[0].password);
-  if (!comparePassword) {
+  const comparePassword = md5(password);
+  if (comparePassword !== data[0].password) {
     throw new Error("账号或密码错误");
   }
   return {

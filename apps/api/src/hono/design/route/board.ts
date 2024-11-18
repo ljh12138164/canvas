@@ -5,6 +5,7 @@ import {
   deleteBoard,
   getBoard,
   getUserBoard,
+  copyBoard,
   updateBoard,
 } from "../../../server/design/board";
 import { zValidator } from "@hono/zod-validator";
@@ -74,7 +75,7 @@ const board = new Hono()
     "/getBoard",
     zValidator("json", z.object({ userid: z.string(), pageParam: z.number() })),
     async (c) => {
-      const { userid, pageParam } = c.req.valid("json");
+      const { pageParam } = c.req.valid("json");
       let user;
       try {
         user = await checkoutCookie(c);
@@ -145,6 +146,32 @@ const board = new Hono()
       }
     }
   )
+  .post("/clone", async (c) => {
+    const { name, json, width, height } = await c.req.json();
+    if (!name || !width || !height) {
+      return c.json({ message: "请输入完整信息" }, 400);
+    }
+    let user;
+    try {
+      user = await checkoutCookie(c);
+    } catch {
+      return c.json({ message: "请先登录" }, 401);
+    }
+    try {
+      const board = await copyBoard({
+        userId: user.userid,
+        board: {
+          name,
+          json,
+          width,
+          height,
+        },
+      });
+      return c.json(board);
+    } catch {
+      return c.json({ message: "复制失败" }, 400);
+    }
+  })
   .post(
     "/:id",
     zValidator("param", z.object({ id: z.string() })),

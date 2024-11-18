@@ -1,6 +1,7 @@
 import { getLocalToken, jwtDecode } from "@/lib/sign";
 import { redirect } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 const init = {
   token: "",
   loading: true,
@@ -17,6 +18,9 @@ export default function Protect({ children }: { children: React.ReactNode }) {
       if (token && userId) {
         setLoading(false);
         setToken(token);
+        toast.dismiss();
+        toast.success("已登录");
+
         redirect("/board");
       }
     })();

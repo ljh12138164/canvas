@@ -1,4 +1,4 @@
-import { cn, indexDBChange } from "@/lib/utils";
+import { cn, getTryBoardById, indexDBChange } from "@/lib/utils";
 import { BoardResponse } from "@/types/board";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseMutateFunction, useQueryClient } from "@tanstack/react-query";
@@ -25,16 +25,16 @@ const zod = z.object({
     .min(2, { message: "画布名称至少为2个字符" })
     .max(20, { message: "画布名称最多为20个字符" }),
   width: z
-    .number({ message: "请输入画布宽度" })
+    .string({ message: "请输入画布宽度" })
     .min(1, { message: "画布宽度最小为1" })
-    .max(1000000, { message: "画布宽度最大为1000000" }),
+    .max(7, { message: "画布宽度最大为999999" }),
   height: z
-    .number({ message: "请输入画布高度" })
+    .string({ message: "请输入画布高度" })
     .min(1, { message: "画布高度最小为1" })
-    .max(1000000, { message: "画布高度最大为1000000" }),
+    .max(7, { message: "画布高度最大为999999" }),
 });
 interface BoardCreateFromProps {
-  type: "create" | "edit";
+  type: "create" | "edit" | "copy";
   children: React.ReactNode;
   defaultValues?: any;
   closeref: RefObject<HTMLButtonElement | null>;
@@ -57,10 +57,10 @@ const BoardCreateFrom = ({
   type,
   children,
   closeref,
-  setChange,
   userId,
-  mutate,
   defaultValues,
+  mutate,
+  setChange,
 }: BoardCreateFromProps) => {
   const query = useQueryClient();
   const { register, handleSubmit, formState } = useForm<z.infer<typeof zod>>({
@@ -68,13 +68,13 @@ const BoardCreateFrom = ({
     defaultValues: defaultValues
       ? {
           name: defaultValues.name,
-          width: defaultValues.width,
-          height: defaultValues.height,
+          width: defaultValues.width + "",
+          height: defaultValues.height + "",
         }
       : {
           name: "",
-          width: 700,
-          height: 1100,
+          width: "700",
+          height: "1100",
         },
   });
   const onSubmit = (data: z.infer<typeof zod>) => {
@@ -83,7 +83,12 @@ const BoardCreateFrom = ({
       toast.loading("创建中");
       if (mutate) {
         mutate(
-          { ...data, json: "" },
+          {
+            ...data,
+            width: Number(data.width),
+            height: Number(data.height),
+            json: type === "create" ? "" : defaultValues.json,
+          },
           {
             onSuccess: () => {
               query.invalidateQueries({ queryKey: [userId] });
@@ -103,8 +108,7 @@ const BoardCreateFrom = ({
       }
     } else {
       if (type === "create") {
-        toast.loading("创建中");
-        // TODO: INDEXDB
+        toast.loading("创建中...");
         indexDBChange({
           type: "add",
           data: {
@@ -123,7 +127,7 @@ const BoardCreateFrom = ({
         if (closeref?.current) {
           closeref.current.click();
         }
-      } else {
+      } else if (type === "edit") {
         toast.loading("修改中...");
         indexDBChange({
           type: "edit",
@@ -141,6 +145,33 @@ const BoardCreateFrom = ({
         if (closeref?.current) {
           closeref.current.click();
         }
+      } else if (type === "copy") {
+        toast.dismiss();
+        (async () => {
+          toast.loading("复制中...");
+          const board = await getTryBoardById(defaultValues.id);
+          await indexDBChange({
+            type: "add",
+            data: {
+              ...board,
+              json: board?.json || "",
+              id: nanoid(),
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+              name: data.name,
+              width: data.width,
+              height: data.height,
+            },
+          });
+          if (setChange) {
+            setChange(true);
+          }
+          toast.dismiss();
+          toast.success("复制成功");
+          if (closeref?.current) {
+            closeref.current.click();
+          }
+        })();
       }
     }
   };

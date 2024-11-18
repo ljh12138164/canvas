@@ -1,3 +1,5 @@
+import supabase from '@/server/supabase';
+import { nanoid } from 'nanoid';
 /**
  * @description 上传图片到云端
  * @param file 文件
@@ -6,8 +8,6 @@
 interface UploadImageClound {
   file: File;
 }
-import supabase from '@/server/supabase';
-import { nanoid } from 'nanoid';
 export const uploadImageclound = async ({ file }: UploadImageClound) => {
   const fileName = `${nanoid()}-${file.name}`.replace('/', '');
   const { data, error } = await supabase.storage
