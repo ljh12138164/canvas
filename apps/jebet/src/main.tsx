@@ -1,12 +1,22 @@
+import { ClerkProvider } from "@clerk/clerk-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import Index from "./page/error/Index";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ThemeProvider } from "./components/ui/theme-provider";
 import "./index.css";
+import Home from "./page/dashboard";
+import Index from "./page/error/Index";
+
+// Import your publishable key
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key");
+}
 
 // eslint-disable-next-line react-refresh/only-export-components
 const SignIn = lazy(() => import("./page/auth/SignIn"));
@@ -21,11 +31,15 @@ const queryclinet = new QueryClient({
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>home</div>,
+    element: <div></div>,
   },
   {
     path: "/sign-in",
     element: <SignIn />,
+  },
+  {
+    path: "/dashboard",
+    element: <Home />,
   },
   {
     path: "*",
@@ -38,7 +52,14 @@ root.render(
   <QueryClientProvider client={queryclinet}>
     <ReactQueryDevtools initialIsOpen={false} />
     <ErrorBoundary fallback={<Index />}>
-      <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <RouterProvider
+            router={router}
+            fallbackElement={<div>Loading...</div>}
+          />
+        </ThemeProvider>
+      </ClerkProvider>
     </ErrorBoundary>
     <Toaster
       position="top-center"

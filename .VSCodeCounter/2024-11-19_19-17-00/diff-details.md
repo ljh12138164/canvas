@@ -1,8 +1,8 @@
 # Diff Details
 
-Date : 2024-11-16 23:06:06
+Date : 2024-11-19 19:17:00
 
-Directory f:\\study\\design\\canvas
+Directory f:\\study\\design\\canvas\\apps\\ljh-design
 
 Total : 0 files,  0 codes, 0 comments, 0 blanks, all 0 lines
 

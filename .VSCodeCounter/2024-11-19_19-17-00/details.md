@@ -1,10 +1,10 @@
 # Details
 
-Date : 2024-11-16 23:06:58
+Date : 2024-11-19 19:17:00
 
 Directory f:\\study\\design\\canvas\\apps\\ljh-design
 
-Total : 118 files,  8471 codes, 312 comments, 420 blanks, all 9203 lines
+Total : 120 files,  8654 codes, 316 comments, 430 blanks, all 9400 lines
 
 [Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
@@ -17,12 +17,12 @@ Total : 118 files,  8471 codes, 312 comments, 420 blanks, all 9203 lines
 | [apps/ljh-design/app/(pages)/board/Edit/[Id]/page.tsx](/apps/ljh-design/app/(pages)/board/Edit/%5BId%5D/page.tsx) | TypeScript JSX | 36 | 0 | 2 | 38 |
 | [apps/ljh-design/app/(pages)/board/layout.tsx](/apps/ljh-design/app/(pages)/board/layout.tsx) | TypeScript JSX | 54 | 0 | 2 | 56 |
 | [apps/ljh-design/app/(pages)/board/page.tsx](/apps/ljh-design/app/(pages)/board/page.tsx) | TypeScript JSX | 9 | 0 | 2 | 11 |
-| [apps/ljh-design/app/(pages)/board/sign-in/layout.tsx](/apps/ljh-design/app/(pages)/board/sign-in/layout.tsx) | TypeScript JSX | 19 | 0 | 2 | 21 |
-| [apps/ljh-design/app/(pages)/board/sign-in/page.tsx](/apps/ljh-design/app/(pages)/board/sign-in/page.tsx) | TypeScript JSX | 30 | 0 | 1 | 31 |
 | [apps/ljh-design/app/(pages)/board/user/page.tsx](/apps/ljh-design/app/(pages)/board/user/page.tsx) | TypeScript JSX | 11 | 0 | 1 | 12 |
+| [apps/ljh-design/app/(pages)/sign-in/layout.tsx](/apps/ljh-design/app/(pages)/sign-in/layout.tsx) | TypeScript JSX | 19 | 0 | 2 | 21 |
+| [apps/ljh-design/app/(pages)/sign-in/page.tsx](/apps/ljh-design/app/(pages)/sign-in/page.tsx) | TypeScript JSX | 30 | 0 | 1 | 31 |
 | [apps/ljh-design/app/(pages)/try/Edit/[id]/layout.tsx](/apps/ljh-design/app/(pages)/try/Edit/%5Bid%5D/layout.tsx) | TypeScript JSX | 16 | 0 | 2 | 18 |
 | [apps/ljh-design/app/(pages)/try/Edit/[id]/page.tsx](/apps/ljh-design/app/(pages)/try/Edit/%5Bid%5D/page.tsx) | TypeScript JSX | 36 | 0 | 2 | 38 |
-| [apps/ljh-design/app/(pages)/try/board/layout.tsx](/apps/ljh-design/app/(pages)/try/board/layout.tsx) | TypeScript JSX | 54 | 0 | 2 | 56 |
+| [apps/ljh-design/app/(pages)/try/board/layout.tsx](/apps/ljh-design/app/(pages)/try/board/layout.tsx) | TypeScript JSX | 54 | 1 | 2 | 57 |
 | [apps/ljh-design/app/(pages)/try/board/page.tsx](/apps/ljh-design/app/(pages)/try/board/page.tsx) | TypeScript JSX | 9 | 0 | 1 | 10 |
 | [apps/ljh-design/app/(pages)/try/board/userData/page.tsx](/apps/ljh-design/app/(pages)/try/board/userData/page.tsx) | TypeScript JSX | 8 | 0 | 1 | 9 |
 | [apps/ljh-design/app/_provide/providers.tsx](/apps/ljh-design/app/_provide/providers.tsx) | TypeScript JSX | 11 | 0 | 1 | 12 |
@@ -32,22 +32,24 @@ Total : 118 files,  8471 codes, 312 comments, 420 blanks, all 9203 lines
 | [apps/ljh-design/app/page.tsx](/apps/ljh-design/app/page.tsx) | TypeScript JSX | 14 | 0 | 1 | 15 |
 | [apps/ljh-design/app/public/favicon.svg](/apps/ljh-design/app/public/favicon.svg) | XML | 14 | 0 | 1 | 15 |
 | [apps/ljh-design/components.json](/apps/ljh-design/components.json) | JSON | 20 | 0 | 0 | 20 |
-| [apps/ljh-design/components/Board/Board.tsx](/apps/ljh-design/components/Board/Board.tsx) | TypeScript JSX | 6 | 0 | 2 | 8 |
-| [apps/ljh-design/components/Board/BoardCreate.tsx](/apps/ljh-design/components/Board/BoardCreate.tsx) | TypeScript JSX | 90 | 3 | 3 | 96 |
-| [apps/ljh-design/components/Board/BoardCreateFrom.tsx](/apps/ljh-design/components/Board/BoardCreateFrom.tsx) | TypeScript JSX | 213 | 1 | 2 | 216 |
+| [apps/ljh-design/components/Board/Board.tsx](/apps/ljh-design/components/Board/Board.tsx) | TypeScript JSX | 9 | 0 | 2 | 11 |
+| [apps/ljh-design/components/Board/BoardCopy.tsx](/apps/ljh-design/components/Board/BoardCopy.tsx) | TypeScript JSX | 73 | 0 | 2 | 75 |
+| [apps/ljh-design/components/Board/BoardCreate.tsx](/apps/ljh-design/components/Board/BoardCreate.tsx) | TypeScript JSX | 90 | 1 | 4 | 95 |
+| [apps/ljh-design/components/Board/BoardCreateFrom.tsx](/apps/ljh-design/components/Board/BoardCreateFrom.tsx) | TypeScript JSX | 245 | 0 | 2 | 247 |
 | [apps/ljh-design/components/Board/BoardDelete.tsx](/apps/ljh-design/components/Board/BoardDelete.tsx) | TypeScript JSX | 98 | 3 | 3 | 104 |
-| [apps/ljh-design/components/Board/BoardEdit.tsx](/apps/ljh-design/components/Board/BoardEdit.tsx) | TypeScript JSX | 91 | 3 | 3 | 97 |
-| [apps/ljh-design/components/Board/BoardItem.tsx](/apps/ljh-design/components/Board/BoardItem.tsx) | TypeScript JSX | 104 | 2 | 2 | 108 |
-| [apps/ljh-design/components/Board/BoardMain.tsx](/apps/ljh-design/components/Board/BoardMain.tsx) | TypeScript JSX | 147 | 1 | 3 | 151 |
+| [apps/ljh-design/components/Board/BoardEdit.tsx](/apps/ljh-design/components/Board/BoardEdit.tsx) | TypeScript JSX | 91 | 2 | 3 | 96 |
+| [apps/ljh-design/components/Board/BoardItem.tsx](/apps/ljh-design/components/Board/BoardItem.tsx) | TypeScript JSX | 124 | 0 | 2 | 126 |
+| [apps/ljh-design/components/Board/BoardMain.tsx](/apps/ljh-design/components/Board/BoardMain.tsx) | TypeScript JSX | 145 | 1 | 2 | 148 |
 | [apps/ljh-design/components/Board/ChangeUserData.tsx](/apps/ljh-design/components/Board/ChangeUserData.tsx) | TypeScript JSX | 188 | 1 | 3 | 192 |
 | [apps/ljh-design/components/Board/Navbar.tsx](/apps/ljh-design/components/Board/Navbar.tsx) | TypeScript JSX | 11 | 0 | 3 | 14 |
 | [apps/ljh-design/components/Board/SiderBar.tsx](/apps/ljh-design/components/Board/SiderBar.tsx) | TypeScript JSX | 14 | 0 | 3 | 17 |
-| [apps/ljh-design/components/Board/SiderBarItem.tsx](/apps/ljh-design/components/Board/SiderBarItem.tsx) | TypeScript JSX | 26 | 0 | 2 | 28 |
+| [apps/ljh-design/components/Board/SiderBarItem.tsx](/apps/ljh-design/components/Board/SiderBarItem.tsx) | TypeScript JSX | 28 | 0 | 2 | 30 |
 | [apps/ljh-design/components/Board/SiderBarRoutes.tsx](/apps/ljh-design/components/Board/SiderBarRoutes.tsx) | TypeScript JSX | 41 | 1 | 3 | 45 |
 | [apps/ljh-design/components/Board/UserData.tsx](/apps/ljh-design/components/Board/UserData.tsx) | TypeScript JSX | 24 | 0 | 2 | 26 |
 | [apps/ljh-design/components/Board/UserInfo.tsx](/apps/ljh-design/components/Board/UserInfo.tsx) | TypeScript JSX | 4 | 0 | 2 | 6 |
 | [apps/ljh-design/components/Comand/Logo.tsx](/apps/ljh-design/components/Comand/Logo.tsx) | TypeScript JSX | 19 | 0 | 3 | 22 |
 | [apps/ljh-design/components/Comand/UserButton.tsx](/apps/ljh-design/components/Comand/UserButton.tsx) | TypeScript JSX | 65 | 2 | 4 | 71 |
+| [apps/ljh-design/components/Echarts/AreaChart.tsx](/apps/ljh-design/components/Echarts/AreaChart.tsx) | TypeScript JSX | 22 | 0 | 5 | 27 |
 | [apps/ljh-design/components/EditComponents/Canvas.tsx](/apps/ljh-design/components/EditComponents/Canvas.tsx) | TypeScript JSX | 263 | 14 | 10 | 287 |
 | [apps/ljh-design/components/EditComponents/ColorPicker.tsx](/apps/ljh-design/components/EditComponents/ColorPicker.tsx) | TypeScript JSX | 33 | 2 | 2 | 37 |
 | [apps/ljh-design/components/EditComponents/ColorSiberbar.tsx](/apps/ljh-design/components/EditComponents/ColorSiberbar.tsx) | TypeScript JSX | 282 | 4 | 6 | 292 |
@@ -71,11 +73,11 @@ Total : 118 files,  8471 codes, 312 comments, 420 blanks, all 9203 lines
 | [apps/ljh-design/components/EditComponents/TryEdit.tsx](/apps/ljh-design/components/EditComponents/TryEdit.tsx) | TypeScript JSX | 274 | 14 | 7 | 295 |
 | [apps/ljh-design/components/EditComponents/UserImageBox.tsx](/apps/ljh-design/components/EditComponents/UserImageBox.tsx) | TypeScript JSX | 69 | 0 | 1 | 70 |
 | [apps/ljh-design/components/Sign/LoginProtect.tsx](/apps/ljh-design/components/Sign/LoginProtect.tsx) | TypeScript JSX | 18 | 0 | 2 | 20 |
-| [apps/ljh-design/components/Sign/Protect.tsx](/apps/ljh-design/components/Sign/Protect.tsx) | TypeScript JSX | 31 | 0 | 2 | 33 |
-| [apps/ljh-design/components/Sign/SignIn.tsx](/apps/ljh-design/components/Sign/SignIn.tsx) | TypeScript JSX | 188 | 1 | 5 | 194 |
+| [apps/ljh-design/components/Sign/Protect.tsx](/apps/ljh-design/components/Sign/Protect.tsx) | TypeScript JSX | 34 | 0 | 3 | 37 |
+| [apps/ljh-design/components/Sign/SignIn.tsx](/apps/ljh-design/components/Sign/SignIn.tsx) | TypeScript JSX | 184 | 1 | 5 | 190 |
 | [apps/ljh-design/components/Try/TryBoard.tsx](/apps/ljh-design/components/Try/TryBoard.tsx) | TypeScript JSX | 6 | 0 | 4 | 10 |
 | [apps/ljh-design/components/Try/TryCanvas.tsx](/apps/ljh-design/components/Try/TryCanvas.tsx) | TypeScript JSX | 16 | 0 | 2 | 18 |
-| [apps/ljh-design/components/Try/TryMain.tsx](/apps/ljh-design/components/Try/TryMain.tsx) | TypeScript JSX | 96 | 0 | 3 | 99 |
+| [apps/ljh-design/components/Try/TryMain.tsx](/apps/ljh-design/components/Try/TryMain.tsx) | TypeScript JSX | 99 | 0 | 4 | 103 |
 | [apps/ljh-design/components/Try/TrySider.tsx](/apps/ljh-design/components/Try/TrySider.tsx) | TypeScript JSX | 40 | 1 | 3 | 44 |
 | [apps/ljh-design/components/Try/TryUser.tsx](/apps/ljh-design/components/Try/TryUser.tsx) | TypeScript JSX | 0 | 0 | 1 | 1 |
 | [apps/ljh-design/components/shadui-Components/Tooltip.tsx](/apps/ljh-design/components/shadui-Components/Tooltip.tsx) | TypeScript JSX | 40 | 3 | 2 | 45 |
@@ -95,13 +97,13 @@ Total : 118 files,  8471 codes, 312 comments, 420 blanks, all 9203 lines
 | [apps/ljh-design/components/ui/table.tsx](/apps/ljh-design/components/ui/table.tsx) | TypeScript JSX | 134 | 0 | 11 | 145 |
 | [apps/ljh-design/components/ui/tooltip.tsx](/apps/ljh-design/components/ui/tooltip.tsx) | TypeScript JSX | 29 | 0 | 9 | 38 |
 | [apps/ljh-design/database/supbash.ts](/apps/ljh-design/database/supbash.ts) | TypeScript | 4 | 0 | 2 | 6 |
-| [apps/ljh-design/hook/query/useBoardQuery.ts](/apps/ljh-design/hook/query/useBoardQuery.ts) | TypeScript | 230 | 30 | 8 | 268 |
+| [apps/ljh-design/hook/query/useBoardQuery.ts](/apps/ljh-design/hook/query/useBoardQuery.ts) | TypeScript | 262 | 35 | 9 | 306 |
 | [apps/ljh-design/hook/query/useImageQuery.ts](/apps/ljh-design/hook/query/useImageQuery.ts) | TypeScript | 24 | 0 | 2 | 26 |
 | [apps/ljh-design/hook/query/useUserQuery.ts](/apps/ljh-design/hook/query/useUserQuery.ts) | TypeScript | 129 | 25 | 3 | 157 |
 | [apps/ljh-design/hook/useCanvas.ts](/apps/ljh-design/hook/useCanvas.ts) | TypeScript | 56 | 4 | 5 | 65 |
 | [apps/ljh-design/hook/useCanvasEvent.ts](/apps/ljh-design/hook/useCanvasEvent.ts) | TypeScript | 52 | 8 | 4 | 64 |
 | [apps/ljh-design/hook/useCliph.ts](/apps/ljh-design/hook/useCliph.ts) | TypeScript | 35 | 0 | 3 | 38 |
-| [apps/ljh-design/hook/useEcharts.ts](/apps/ljh-design/hook/useEcharts.ts) | TypeScript | 16 | 0 | 1 | 17 |
+| [apps/ljh-design/hook/useEcharts.ts](/apps/ljh-design/hook/useEcharts.ts) | TypeScript | 14 | 4 | 1 | 19 |
 | [apps/ljh-design/hook/useHistory.ts](/apps/ljh-design/hook/useHistory.ts) | TypeScript | 73 | 9 | 4 | 86 |
 | [apps/ljh-design/hook/useKeyBoard.ts](/apps/ljh-design/hook/useKeyBoard.ts) | TypeScript | 66 | 0 | 3 | 69 |
 | [apps/ljh-design/hook/useLoding.ts](/apps/ljh-design/hook/useLoding.ts) | TypeScript | 30 | 1 | 3 | 34 |
@@ -125,7 +127,7 @@ Total : 118 files,  8471 codes, 312 comments, 420 blanks, all 9203 lines
 | [apps/ljh-design/store/index.ts](/apps/ljh-design/store/index.ts) | TypeScript | 11 | 0 | 2 | 13 |
 | [apps/ljh-design/store/trystore.ts](/apps/ljh-design/store/trystore.ts) | TypeScript | 14 | 0 | 3 | 17 |
 | [apps/ljh-design/tailwind.config.ts](/apps/ljh-design/tailwind.config.ts) | TypeScript | 63 | 0 | 1 | 64 |
-| [apps/ljh-design/tsconfig.json](/apps/ljh-design/tsconfig.json) | JSON with Comments | 33 | 0 | 1 | 34 |
+| [apps/ljh-design/tsconfig.json](/apps/ljh-design/tsconfig.json) | JSON with Comments | 34 | 0 | 1 | 35 |
 | [apps/ljh-design/types/Edit.ts](/apps/ljh-design/types/Edit.ts) | TypeScript | 825 | 8 | 10 | 843 |
 | [apps/ljh-design/types/board.ts](/apps/ljh-design/types/board.ts) | TypeScript | 25 | 0 | 2 | 27 |
 | [apps/ljh-design/types/user.ts](/apps/ljh-design/types/user.ts) | TypeScript | 17 | 0 | 3 | 20 |

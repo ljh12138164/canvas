@@ -1,20 +1,19 @@
 import styled from "styled-components";
 
 interface ContainerProps {
-  width?: number;
   height?: number;
 }
 const Container = styled.div<ContainerProps>`
-  width: ${({ width }) => width}px;
+  width: 100%;
   height: ${({ height }) => height}px;
 `;
 const Image = styled.img`
   width: 100%;
   height: 100%;
 `;
-const Logo = ({ width = 100, height = 100 }: ContainerProps) => {
+const Logo = ({ height = 50 }: ContainerProps) => {
   return (
-    <Container width={width} height={height}>
+    <Container height={height}>
       <Image src="/logo.png" alt="logo" />
     </Container>
   );

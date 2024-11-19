@@ -1,4 +1,3 @@
 import { Hono } from 'hono';
-export const jebt = new Hono().get('/', (c) => {
-  return c.json({ message: 'Hello World' });
-});
+import board from './route/board';
+export const jebt = new Hono().route('/board', board);
