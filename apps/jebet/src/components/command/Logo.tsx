@@ -6,6 +6,7 @@ interface ContainerProps {
 const Container = styled.div<ContainerProps>`
   width: 100%;
   height: ${({ height }) => height}px;
+  cursor: pointer;
 `;
 const Image = styled.img`
   width: 100%;

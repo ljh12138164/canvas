@@ -1,149 +1,162 @@
-import { client } from "@/server";
-import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 // import { ThemeToggle } from "../../components/command/Theme";
-import Router from "@/components/board/Router";
-import Logo from "@/components/command/Logo";
-import { Button } from "@/components/ui/button";
+
+import { ThemeToggle } from "@/components/command/Theme";
 import { Separator } from "@/components/ui/separator";
+import { useTheme } from "@/components/ui/theme-provider";
+import userStore from "@/store/user";
+import { observer } from "mobx-react-lite";
+import { TfiMenuAlt } from "react-icons/tfi";
+import SiderBar from "./SiderBar";
+
 const Container = styled.div`
   display: flex;
 `;
-const Asider = styled.aside`
-  flex-basis: 250px;
+const Media = styled.div`
   width: 250px;
   height: 100vh;
-  padding: 10px 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-right: 1px solid hsl(var(--border));
-  overflow: hidden;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
+const Mobile = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
 const Main = styled.main`
   flex: 1;
+  height: 100dvh;
   border-radius: var(--radius);
-  padding: 2px;
+  padding: 0.8rem;
 `;
-const RouterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-const RouterDiv = styled(Button)`
+
+const MainContainer = styled.div<{ theme: string }>`
+  padding: 1rem;
+  min-width: 360px;
+  border-radius: 0.8rem;
+  height: 100%;
+  overflow: hidden;
   width: 100%;
-  background-color: aliceblue;
-  border-radius: var(--radius);
-  padding: 1px;
-  color: white;
+  background-color: ${(props) =>
+    props.theme === "light" ? "white" : "#191924"};
 `;
-const UserButtonContainer = styled.div`
-  height: 50px;
+const MainHeader = styled.div`
   display: flex;
   align-items: center;
-  border: 1px solid hsl(var(--border));
-  gap: 20px;
+  justify-content: space-between;
 `;
-const UserDataContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-const EmailText = styled.p`
-  font-size: 0.8rem;
-  color: hsl(var(--muted-foreground));
-`;
-const NameText = styled.p`
-  font-size: 0.8rem;
-`;
-export default function App() {
-  const { isLoaded, isSignedIn, user } = useUser();
-  useEffect(() => {
-    // console.log(user);
-    if (!isLoaded || !isSignedIn || !user) return;
 
-    (async () => {
-      const data = await client.board.$get();
-      const json = await data.json();
-      console.log(json);
-    })();
+const App = observer(() => {
+  const { isLoaded, isSignedIn, user } = useUser();
+  const { theme } = useTheme();
+  const router = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (router.pathname === "/dashboard") {
+      navigate("/dashboard/home");
+    }
+  }, [router, navigate]);
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn || !user) return;
+    userStore.userData = user;
   }, [isLoaded, isSignedIn, user]);
 
-  if (!isLoaded)
-    return (
-      <Container>
-        <Asider>
-          <RouterContainer>
-            <Logo />
-            <Router to="/dashboard/home">
-              <RouterDiv>HOME</RouterDiv>
-            </Router>
-            <Router to="/dashboard/home">
-              <RouterDiv>HOME</RouterDiv>
-            </Router>
-            <Router to="/dashboard/home">
-              <RouterDiv>HOME</RouterDiv>
-            </Router>
-            <Router to="/dashboard/home">
-              <RouterDiv>HOME</RouterDiv>
-            </Router>
-          </RouterContainer>
-          {/*  */}
-          {/* <SignedIn>
-            <UserButton />
-          </SignedIn> */}
-          {/* <ThemeToggle /> */}
-        </Asider>
-        <Main>加载中...</Main>
-      </Container>
-    );
+  if (!isLoaded) return;
+  // return (
+  //   <Container className="bg-[#fafafa]">
+  //     <Asider className="bg-[#fafafa]">
+  //       <RouterContainer>
+  //         <div>
+  //           <Logo />
+  //           <Separator className="mt-6" />
+  //         </div>
+  //         <Router to="/dashboard/home">
+  //           <RouterDiv
+  //             variant="ghost"
+  //             className={
+  //               router.pathname === "/dashboard/home" ? "bg-white " : ""
+  //             }
+  //           >
+  //             HOME
+  //           </RouterDiv>
+  //         </Router>
+  //         <Router to="/dashboard/home">
+  //           <RouterDiv
+  //             variant="ghost"
+  //             className={
+  //               router.pathname === "/dashboard/home"
+  //                 ? "bg-white text-[#676767]"
+  //                 : "text-[#c4c9d2]"
+  //             }
+  //           >
+  //             HOME
+  //           </RouterDiv>
+  //         </Router>
+  //         <Router to="/dashboard/home">
+  //           <RouterDiv
+  //             variant="ghost"
+  //             className={
+  //               router.pathname === "/dashboard/home"
+  //                 ? "bg-white text-[#676767]"
+  //                 : "text-[#c4c9d2]"
+  //             }
+  //           >
+  //             HOME
+  //           </RouterDiv>
+  //         </Router>
+  //         <Router to="/dashboard/home">
+  //           <RouterDiv
+  //             variant="ghost"
+  //             className={
+  //               router.pathname === "/dashboard/home"
+  //                 ? "bg-white text-[#676767]"
+  //                 : "text-[#c4c9d2]"
+  //             }
+  //           >
+  //             HOME
+  //           </RouterDiv>
+  //         </Router>
+  //         <Separator />
+  //       </RouterContainer>
+  //       {/* TODO:龙骨架 */}
+  //     </Asider>
+  //     <Main>加载中...</Main>
+  //   </Container>
+  // );
 
   if (!isSignedIn) return <Navigate to="/sign-in" />;
-  console.log(user);
   return (
-    <Container>
-      <Asider>
-        <RouterContainer>
-          <Logo />
-          <Separator />
-          <Router to="/dashboard/home">
-            <RouterDiv>HOME</RouterDiv>
-          </Router>
-          <Router to="/dashboard/home">
-            <RouterDiv>HOME</RouterDiv>
-          </Router>
-          <Router to="/dashboard/home">
-            <RouterDiv>HOME</RouterDiv>
-          </Router>
-          <Router to="/dashboard/home">
-            <RouterDiv>HOME</RouterDiv>
-          </Router>
-        </RouterContainer>
-        <UserButtonContainer>
-          <SignedIn>
-            <UserButton
-              userProfileProps={{
-                appearance: {
-                  elements: {
-                    rootBox: {
-                      width: "100%",
-                      height: "100%",
-                    },
-                  },
-                },
-              }}
-            />
-          </SignedIn>
-          <UserDataContainer>
-            <NameText>{user.username}</NameText>
-            <EmailText>{user.emailAddresses[0].emailAddress}</EmailText>
-          </UserDataContainer>
-        </UserButtonContainer>
-        {/* <ThemeToggle /> */}
-      </Asider>
-      <Main>{!isLoaded && <Outlet></Outlet>}</Main>
+    <Container className="bg-[#e5e7eba0] dark:bg-[#1c1c22]">
+      <Media>
+        <SiderBar user={user} />
+      </Media>
+      <Main>
+        <MainContainer theme={theme}>
+          <MainHeader>
+            <Mobile>
+              <Sheet>
+                <SheetTrigger>
+                  <TfiMenuAlt />
+                </SheetTrigger>
+                <SheetContent side="left">
+                  <SiderBar user={user} />
+                </SheetContent>
+              </Sheet>
+            </Mobile>
+            <ThemeToggle />
+          </MainHeader>
+          <Separator className="my-2" />
+          <Outlet />
+        </MainContainer>
+      </Main>
     </Container>
   );
-}
+});
+export default App;

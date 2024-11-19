@@ -29,6 +29,7 @@
     "@types/bcryptjs": "2.4.0",
     "@types/blueimp-md5": "^2.18.2",
     "@types/node": "^20",
+    "await-to-js": "^3.0.0",
     "bcryptjs": "^2.4.0",
     "blueimp-md5": "^2.19.0",
     "crypto-js": "^4.2.0",

@@ -74,3 +74,13 @@ html {
   width: 100% !important;
   height: 100% !important;
 }
+.cl-rootBox,
+.cl-avatarBox,
+.cl-userButtonBox {
+  margin-left: 0.5rem;
+  height: 2.5rem !important;
+  width: 2.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}

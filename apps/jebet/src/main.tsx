@@ -8,7 +8,8 @@ import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import "./index.css";
-import Home from "./page/dashboard";
+import Dashboard from "./page/dashboard";
+import Home from "./page/dashboard/home";
 import Index from "./page/error/Index";
 
 // Import your publishable key
@@ -39,7 +40,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Home />,
+    element: <Dashboard />,
+    children: [
+      {
+        path: "/dashboard/home",
+        element: <Home />,
+      },
+    ],
   },
   {
     path: "*",
