@@ -14,12 +14,15 @@
   },
   "scripts": {
     "dev": "pnpm run api",
+    "restart": "rimraf dist && vite build && tsc",
     "api": "rimraf dist && vite build && tsc && vercel dev --listen=8000",
     "local": "bun run ./local.ts",
     "deploy": "vercel"
   },
   "dependencies": {
+    "@clerk/backend": "^1.17.0",
     "@fntools/password": "^1.0.4",
+    "@hono/clerk-auth": "^2.0.0",
     "@hono/node-server": "^1.13.7",
     "@hono/zod-validator": "^0.4.1",
     "@supabase/supabase-js": "^2.46.1",
