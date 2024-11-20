@@ -1,10 +1,20 @@
 import Router from "@/components/board/Router";
 import Logo from "@/components/command/Logo";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/components/ui/theme-provider";
+import { useWorkspace } from "@/server/hooks/board";
 import { SignedIn, UserButton } from "@clerk/clerk-react";
 import { UserResource } from "@clerk/types";
+import { useEffect, useState } from "react";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -71,7 +81,22 @@ const Title = styled.h1`
 
   margin: 0;
 `;
+const SelectContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  height: 4rem;
+  border: 2px solid hsl(var(--border));
+  border-radius: var(--radius);
+`;
+
 const SiderBar = ({ user }: { user: UserResource }) => {
+  const { isLoading, data, error } = useWorkspace(user.id);
+  const [value, setValue] = useState<string>("");
+  useEffect(() => {
+    if (isLoading || !error || data?.length === 0) return;
+    setValue(data?.[0].id as string);
+  }, [data, isLoading, error]);
   const router = useLocation();
   const { theme } = useTheme();
   return (
@@ -80,6 +105,29 @@ const SiderBar = ({ user }: { user: UserResource }) => {
         <div>
           <Logo />
         </div>
+        <SelectContainer>
+          {isLoading && !error && "加载中"}
+          {!isLoading && !error && (
+            <Select value={value}>
+              <SelectTrigger className="w-full h-full dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200">
+                <SelectValue placeholder="选择工作区" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {data?.map((item) => (
+                    <SelectItem value={item.id}>{item.name}</SelectItem>
+                  ))}
+                  {data?.length === 0 && (
+                    <SelectItem value="empty" disabled={true}>
+                      暂无数据，请创建
+                    </SelectItem>
+                  )}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+          {error && <div>获取失败</div>}
+        </SelectContainer>
         <Title>菜单</Title>
         <Router to="/dashboard/home">
           <RouterDiv
