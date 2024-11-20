@@ -16,7 +16,7 @@
     "dev": "pnpm run api",
     "restart": "rimraf dist && vite build && tsc",
     "api": "rimraf dist && vite build && tsc && vercel dev --listen=8000",
-    "local": "bun run ./local.ts",
+    "local": "bun run --hot ./local.ts",
     "deploy": "vercel"
   },
   "dependencies": {
