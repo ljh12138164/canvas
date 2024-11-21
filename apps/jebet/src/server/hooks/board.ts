@@ -53,3 +53,26 @@ export const useWorkspace = (id: string) => {
   });
   return { isLoading, data, error };
 };
+/**
+ * 更新工作区
+ */
+type UpdateRequestType = InferRequestType<typeof client.board.update.$patch>;
+type UpdateResponseType = InferResponseType<typeof client.board.update.$patch>;
+export const useUpdateWorkspace = () => {
+  const { mutate: updateWorkspace, isPending: isUpdating } = useMutation<
+    UpdateResponseType,
+    Error,
+    UpdateRequestType
+  >({
+    mutationFn: async (data) => {
+      const res = await client.board.update.$patch({
+        form: data.form,
+      });
+      if (!res.ok) {
+        throw new Error("更新失败");
+      }
+      return res.json();
+    },
+  });
+  return { updateWorkspace, isUpdating };
+};

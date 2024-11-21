@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import {
   createJebtWorkspace,
   getJebtWorkspace,
+  updateJebtWorkspace,
 } from "../../../server/jebt/board";
 import { z } from "zod";
 import to from "await-to-js";
@@ -38,6 +39,34 @@ const board = new Hono()
       const { id } = c.req.valid("param");
       const [error, workspace] = await to(getJebtWorkspace(id));
       console.log(workspace, error);
+      if (error) throw error;
+      return c.json(workspace);
+    }
+  )
+  .patch(
+    "/update",
+    zValidator(
+      "form",
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        file: z.any(),
+        userId: z.string(),
+        oldImageUrl: z.string(),
+      })
+    ),
+    async (c) => {
+      const body = await c.req.parseBody();
+      const { id, name, file, userId, oldImageUrl } = body;
+      const [error, workspace] = await to(
+        updateJebtWorkspace({
+          id: id as string,
+          name: name as string,
+          userId: userId as string,
+          file,
+          oldImageUrl: oldImageUrl as string,
+        })
+      );
       if (error) throw error;
       return c.json(workspace);
     }

@@ -12,11 +12,16 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/components/ui/theme-provider";
 import { useWorkspace } from "@/server/hooks/board";
+import userStore from "@/store/user";
 import { SignedIn, UserButton } from "@clerk/clerk-react";
 import { UserResource } from "@clerk/types";
-import { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { LuSettings, LuUsers2 } from "react-icons/lu";
 import { TfiMenuAlt } from "react-icons/tfi";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import DrawerFromCard from "@/components/board/DrawerFromCard";
 import styled from "styled-components";
 const Asider = styled.aside`
   flex-basis: 250px;
@@ -68,17 +73,16 @@ const EmailText = styled.p`
 const NameText = styled.p`
   font-size: 0.8rem;
 `;
-const ButtonContainer = styled.div`
+const ButtonContainer = styled.p`
   display: flex;
   align-items: center;
   justify-content: start;
-  padding: 0 0.7rem;
+  padding: 0 1rem;
   gap: 10px;
 `;
 const Title = styled.h1`
   font-size: 1rem;
   opacity: 0.5;
-
   margin: 0;
 `;
 const SelectContainer = styled.div`
@@ -90,14 +94,50 @@ const SelectContainer = styled.div`
   border-radius: var(--radius);
 `;
 
-const SiderBar = ({ user }: { user: UserResource }) => {
-  const { isLoading, data, error } = useWorkspace(user.id);
-  const [value, setValue] = useState<string>("");
-  useEffect(() => {
-    if (isLoading || !error || data?.length === 0) return;
-    setValue(data?.[0].id as string);
-  }, [data, isLoading, error]);
+const LoadingP = styled.p`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const SelectItems = styled(SelectItem)`
+  display: flex;
+  transition: all 0.2s;
+  padding-left: 1rem;
+  &:hover {
+    background-color: #e5e7eba0;
+  }
+`;
+const SelectImage = styled.img`
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 4px;
+`;
+const TitleP = styled.p`
+  font-size: 1rem;
+  opacity: 0.5;
+  margin: 0;
+`;
+const TitleContain = styled.section`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const SiderBar = observer(({ user }: { user: UserResource }) => {
   const router = useLocation();
+  const navigate = useNavigate();
+  const { isLoading, data, error } = useWorkspace(user.id);
+  // const location = useLocation();
+
+  useEffect(() => {
+    if (isLoading || error) return;
+    if (data) {
+      userStore.setWorkspace(data);
+    }
+  }, [data, isLoading, error]);
+  // const [isLoadings, setLoadings] = useState(true);
+
   const { theme } = useTheme();
   return (
     <Asider>
@@ -105,23 +145,40 @@ const SiderBar = ({ user }: { user: UserResource }) => {
         <div>
           <Logo />
         </div>
+        <TitleContain>
+          <TitleP>工作区</TitleP>
+          <DrawerFromCard></DrawerFromCard>
+        </TitleContain>
         <SelectContainer>
-          {isLoading && !error && "加载中"}
+          {isLoading && !error && <LoadingP>加载中</LoadingP>}
           {!isLoading && !error && (
-            <Select value={value}>
-              <SelectTrigger className="w-full h-full dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200">
+            <Select
+              onValueChange={(value) => {
+                userStore.setActiveWorkSpace(
+                  data?.find((item) => item.id === value) || null
+                );
+                navigate(`/dashboard/${value}`);
+              }}
+              value={
+                data?.find((item) => item.id === router.pathname.split("/")[2])
+                  ?.id
+              }
+            >
+              <SelectTrigger className="w-full h-full  dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200">
                 <SelectValue placeholder="选择工作区" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   {data?.map((item) => (
-                    <SelectItem value={item.id}>{item.name}</SelectItem>
+                    <SelectItems key={item.id} value={item.id}>
+                      <div className="flex items-center justify-start gap-2 ">
+                        <SelectImage src={item.imageUrl} alt={item.name} />
+                        <p>{item.name}</p>
+                      </div>
+                    </SelectItems>
                   ))}
-                  {data?.length === 0 && (
-                    <SelectItem value="empty" disabled={true}>
-                      暂无数据，请创建
-                    </SelectItem>
-                  )}
+                  {data?.length === 0 && !isLoading && <p>无数据，请创建</p>}
+                  {isLoading && <p>加载中</p>}
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -151,13 +208,13 @@ const SiderBar = ({ user }: { user: UserResource }) => {
             </ButtonContainer>
           </RouterDiv>
         </Router>
-        <Router to="/dashboard/a">
+        <Router to="/dashboard/member">
           <RouterDiv
-            active={router.pathname === "/dashboard/a"}
+            active={router.pathname === "/dashboard/member"}
             variant="ghost"
             theme={theme === "light"}
             className={
-              router.pathname === "/dashboard/a"
+              router.pathname === "/dashboard/member"
                 ? `text-black font-semibold border-2 border-[${
                     theme === "light" ? "#ebf0fa" : "#1c1c22"
                   }]`
@@ -168,12 +225,33 @@ const SiderBar = ({ user }: { user: UserResource }) => {
             asChild
           >
             <ButtonContainer>
-              <TfiMenuAlt />
-              <span>HOME</span>
+              <LuUsers2 />
+              <span>成员</span>
             </ButtonContainer>
           </RouterDiv>
         </Router>
-
+        <Router to="/dashboard/setting">
+          <RouterDiv
+            active={router.pathname === "/dashboard/setting"}
+            variant="ghost"
+            theme={theme === "light"}
+            className={
+              router.pathname === "/dashboard/setting"
+                ? `text-black font-semibold border-2 border-[${
+                    theme === "light" ? "#ebf0fa" : "#1c1c22"
+                  }]`
+                : `opacity-80 ${
+                    theme === "light" ? "text-black" : "text-white"
+                  }`
+            }
+            asChild
+          >
+            <ButtonContainer>
+              <LuSettings />
+              <span>设置</span>
+            </ButtonContainer>
+          </RouterDiv>
+        </Router>
         <Separator />
       </RouterContainer>
       <UserButtonContainer>
@@ -188,6 +266,6 @@ const SiderBar = ({ user }: { user: UserResource }) => {
       </UserButtonContainer>
     </Asider>
   );
-};
+});
 
 export default SiderBar;

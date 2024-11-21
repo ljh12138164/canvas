@@ -1,11 +1,5 @@
-import FromCard from "@/components/board/FromCard";
-
-const Home = () => {
-  return (
-    <>
-      <FromCard />
-    </>
-  );
+const Hone = () => {
+  return <div>Hone</div>;
 };
 
-export default Home;
+export default Hone;

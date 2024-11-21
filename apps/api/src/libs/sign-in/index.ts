@@ -7,6 +7,11 @@ type Payload = {
   expiresAt: Date;
 };
 
+/**
+ * 生成jwt
+ * @param payload
+ * @returns
+ */
 export function jwtEncode(payload: Payload) {
   const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
   return new SignJWT(payload)
@@ -18,6 +23,11 @@ interface DecodeResult extends JWTPayload {
   userid: string;
   expiresAt: Date;
 }
+/**
+ * 解码jwt
+ * @param token
+ * @returns
+ */
 export async function jwtDecode(
   token: string = ""
 ): Promise<DecodeResult | null> {
@@ -32,11 +42,21 @@ export async function jwtDecode(
   }
 }
 
+/**
+ * 获取用户信息
+ * @param userId
+ * @returns
+ */
 export async function getUser(userId: string) {
   const user = await getCurrentUser({ userId });
   return user;
 }
 
+/**
+ * ## 检查token
+ * @param c
+ * @returns
+ */
 export async function checkoutCookie(c: Context): Promise<Payload> {
   return new Promise(async (resolve, reject) => {
     const token = c.req.header("Authorization")?.split(" ")[1];

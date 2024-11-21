@@ -9,8 +9,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import "./index.css";
 import Dashboard from "./page/dashboard";
+import Create from "./page/dashboard/create";
 import Home from "./page/dashboard/home";
 import Index from "./page/error/Index";
+import WorkSpace from "./page/dashboard/workspace";
+import Member from "./page/dashboard/member";
+import Setting from "./page/dashboard/setting";
+import WorkspaceSetting from "./page/dashboard/workspace/setting";
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -46,6 +51,28 @@ const router = createBrowserRouter([
         path: "/dashboard/home",
         element: <Home />,
       },
+      {
+        path: "/dashboard/create",
+        element: <Create />,
+      },
+      {
+        path: "/dashboard/:workspaceId",
+        element: <WorkSpace />,
+        children: [
+          {
+            path: "/dashboard/:workspaceId/setting",
+            element: <WorkspaceSetting />,
+          },
+        ],
+      },
+      {
+        path: "/dashboard/member",
+        element: <Member />,
+      },
+      {
+        path: "/dashboard/setting",
+        element: <Setting />,
+      },
     ],
   },
   {
@@ -55,6 +82,7 @@ const router = createBrowserRouter([
 ]);
 const container = document.getElementById("root")!;
 const root = createRoot(container);
+
 root.render(
   <QueryClientProvider client={queryclinet}>
     <ReactQueryDevtools initialIsOpen={false} />
