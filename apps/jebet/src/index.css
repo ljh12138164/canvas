@@ -76,11 +76,18 @@ html {
 }
 .cl-rootBox,
 .cl-avatarBox,
-.cl-userButtonBox {
-  margin-left: 0.5rem;
+.cl-userButtonBox,
+.cl-userButtonTrigger {
+  margin-left: 0.2rem;
   height: 2.5rem !important;
   width: 2.5rem !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  border: none !important;
+  background-color: transparent !important;
+}
+.cl-userButtonTrigger:focus {
+  box-shadow: none;
+  border: none !important;
 }

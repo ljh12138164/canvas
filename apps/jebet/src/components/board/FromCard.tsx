@@ -1,22 +1,25 @@
-import { useCreateWorkspace } from "@/server/hooks/board";
-import userStore from "@/store/user";
+import { useCreateWorkspace, useUpdateWorkspace } from "@/server/hooks/board";
+import { DEFAULT_ICON } from "@/utils/board";
+import { UserResource } from "@clerk/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { observer } from "mobx-react-lite";
+import { ChangeEvent, RefObject, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
 import { Button } from "../ui/button";
+import userStore from "@/store/user";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "../ui/card";
 import { Input } from "../ui/input";
-import { DEFAULT_ICON } from "@/utils/board";
-import { ChangeEvent, useRef, useState } from "react";
 import { Separator } from "../ui/separator";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { Workspace } from "@/types/workspace";
 const zodShema = z.object({
   name: z.string().min(1, { message: "仪表盘名称不能为空" }),
   file: z.any().optional(),
@@ -50,17 +53,38 @@ const ButtonContent = styled.div`
   justify-content: space-between;
 `;
 
-const FromCard = observer(() => {
-  const { userData } = userStore;
+const FromCard = ({
+  type = "create",
+  editId,
+  // workspace,
+  showFooter = true,
+  defaultFrom,
+  userData,
+  closeRef,
+}: {
+  // workspace: Workspace;
+  editId?: string;
+  type?: "create" | "edit";
+  showFooter?: boolean;
+  defaultFrom?: {
+    name: string;
+    file: string;
+  };
+  userData: UserResource;
+  closeRef?: RefObject<HTMLButtonElement | null>;
+}) => {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<string>("");
+  const queryClient = useQueryClient();
+  const [file, setFile] = useState<string>(defaultFrom?.file || "");
   const { createWorkspace, isCreating } = useCreateWorkspace();
+  const { updateWorkspace, isUpdating } = useUpdateWorkspace();
+  const navigator = useNavigate();
   const { register, handleSubmit, formState, setError, getValues, setValue } =
     useForm({
       resolver: zodResolver(zodShema),
       defaultValues: {
-        name: "",
-        file: DEFAULT_ICON,
+        name: defaultFrom?.name || "",
+        file: defaultFrom?.file || DEFAULT_ICON,
       },
     });
 
@@ -77,9 +101,48 @@ const FromCard = observer(() => {
     }
 
     if (!userData) return;
-    createWorkspace({
-      form: { ...data, userId: userData.id },
-    });
+    if (type === "create") {
+      createWorkspace(
+        {
+          form: { ...data, userId: userData.id },
+        },
+        {
+          onSuccess: (data) => {
+            closeRef?.current?.click();
+            userStore.setActiveWorkSpace(data);
+            navigator(`/dashboard/${data.id}`);
+          },
+        }
+      );
+    } else {
+      if (editId) {
+        updateWorkspace(
+          {
+            form: {
+              ...data,
+              id: editId,
+              userId: userData.id,
+              oldImageUrl: defaultFrom?.file || DEFAULT_ICON,
+            },
+          },
+          {
+            onSuccess: (data) => {
+              const oldData = queryClient.getQueryData([
+                "workspace",
+                userData.id,
+              ]) as Workspace[];
+              const oldWorkspaceIndex = oldData?.findIndex(
+                (item) => item.id === editId
+              );
+              oldData[oldWorkspaceIndex] = data;
+              queryClient.setQueryData(["workspace", userData.id], oldData);
+              toast.dismiss();
+              toast.success("更新成功");
+            },
+          }
+        );
+      }
+    }
   };
 
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
@@ -91,11 +154,12 @@ const FromCard = observer(() => {
     }
     e.target.value = "";
   }
+
   return (
-    <Card className="w-full">
+    <div className="w-full">
       <CardHeader>
-        <CardTitle>创建你第一个仪表盘</CardTitle>
-        <CardDescription>创建一个仪表盘，开始管理你的项目</CardDescription>
+        <CardTitle>创建你仪表盘</CardTitle>
+        <CardDescription>创建仪表盘，开始管理你的项目</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -137,10 +201,10 @@ const FromCard = observer(() => {
                   variant="destructive"
                   onClick={() => {
                     setFile("");
-                    setValue("file", DEFAULT_ICON);
+                    setValue("file", defaultFrom?.file || DEFAULT_ICON);
                   }}
                 >
-                  重置
+                  重置图片
                 </Button>
               </ButtonContent>
             </UploadP>
@@ -154,21 +218,38 @@ const FromCard = observer(() => {
             type="file"
             className="hidden"
           />
-          <Footer>
-            <Button variant="outline">取消</Button>
-            <Button
-              variant="primary"
-              type="submit"
-              className="dark:text-white"
-              disabled={isCreating}
-            >
-              {isCreating ? "创建中..." : "创建仪表盘"}
-            </Button>
-          </Footer>
+          {showFooter && (
+            <Footer>
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => {
+                  console.log(closeRef?.current);
+                  closeRef?.current?.click();
+                }}
+              >
+                取消
+              </Button>
+              <Button
+                variant="primary"
+                type="submit"
+                className="dark:text-white"
+                disabled={isCreating || isUpdating}
+              >
+                {isCreating
+                  ? "创建中..."
+                  : isUpdating
+                    ? "更新中..."
+                    : type === "create"
+                      ? "创建仪表盘"
+                      : "更新仪表盘"}
+              </Button>
+            </Footer>
+          )}
         </form>
       </CardContent>
-    </Card>
+    </div>
   );
-});
+};
 
 export default FromCard;

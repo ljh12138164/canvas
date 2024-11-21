@@ -1,20 +1,22 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useUser } from "@clerk/clerk-react";
+import { UserButton, useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 // import { ThemeToggle } from "../../components/command/Theme";
-
+import userStore from "@/store/user";
 import { ThemeToggle } from "@/components/command/Theme";
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/components/ui/theme-provider";
-import userStore from "@/store/user";
 import { observer } from "mobx-react-lite";
 import { TfiMenuAlt } from "react-icons/tfi";
 import SiderBar from "./SiderBar";
 
 const Container = styled.div`
   display: flex;
+  height: 100dvh;
+  width: 100dvw;
+  overflow: hidden;
 `;
 const Media = styled.div`
   width: 250px;
@@ -56,6 +58,7 @@ const MainHeader = styled.div`
 const App = observer(() => {
   const { isLoaded, isSignedIn, user } = useUser();
   const { theme } = useTheme();
+
   const router = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -65,7 +68,8 @@ const App = observer(() => {
   }, [router, navigate]);
   useEffect(() => {
     if (!isLoaded || !isSignedIn || !user) return;
-    userStore.userData = user;
+    userStore.setUserData(user);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, isSignedIn, user]);
 
   if (!isLoaded) return;
@@ -150,7 +154,10 @@ const App = observer(() => {
                 </SheetContent>
               </Sheet>
             </Mobile>
-            <ThemeToggle />
+            <div className="flex flex-row w-full items-center justify-end md:justify-between">
+              <ThemeToggle />
+              <UserButton />
+            </div>
           </MainHeader>
           <Separator className="my-2" />
           <Outlet />
