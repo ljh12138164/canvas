@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      entry: resolve(__dirname, './src/hono/index.tsx'),
+      entry: resolve(__dirname, './src/hono/index.ts'),
       name: 'api',
       fileName: 'api',
     },

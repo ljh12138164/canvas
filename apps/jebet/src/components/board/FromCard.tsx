@@ -2,12 +2,14 @@ import { useCreateWorkspace, useUpdateWorkspace } from "@/server/hooks/board";
 import { DEFAULT_ICON } from "@/utils/board";
 import { UserResource } from "@clerk/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, RefObject, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { z } from "zod";
 import { Button } from "../ui/button";
-import userStore from "@/store/user";
 import {
   CardContent,
   CardDescription,
@@ -16,19 +18,17 @@ import {
 } from "../ui/card";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
-import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-import { Workspace } from "@/types/workspace";
+
 const zodShema = z.object({
   name: z.string().min(1, { message: "仪表盘名称不能为空" }),
   file: z.any().optional(),
 });
-const Footer = styled.div`
+const Footer = styled.div<{ type: "create" | "edit" }>`
   margin-top: 2rem;
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: ${({ type }) =>
+    type === "edit" ? "flex-end" : "space-between"};
 `;
 const ImageContent = styled.div`
   margin-top: 1rem;
@@ -55,6 +55,7 @@ const ButtonContent = styled.div`
 
 const FromCard = ({
   type = "create",
+  Back,
   editId,
   // workspace,
   showFooter = true,
@@ -62,6 +63,7 @@ const FromCard = ({
   userData,
   closeRef,
 }: {
+  Back?: boolean;
   // workspace: Workspace;
   editId?: string;
   type?: "create" | "edit";
@@ -75,6 +77,7 @@ const FromCard = ({
 }) => {
   const fileRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
+  const params = useParams();
   const [file, setFile] = useState<string>(defaultFrom?.file || "");
   const { createWorkspace, isCreating } = useCreateWorkspace();
   const { updateWorkspace, isUpdating } = useUpdateWorkspace();
@@ -109,7 +112,7 @@ const FromCard = ({
         {
           onSuccess: (data) => {
             closeRef?.current?.click();
-            userStore.setActiveWorkSpace(data);
+            queryClient.setQueryData(["workspace", userData.id], data);
             navigator(`/dashboard/${data.id}`);
           },
         }
@@ -126,16 +129,10 @@ const FromCard = ({
             },
           },
           {
-            onSuccess: (data) => {
-              const oldData = queryClient.getQueryData([
-                "workspace",
-                userData.id,
-              ]) as Workspace[];
-              const oldWorkspaceIndex = oldData?.findIndex(
-                (item) => item.id === editId
-              );
-              oldData[oldWorkspaceIndex] = data;
-              queryClient.setQueryData(["workspace", userData.id], oldData);
+            onSuccess: () => {
+              queryClient.invalidateQueries({
+                queryKey: ["workspace", userData.id],
+              });
               toast.dismiss();
               toast.success("更新成功");
             },
@@ -157,9 +154,26 @@ const FromCard = ({
 
   return (
     <div className="w-full">
-      <CardHeader>
-        <CardTitle>创建你仪表盘</CardTitle>
-        <CardDescription>创建仪表盘，开始管理你的项目</CardDescription>
+      <CardHeader className="flex flex-row gap-4 items-center">
+        {Back && (
+          <Button
+            className="w-16 h-full"
+            variant="outline"
+            onClick={() => navigator(`/dashboard/${params.workspaceId || ""}`)}
+          >
+            返回
+          </Button>
+        )}
+        <div>
+          <CardTitle>
+            {type === "create" ? "创建你仪表盘" : "更新仪表盘"}
+          </CardTitle>
+          <CardDescription>
+            {type === "create"
+              ? "创建仪表盘，开始管理你的项目"
+              : "更新仪表盘，管理你的项目"}
+          </CardDescription>
+        </div>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -219,17 +233,19 @@ const FromCard = ({
             className="hidden"
           />
           {showFooter && (
-            <Footer>
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => {
-                  console.log(closeRef?.current);
-                  closeRef?.current?.click();
-                }}
-              >
-                取消
-              </Button>
+            <Footer type={type}>
+              {type === "create" && (
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => {
+                    console.log(closeRef?.current);
+                    closeRef?.current?.click();
+                  }}
+                >
+                  取消
+                </Button>
+              )}
               <Button
                 variant="primary"
                 type="submit"

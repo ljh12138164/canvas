@@ -1,5 +1,15 @@
-const Hone = () => {
-  return <div>Hone</div>;
-};
+import { observer } from 'mobx-react-lite';
+import useStore from '@/store/user';
+import JoinCard from '@/components/board/JoinCard';
 
-export default Hone;
+const Home = observer(() => {
+  const { userData } = useStore;
+  if (userData == null) return null;
+  return (
+    <div>
+      <JoinCard />
+    </div>
+  );
+});
+
+export default Home;
