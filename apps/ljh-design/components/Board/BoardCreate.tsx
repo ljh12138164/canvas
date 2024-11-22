@@ -44,7 +44,9 @@ const BoardCreate = ({
             {data?.length ? '创建你的画布以开始使用' : '创建第一个画布'}
           </div>
           <span>
+            {/* @ts-ignore */}
             <Dialog>
+              {/* @ts-ignore */}
               <DialogTrigger asChild>
                 <Button
                   variant='outline'

@@ -17,6 +17,7 @@
     "restart": "rimraf dist && vite build && tsc",
     "api": "rimraf dist && vite build && tsc && vercel dev --listen=8000",
     "local": "bun run --hot ./local.tsx",
+    "deploy:prod": "vercel --prod",
     "deploy": "vercel"
   },
   "dependencies": {

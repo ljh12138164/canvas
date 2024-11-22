@@ -1,7 +1,7 @@
-import { handle } from "hono/vercel";
-import app from "../src/hono";
+import { handle } from 'hono/vercel';
+import app from '../src/hono';
 export const config = {
-  runtime: "edge",
+  runtime: 'edge',
 };
 
 export default handle(app);

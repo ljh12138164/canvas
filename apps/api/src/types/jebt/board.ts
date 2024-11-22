@@ -5,4 +5,5 @@ export interface Workspace {
   createdAt: string;
   updatedAt: string;
   imageUrl: string;
+  inviteCode: string;
 }
