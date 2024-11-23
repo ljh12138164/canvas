@@ -1,52 +1,68 @@
-import { nanoid } from 'nanoid';
-import { supabaseJebt } from '../../../server/supabase/jebt';
-import { Workspace } from '../../../types/jebt/board';
-import { generateInviteCode } from '../../../libs/utils';
+import to from "await-to-js";
+import { nanoid } from "nanoid";
+import { generateInviteCode } from "../../../libs/utils";
+import { supabaseJebt } from "../../../server/supabase/jebt";
+import { Workspace } from "../../../types/jebt/board";
 const DEFAULT_ICON =
-  'https://xllpazcrvbmwkyvnpylu.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg';
+  "https://xllpazcrvbmwkyvnpylu.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg";
 const JEBT_URL =
-  'https://xllpazcrvbmwkyvnpylu.supabase.co/storage/v1/object/public/';
+  "https://xllpazcrvbmwkyvnpylu.supabase.co/storage/v1/object/public/";
+
 /**
  * @description 上传图片到云端
  * @param file 文件
  * @returns 图片路径
  */
-interface UploadImageClound {
-  file: File;
-}
-export const uploadImageclound = async ({ file }: UploadImageClound) => {
+export const uploadImageclound = async ({ file }: { file: File }) => {
   // 设置照片名字
-  const fileName = `${nanoid()}-${file.name}`.replace('/', '');
+  const fileName = `${nanoid()}-${file.name}`.replace("/", "");
   const { data, error } = await supabaseJebt.storage
     // 桶名字
-    .from('USER_IMAGE')
+    .from("USER_IMAGE")
     .upload(fileName, file);
   if (error) {
     // Handle error
-    throw new Error(error.message);
+    throw new Error("服务器错误");
   }
   return JEBT_URL + data.fullPath;
 };
+
 /**
  * @description 删除图片
  * @param image 图片路径
  * @returns 图片路径
  */
-interface DeleteImageClound {
-  image: string;
-}
 export const deleteImageClound = async ({
   image,
-}: DeleteImageClound): Promise<{ data: any; error: any }> => {
+}: {
+  image: string;
+}): Promise<{ data: any; error: any }> => {
   const { data, error } = await supabaseJebt.storage
     //  桶名字
-    .from('UPLOAD_IMG')
+    .from("UPLOAD_IMG")
     // 删除图片路径
     .remove([image]);
   if (error) {
-    throw new Error(error.message);
+    throw new Error("服务器错误");
   }
   return { data, error };
+};
+
+/**
+ * 检查用户权限
+ * @param userId 用户id
+ * @param workspaceId 仪表盘id
+ * @returns
+ */
+export const checkMember = async (userId: string, workspaceId: string) => {
+  const { data, error } = await supabaseJebt
+    .from("member")
+    .select("workspaceId,role")
+    .eq("workspaceId", workspaceId)
+    .eq("userId", userId);
+  if (error) throw new Error("服务器错误");
+  if (data.length === 0 || data?.[0].role === "member")
+    throw new Error("无权限");
 };
 
 /**
@@ -63,51 +79,63 @@ export const createJebtWorkspace = async ({
   userId: string;
   file: File | string;
 }): Promise<Workspace> => {
-  if (typeof file !== 'string') {
+  if (typeof file !== "string") {
     const imageUrl = await uploadImageclound({ file });
     const { data, error } = await supabaseJebt
-      .from('workspace')
+      .from("workspace")
       .insert([
         {
+          id: nanoid(),
           name,
-          userId: userId,
           imageUrl: imageUrl,
           inviteCode: generateInviteCode(6),
         },
       ])
-      .select('*');
-    if (error) throw new Error(error.message);
+      .select("*");
+    if (error) throw new Error("服务器错误");
+    const { error: memberError } = await supabaseJebt
+      .from("member")
+      .insert([{ userId, workspaceId: data[0].id, role: "admin" }])
+      .select("*");
+    if (memberError) throw new Error("服务器错误");
     return data[0];
   } else {
     const { data, error } = await supabaseJebt
-      .from('workspace')
+      .from("workspace")
       .insert([
         {
+          id: nanoid(),
           name,
-          userId: userId,
           imageUrl: file,
           inviteCode: generateInviteCode(6),
         },
       ])
-      .select('*');
-    if (error) throw new Error(error.message);
+      .select("*");
+    if (error) throw new Error("服务器错误");
+    const { error: memberError } = await supabaseJebt
+      .from("member")
+      .insert([{ userId, workspaceId: data[0].id, role: "admin" }])
+      .select("*");
+    if (memberError) throw new Error("服务器错误");
     return data[0];
   }
 };
 
 /**
- * 获取仪表盘
+ * ## 获取仪表盘
+ * @param userId 用户id
+ * @returns
  */
 export const getJebtWorkspace = async (
   userId: string
 ): Promise<Workspace[]> => {
   const { data, error } = await supabaseJebt
-    .from('workspace')
-    .select('*')
-    .eq('userId', userId);
-  if (error) throw new Error(error.message);
-  console.log(data, error);
-  return data;
+    .from("member")
+    .select("*,workspace(*)")
+    .eq("userId", userId);
+  console.log({ data, error });
+  if (error) throw new Error("服务器错误");
+  return data.map((item) => item.workspace);
 };
 
 /**
@@ -128,7 +156,10 @@ export const updateJebtWorkspace = async ({
   userId: string;
   oldImageUrl: string;
 }): Promise<Workspace> => {
-  if (typeof file !== 'string') {
+  const [error, _] = await to(checkMember(userId, id));
+  if (error) throw new Error(error.message);
+
+  if (typeof file !== "string") {
     //默认图片
     let remove: Promise<any> | null = Promise.resolve(null);
     if (oldImageUrl !== DEFAULT_ICON) {
@@ -141,7 +172,7 @@ export const updateJebtWorkspace = async ({
       uploadImageclound({ file }),
     ]);
     const { data, error } = await supabaseJebt
-      .from('workspace')
+      .from("workspace")
       .update([
         {
           name,
@@ -149,14 +180,13 @@ export const updateJebtWorkspace = async ({
           inviteCode: generateInviteCode(6),
         },
       ])
-      .eq('id', id)
-      .eq('userId', userId)
-      .select('*');
-    if (error) throw new Error(error.message);
+      .eq("id", id)
+      .select("*");
+    if (error) throw new Error("服务器错误");
     return data[0];
   } else {
     const { data, error } = await supabaseJebt
-      .from('workspace')
+      .from("workspace")
       .update([
         {
           name,
@@ -164,16 +194,15 @@ export const updateJebtWorkspace = async ({
           inviteCode: generateInviteCode(6),
         },
       ])
-      .eq('id', id)
-      .eq('userId', userId)
-      .select('*');
-    if (error) throw new Error(error.message);
+      .eq("id", id)
+      .select("*");
+    if (error) throw new Error("服务器错误");
     return data[0];
   }
 };
 
 /**
- * 删除仪表盘
+ * ## 删除仪表盘
  * @param id 仪表盘id
  * @param userId 用户id
  * @returns
@@ -182,17 +211,18 @@ export const deleteJebtWorkspace = async (
   id: string,
   userId: string
 ): Promise<boolean> => {
-  const { error } = await supabaseJebt
-    .from('workspace')
-    .delete()
-    .eq('id', id)
-    .eq('userId', userId);
+  const [error, _] = await to(checkMember(userId, id));
   if (error) throw new Error(error.message);
+  const { error: workspaceError } = await supabaseJebt
+    .from("workspace")
+    .delete()
+    .eq("id", id);
+  if (workspaceError) throw new Error("服务器错误");
   return true;
 };
 
 /**
- * 刷新仪表盘inviteCode
+ * ## 刷新仪表盘inviteCode
  * @param id 仪表盘id
  * @param userId 用户id
  * @returns
@@ -201,12 +231,54 @@ export const refreshJebtWorkspace = async (
   id: string,
   userId: string
 ): Promise<Workspace> => {
-  const { data, error } = await supabaseJebt
-    .from('workspace')
-    .update([{ inviteCode: generateInviteCode(6) }])
-    .eq('id', id)
-    .eq('userId', userId)
-    .select('*');
+  const [error, _] = await to(checkMember(userId, id));
   if (error) throw new Error(error.message);
+  const { data, error: workspaceError } = await supabaseJebt
+    .from("workspace")
+    .update([{ inviteCode: generateInviteCode(6) }])
+    .eq("id", id)
+    .select("*");
+  if (workspaceError) throw new Error("服务器错误");
+  return data[0];
+};
+
+/**
+ * ## 根据邀请码获取仪表盘
+ * @param inviteCode 邀请码
+ * @returns Workspace[]
+ */
+export const getJebtWorkspaceByInviteCode = async (
+  inviteCode: string
+): Promise<Workspace> => {
+  const { data, error } = await supabaseJebt
+    .from("workspace")
+    .select("*")
+    .eq("inviteCode", inviteCode);
+  if (error) throw new Error("服务器错误");
+  if (data.length === 0) throw new Error("面板不存在");
+  return data[0];
+};
+
+/**
+ * ## 加入仪表盘
+ * @param inviteCode 邀请码
+ * @param id 仪表盘id
+ * @returns Workspace
+ */
+export const joinJebtWorkspace = async (
+  userId: string,
+  id: string
+): Promise<Workspace> => {
+  const { data: memberData, error: memberError } = await supabaseJebt
+    .from("member")
+    .select("workspaceId,role")
+    .eq("userId", userId);
+  if (memberError) throw new Error("服务器错误");
+  if (memberData.length > 0) throw new Error("已加入");
+  const { data, error } = await supabaseJebt
+    .from("member")
+    .insert([{ userId, workspaceId: id, role: "member" }])
+    .select("*");
+  if (error) throw new Error("服务器错误");
   return data[0];
 };

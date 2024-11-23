@@ -1,6 +1,6 @@
-import { Suspense } from 'react';
-import { Loader2 } from 'lucide-react';
-import styled from 'styled-components';
+import { Loader2 } from "lucide-react";
+import { Suspense } from "react";
+import styled from "styled-components";
 const LoadinContain = styled.div`
   width: 100%;
   height: 100%;
@@ -8,9 +8,10 @@ const LoadinContain = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 export const Loading = (
   <LoadinContain>
-    <Loader2 className='animate-spin' size={32} />
+    <Loader2 className="animate-spin" size={32} />
   </LoadinContain>
 );
 

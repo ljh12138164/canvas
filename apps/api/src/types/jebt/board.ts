@@ -1,9 +1,20 @@
 export interface Workspace {
   id: string;
   name: string;
-  userId: string;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_t: string;
   imageUrl: string;
   inviteCode: string;
+}
+
+export interface Member {
+  id: string;
+  userId: string;
+  workspaceId: string;
+  role: "admin" | "member";
+}
+
+export interface WorkspaceWithMember extends Workspace {
+  userId: string;
+  role: "admin" | "member";
 }

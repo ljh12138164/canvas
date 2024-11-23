@@ -1,7 +1,6 @@
 import userStore from "@/store/user";
 import { Settings } from "lucide-react";
 import { observer } from "mobx-react-lite";
-import { toast } from "react-hot-toast";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 const Icon = styled(Settings)`
@@ -37,15 +36,16 @@ const WorkSpace = observer(() => {
     return (
       <MainWorkSpace>
         <NavWorkSpace>
-          <Icon onClick={() => navigator("setting")} />
+          <Icon
+            onClick={() =>
+              navigator(`/dashboard/${params.workspaceId}/setting`)
+            }
+          />
         </NavWorkSpace>
         <Outlet></Outlet>
       </MainWorkSpace>
     );
   }
-  //未找到工作区
-  toast.error("未找到工作区");
-  navigator("/dashboard/home");
 });
 
 export default WorkSpace;

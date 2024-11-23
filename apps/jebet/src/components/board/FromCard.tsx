@@ -79,7 +79,7 @@ const FromCard = ({
   const queryClient = useQueryClient();
   const params = useParams();
   const [file, setFile] = useState<string>(defaultFrom?.file || "");
-  const { createWorkspace, isCreating } = useCreateWorkspace();
+  const { createWorkspace, isCreating } = useCreateWorkspace(userData.id);
   const { updateWorkspace, isUpdating } = useUpdateWorkspace();
   const navigator = useNavigate();
   const { register, handleSubmit, formState, setError, getValues, setValue } =
@@ -118,6 +118,11 @@ const FromCard = ({
         }
       );
     } else {
+      if (defaultFrom?.file === data.file && defaultFrom?.name === data.name) {
+        toast.dismiss();
+        toast.success("更新成功");
+        return;
+      }
       if (editId) {
         updateWorkspace(
           {

@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogClose,
@@ -15,13 +15,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { useRefreshWorkspace } from '@/server/hooks/board';
-import { useRef, useState } from 'react';
-import toast from 'react-hot-toast';
-import { IoCopyOutline } from 'react-icons/io5';
-import styled from 'styled-components';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/InputOtp';
+} from "@/components/ui/dialog";
+import { useRefreshWorkspace } from "@/server/hooks/board";
+import { useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { IoCopyOutline } from "react-icons/io5";
+import styled from "styled-components";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/InputOtp";
 
 const CopyButton = styled.div`
   position: relative;
@@ -43,6 +43,11 @@ const CopyIcon = styled(IoCopyOutline)`
     background-color: rgba(0, 0, 0, 0.05);
   }
 `;
+const InputItems = styled(InputOTPSlot)`
+  width: 5rem;
+  height: 4rem;
+`;
+
 export default function RefreshInviteCode({
   workspaceId,
   inviteCode,
@@ -60,7 +65,7 @@ export default function RefreshInviteCode({
       { json: { id: workspaceId, userId } },
       {
         onSuccess: (data) => {
-          toast.success('刷新成功');
+          toast.success("刷新成功");
           closeRef.current?.click();
           setNewInviteCode(data.inviteCode);
         },
@@ -70,7 +75,7 @@ export default function RefreshInviteCode({
   function handleCopy() {
     navigator.clipboard.writeText(newInviteCode);
     toast.dismiss();
-    toast.success('复制成功');
+    toast.success("复制成功");
   }
   return (
     <Card>
@@ -81,21 +86,21 @@ export default function RefreshInviteCode({
         <CopyButton>
           <InputOTP value={newInviteCode} maxLength={6}>
             <InputOTPGroup>
-              <InputOTPSlot index={0} />
-              <InputOTPSlot index={1} />
-              <InputOTPSlot index={2} />
-              <InputOTPSlot index={3} />
-              <InputOTPSlot index={4} />
-              <InputOTPSlot index={5} />
+              <InputItems index={0} />
+              <InputItems index={1} />
+              <InputItems index={2} />
+              <InputItems index={3} />
+              <InputItems index={4} />
+              <InputItems index={5} />
             </InputOTPGroup>
           </InputOTP>
-          <CopyIcon data-clipboard-target='#inviteCode' onClick={handleCopy} />
+          <CopyIcon data-clipboard-target="#inviteCode" onClick={handleCopy} />
         </CopyButton>
       </CardContent>
-      <CardFooter className='flex justify-end'>
+      <CardFooter className="flex justify-end">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant='outline'>刷新邀请码</Button>
+            <Button variant="outline">刷新邀请码</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -103,16 +108,16 @@ export default function RefreshInviteCode({
               <DialogDescription>刷新邀请码将重新生成邀请码</DialogDescription>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant='outline' ref={closeRef}>
+                  <Button variant="outline" ref={closeRef}>
                     取消
                   </Button>
                 </DialogClose>
                 <Button
-                  variant='destructive'
+                  variant="destructive"
                   onClick={handleRefresh}
                   disabled={isRefreshing}
                 >
-                  {isRefreshing ? '刷新中...' : '刷新邀请码'}
+                  {isRefreshing ? "刷新中..." : "刷新邀请码"}
                 </Button>
               </DialogFooter>
             </DialogHeader>
