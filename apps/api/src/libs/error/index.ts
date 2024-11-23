@@ -40,6 +40,8 @@ export const error400 = (c: Context, message: string) => {
  * @returns
  */
 export const errorCheck = (error: Error) => {
+  if (error.message === "未找到工作区") return 404;
+  if (error.message === "未找到用户") return 404;
   if (error.message === "无权限") return 403;
   if (error.message === "服务器错误") return 500;
   if (error.message === "已加入") return 400;

@@ -1,5 +1,5 @@
 {
-  "name": "vue",
+  "name": "note",
   "private": true,
   "version": "1.0.0",
   "scripts": {
@@ -11,9 +11,17 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@tiptap/pm": "^2.10.2",
+    "@tiptap/starter-kit": "^2.10.2",
+    "@tiptap/vue-3": "^2.10.2",
+    "api": "workspace:*",
     "hono": "^4.6.0",
+    "nanoid": "^5.0.8",
+    "pinia": "^2.2.6",
     "vue": "^3.5.12",
-    "api": "workspace:*"
+    "vue-router": "4",
+    "y-protocols": "^1.0.6",
+    "yjs": "^13.6.20"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.3",

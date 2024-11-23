@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { z } from "zod";
+import { nanoid } from "nanoid";
 import { Button } from "../ui/button";
 import {
   CardContent,
@@ -54,6 +55,7 @@ const ButtonContent = styled.div`
 `;
 
 const FromCard = ({
+  canEdit = true,
   type = "create",
   Back,
   editId,
@@ -63,6 +65,7 @@ const FromCard = ({
   userData,
   closeRef,
 }: {
+  canEdit?: boolean;
   Back?: boolean;
   // workspace: Workspace;
   editId?: string;
@@ -107,7 +110,13 @@ const FromCard = ({
     if (type === "create") {
       createWorkspace(
         {
-          form: { ...data, userId: userData.id },
+          form: {
+            ...data,
+            userId: userData.id,
+            email: userData.emailAddresses[0].emailAddress,
+            userImage: userData.imageUrl,
+            username: userData.username || "用户" + nanoid(4),
+          },
         },
         {
           onSuccess: (data) => {
@@ -123,7 +132,7 @@ const FromCard = ({
         toast.success("更新成功");
         return;
       }
-      if (editId) {
+      if (editId && canEdit) {
         updateWorkspace(
           {
             form: {
@@ -143,6 +152,8 @@ const FromCard = ({
             },
           }
         );
+      } else {
+        toast.error("无权限");
       }
     }
   };
@@ -255,7 +266,7 @@ const FromCard = ({
                 variant="primary"
                 type="submit"
                 className="dark:text-white"
-                disabled={isCreating || isUpdating}
+                disabled={!canEdit || isCreating || isUpdating}
               >
                 {isCreating
                   ? "创建中..."
