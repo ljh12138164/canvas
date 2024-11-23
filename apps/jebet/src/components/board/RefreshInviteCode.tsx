@@ -49,14 +49,17 @@ const InputItems = styled(InputOTPSlot)`
 `;
 
 export default function RefreshInviteCode({
+  canEdit,
   workspaceId,
   inviteCode,
   userId,
 }: {
+  canEdit: boolean;
   workspaceId: string;
   userId: string;
   inviteCode: string;
 }) {
+  console.log(canEdit);
   const closeRef = useRef<HTMLButtonElement>(null);
   const { refreshWorkspace, isRefreshing } = useRefreshWorkspace();
   const [newInviteCode, setNewInviteCode] = useState(inviteCode);
@@ -100,7 +103,9 @@ export default function RefreshInviteCode({
       <CardFooter className="flex justify-end">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline">刷新邀请码</Button>
+            <Button disabled={!canEdit} variant="outline">
+              刷新邀请码
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -115,7 +120,7 @@ export default function RefreshInviteCode({
                 <Button
                   variant="destructive"
                   onClick={handleRefresh}
-                  disabled={isRefreshing}
+                  disabled={!canEdit || isRefreshing}
                 >
                   {isRefreshing ? "刷新中..." : "刷新邀请码"}
                 </Button>

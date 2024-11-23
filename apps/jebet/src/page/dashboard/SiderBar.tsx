@@ -1,4 +1,4 @@
-import Router from "@/components/board/Router";
+import DrawerFromCard from "@/components/board/DrawerFromCard";
 import Logo from "@/components/command/Logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,15 +15,16 @@ import { useWorkspace } from "@/server/hooks/board";
 import userStore from "@/store/user";
 import { SignedIn, UserButton } from "@clerk/clerk-react";
 import { UserResource } from "@clerk/types";
+import { useMemoizedFn } from "ahooks";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { LuSettings, LuUsers2 } from "react-icons/lu";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-
-import DrawerFromCard from "@/components/board/DrawerFromCard";
 import styled from "styled-components";
-import toast from "react-hot-toast";
+
+type PathRush = "home" | "member" | "setting";
 const Asider = styled.aside`
   flex-basis: 250px;
   width: 100%;
@@ -140,16 +141,21 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
   }, [data, isLoading, error]);
   // const [isLoadings, setLoadings] = useState(true);
 
-  const checkActive = (path: string) => {
+  const checkActive = (path: PathRush) => {
     const workspaceId = parmas?.workspaceId;
     if (!workspaceId) return router.pathname === `/dashboard/${path}`;
     return router.pathname === `/dashboard/${workspaceId}/${path}`;
   };
-  const JumpTo = (path: string) => {
+  const handleJump = useMemoizedFn((path: PathRush) => {
+    if (isLoading) return;
     const workspaceId = parmas?.workspaceId;
-    if (!workspaceId) toast.error("请选择工作区");
-    return `/dashboard/${workspaceId}/${path}`;
-  };
+    if (!workspaceId) {
+      toast.dismiss();
+      if (path !== "home") toast.error("请选择工作区");
+      return;
+    }
+    navigate(`/dashboard/${workspaceId}/${path}`);
+  });
   const { theme } = useTheme();
   return (
     <Asider>
@@ -166,14 +172,14 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           {!isLoading && !error && (
             <Select
               onValueChange={(value) => {
-                userStore.setActiveWorkSpace(
-                  data?.find((item) => item.id === value) || null
-                );
                 navigate(`/dashboard/${value}`);
               }}
               value={
-                data?.find((item) => item.id === router.pathname.split("/")[2])
-                  ?.id
+                data
+                  ? data?.find(
+                      (item) => item.id === router.pathname.split("/")[2]
+                    )?.id
+                  : ""
               }
             >
               <SelectTrigger className="w-full h-full  dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200">
@@ -198,7 +204,14 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           {error && <div>获取失败</div>}
         </SelectContainer>
         <Title>菜单</Title>
-        <Router to={JumpTo("home")}>
+        <Button
+          className="cursor-pointer"
+          onClick={() => {
+            handleJump("home");
+          }}
+          asChild
+          variant="ghost"
+        >
           <RouterDiv
             active={checkActive("home")}
             variant="ghost"
@@ -219,8 +232,15 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
               <span>主页</span>
             </ButtonContainer>
           </RouterDiv>
-        </Router>
-        <Router to={JumpTo("member")}>
+        </Button>
+        <Button
+          asChild
+          className="cursor-pointer"
+          onClick={() => {
+            handleJump("member");
+          }}
+          variant="ghost"
+        >
           <RouterDiv
             active={checkActive("member")}
             variant="ghost"
@@ -241,8 +261,15 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
               <span>成员</span>
             </ButtonContainer>
           </RouterDiv>
-        </Router>
-        <Router to={JumpTo("setting")}>
+        </Button>
+        <Button
+          className="cursor-pointer"
+          asChild
+          variant="ghost"
+          onClick={() => {
+            handleJump("setting");
+          }}
+        >
           <RouterDiv
             active={checkActive("setting")}
             variant="ghost"
@@ -263,7 +290,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
               <span>设置</span>
             </ButtonContainer>
           </RouterDiv>
-        </Router>
+        </Button>
         <Separator />
       </RouterContainer>
       <UserButtonContainer>

@@ -44,6 +44,7 @@
     "lucide-react": "^0.447.0",
     "mobx": "^6.13.5",
     "mobx-react-lite": "^4.0.7",
+    "nanoid": "^5.0.8",
     "react": "^18.3.1",
     "react-day-picker": "8.10.1",
     "react-dom": "^18.3.1",

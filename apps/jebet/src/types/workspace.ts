@@ -12,4 +12,7 @@ export interface Member {
   userId: string;
   workspaceId: string;
   role: "admin" | "member";
+  email: string;
+  userImage: string;
+  username: string;
 }

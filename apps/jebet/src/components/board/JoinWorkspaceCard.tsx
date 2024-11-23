@@ -1,4 +1,11 @@
 import { useJoinWorkspace, useUserJoinWorkspace } from "@/server/hooks/board";
+import { useQueryClient } from "@tanstack/react-query";
+import { UserResource } from "@clerk/types";
+import dayjs from "dayjs";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
@@ -7,14 +14,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Button } from "../ui/button";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { Input } from "../ui/input";
-import dayjs from "dayjs";
 import { Separator } from "../ui/separator";
-import toast from "react-hot-toast";
-import { useQueryClient } from "@tanstack/react-query";
+import { nanoid } from "nanoid";
 const Footer = styled(CardFooter)`
   display: flex;
   flex-direction: column;
@@ -46,7 +48,13 @@ const Container = styled.section`
   display: grid;
   grid-template-columns: 1fr 10px 1fr;
 `;
-const JoinWorkspaceCard = ({ id, userId }: { id: string; userId: string }) => {
+const JoinWorkspaceCard = ({
+  id,
+  user,
+}: {
+  id: string;
+  user: UserResource;
+}) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { isLoading, data, error } = useJoinWorkspace(id);
@@ -57,12 +65,21 @@ const JoinWorkspaceCard = ({ id, userId }: { id: string; userId: string }) => {
 
   const handleJoin = () => {
     joinWorkspace(
-      { json: { userId, id: data.id } },
+      {
+        json: {
+          userId: user.id,
+          id: data.id,
+          email: user.emailAddresses[0].emailAddress,
+          userImage: user.imageUrl,
+          username: user.fullName || "用户" + nanoid(4),
+        },
+      },
       {
         onSuccess: () => {
           toast.success("加入成功");
-          queryClient.invalidateQueries({ queryKey: ["workspace", userId] });
-          navigate(`/dashboard/${data.id}`);
+          queryClient.invalidateQueries({ queryKey: ["workspace", user.id] });
+          queryClient.invalidateQueries({ queryKey: ["member", data.id] });
+          navigate("/dashboard/home");
         },
       }
     );
@@ -83,7 +100,7 @@ const JoinWorkspaceCard = ({ id, userId }: { id: string; userId: string }) => {
           <LeftContainer>
             <Item>
               <Label>工作区名字</Label>
-              <Input value={data.name} disabled></Input>
+              <Input className="text-center" value={data.name} disabled></Input>
             </Item>
             <Item>
               <Label>工作区创建时间</Label>

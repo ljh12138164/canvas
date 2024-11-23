@@ -1,5 +1,5 @@
 {
-  "name": "housepocus",
+  "name": "ws-note",
   "module": "index.ts",
   "type": "module",
   "scripts": {

@@ -74,7 +74,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/:workspaceId",
-        element: <Navigate to={"/dashboard/:workspaceId/home"} />,
+        element: (
+          <Suspensed>
+            <WorkContains>
+              <Scroll>
+                <Navigate to="home" replace />,
+              </Scroll>
+            </WorkContains>
+          </Suspensed>
+        ),
       },
       {
         path: "/dashboard/:workspaceId/home",

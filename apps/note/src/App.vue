@@ -1,3 +1,3 @@
-<script lang="tsx" setup></script>
+<script lang="ts" setup></script>
 <template></template>
 <style scoped></style>

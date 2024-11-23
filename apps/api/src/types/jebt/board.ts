@@ -12,6 +12,9 @@ export interface Member {
   userId: string;
   workspaceId: string;
   role: "admin" | "member";
+  email: string;
+  userImage: string;
+  username: string;
 }
 
 export interface WorkspaceWithMember extends Workspace {
