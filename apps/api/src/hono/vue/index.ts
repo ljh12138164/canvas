@@ -1,4 +1,8 @@
-import { Hono } from 'hono';
-export const vue = new Hono().get('/abc', (c) => {
-  return c.json({ message: 'Hello World' });
+import { Hono } from "hono";
+import { getCookie } from "hono/cookie";
+
+export const vue = new Hono().get("/abc", (c) => {
+  const auth = getCookie(c);
+  console.log(auth);
+  return c.json({ auth });
 });

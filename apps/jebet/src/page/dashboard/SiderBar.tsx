@@ -19,10 +19,11 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { LuSettings, LuUsers2 } from "react-icons/lu";
 import { TfiMenuAlt } from "react-icons/tfi";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import DrawerFromCard from "@/components/board/DrawerFromCard";
 import styled from "styled-components";
+import toast from "react-hot-toast";
 const Asider = styled.aside`
   flex-basis: 250px;
   width: 100%;
@@ -127,6 +128,7 @@ const TitleContain = styled.section`
 const SiderBar = observer(({ user }: { user: UserResource }) => {
   const router = useLocation();
   const navigate = useNavigate();
+  const parmas = useParams();
   const { isLoading, data, error } = useWorkspace(user.id);
   // const location = useLocation();
 
@@ -138,6 +140,16 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
   }, [data, isLoading, error]);
   // const [isLoadings, setLoadings] = useState(true);
 
+  const checkActive = (path: string) => {
+    const workspaceId = parmas?.workspaceId;
+    if (!workspaceId) return router.pathname === `/dashboard/${path}`;
+    return router.pathname === `/dashboard/${workspaceId}/${path}`;
+  };
+  const JumpTo = (path: string) => {
+    const workspaceId = parmas?.workspaceId;
+    if (!workspaceId) toast.error("请选择工作区");
+    return `/dashboard/${workspaceId}/${path}`;
+  };
   const { theme } = useTheme();
   return (
     <Asider>
@@ -186,13 +198,13 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           {error && <div>获取失败</div>}
         </SelectContainer>
         <Title>菜单</Title>
-        <Router to="/dashboard/home">
+        <Router to={JumpTo("home")}>
           <RouterDiv
-            active={router.pathname === "/dashboard/home"}
+            active={checkActive("home")}
             variant="ghost"
             theme={theme === "light"}
             className={
-              router.pathname === "/dashboard/home"
+              checkActive("home")
                 ? `text-black font-semibold border-2 border-[${
                     theme === "light" ? "#ebf0fa" : "#1c1c22"
                   }]`
@@ -208,13 +220,13 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
             </ButtonContainer>
           </RouterDiv>
         </Router>
-        <Router to="/dashboard/member">
+        <Router to={JumpTo("member")}>
           <RouterDiv
-            active={router.pathname === "/dashboard/member"}
+            active={checkActive("member")}
             variant="ghost"
             theme={theme === "light"}
             className={
-              router.pathname === "/dashboard/member"
+              checkActive("member")
                 ? `text-black font-semibold border-2 border-[${
                     theme === "light" ? "#ebf0fa" : "#1c1c22"
                   }]`
@@ -230,13 +242,13 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
             </ButtonContainer>
           </RouterDiv>
         </Router>
-        <Router to="/dashboard/setting">
+        <Router to={JumpTo("setting")}>
           <RouterDiv
-            active={router.pathname === "/dashboard/setting"}
+            active={checkActive("setting")}
             variant="ghost"
             theme={theme === "light"}
             className={
-              router.pathname === "/dashboard/setting"
+              checkActive("setting")
                 ? `text-black font-semibold border-2 border-[${
                     theme === "light" ? "#ebf0fa" : "#1c1c22"
                   }]`

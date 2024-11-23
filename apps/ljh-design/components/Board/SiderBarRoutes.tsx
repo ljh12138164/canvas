@@ -1,8 +1,8 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
-import SiderBarItem from "./SiderBarItem";
 import { Home, User } from "lucide-react";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
+import SiderBarItem from "./SiderBarItem";
 
 const SiderBarRoutes = () => {
   const pathname = usePathname();
@@ -19,9 +19,6 @@ const SiderBarRoutes = () => {
             label="主页"
             Icon={Home}
             isActive={pathname === "/board"}
-            onClick={() => {
-              redirect("/board");
-            }}
           ></SiderBarItem>
         </li>
         <Separator></Separator>
@@ -31,9 +28,6 @@ const SiderBarRoutes = () => {
             label="用户"
             Icon={User}
             isActive={pathname === "/board/user"}
-            onClick={() => {
-              redirect("/board/user");
-            }}
           ></SiderBarItem>
         </li>
       </ul>

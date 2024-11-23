@@ -1,27 +1,31 @@
-import { Button } from '../ui/button';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/InputOtp';
-import { useState } from 'react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from "@/hooks/use-mobile";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { z } from "zod";
+import { Button } from "../ui/button";
 import {
   Dialog,
-  DialogHeader,
   DialogContent,
-  DialogTitle,
-  DialogFooter,
-  DialogTrigger,
   DialogDescription,
-} from '../ui/dialog';
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
-  DrawerClose,
   DrawerTitle,
   DrawerTrigger,
-  DrawerDescription,
-} from '../ui/drawerui';
-import styled from 'styled-components';
+} from "../ui/drawerui";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/InputOtp";
 const InputOTPGroups = styled(InputOTP)`
   display: flex;
   width: 100%;
@@ -34,13 +38,36 @@ const InputContainer = styled(InputOTPGroup)`
   margin: 2rem 0;
 `;
 const InputItems = styled(InputOTPSlot)`
-  width: 2rem;
-  height: 2rem;
+  width: 4rem;
+  height: 4rem;
+  @media (max-width: 768px) {
+    width: 3rem;
+    height: 3rem;
+  }
 `;
+const ErrorMessage = styled.p`
+  color: red;
+  text-align: center;
+`;
+const zodSchema = z.object({
+  code: z.string().min(6, {
+    message: "邀请码长度为6位",
+  }),
+});
+
 export default function JoinCard() {
-  const [input, setInput] = useState('');
+  const { handleSubmit, reset, formState, setValue } = useForm({
+    resolver: zodResolver(zodSchema),
+    defaultValues: {
+      code: "",
+    },
+  });
+  const navigate = useNavigate();
   const isModile = useIsMobile();
   const [open, setOpen] = useState(false);
+  const onSubmit = handleSubmit((data) => {
+    navigate(`/dashboard/join/${data.code}`);
+  });
   if (isModile)
     return (
       <Drawer open={open} onOpenChange={setOpen}>
@@ -48,16 +75,63 @@ export default function JoinCard() {
           <Button>加入工作区</Button>
         </DrawerTrigger>
         <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>加入工作区</DrawerTitle>
-            <DrawerDescription>请输入邀请码加入工作区</DrawerDescription>
-          </DrawerHeader>
+          <form onSubmit={onSubmit}>
+            <DrawerHeader>
+              <DrawerTitle>加入工作区</DrawerTitle>
+              <DrawerDescription>请输入邀请码加入工作区</DrawerDescription>
+            </DrawerHeader>
+            <InputOTPGroups
+              onChange={(e) => {
+                setValue("code", e);
+              }}
+              placeholder="请输入邀请码"
+              maxLength={6}
+            >
+              <InputContainer>
+                <InputItems index={0} />
+                <InputItems index={1} />
+                <InputItems index={2} />
+                <InputItems index={3} />
+                <InputItems index={4} />
+                <InputItems index={5} />
+              </InputContainer>
+            </InputOTPGroups>
+            {formState.errors.code && (
+              <ErrorMessage>{formState.errors.code.message}</ErrorMessage>
+            )}
+            <DrawerFooter>
+              <DrawerClose asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setOpen(false)}
+                >
+                  取消
+                </Button>
+              </DrawerClose>
+              <Button type="submit">加入工作区</Button>
+            </DrawerFooter>
+          </form>
+        </DrawerContent>
+      </Drawer>
+    );
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        <Button>加入工作区</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <form onSubmit={onSubmit}>
+          <DialogHeader>
+            <DialogTitle>加入工作区</DialogTitle>
+            <DialogDescription>请输入邀请码加入工作区</DialogDescription>
+          </DialogHeader>
           <InputOTPGroups
-            value={input}
             onChange={(e) => {
-              setInput(e);
+              setValue("code", e);
             }}
-            placeholder='请输入邀请码'
+            placeholder="请输入邀请码"
             maxLength={6}
           >
             <InputContainer>
@@ -69,51 +143,23 @@ export default function JoinCard() {
               <InputItems index={5} />
             </InputContainer>
           </InputOTPGroups>
-          <DrawerFooter>
-            <DrawerClose asChild>
-              <Button variant='outline' onClick={() => setOpen(false)}>
-                取消
-              </Button>
-            </DrawerClose>
-            <Button>加入工作区</Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    );
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button>加入工作区</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>加入工作区</DialogTitle>
-          <DialogDescription>请输入邀请码加入工作区</DialogDescription>
-        </DialogHeader>
-        <InputOTPGroups
-          value={input}
-          onChange={(e) => {
-            setInput(e);
-          }}
-          placeholder='请输入邀请码'
-          maxLength={6}
-        >
-          <InputContainer>
-            <InputItems index={0} />
-            <InputItems index={1} />
-            <InputItems index={2} />
-            <InputItems index={3} />
-            <InputItems index={4} />
-            <InputItems index={5} />
-          </InputContainer>
-        </InputOTPGroups>
-        <DialogFooter>
-          <Button variant='outline' onClick={() => setOpen(false)}>
-            取消
-          </Button>
-          <Button>加入工作区</Button>
-        </DialogFooter>
+          {formState.errors.code && (
+            <ErrorMessage>{formState.errors.code.message}</ErrorMessage>
+          )}
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setOpen(false);
+                reset();
+              }}
+            >
+              取消
+            </Button>
+            <Button type="submit">加入工作区</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
