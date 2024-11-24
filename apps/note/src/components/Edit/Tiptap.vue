@@ -2,6 +2,8 @@
 import Collaboration from "@tiptap/extension-collaboration";
 import type { Awareness } from "y-protocols/awareness";
 import * as Y from "yjs";
+import { Editor, EditorContent } from "@tiptap/vue-3";
+import StarterKit from "@tiptap/starter-kit";
 // 协作
 import {
   HocuspocusProvider,
@@ -10,9 +12,9 @@ import {
 import { nanoid } from "nanoid";
 
 const doc = new Y.Doc();
-
-const editor = useEditor({
+const editor = new Editor({
   extensions: [
+    StarterKit,
     Collaboration.configure({
       document: doc,
     }),
@@ -27,19 +29,16 @@ const editor = useEditor({
     `,
 });
 
+// 创建ws
 const websocket = new HocuspocusProviderWebsocket({
-  //自己实现多 Provider 共享 ws 即可，避免多篇文档时发起多个 ws 链接
-  url: "ws://localhost:8080",
+  url: import.meta.env.PUBLIC_WS,
 });
-const map = new Map();
-map.set(1, {
-  name: "user.name",
-});
+
 const awareness: Awareness = {
   doc,
   clientID: Math.floor(Math.random() * 1000000),
   states: new Map(),
-  meta: map,
+  meta: new Map(),
   _checkInterval: 1000,
   getLocalState: () => null,
   setLocalState: () => {},
@@ -52,6 +51,7 @@ const awareness: Awareness = {
   destroy: () => {},
   _observers: new Map(),
 };
+// 协同
 const text = new HocuspocusProvider({
   websocketProvider: websocket,
   name: "abc", // 服务端的 documentName
@@ -67,7 +67,5 @@ text.setAwarenessField("user", {
 </script>
 
 <template>
-  <div>
-    <EditorContent editor="{editor}" />
-  </div>
+  <EditorContent :editor="editor" />
 </template>
