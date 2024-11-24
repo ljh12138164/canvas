@@ -6,6 +6,7 @@ import { Hono } from "hono";
 import md5 from "blueimp-md5";
 import { deleteCookie } from "hono/cookie";
 import { z } from "zod";
+// TODO: 双 token
 const user = new Hono()
   .post(
     "/sign-up",

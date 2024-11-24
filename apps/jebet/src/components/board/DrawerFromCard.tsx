@@ -13,51 +13,61 @@ import {
   DrawerTrigger,
 } from "../ui/drawerui";
 import FromCard from "./FromCard";
-const DrawerFromCard = observer(() => {
-  const isDesktop = useIsMobile();
-  const [open, setOpen] = React.useState(false);
-  const drawref = useRef<HTMLButtonElement | null>(null);
-  const dialogref = useRef<HTMLButtonElement | null>(null);
-  const { userData } = userStore;
+const DrawerFromCard = observer(
+  ({ type }: { type: "workspace" | "project" }) => {
+    const isDesktop = useIsMobile();
+    const [open, setOpen] = React.useState(false);
+    const drawref = useRef<HTMLButtonElement | null>(null);
+    const dialogref = useRef<HTMLButtonElement | null>(null);
+    const { userData } = userStore;
 
-  if (!userData) return null;
-  if (!isDesktop) {
+    if (!userData) return null;
+    if (!isDesktop) {
+      return (
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger>
+            <IoIosAddCircleOutline
+              size={20}
+              className="cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200"
+            />
+          </DialogTrigger>
+          <DialogClose asChild>
+            <Button variant="outline" className="hidden" ref={dialogref}>
+              取消
+            </Button>
+          </DialogClose>
+          <DialogContent>
+            <FromCard
+              formType={type}
+              userData={userData}
+              closeRef={dialogref}
+            ></FromCard>
+          </DialogContent>
+        </Dialog>
+      );
+    }
+
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger>
           <IoIosAddCircleOutline
             size={20}
             className="cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200"
           />
-        </DialogTrigger>
-        <DialogClose asChild>
-          <Button variant="outline" className="hidden" ref={dialogref}>
-            取消
-          </Button>
-        </DialogClose>
-        <DialogContent>
-          <FromCard userData={userData} closeRef={dialogref}></FromCard>
-        </DialogContent>
-      </Dialog>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerClose asChild>
+            <button className="hidden" ref={drawref}></button>
+          </DrawerClose>
+          <FromCard
+            formType={type}
+            userData={userData}
+            closeRef={drawref}
+          ></FromCard>
+        </DrawerContent>
+      </Drawer>
     );
   }
-
-  return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger>
-        <IoIosAddCircleOutline
-          size={20}
-          className="cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200"
-        />
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerClose asChild>
-          <button className="hidden" ref={drawref}></button>
-        </DrawerClose>
-        <FromCard userData={userData} closeRef={drawref}></FromCard>
-      </DrawerContent>
-    </Drawer>
-  );
-});
+);
 
 export default DrawerFromCard;

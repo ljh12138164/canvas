@@ -15,4 +15,14 @@ export interface Member {
   email: string;
   userImage: string;
   username: string;
+  created_at: string;
+}
+
+export interface projects {
+  created_at: string;
+  updated_t: string;
+  id: string;
+  userId: string;
+  workspaceId: string;
+  imageUrl: string;
 }

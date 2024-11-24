@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/components/ui/theme-provider";
 import { observer } from "mobx-react-lite";
 import { TfiMenuAlt } from "react-icons/tfi";
-import SiderBar from "./SiderBar";
+import SiderBar from "../../components/board/SiderBar";
 
 const Container = styled.div`
   display: flex;

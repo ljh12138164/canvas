@@ -98,13 +98,18 @@ const board = new Hono()
     ),
     zValidator(
       "json",
-      z.object({ userId: z.string().min(1, { message: "userID不能为空" }) })
+      z.object({
+        userId: z.string().min(1, { message: "userID不能为空" }),
+        imageUrl: z.string().min(1, { message: "imageUrl不能为空" }),
+      })
     ),
     async (c) => {
       const { id } = c.req.valid("param");
-      const { userId } = c.req.valid("json");
+      const { userId, imageUrl } = c.req.valid("json");
 
-      const [error, workspace] = await to(deleteJebtWorkspace(id, userId));
+      const [error, workspace] = await to(
+        deleteJebtWorkspace(id, userId, imageUrl)
+      );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(workspace);
     }

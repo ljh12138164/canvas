@@ -54,7 +54,13 @@ const ButtonContent = styled.div`
   justify-content: space-between;
 `;
 
+/**
+ * 表单卡片(工作区、项目)
+ * @param param0
+ * @returns
+ */
 const FromCard = ({
+  formType,
   canEdit = true,
   type = "create",
   Back,
@@ -65,6 +71,7 @@ const FromCard = ({
   userData,
   closeRef,
 }: {
+  formType: "workspace" | "project";
   canEdit?: boolean;
   Back?: boolean;
   // workspace: Workspace;
@@ -94,6 +101,7 @@ const FromCard = ({
       },
     });
 
+  // 提交
   const onSubmit = (data: z.infer<typeof zodShema>) => {
     if (data.file instanceof File) {
       if (data.file.size > 1024 * 1024 * 5) {
@@ -186,15 +194,15 @@ const FromCard = ({
           </CardTitle>
           <CardDescription>
             {type === "create"
-              ? "创建仪表盘，开始管理你的项目"
-              : "更新仪表盘，管理你的项目"}
+              ? `创建${formType === "workspace" ? "工作区" : "项目"}，开始管理你的${formType === "workspace" ? "项目" : ""}`
+              : `更新${formType === "workspace" ? "工作区" : "项目"}，管理你的${formType === "workspace" ? "项目" : ""}`}
           </CardDescription>
         </div>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label className="text-xl mb-4" htmlFor="name">
-            仪表盘名称
+            {formType === "workspace" ? "工作区名称" : "项目名称"}
           </label>
           <Input
             className={`${formState.errors.name ? "border-red-500" : ""}`}
@@ -206,7 +214,9 @@ const FromCard = ({
           <ImageContent>
             <Image src={file || getValues("file")} alt="icon" />
             <UploadP>
-              <span className="text-xl">工作区图标</span>
+              <span className="text-xl">
+                {formType === "workspace" ? "工作区图标" : "项目图标"}
+              </span>
               <span className="text-slate-500/50 dark:text-slate-400/50">
                 支持jpg、png、jpeg、svg格式，大小不超过5M
                 <span className="text-red-500">{}</span>
@@ -273,8 +283,8 @@ const FromCard = ({
                   : isUpdating
                     ? "更新中..."
                     : type === "create"
-                      ? "创建仪表盘"
-                      : "更新仪表盘"}
+                      ? `创建${formType === "workspace" ? "工作区" : "项目"}`
+                      : `更新${formType === "workspace" ? "工作区" : "项目"}`}
               </Button>
             </Footer>
           )}

@@ -1,7 +1,14 @@
+<script setup lang="ts">
+import { logout } from "@/server/supabase/user";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const handleClick = () => {
+  router.push("/login");
+};
+</script>
 <template>
-  <div></div>
+  <button @click="handleClick">跳转登录</button>
+  <button @click="logout">登出</button>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped></style>

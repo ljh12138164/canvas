@@ -19,18 +19,7 @@ const server = Server.configure({
    */
   onLoadDocument: async (payload) => {
     const { documentName } = payload;
-    // const path = `../data/${documentName}.yjs`;
-
-    // if (fs.existsSync(path)) {
-    //   const doc = new Y.Doc();
-    //   const docData = fs.readFileSync(path);
-    //   const uint8Array = new Uint8Array(docData);
-    //   Y.applyUpdate(doc, uint8Array);
-    //   return doc;
-    // }
-    // else {
-    //   return createEmptyDocument();
-    // }
+    //TODO: 没用就创建
   },
   /**
    * 保存文档
@@ -38,11 +27,9 @@ const server = Server.configure({
    */
   onStoreDocument: async (payload) => {
     const { documentName, document } = payload;
-    // const path = `../data/${documentName}.yjs`;
 
     const update = Y.encodeStateAsUpdate(document);
     console.log(update);
-    // fs.writeFileSync(path, update);
   },
 });
 

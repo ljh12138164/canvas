@@ -61,10 +61,24 @@ export const checkMember = async (userId: string, workspaceId: string) => {
     .select("workspaceId,role")
     .eq("workspaceId", workspaceId)
     .eq("userId", userId);
-  console.log({ data });
   if (error) throw new Error("服务器错误");
   if (data.length === 0 || data?.[0].role === "member")
     throw new Error("无权限");
+};
+/**
+ * 检查是否存在该用户
+ * @param userId 用户id
+ * @param workspaceId 工作区id
+ * @returns void
+ */
+export const checkUser = async (userId: string, workspaceId: string) => {
+  const { data, error } = await supabaseJebt
+    .from("member")
+    .select("*")
+    .eq("userId", userId)
+    .eq("workspaceId", workspaceId);
+  if (error) throw new Error("服务器错误");
+  if (data.length === 0) throw new Error("无权限");
 };
 
 /**
@@ -235,14 +249,22 @@ export const updateJebtWorkspace = async ({
  */
 export const deleteJebtWorkspace = async (
   id: string,
-  userId: string
+  userId: string,
+  imageUrl: string
 ): Promise<boolean> => {
   const [error, _] = await to(checkMember(userId, id));
   if (error) throw new Error(error.message);
-  const { error: workspaceError } = await supabaseJebt
-    .from("workspace")
-    .delete()
-    .eq("id", id);
+  let deleteImage: Promise<any> | null = Promise.resolve(null);
+  if (imageUrl !== DEFAULT_ICON) {
+    deleteImage = deleteImageClound({
+      image: imageUrl.slice(JEBT_URL.length + 11),
+    });
+  }
+  const [__, workspaceError] = await Promise.all([
+    deleteImage,
+    supabaseJebt.from("workspace").delete().eq("id", id),
+  ]);
+
   if (workspaceError) throw new Error("服务器错误");
   return true;
 };

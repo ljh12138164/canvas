@@ -17,7 +17,17 @@ export interface Member {
   username: string;
 }
 
+// 工作区成员
 export interface WorkspaceWithMember extends Workspace {
   userId: string;
   role: "admin" | "member";
+}
+
+export interface Project {
+  created_at: string;
+  updated_t: string;
+  id: string;
+  userId: string;
+  workspaceId: string;
+  imageUrl: string;
 }
