@@ -49,10 +49,10 @@
 ## 笔记应用(vue + rebuild + pinia)
 
 - ### apps/note 笔记应用
-  - #### server 配置api打包后进行请求接口
   - #### public 静态资源
   - #### src 笔记应用代码
     - ##### components 组件
+    - ##### server 配置api打包后进行请求接口
     - ##### router 自定义hooks
     - ##### lib 工具库
     - ##### pages 页面
