@@ -37,6 +37,7 @@ const WorkspaceSetting = observer(() => {
         <>
           <Card>
             <FromCard
+              formType="workspace"
               canEdit={data?.user.role === "admin"}
               Back={true}
               editId={workSpace.id}

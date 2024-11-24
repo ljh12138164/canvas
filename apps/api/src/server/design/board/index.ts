@@ -178,7 +178,6 @@ export const copyBoard = async ({
     .from("board")
     .insert([{ ...board, userId }])
     .select("*");
-  console.log(data, error);
   if (error) throw new Error(error.message);
   return data[0];
 };

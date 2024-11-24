@@ -1,8 +1,23 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { routerCheckLogin, routerLoginAfter } from "@/libs";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
-const routes = [
-  { path: "/home", component: () => import("@/pages/home/index.vue") },
-  { path: "/edit", component: () => import("@/pages/Edit/index.vue") },
+const routes: RouteRecordRaw[] = [
+  { path: "/", component: () => import("@/pages/home/index.vue") },
+  {
+    path: "/login",
+    component: () => import("@/pages/login/index.vue"),
+    beforeEnter: routerLoginAfter,
+  },
+  {
+    path: "/edit",
+    component: () => import("@/pages/edit/index.vue"),
+    beforeEnter: routerCheckLogin,
+  },
+  {
+    path: "/board",
+    component: () => import("@/pages/board/index.vue"),
+    beforeEnter: routerCheckLogin,
+  },
 ];
 
 export const routers = createRouter({

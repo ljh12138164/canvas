@@ -159,13 +159,14 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
   const { theme } = useTheme();
   return (
     <Asider>
+      {/* 菜单 */}
       <RouterContainer>
         <div>
           <Logo />
         </div>
         <TitleContain>
           <TitleP>工作区</TitleP>
-          <DrawerFromCard></DrawerFromCard>
+          <DrawerFromCard type="workspace"></DrawerFromCard>
         </TitleContain>
         <SelectContainer>
           {isLoading && !error && <LoadingP>加载中</LoadingP>}
@@ -292,7 +293,13 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           </RouterDiv>
         </Button>
         <Separator />
+
+        <TitleContain>
+          <TitleP>项目</TitleP>
+          <DrawerFromCard type="project"></DrawerFromCard>
+        </TitleContain>
       </RouterContainer>
+      {/* 用户信息 */}
       <UserButtonContainer>
         <SignedIn>
           <UserButton />
