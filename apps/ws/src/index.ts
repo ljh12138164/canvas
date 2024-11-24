@@ -19,7 +19,6 @@ const server = Server.configure({
    */
   onLoadDocument: async (payload) => {
     const { documentName } = payload;
-    //TODO: 没用就创建
   },
   /**
    * 保存文档
