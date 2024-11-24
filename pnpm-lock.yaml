@@ -628,6 +628,15 @@ importers:
 
   apps/ws:
     dependencies:
+      bun:
+        specifier: ^1.1.36
+        version: 1.1.36
+      deno:
+        specifier: ^0.1.1
+        version: 0.1.1
+      hono:
+        specifier: ^4.6.0
+        version: 4.6.11
       nanoid:
         specifier: ^5.0.8
         version: 5.0.8
@@ -1963,6 +1972,46 @@ packages:
 
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
+
+  '@oven/bun-darwin-aarch64@1.1.36':
+    resolution: {integrity: sha512-b+QdXV0hg1SNGjYOpnccwyrKkfHl3Pk9nKNsrryFaLiMsKVm/XKKWwVSrhTG2B3NcqyGn+pHGyc2+1+McfK4jg==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@oven/bun-darwin-x64-baseline@1.1.36':
+    resolution: {integrity: sha512-UdGohqbZ8gHnQpfehF1GBXcuHBgNs3Vq+z7dGWm7OZG6/Bv0faYQRJXxrf9Q0Uz6PwYoaT+P++l0xbK87b/8ZA==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@oven/bun-darwin-x64@1.1.36':
+    resolution: {integrity: sha512-t1IYgmc5B4id+EzQHsJCPnrRDfTCAEnF5dyXzxaXhr1JL713XRC+h8dqO+gvIxABL63Gx1Ktn4AyI11SOpgHew==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@oven/bun-linux-aarch64@1.1.36':
+    resolution: {integrity: sha512-sIMrsRX/hUed4GU5beHAcJeBt4Q6agib5kVUxDOz0k/JuIeduDkY9psEVZx+k2yKEs1AC0rIY+aw5ATBbpopYw==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@oven/bun-linux-x64-baseline@1.1.36':
+    resolution: {integrity: sha512-9bjTVrs7FjTaJ9kirq7m7AywjBfgKTm5cr/5LjVUtX6iGL82kyzmgd45Z1Cubj8M5+Dh3E9ESWRmNkmLikqTFA==}
+    cpu: [x64]
+    os: [linux]
+
+  '@oven/bun-linux-x64@1.1.36':
+    resolution: {integrity: sha512-eeDiHdN6zhzSLNbb50nVBZUUgi8KnidowvA3VRS9z4xUvUxpHup58E+YDenXYOOohwnUPMAUOmKlNOJwrlH7Ng==}
+    cpu: [x64]
+    os: [linux]
+
+  '@oven/bun-windows-x64-baseline@1.1.36':
+    resolution: {integrity: sha512-d3fqpHeL1xs4SkiLEFV1xXurfymiwCi/8ZWiIfCnCDHYFkrkRSsiZJ83FnOzNUFkxCyfSeTWKoEsGI3X3SpPXw==}
+    cpu: [x64]
+    os: [win32]
+
+  '@oven/bun-windows-x64@1.1.36':
+    resolution: {integrity: sha512-2ylum2WPMmI94JLAxGAiwNu+VUG9mUMY0Ur/jzoJU+O9+06c7qmvY5v3jgMydRGo+2nGFHWmKVQ1ozUS2GM1sA==}
+    cpu: [x64]
+    os: [win32]
 
   '@parcel/watcher-android-arm64@2.5.0':
     resolution: {integrity: sha512-qlX4eS28bUcQCdribHkg/herLe+0A9RyYC+mm2PXpncit8z5b3nSqGVzMNR3CmtAOgRutiZ02eIJJgP/b1iEFQ==}
@@ -3926,6 +3975,11 @@ packages:
   bun-types@1.1.34:
     resolution: {integrity: sha512-br5QygTEL/TwB4uQOb96Ky22j4Gq2WxWH/8Oqv20fk5HagwKXo/akB+LiYgSfzexCt6kkcUaVm+bKiPl71xPvw==}
 
+  bun@1.1.36:
+    resolution: {integrity: sha512-PTpHkW0N9Wy0ck6AY20ksDGfg+Vs+7HApiWnC4FrOuCFKQZ+APqa/WPvkK14Sg3HZZ/r/uEY2F0gguoUkZE8XA==}
+    os: [darwin, linux, win32]
+    hasBin: true
+
   bundle-name@4.1.0:
     resolution: {integrity: sha512-tjwM5exMg6BGRI+kNmTntNsvdZS1X8BFYS6tnJ2hdH0kVxM6/eVZ2xy+FqStSWvYmtfFMDLIxurorHwDKfDz5Q==}
     engines: {node: '>=18'}
@@ -4317,6 +4371,9 @@ packages:
     resolution: {integrity: sha512-ndfJ/JxxMd3nw31uyKoY2naivF+r29V+Lc0svZxe1JvvIRmi8hUsrMvdOwgS1o6uBHmiz91geQ0ylPP0aj1VUA==}
     engines: {node: '>=12'}
 
+  dafo@0.1.1:
+    resolution: {integrity: sha512-18XhtDt5qQ5pAfWzo1t3mRXQPanY8diFQFjCxh+/0mko5QHztCv6oLgPL9kKxB8aeYutp8lWC7BqjGzC8GWX1w==}
+
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
 
@@ -4461,6 +4518,10 @@ packages:
 
   delegates@1.0.0:
     resolution: {integrity: sha512-bd2L678uiWATM6m5Z1VzNCErI3jiGzt6HGY8OVICs40JQq/HALfbyNJmp0UDakEY4pMMaN0Ly5om/B1VI/+xfQ==}
+
+  deno@0.1.1:
+    resolution: {integrity: sha512-vdXCOZOXXgRUFPIV2HbyBBT+u1TjKmDueCEJuk9Q+ADLS7jmVfdfGxp0vI5o/gOjbA1OwOYMVfg249+9vjYa7w==}
+    hasBin: true
 
   denque@2.1.0:
     resolution: {integrity: sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==}
@@ -6308,6 +6369,13 @@ packages:
   no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
 
+  noda@0.1.2:
+    resolution: {integrity: sha512-oP5xzQsC4dujsuRlshsnb2R+0BWJmPRJx8MXQlTgbrSSqi5Szeu67Lr8Od1/lkc+8evLPRDmHl9L0xeVJYRGaw==}
+
+  noda@0.6.0:
+    resolution: {integrity: sha512-Zj3eTQ1cL83zGvorxbGmeqNnt/h+2nH3jT/XLI2oXHL9LH6IKoPvFh6feT1e/yFhRRByP3Q+waM+2dcXIdZkqg==}
+    engines: {node: '>=6'}
+
   node-abi@3.71.0:
     resolution: {integrity: sha512-SZ40vRiy/+wRTf21hxkkEjPJZpARzUMVcJoQse2EF8qkUWbbO2z7vd5oA/H6bVH6SZQ5STGcu0KRDS7biNRfxw==}
     engines: {node: '>=10'}
@@ -7028,6 +7096,9 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  qir@0.1.0:
+    resolution: {integrity: sha512-LJUKDMyPsaog5uDarzqterz+SfdyA3mfvq45kSLV0X5IOSPy/nlueKvLg8nClOSKp57c1E0bU/BFHwHFUoVhcw==}
 
   querystringify@2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
@@ -10041,6 +10112,30 @@ snapshots:
 
   '@one-ini/wasm@0.1.1': {}
 
+  '@oven/bun-darwin-aarch64@1.1.36':
+    optional: true
+
+  '@oven/bun-darwin-x64-baseline@1.1.36':
+    optional: true
+
+  '@oven/bun-darwin-x64@1.1.36':
+    optional: true
+
+  '@oven/bun-linux-aarch64@1.1.36':
+    optional: true
+
+  '@oven/bun-linux-x64-baseline@1.1.36':
+    optional: true
+
+  '@oven/bun-linux-x64@1.1.36':
+    optional: true
+
+  '@oven/bun-windows-x64-baseline@1.1.36':
+    optional: true
+
+  '@oven/bun-windows-x64@1.1.36':
+    optional: true
+
   '@parcel/watcher-android-arm64@2.5.0':
     optional: true
 
@@ -12698,6 +12793,17 @@ snapshots:
       '@types/node': 20.12.14
       '@types/ws': 8.5.13
 
+  bun@1.1.36:
+    optionalDependencies:
+      '@oven/bun-darwin-aarch64': 1.1.36
+      '@oven/bun-darwin-x64': 1.1.36
+      '@oven/bun-darwin-x64-baseline': 1.1.36
+      '@oven/bun-linux-aarch64': 1.1.36
+      '@oven/bun-linux-x64': 1.1.36
+      '@oven/bun-linux-x64-baseline': 1.1.36
+      '@oven/bun-windows-x64': 1.1.36
+      '@oven/bun-windows-x64-baseline': 1.1.36
+
   bundle-name@4.1.0:
     dependencies:
       run-applescript: 7.0.0
@@ -13118,6 +13224,10 @@ snapshots:
 
   d3-timer@3.0.1: {}
 
+  dafo@0.1.1:
+    dependencies:
+      noda: 0.1.2
+
   damerau-levenshtein@1.0.8: {}
 
   data-fns@1.1.0:
@@ -13223,6 +13333,12 @@ snapshots:
   delegate@3.2.0: {}
 
   delegates@1.0.0: {}
+
+  deno@0.1.1:
+    dependencies:
+      dafo: 0.1.1
+      noda: 0.6.0
+      qir: 0.1.0
 
   denque@2.1.0: {}
 
@@ -15485,6 +15601,10 @@ snapshots:
       lower-case: 2.0.2
       tslib: 2.8.1
 
+  noda@0.1.2: {}
+
+  noda@0.6.0: {}
+
   node-abi@3.71.0:
     dependencies:
       semver: 7.6.3
@@ -16319,6 +16439,10 @@ snapshots:
   punycode.js@2.3.1: {}
 
   punycode@2.3.1: {}
+
+  qir@0.1.0:
+    dependencies:
+      noda: 0.6.0
 
   querystringify@2.2.0:
     optional: true
