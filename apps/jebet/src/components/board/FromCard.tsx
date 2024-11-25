@@ -341,7 +341,6 @@ const FromCard = ({
                   variant='outline'
                   type='button'
                   onClick={() => {
-                    console.log(closeRef?.current);
                     closeRef?.current?.click();
                   }}
                 >

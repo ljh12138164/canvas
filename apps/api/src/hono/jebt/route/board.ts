@@ -1,5 +1,5 @@
-import { zValidator } from '@hono/zod-validator';
-import { Hono } from 'hono';
+import { zValidator } from "@hono/zod-validator";
+import { Hono } from "hono";
 import {
   createJebtWorkspace,
   deleteJebtWorkspace,
@@ -8,16 +8,16 @@ import {
   joinJebtWorkspace,
   refreshJebtWorkspace,
   updateJebtWorkspace,
-} from '../../../server/jebt/board';
-import { z } from 'zod';
-import to from 'await-to-js';
-import { errorCheck } from '../../../libs/error';
+} from "../../../server/jebt/board";
+import { z } from "zod";
+import to from "await-to-js";
+import { errorCheck } from "../../../libs/error";
 const board = new Hono()
   // 创建工作区
   .post(
-    '/create',
+    "/create",
     zValidator(
-      'form',
+      "form",
       z.object({
         name: z.string(),
         file: z.any(),
@@ -46,9 +46,9 @@ const board = new Hono()
   )
   // 更新工作区
   .patch(
-    '/update',
+    "/update",
     zValidator(
-      'form',
+      "form",
       z.object({
         id: z.string(),
         name: z.string(),
@@ -75,13 +75,13 @@ const board = new Hono()
   )
   // 获取工作区
   .get(
-    '/:id',
+    "/:id",
     zValidator(
-      'param',
-      z.object({ id: z.string().min(1, { message: 'userID不能为空' }) })
+      "param",
+      z.object({ id: z.string().min(1, { message: "userID不能为空" }) })
     ),
     async (c) => {
-      const { id } = c.req.valid('param');
+      const { id } = c.req.valid("param");
       const [error, workspace] = await to(getJebtWorkspace(id));
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(workspace);
@@ -89,23 +89,23 @@ const board = new Hono()
   )
   // 删除工作区
   .delete(
-    '/:id',
+    "/:id",
     zValidator(
-      'param',
+      "param",
       z.object({
-        id: z.string().min(1, { message: 'userID不能为空' }),
+        id: z.string().min(1, { message: "userID不能为空" }),
       })
     ),
     zValidator(
-      'json',
+      "json",
       z.object({
-        userId: z.string().min(1, { message: 'userID不能为空' }),
-        imageUrl: z.string().min(1, { message: 'imageUrl不能为空' }),
+        userId: z.string().min(1, { message: "userID不能为空" }),
+        imageUrl: z.string().min(1, { message: "imageUrl不能为空" }),
       })
     ),
     async (c) => {
-      const { id } = c.req.valid('param');
-      const { userId, imageUrl } = c.req.valid('json');
+      const { id } = c.req.valid("param");
+      const { userId, imageUrl } = c.req.valid("json");
 
       const [error, workspace] = await to(
         deleteJebtWorkspace(id, userId, imageUrl)
@@ -116,16 +116,16 @@ const board = new Hono()
   )
   // 刷新工作区
   .post(
-    '/refresh',
+    "/refresh",
     zValidator(
-      'json',
+      "json",
       z.object({
-        id: z.string().min(1, { message: 'id不能为空' }),
-        userId: z.string().min(1, { message: 'userID不能为空' }),
+        id: z.string().min(1, { message: "id不能为空" }),
+        userId: z.string().min(1, { message: "userID不能为空" }),
       })
     ),
     async (c) => {
-      const { id, userId } = c.req.valid('json');
+      const { id, userId } = c.req.valid("json");
       const [error, workspace] = await to(refreshJebtWorkspace(id, userId));
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(workspace);
@@ -133,36 +133,35 @@ const board = new Hono()
   )
   // 通过邀请码获取工作区
   .get(
-    '/dashboard/:inviteCode',
+    "/dashboard/:inviteCode",
     zValidator(
-      'param',
-      z.object({ inviteCode: z.string().min(6, { message: '邀请码不能为空' }) })
+      "param",
+      z.object({ inviteCode: z.string().min(6, { message: "邀请码不能为空" }) })
     ),
     async (c) => {
-      const { inviteCode } = c.req.valid('param');
+      const { inviteCode } = c.req.valid("param");
       const [error, workspace] = await to(
         getJebtWorkspaceByInviteCode(inviteCode)
       );
-      console.log({ error, workspace });
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(workspace);
     }
   )
   // 加入工作区
   .post(
-    '/join',
+    "/join",
     zValidator(
-      'json',
+      "json",
       z.object({
-        userId: z.string().min(1, { message: 'userID不能为空' }),
-        id: z.string().min(1, { message: 'id不能为空' }),
-        email: z.string().min(1, { message: 'email不能为空' }),
-        userImage: z.string().min(1, { message: 'userImage不能为空' }),
-        username: z.string().min(1, { message: 'username不能为空' }),
+        userId: z.string().min(1, { message: "userID不能为空" }),
+        id: z.string().min(1, { message: "id不能为空" }),
+        email: z.string().min(1, { message: "email不能为空" }),
+        userImage: z.string().min(1, { message: "userImage不能为空" }),
+        username: z.string().min(1, { message: "username不能为空" }),
       })
     ),
     async (c) => {
-      const { userId, id, email, userImage, username } = c.req.valid('json');
+      const { userId, id, email, userImage, username } = c.req.valid("json");
       const [error, workspace] = await to(
         joinJebtWorkspace(userId, id, email, userImage, username)
       );

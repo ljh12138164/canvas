@@ -68,7 +68,6 @@ const user = new Hono()
 
         return c.json({ user, token }, 200);
       } catch (error) {
-        console.log(error);
         return c.json({ message: error }, 400);
       }
     }

@@ -9,6 +9,9 @@ type GetJebtUserListResponseType = InferResponseType<
   typeof client.user.list.$get,
   200
 >;
+/**
+ * 获取工作区成员
+ */
 export const useGetJebtUserList = ({
   workspaceId,
   userId,

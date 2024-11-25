@@ -268,7 +268,6 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["project", id] });
     },
-    
   });
   return { mutate, isPending, error };
 };
@@ -287,7 +286,6 @@ export const useBoardCopyQuery = () => {
     mutationFn: async (board) => {
       const token = await getLocalToken();
       if (!token) redirect("/board/sign-in");
-      console.log(board);
       const response = await client.board.clone.$post(
         {
           json: { ...board },
