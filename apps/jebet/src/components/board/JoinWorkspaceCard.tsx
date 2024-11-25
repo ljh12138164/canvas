@@ -81,6 +81,9 @@ const JoinWorkspaceCard = ({
           queryClient.invalidateQueries({ queryKey: ["member", data.id] });
           navigate("/dashboard/home");
         },
+        onError: () => {
+          toast.error("加入失败");
+        },
       }
     );
   };

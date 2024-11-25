@@ -1,6 +1,6 @@
-import DrawerFromCard from "@/components/board/DrawerFromCard";
-import Logo from "@/components/command/Logo";
-import { Button } from "@/components/ui/button";
+import DrawerFromCard from '@/components/board/DrawerFromCard';
+import Logo from '@/components/command/Logo';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
@@ -8,23 +8,24 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { useTheme } from "@/components/ui/theme-provider";
-import { useWorkspace } from "@/server/hooks/board";
-import userStore from "@/store/user";
-import { SignedIn, UserButton } from "@clerk/clerk-react";
-import { UserResource } from "@clerk/types";
-import { useMemoizedFn } from "ahooks";
-import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
-import { LuSettings, LuUsers2 } from "react-icons/lu";
-import { TfiMenuAlt } from "react-icons/tfi";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
+} from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { useTheme } from '@/components/ui/theme-provider';
+import { useWorkspace } from '@/server/hooks/board';
+import userStore from '@/store/user';
+import { SignedIn, UserButton } from '@clerk/clerk-react';
+import { UserResource } from '@clerk/types';
+import { useMemoizedFn } from 'ahooks';
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
+import { LuSettings, LuUsers2 } from 'react-icons/lu';
+import { TfiMenuAlt } from 'react-icons/tfi';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import ProjectList from './ProjectList';
 
-type PathRush = "home" | "member" | "setting";
+type PathRush = 'home' | 'member' | 'setting';
 const Asider = styled.aside`
   flex-basis: 250px;
   width: 100%;
@@ -47,13 +48,13 @@ const RouterDiv = styled(Button)<{ theme: boolean; active: boolean }>`
   align-items: center;
   border-radius: var(--radius);
   background-color: ${(props) =>
-    props.active ? (props.theme ? "white" : "#1c1c22") : "#e5e7eba0"};
+    props.active ? (props.theme ? 'white' : '#1c1c22') : '#e5e7eba0'};
   padding: 1px;
   transition: all 0.2s;
   &:hover {
     background-color: ${(props) =>
-      props.theme ? "white" : props.active ? "#1c1c22" : "#e5e7eba0"};
-    color: ${(props) => (props.theme ? "black" : "white")};
+      props.theme ? 'white' : props.active ? '#1c1c22' : '#e5e7eba0'};
+    color: ${(props) => (props.theme ? 'black' : 'white')};
   }
 `;
 const UserButtonContainer = styled.div`
@@ -151,7 +152,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
     const workspaceId = parmas?.workspaceId;
     if (!workspaceId) {
       toast.dismiss();
-      if (path !== "home") toast.error("请选择工作区");
+      if (path !== 'home') toast.error('请选择工作区');
       return;
     }
     navigate(`/dashboard/${workspaceId}/${path}`);
@@ -166,7 +167,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
         </div>
         <TitleContain>
           <TitleP>工作区</TitleP>
-          <DrawerFromCard type="workspace"></DrawerFromCard>
+          <DrawerFromCard type='workspace'></DrawerFromCard>
         </TitleContain>
         <SelectContainer>
           {isLoading && !error && <LoadingP>加载中</LoadingP>}
@@ -176,21 +177,21 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
                 navigate(`/dashboard/${value}`);
               }}
               value={
-                data
-                  ? data?.find(
-                      (item) => item.id === router.pathname.split("/")[2]
+                userStore.workspace
+                  ? userStore.workspace?.find(
+                      (item) => item.id === router.pathname.split('/')[2]
                     )?.id
-                  : ""
+                  : ''
               }
             >
-              <SelectTrigger className="w-full h-full  dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200">
-                <SelectValue placeholder="选择工作区" />
+              <SelectTrigger className='w-full h-full  dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200'>
+                <SelectValue placeholder='选择工作区' />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   {data?.map((item) => (
                     <SelectItems key={item.id} value={item.id}>
-                      <div className="flex items-center justify-start gap-2 ">
+                      <div className='flex items-center justify-start gap-2 '>
                         <SelectImage src={item.imageUrl} alt={item.name} />
                         <p>{item.name}</p>
                       </div>
@@ -206,24 +207,24 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
         </SelectContainer>
         <Title>菜单</Title>
         <Button
-          className="cursor-pointer"
+          className='cursor-pointer'
           onClick={() => {
-            handleJump("home");
+            handleJump('home');
           }}
           asChild
-          variant="ghost"
+          variant='ghost'
         >
           <RouterDiv
-            active={checkActive("home")}
-            variant="ghost"
-            theme={theme === "light"}
+            active={checkActive('home')}
+            variant='ghost'
+            theme={theme === 'light'}
             className={
-              checkActive("home")
+              checkActive('home')
                 ? `text-black font-semibold border-2 border-[${
-                    theme === "light" ? "#ebf0fa" : "#1c1c22"
+                    theme === 'light' ? '#ebf0fa' : '#1c1c22'
                   }]`
                 : `opacity-80 ${
-                    theme === "light" ? "text-black" : "text-white bg-white"
+                    theme === 'light' ? 'text-black' : 'text-white bg-white'
                   }`
             }
             asChild
@@ -236,23 +237,23 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
         </Button>
         <Button
           asChild
-          className="cursor-pointer"
+          className='cursor-pointer'
           onClick={() => {
-            handleJump("member");
+            handleJump('member');
           }}
-          variant="ghost"
+          variant='ghost'
         >
           <RouterDiv
-            active={checkActive("member")}
-            variant="ghost"
-            theme={theme === "light"}
+            active={checkActive('member')}
+            variant='ghost'
+            theme={theme === 'light'}
             className={
-              checkActive("member")
+              checkActive('member')
                 ? `text-black font-semibold border-2 border-[${
-                    theme === "light" ? "#ebf0fa" : "#1c1c22"
+                    theme === 'light' ? '#ebf0fa' : '#1c1c22'
                   }]`
                 : `opacity-80 ${
-                    theme === "light" ? "text-black" : "text-white"
+                    theme === 'light' ? 'text-black' : 'text-white'
                   }`
             }
             asChild
@@ -264,24 +265,24 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           </RouterDiv>
         </Button>
         <Button
-          className="cursor-pointer"
+          className='cursor-pointer'
           asChild
-          variant="ghost"
+          variant='ghost'
           onClick={() => {
-            handleJump("setting");
+            handleJump('setting');
           }}
         >
           <RouterDiv
-            active={checkActive("setting")}
-            variant="ghost"
-            theme={theme === "light"}
+            active={checkActive('setting')}
+            variant='ghost'
+            theme={theme === 'light'}
             className={
-              checkActive("setting")
+              checkActive('setting')
                 ? `text-black font-semibold border-2 border-[${
-                    theme === "light" ? "#ebf0fa" : "#1c1c22"
+                    theme === 'light' ? '#ebf0fa' : '#1c1c22'
                   }]`
                 : `opacity-80 ${
-                    theme === "light" ? "text-black" : "text-white"
+                    theme === 'light' ? 'text-black' : 'text-white'
                   }`
             }
             asChild
@@ -294,10 +295,9 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
         </Button>
         <Separator />
 
-        <TitleContain>
-          <TitleP>项目</TitleP>
-          <DrawerFromCard type="project"></DrawerFromCard>
-        </TitleContain>
+        {parmas?.workspaceId && userStore.workspace && (
+          <ProjectList workspaceId={parmas?.workspaceId} userId={user.id} />
+        )}
       </RouterContainer>
       {/* 用户信息 */}
       <UserButtonContainer>

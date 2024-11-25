@@ -1,6 +1,6 @@
-import MemberList from "@/components/board/MemberList";
-import useUserAndWorkspace from "@/hooks/useUser";
-import { observer } from "mobx-react-lite";
+import MemberList from '@/components/board/MemberList';
+import useUserAndWorkspace from '@/hooks/useUser';
+import { observer } from 'mobx-react-lite';
 // @ts-ignore
 const Member = observer(() => {
   const { activeWorkspace, isLoading, user } = useUserAndWorkspace();

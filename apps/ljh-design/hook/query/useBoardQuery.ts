@@ -268,6 +268,7 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["project", id] });
     },
+    
   });
   return { mutate, isPending, error };
 };
