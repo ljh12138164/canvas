@@ -1,7 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
-import toast from "react-hot-toast";
-import { client } from "..";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { InferRequestType, InferResponseType } from 'hono';
+import toast from 'react-hot-toast';
+import { client } from '..';
 
 /**
  * 创建工作区
@@ -19,21 +19,25 @@ export const useCreateWorkspace = (userId: string) => {
     RequestType
   >({
     mutationFn: async (data) => {
-      toast.loading("创建中");
+      toast.loading('创建中');
       const workspace = await client.board.create.$post({
         form: data.form,
       });
       if (!workspace.ok) {
-        toast.error("创建失败");
-        throw new Error("创建失败");
+        toast.error('创建失败');
+        throw new Error('创建失败');
       }
 
       return workspace.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workspace", userId] });
+      queryClient.invalidateQueries({ queryKey: ['workspace', userId] });
       toast.dismiss();
-      toast.success("创建成功");
+      toast.success('创建成功');
+    },
+    onError: () => {
+      toast.dismiss();
+      toast.error('创建失败');
     },
   });
   return { createWorkspace, isCreating };
@@ -43,13 +47,13 @@ export const useCreateWorkspace = (userId: string) => {
  */
 export const useWorkspace = (id: string) => {
   const { isLoading, data, error } = useQuery({
-    queryKey: ["workspace", id],
+    queryKey: ['workspace', id],
     queryFn: async () => {
-      const res = await client.board[":id"].$get({
+      const res = await client.board[':id'].$get({
         param: { id },
       });
       if (!res.ok) {
-        throw new Error("获取失败");
+        throw new Error('获取失败');
       }
       return res.json();
     },
@@ -73,7 +77,7 @@ export const useUpdateWorkspace = () => {
         form: data.form,
       });
       if (!res.ok) {
-        throw new Error("更新失败");
+        throw new Error('更新失败');
       }
       return res.json();
     },
@@ -82,10 +86,10 @@ export const useUpdateWorkspace = () => {
 };
 
 type DeleteRequestType = InferRequestType<
-  (typeof client.board)[":id"]["$delete"]
+  (typeof client.board)[':id']['$delete']
 >;
 type DeleteResponseType = InferResponseType<
-  (typeof client.board)[":id"]["$delete"]
+  (typeof client.board)[':id']['$delete']
 >;
 /**
  * ## 删除工作区
@@ -97,12 +101,12 @@ export const useDeleteWorkspace = () => {
     DeleteRequestType
   >({
     mutationFn: async (data) => {
-      const res = await client.board[":id"].$delete({
+      const res = await client.board[':id'].$delete({
         param: data.param,
         json: data.json,
       });
       if (!res.ok) {
-        throw new Error("删除失败");
+        throw new Error('删除失败');
       }
       return res.json();
     },
@@ -128,7 +132,7 @@ export const useRefreshWorkspace = () => {
     mutationFn: async (data) => {
       const res = await client.board.refresh.$post(data);
       if (!res.ok) {
-        throw new Error("刷新失败");
+        throw new Error('刷新失败');
       }
       return res.json();
     },
@@ -140,7 +144,7 @@ export const useRefreshWorkspace = () => {
 //   (typeof client.board.dashboard)[":inviteCode"]["$get"]
 // >;
 type JoinResponseSuccessType = InferResponseType<
-  (typeof client.board.dashboard)[":inviteCode"]["$get"],
+  (typeof client.board.dashboard)[':inviteCode']['$get'],
   200
 >;
 
@@ -153,13 +157,13 @@ export const useJoinWorkspace = (id: string) => {
     Error,
     JoinResponseSuccessType
   >({
-    queryKey: ["join", id],
+    queryKey: ['join', id],
     queryFn: async () => {
-      const res = await client.board.dashboard[":inviteCode"].$get({
+      const res = await client.board.dashboard[':inviteCode'].$get({
         param: { inviteCode: id },
       });
       if (!res.ok) {
-        throw new Error("获取失败");
+        throw new Error('获取失败');
       }
       return res.json();
     },
@@ -184,7 +188,7 @@ export const useUserJoinWorkspace = () => {
     mutationFn: async (data) => {
       const res = await client.board.join.$post(data);
       if (!res.ok) {
-        throw new Error("加入失败");
+        throw new Error('加入失败');
       }
       return res.json();
     },

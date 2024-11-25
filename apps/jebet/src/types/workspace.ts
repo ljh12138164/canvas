@@ -2,12 +2,13 @@ export interface Workspace {
   id: string;
   name: string;
   created_at: string;
-  updated_t: string;
+  updated_at: string;
   imageUrl: string;
   inviteCode: string;
 }
 
 export interface Member {
+  created_at: string;
   id: string;
   userId: string;
   workspaceId: string;
@@ -15,14 +16,13 @@ export interface Member {
   email: string;
   userImage: string;
   username: string;
-  created_at: string;
 }
 
-export interface projects {
+export interface Project {
   created_at: string;
-  updated_t: string;
+  updated_at: string;
   id: string;
-  userId: string;
+  name: string;
   workspaceId: string;
   imageUrl: string;
 }

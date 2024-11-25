@@ -1,4 +1,4 @@
-import userStore from "@/store/user";
+import userStore from '@/store/user';
 const Setting = () => {
   const { userData } = userStore;
   if (!userData) return null;

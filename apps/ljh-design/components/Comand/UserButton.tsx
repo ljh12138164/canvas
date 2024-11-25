@@ -43,6 +43,10 @@ const UserButton = () => {
                     toast.success("登出成功");
                     routers.refresh();
                   },
+                  onError: () => {
+                    toast.dismiss();
+                    toast.error("登出失败");
+                  },
                 });
               }}
             >
