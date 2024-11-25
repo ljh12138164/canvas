@@ -11,7 +11,7 @@ export interface Member {
   id: string;
   userId: string;
   workspaceId: string;
-  role: 'admin' | 'member';
+  role: "admin" | "member";
   email: string;
   userImage: string;
   username: string;
@@ -21,7 +21,7 @@ export interface Member {
 // 工作区成员
 export interface WorkspaceWithMember extends Workspace {
   userId: string;
-  role: 'admin' | 'member';
+  role: "admin" | "member";
 }
 
 export interface Project {
@@ -32,4 +32,30 @@ export interface Project {
   name: string;
   workspaceId: string;
   imageUrl: string;
+}
+// 任务状态
+export enum TaskStatus {
+  BACKLOG = "储备",
+  TODO = "待办",
+  DONE = "完成",
+  IN_PROGRESS = "进行中",
+  IN_REVIEW = "等待审核",
+}
+export interface Task {
+  id: string;
+  name: string;
+  projectId: string;
+  workspaceId: string;
+  created_at: string;
+  updated_at: string;
+  lastTime: string;
+  status: TaskStatus;
+  description: string;
+  assigneeId: string;
+}
+
+// 任务包含工作区信息
+export interface TaskWithWorkspace extends Task {
+  workspace: Workspace & { member: Member[] };
+  project: Project;
 }

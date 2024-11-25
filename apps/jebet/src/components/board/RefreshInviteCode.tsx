@@ -59,7 +59,6 @@ export default function RefreshInviteCode({
   userId: string;
   inviteCode: string;
 }) {
-  console.log(canEdit);
   const closeRef = useRef<HTMLButtonElement>(null);
   const { refreshWorkspace, isRefreshing } = useRefreshWorkspace();
   const [newInviteCode, setNewInviteCode] = useState(inviteCode);

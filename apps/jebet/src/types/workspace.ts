@@ -26,3 +26,23 @@ export interface Project {
   workspaceId: string;
   imageUrl: string;
 }
+// 任务状态
+export enum TaskStatus {
+  BACKLOG = "储备",
+  TODO = "待办",
+  DONE = "完成",
+  IN_PROGRESS = "进行中",
+  IN_REVIEW = "等待审核",
+}
+export interface Task {
+  id: string;
+  name: string;
+  projectId: string;
+  workspaceId: string;
+  created_at: string;
+  updated_at: string;
+  lastTime: string;
+  status: TaskStatus;
+  description: string;
+  assigneeId: string;
+}
