@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { toast } from "@/libs";
+import Button from "@/components/ui/button/Button.vue";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { toast } from "@/lib";
 import { login, signup } from "@/server/supabase/user";
 import { Icon } from "@iconify/vue";
 import { toTypedSchema } from "@vee-validate/zod";
@@ -52,7 +54,6 @@ async function onSubmit(values: any) {
       loading.value = true;
       console.log(values);
       toast.loading("登录中...");
-      toast.dismiss();
       // 登录
       await login({
         email: values.email,
@@ -62,7 +63,6 @@ async function onSubmit(values: any) {
       router.push("/");
     }
   } catch (error) {
-    toast.dismiss();
     if (error instanceof Error) {
       toast.error(error.message);
     } else {
@@ -75,14 +75,21 @@ async function onSubmit(values: any) {
 </script>
 <template>
   <main class="mainContainer">
-    <v-card variant="outlined" class="loginCard">
-      <section class="cardContent">
-        <header class="cardHeader">
-          <!-- TODO:logo -->
+    <Card variant="outlined" class="loginCard">
+      <section class="loginCardLeft">
+        <div class="loginCardLeftTitle">
+          <div class="loginCardLeftTitleContent">
+            <h1 class="loginCardLeftTitleText">欢迎使用</h1>
+            <p class="loginCardLeftTitleSubtitle">登录或注册来开始使用</p>
+          </div>
+        </div>
+      </section>
+      <CardContent class="loginCardRight">
+        <CardHeader class="cardHeader">
           <div style="width: 100px; height: 100px; background: #eee"></div>
           <h1 class="cardTitle">欢迎回来</h1>
           <p class="cardSubtitle">请输入您的账号密码</p>
-        </header>
+        </CardHeader>
         <main class="cardMain">
           <p class="cardChange">
             <v-btn
@@ -112,7 +119,9 @@ async function onSubmit(values: any) {
                 type="name"
                 class="formInput"
               />
-              <span v-if="errors.name" class="error"> {{ errors.name }} </span>
+              <span v-if="errors.name" class="error">
+                {{ errors.name }}
+              </span>
               <ErrorMessage class="error" name="name" />
             </div>
             <div class="formItem">
@@ -134,7 +143,6 @@ async function onSubmit(values: any) {
                 "
                 class="formEye"
               />
-
               <Field
                 placeholder="请输入密码..."
                 name="password"
@@ -143,10 +151,10 @@ async function onSubmit(values: any) {
               />
               <ErrorMessage class="error" name="password" />
             </div>
-            <v-btn
+            <Button
               type="submit"
               :disabled="loading"
-              variant="outlined"
+              variant="outline"
               class="formSubmit"
               >{{
                 loginType === "login"
@@ -156,34 +164,70 @@ async function onSubmit(values: any) {
                   : loading
                     ? "注册中..."
                     : "注册"
-              }}</v-btn
+              }}</Button
             >
           </Form>
         </main>
-      </section>
-    </v-card>
+      </CardContent>
+    </Card>
   </main>
 </template>
 
 <style scoped lang="scss">
 .mainContainer {
-  min-width: 450px;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(to top, #dcdffd, #fff);
+  border-radius: 20px;
+  background-image: linear-gradient(to top, #dcfdf2, #fff);
 }
 .loginCard {
-  min-width: 450px;
+  min-width: 800px;
   height: 550px;
   border: 1.5px solid rgba(#0000001a, 0.02);
-  box-shadow: 0 0 100px rgba(#1f34f1, 0.2);
+  /* box-shadow: 0 0 100px rgba(#1f34f1, 0.2); */
   background-color: #f6f6f9;
   border-radius: 20px;
   display: flex;
-  flex-direction: column;
+  border-radius: 20px;
+  /* flex-direction: column; */
+  display: flex;
+  &Left {
+    flex-basis: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(
+      to bottom,
+      rgb(65, 177, 149),
+      rgba(65, 177, 149, 0.644)
+    );
+    &Title {
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+      color: white;
+      &Content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+      }
+      &Subtitle {
+        font-size: 1rem;
+        font-weight: 400;
+        text-align: center;
+        color: white;
+      }
+    }
+  }
+  &Right {
+    flex: 1;
+  }
 }
 .card {
   &Change {
@@ -197,12 +241,6 @@ async function onSubmit(values: any) {
     }
   }
 
-  &Content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-  }
   &Header {
     height: 40%;
     flex-basis: 40%;
@@ -253,7 +291,7 @@ async function onSubmit(values: any) {
     padding: 0 1rem;
     &:active,
     &:focus {
-      border: 2px solid #1f34f1;
+      border: 2px solid rgb(65, 177, 149);
       outline: none;
       transition: all 0.3s ease;
     }
@@ -261,7 +299,7 @@ async function onSubmit(values: any) {
   &Submit {
     width: 100%;
     border-radius: 5px;
-    background-color: #1f34f1;
+    background-color: rgb(65, 177, 149);
     color: #fff;
     border: none;
   }
@@ -270,8 +308,8 @@ async function onSubmit(values: any) {
   }
 }
 .active {
-  color: #1f34f1;
-  border-bottom: 2px solid #1f34f1;
+  color: rgb(65, 177, 149);
+  border-bottom: 2px solid rgb(65, 177, 149);
 }
 .error {
   color: rgba(255, 0, 0, 0.56);

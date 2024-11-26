@@ -18,7 +18,7 @@ const task = new Hono()
         description: z.string().optional(),
         assigneeId: z.string(),
         status: z.nativeEnum(TaskStatus),
-        lastTime: z.date(),
+        lastTime: z.string(),
         currentUserId: z.string(),
       })
     ),
@@ -49,6 +49,7 @@ const task = new Hono()
       return c.json(data);
     }
   )
+  // 获取任务
   .get(
     "/get",
     zValidator(
@@ -59,7 +60,7 @@ const task = new Hono()
         projectId: z.string().nullish(),
         status: z.nativeEnum(TaskStatus).nullish(),
         search: z.string().nullish(),
-        dueDate: z.string().nullish(),
+        lastTime: z.string().nullish(),
         assigneeId: z.string().nullish(),
       })
     ),
@@ -70,7 +71,7 @@ const task = new Hono()
         currentUserId,
         status,
         search,
-        dueDate,
+        lastTime,
         assigneeId,
       } = c.req.valid("query");
       const [error, data] = await to(
@@ -80,7 +81,7 @@ const task = new Hono()
           projectId,
           status,
           search,
-          dueDate,
+          lastTime,
           assigneeId,
         })
       );

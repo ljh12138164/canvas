@@ -1,19 +1,19 @@
-import { cn } from "@/lib/utils";
 import { useCreateTask } from "@/server/hooks/tasks";
 import { Member, TaskStatus } from "@/types/workspace";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
-import { CardContent } from "../ui/card";
-import { DialogClose, DialogFooter } from "../ui/dialog";
-import { DrawerFooter } from "../ui/drawerui";
+import { CardContent, CardFooter } from "../ui/card";
+import { DialogClose } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { ScrollArea } from "../ui/scrollArea";
 import {
   Select,
   SelectContent,
@@ -23,24 +23,23 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
-import { SelectImage, SelectItems } from "../board/SiderBar";
 
 const zShema = z.object({
   name: z
     .string({
-      required_error: "请输入任务名称",
+      message: "请输入任务名称",
     })
-    .min(2)
-    .max(20),
-  lastTime: z.date({
-    required_error: "请选择最后时间",
+    .min(2, { message: "任务名称至少2个字符" })
+    .max(20, { message: "任务名称最多20个字符" }),
+  lastTime: z.string({
+    message: "请选择最后时间",
   }),
   assigneeId: z.string({
-    required_error: "请选择指派人",
+    message: "请选择指派人",
   }),
   description: z
     .string({
-      required_error: "请输入任务描述",
+      message: "请输入任务描述",
     })
     .optional(),
   status: z.nativeEnum(TaskStatus),
@@ -51,6 +50,11 @@ const Label = styled.label`
 `;
 const FromItem = styled.div`
   margin-bottom: 1rem;
+`;
+const SelectContents = styled.section`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;
 const TaskFrom = ({
   workspaceId,
@@ -67,17 +71,24 @@ const TaskFrom = ({
   currentUserId: string;
   isMobile: boolean;
 }) => {
-  const { register, handleSubmit, getValues, setValue } = useForm<
+  const { register, handleSubmit, setValue, formState } = useForm<
     z.infer<typeof zShema>
   >({
     resolver: zodResolver(zShema),
+    defaultValues: {
+      name: "",
+      description: "",
+    },
   });
+  const [lastTime, setLastTime] = useState<Date | null>(null);
+
   const closeRef = useRef<HTMLButtonElement>(null);
   const closeRef2 = useRef<HTMLButtonElement>(null);
   const { createTask, createTaskLoading } = useCreateTask();
   const onSubmit = (data: z.infer<typeof zShema>) => {
     if (type === "create") {
       createTask({
+        // @ts-ignore
         json: {
           ...data,
           workspaceId,
@@ -92,80 +103,157 @@ const TaskFrom = ({
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <CardContent className="my-8 flex flex-col gap-4 mx-0">
-        <FromItem>
-          <Label htmlFor="name">任务名称</Label>
-          <Input id="name" {...register("name")} placeholder="请输入任务名称" />
-        </FromItem>
-        <FromItem>
-          <Label htmlFor="lastTime">最后时间</Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant={"outline"} className="w-full">
-                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
+      <CardContent className="my-2 flex w-full flex-col gap-2 mx-0">
+        <ScrollArea
+          className="h-[calc(100vh-250px)]"
+          style={{ scrollbarWidth: "none" }}
+        >
+          <FromItem>
+            <Label htmlFor="name">任务名称</Label>
+            <Input
+              id="name"
+              {...register("name")}
+              placeholder="请输入任务名称"
+            />
+            <p className="text-red-500 text-sm">
+              {formState.errors.name?.message}
+            </p>
+          </FromItem>
+          <FromItem>
+            <Label htmlFor="name">任务状态</Label>
+            <Select
+              {...register("status")}
+              onValueChange={(value) => {
+                setValue("status", value as TaskStatus);
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="请选择任务状态" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={TaskStatus.BACKLOG}>阻塞</SelectItem>
+                <SelectItem value={TaskStatus.TODO}>未开始</SelectItem>
+                <SelectItem value={TaskStatus.IN_PROGRESS}>进行中</SelectItem>
+                <SelectItem value={TaskStatus.IN_REVIEW}>审核中</SelectItem>
+                <SelectItem value={TaskStatus.DONE}>已完成</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-red-500 text-sm">
+              {formState.errors.status?.message}
+            </p>
+          </FromItem>
+          <FromItem>
+            <Label htmlFor="lastTime">最后时间</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-full">
+                  {lastTime ? format(lastTime, "yyyy-MM-dd") : "请选择最后时间"}
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  className="w-full"
+                  selected={lastTime || undefined}
+                  onSelect={(date) => {
+                    if (date) {
+                      // @ts-ignore
+                      setValue("lastTime", date);
+                      setLastTime(date);
+                    }
+                  }}
+                  disabled={(date) => date < new Date()}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            <p className="text-red-500 text-sm">
+              {formState.errors.lastTime?.message}
+            </p>
+          </FromItem>
+          <FromItem>
+            <Label htmlFor="assigneeId">指派人</Label>
+            <Select
+              {...register("assigneeId")}
+              onValueChange={(value) => {
+                setValue("assigneeId", value);
+              }}
+            >
+              <SelectTrigger className="h-16 dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200">
+                <SelectValue placeholder="选择指派人" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {userData?.map((item) => (
+                    <SelectItem
+                      className="cursor-pointer flex items-center gap-2"
+                      key={item.id}
+                      value={item.userId}
+                    >
+                      <SelectContents>
+                        <img
+                          className="w-8 h-8 rounded-full"
+                          src={item.userImage}
+                          alt={item.username}
+                        />
+                        <p>{item.username}</p>
+                      </SelectContents>
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <p className="text-red-500 text-sm">
+              {formState.errors.assigneeId?.message}
+            </p>
+          </FromItem>
+          <FromItem>
+            <Label htmlFor="description">描述</Label>
+            <Textarea id="description" {...register("description")} />
+            <p className="text-red-500 text-sm">
+              {formState.errors.description?.message}
+            </p>
+          </FromItem>
+        </ScrollArea>
+        <CardFooter className="flex w-full flex-col gap-2">
+          {!isMobile ? (
+            <>
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  ref={closeRef2}
+                >
+                  取消
+                </Button>
+              </DialogClose>
+              <Button
                 className="w-full"
-                selected={getValues("lastTime")}
-                onSelect={(date) => {
-                  if (date) {
-                    setValue("lastTime", date);
-                  }
-                }}
-                disabled={(date) =>
-                  date > new Date() || date < new Date("1900-01-01")
-                }
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
-        </FromItem>
-        <FromItem>
-          <Label htmlFor="assigneeId">指派人</Label>
-          <Select {...register("assigneeId")}>
-            <SelectTrigger>
-              <SelectValue placeholder="请选择指派人" />
-            </SelectTrigger>
-            <SelectContent className="max-h-[200px] overflow-y-auto">
-              <SelectGroup>
-                {userData?.map((item) => (
-                  <SelectItems key={item.id} value={item.id}>
-                    <div className="flex items-center justify-start gap-2 ">
-                      <SelectImage src={item.userImage} alt={item.username} />
-                      <p>{item.username}</p>
-                    </div>
-                  </SelectItems>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </FromItem>
-        <FromItem>
-          <Label htmlFor="description">描述</Label>
-          <Textarea id="description" {...register("description")} />
-        </FromItem>
-        {!isMobile ? (
-          <DrawerFooter>
-            <DialogClose asChild>
-              <Button variant="outline" ref={closeRef2}>
-                取消
+                type="submit"
+                disabled={createTaskLoading}
+              >
+                {type === "create" ? "添加" : "保存"}
               </Button>
-            </DialogClose>
-            <Button>{type === "create" ? "添加" : "保存"}</Button>
-          </DrawerFooter>
-        ) : (
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline" ref={closeRef}>
-                取消
+            </>
+          ) : (
+            <>
+              <DialogClose asChild>
+                <Button variant="outline" className="w-full" ref={closeRef}>
+                  取消
+                </Button>
+              </DialogClose>
+              <Button
+                className="w-full"
+                type="submit"
+                disabled={createTaskLoading}
+              >
+                {type === "create" ? "添加" : "保存"}
               </Button>
-            </DialogClose>
-            <Button>{type === "create" ? "添加" : "保存"}</Button>
-          </DialogFooter>
-        )}
+            </>
+          )}
+        </CardFooter>
       </CardContent>
     </form>
   );
