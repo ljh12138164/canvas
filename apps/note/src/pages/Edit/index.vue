@@ -3,7 +3,14 @@ import Editor from "@/components/Edit/Tiptap.vue";
 </script>
 <template>
   11r
-  <Editor />
+  <div>
+    <Editor class="editor" />
+  </div>
 </template>
 
-<style scoped></style>
+<style>
+.tiptap {
+  height: 100%;
+  width: 100%;
+}
+</style>

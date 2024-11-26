@@ -5,7 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "dev:api": "turbo --filter=api dev",
-    "dev:note": "turbo --filter=api --filter=note --filter=ws-note dev",
+    "dev:note": "turbo --filter=api --filter=note --filter=ws dev",
     "dev:design": "turbo --filter=api --filter=design dev",
     "dev:jebet": "turbo --filter=api --filter=jebet dev",
     "dev:ws": "turbo --filter=api --filter=ws dev",

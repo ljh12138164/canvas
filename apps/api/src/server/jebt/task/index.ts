@@ -3,6 +3,7 @@ import to from "await-to-js";
 import { supabaseJebt } from "../../../server/supabase/jebt";
 import { TaskStatus, TaskWithWorkspace } from "../../../types/jebt/board";
 import { checkMember } from "../board";
+import { nanoid } from "nanoid";
 
 /**
  * 创建任务
@@ -25,16 +26,19 @@ export const createJebtTask = async ({
   description?: string;
   assigneeId: string;
   status: TaskStatus;
-  lastTime: Date;
+  lastTime: string;
   currentUserId: string;
 }) => {
+  const id = nanoid();
   const [error] = await to(checkMember(currentUserId, workspaceId));
   if (error) throw new Error("无权限");
   const { data, error: taskError } = await supabaseJebt
     .from("tasks")
     .insert([
       {
+        id,
         name,
+        position: 1000,
         projectId,
         workspaceId,
         description,
@@ -44,6 +48,7 @@ export const createJebtTask = async ({
       },
     ])
     .select("*");
+  console.log({ data, taskError });
   if (taskError) throw new Error("服务器错误");
   return data;
 };
@@ -60,7 +65,7 @@ export const getJebtTask = async ({
   assigneeId,
   status,
   search,
-  dueDate,
+  lastTime,
 }: {
   currentUserId: string;
   workspaceId: string;
@@ -68,26 +73,27 @@ export const getJebtTask = async ({
   search: string | null | undefined;
   status: TaskStatus | null | undefined;
   assigneeId: string | null | undefined;
-  dueDate: string | null | undefined;
+  lastTime: string | null | undefined;
 }) => {
   const [error] = await to(checkMember(currentUserId, workspaceId));
   if (error) throw new Error("无权限");
   const query = supabaseJebt
     .from("tasks")
-    .select("*,workspace(*,member(*)),project(*)")
+    .select("*,workspace(*,member(*)),projects(*)")
     .eq("workspaceId", workspaceId)
-    .order("createdAt", { ascending: false });
+    .order("created_at", { ascending: false });
 
   if (projectId) query.eq("projectId", projectId);
-  if (status) query.eq("status", status);
+  if (status && status !== TaskStatus.ALL) query.eq("status", status);
   if (assigneeId) query.eq("assigneeId", assigneeId);
-  if (dueDate) query.gte("dueDate", dueDate);
+  if (lastTime) query.gte("lastTime", lastTime);
   if (search) query.textSearch("name", search);
 
   const { data, error: taskError } = (await query) as {
     data: TaskWithWorkspace[];
     error: PostgrestError | null;
   };
+  console.log({ data, taskError });
   if (taskError) throw new Error("服务器错误");
   return data;
 };

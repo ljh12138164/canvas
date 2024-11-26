@@ -1,10 +1,9 @@
 {
-  "name": "ws-note",
+  "name": "ws",
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "dev:bun": "bun run --hot src/index.ts --port 8080",
-    "dev:deno": "deno run src/index.ts --port 8080"
+    "dev:bun": "bun run --hot src/index.ts --port 8080"
   },
   "devDependencies": {
     "@hocuspocus/extension-sqlite": "^2.13.5",

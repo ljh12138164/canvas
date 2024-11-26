@@ -1,4 +1,4 @@
-import { routerCheckLogin, routerLoginAfter } from "@/libs";
+import { routerCheckLogin, routerLoginAfter } from "@/lib";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: RouteRecordRaw[] = [

@@ -1,4 +1,4 @@
-import { DEFAULT_AVATAR, USER_IMAGE_URL } from "@/libs";
+import { DEFAULT_AVATAR, USER_IMAGE_URL } from "@/lib";
 import { nanoid } from "nanoid";
 import { supabaseNote } from "../index";
 

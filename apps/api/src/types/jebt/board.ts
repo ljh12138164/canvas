@@ -35,6 +35,7 @@ export interface Project {
 }
 // 任务状态
 export enum TaskStatus {
+  ALL = "全部",
   BACKLOG = "储备",
   TODO = "待办",
   DONE = "完成",
