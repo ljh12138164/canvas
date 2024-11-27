@@ -97,3 +97,31 @@ export const getJebtTask = async ({
   if (taskError) throw new Error("服务器错误");
   return data;
 };
+
+/**
+ * 删除任务
+ * @param param0
+ * @returns
+ */
+export const deleteJebtTask = async ({
+  id,
+  currentUserId,
+  workspaceId,
+  projectId,
+}: {
+  id: string;
+  currentUserId: string;
+  workspaceId: string;
+  projectId: string;
+}) => {
+  const [error] = await to(checkMember(currentUserId, workspaceId));
+  if (error) throw new Error("无权限");
+  const { error: taskError } = await supabaseJebt
+    .from("tasks")
+    .delete()
+    .eq("id", id)
+    .eq("workspaceId", workspaceId)
+    .eq("projectId", projectId);
+  if (taskError) throw new Error("服务器错误");
+  return true;
+};

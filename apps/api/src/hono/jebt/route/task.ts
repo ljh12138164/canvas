@@ -4,7 +4,11 @@ import { TaskStatus } from "../../../types/jebt/board";
 import { z } from "zod";
 import { errorCheck } from "../../../libs/error";
 import to from "await-to-js";
-import { createJebtTask, getJebtTask } from "../../../server/jebt/task";
+import {
+  createJebtTask,
+  deleteJebtTask,
+  getJebtTask,
+} from "../../../server/jebt/task";
 
 const task = new Hono()
   .post(
@@ -88,6 +92,27 @@ const task = new Hono()
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     }
+  )
+  // 删除任务
+  .delete(
+    "/delete",
+    zValidator(
+      "query",
+      z.object({
+        id: z.string(),
+        currentUserId: z.string(),
+        workspaceId: z.string(),
+        projectId: z.string(),
+      })
+    ),
+    async (c) => {
+      const { id, currentUserId, workspaceId, projectId } =
+        c.req.valid("query");
+      const [error, data] = await to(
+        deleteJebtTask({ id, currentUserId, workspaceId, projectId })
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    }
   );
-
 export default task;

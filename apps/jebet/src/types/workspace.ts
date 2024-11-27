@@ -30,10 +30,10 @@ export interface Project {
 export enum TaskStatus {
   ALL = "全部",
   BACKLOG = "储备",
-  TODO = "待办",
-  DONE = "完成",
-  IN_PROGRESS = "进行中",
   IN_REVIEW = "等待审核",
+  TODO = "待办",
+  IN_PROGRESS = "进行中",
+  DONE = "完成",
 }
 export interface Task {
   id: string;
@@ -46,4 +46,9 @@ export interface Task {
   status: TaskStatus;
   description: string;
   assigneeId: string;
+}
+// 任务包含工作区信息
+export interface TaskWithWorkspace extends Task {
+  workspace: Workspace & { member: Member[] };
+  project: Project;
 }

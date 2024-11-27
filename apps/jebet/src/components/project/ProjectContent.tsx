@@ -6,12 +6,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CalendarIcon, XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 import { FiPlus } from "react-icons/fi";
 import { useSearchParams } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { Card } from "../ui/card";
+import { DataTable } from "../ui/date-table";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { ScrollArea } from "../ui/scrollArea";
 import {
@@ -24,7 +26,7 @@ import {
 import { Separator } from "../ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import TaskFromCard from "./TaskFromCard";
-import { flushSync } from "react-dom";
+import { columns } from "./Table";
 const animate = keyframes`
   0%{
     opacity: 0;
@@ -160,7 +162,6 @@ const ProjectContent = ({
         <Separator className="my-2" />
       </ProjectNav>
       <ProjectScrollArea>
-        {/* TODO: 根据不同的selectTap显示不同的内容 */}
         <header>分类</header>
         <SelectConatiner>
           <Select
@@ -285,7 +286,9 @@ const ProjectContent = ({
         {!taskListLoading ? (
           <Container>
             {selectTap === "task" && (
-              <div className={taskListFetching ? "opacity-50" : ""}>任务</div>
+              <div className={taskListFetching ? "opacity-50" : ""}>
+                <DataTable columns={columns} data={taskList || []} />
+              </div>
             )}
             {selectTap === "calendar" && <div>日历</div>}
             {selectTap === "kanban" && <div>看板</div>}

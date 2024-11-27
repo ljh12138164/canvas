@@ -43,7 +43,7 @@ export const useGetTaskList = ({
   const { data, isLoading, isFetching } = useQuery<
     GetTaskListOutput,
     Error,
-    GetTaskListInput
+    GetTaskListOutput
   >({
     queryKey: ["taskList"],
     queryFn: async () => {
@@ -65,4 +65,29 @@ export const useGetTaskList = ({
     },
   });
   return { data, isLoading, isFetching };
+};
+
+type DeleteTaskInput = InferRequestType<typeof client.task.delete.$delete>;
+type DeleteTaskOutput = InferResponseType<
+  typeof client.task.delete.$delete,
+  200
+>;
+/**
+ * ## 删除任务
+ */
+export const useDeleteTask = () => {
+  const { mutate: deleteTask, isPending: deleteTaskLoading } = useMutation<
+    DeleteTaskOutput,
+    Error,
+    DeleteTaskInput
+  >({
+    mutationFn: async (data) => {
+      const res = await client.task.delete.$delete(data);
+      if (!res.ok) {
+        throw new Error("删除任务失败");
+      }
+      return res.json();
+    },
+  });
+  return { deleteTask, deleteTaskLoading };
 };
