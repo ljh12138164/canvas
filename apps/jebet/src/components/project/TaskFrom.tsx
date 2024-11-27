@@ -1,10 +1,12 @@
 import { useCreateTask } from "@/server/hooks/tasks";
 import { Member, TaskStatus } from "@/types/workspace";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import styled from "styled-components";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -31,7 +33,7 @@ const zShema = z.object({
     })
     .min(2, { message: "任务名称至少2个字符" })
     .max(20, { message: "任务名称最多20个字符" }),
-  lastTime: z.string({
+  lastTime: z.any({
     message: "请选择最后时间",
   }),
   assigneeId: z.string({
@@ -71,6 +73,7 @@ const TaskFrom = ({
   currentUserId: string;
   isMobile: boolean;
 }) => {
+  const queryClient = useQueryClient();
   const { register, handleSubmit, setValue, formState } = useForm<
     z.infer<typeof zShema>
   >({
@@ -81,21 +84,36 @@ const TaskFrom = ({
     },
   });
   const [lastTime, setLastTime] = useState<Date | null>(null);
-
   const closeRef = useRef<HTMLButtonElement>(null);
   const closeRef2 = useRef<HTMLButtonElement>(null);
   const { createTask, createTaskLoading } = useCreateTask();
   const onSubmit = (data: z.infer<typeof zShema>) => {
     if (type === "create") {
-      createTask({
-        // @ts-ignore
-        json: {
-          ...data,
-          workspaceId,
-          projectId,
-          currentUserId,
+      toast.loading("创建中");
+      createTask(
+        {
+          // @ts-ignore
+          json: {
+            ...data,
+            workspaceId,
+            projectId,
+            currentUserId,
+          },
         },
-      });
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["taskList"] });
+            toast.dismiss();
+            toast.success("创建成功");
+            if (closeRef.current) {
+              closeRef.current.click();
+            }
+            if (closeRef2.current) {
+              closeRef2.current.click();
+            }
+          },
+        }
+      );
     }
     if (type === "edit") {
       // updateTask(data);
@@ -169,6 +187,7 @@ const TaskFrom = ({
               </PopoverContent>
             </Popover>
             <p className="text-red-500 text-sm">
+              {/* @ts-ignore */}
               {formState.errors.lastTime?.message}
             </p>
           </FromItem>
