@@ -8,9 +8,12 @@ import {
   createJebtTask,
   deleteJebtTask,
   getJebtTask,
+  getJebtTaskDetail,
+  updateJebtTask,
 } from "../../../server/jebt/task";
 
 const task = new Hono()
+  // 创建任务
   .post(
     "/create",
     zValidator(
@@ -47,6 +50,52 @@ const task = new Hono()
           assigneeId,
           status,
           lastTime,
+        })
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    }
+  )
+  // 更新任务
+  .patch(
+    "/update",
+    zValidator(
+      "json",
+      z.object({
+        name: z.string(),
+        projectId: z.string(),
+        workspaceId: z.string(),
+        description: z.string().optional(),
+        assigneeId: z.string(),
+        status: z.nativeEnum(TaskStatus),
+        lastTime: z.string(),
+        currentUserId: z.string(),
+        id: z.string(),
+      })
+    ),
+    async (c) => {
+      const {
+        name,
+        projectId,
+        workspaceId,
+        description,
+        assigneeId,
+        status,
+        lastTime,
+        currentUserId,
+        id,
+      } = c.req.valid("json");
+      const [error, data] = await to(
+        updateJebtTask({
+          currentUserId,
+          name,
+          projectId,
+          workspaceId,
+          description,
+          assigneeId,
+          status,
+          lastTime,
+          id,
         })
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
@@ -97,7 +146,7 @@ const task = new Hono()
   .delete(
     "/delete",
     zValidator(
-      "query",
+      "json",
       z.object({
         id: z.string(),
         currentUserId: z.string(),
@@ -106,10 +155,31 @@ const task = new Hono()
       })
     ),
     async (c) => {
-      const { id, currentUserId, workspaceId, projectId } =
-        c.req.valid("query");
+      const { id, currentUserId, workspaceId, projectId } = c.req.valid("json");
       const [error, data] = await to(
         deleteJebtTask({ id, currentUserId, workspaceId, projectId })
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    }
+  )
+  // 根据id任务详情
+  .get(
+    "/detail",
+    zValidator(
+      "query",
+      z.object({
+        id: z.string(),
+        workspaceId: z.string(),
+        projectId: z.string(),
+        currentUserId: z.string(),
+      })
+    ),
+    async (c) => {
+      const { id, workspaceId, projectId, currentUserId } =
+        c.req.valid("query");
+      const [error, data] = await to(
+        getJebtTaskDetail({ id, workspaceId, projectId, currentUserId })
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);

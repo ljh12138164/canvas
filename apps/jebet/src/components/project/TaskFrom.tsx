@@ -1,5 +1,5 @@
-import { useCreateTask } from "@/server/hooks/tasks";
-import { Member, TaskStatus } from "@/types/workspace";
+import { useCreateTask, useUpdateTask } from "@/server/hooks/tasks";
+import { Member, Task, TaskStatus } from "@/types/workspace";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -65,6 +65,7 @@ const TaskFrom = ({
   userData,
   currentUserId,
   isMobile,
+  defaultData,
 }: {
   workspaceId: string;
   projectId: string;
@@ -72,6 +73,7 @@ const TaskFrom = ({
   userData: Member[] | undefined;
   currentUserId: string;
   isMobile: boolean;
+  defaultData?: Task;
 }) => {
   const queryClient = useQueryClient();
   const { register, handleSubmit, setValue, formState } = useForm<
@@ -79,14 +81,18 @@ const TaskFrom = ({
   >({
     resolver: zodResolver(zShema),
     defaultValues: {
-      name: "",
-      description: "",
+      name: defaultData?.name || "",
+      description: defaultData?.description || "",
+      status: defaultData?.status || TaskStatus.TODO,
+      assigneeId: defaultData?.assigneeId || "",
+      lastTime: defaultData?.lastTime || null,
     },
   });
   const [lastTime, setLastTime] = useState<Date | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const closeRef2 = useRef<HTMLButtonElement>(null);
   const { createTask, createTaskLoading } = useCreateTask();
+  const { updateTask, updateTaskLoading } = useUpdateTask();
   const onSubmit = (data: z.infer<typeof zShema>) => {
     if (type === "create") {
       toast.loading("创建中");
@@ -98,6 +104,7 @@ const TaskFrom = ({
             workspaceId,
             projectId,
             currentUserId,
+            // lastTime,
           },
         },
         {
@@ -116,7 +123,27 @@ const TaskFrom = ({
       );
     }
     if (type === "edit") {
-      // updateTask(data);
+      updateTask(
+        {
+          // @ts-ignore
+          json: {
+            ...data,
+            workspaceId,
+            projectId,
+            currentUserId,
+          },
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["taskList"] });
+            toast.dismiss();
+            toast.success("更新成功");
+            if (closeRef.current) {
+              closeRef.current.click();
+            }
+          },
+        }
+      );
     }
   };
   return (
@@ -251,7 +278,7 @@ const TaskFrom = ({
               <Button
                 className="w-full"
                 type="submit"
-                disabled={createTaskLoading}
+                disabled={createTaskLoading || updateTaskLoading}
               >
                 {type === "create" ? "添加" : "保存"}
               </Button>

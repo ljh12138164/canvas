@@ -18,7 +18,7 @@ const TaskDate = ({ lastTime }: TaskDateProps) => {
   const diffInDays = differenceInDays(endDate, today);
 
   return (
-    <TextColor diffInDays={diffInDays} className="text-muted-foreground">
+    <TextColor diffInDays={diffInDays || 0} className="text-muted-foreground">
       {format(endDate, "yyyy-MM-dd")}
     </TextColor>
   );

@@ -15,7 +15,6 @@ import { Calendar } from "../ui/calendar";
 import { Card } from "../ui/card";
 import { DataTable } from "../ui/date-table";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { ScrollArea } from "../ui/scrollArea";
 import {
   Select,
   SelectContent,
@@ -25,8 +24,9 @@ import {
 } from "../ui/select";
 import { Separator } from "../ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
-import TaskFromCard from "./TaskFromCard";
+import Kanban from "./Kanban";
 import { columns } from "./Table";
+import TaskFromCard from "./TaskFromCard";
 const animate = keyframes`
   0%{
     opacity: 0;
@@ -53,7 +53,7 @@ const ProjectNavContainer = styled.div`
 const ProjectNav = styled.nav`
   height: 6dvh;
 `;
-const ProjectScrollArea = styled(ScrollArea)`
+const ProjectScrollArea = styled.main`
   height: 60dvh;
   padding: 1rem 0 0 0;
 `;
@@ -104,7 +104,6 @@ const ProjectContent = ({
     return "task";
   });
   const {
-    // TODO: 数据渲染
     data: taskList,
     isLoading: taskListLoading,
     isFetching: taskListFetching,
@@ -281,7 +280,6 @@ const ProjectContent = ({
             </PopoverContent>
           </Popover>
         </SelectConatiner>
-
         <Separator className="my-2" />
         {!taskListLoading ? (
           <Container>
@@ -291,7 +289,15 @@ const ProjectContent = ({
               </div>
             )}
             {selectTap === "calendar" && <div>日历</div>}
-            {selectTap === "kanban" && <div>看板</div>}
+            {selectTap === "kanban" && (
+              <div
+                className={
+                  taskListFetching ? "opacity-50  max-w-full" : " max-w-full"
+                }
+              >
+                <Kanban taskList={taskList || []} />
+              </div>
+            )}
           </Container>
         ) : (
           <div>加载中</div>

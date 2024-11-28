@@ -91,3 +91,28 @@ export const useDeleteTask = () => {
   });
   return { deleteTask, deleteTaskLoading };
 };
+
+type UpdateTaskInput = InferRequestType<typeof client.task.update.$patch>;
+type UpdateTaskOutput = InferResponseType<
+  typeof client.task.update.$patch,
+  200
+>;
+/**
+ * ## 更新任务
+ */
+export const useUpdateTask = () => {
+  const { mutate: updateTask, isPending: updateTaskLoading } = useMutation<
+    UpdateTaskOutput,
+    Error,
+    UpdateTaskInput
+  >({
+    mutationFn: async (data) => {
+      const res = await client.task.update.$patch(data);
+      if (!res.ok) {
+        throw new Error("更新任务失败");
+      }
+      return res.json();
+    },
+  });
+  return { updateTask, updateTaskLoading };
+};

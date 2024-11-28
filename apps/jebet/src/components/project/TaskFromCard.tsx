@@ -1,5 +1,5 @@
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Member } from "@/types/workspace";
+import { Member, Task } from "@/types/workspace";
 import { useState } from "react";
 import {
   Dialog,
@@ -24,6 +24,7 @@ const TaskFromCard = ({
   projectId,
   userData,
   currentUserId,
+  defaultData,
 }: {
   children: React.ReactNode;
   type: "create" | "edit";
@@ -31,6 +32,7 @@ const TaskFromCard = ({
   projectId: string;
   userData: Member[] | undefined;
   currentUserId: string;
+  defaultData?: Task;
 }) => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
@@ -38,7 +40,11 @@ const TaskFromCard = ({
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger>{children}</DrawerTrigger>
+        <DrawerTrigger
+          className={`${type === "edit" && "w-full"} cursor-pointer`}
+        >
+          {children}
+        </DrawerTrigger>
         <DrawerContent className="py-4">
           <DrawerHeader>
             <DrawerTitle>
@@ -52,6 +58,7 @@ const TaskFromCard = ({
             type={type}
             userData={userData}
             currentUserId={currentUserId}
+            defaultData={defaultData}
           />
         </DrawerContent>
       </Drawer>
@@ -74,6 +81,7 @@ const TaskFromCard = ({
           userData={userData}
           isMobile={isMobile}
           currentUserId={currentUserId}
+          defaultData={defaultData}
         />
       </DialogContent>
     </Dialog>
