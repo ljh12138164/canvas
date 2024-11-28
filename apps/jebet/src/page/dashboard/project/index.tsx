@@ -4,10 +4,12 @@ import useStore from "@/store/user";
 import { observer } from "mobx-react-lite";
 import toast from "react-hot-toast";
 import { Navigate, useParams } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 import styled from "styled-components";
-const ProjectContainer = styled.main`
+const ProjectContainer = styled.main<{ mobile: boolean }>`
   height: 100%;
-  width: 100%;
+  max-width: ${(props) =>
+    props.mobile ? "calc(100dvw - 50px)" : "calc(100dvw - 300px)"};
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -17,6 +19,7 @@ const Project = observer(() => {
   const store = useStore;
   const params = useParams();
 
+  const isModel = useIsMobile();
   // const {}=useMe
   if (store.userData === null || store.activeProject === null) return null;
   if (!store.userData) {
@@ -32,7 +35,7 @@ const Project = observer(() => {
     return <Navigate to="/dashboard" replace />;
   }
   return (
-    <ProjectContainer>
+    <ProjectContainer mobile={isModel}>
       <ProjectNav project={store.activeProject} />
       <ProjectContent
         userData={store.userData}

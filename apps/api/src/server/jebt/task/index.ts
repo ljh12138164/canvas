@@ -1,9 +1,9 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import to from "await-to-js";
+import { nanoid } from "nanoid";
 import { supabaseJebt } from "../../../server/supabase/jebt";
 import { TaskStatus, TaskWithWorkspace } from "../../../types/jebt/board";
-import { checkMember } from "../board";
-import { nanoid } from "nanoid";
+import { checkMember, checkUser } from "../board";
 
 /**
  * 创建任务
@@ -93,7 +93,6 @@ export const getJebtTask = async ({
     data: TaskWithWorkspace[];
     error: PostgrestError | null;
   };
-  console.log({ data, taskError });
   if (taskError) throw new Error("服务器错误");
   return data;
 };
@@ -124,4 +123,78 @@ export const deleteJebtTask = async ({
     .eq("projectId", projectId);
   if (taskError) throw new Error("服务器错误");
   return true;
+};
+
+/**
+ * 更新任务
+ * @param param0
+ * @returns
+ */
+export const updateJebtTask = async ({
+  projectId,
+  workspaceId,
+  description,
+  assigneeId,
+  status,
+  currentUserId,
+  lastTime,
+  id,
+}: {
+  name: string;
+  projectId: string;
+  workspaceId: string;
+  description?: string;
+  assigneeId: string;
+  status: TaskStatus;
+  lastTime: string;
+  currentUserId: string;
+  id: string;
+}) => {
+  const [error] = await to(checkUser(currentUserId, workspaceId));
+  if (error) throw new Error("无权限");
+  const { data, error: taskError } = await supabaseJebt
+    .from("tasks")
+    .update([
+      {
+        position: 1000,
+        description,
+        assigneeId,
+        status,
+        lastTime,
+      },
+    ])
+    .eq("id", id)
+    .eq("workspaceId", workspaceId)
+    .eq("projectId", projectId)
+    .select("*");
+  if (taskError) throw new Error("服务器错误");
+  return data;
+};
+
+/**
+ * 根据id获取任务详情
+ * @param param0
+ * @returns
+ */
+export const getJebtTaskDetail = async ({
+  id,
+  workspaceId,
+  projectId,
+  currentUserId,
+}: {
+  id: string;
+  workspaceId: string;
+  projectId: string;
+  currentUserId: string;
+}) => {
+  const [error] = await to(checkUser(currentUserId, workspaceId));
+  if (error) throw new Error("无权限");
+  const { data, error: taskError } = await supabaseJebt
+    .from("tasks")
+    .select("*")
+    .eq("id", id)
+    .eq("workspaceId", workspaceId)
+    .eq("projectId", projectId);
+  if (taskError) throw new Error("服务器错误");
+  return data;
 };

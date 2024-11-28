@@ -1,20 +1,13 @@
-import { TaskWithWorkspace } from "@/types/workspace";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import {
-  ExternalLinkIcon,
-  MoreVertical,
-  PencilIcon,
-  Trash,
-} from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDeleteTask } from "@/server/hooks/tasks";
 import userStore from "@/store/user";
+import { TaskWithWorkspace } from "@/types/workspace";
+import { useQueryClient } from "@tanstack/react-query";
+import { Link, MoreVertical, PencilIcon, Trash } from "lucide-react";
 import { observer } from "mobx-react-lite";
+import { useRef } from "react";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogClose,
@@ -25,10 +18,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { useDeleteTask } from "@/server/hooks/tasks";
-import toast from "react-hot-toast";
-import { useRef } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import TaskFromCard from "./TaskFromCard";
 const ProjectOpacte = observer(({ task }: { task: TaskWithWorkspace }) => {
   const { userData } = userStore;
   const { workspaceId, projectId } = useParams();
@@ -43,7 +39,7 @@ const ProjectOpacte = observer(({ task }: { task: TaskWithWorkspace }) => {
     toast.loading("删除中...");
     deleteTask(
       {
-        query: {
+        json: {
           currentUserId: userData?.id,
           workspaceId: workspaceId,
           projectId: projectId,
@@ -60,32 +56,46 @@ const ProjectOpacte = observer(({ task }: { task: TaskWithWorkspace }) => {
       }
     );
   };
+
+  if (!workspaceId || !projectId || !userData) return null;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost">
-          <Link to={`${task.id}`}>
-            <MoreVertical />
-            <span className="sr-only">细节</span>
-          </Link>
+        <Button
+          variant="ghost"
+          className="w-full cursor-pointer"
+          onClick={() =>
+            navigate(`/dashboard/${workspaceId}/${projectId}/${task.id}`)
+          }
+        >
+          <MoreVertical />
         </Button>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent>
-        <DropdownMenuItem asChild>
-          <Button variant="ghost" className="w-full cursor-pointer">
-            <PencilIcon />
-            <span>编辑</span>
-          </Button>
-        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Button
             variant="ghost"
             className="w-full cursor-pointer"
             onClick={() => navigate(`${task.id}`)}
           >
-            <ExternalLinkIcon />
-            <span>打开</span>
+            <Link />
+            <span>细节</span>
           </Button>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <TaskFromCard
+            workspaceId={workspaceId}
+            projectId={projectId}
+            type="edit"
+            userData={task.workspace.member}
+            currentUserId={userData.id}
+          >
+            <Button variant="ghost" className="w-full cursor-pointer">
+              <PencilIcon />
+              <span>编辑</span>
+            </Button>
+          </TaskFromCard>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Dialog>
