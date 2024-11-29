@@ -17,6 +17,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { LabelCount } from "@/utils/board";
+import { useMount } from "ahooks";
 import { useState } from "react";
 import { Button } from "./button";
 
@@ -31,6 +33,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
   const table = useReactTable({
     data,
     columns,
@@ -44,7 +47,9 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   });
-
+  useMount(() => {
+    table.setPageSize(LabelCount);
+  });
   return (
     <div>
       {/* <div className="flex items-center py-4">
@@ -107,6 +112,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
@@ -121,7 +127,10 @@ export function DataTable<TData, TValue>({
           variant="outline"
           size="sm"
           className={!table.getCanNextPage() ? "cursor-not-allowed" : ""}
-          onClick={() => table.nextPage()}
+          onClick={() => {
+            console.log(table);
+            table.nextPage();
+          }}
           disabled={!table.getCanNextPage()}
         >
           下一页

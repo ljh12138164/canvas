@@ -3,15 +3,17 @@ import { useDroppable } from "@dnd-kit/core";
 export function KanbanDroppable({
   children,
   id,
+  color,
 }: {
   children: React.ReactNode;
   id: string;
+  color: string;
 }) {
   const { isOver, setNodeRef } = useDroppable({
     id,
   });
   const style = {
-    color: isOver ? "green" : undefined,
+    color: isOver ? color : undefined,
   };
 
   return (
