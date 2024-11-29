@@ -1,12 +1,14 @@
-import DrawerFromCard from '@/components/board/DrawerFromCard';
-import styled from 'styled-components';
-import { useProjectList } from '@/server/hooks/project';
-import { ScrollArea } from '../ui/scrollArea';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useMemoizedFn } from 'ahooks';
-import { observer } from 'mobx-react-lite';
-import useStore from '@/store/user';
-import { useEffect } from 'react';
+import DrawerFromCard from "@/components/board/DrawerFromCard";
+import styled from "styled-components";
+import { useProjectList } from "@/server/hooks/project";
+import { ScrollArea } from "../ui/scrollArea";
+import { useParams, useNavigate } from "react-router-dom";
+import { useMemoizedFn } from "ahooks";
+import { observer } from "mobx-react-lite";
+import useStore from "@/store/user";
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useGetTaskList } from "@/server/hooks/tasks";
 
 const TitleP = styled.p`
   font-size: 1rem;
@@ -61,7 +63,7 @@ const ProjectList = observer(
       <>
         <TitleContain>
           <TitleP>项目</TitleP>
-          <DrawerFromCard type='project'></DrawerFromCard>
+          <DrawerFromCard type="project"></DrawerFromCard>
         </TitleContain>
         <ListContain>
           {isLoadingProjectList && <div>加载中...</div>}
@@ -76,12 +78,12 @@ const ProjectList = observer(
                     }
                   }}
                   key={project.id}
-                  className={checkActive(project.id) ? 'active bg-white' : ''}
+                  className={checkActive(project.id) ? "active bg-white" : ""}
                 >
                   <img
-                    className='rounded-sm'
+                    className="rounded-sm"
                     src={project.imageUrl}
-                    alt='项目图片'
+                    alt="项目图片"
                     width={20}
                     height={20}
                   />

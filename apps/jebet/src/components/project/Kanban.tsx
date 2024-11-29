@@ -1,9 +1,11 @@
 import { TaskStatus, TaskWithWorkspace } from "@/types/workspace";
 import { CircleDashedIcon, CircleIcon } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import styled from "styled-components";
 import { Separator } from "../ui/separator";
 import KanbanDrop from "./KanbanDrop";
+import { useMemoizedFn } from "ahooks";
+import { DndContext, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
 
 const taskStateIcon = {
   [TaskStatus.BACKLOG]: {
@@ -90,27 +92,36 @@ const Kanban = ({ taskList }: { taskList: TaskWithWorkspace[] }) => {
       ),
     };
   }, [taskList]);
-  console.log(taskStateList);
+  const [parent, setParent] = useState<UniqueIdentifier | null>(null);
+  const handleDragEnd = useMemoizedFn((event: DragEndEvent) => {
+    const { over } = event;
+    setParent(over ? over.id : null);
+  });
+  if (!taskList) return null;
   return (
     <KanbanNav>
-      {Object.entries(taskStateIcon).map(
-        ([status, { icon: Icon, color, state, dropColor }]) => (
-          <div style={{ minWidth: "200px", minHeight: "200px" }}>
-            <StateItem key={status}>
-              <Icon className={color} />
-              <span>{state}</span>
-              <span>
-                {state !== TaskStatus.ALL && taskStateList[state].length}
-              </span>
-            </StateItem>
-            <Separator />
-            <KanbanDrop
-              color={dropColor}
-              taskList={state !== TaskStatus.ALL && taskStateList[state]}
-            />
-          </div>
-        )
-      )}
+      <DndContext onDragEnd={handleDragEnd}>
+        {Object.entries(taskStateIcon).map(
+          ([status, { icon: Icon, color, state, dropColor }]) => (
+            <div style={{ minWidth: "200px", minHeight: "200px" }}>
+              <StateItem key={status}>
+                <Icon className={color} />
+                <span>{state}</span>
+                <span>
+                  {state !== TaskStatus.ALL && taskStateList[state].length}
+                </span>
+              </StateItem>
+              <Separator />
+              <KanbanDrop
+                status={state}
+                parent={parent}
+                color={dropColor}
+                taskList={state !== TaskStatus.ALL && taskStateList[state]}
+              />
+            </div>
+          )
+        )}
+      </DndContext>
     </KanbanNav>
   );
 };
