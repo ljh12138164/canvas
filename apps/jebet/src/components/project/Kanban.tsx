@@ -8,51 +8,57 @@ import KanbanDrop from "./KanbanDrop";
 const taskStateIcon = {
   [TaskStatus.BACKLOG]: {
     icon: CircleDashedIcon,
+    dropColor: "gray",
     color: "text-gray-500",
     state: TaskStatus.BACKLOG,
   },
   [TaskStatus.IN_REVIEW]: {
     icon: CircleIcon,
     color: "text-blue-500",
+    dropColor: "#6c7eae",
     state: TaskStatus.IN_REVIEW,
   },
   [TaskStatus.TODO]: {
     icon: CircleIcon,
     color: "text-green-500",
+    dropColor: "green",
     state: TaskStatus.TODO,
   },
   [TaskStatus.IN_PROGRESS]: {
     icon: CircleIcon,
     color: "text-yellow-500",
+    dropColor: "#c6b87d",
     state: TaskStatus.IN_PROGRESS,
   },
   [TaskStatus.DONE]: {
     icon: CircleIcon,
     color: "text-red-500",
+    dropColor: "#d38686",
     state: TaskStatus.DONE,
   },
 };
 const KanbanNav = styled.nav`
   display: grid;
   width: 100%;
-  overflow-x: scroll;
-  grid-template-columns: 200px 200px 200px 200px 200px;
-  gap: 0.2rem;
+  overflow-x: auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
   height: 100%;
-  padding: 1rem 0;
+
+  padding: 1rem 0.5rem;
 
   &::-webkit-scrollbar {
     margin-top: 10px;
-    width: 2px;
-    background-color: transparent;
+    width: 1px;
+    background-color: #f0f0f0;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    width: 2px;
+    background-color: #888;
+    width: 1px;
     border-radius: 10px;
   }
   &::-webkit-scrollbar-track {
-    background-color: transparent;
+    background-color: #f0f0f0;
   }
 `;
 const StateItem = styled.div`
@@ -88,8 +94,8 @@ const Kanban = ({ taskList }: { taskList: TaskWithWorkspace[] }) => {
   return (
     <KanbanNav>
       {Object.entries(taskStateIcon).map(
-        ([status, { icon: Icon, color, state }]) => (
-          <div>
+        ([status, { icon: Icon, color, state, dropColor }]) => (
+          <div style={{ minWidth: "200px", minHeight: "200px" }}>
             <StateItem key={status}>
               <Icon className={color} />
               <span>{state}</span>
@@ -97,8 +103,9 @@ const Kanban = ({ taskList }: { taskList: TaskWithWorkspace[] }) => {
                 {state !== TaskStatus.ALL && taskStateList[state].length}
               </span>
             </StateItem>
-            <Separator></Separator>
+            <Separator />
             <KanbanDrop
+              color={dropColor}
               taskList={state !== TaskStatus.ALL && taskStateList[state]}
             />
           </div>

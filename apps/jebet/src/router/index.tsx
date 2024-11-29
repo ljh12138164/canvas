@@ -28,11 +28,10 @@ const WorkContains = styled.div`
     width: calc(100dvw - 50px);
   }
 `;
-// 559-14-36--14.4-23
 const Scroll = styled(ScrollArea)`
   width: 100%;
   height: 100%;
-  padding: 1.5rem 0;
+  padding: 0%.5 0;
 `;
 export const router = createBrowserRouter([
   {

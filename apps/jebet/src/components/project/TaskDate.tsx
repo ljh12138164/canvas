@@ -10,7 +10,7 @@ const TextColor = styled.span<{ diffInDays: number }>`
       ? "rgb(255, 75, 75)"
       : props.diffInDays <= 7
         ? "rgb(255, 152, 0)"
-        : "rgb(255, 247, 0)"};
+        : "rgb(180, 175, 10)"};
 `;
 const TaskDate = ({ lastTime }: TaskDateProps) => {
   const today = new Date();

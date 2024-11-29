@@ -67,7 +67,12 @@ const TaskFromCard = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger
+        className={`${type === "edit" && "w-full"} cursor-pointer`}
+        asChild
+      >
+        {children}
+      </DialogTrigger>
       <DialogContent className="py-4">
         <DialogHeader>
           <DialogTitle>

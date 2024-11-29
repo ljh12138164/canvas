@@ -105,7 +105,7 @@ export const columns: ColumnDef<TaskWithWorkspace>[] = [
   {
     accessorKey: "操作",
     cell: ({ row }) => {
-      return <ProjectOpacte task={row.original} />;
+      return <ProjectOpacte type="list" task={row.original} />;
     },
   },
 ];

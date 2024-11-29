@@ -39,6 +39,7 @@ const ProjectContentContainer = styled(Card)`
   flex: 1;
   padding: 20px;
   z-index: 0;
+  max-height: 100%;
   animation: ${animate} 0.4s ease-in-out;
 `;
 const ProjectNavContainer = styled.div`
@@ -54,7 +55,7 @@ const ProjectNav = styled.nav`
   height: 6dvh;
 `;
 const ProjectScrollArea = styled.main`
-  height: 60dvh;
+  height: 68dvh;
   padding: 1rem 0 0 0;
 `;
 const PlusButton = styled(Button)`
