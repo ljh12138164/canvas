@@ -5,6 +5,7 @@ import { Separator } from "../ui/separator";
 import ProjectOpacte from "./ProjectOpacte";
 import { MoveLeft } from "lucide-react";
 import TaskDate from "./TaskDate";
+import { useDraggable } from "@dnd-kit/core";
 
 const TaskItem = styled.div`
   display: flex;
@@ -38,12 +39,19 @@ const TaskImage = styled.img`
   border-radius: 50%;
 `;
 const KanbanItem = ({ task }: { task: TaskWithWorkspace }) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: task.id,
+  });
+  const styled = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : {};
   const assigneeMemeber = useMemo(() => {
     return task.workspace.member.find((m) => m.userId === task.assigneeId);
   }, [task.workspace.member, task.assigneeId]);
-  console.log(task);
   return (
-    <TaskItem>
+    <TaskItem ref={setNodeRef} {...attributes} {...listeners} style={styled}>
       <TaskMessage>
         <span>{task.name}</span>
         <span>
