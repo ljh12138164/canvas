@@ -15,6 +15,6 @@ export interface Folders extends Workspace {
   workspaceId: string;
 }
 
-export interface Filts extends Folders {
+export interface Files extends Folders {
   folderId: string;
 }

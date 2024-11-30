@@ -47,7 +47,7 @@ export async function getCurrentUser() {
   //获取用户权限
   const { data, error } = await supabaseNote.auth.getUser();
   if (error) throw new Error("服务器错误");
-  return data?.user;
+  return { user: data?.user, session: session.session };
 }
 /**
  * ## 登出

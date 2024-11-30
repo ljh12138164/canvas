@@ -1,4 +1,4 @@
-import { supabaseDesign } from "../../../server/supabase/design";
+import { supabaseDesign } from "../../supabase/design";
 import { User } from "../../../types/design/user";
 import md5 from "blueimp-md5";
 

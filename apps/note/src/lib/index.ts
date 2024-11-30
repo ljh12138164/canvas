@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/server/supabase/user";
+import useUser from "@/store/user";
 import { RouteLocationNormalized } from "vue-router";
 import {
   toast as toastify,
@@ -50,9 +51,12 @@ export async function routerCheckLogin(
   next: (go?: string) => void
 ) {
   const data = await getCurrentUser();
+  const { setUserData } = useUser();
+
   if (!data) {
     next("/login");
   } else {
+    setUserData({ session: data.session });
     next();
   }
 }

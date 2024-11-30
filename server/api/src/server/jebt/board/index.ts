@@ -1,7 +1,7 @@
 import to from "await-to-js";
 import { nanoid } from "nanoid";
 import { generateInviteCode } from "../../../libs/utils";
-import { supabaseJebt } from "../../../server/supabase/jebt";
+import { supabaseJebt } from "../../supabase/jebt";
 import { Member, Workspace } from "../../../types/jebt/board";
 
 export const DEFAULT_ICON =
