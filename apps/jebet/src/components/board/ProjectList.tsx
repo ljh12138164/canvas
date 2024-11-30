@@ -1,14 +1,12 @@
 import DrawerFromCard from "@/components/board/DrawerFromCard";
-import styled from "styled-components";
 import { useProjectList } from "@/server/hooks/project";
-import { ScrollArea } from "../ui/scrollArea";
-import { useParams, useNavigate } from "react-router-dom";
+import useStore from "@/store/user";
 import { useMemoizedFn } from "ahooks";
 import { observer } from "mobx-react-lite";
-import useStore from "@/store/user";
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useGetTaskList } from "@/server/hooks/tasks";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import { ScrollArea } from "../ui/scrollArea";
 
 const TitleP = styled.p`
   font-size: 1rem;

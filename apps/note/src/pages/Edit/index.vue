@@ -2,7 +2,6 @@
 import Editor from "@/components/Edit/Tiptap.vue";
 </script>
 <template>
-  11r
   <div>
     <Editor class="editor" />
   </div>

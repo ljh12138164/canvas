@@ -1,7 +1,7 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import to from "await-to-js";
 import { nanoid } from "nanoid";
-import { supabaseJebt } from "../../../server/supabase/jebt";
+import { supabaseJebt } from "../../supabase/jebt";
 import { TaskStatus, TaskWithWorkspace } from "../../../types/jebt/board";
 import { checkMember, checkUser } from "../board";
 

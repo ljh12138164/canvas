@@ -1,6 +1,6 @@
 import { Board, BoardResponse } from "../../../types/design/board";
 import { UserImage } from "../../../types/design/user";
-import { supabaseDesign } from "../../../server/supabase/design";
+import { supabaseDesign } from "../../supabase/design";
 interface GetUserImage {
   userId: string;
 }

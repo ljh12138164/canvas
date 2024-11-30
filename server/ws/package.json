@@ -1,9 +1,10 @@
 {
   "name": "ws",
   "module": "index.ts",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "dev:bun": "bun run --hot src/index.ts --port 8080"
+    "dev": "bun run --hot src/index.ts --port 8080"
   },
   "devDependencies": {
     "@hocuspocus/extension-sqlite": "^2.13.5",

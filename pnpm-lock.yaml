@@ -16,91 +16,6 @@ importers:
         specifier: ^2.3.3
         version: 2.3.3
 
-  apps/api:
-    dependencies:
-      '@clerk/backend':
-        specifier: ^1.17.2
-        version: 1.17.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@hono/clerk-auth':
-        specifier: ^2.0.0
-        version: 2.0.0(@clerk/backend@1.17.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(hono@4.6.11)
-      '@hono/node-server':
-        specifier: 1.13.7
-        version: 1.13.7(hono@4.6.11)
-      '@hono/zod-validator':
-        specifier: ^0.4.1
-        version: 0.4.1(hono@4.6.11)(zod@3.23.8)
-      '@react-email/components':
-        specifier: 0.0.28
-        version: 0.0.28(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@supabase/supabase-js':
-        specifier: ^2.46.1
-        version: 2.46.1
-      '@types/bcryptjs':
-        specifier: 2.4.0
-        version: 2.4.0
-      '@types/blueimp-md5':
-        specifier: ^2.18.2
-        version: 2.18.2
-      '@types/node':
-        specifier: ^20
-        version: 20.17.6
-      '@types/react':
-        specifier: ^18.3.11
-        version: 18.3.12
-      '@vitejs/plugin-react':
-        specifier: ^4.3.3
-        version: 4.3.3(vite@5.4.11(@types/node@20.17.6)(sass-embedded@1.81.0)(terser@5.36.0))
-      await-to-js:
-        specifier: ^3.0.0
-        version: 3.0.0
-      bcryptjs:
-        specifier: ^2.4.0
-        version: 2.4.3
-      blueimp-md5:
-        specifier: ^2.19.0
-        version: 2.19.0
-      hono:
-        specifier: ^4.6.0
-        version: 4.6.11
-      jose:
-        specifier: ^5.9.6
-        version: 5.9.6
-      nanoid:
-        specifier: ^5.0.8
-        version: 5.0.8
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      resend:
-        specifier: ^4.0.1
-        version: 4.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      rimraf:
-        specifier: ^6.0.1
-        version: 6.0.1
-      typescript:
-        specifier: ^5.6.3
-        version: 5.6.3
-      unsplash-js:
-        specifier: ^7.0.19
-        version: 7.0.19
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
-    devDependencies:
-      drizzle-kit:
-        specifier: ^0.28.1
-        version: 0.28.1
-      vercel:
-        specifier: ^39.0.2
-        version: 39.1.1(encoding@0.1.13)
-      vite:
-        specifier: ^5.4.11
-        version: 5.4.11(@types/node@20.17.6)(sass-embedded@1.81.0)(terser@5.36.0)
-
   apps/form:
     dependencies:
       nuxt:
@@ -189,7 +104,7 @@ importers:
         version: 3.8.1(react@18.3.1)
       api:
         specifier: workspace:*
-        version: link:../api
+        version: link:../../server/api
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -397,7 +312,7 @@ importers:
         version: 3.8.1(react@19.0.0-rc-69d4b800-20241021)
       api:
         specifier: workspace:*
-        version: link:../api
+        version: link:../../server/api
       await-to-js:
         specifier: ^3.0.0
         version: 3.0.0
@@ -563,7 +478,7 @@ importers:
         version: 2.0.6
       api:
         specifier: workspace:*
-        version: link:../api
+        version: link:../../server/api
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -662,11 +577,96 @@ importers:
         specifier: ^8.8.1
         version: 8.15.0(eslint@9.15.0(jiti@2.4.0))(typescript@5.6.3)
 
-  apps/ws:
+  server/api:
+    dependencies:
+      '@clerk/backend':
+        specifier: ^1.17.2
+        version: 1.17.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@hono/clerk-auth':
+        specifier: ^2.0.0
+        version: 2.0.0(@clerk/backend@1.17.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(hono@4.6.11)
+      '@hono/node-server':
+        specifier: 1.13.7
+        version: 1.13.7(hono@4.6.11)
+      '@hono/zod-validator':
+        specifier: ^0.4.1
+        version: 0.4.1(hono@4.6.11)(zod@3.23.8)
+      '@react-email/components':
+        specifier: 0.0.28
+        version: 0.0.28(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@supabase/supabase-js':
+        specifier: ^2.46.1
+        version: 2.46.1
+      '@types/bcryptjs':
+        specifier: 2.4.0
+        version: 2.4.0
+      '@types/blueimp-md5':
+        specifier: ^2.18.2
+        version: 2.18.2
+      '@types/node':
+        specifier: ^20
+        version: 20.17.6
+      '@types/react':
+        specifier: ^18.3.11
+        version: 18.3.12
+      '@vitejs/plugin-react':
+        specifier: ^4.3.3
+        version: 4.3.3(vite@5.4.11(@types/node@20.17.6)(sass-embedded@1.81.0)(terser@5.36.0))
+      await-to-js:
+        specifier: ^3.0.0
+        version: 3.0.0
+      bcryptjs:
+        specifier: ^2.4.0
+        version: 2.4.3
+      blueimp-md5:
+        specifier: ^2.19.0
+        version: 2.19.0
+      hono:
+        specifier: ^4.6.0
+        version: 4.6.11
+      jose:
+        specifier: ^5.9.6
+        version: 5.9.6
+      nanoid:
+        specifier: ^5.0.8
+        version: 5.0.8
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      resend:
+        specifier: ^4.0.1
+        version: 4.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
+      unsplash-js:
+        specifier: ^7.0.19
+        version: 7.0.19
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      drizzle-kit:
+        specifier: ^0.28.1
+        version: 0.28.1
+      vercel:
+        specifier: ^39.0.2
+        version: 39.1.1(encoding@0.1.13)
+      vite:
+        specifier: ^5.4.11
+        version: 5.4.11(@types/node@20.17.6)(sass-embedded@1.81.0)(terser@5.36.0)
+
+  server/ws:
     dependencies:
       bun:
         specifier: ^1.1.36
-        version: 1.1.36
+        version: 1.1.38
       hono:
         specifier: ^4.6.0
         version: 4.6.11
@@ -688,7 +688,7 @@ importers:
         version: 2.14.0(y-protocols@1.0.6(yjs@13.6.20))(yjs@13.6.20)
       '@types/bun':
         specifier: latest
-        version: 1.1.13
+        version: 1.1.14
 
 packages:
 
@@ -2031,43 +2031,43 @@ packages:
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
 
-  '@oven/bun-darwin-aarch64@1.1.36':
-    resolution: {integrity: sha512-b+QdXV0hg1SNGjYOpnccwyrKkfHl3Pk9nKNsrryFaLiMsKVm/XKKWwVSrhTG2B3NcqyGn+pHGyc2+1+McfK4jg==}
+  '@oven/bun-darwin-aarch64@1.1.38':
+    resolution: {integrity: sha512-6r+PgOE1s56h16wHs4Tg32ZOB9JQEgLi3V+FyIag/lIKS5FV9rUjfSZSwwI8UGfNqj7RrD5cB+1PT3IFpV6gmA==}
     cpu: [arm64]
     os: [darwin]
 
-  '@oven/bun-darwin-x64-baseline@1.1.36':
-    resolution: {integrity: sha512-UdGohqbZ8gHnQpfehF1GBXcuHBgNs3Vq+z7dGWm7OZG6/Bv0faYQRJXxrf9Q0Uz6PwYoaT+P++l0xbK87b/8ZA==}
+  '@oven/bun-darwin-x64-baseline@1.1.38':
+    resolution: {integrity: sha512-hqaAsJGdGXiwwN6Y7dvYWjYwgAB8r3fXFIecjmxeijbOIw8zfru+zKFCBQtHa5AglAUAw1fOSOsWGlu8rtGp7Q==}
     cpu: [x64]
     os: [darwin]
 
-  '@oven/bun-darwin-x64@1.1.36':
-    resolution: {integrity: sha512-t1IYgmc5B4id+EzQHsJCPnrRDfTCAEnF5dyXzxaXhr1JL713XRC+h8dqO+gvIxABL63Gx1Ktn4AyI11SOpgHew==}
+  '@oven/bun-darwin-x64@1.1.38':
+    resolution: {integrity: sha512-eda41VCgQcYkrvRnob1xep8zlOm0Io3q1uiBGMaNL8aSrhpYaz3NhMH1NVlZEFahfIHhCfkin/gSLhJK0qK1fg==}
     cpu: [x64]
     os: [darwin]
 
-  '@oven/bun-linux-aarch64@1.1.36':
-    resolution: {integrity: sha512-sIMrsRX/hUed4GU5beHAcJeBt4Q6agib5kVUxDOz0k/JuIeduDkY9psEVZx+k2yKEs1AC0rIY+aw5ATBbpopYw==}
+  '@oven/bun-linux-aarch64@1.1.38':
+    resolution: {integrity: sha512-YIyJ2cBEgvQAYUh1udxe6yximei2QUh6gpdGWmhHiWWRX0VhVxPpZ2E8n6NIlpM2TBy4h/hOndoImiD/XnSq5Q==}
     cpu: [arm64]
     os: [linux]
 
-  '@oven/bun-linux-x64-baseline@1.1.36':
-    resolution: {integrity: sha512-9bjTVrs7FjTaJ9kirq7m7AywjBfgKTm5cr/5LjVUtX6iGL82kyzmgd45Z1Cubj8M5+Dh3E9ESWRmNkmLikqTFA==}
+  '@oven/bun-linux-x64-baseline@1.1.38':
+    resolution: {integrity: sha512-7Sv4RHpWBVjmkGjER90e99bYYkPiiNPGVP02CTBo49JwHfogVl8md8oWKr9A6K3ZZ05HS5atOg7wrKolkbR0bA==}
     cpu: [x64]
     os: [linux]
 
-  '@oven/bun-linux-x64@1.1.36':
-    resolution: {integrity: sha512-eeDiHdN6zhzSLNbb50nVBZUUgi8KnidowvA3VRS9z4xUvUxpHup58E+YDenXYOOohwnUPMAUOmKlNOJwrlH7Ng==}
+  '@oven/bun-linux-x64@1.1.38':
+    resolution: {integrity: sha512-foVXWa2/zRPMudxVpr+/COmcF1F849g4JJHTDDzpxIp30Xp7422nSk/c0NESveklrqhCvINq4CNcKnBh3WPFAw==}
     cpu: [x64]
     os: [linux]
 
-  '@oven/bun-windows-x64-baseline@1.1.36':
-    resolution: {integrity: sha512-d3fqpHeL1xs4SkiLEFV1xXurfymiwCi/8ZWiIfCnCDHYFkrkRSsiZJ83FnOzNUFkxCyfSeTWKoEsGI3X3SpPXw==}
+  '@oven/bun-windows-x64-baseline@1.1.38':
+    resolution: {integrity: sha512-iwvzUC59J/aMwEsCkKyPLVc2oNep2OhWL6VRp2d9Sx0g9hycBgxOfBfAhii0bDOBI/aQAVevcTRoQJ1V79PT9Q==}
     cpu: [x64]
     os: [win32]
 
-  '@oven/bun-windows-x64@1.1.36':
-    resolution: {integrity: sha512-2ylum2WPMmI94JLAxGAiwNu+VUG9mUMY0Ur/jzoJU+O9+06c7qmvY5v3jgMydRGo+2nGFHWmKVQ1ozUS2GM1sA==}
+  '@oven/bun-windows-x64@1.1.38':
+    resolution: {integrity: sha512-bMo3o7lyfC8HlyaunUXBFZVbVrYCQHHQRPXsCtgtBKzKbe/r51piwtMl4wpcvd5VZUhBDXMPrm7/OR89XXteyA==}
     cpu: [x64]
     os: [win32]
 
@@ -3351,8 +3351,8 @@ packages:
   '@types/blueimp-md5@2.18.2':
     resolution: {integrity: sha512-dJ9yRry9Olt5GAWlgCtE5dK9d/Dfhn/V7hna86eEO2Pn76+E8Y0S0n61iEUEGhWXXgtKtHxtZLVNwL8X+vLHzg==}
 
-  '@types/bun@1.1.13':
-    resolution: {integrity: sha512-KmQxSBgVWCl6RSuerlLGZlIWfdxkKqat0nxN61+qu4y1KDn0Ll3j7v1Pl8GnaL3a/U6GGWVTJh75ap62kR1E8Q==}
+  '@types/bun@1.1.14':
+    resolution: {integrity: sha512-opVYiFGtO2af0dnWBdZWlioLBoxSdDO5qokaazLhq8XQtGZbY4pY3/JxY8Zdf/hEwGubbp7ErZXoN1+h2yesxA==}
 
   '@types/d3-array@3.2.1':
     resolution: {integrity: sha512-Y2Jn2idRrLzUfAKV2LyRImR+y4oa2AntrgID95SHJxuMUrkNXmanDSed71sRNZysveJVt1hLLemQZIady0FpEg==}
@@ -4074,11 +4074,12 @@ packages:
   buffer@6.0.3:
     resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
 
-  bun-types@1.1.34:
-    resolution: {integrity: sha512-br5QygTEL/TwB4uQOb96Ky22j4Gq2WxWH/8Oqv20fk5HagwKXo/akB+LiYgSfzexCt6kkcUaVm+bKiPl71xPvw==}
+  bun-types@1.1.37:
+    resolution: {integrity: sha512-C65lv6eBr3LPJWFZ2gswyrGZ82ljnH8flVE03xeXxKhi2ZGtFiO4isRKTKnitbSqtRAcaqYSR6djt1whI66AbA==}
 
-  bun@1.1.36:
-    resolution: {integrity: sha512-PTpHkW0N9Wy0ck6AY20ksDGfg+Vs+7HApiWnC4FrOuCFKQZ+APqa/WPvkK14Sg3HZZ/r/uEY2F0gguoUkZE8XA==}
+  bun@1.1.38:
+    resolution: {integrity: sha512-cr+UDFiEasyw0kKEbbD7kDewrI2vTo17JssVVjzBv/eNskeL2wikJ+4RNgUfoRqgthCjDZux7r6ELGgIGq6aWw==}
+    cpu: [arm64, x64]
     os: [darwin, linux, win32]
     hasBin: true
 
@@ -10285,28 +10286,28 @@ snapshots:
 
   '@one-ini/wasm@0.1.1': {}
 
-  '@oven/bun-darwin-aarch64@1.1.36':
+  '@oven/bun-darwin-aarch64@1.1.38':
     optional: true
 
-  '@oven/bun-darwin-x64-baseline@1.1.36':
+  '@oven/bun-darwin-x64-baseline@1.1.38':
     optional: true
 
-  '@oven/bun-darwin-x64@1.1.36':
+  '@oven/bun-darwin-x64@1.1.38':
     optional: true
 
-  '@oven/bun-linux-aarch64@1.1.36':
+  '@oven/bun-linux-aarch64@1.1.38':
     optional: true
 
-  '@oven/bun-linux-x64-baseline@1.1.36':
+  '@oven/bun-linux-x64-baseline@1.1.38':
     optional: true
 
-  '@oven/bun-linux-x64@1.1.36':
+  '@oven/bun-linux-x64@1.1.38':
     optional: true
 
-  '@oven/bun-windows-x64-baseline@1.1.36':
+  '@oven/bun-windows-x64-baseline@1.1.38':
     optional: true
 
-  '@oven/bun-windows-x64@1.1.36':
+  '@oven/bun-windows-x64@1.1.38':
     optional: true
 
   '@parcel/watcher-android-arm64@2.5.0':
@@ -11948,9 +11949,9 @@ snapshots:
 
   '@types/blueimp-md5@2.18.2': {}
 
-  '@types/bun@1.1.13':
+  '@types/bun@1.1.14':
     dependencies:
-      bun-types: 1.1.34
+      bun-types: 1.1.37
 
   '@types/d3-array@3.2.1': {}
 
@@ -13031,21 +13032,21 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  bun-types@1.1.34:
+  bun-types@1.1.37:
     dependencies:
       '@types/node': 20.12.14
       '@types/ws': 8.5.13
 
-  bun@1.1.36:
+  bun@1.1.38:
     optionalDependencies:
-      '@oven/bun-darwin-aarch64': 1.1.36
-      '@oven/bun-darwin-x64': 1.1.36
-      '@oven/bun-darwin-x64-baseline': 1.1.36
-      '@oven/bun-linux-aarch64': 1.1.36
-      '@oven/bun-linux-x64': 1.1.36
-      '@oven/bun-linux-x64-baseline': 1.1.36
-      '@oven/bun-windows-x64': 1.1.36
-      '@oven/bun-windows-x64-baseline': 1.1.36
+      '@oven/bun-darwin-aarch64': 1.1.38
+      '@oven/bun-darwin-x64': 1.1.38
+      '@oven/bun-darwin-x64-baseline': 1.1.38
+      '@oven/bun-linux-aarch64': 1.1.38
+      '@oven/bun-linux-x64': 1.1.38
+      '@oven/bun-linux-x64-baseline': 1.1.38
+      '@oven/bun-windows-x64': 1.1.38
+      '@oven/bun-windows-x64-baseline': 1.1.38
 
   bundle-name@4.1.0:
     dependencies:
@@ -13514,7 +13515,7 @@ snapshots:
 
   debug@4.1.1:
     dependencies:
-      ms: 2.1.1
+      ms: 2.1.3
 
   debug@4.3.7(supports-color@9.4.0):
     dependencies:
@@ -14054,7 +14055,7 @@ snapshots:
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.2(eslint@8.57.1)
       eslint-plugin-react-hooks: 5.0.0(eslint@8.57.1)
@@ -14085,7 +14086,7 @@ snapshots:
       is-bun-module: 1.2.1
       is-glob: 4.0.3
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint-import-resolver-node
@@ -14103,7 +14104,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.15.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
