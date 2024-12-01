@@ -2,8 +2,12 @@ import { client } from "@/server";
 import { useQuery } from "@tanstack/vue-query";
 
 export const useBoard = (token: string) => {
-  const { data, error } = useQuery({
-    queryKey: ["board"],
+  const {
+    data: folders,
+    error: foldersError,
+    isLoading: foldersIsLoading,
+  } = useQuery({
+    queryKey: ["folders"],
     queryFn: () =>
       client.board.board.$get(undefined, {
         headers: {
@@ -11,5 +15,5 @@ export const useBoard = (token: string) => {
         },
       }),
   });
-  return { data, error };
+  return { folders, foldersError, foldersIsLoading };
 };

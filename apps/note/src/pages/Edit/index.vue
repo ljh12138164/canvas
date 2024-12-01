@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Sider from "@/components/border/Sider.vue";
 import ThemeChange from "@/components/common/ThemeChange.vue";
-import Editor from "@/components/Edit/Tiptap.vue";
 import { useBoard } from "@/hooks/board";
 import useUser from "@/store/user";
 import { ref, watch } from "vue";
@@ -10,7 +9,9 @@ const route = useRoute();
 // const router = useRouter();
 const routerParams = ref(route.params.id);
 const userData = useUser().userData!;
-const { data, isLoading } = useBoard(userData.session.access_token);
+const { folders, foldersError, foldersIsLoading } = useBoard(
+  userData.session.access_token
+);
 
 watch(
   () => route.params.id,
@@ -23,15 +24,15 @@ watch(
 <template>
   <main class="content">
     <section class="sider-container">
-      <Sider />
+      <Sider :isLoading="foldersIsLoading" :foldersError="foldersError" />
     </section>
     <section class="editor-container">
       <nav class="nav-container">
         <ThemeChange />
       </nav>
-      <main class="editor-main">
-        <Editor />
-      </main>
+      <keep-alive>
+        <main class="editor-main"></main>
+      </keep-alive>
     </section>
   </main>
 </template>
@@ -69,6 +70,7 @@ watch(
   height: 100%;
   overflow: hidden;
   &-main {
+    flex: 1;
     height: 100%;
     padding: 20px;
   }
