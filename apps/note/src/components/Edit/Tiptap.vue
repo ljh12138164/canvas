@@ -69,3 +69,9 @@ text.setAwarenessField("user", {
 <template>
   <EditorContent :editor="editor" />
 </template>
+<style lang="scss">
+.tiptap {
+  height: calc(100dvh - 150px) !important;
+  padding: 5px;
+}
+</style>

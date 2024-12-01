@@ -6,6 +6,7 @@ import "./assets/index.css";
 // toast
 import Vue3Toastify, { type ToastContainerOptions } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const app = createApp(App);
 // 使用路由 和 vuetify 和 toast
@@ -15,6 +16,7 @@ app
   .use(Vue3Toastify, {
     autoClose: 3000,
     // ...
-  } as ToastContainerOptions);
+  } as ToastContainerOptions)
+  .use(VueQueryPlugin);
 // 挂载
 app.mount("#root");

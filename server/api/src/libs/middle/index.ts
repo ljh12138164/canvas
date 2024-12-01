@@ -1,7 +1,6 @@
-import { Session, AuthSession } from "@supabase/supabase-js";
-import { Context, Next } from "hono";
-import { JWTPayload, jwtVerify } from "jose";
+import { Context, MiddlewareHandler } from "hono";
 import { verify } from "hono/jwt";
+import { JWTPayload } from "hono/utils/jwt/types";
 
 const a = {
   iss: "https://dtdgcdckrehydymmxhng.supabase.co/auth/v1",
@@ -27,55 +26,40 @@ const a = {
   session_id: "00eb12f0-1e0b-4f6a-8f3e-6c171018cd2f",
   is_anonymous: false,
 };
-interface User extends JWTPayload {
-  iss: string;
-  sub: string;
-  aud: string;
-  exp: number;
-  iat: number;
-  email: string;
-  phone: string;
-  app_metadata: {
-    provider: string;
-    providers: string[];
-  };
-  user_metadata: {
-    email: string;
-    email_verified: boolean;
-  };
-  role: string;
-  aal: string;
-  amr: { method: string; timestamp: number }[];
-  session_id: string;
-  is_anonymous: boolean;
-}
+type UserData = typeof a;
 declare module "hono" {
   interface Context {
     userData: {
-      payload: JWTPayload & AuthSession;
+      payload: UserData;
       jwt: string;
     } | null;
   }
 }
+declare module "hono" {
+  interface ContextVariableMap {
+    supabaseAuth: { auth: JWTPayload; token: string };
+  }
+}
+
 export const getSupabaseAuth = (c: Context) => {
-  return c.get("supabaseAuth");
+  return c.get("supabaseAuth") as { auth: JWTPayload; token: string };
 };
 
-export const checkToken = async (c: Context, next: Next) => {
-  const token = c.req.header("Authorization");
-  if (!token) {
-    return c.json({ message: "token is required" }, 401);
-  }
-  const jwt = token.split(" ").at(-1);
-  if (!jwt) {
-    return c.json({ message: "token is invalid" }, 401);
-  }
-  const secret = process.env.NOTE_JWT_SECRET;
-  if (!secret) {
-    return c.json({ message: "JWT secret is not configured" }, 500);
-  }
-  const payload = await verify(jwt, secret);
-  console.log({ payload });
-  c.set("userData", { payload, jwt });
-  await next();
+export const checkToken = (supabase: string): MiddlewareHandler => {
+  return async (c, next) => {
+    const secret = supabase;
+    const token = c.req.header("Authorization");
+
+    if (!token) return c.json({ message: "token is required" }, 401);
+    const jwt = token.split(" ").at(-1);
+    if (!jwt) return c.json({ message: "token is invalid" }, 401);
+
+    try {
+      const payload = await verify(jwt, secret);
+      c.set("supabaseAuth", { auth: payload, token: jwt });
+      await next();
+    } catch (e) {
+      return c.json({ message: "jwt is invalid" }, 401);
+    }
+  };
 };
