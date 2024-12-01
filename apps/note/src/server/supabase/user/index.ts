@@ -76,7 +76,7 @@ export async function signup({
     password,
     options: {
       data: {
-        fullName: username,
+        name: username,
         image: DEFAULT_AVATAR,
       },
     },
@@ -112,19 +112,19 @@ export async function login({
  */
 export async function updateCurrentUser({
   password,
-  fullName,
+  name,
   imageUrl,
   oldImageUrl,
 }: {
   password: string;
-  fullName: string;
+  name: string;
   imageUrl: string | File;
   oldImageUrl: string;
 }) {
   let userData = {
     password,
     data: {
-      fullName,
+      name,
       image: imageUrl,
     },
   };

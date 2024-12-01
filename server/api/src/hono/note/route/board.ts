@@ -1,27 +1,42 @@
 import { zValidator } from "@hono/zod-validator";
+import to from "await-to-js";
 import { Hono } from "hono";
 import { z } from "zod";
 import { checkToken, getSupabaseAuth } from "../../../libs/middle";
+import { getBoard } from "../../../server/note/board";
 
 export const board = new Hono()
-  .use(checkToken)
-  .get("/", zValidator("query", z.object({ id: z.string() })), async (c) => {
-    const token = getSupabaseAuth(c);
-    const { id } = c.req.valid("query");
-    const secret = process.env.NOTE_JWT_SECRET;
-
-    if (!token) {
-      return c.json({ message: "token is required" }, 401);
-    }
-
-    if (!secret) {
-      return c.json({ message: "JWT secret is not configured" }, 500);
-    }
-
-    return c.json({
-      message: "success",
-    });
+  .use(checkToken(process.env.NOTE_JWT_SECRET!))
+  .get("/board", async (c) => {
+    const { token, auth } = getSupabaseAuth(c);
+    const [error, board] = await to(
+      getBoard({ id: auth.session_id as string, token })
+    );
+    if (error) return c.json({ message: error.message }, 500);
+    return c.json(board);
   })
-  .post("/create", (c) => {
-    return c.json({ message: "Hello World" });
-  });
+  .post(
+    "/create",
+    zValidator(
+      "json",
+      z.object({
+        title: z.string(),
+        content: z.string(),
+        inconId: z.string(),
+      })
+    ),
+    async (c) => {
+      const { token, auth } = getSupabaseAuth(c);
+      // const [error, board] = await to(
+      //   createBoard({
+      //     title: "test",
+      //     content: "test",
+      //     id: auth.session_id as string,
+      //     inconId,
+      //     token,
+      //   })
+      // );
+      // if (error) return c.json({ message: error.message }, 500);
+      // return c.json({ board });
+    }
+  );

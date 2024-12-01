@@ -9,9 +9,10 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: routerLoginAfter,
   },
   {
-    path: "/edit",
+    path: "/edit/:id",
     component: () => import("@/pages/edit/index.vue"),
     beforeEnter: routerCheckLogin,
+    props: true,
   },
   {
     path: "/board",

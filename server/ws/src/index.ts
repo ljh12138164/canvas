@@ -9,8 +9,9 @@ const server = Server.configure({
    * @param payload
    * @returns
    */
+  // TODO: 协作认证
   onAuthenticate: async (payload) => {
-    console.log(payload);
+    // console.log(payload);
   },
   /**
    * 加载文档
