@@ -12,6 +12,24 @@ const routes: RouteRecordRaw[] = [
     path: "/edit/:id",
     component: () => import("@/pages/edit/index.vue"),
     beforeEnter: routerCheckLogin,
+    children: [
+      {
+        path: "setting",
+        component: () => import("@/pages/edit/Setting.vue"),
+      },
+      {
+        path: "workspace",
+        component: () => import("@/pages/edit/Workspace.vue"),
+      },
+      {
+        path: "trash",
+        component: () => import("@/pages/edit/Trash.vue"),
+      },
+      {
+        path: "edit",
+        component: () => import("@/pages/edit/Edit.vue"),
+      },
+    ],
     props: true,
   },
   {
