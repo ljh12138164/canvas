@@ -1,16 +1,5 @@
 <script setup lang="ts">
-import EmojiPop from "@/components/border/EmojiPop.vue";
-// onMounted(() => {
-//   if (!userData) return;
-//   client.board.$get(
-//     {
-//       query: { id: "1" },
-//     },
-//     {
-//       headers: { Authorization: "Bearer " + userData.session.access_token },
-//     }
-//   );
-// });
+import EmojiPop from '@/components/border/EmojiPop.vue';
 </script>
 <template>
   <div class="content">

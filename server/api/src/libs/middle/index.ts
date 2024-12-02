@@ -1,65 +1,71 @@
-import { Context, MiddlewareHandler } from "hono";
-import { verify } from "hono/jwt";
-import { JWTPayload } from "hono/utils/jwt/types";
+import { Context, MiddlewareHandler } from 'hono';
+import { verify } from 'hono/jwt';
 
-const a = {
-  iss: "https://dtdgcdckrehydymmxhng.supabase.co/auth/v1",
-  sub: "0cbd3058-5c2a-4705-98cf-2a43403c74ea",
-  aud: "authenticated",
-  exp: 1733016917,
-  iat: 1732980917,
-  email: "3479261099@qq.com",
-  phone: "",
-  app_metadata: { provider: "email", providers: ["email"] },
+interface Payload {
+  // 签发者
+  iss: string;
+  // 用户唯一标识
+  sub: string;
+  // 受众
+  aud: string;
+  // 过期时间
+  exp: number;
+  // 签发时间
+  iat: number;
+  // 用户信息
   user_metadata: {
-    email: "3479261099@qq.com",
-    email_verified: false,
-    fullName: "123",
-    image:
-      "https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg",
-    phone_verified: false,
-    sub: "0cbd3058-5c2a-4705-98cf-2a43403c74ea",
-  },
-  role: "authenticated",
-  aal: "aal1",
-  amr: [{ method: "password", timestamp: 1732980917 }],
-  session_id: "00eb12f0-1e0b-4f6a-8f3e-6c171018cd2f",
-  is_anonymous: false,
-};
-type UserData = typeof a;
-declare module "hono" {
-  interface Context {
-    userData: {
-      payload: UserData;
-      jwt: string;
-    } | null;
-  }
+    sub: string;
+    [key: string]: any;
+  };
+  // 角色
+  role: string;
+  // 认证方法
+  amr: [{ method: string; timestamp: number }];
+  // 会话ID
+  session_id: string;
+  // 是否匿名
+  is_anonymous: boolean;
+  // 认证级别
+  aal: string;
+  // 邮箱
+  email: string;
+  // 电话
+  phone: string;
+  // 电话验证
 }
-declare module "hono" {
+interface SupabaseAuth {
+  auth: Payload;
+  token: string;
+}
+declare module 'hono' {
   interface ContextVariableMap {
-    supabaseAuth: { auth: JWTPayload; token: string };
+    supabaseAuth: SupabaseAuth;
   }
 }
-
+/**
+ * ## 获取supabaseAuth
+ * @param c
+ * @returns
+ */
 export const getSupabaseAuth = (c: Context) => {
-  return c.get("supabaseAuth") as { auth: JWTPayload; token: string };
+  return c.get('supabaseAuth');
 };
 
 export const checkToken = (supabase: string): MiddlewareHandler => {
   return async (c, next) => {
     const secret = supabase;
-    const token = c.req.header("Authorization");
+    const token = c.req.header('Authorization');
 
-    if (!token) return c.json({ message: "token is required" }, 401);
-    const jwt = token.split(" ").at(-1);
-    if (!jwt) return c.json({ message: "token is invalid" }, 401);
+    if (!token) return c.json({ message: 'token is required' }, 401);
+    const jwt = token.split(' ').at(-1);
+    if (!jwt) return c.json({ message: 'token is invalid' }, 401);
 
     try {
       const payload = await verify(jwt, secret);
-      c.set("supabaseAuth", { auth: payload, token: jwt });
+      c.set('supabaseAuth', { auth: payload as any as Payload, token: jwt });
       await next();
     } catch (e) {
-      return c.json({ message: "jwt is invalid" }, 401);
+      return c.json({ message: 'jwt is invalid' }, 401);
     }
   };
 };

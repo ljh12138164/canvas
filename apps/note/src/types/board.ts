@@ -1,10 +1,10 @@
 export interface Workspace {
-  id: string;
-  created_at: string;
-  updated_at: string;
   title: string;
-  workspaceOwners: string;
+  userId: string;
   inconId: string;
+  id?: string;
+  updated_at?: string;
+  created_at?: string;
   data?: string;
   inTrash?: boolean;
   logo?: string;

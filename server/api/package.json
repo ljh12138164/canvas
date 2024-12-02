@@ -7,9 +7,9 @@
   "main": "dist/api.js",
   "exports": {
     ".": {
+      "types": "./dist/hono/index.d.ts",
       "import": "./dist/hono/index.js",
-      "require": "./dist/hono/index.umd.cjs",
-      "types": "./dist/hono/index.d.ts"
+      "require": "./dist/hono/index.umd.cjs"
     }
   },
   "scripts": {
