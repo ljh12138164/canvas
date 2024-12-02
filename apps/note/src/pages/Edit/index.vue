@@ -24,7 +24,11 @@ watch(
 <template>
   <main class="content">
     <section class="sider-container">
-      <Sider :isLoading="foldersIsLoading" :foldersError="foldersError" />
+      <Sider
+        :folders="folders"
+        :isLoading="foldersIsLoading"
+        :foldersError="foldersError"
+      />
     </section>
     <section class="editor-container">
       <nav class="nav-container">

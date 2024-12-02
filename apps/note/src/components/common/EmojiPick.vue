@@ -1,10 +1,14 @@
-<script lang="ts" setup>
+<!-- <script lang="ts" setup>
 // @ts-ignore
 import EmojiPicker from "vue3-emoji-picker";
 import "vue3-emoji-picker/css";
 const emojis = defineModel<string>();
+const emit = defineEmits<{
+  (e: "change", emojis: string): void;
+}>();
 function onSelectEmoji(emoji: any) {
   emojis.value = emoji.i;
+  emit("change", emoji.i);
 }
 </script>
 
@@ -16,4 +20,4 @@ function onSelectEmoji(emoji: any) {
 .emoji {
   font-size: 2em;
 }
-</style>
+</style> -->

@@ -3,13 +3,10 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardFooter,
   CardTitle,
   CardDescription,
-} from '@/components/ui/card';
-import From from './From.vue';
-
-
+} from "@/components/ui/card";
+import From from "./From.vue";
 </script>
 <template>
   <Card>
@@ -20,10 +17,11 @@ import From from './From.vue';
     <CardContent>
       <From />
     </CardContent>
-    <CardFooter>
-      <Button> 创建 </Button>
-    </CardFooter>
   </Card>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.emoji {
+  font-size: 2em;
+}
+</style>

@@ -1,6 +1,6 @@
-import { DEFAULT_AVATAR, USER_IMAGE_URL } from '@/lib';
-import { nanoid } from 'nanoid';
-import { supabaseNote } from '../index';
+import { DEFAULT_AVATAR, USER_IMAGE_URL } from "@/lib";
+import { nanoid } from "nanoid";
+import { supabaseNote } from "../index";
 
 /**
  * @description 上传图片到云端
@@ -9,12 +9,12 @@ import { supabaseNote } from '../index';
  */
 export const uploadImageclound = async ({ file }: { file: File }) => {
   // 设置照片名字
-  const fileName = `${nanoid()}-${file.name}`.replace('/', '');
+  const fileName = `${nanoid()}-${file.name}`.replace("/", "");
   const { data, error } = await supabaseNote.storage
     // 桶名字
-    .from('USER_IMAGE')
+    .from("USER_IMAGE")
     .upload(fileName, file);
-  if (error) throw new Error('服务器错误');
+  if (error) throw new Error("服务器错误");
   return USER_IMAGE_URL + data.fullPath;
 };
 
@@ -30,10 +30,10 @@ export const deleteImageClound = async ({
 }): Promise<true> => {
   const { error } = await supabaseNote.storage
     //  桶名字
-    .from('USER_IMAGE')
+    .from("USER_IMAGE")
     // 删除图片路径
     .remove([image]);
-  if (error) throw new Error('服务器错误');
+  if (error) throw new Error("服务器错误");
   return true;
 };
 
@@ -46,7 +46,7 @@ export async function getCurrentUser() {
   if (!session.session) return null;
   //获取用户权限
   const { data, error } = await supabaseNote.auth.getUser();
-  if (error) throw new Error('服务器错误');
+  if (error) throw new Error("服务器错误");
   return { user: data?.user, session: session.session };
 }
 /**
@@ -54,7 +54,7 @@ export async function getCurrentUser() {
  */
 export async function logout() {
   const { error } = await supabaseNote.auth.signOut();
-  if (error) throw new Error('服务器错误');
+  if (error) throw new Error("服务器错误");
 }
 
 /**
@@ -81,7 +81,7 @@ export async function signup({
       },
     },
   });
-  if (error) throw new Error('服务器错误');
+  if (error) throw new Error("服务器错误");
   return data;
 }
 
@@ -101,7 +101,7 @@ export async function login({
     email: email,
     password: password,
   });
-  if (error) throw new Error('服务器错误');
+  if (error) throw new Error("服务器错误");
   return data;
 }
 
@@ -140,6 +140,6 @@ export async function updateCurrentUser({
   }
   // 更新用户信息
   const { data, error } = await supabaseNote.auth.updateUser(userData);
-  if (error) throw new Error('服务器错误');
+  if (error) throw new Error("服务器错误");
   return data.user;
 }

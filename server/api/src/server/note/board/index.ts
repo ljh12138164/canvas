@@ -1,5 +1,5 @@
 import { supabaseNote } from "../../supabase/note";
-import { Workspace } from "../../../types/note/workspace";
+import { Folders, Workspace } from "../../../types/note/workspace";
 
 /**
  * 创建白板
@@ -39,13 +39,13 @@ export const createBoard = async ({
  * @param param
  * @returns
  */
-export const getBoard = async ({
+export const getfolder = async ({
   id,
   token,
 }: {
   id: string;
   token: string;
-}): Promise<Workspace[]> => {
+}): Promise<Folders[]> => {
   const { data, error } = await supabaseNote(token)
     .from("folders")
     .select("*")
