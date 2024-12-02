@@ -1,12 +1,13 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import "./assets/index.css";
-import { routers } from "./router";
-import pinia from "./store";
+import { createApp } from 'vue';
+import App from './App.vue';
+import './assets/index.css';
+import { routers } from './router';
+import pinia from './store';
 // toast
-import { VueQueryPlugin, VueQueryPluginOptions } from "@tanstack/vue-query";
-import Vue3Toastify, { type ToastContainerOptions } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
+import { VueQueryPlugin, VueQueryPluginOptions } from '@tanstack/vue-query';
+import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
+import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
+import 'vue3-toastify/dist/index.css';
 const vueQueryPluginOptions: VueQueryPluginOptions = {
   queryClientConfig: {
     defaultOptions: {
@@ -32,6 +33,7 @@ app
     autoClose: 3000,
     // ...
   } as ToastContainerOptions)
-  .use(VueQueryPlugin, vueQueryPluginOptions);
+  .use(VueQueryPlugin, vueQueryPluginOptions)
+  .use(autoAnimatePlugin);
 // 挂载
-app.mount("#root");
+app.mount('#root');

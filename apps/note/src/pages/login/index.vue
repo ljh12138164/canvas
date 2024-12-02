@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import Button from "@/components/ui/button/Button.vue";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { toast } from "@/lib";
-import { login, signup } from "@/server/supabase/user";
-import { Icon } from "@iconify/vue";
-import { toTypedSchema } from "@vee-validate/zod";
-import { ErrorMessage, Field, Form, useForm } from "vee-validate";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import Button from '@/components/ui/button/Button.vue';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { toast } from '@/lib';
+import { login, signup } from '@/server/supabase/user';
+import { Icon } from '@iconify/vue';
+import { toTypedSchema } from '@vee-validate/zod';
+import { ErrorMessage, Field, Form, useForm } from 'vee-validate';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-import * as zod from "zod";
+import * as zod from 'zod';
 
 // 页面加载
 const router = useRouter();
-const loginType = ref<"login" | "register">("login");
+const loginType = ref<'login' | 'register'>('login');
 const loading = ref(false);
 const showPassword = ref(false);
 
 // 表单验证
 const zodSchema = zod.object({
   email: zod
-    .string({ required_error: "请输入邮箱" })
-    .min(1, { message: "请输入邮箱" })
-    .email({ message: "请输入正确的邮箱" }),
+    .string({ required_error: '请输入邮箱' })
+    .min(1, { message: '请输入邮箱' })
+    .email({ message: '请输入正确的邮箱' }),
   password: zod
-    .string({ required_error: "请输入密码" })
-    .min(6, { message: "请输入密码" })
-    .max(16, { message: "密码长度最多为16位" }),
-  name: zod.string().min(1, { message: "请输入昵称" }).optional(),
+    .string({ required_error: '请输入密码' })
+    .min(6, { message: '请输入密码' })
+    .max(16, { message: '密码长度最多为16位' }),
+  name: zod.string().min(1, { message: '请输入昵称' }).optional(),
 });
 const validationSchema = toTypedSchema(zodSchema);
 const { setFieldError, errors } = useForm({
@@ -36,10 +36,10 @@ const { setFieldError, errors } = useForm({
 
 async function onSubmit(values: any) {
   try {
-    if (loginType.value === "register") {
+    if (loginType.value === 'register') {
       // 注册
       if (!values.name) {
-        return setFieldError("name", "请输入昵称");
+        return setFieldError('name', '请输入昵称');
       }
       loading.value = true;
       // 注册
@@ -48,27 +48,26 @@ async function onSubmit(values: any) {
         email: values.email,
         password: values.password,
       });
-      toast.success("请前往邮箱验证");
+      toast.success('请前往邮箱验证');
     } else {
       // 登录
       loading.value = true;
       console.log(values);
-      toast.loading("登录中...");
+      toast.loading('登录中...');
       // 登录
       await login({
         email: values.email,
         password: values.password,
       });
-      toast.success("登录成功");
-      router.push("/");
+      toast.success('登录成功');
+      router.push('/');
     }
   } catch (error) {
-    if (error instanceof Error) {
-      toast.error(error.message);
-    } else {
-      toast.error("登录失败");
-    }
+    toast.error('登录失败');
   } finally {
+    setTimeout(() => {
+      toast.dismiss();
+    }, 1000);
     loading.value = false;
   }
 }
@@ -157,13 +156,13 @@ async function onSubmit(values: any) {
               variant="outline"
               class="formSubmit"
               >{{
-                loginType === "login"
+                loginType === 'login'
                   ? loading
-                    ? "登录中..."
-                    : "登录"
+                    ? '登录中...'
+                    : '登录'
                   : loading
-                    ? "注册中..."
-                    : "注册"
+                    ? '注册中...'
+                    : '注册'
               }}</Button
             >
           </Form>

@@ -1,11 +1,25 @@
-import { Server } from "@hocuspocus/server";
-import * as Y from "yjs";
-
+import { Server } from '@hocuspocus/server';
+import * as Y from 'yjs';
+import { Webhook, Events } from '@hocuspocus/extension-webhook';
 const server = Server.configure({
+  extensions: [
+    new Webhook({
+      url: 'http://localhost:8000/api/note/webhook',
+      secret: '459824aaffa928e05f5b1caec411ae5f',
+      events: [
+        Events.onChange,
+        Events.onCreate,
+        Events.onConnect,
+        Events.onConnect,
+      ],
+      debounce: 2000,
+      debounceMaxWait: 10000,
+    }),
+  ],
   port: 8080,
   yDocOptions: { gc: false, gcFilter: () => false },
   /**
-   * 认证
+   * 认证 hook
    * @param payload
    * @returns
    */
@@ -14,7 +28,7 @@ const server = Server.configure({
     // console.log(payload);
   },
   /**
-   * 加载文档
+   * 加载文档 hook
    * @param payload
    * @returns
    */
@@ -22,7 +36,7 @@ const server = Server.configure({
     const { documentName } = payload;
   },
   /**
-   * 保存文档
+   * 保存文档 hook
    * @param payload
    */
   onStoreDocument: async (payload) => {
@@ -32,9 +46,7 @@ const server = Server.configure({
     console.log(update);
   },
 });
-
 server.listen();
-
 /**
  * 创建空文档
  * @returns

@@ -1,13 +1,13 @@
-import { zValidator } from "@hono/zod-validator";
-import to from "await-to-js";
-import { Hono } from "hono";
-import { z } from "zod";
-import { checkToken, getSupabaseAuth } from "../../../libs/middle";
-import { getBoard } from "../../../server/note/board";
+import { zValidator } from '@hono/zod-validator';
+import to from 'await-to-js';
+import { Hono } from 'hono';
+import { z } from 'zod';
+import { checkToken, getSupabaseAuth } from '../../../libs/middle';
+import { getBoard } from '../../../server/note/board';
 
 export const board = new Hono()
-  .use(checkToken(process.env.NOTE_JWT_SECRET!))
-  .get("/board", async (c) => {
+  .use(checkToken(process.env.SUPABASE_NOTE_JWT!))
+  .get('/board', async (c) => {
     const { token, auth } = getSupabaseAuth(c);
     const [error, board] = await to(
       getBoard({ id: auth.session_id as string, token })
@@ -16,9 +16,9 @@ export const board = new Hono()
     return c.json(board);
   })
   .post(
-    "/create",
+    '/create',
     zValidator(
-      "json",
+      'json',
       z.object({
         title: z.string(),
         content: z.string(),
