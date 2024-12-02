@@ -1,24 +1,24 @@
-import { zValidator } from '@hono/zod-validator';
-import to from 'await-to-js';
-import { Hono } from 'hono';
-import { z } from 'zod';
-import { checkToken, getSupabaseAuth } from '../../../libs/middle';
-import { getBoard } from '../../../server/note/board';
+import { zValidator } from "@hono/zod-validator";
+import to from "await-to-js";
+import { Hono } from "hono";
+import { z } from "zod";
+import { checkToken, getSupabaseAuth } from "../../../libs/middle";
+import { getfolder } from "../../../server/note/board";
 
-export const board = new Hono()
+export const folder = new Hono()
   .use(checkToken(process.env.SUPABASE_NOTE_JWT!))
-  .get('/board', async (c) => {
+  .get("/folderList", async (c) => {
     const { token, auth } = getSupabaseAuth(c);
-    const [error, board] = await to(
-      getBoard({ id: auth.session_id as string, token })
+    const [error, folder] = await to(
+      getfolder({ id: auth.session_id as string, token })
     );
     if (error) return c.json({ message: error.message }, 500);
-    return c.json(board);
+    return c.json(folder);
   })
   .post(
-    '/create',
+    "/create",
     zValidator(
-      'json',
+      "json",
       z.object({
         title: z.string(),
         content: z.string(),

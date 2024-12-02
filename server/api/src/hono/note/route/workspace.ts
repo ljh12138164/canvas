@@ -1,21 +1,26 @@
-import { Hono } from 'hono';
-import { checkToken, getSupabaseAuth } from '../../../libs/middle';
-import to from 'await-to-js';
-import { createWorkspace } from '../../../server/note/workspace';
-import { zValidator } from '@hono/zod-validator';
-import { z } from 'zod';
+import { Hono } from "hono";
+import { checkToken, getSupabaseAuth } from "../../../libs/middle";
+import to from "await-to-js";
+import { createWorkspace, getWorkspaces } from "../../../server/note/workspace";
+import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
 
 const workspace = new Hono()
   .use(checkToken(process.env.SUPABASE_NOTE_JWT!))
   // 获取工作区
-  .get('/', async (c) => {
-    return c.json({ message: 'hello' });
+  .get("/", async (c) => {
+    const { token, auth } = getSupabaseAuth(c);
+    const [error, workspaces] = await to(
+      getWorkspaces({ token, userId: auth.user_metadata.sub })
+    );
+    if (error) return c.json({ message: "服务器错误" }, 500);
+    return c.json(workspaces);
   })
   // 创建工作区
   .post(
-    '/create',
+    "/create",
     zValidator(
-      'json',
+      "json",
       z.object({
         name: z.string(),
         inconId: z.string(),
@@ -23,7 +28,7 @@ const workspace = new Hono()
     ),
     async (c) => {
       const { token, auth } = getSupabaseAuth(c);
-      const { name, inconId } = c.req.valid('json');
+      const { name, inconId } = c.req.valid("json");
       const [error, workspace] = await to(
         createWorkspace({
           userId: auth.user_metadata.sub,
@@ -32,7 +37,7 @@ const workspace = new Hono()
           token,
         })
       );
-      if (error) return c.json({ message: '服务器错误' }, 500);
+      if (error) return c.json({ message: "服务器错误" }, 500);
       return c.json(workspace);
     }
   );
