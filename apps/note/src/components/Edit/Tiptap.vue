@@ -9,6 +9,7 @@ import Image from "@tiptap/extension-image";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import Table from "@tiptap/extension-table";
+import ImageResize from "tiptap-extension-resize-image";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import Gapcursor from "@tiptap/extension-gapcursor";
@@ -60,8 +61,17 @@ text.setAwarenessField("user", {
 const editor = new Editor({
   extensions: [
     StarterKit,
+    // 协同
     Collaboration.configure({
       document: doc,
+    }),
+    // 协同光标
+    CollaborationCursor.configure({
+      provider: text,
+      user: {
+        name: `111${Math.floor(Math.random() * 1000000)}`,
+        color: `#155862`,
+      },
     }),
     // 表格
     Table.configure({
@@ -69,21 +79,15 @@ const editor = new Editor({
     }),
     TableCell,
     TableHeader,
-    TableRow,
+    ImageResize,
     Gapcursor,
+    TableRow,
     Image,
     // 任务列表
     TaskList,
     // 任务项
     TaskItem.configure({
       nested: true,
-    }),
-    CollaborationCursor.configure({
-      provider: text,
-      user: {
-        name: `111${Math.floor(Math.random() * 1000000)}`,
-        color: `#155862`,
-      },
     }),
   ],
   content: "",
