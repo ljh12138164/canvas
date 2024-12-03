@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -10,22 +9,32 @@ import {
 } from "@/components/ui/form";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import * as z from "zod";
 import EmojiPopup from "../common/EmojiPopup.vue";
 import { Input } from "../ui/input";
-import { CardFooter } from "../ui/card";
-import { useCreateWorkspace } from "@/hooks/workspace";
 import useUser from "@/store/user";
-const { userData } = useUser();
-const token = userData?.session.access_token as string;
-const { createWorkspaceLoading, createWorkspace } = useCreateWorkspace(token);
+import { useCreateFolder } from "@/hooks/floders";
+import { useRoute } from "vue-router";
 const formSchema = toTypedSchema(
   z.object({
     title: z.string().optional(),
     inconId: z.string().optional(),
   })
 );
+const route = useRoute();
+const workspaceId = ref(route.params.worskpaceId as string);
+watch(
+  () => route.params.worskpaceId,
+  () => {
+    workspaceId.value = route.params.worskpaceId as string;
+  },
+  { immediate: true }
+);
+const token = useUser().userData?.session.access_token as string;
+// const userId = useUser().userData?.session.user.id as string;
+const { createFolderIsLoading, createFolder } = useCreateFolder(token);
+
 const showEmoji = ref("");
 const form = useForm({
   validationSchema: formSchema,
@@ -36,11 +45,13 @@ const onSubmit = form.handleSubmit((values) => {
   if (values.title.length < 2)
     return form.setErrors({ title: "文档名称至少2个字符" });
   if (!values.inconId) return form.setErrors({ inconId: "请选择图标" });
-  createWorkspace(
+  createFolder(
     {
       json: {
-        name: values.title,
+        title: values.title,
         inconId: values.inconId,
+        workspaceId: workspaceId.value,
+        content: "",
       },
     },
     {
@@ -57,24 +68,23 @@ const onChangeEmoji = (emoji: string) => {
 };
 </script>
 <template>
-  <form @submit="onSubmit">
+  <form @submit="onSubmit" class="from">
     <FormField v-slot="{ componentField }" name="title">
       <FormItem v-auto-animate>
-        <FormLabel>文档名称</FormLabel>
+        <FormLabel class="form-label">文档名称</FormLabel>
         <FormControl>
           <Input type="text" placeholder="文档名称" v-bind="componentField" />
         </FormControl>
-        <FormDescription> 文档名称 </FormDescription>
         <FormMessage />
       </FormItem>
     </FormField>
     <FormField v-slot="{ componentField }" name="inconId">
-      <FormItem>
-        <FormLabel>图标</FormLabel>
+      <FormItem class="form-item">
+        <FormLabel class="form-label">图标</FormLabel>
         <FormControl>
           <EmojiPopup @onChangeEmoji="onChangeEmoji">
             <template #trigger>
-              <Button type="button" variant="outline">
+              <Button type="button" class="emoji-button" variant="outline">
                 <input class="emojiInput" type="text" v-bind="componentField" />
                 <span v-if="showEmoji" class="emoji">{{ showEmoji }}</span>
                 <span v-else>选择图标</span>
@@ -82,15 +92,12 @@ const onChangeEmoji = (emoji: string) => {
             </template>
           </EmojiPopup>
         </FormControl>
-        <FormDescription> 图标 </FormDescription>
         <FormMessage />
       </FormItem>
     </FormField>
-    <CardFooter>
-      <Button :disabled="createWorkspaceLoading" type="submit">
-        {{ createWorkspaceLoading ? "创建中..." : "创建" }}
-      </Button>
-    </CardFooter>
+    <Button :disabled="createFolderIsLoading" type="submit">
+      {{ createFolderIsLoading ? "创建中..." : "创建" }}
+    </Button>
   </form>
 </template>
 
@@ -101,5 +108,25 @@ const onChangeEmoji = (emoji: string) => {
 }
 .emoji {
   font-size: 2em;
+}
+.form-item {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.emoji-button {
+  margin: 0 !important;
+}
+.from {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  &-label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+  }
 }
 </style>

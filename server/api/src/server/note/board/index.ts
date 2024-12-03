@@ -6,25 +6,29 @@ import { Folders, Workspace } from "../../../types/note/workspace";
  * @param param0
  * @returns
  */
-export const createBoard = async ({
+export const createFolder = async ({
   title,
   content,
-  id,
+  userId,
   inconId,
   token,
+  workspaceId,
 }: {
   title: string;
-  id: string;
+  userId: string;
   content: string;
   inconId: string;
   token: string;
-}): Promise<Workspace> => {
+  workspaceId: string;
+}): Promise<Folders> => {
+  console.log({ title, content, userId, inconId, token, workspaceId });
   const { data, error } = await supabaseNote(token)
-    .from("board")
+    .from("folders")
     .insert({
       title,
-      content,
-      workspaceOwners: id,
+      data: content,
+      userId,
+      workspaceId,
       inconId,
     })
     .select("*");

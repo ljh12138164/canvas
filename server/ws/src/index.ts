@@ -1,21 +1,21 @@
-import { Server } from '@hocuspocus/server';
-import * as Y from 'yjs';
-import { Webhook, Events } from '@hocuspocus/extension-webhook';
+import { Server } from "@hocuspocus/server";
+import * as Y from "yjs";
+// import { Webhook, Events } from "@hocuspocus/extension-webhook";
 const server = Server.configure({
-  extensions: [
-    new Webhook({
-      url: 'http://localhost:8000/api/note/webhook',
-      secret: '459824aaffa928e05f5b1caec411ae5f',
-      events: [
-        Events.onChange,
-        Events.onCreate,
-        Events.onConnect,
-        Events.onConnect,
-      ],
-      debounce: 2000,
-      debounceMaxWait: 10000,
-    }),
-  ],
+  // extensions: [
+  //   new Webhook({
+  //     url: 'http://localhost:8000/api/note/webhook',
+  //     secret: '459824aaffa928e05f5b1caec411ae5f',
+  //     events: [
+  //       Events.onChange,
+  //       Events.onCreate,
+  //       Events.onConnect,
+  //       Events.onConnect,
+  //     ],
+  //     debounce: 2000,
+  //     debounceMaxWait: 10000,
+  //   }),
+  // ],
   port: 8080,
   yDocOptions: { gc: false, gcFilter: () => false },
   /**
@@ -34,6 +34,7 @@ const server = Server.configure({
    */
   onLoadDocument: async (payload) => {
     const { documentName } = payload;
+    console.log(documentName);
   },
   /**
    * 保存文档 hook
@@ -41,9 +42,7 @@ const server = Server.configure({
    */
   onStoreDocument: async (payload) => {
     const { documentName, document } = payload;
-
     const update = Y.encodeStateAsUpdate(document);
-    console.log(update);
   },
 });
 server.listen();
