@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Folders } from "@/types/board";
-import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
-import FromCard from "./FromCard.vue";
-import { Button } from "../ui/button";
 import { Icon } from "@iconify/vue/dist/iconify.js";
+// @ts-ignore
+import ResponsePop from "../common/ResponsePop.vue";
+import { Button } from "../ui/button";
+import FromCard from "./FromCard.vue";
 
 const { isLoading, foldersError, folders } = defineProps<{
   isLoading: boolean;
@@ -12,19 +13,19 @@ const { isLoading, foldersError, folders } = defineProps<{
 }>();
 </script>
 <template>
-  <aside>
-    <header>工作站</header>
+  <aside class="asider">
+    <header class="asider-header">工作站</header>
     <aside>
-      <Popover>
-        <PopoverTrigger
-          ><Button><Icon icon="gg:add" />创建文档</Button></PopoverTrigger
-        >
-        <PopoverContent as-child>
+      <ResponsePop title="创建文档">
+        <template #trigger>
+          <Button><Icon icon="gg:add" />创建文档</Button>
+        </template>
+        <template #content>
           <FromCard />
-        </PopoverContent>
-      </Popover>
+        </template>
+      </ResponsePop>
     </aside>
-    <main>
+    <main class="asider-main">
       <div v-if="isLoading">加载中...</div>
       <div v-else-if="foldersError">
         <div>{{ foldersError.message }}</div>
@@ -41,4 +42,24 @@ const { isLoading, foldersError, folders } = defineProps<{
   </aside>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.footer-button {
+  margin-top: 10px;
+  width: 100%;
+}
+.asider {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    font-size: 18px;
+    font-weight: 600;
+    flex-basis: 25dvh;
+  }
+
+  &-main {
+    flex-basis: 75dvh;
+  }
+}
+</style>

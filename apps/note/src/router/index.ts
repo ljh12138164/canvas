@@ -14,10 +14,20 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: routerCheckLogin,
   },
   {
-    path: "/edit/:id",
+    path: "/workspace/:worskpaceId/",
     component: () => import("@/pages/edit/index.vue"),
     beforeEnter: routerCheckLogin,
     children: [
+      {
+        path: "",
+        component: () => import("@/pages/edit/Home.vue"),
+        beforeEnter: routerCheckLogin,
+      },
+      {
+        path: ":folderId",
+        component: () => import("@/pages/edit/Edit.vue"),
+        beforeEnter: routerCheckLogin,
+      },
       {
         path: "setting",
         component: () => import("@/pages/edit/Setting.vue"),
@@ -26,13 +36,8 @@ const routes: RouteRecordRaw[] = [
         path: "trash",
         component: () => import("@/pages/edit/Trash.vue"),
       },
-      {
-        path: "edit",
-        component: () => import("@/pages/edit/Edit.vue"),
-      },
     ],
   },
-
   {
     path: "/:pathMatch(.*)*",
     redirect: "/",

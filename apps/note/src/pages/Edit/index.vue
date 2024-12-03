@@ -4,19 +4,19 @@ import ThemeChange from "@/components/common/ThemeChange.vue";
 import { useBoard } from "@/hooks/board";
 import useUser from "@/store/user";
 import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
 const route = useRoute();
 // const router = useRouter();
-const routerParams = ref(route.params.id);
+const routerParams = ref(route.params.worskpaceId);
 const userData = useUser().userData!;
 const { folders, foldersError, foldersIsLoading } = useBoard(
   userData.session.access_token
 );
 
 watch(
-  () => route.params.id,
+  () => route.params.worskpaceId,
   () => {
-    routerParams.value = route.params.id;
+    routerParams.value = route.params.worskpaceId;
   },
   { immediate: true }
 );
@@ -35,7 +35,9 @@ watch(
         <ThemeChange />
       </nav>
       <keep-alive>
-        <main class="editor-main"></main>
+        <main class="editor-main">
+          <RouterView />
+        </main>
       </keep-alive>
     </section>
   </main>
@@ -76,7 +78,6 @@ watch(
   &-main {
     flex: 1;
     height: 100%;
-    padding: 20px;
   }
 }
 </style>
