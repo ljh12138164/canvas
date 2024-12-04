@@ -7,7 +7,6 @@ const useUser = defineStore("user", () => {
   const userData = ref<{
     session: Session;
   } | null>(null);
-  console.log(userData);
   const setUserData = (data: { session: Session }) => (userData.value = data);
 
   return {

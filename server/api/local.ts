@@ -1,6 +1,4 @@
 import { Hono } from "hono";
-import { board } from "./src/hono/board";
-import { vue } from "./src/hono/vue";
 import { design } from "./src/hono/design";
 import { jebt } from "./src/hono/jebt";
 import { serve } from "@hono/node-server";
@@ -17,9 +15,7 @@ const app = new Hono()
   .basePath("/api")
   .route("/design", design)
   .route("/jebt", jebt)
-  .route("/board", board)
-  .route("/note", note)
-  .route("/vue", vue);
+  .route("/note", note);
 
 serve({
   fetch: app.fetch,
