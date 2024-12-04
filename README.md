@@ -13,7 +13,7 @@
     - ##### types 类型
     - ##### email 邮件服务(未使用)
 
-## 设计应用(next15 + react19 + zustand) 3000端口
+## 设计应用(next15 + react19 + zustand + shadcn) 3000端口
 
 - ### apps/ljh-design 设计应用
 
@@ -30,7 +30,7 @@
     - ##### pages 页面
     - ##### \_provider react-query 配置
 
-## 管理应用(react18 + mobx) 8100端口
+## 管理应用(react18 + mobx + shadcn) 8100端口
 
 - ### apps/jebet 管理应用
 
@@ -46,7 +46,7 @@
     - ##### hooks 自定义hooks
     - ##### assets 静态资源
 
-## 笔记应用(vue + rebuild + pinia + vuetify) 8200端口
+## 笔记应用(vue + rebuild + pinia + shadcn) 8200端口
 
 - ### apps/note 笔记应用
   - #### public 静态资源
@@ -65,6 +65,6 @@
 - ### apps/ws 协同笔记websocket服务
   - #### src 协同笔记websocket服务代码
 
-## 表单生成器应用(nuxt) 8300端口
+## 表单生成器应用(nuxt + zustand + tailwind + shadcn) 8300端口
 
-- ### apps/form 表单生成器应用(未开始)
+- ### apps/form 表单生成器应用
