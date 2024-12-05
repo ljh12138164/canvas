@@ -1,22 +1,37 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import { Button } from "../ui/button";
-
-const { iconName } = defineProps<{
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+const { iconName, isActive, onClick, label } = defineProps<{
   iconName: string;
-  isActive: boolean;
+  isActive: boolean | undefined;
   onClick: () => void;
+  label: string;
 }>();
 </script>
 <template>
-  <Button
-    variant="ghost"
-    @click="onClick"
-    class="kitBtn"
-    :class="{ active: isActive }"
-  >
-    <Icon :icon="iconName" />
-  </Button>
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger>
+        <Button
+          variant="ghost"
+          @click="onClick"
+          class="kitBtn"
+          :style="{ backgroundColor: isActive ? '#e5e5e5cc' : 'transparent' }"
+        >
+          <Icon :icon="iconName" class="kit-icon" />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent :duration="100">
+        <span>{{ label }}</span>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
 </template>
 
 <style scoped lang="scss">
@@ -28,5 +43,9 @@ const { iconName } = defineProps<{
   &:hover {
     background-color: #e5e5e5cc;
   }
+}
+.kit-icon {
+  width: 16px;
+  height: 16px;
 }
 </style>

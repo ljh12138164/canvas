@@ -1,22 +1,22 @@
-import { getCurrentUser } from '@/server/supabase/user';
-import useUser from '@/store/user';
-import { RouteLocationNormalized } from 'vue-router';
+import { getCurrentUser } from "@/server/supabase/user";
+import useUser from "@/store/user";
+import { RouteLocationNormalized } from "vue-router";
 import {
   toast as toastify,
   ToastPosition,
   ToastTheme,
   ToastTransition,
-} from 'vue3-toastify';
+} from "vue3-toastify";
 
 export const DEFAULT_AVATAR =
-  'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg';
+  "https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg";
 export const USER_IMAGE_URL =
-  'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/';
+  "https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/";
 // toast 实例
 const toastOption = {
-  theme: 'auto' as ToastTheme,
-  position: 'top-center' as ToastPosition,
-  transition: 'flip' as ToastTransition,
+  theme: "auto" as ToastTheme,
+  position: "top-center" as ToastPosition,
+  transition: "flip" as ToastTransition,
   dangerouslyHTMLString: true,
   hideProgressBar: true,
 };
@@ -55,7 +55,7 @@ export async function routerCheckLogin(
   const { setUserData } = useUser();
 
   if (!data) {
-    next('/login');
+    next("/login");
   } else {
     setUserData({ session: data.session });
     next();
@@ -75,8 +75,8 @@ export async function routerLoginAfter(
 ) {
   const data = await getCurrentUser();
   if (data) {
-    toast.success('用户已登录');
-    next('/');
+    toast.success("用户已登录");
+    next("/");
   } else {
     next();
   }
