@@ -2,10 +2,10 @@
 import Collaboration from "@tiptap/extension-collaboration";
 import { BubbleMenu, Editor, EditorContent } from "@tiptap/vue-3";
 import { nanoid } from "nanoid";
-import { onBeforeMount, onBeforeUnmount, ref } from "vue";
+import { onBeforeUnmount, ref } from "vue";
+import * as Y from "yjs";
 import Commands from "./command";
 import suggestion from "./suggest";
-import * as Y from "yjs";
 // 编辑器扩展
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { Color } from "@tiptap/extension-color";
@@ -25,6 +25,7 @@ import TaskList from "@tiptap/extension-task-list";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
+import FontFamily from "@tiptap/extension-font-family";
 import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
 import ImageResize from "tiptap-extension-resize-image";
@@ -41,6 +42,7 @@ import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
 import { all, createLowlight } from "lowlight";
+import StarterKitComponent from "./StarterKit.vue";
 
 // 创建doc
 const doc = new Y.Doc();
@@ -61,6 +63,10 @@ const hocuspocusConnection = new HocuspocusProvider({
   name: "abc", // 服务端的 documentName
   document: doc,
   token: `token${Math.floor(Math.random() * 1000000)}`,
+  onSynced() {
+    console.log("同步");
+  },
+  // on
   // awareness, // 这里传递 awareness 就可以实现共享用户信息
 });
 hocuspocusConnection.setAwarenessField("user", {
@@ -71,11 +77,68 @@ hocuspocusConnection.setAwarenessField("user", {
 
 const editor = ref<Editor>(
   new Editor({
+    // enableContentCheck: true,
+    onCreate({ editor }) {
+      // 设置编辑器
+      useEditorStore().setEditorData(editor as Editor);
+      // 设置工具栏
+      useEditorStore().setTiptapKit(editor as Editor);
+      // 设置协同
+      useEditorStore().setHocuspocusConnection(hocuspocusConnection);
+      // 设置加载
+      useEditorStore().setLoadEditor(false);
+    },
+    onDestroy() {
+      // 设置编辑器
+      useEditorStore().setEditorData(null);
+      // 设置工具栏
+      useEditorStore().setTiptapKit([] as any);
+      // 设置协同
+      useEditorStore().setHocuspocusConnection(null);
+      // 设置加载
+      useEditorStore().setLoadEditor(true);
+    },
+    onUpdate({ editor }) {
+      // 设置编辑器
+      useEditorStore().setEditorData(editor as Editor);
+      // 设置工具栏
+      useEditorStore().setTiptapKit(editor as Editor);
+    },
+    onSelectionUpdate({ editor }) {
+      // 设置编辑器
+      useEditorStore().setEditorData(editor as Editor);
+      // 设置工具栏
+      useEditorStore().setTiptapKit(editor as Editor);
+    },
+    onTransaction({ editor }) {
+      // 设置编辑器
+      useEditorStore().setEditorData(editor as Editor);
+      // 设置工具栏
+      useEditorStore().setTiptapKit(editor as Editor);
+    },
+    onFocus({ editor }) {
+      // 设置编辑器
+      useEditorStore().setEditorData(editor as Editor);
+      // 设置工具栏
+      useEditorStore().setTiptapKit(editor as Editor);
+    },
+    onBlur({ editor }) {
+      // 设置编辑器
+      useEditorStore().setEditorData(editor as Editor);
+      // 设置工具栏
+      useEditorStore().setTiptapKit(editor as Editor);
+    },
+    onContentError({ editor }) {
+      // 设置编辑器
+      useEditorStore().setEditorData(editor as Editor);
+      // 设置工具栏
+      useEditorStore().setTiptapKit(editor as Editor);
+    },
     extensions: [
       CodeBlockLowlight.configure({
         lowlight,
       }),
-
+      FontFamily,
       StarterKit.configure({
         codeBlock: false,
         history: false,
@@ -170,11 +233,7 @@ const editor = ref<Editor>(
       `,
   })
 );
-onBeforeMount(() => {
-  useEditorStore().setEditorData(editor.value as Editor);
-  useEditorStore().setHocuspocusConnection(hocuspocusConnection);
-  useEditorStore().setLoadEditor(false);
-});
+
 onBeforeUnmount(() => {
   editor.value.destroy();
 });
@@ -186,28 +245,10 @@ onBeforeUnmount(() => {
   <BubbleMenu
     :editor="editor as Editor"
     :tippy-options="{ duration: 100 }"
+    class="bubble-menu"
     v-if="editor && !useEditorStore().loadEditor"
   >
-    <div class="bubble-menu">
-      <button
-        @click="editor.chain().focus().toggleBold().run()"
-        :class="{ 'is-active': editor.isActive('bold') }"
-      >
-        Bold
-      </button>
-      <button
-        @click="editor.chain().focus().toggleItalic().run()"
-        :class="{ 'is-active': editor.isActive('italic') }"
-      >
-        Italic
-      </button>
-      <button
-        @click="editor.chain().focus().toggleStrike().run()"
-        :class="{ 'is-active': editor.isActive('strike') }"
-      >
-        Strike
-      </button>
-    </div>
+    <StarterKitComponent />
   </BubbleMenu>
 </template>
 
@@ -225,6 +266,9 @@ onBeforeUnmount(() => {
   &:focus-visible {
     outline: none;
   }
+}
+.bubble-menu {
+  width: 80dvw;
 }
 .tiptap {
   //:first-child {

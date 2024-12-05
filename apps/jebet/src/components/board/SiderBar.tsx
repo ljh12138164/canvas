@@ -19,7 +19,7 @@ import { useMemoizedFn } from "ahooks";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { LuSettings, LuUsers2 } from "react-icons/lu";
+import { LuSettings, LuUser } from "react-icons/lu";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -259,7 +259,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
             asChild
           >
             <ButtonContainer>
-              <LuUsers2 />
+              <LuUser />
               <span>成员</span>
             </ButtonContainer>
           </RouterDiv>
