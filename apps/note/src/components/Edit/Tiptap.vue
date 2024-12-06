@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import Collaboration from "@tiptap/extension-collaboration";
-import { BubbleMenu, Editor, EditorContent } from "@tiptap/vue-3";
+import { Editor, EditorContent } from "@tiptap/vue-3";
 import { nanoid } from "nanoid";
 import { onBeforeUnmount, ref } from "vue";
 import * as Y from "yjs";
-import Commands from "./command";
-import suggestion from "./suggest";
+import StarterKitComponent from "./StarterKit.vue";
 // 编辑器扩展
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { Color } from "@tiptap/extension-color";
 import Focus from "@tiptap/extension-focus";
+import FontFamily from "@tiptap/extension-font-family";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import ListKeymap from "@tiptap/extension-list-keymap";
@@ -25,13 +25,11 @@ import TaskList from "@tiptap/extension-task-list";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
-import FontFamily from "@tiptap/extension-font-family";
 import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
 import ImageResize from "tiptap-extension-resize-image";
 
 // 协作
-import useEditorStore from "@/store/editor";
 import {
   HocuspocusProvider,
   HocuspocusProviderWebsocket,
@@ -42,7 +40,8 @@ import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
 import { all, createLowlight } from "lowlight";
-import StarterKitComponent from "./StarterKit.vue";
+import { ScrollArea } from "../ui/scroll-area";
+import { FontSizeExtension } from "../editExtenstions/fontSize";
 
 // 创建doc
 const doc = new Y.Doc();
@@ -78,62 +77,62 @@ hocuspocusConnection.setAwarenessField("user", {
 const editor = ref<Editor>(
   new Editor({
     // enableContentCheck: true,
-    onCreate({ editor }) {
-      // 设置编辑器
-      useEditorStore().setEditorData(editor as Editor);
-      // 设置工具栏
-      useEditorStore().setTiptapKit(editor as Editor);
-      // 设置协同
-      useEditorStore().setHocuspocusConnection(hocuspocusConnection);
-      // 设置加载
-      useEditorStore().setLoadEditor(false);
-    },
-    onDestroy() {
-      // 设置编辑器
-      useEditorStore().setEditorData(null);
-      // 设置工具栏
-      useEditorStore().setTiptapKit([] as any);
-      // 设置协同
-      useEditorStore().setHocuspocusConnection(null);
-      // 设置加载
-      useEditorStore().setLoadEditor(true);
-    },
-    onUpdate({ editor }) {
-      // 设置编辑器
-      useEditorStore().setEditorData(editor as Editor);
-      // 设置工具栏
-      useEditorStore().setTiptapKit(editor as Editor);
-    },
-    onSelectionUpdate({ editor }) {
-      // 设置编辑器
-      useEditorStore().setEditorData(editor as Editor);
-      // 设置工具栏
-      useEditorStore().setTiptapKit(editor as Editor);
-    },
-    onTransaction({ editor }) {
-      // 设置编辑器
-      useEditorStore().setEditorData(editor as Editor);
-      // 设置工具栏
-      useEditorStore().setTiptapKit(editor as Editor);
-    },
-    onFocus({ editor }) {
-      // 设置编辑器
-      useEditorStore().setEditorData(editor as Editor);
-      // 设置工具栏
-      useEditorStore().setTiptapKit(editor as Editor);
-    },
-    onBlur({ editor }) {
-      // 设置编辑器
-      useEditorStore().setEditorData(editor as Editor);
-      // 设置工具栏
-      useEditorStore().setTiptapKit(editor as Editor);
-    },
-    onContentError({ editor }) {
-      // 设置编辑器
-      useEditorStore().setEditorData(editor as Editor);
-      // 设置工具栏
-      useEditorStore().setTiptapKit(editor as Editor);
-    },
+    // onCreate({ editor }) {
+    //   // 设置编辑器
+    //   useEditorStore().setEditorData(editor as Editor);
+    //   // 设置工具栏
+    //   useEditorStore().setTiptapKit(editor as Editor);
+    //   // 设置协同
+    //   useEditorStore().setHocuspocusConnection(hocuspocusConnection);
+    //   // 设置加载
+    //   useEditorStore().setLoadEditor(false);
+    // },
+    // onDestroy() {
+    //   // 设置编辑器
+    //   useEditorStore().setEditorData(null);
+    //   // 设置工具栏
+    //   useEditorStore().setTiptapKit([] as any);
+    //   // 设置协同
+    //   useEditorStore().setHocuspocusConnection(null);
+    //   // 设置加载
+    //   useEditorStore().setLoadEditor(true);
+    // },
+    // onUpdate({ editor }) {
+    //   // 设置编辑器
+    //   useEditorStore().setEditorData(editor as Editor);
+    //   // 设置工具栏
+    //   useEditorStore().setTiptapKit(editor as Editor);
+    // },
+    // onSelectionUpdate({ editor }) {
+    //   // 设置编辑器
+    //   useEditorStore().setEditorData(editor as Editor);
+    //   // 设置工具栏
+    //   useEditorStore().setTiptapKit(editor as Editor);
+    // },
+    // onTransaction({ editor }) {
+    //   // 设置编辑器
+    //   useEditorStore().setEditorData(editor as Editor);
+    //   // 设置工具栏
+    //   useEditorStore().setTiptapKit(editor as Editor);
+    // },
+    // onFocus({ editor }) {
+    //   // 设置编辑器
+    //   useEditorStore().setEditorData(editor as Editor);
+    //   // 设置工具栏
+    //   useEditorStore().setTiptapKit(editor as Editor);
+    // },
+    // onBlur({ editor }) {
+    //   // 设置编辑器
+    //   useEditorStore().setEditorData(editor as Editor);
+    //   // 设置工具栏
+    //   useEditorStore().setTiptapKit(editor as Editor);
+    // },
+    // onContentError({ editor }) {
+    //   // 设置编辑器
+    //   useEditorStore().setEditorData(editor as Editor);
+    //   // 设置工具栏
+    //   useEditorStore().setTiptapKit(editor as Editor);
+    // },
     extensions: [
       CodeBlockLowlight.configure({
         lowlight,
@@ -173,13 +172,19 @@ const editor = ref<Editor>(
 
       // 标记类
       Highlight.configure({ multicolor: true }),
-      Link,
+      Link.configure({
+        openOnClick: true,
+        defaultProtocol: "https",
+        autolink: true,
+      }),
       Subscript,
       Superscript,
       TextStyle,
       Underline,
       Typography,
-      TextAlign,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
       Placeholder.configure({
         placeholder: "写点什么吧...",
       }),
@@ -189,9 +194,10 @@ const editor = ref<Editor>(
       }),
       Color,
       // 自定义命令
-      Commands.configure({
-        suggestion,
-      }),
+      FontSizeExtension,
+      // Commands.configure({
+      //   suggestion,
+      // }),
     ],
     content: `
         <h3>
@@ -241,7 +247,13 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <EditorContent :editor="editor as Editor" />
+  <main class="flex flex-col">
+    <ScrollArea class="overflow-x-auto">
+      <StarterKitComponent :editor="editor as Editor" />
+    </ScrollArea>
+    <EditorContent :editor="editor as Editor" />
+  </main>
+  <!--
   <BubbleMenu
     :editor="editor as Editor"
     :tippy-options="{ duration: 100 }"
@@ -250,6 +262,7 @@ onBeforeUnmount(() => {
   >
     <StarterKitComponent />
   </BubbleMenu>
+  -->
 </template>
 
 <style lang="scss">
@@ -548,11 +561,12 @@ onBeforeUnmount(() => {
   }
 
   a {
-    color: #6a00f5;
+    color: #1b15ca;
     cursor: pointer;
 
     &:hover {
-      color: #5800cc;
+      color: #1b15ca;
+      border-bottom: 1px solid #1b15ca;
     }
   }
 
