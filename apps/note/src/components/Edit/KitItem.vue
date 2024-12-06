@@ -7,10 +7,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-const { iconName, isActive, onClick, label } = defineProps<{
+import { Editor } from "@tiptap/vue-3";
+const { iconName, isActive, onClick, label, editor } = defineProps<{
   iconName: string;
+  editor: Editor | null;
   isActive: boolean | undefined;
-  onClick: () => void;
+  onClick?: (editor: Editor) => void;
   label: string;
 }>();
 </script>
@@ -20,7 +22,7 @@ const { iconName, isActive, onClick, label } = defineProps<{
       <TooltipTrigger>
         <Button
           variant="ghost"
-          @click="onClick"
+          @click="onClick && onClick(editor as Editor)"
           class="kitBtn"
           :style="{ backgroundColor: isActive ? '#e5e5e5cc' : 'transparent' }"
         >

@@ -1,0 +1,40 @@
+<script setup lang="ts">
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Icon } from "@iconify/vue";
+import { Editor } from "@tiptap/vue-3";
+import { watch } from "vue";
+import { defineProps, ref } from "vue";
+import { debounce } from "lodash";
+const props = defineProps<{
+  editor: Editor | null;
+}>();
+
+const color = ref(props.editor?.getAttributes("textStyle").color || "#000000");
+watch(
+  color,
+  debounce((newVal: string) => {
+    props.editor?.chain().focus().setColor(newVal).run();
+  }, 100)
+);
+</script>
+<template>
+  <DropdownMenu v-if="props.editor">
+    <DropdownMenuTrigger>
+      <Button class="font-family-btn" variant="outline">
+        <span>颜色</span>
+        <Icon icon="heroicons:chevron-down" />
+        <div class="h-0.5 w-full" />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent asChild>
+      <v-color-picker v-model="color" />
+    </DropdownMenuContent>
+  </DropdownMenu>
+</template>
+
+<style scoped lang="scss"></style>

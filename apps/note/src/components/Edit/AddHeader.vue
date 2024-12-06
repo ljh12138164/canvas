@@ -1,18 +1,31 @@
 <script setup lang="ts">
 import { fontTitle } from "@/lib/edit";
-import useEditor from "@/store/editor";
+import { type Level } from "@tiptap/extension-heading";
+import { Editor } from "@tiptap/vue-3";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { type Level } from "@tiptap/extension-heading";
+import { computed } from "vue";
+
+const props = defineProps<{
+  editor: Editor | null;
+}>();
+const headingLevel = computed(() => {
+  for (let i = 0; i < fontTitle.length; i++) {
+    if (props.editor?.isActive("heading", { level: i })) {
+      return i;
+    }
+  }
+  return 0;
+});
 </script>
 <template>
-  <DropdownMenu>
+  <DropdownMenu v-if="props.editor">
     <DropdownMenuTrigger>
       <Button class="font-family-btn" variant="outline"
-        >{{ useEditor().fontTitle }}
+        >{{ headingLevel === 0 ? "正文" : `${headingLevel}级标题` }}
         <Icon icon="heroicons:chevron-down" />
       </Button>
     </DropdownMenuTrigger>
@@ -21,10 +34,10 @@ import { type Level } from "@tiptap/extension-heading";
         @click="
           () => {
             if (item.value === 0) {
-              useEditor()?.editorData.chain().focus().setParagraph().run();
+              props.editor?.chain().focus().setParagraph().run();
             } else {
-              useEditor()
-                ?.editorData.chain()
+              props.editor
+                ?.chain()
                 .focus()
                 .setHeading({ level: item.value as Level })
                 .run();
@@ -39,7 +52,9 @@ import { type Level } from "@tiptap/extension-heading";
           fontSize: item.fontSize,
         }"
         :class="{
-          active: useEditor().fontFamily === item.value,
+          active: props.editor?.isActive('heading', {
+            level: item.value as Level,
+          }),
         }"
         >{{ item.label }}</Button
       >

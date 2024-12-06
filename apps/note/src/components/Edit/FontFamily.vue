@@ -1,31 +1,33 @@
 <script setup lang="ts">
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
 import { fontFamily } from "@/lib/edit";
 import { Icon } from "@iconify/vue";
-import useEditor from "@/store/editor";
+import { Editor } from "@tiptap/vue-3";
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+
+const props = defineProps<{
+  editor: Editor | null;
+}>();
 </script>
 <template>
-  <DropdownMenu>
+  <DropdownMenu v-if="props.editor">
     <DropdownMenuTrigger>
       <Button class="font-family-btn" variant="outline"
-        >{{ useEditor().fontFamily }}
+        >{{
+          props.editor?.isActive("textStyle", {
+            fontFamily: "Arial",
+          })
+        }}
         <Icon icon="heroicons:chevron-down" />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="font-family-dropdown">
       <Button
-        @click="
-          useEditor()
-            ?.editorData.chain()
-            .focus()
-            .setFontFamily(item.value)
-            .run()
-        "
+        @click="props.editor?.chain().focus().setFontFamily(item.value).run()"
         v-for="item in fontFamily"
         :key="item.label"
         class="font-family-item"
@@ -34,7 +36,9 @@ import useEditor from "@/store/editor";
           fontFamily: item.value,
         }"
         :class="{
-          active: useEditor().fontFamily === item.value,
+          active: props.editor?.isActive('textStyle', {
+            fontFamily: item.value,
+          }),
         }"
         >{{ item.label }}</Button
       >

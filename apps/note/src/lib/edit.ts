@@ -1,21 +1,14 @@
+import { Editor } from "@tiptap/vue-3";
+
 // tiptap支持的字体
 export const fontFamily = [
   { label: "Arial", value: "Arial" },
   { label: "Inter", value: "Inter" },
-  {
-    label: "Comic Sans",
-    value: "Comic Sans",
-  },
   { label: "Serif", value: "serif" },
-  { label: "Monospace", value: "monospace" },
   { label: "Cursive", value: "cursive" },
   {
     label: "Georgia",
     value: "Georgia",
-  },
-  {
-    label: "Courier New",
-    value: "Courier New",
   },
   {
     label: "Verdana",
@@ -34,4 +27,29 @@ export const fontTitle = [
   { label: "3级标题", value: 3, fontSize: "16px" },
   { label: "4级标题", value: 4, fontSize: "14px" },
   { label: "5级标题", value: 5, fontSize: "12px" },
+];
+
+export const align = [
+  { label: "左对齐", value: "left", iconName: "mdi:format-align-left" },
+  { label: "居中", value: "center", iconName: "mdi:format-align-center" },
+  { label: "右对齐", value: "right", iconName: "mdi:format-align-right" },
+];
+
+export const list = [
+  {
+    label: "无序列表",
+    value: "bulletList",
+    iconName: "mdi:format-list-bulleted",
+    onClick: (editor: Editor) => {
+      editor?.chain().focus().toggleBulletList().run();
+    },
+  },
+  {
+    label: "有序列表",
+    value: "orderedList",
+    iconName: "mdi:format-list-numbered",
+    onClick: (editor: Editor) => {
+      editor?.chain().focus().toggleOrderedList().run();
+    },
+  },
 ];

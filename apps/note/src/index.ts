@@ -4,10 +4,23 @@ import "./assets/index.css";
 import { routers } from "./router";
 import pinia from "./store";
 // toast
+import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
 import { VueQueryPlugin, VueQueryPluginOptions } from "@tanstack/vue-query";
 import Vue3Toastify, { type ToastContainerOptions } from "vue3-toastify";
-import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
 import "vue3-toastify/dist/index.css";
+
+// Vuetify
+import "vuetify/styles";
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
+
+// Components
+
+const vuetify = createVuetify({
+  components,
+  directives,
+});
 const vueQueryPluginOptions: VueQueryPluginOptions = {
   queryClientConfig: {
     defaultOptions: {
@@ -33,6 +46,7 @@ app
     // ...
   } as ToastContainerOptions)
   .use(VueQueryPlugin, vueQueryPluginOptions)
-  .use(autoAnimatePlugin);
+  .use(autoAnimatePlugin)
+  .use(vuetify);
 // 挂载
 app.mount("#root");

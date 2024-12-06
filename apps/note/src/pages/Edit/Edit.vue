@@ -21,6 +21,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
   justify-content: center;
 
   &-container {
+    display: flex;
+    flex-direction: column;
     max-height: calc(100dvh - 150px);
     min-width: calc(100dvw - 300px);
     max-width: calc(100dvw - 300px);
