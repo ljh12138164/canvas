@@ -1,5 +1,5 @@
 import { supabaseNote } from "../../supabase/note";
-import { Workspace } from "../../../types/note/workspace";
+import { Folders, Workspace } from "../../../types/note/workspace";
 
 /**
  * 创建工作区
@@ -20,6 +20,12 @@ export const createWorkspace = async ({
     .insert<Workspace>({ title: name, userId, inconId })
     .select("*");
   if (error) throw new Error("服务器错误");
+  await supabaseNote(token).from("folder").insert<Folders>({
+    title: "默认文件夹",
+    workspaceId: data[0].id,
+    userId,
+    inconId: "📄",
+  });
   return data[0];
 };
 

@@ -8,15 +8,16 @@ import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
 import { VueQueryPlugin, VueQueryPluginOptions } from "@tanstack/vue-query";
 import Vue3Toastify, { type ToastContainerOptions } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-
 // Vuetify
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
+// 定义 UserMetadata 接口
+
+// 在 User 接口中使用 UserMetadata
 
 // Components
-
 const vuetify = createVuetify({
   components,
   directives,
