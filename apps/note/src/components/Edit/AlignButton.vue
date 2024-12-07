@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { align } from "@/lib/edit";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/vue";
-import { Editor } from "@tiptap/vue-3";
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { align } from '@/lib/edit';
+import { Icon } from '@iconify/vue';
+import type { Editor } from '@tiptap/vue-3';
 
 const props = defineProps<{
   editor: Editor | null;

@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import type { PrimitiveProps } from 'radix-vue'
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { Primitive } from 'radix-vue'
+import { cn } from '@/lib/utils';
+import type { PrimitiveProps } from 'radix-vue';
+import { Primitive } from 'radix-vue';
+import type { HTMLAttributes } from 'vue';
 
-const props = defineProps<PrimitiveProps & {
-  class?: HTMLAttributes['class']
-}>()
+const props = defineProps<
+  PrimitiveProps & {
+    class?: HTMLAttributes['class'];
+  }
+>();
 </script>
 
 <template>

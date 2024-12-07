@@ -6,21 +6,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
-import { createReusableTemplate, useMediaQuery } from "@vueuse/core";
-import { ref } from "vue";
-import { Button } from "../ui/button";
-import DialogFooter from "../ui/dialog/DialogFooter.vue";
+} from '@/components/ui/drawer';
+import { createReusableTemplate, useMediaQuery } from '@vueuse/core';
+import { ref } from 'vue';
+import DialogFooter from '../ui/dialog/DialogFooter.vue';
 
 defineProps<{
   title: string;
@@ -28,7 +26,7 @@ defineProps<{
 }>();
 // Reuse `form` section
 const [UseTemplate, GridForm] = createReusableTemplate();
-const isDesktop = useMediaQuery("(min-width: 768px)");
+const isDesktop = useMediaQuery('(min-width: 768px)');
 
 const isOpen = ref(false);
 </script>

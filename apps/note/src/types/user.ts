@@ -1,4 +1,4 @@
-import { Session, User } from "@supabase/supabase-js";
+import type { Session, User } from '@supabase/supabase-js';
 
 export interface UserMeta {
   email: string;
@@ -13,3 +13,10 @@ export type Sessions = {
     user_metadata: UserMeta;
   };
 } & Session;
+
+export interface Profiles {
+  id: string;
+  name: string;
+  image: string;
+  email: string;
+}

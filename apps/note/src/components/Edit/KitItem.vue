@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
-import { Button } from "../ui/button";
+import { Icon } from '@iconify/vue';
+import type { Editor } from '@tiptap/vue-3';
+import { Button } from '../ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
-import { Editor } from "@tiptap/vue-3";
+} from '../ui/tooltip';
 const { iconName, isActive, onClick, label, editor } = defineProps<{
   iconName: string;
   editor: Editor | null;

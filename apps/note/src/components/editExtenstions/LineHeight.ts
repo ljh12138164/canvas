@@ -1,7 +1,7 @@
-import { Extension } from "@tiptap/core";
-import "@tiptap/extension-text-style";
+import { Extension } from '@tiptap/core';
+import '@tiptap/extension-text-style';
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     lineHeight: {
       setLineHeight: (size: string) => ReturnType;
@@ -10,12 +10,12 @@ declare module "@tiptap/core" {
   }
 }
 export const LineHeightExtension = Extension.create({
-  name: "lineHeight",
+  name: 'lineHeight',
   // 添加选项
   addOptions() {
     return {
-      types: ["heading", "paragraph"],
-      defaultLineHeight: "normal",
+      types: ['heading', 'paragraph'],
+      defaultLineHeight: 'normal',
     };
   },
   // 添加全局属性

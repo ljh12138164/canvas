@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import type { Editor } from '@tiptap/vue-3';
 import {
   Menubar,
-  MenubarMenu,
-  MenubarTrigger,
   MenubarContent,
-  MenubarSub,
-  MenubarSubTrigger,
-  MenubarSubContent,
   MenubarItem,
-} from "../ui/menubar";
-import { Editor } from "@tiptap/vue-3";
+  MenubarMenu,
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarTrigger,
+} from '../ui/menubar';
 
 const props = defineProps<{
   editor: Editor | null;

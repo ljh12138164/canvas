@@ -1,6 +1,6 @@
-import { client } from "@/server";
-import { useMutation, useQuery } from "@tanstack/vue-query";
-import { InferRequestType, InferResponseType } from "hono";
+import { client } from '@/server';
+import { useMutation, useQuery } from '@tanstack/vue-query';
+import type { InferRequestType, InferResponseType } from 'hono';
 
 type createWorkspaceRequest = InferRequestType<
   typeof client.workspace.create.$post
@@ -49,8 +49,9 @@ export const useGetWorkspaces = (token: string) => {
     data: workspaces,
     error: workspacesError,
     isLoading: workspacesIsLoading,
+    isFetching: workspacesIsFetching,
   } = useQuery<getWorkspacesResponse, Error>({
-    queryKey: ["workspaces"],
+    queryKey: ['workspaces'],
     queryFn: async () => {
       const res = await client.workspace.$get(undefined, {
         headers: {
@@ -61,5 +62,43 @@ export const useGetWorkspaces = (token: string) => {
       return res.json();
     },
   });
-  return { workspaces, workspacesError, workspacesIsLoading };
+  return {
+    workspaces,
+    workspacesError,
+    workspacesIsLoading,
+    workspacesIsFetching,
+  };
+};
+
+type getWorkspaceByIdResponse = InferResponseType<
+  (typeof client.workspace)[':workspaceId']['$get'],
+  200
+>;
+/**
+ * 获取工作区
+ * @param id
+ * @returns
+ */
+export const useGetWorkspaceById = (token: string, id: string) => {
+  const {
+    data: workspace,
+    error: workspaceError,
+    isFetching: workspaceIsFetching,
+    isLoading: workspaceIsLoading,
+  } = useQuery<getWorkspaceByIdResponse, Error>({
+    queryKey: ['workspaceItem'],
+    queryFn: async () => {
+      const res = await client.workspace[':workspaceId'].$get(
+        { param: { workspaceId: id } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (!res.ok) throw new Error(res.statusText);
+      return res.json();
+    },
+  });
+  return { workspace, workspaceError, workspaceIsLoading, workspaceIsFetching };
 };

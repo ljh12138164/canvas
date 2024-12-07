@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@supabase/supabase-js";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import DropdownMenuContent from "../ui/dropdown-menu/DropdownMenuContent.vue";
-import { Skeleton } from "../ui/skeleton";
-import { useRouter } from "vue-router";
-import { logout } from "@/server/supabase/user";
+} from '@/components/ui/dropdown-menu';
+import { logout } from '@/server/supabase/user';
+import type { User } from '@supabase/supabase-js';
+import { useRouter } from 'vue-router';
+import DropdownMenuContent from '../ui/dropdown-menu/DropdownMenuContent.vue';
+import { Skeleton } from '../ui/skeleton';
 const router = useRouter();
 const props = defineProps<{
   user: User | undefined;
@@ -18,7 +18,7 @@ const props = defineProps<{
 }>();
 const handleLogout = () => {
   logout();
-  router.push("/login");
+  router.push('/login');
 };
 </script>
 <template>

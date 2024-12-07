@@ -10,7 +10,7 @@ export const folder = new Hono()
   .get("/folderList", async (c) => {
     const { token, auth } = getSupabaseAuth(c);
     const [error, folder] = await to(
-      getfolder({ id: auth.session_id as string, token })
+      getfolder({ id: auth.sub as string, token })
     );
     if (error) return c.json({ message: error.message }, 500);
     return c.json(folder);
@@ -33,7 +33,7 @@ export const folder = new Hono()
         createFolder({
           title,
           content,
-          userId: auth.user_metadata.sub as string,
+          userId: auth.sub as string,
           inconId,
           token,
           workspaceId,

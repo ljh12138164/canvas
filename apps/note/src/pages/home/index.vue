@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import ThemeChange from "@/components/common/ThemeChange.vue";
-import UserButton from "@/components/common/UserButton.vue";
-import { getCurrentUser } from "@/server/supabase/user";
-import useUser from "@/store/user";
-import { Sessions } from "@/types/user";
-import { onBeforeMount } from "vue";
+import ThemeChange from '@/components/common/ThemeChange.vue';
+import UserButton from '@/components/common/UserButton.vue';
+import { getCurrentUser } from '@/server/supabase/user';
+import useUser from '@/store/user';
+import type { Sessions } from '@/types/user';
+import { onBeforeMount } from 'vue';
 onBeforeMount(async () => {
   const userStore = await getCurrentUser();
   if (userStore) {

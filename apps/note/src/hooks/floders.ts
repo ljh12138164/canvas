@@ -1,6 +1,6 @@
-import { useMutation } from "@tanstack/vue-query";
-import { client } from "@/server";
-import { InferRequestType, InferResponseType } from "hono";
+import { client } from '@/server';
+import { useMutation } from '@tanstack/vue-query';
+import type { InferRequestType, InferResponseType } from 'hono';
 
 type Folder = InferResponseType<typeof client.folder.create.$post, 200>;
 type FolderRequest = InferRequestType<typeof client.folder.create.$post>;
@@ -16,7 +16,7 @@ export const useCreateFolder = (token: string) => {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {
-          throw new Error("创建失败");
+          throw new Error('创建失败');
         }
         return res.json();
       },

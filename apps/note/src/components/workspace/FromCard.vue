@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {
   Card,
-  CardHeader,
   CardContent,
-  CardTitle,
   CardDescription,
-} from "@/components/ui/card";
-import From from "./From.vue";
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import From from './From.vue';
 </script>
 <template>
   <Card>

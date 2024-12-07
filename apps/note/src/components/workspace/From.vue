@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   FormControl,
   FormDescription,
@@ -7,19 +7,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { toTypedSchema } from "@vee-validate/zod";
-import { useForm } from "vee-validate";
-import { ref } from "vue";
-import * as z from "zod";
-import EmojiPopup from "../common/EmojiPopup.vue";
-import { Input } from "../ui/input";
-import { CardFooter } from "../ui/card";
-import { useCreateWorkspace } from "@/hooks/workspace";
-import useUser from "@/store/user";
-import { toast } from "@/lib";
-import { useRouter } from "vue-router";
-import { useQueryClient } from "@tanstack/vue-query";
+} from '@/components/ui/form';
+import { useCreateWorkspace } from '@/hooks/workspace';
+import { toast } from '@/lib';
+import useUser from '@/store/user';
+import { useQueryClient } from '@tanstack/vue-query';
+import { toTypedSchema } from '@vee-validate/zod';
+import { useForm } from 'vee-validate';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import * as z from 'zod';
+import EmojiPopup from '../common/EmojiPopup.vue';
+import { CardFooter } from '../ui/card';
+import { Input } from '../ui/input';
 const { userData } = useUser();
 const router = useRouter();
 const token = userData?.session.access_token as string;
@@ -28,19 +28,19 @@ const formSchema = toTypedSchema(
   z.object({
     title: z.string().optional(),
     inconId: z.string().optional(),
-  })
+  }),
 );
 const queryClient = useQueryClient();
-const showEmoji = ref("");
+const showEmoji = ref('');
 const form = useForm({
   validationSchema: formSchema,
 });
 const onSubmit = form.handleSubmit((values) => {
   //校验
-  if (!values.title) return form.setErrors({ title: "请输入工作间名称" });
+  if (!values.title) return form.setErrors({ title: '请输入工作间名称' });
   if (values.title.length < 2)
-    return form.setErrors({ title: "工作间名称至少2个字符" });
-  if (!values.inconId) return form.setErrors({ inconId: "请选择图标" });
+    return form.setErrors({ title: '工作间名称至少2个字符' });
+  if (!values.inconId) return form.setErrors({ inconId: '请选择图标' });
   createWorkspace(
     {
       json: {
@@ -51,17 +51,17 @@ const onSubmit = form.handleSubmit((values) => {
     {
       onSuccess: (res) => {
         toast.dismiss();
-        toast.success("创建成功");
+        toast.success('创建成功');
         form.resetForm();
-        showEmoji.value = "";
+        showEmoji.value = '';
         router.push(`/workspace/${res.id}`);
-        queryClient.invalidateQueries({ queryKey: ["workspace"] });
+        queryClient.invalidateQueries({ queryKey: ['workspaces'] });
       },
       onError: () => {
         toast.dismiss();
-        toast.error("创建失败");
+        toast.error('创建失败');
       },
-    }
+    },
   );
 });
 const onChangeEmoji = (emoji: string) => {

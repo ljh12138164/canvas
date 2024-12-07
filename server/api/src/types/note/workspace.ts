@@ -8,6 +8,7 @@ export interface Workspace {
   data?: string;
   inTrash?: boolean;
   logo?: string;
+  inviteCode?: string;
   bannerUrl?: string;
 }
 
@@ -23,4 +24,11 @@ export interface Collaborators {
   workspaceId: string;
   userId: string;
   created_at: string;
+}
+
+export interface Profiles {
+  id: string;
+  name: string;
+  image: string;
+  email: string;
 }

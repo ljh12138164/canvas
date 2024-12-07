@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { LineHeightExtension } from "@/lib/edit";
-import { Icon } from "@iconify/vue";
-import { Editor } from "@tiptap/vue-3";
-import { ref } from "vue";
+} from '@/components/ui/dropdown-menu';
+import { LineHeightExtension } from '@/lib/edit';
+import { Icon } from '@iconify/vue';
+import type { Editor } from '@tiptap/vue-3';
+import { ref } from 'vue';
 const props = defineProps<{
   editor: Editor | null;
 }>();
-const lineHeight = ref(props.editor?.getAttributes("paragraph").lineHeight);
+const lineHeight = ref(props.editor?.getAttributes('paragraph').lineHeight);
 </script>
 <template>
   <DropdownMenu v-if="props.editor">

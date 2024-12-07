@@ -1,14 +1,14 @@
-import { Extension, Range } from "@tiptap/core";
-import Suggestion from "@tiptap/suggestion";
-import { Editor } from "@tiptap/vue-3";
+import { Extension, type Range } from '@tiptap/core';
+import Suggestion from '@tiptap/suggestion';
+import type { Editor } from '@tiptap/vue-3';
 
 export default Extension.create({
-  name: "commandsPop",
+  name: 'commandsPop',
 
   addOptions() {
     return {
       suggestion: {
-        char: "/",
+        char: '/',
         command: ({
           editor,
           range,

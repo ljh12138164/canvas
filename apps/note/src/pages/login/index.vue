@@ -156,13 +156,13 @@ async function onSubmit(values: any) {
               variant="outline"
               class="formSubmit"
               >{{
-                loginType === 'login'
+                loginType === "login"
                   ? loading
-                    ? '登录中...'
-                    : '登录'
+                    ? "登录中..."
+                    : "登录"
                   : loading
-                    ? '注册中...'
-                    : '注册'
+                    ? "注册中..."
+                    : "注册"
               }}</Button
             >
           </Form>
@@ -268,12 +268,11 @@ async function onSubmit(values: any) {
 .form {
   display: flex;
   flex-direction: column;
-  transition: all 0.3s ease;
   align-items: center;
   padding: 2rem;
   width: 100%;
   height: 100%;
-  gap: 1rem;
+  gap: 2rem;
   &Item {
     width: 100%;
     display: flex;

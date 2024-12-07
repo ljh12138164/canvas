@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import useEditor from "@/store/editor";
-import { Editor } from "@tiptap/vue-3";
-import Separator from "../ui/separator/Separator.vue";
-import FontFamily from "./FontFamily.vue";
-import AddHeader from "./AddHeader.vue";
-import KitItem from "./KitItem.vue";
-import Color from "./Color.vue";
-import HeightColor from "./HeightColor.vue";
-import Link from "./Link.vue";
-import Image from "./Image.vue";
-import AlignButton from "./AlignButton.vue";
-import ListButton from "./ListButton.vue";
-import FontSizeButton from "./FontSizeButton.vue";
-import LineHeightButton from "./LineHeightButton.vue";
-import TableInsert from "./TableInsert.vue";
+import useEditor from '@/store/editor';
+import type { Editor } from '@tiptap/vue-3';
+import Separator from '../ui/separator/Separator.vue';
+import AddHeader from './AddHeader.vue';
+import AlignButton from './AlignButton.vue';
+import Color from './Color.vue';
+import FontFamily from './FontFamily.vue';
+import FontSizeButton from './FontSizeButton.vue';
+import HeightColor from './HeightColor.vue';
+import Image from './Image.vue';
+import KitItem from './KitItem.vue';
+import LineHeightButton from './LineHeightButton.vue';
+import Link from './Link.vue';
+import ListButton from './ListButton.vue';
+import TableInsert from './TableInsert.vue';
 
 const props = defineProps<{
   editor: Editor | null;
