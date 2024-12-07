@@ -6,6 +6,7 @@ export interface Workspace {
   updated_at?: string;
   created_at?: string;
   data?: string;
+  inviteCode?: string;
   inTrash?: boolean;
   logo?: string;
   bannerUrl?: string;

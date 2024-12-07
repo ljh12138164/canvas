@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { Editor } from "@tiptap/vue-3";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@iconify/vue";
-import { ref, watch } from "vue";
-import { Input } from "@/components/ui/input";
+import type { Editor } from "@tiptap/vue-3";
+import { ref } from "vue";
 
 const props = defineProps<{
   editor: Editor | null;
@@ -14,14 +13,14 @@ const fontSize = ref(
     : "16"
 );
 const input = ref<HTMLInputElement | null>(null);
-const updateFontSize = (newSize: string) => {
-  const size = parseInt(newSize);
-  if (size === "") {
-    props.editor?.chain().focus().setFontSize("16px").run();
-    // props.editor?.commands.focus();
-    fontSize.value = "16";
-    return;
-  }
+const updateFontSize = (newSize: number) => {
+  const size = newSize;
+  // if (size === "") {
+  //   props.editor?.chain().focus().setFontSize("16px").run();
+  //   // props.editor?.commands.focus();
+  //   fontSize.value = "16";
+  //   return;
+  // }
   if (size <= 0) {
     props.editor?.chain().focus().setFontSize("1px").run();
     // props.editor?.commands.focus();
@@ -50,7 +49,7 @@ const updateFontSize = (newSize: string) => {
 </script>
 <template>
   <div class="flex items-center gap-2">
-    <Button variant="outline" @click="updateFontSize(fontSize - 0 - 1)">
+    <Button variant="outline" @click="updateFontSize(Number(fontSize) - 1)">
       <Icon class="w-4 h-4" icon="mdi:minus" />
     </Button>
     <input
@@ -59,9 +58,9 @@ const updateFontSize = (newSize: string) => {
       class="w-20"
       type="number"
       v-model="fontSize"
-      @input="updateFontSize($event.target.value)"
+      @input="updateFontSize(Number($event.target?.value!))"
     />
-    <Button variant="outline" @click="updateFontSize(fontSize - 0 + 1)">
+    <Button variant="outline" @click="updateFontSize(Number(fontSize) + 1)">
       <Icon class="w-4 h-4" icon="mdi:plus" />
     </Button>
   </div>

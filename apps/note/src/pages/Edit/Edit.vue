@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Editor from "@/components/Edit/Tiptap.vue";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import Editor from '@/components/Edit/Tiptap.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
 </script>
 <template>
   <ScrollArea class="h-full py-6 bg-[rgb(248,250,254)]">

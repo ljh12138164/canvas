@@ -1,7 +1,7 @@
-import { Extension } from "@tiptap/core";
-import "@tiptap/extension-text-style";
+import { Extension } from '@tiptap/core';
+import '@tiptap/extension-text-style';
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     fontSize: {
       setFontSize: (size: string) => ReturnType;
@@ -10,11 +10,11 @@ declare module "@tiptap/core" {
   }
 }
 export const FontSizeExtension = Extension.create({
-  name: "fontSize",
+  name: 'fontSize',
   // 添加选项
   addOptions() {
     return {
-      types: ["textStyle"],
+      types: ['textStyle'],
     };
   },
   // 添加全局属性
@@ -41,13 +41,13 @@ export const FontSizeExtension = Extension.create({
       setFontSize:
         (size: string) =>
         ({ chain }) => {
-          return chain().setMark("textStyle", { fontSize: size }).run();
+          return chain().setMark('textStyle', { fontSize: size }).run();
         },
       unsetFontSize:
         () =>
         ({ chain }) => {
           return chain()
-            .setMark("textStyle", { fontSize: null })
+            .setMark('textStyle', { fontSize: null })
             .removeEmptyTextStyle()
             .run();
         },

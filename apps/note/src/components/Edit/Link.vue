@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { Editor } from "@tiptap/vue-3";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Icon } from "@iconify/vue";
-import { ref } from "vue";
-const link = ref("");
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Icon } from '@iconify/vue';
+import type { Editor } from '@tiptap/vue-3';
+import { ref } from 'vue';
+const link = ref('');
 const props = defineProps<{
   editor: Editor | null;
 }>();
@@ -17,14 +17,14 @@ const handleLink = () => {
   props.editor
     ?.chain()
     .focus()
-    .extendMarkRange("link")
+    .extendMarkRange('link')
     .setLink({ href: link.value })
     .run();
-  link.value = "";
+  link.value = '';
 };
 const handleDefaultLink = () => {
-  const { href } = props.editor?.getAttributes("link") || {};
-  link.value = href || "";
+  const { href } = props.editor?.getAttributes('link') || {};
+  link.value = href || '';
 };
 </script>
 <template>

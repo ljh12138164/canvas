@@ -3,12 +3,12 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import Button from "../ui/button/Button.vue";
-import EmojiPick from "../common/EmojiPick.vue";
-import { ref } from "vue";
+} from '@/components/ui/popover';
+import { ref } from 'vue';
+import EmojiPick from '../common/EmojiPick.vue';
+import Button from '../ui/button/Button.vue';
 
-const emojis = ref("");
+const emojis = ref('');
 </script>
 
 <template>

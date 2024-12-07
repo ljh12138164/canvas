@@ -1,4 +1,4 @@
-import { Sessions } from "@/types/user";
+import type { Sessions } from "@/types/user";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 

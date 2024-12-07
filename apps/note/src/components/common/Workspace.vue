@@ -1,13 +1,13 @@
 <script lang="ts">
-import { watch } from "vue";
-import { useRouter } from "vue-router";
+import { watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 watch(
   () => router.currentRoute.value.path,
   (path) => {
     console.log(path);
-  }
+  },
 );
 </script>
 <template>

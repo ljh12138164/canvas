@@ -21,7 +21,6 @@ export const createFolder = async ({
   token: string;
   workspaceId: string;
 }): Promise<Folders> => {
-  console.log({ title, content, userId, inconId, token, workspaceId });
   const { data, error } = await supabaseNote(token)
     .from("folders")
     .insert({
@@ -32,7 +31,6 @@ export const createFolder = async ({
       inconId,
     })
     .select("*");
-
   if (error) throw new Error(error.message);
 
   return data[0];

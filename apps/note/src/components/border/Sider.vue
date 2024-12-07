@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Folders } from "@/types/board";
-import { Icon } from "@iconify/vue/dist/iconify.js";
+import type { Folders } from '@/types/board';
+import { Icon } from '@iconify/vue/dist/iconify.js';
 // @ts-ignore
-import ResponsePop from "../common/ResponsePop.vue";
-import { Button } from "../ui/button";
-import FromCard from "./FromCard.vue";
+import ResponsePop from '../common/ResponsePop.vue';
+import { Button } from '../ui/button';
+import FromCard from './FromCard.vue';
 
 const { isLoading, foldersError, folders } = defineProps<{
   isLoading: boolean;

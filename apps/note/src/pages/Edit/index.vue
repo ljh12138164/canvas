@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import Sider from "@/components/border/Sider.vue";
-import { useBoard } from "@/hooks/board";
-import useUser from "@/store/user";
-import { ref, watch } from "vue";
-import { RouterView, useRoute } from "vue-router";
-import NavHeader from "./NavHeader.vue";
+import Sider from '@/components/border/Sider.vue';
+import { useBoard } from '@/hooks/board';
+import useUser from '@/store/user';
+import { ref, watch } from 'vue';
+import { RouterView, useRoute } from 'vue-router';
+import NavHeader from './NavHeader.vue';
 const route = useRoute();
 // const router = useRouter();
 
 const routerParams = ref(route.params.worskpaceId);
 const userData = useUser().userData!;
 const { folders, foldersError, foldersIsLoading } = useBoard(
-  userData.session.access_token
+  userData.session.access_token,
 );
 
 watch(
@@ -19,7 +19,7 @@ watch(
   () => {
     routerParams.value = route.params.worskpaceId;
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 <template>

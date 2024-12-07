@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -8,18 +8,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/lib";
-import { Icon } from "@iconify/vue";
-import { Editor } from "@tiptap/vue-3";
-import { ref } from "vue";
-const link = ref("");
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/lib';
+import { Icon } from '@iconify/vue';
+import type { Editor } from '@tiptap/vue-3';
+import { ref } from 'vue';
+const link = ref('');
 const inputRef = ref<HTMLInputElement>();
 const props = defineProps<{
   editor: Editor | null;
@@ -27,9 +27,9 @@ const props = defineProps<{
 const handleLink = () => {
   if (!props.editor || !link.value) return;
   toast.dismiss();
-  toast.success("图片插入成功");
+  toast.success('图片插入成功');
   props.editor?.chain().focus().setImage({ src: link.value }).run();
-  link.value = "";
+  link.value = '';
 };
 const handleImage = (e: Event) => {
   const file = (e.target as HTMLInputElement).files?.[0];
@@ -37,7 +37,7 @@ const handleImage = (e: Event) => {
   const url = URL.createObjectURL(file);
   link.value = url;
   handleLink();
-  (e.target as HTMLInputElement).value = "";
+  (e.target as HTMLInputElement).value = '';
 };
 const handleImageClick = () => {
   console.log(inputRef);

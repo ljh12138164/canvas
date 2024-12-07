@@ -1,59 +1,59 @@
 <script lang="ts" setup>
-import Collaboration from "@tiptap/extension-collaboration";
-import { Editor, EditorContent } from "@tiptap/vue-3";
-import { nanoid } from "nanoid";
-import { onBeforeUnmount, onMounted, ref } from "vue";
-import * as Y from "yjs";
-import StarterKitComponent from "./StarterKit.vue";
+import Collaboration from '@tiptap/extension-collaboration';
 // 编辑器扩展
-import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
-import { Color } from "@tiptap/extension-color";
-import Focus from "@tiptap/extension-focus";
-import FontFamily from "@tiptap/extension-font-family";
-import Highlight from "@tiptap/extension-highlight";
-import Link from "@tiptap/extension-link";
-import ListKeymap from "@tiptap/extension-list-keymap";
-import Placeholder from "@tiptap/extension-placeholder";
-import Subscript from "@tiptap/extension-subscript";
-import Superscript from "@tiptap/extension-superscript";
-import Table from "@tiptap/extension-table";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-import TableRow from "@tiptap/extension-table-row";
-import TaskItem from "@tiptap/extension-task-item";
-import TaskList from "@tiptap/extension-task-list";
-import TextAlign from "@tiptap/extension-text-align";
-import TextStyle from "@tiptap/extension-text-style";
-import Typography from "@tiptap/extension-typography";
-import Underline from "@tiptap/extension-underline";
-import StarterKit from "@tiptap/starter-kit";
-import ImageResize from "tiptap-extension-resize-image";
-import { LineHeightExtension } from "../editExtenstions/LineHeight";
+import CollaborationCursor from '@tiptap/extension-collaboration-cursor';
+import { Color } from '@tiptap/extension-color';
+import Focus from '@tiptap/extension-focus';
+import FontFamily from '@tiptap/extension-font-family';
+import Highlight from '@tiptap/extension-highlight';
+import Link from '@tiptap/extension-link';
+import ListKeymap from '@tiptap/extension-list-keymap';
+import Placeholder from '@tiptap/extension-placeholder';
+import Subscript from '@tiptap/extension-subscript';
+import Superscript from '@tiptap/extension-superscript';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
+import TextAlign from '@tiptap/extension-text-align';
+import TextStyle from '@tiptap/extension-text-style';
+import Typography from '@tiptap/extension-typography';
+import Underline from '@tiptap/extension-underline';
+import StarterKit from '@tiptap/starter-kit';
+import { Editor, EditorContent } from '@tiptap/vue-3';
+import { nanoid } from 'nanoid';
+import ImageResize from 'tiptap-extension-resize-image';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+import * as Y from 'yjs';
+import { LineHeightExtension } from '../editExtenstions/LineHeight';
+import StarterKitComponent from './StarterKit.vue';
 
+import useEditor from '@/store/editor';
 // 协作
 import {
   HocuspocusProvider,
   HocuspocusProviderWebsocket,
-} from "@hocuspocus/provider";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import css from "highlight.js/lib/languages/css";
-import js from "highlight.js/lib/languages/javascript";
-import ts from "highlight.js/lib/languages/typescript";
-import html from "highlight.js/lib/languages/xml";
-import { all, createLowlight } from "lowlight";
-import { FontSizeExtension } from "../editExtenstions/fontSize";
-import { ScrollArea } from "../ui/scroll-area";
-import Ruler from "./Ruler.vue";
-import useEditor from "@/store/editor";
+} from '@hocuspocus/provider';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import css from 'highlight.js/lib/languages/css';
+import js from 'highlight.js/lib/languages/javascript';
+import ts from 'highlight.js/lib/languages/typescript';
+import html from 'highlight.js/lib/languages/xml';
+import { all, createLowlight } from 'lowlight';
+import { FontSizeExtension } from '../editExtenstions/fontSize';
+import { ScrollArea } from '../ui/scroll-area';
+import Ruler from './Ruler.vue';
 
 // 创建doc
 const doc = new Y.Doc();
 // 文本编辑器
 const lowlight = createLowlight(all);
-lowlight.register("html", html);
-lowlight.register("css", css);
-lowlight.register("js", js);
-lowlight.register("ts", ts);
+lowlight.register('html', html);
+lowlight.register('css', css);
+lowlight.register('js', js);
+lowlight.register('ts', ts);
 // 创建ws
 const websocket = new HocuspocusProviderWebsocket({
   url: import.meta.env.PUBLIC_WS,
@@ -62,18 +62,18 @@ const websocket = new HocuspocusProviderWebsocket({
 // 协同
 const hocuspocusConnection = new HocuspocusProvider({
   websocketProvider: websocket,
-  name: "abc", // 服务端的 documentName
+  name: 'abc', // 服务端的 documentName
   document: doc,
   token: `token${Math.floor(Math.random() * 1000000)}`,
   onSynced() {
-    console.log("同步");
+    console.log('同步');
   },
   // on
   // awareness, // 这里传递 awareness 就可以实现共享用户信息
 });
-hocuspocusConnection.setAwarenessField("user", {
+hocuspocusConnection.setAwarenessField('user', {
   // 设置本地用户信息，这样另外的客户端就能拿到这个信息来显示了
-  name: "user.name" + Math.floor(Math.random() * 1000000),
+  name: 'user.name' + Math.floor(Math.random() * 1000000),
   id: nanoid(),
 });
 
@@ -90,7 +90,7 @@ const editor = ref<Editor>(
         history: false,
       }),
       LineHeightExtension.configure({
-        types: ["heading", "paragraph"],
+        types: ['heading', 'paragraph'],
       }),
       // 协同
       Collaboration.configure({
@@ -124,7 +124,7 @@ const editor = ref<Editor>(
       Highlight.configure({ multicolor: true }),
       Link.configure({
         openOnClick: true,
-        defaultProtocol: "https",
+        defaultProtocol: 'https',
         autolink: true,
       }),
       Subscript,
@@ -133,14 +133,14 @@ const editor = ref<Editor>(
       Underline,
       Typography,
       TextAlign.configure({
-        types: ["heading", "paragraph"],
+        types: ['heading', 'paragraph'],
       }),
       Placeholder.configure({
-        placeholder: "写点什么吧...",
+        placeholder: '写点什么吧...',
       }),
       ListKeymap,
       Focus.configure({
-        className: "focus",
+        className: 'focus',
       }),
       Color,
       // 自定义命令
@@ -188,7 +188,7 @@ const editor = ref<Editor>(
           </tbody>
         </table>
       `,
-  })
+  }),
 );
 onMounted(() => {
   useEditor().setEditorData(editor.value as Editor);

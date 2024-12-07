@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { Button } from "../ui/button";
+import { Icon } from '@iconify/vue';
+import type { Editor } from '@tiptap/vue-3';
+import { debounce } from 'lodash';
+import { watch } from 'vue';
+import { defineProps, ref } from 'vue';
+import { Button } from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Icon } from "@iconify/vue";
-import { Editor } from "@tiptap/vue-3";
-import { watch } from "vue";
-import { defineProps, ref } from "vue";
-import { debounce } from "lodash";
+} from '../ui/dropdown-menu';
 const props = defineProps<{
   editor: Editor | null;
 }>();
 
-const color = ref(props.editor?.getAttributes("textStyle").color || "#000000");
+const color = ref(props.editor?.getAttributes('textStyle').color || '#000000');
 watch(
   color,
   debounce((newVal: string) => {
     props.editor?.chain().focus().setColor(newVal).run();
-  }, 100)
+  }, 100),
 );
 </script>
 <template>

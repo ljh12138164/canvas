@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { CardContent } from "@/components/ui/card";
-import From from "./From.vue";
+import { CardContent } from '@/components/ui/card';
+import From from './From.vue';
 </script>
 <template>
   <CardContent>

@@ -42,17 +42,17 @@ export default {
 
   methods: {
     onKeyDown({ event }) {
-      if (event.key === "ArrowUp") {
+      if (event.key === 'ArrowUp') {
         this.upHandler();
         return true;
       }
 
-      if (event.key === "ArrowDown") {
+      if (event.key === 'ArrowDown') {
         this.downHandler();
         return true;
       }
 
-      if (event.key === "Enter") {
+      if (event.key === 'Enter') {
         this.enterHandler();
         return true;
       }

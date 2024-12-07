@@ -1,33 +1,42 @@
 <script setup lang="ts">
-import { Workspace } from "@/types/board";
-import Skeleton from "../ui/skeleton/Skeleton.vue";
-import { useRoute, useRouter } from "vue-router";
+import { useGetWorkspaceById } from '@/hooks/workspace';
+import type { Workspace } from '@/types/board';
+import type { Profiles } from '@/types/user';
+import { ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import Skeleton from '../ui/skeleton/Skeleton.vue';
 import {
-  TooltipTrigger,
+  Tooltip,
   TooltipContent,
   TooltipProvider,
-  Tooltip,
-} from "../ui/tooltip";
-import { randomColor } from "@/lib";
-import { ref, watch } from "vue";
-
+  TooltipTrigger,
+} from '../ui/tooltip';
 const props = defineProps<{
-  workspaces: Workspace[] | undefined;
+  workspaces: (Workspace & { profiles: Profiles[] })[] | undefined;
   isLoading: boolean;
+  isFetching: boolean;
+  token: string;
   error: Error | null;
 }>();
+
 const router = useRouter();
 const route = useRoute();
+
 const activeWorkspaceId = ref(route.params.workspaceId as string);
 watch(
   () => route.params.workspaceId,
   (newVal) => {
     activeWorkspaceId.value = newVal as string;
-  }
+  },
 );
 const handleClick = (id: string) => {
+  if (workspaceIsFetching.value) return;
   router.push(`/workspace/${id}`);
 };
+const { workspaceIsFetching } = useGetWorkspaceById(
+  props.token,
+  route.params.workspaceId as string,
+);
 </script>
 <template>
   <div class="workspace-list-container">
@@ -44,6 +53,7 @@ const handleClick = (id: string) => {
             <div
               class="workspace-item hover:bg-[#dcdcdc] dark:hover:bg-[#454648] transition-colors duration-300"
               @click="handleClick(workspace.id as string)"
+              :disabled="props.isFetching || workspaceIsFetching"
               :class="{
                 'bg-[#dcdcdc] dark:bg-[#454648]':
                   activeWorkspaceId === workspace.id,
@@ -63,7 +73,7 @@ const handleClick = (id: string) => {
       </TooltipProvider>
     </div>
     <div v-else>
-      <div>请先创建工作区</div>
+      <div>无工作区</div>
     </div>
   </div>
 </template>

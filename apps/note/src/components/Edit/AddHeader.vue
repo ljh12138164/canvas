@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { fontTitle } from "@/lib/edit";
-import { type Level } from "@tiptap/extension-heading";
-import { Editor } from "@tiptap/vue-3";
+import { fontTitle } from '@/lib/edit';
+import type { Level } from '@tiptap/extension-heading';
+import type { Editor } from '@tiptap/vue-3';
+import { computed } from 'vue';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { computed } from "vue";
+} from '../ui/dropdown-menu';
 
 const props = defineProps<{
   editor: Editor | null;
 }>();
 const headingLevel = computed(() => {
   for (let i = 0; i < fontTitle.length; i++) {
-    if (props.editor?.isActive("heading", { level: i })) {
+    if (props.editor?.isActive('heading', { level: i })) {
       return i;
     }
   }

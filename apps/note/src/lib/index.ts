@@ -1,23 +1,23 @@
-import { getCurrentUser } from "@/server/supabase/user";
-import useUser from "@/store/user";
-import { Sessions } from "@/types/user";
-import { RouteLocationNormalized } from "vue-router";
+import { getCurrentUser } from '@/server/supabase/user';
+import useUser from '@/store/user';
+import type { Sessions } from '@/types/user';
+import type { RouteLocationNormalized } from 'vue-router';
 import {
+  type ToastPosition,
+  type ToastTheme,
+  type ToastTransition,
   toast as toastify,
-  ToastPosition,
-  ToastTheme,
-  ToastTransition,
-} from "vue3-toastify";
+} from 'vue3-toastify';
 
 export const DEFAULT_AVATAR =
-  "https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg";
+  'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg';
 export const USER_IMAGE_URL =
-  "https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/";
+  'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/';
 // toast 实例
 const toastOption = {
-  theme: "auto" as ToastTheme,
-  position: "top-center" as ToastPosition,
-  transition: "flip" as ToastTransition,
+  theme: 'auto' as ToastTheme,
+  position: 'top-center' as ToastPosition,
+  transition: 'flip' as ToastTransition,
   dangerouslyHTMLString: true,
   hideProgressBar: true,
 };
@@ -50,13 +50,13 @@ export const toast = new Toast();
 export async function routerCheckLogin(
   _: RouteLocationNormalized,
   __: RouteLocationNormalized,
-  next: (go?: string) => void
+  next: (go?: string) => void,
 ) {
   const data = await getCurrentUser();
   const { setUserData } = useUser();
 
   if (!data) {
-    next("/login");
+    next('/login');
   } else {
     setUserData({ session: data.session as Sessions });
     next();
@@ -72,12 +72,12 @@ export async function routerCheckLogin(
 export async function routerLoginAfter(
   _: RouteLocationNormalized,
   __: RouteLocationNormalized,
-  next: (go?: string) => void
+  next: (go?: string) => void,
 ) {
   const data = await getCurrentUser();
   if (data) {
-    toast.success("用户已登录");
-    next("/");
+    toast.success('用户已登录');
+    next('/');
   } else {
     next();
   }
@@ -87,7 +87,7 @@ export async function routerLoginAfter(
  * 下载文件
  */
 export function downloadFile(blob: Blob, name: string) {
-  const a = document.createElement("a");
+  const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = name;
   a.click();
@@ -98,5 +98,5 @@ export function downloadFile(blob: Blob, name: string) {
  * 随机颜色
  */
 export function randomColor() {
-  return "#" + Math.floor(Math.random() * 16777215).toString(16);
+  return '#' + Math.floor(Math.random() * 16777215).toString(16);
 }

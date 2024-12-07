@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { ScrollArea } from "@/components/ui/scroll-area";
-import FromCard from "@/components/workspace/FromCard.vue";
+import { ScrollArea } from '@/components/ui/scroll-area';
+import FromCard from '@/components/workspace/FromCard.vue';
+import userData from '@/store/user';
+import InviteDialog from './InviteDialog.vue';
+const token = userData()?.userData?.session.access_token as string;
 </script>
 <template>
   <section class="home-container border border-gray-200 dark:border-gray-800">
     <ScrollArea class="h-[85dvh]">
-      <FromCard />
+      <div class="flex flex-col gap-4">
+        <FromCard />
+        <InviteDialog :token="token" />
+      </div>
     </ScrollArea>
   </section>
 </template>

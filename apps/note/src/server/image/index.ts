@@ -1,8 +1,8 @@
-import { supabaseNote } from "../supabase/index";
-import { nanoid } from "nanoid";
-const imageBucket = "DOCUMENT_IMAGE";
+import { nanoid } from 'nanoid';
+import { supabaseNote } from '../supabase/index';
+const imageBucket = 'DOCUMENT_IMAGE';
 const imagePath =
-  "https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/";
+  'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/';
 interface UploadImageClound {
   file: File;
 }
@@ -13,7 +13,7 @@ interface UploadImageClound {
  * @returns 图片路径
  */
 export const uploadImageclound = async ({ file }: UploadImageClound) => {
-  const fileName = `${nanoid()}-${file.name}`.replace("/", "");
+  const fileName = `${nanoid()}-${file.name}`.replace('/', '');
   const { data, error } = await supabaseNote.storage
     // 桶名字
     .from(imageBucket)
