@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { useGetWorkspaceById } from '@/hooks/workspace';
-import type { Workspace } from '@/types/board';
-import type { Profiles } from '@/types/user';
-import { ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import Skeleton from '../ui/skeleton/Skeleton.vue';
+import { useGetWorkspaceById } from "@/hooks/workspace";
+import type { Workspace } from "@/types/board";
+import type { Profiles } from "@/types/user";
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import Skeleton from "../ui/skeleton/Skeleton.vue";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../ui/tooltip';
+} from "../ui/tooltip";
 const props = defineProps<{
-  workspaces: (Workspace & { profiles: Profiles[] })[] | undefined;
+  workspaces: (Workspace & { profiles: Profiles })[] | undefined;
   isLoading: boolean;
   isFetching: boolean;
   token: string;
@@ -27,7 +27,7 @@ watch(
   () => route.params.workspaceId,
   (newVal) => {
     activeWorkspaceId.value = newVal as string;
-  },
+  }
 );
 const handleClick = (id: string) => {
   if (workspaceIsFetching.value) return;
@@ -35,7 +35,7 @@ const handleClick = (id: string) => {
 };
 const { workspaceIsFetching } = useGetWorkspaceById(
   props.token,
-  route.params.workspaceId as string,
+  route.params.workspaceId as string
 );
 </script>
 <template>

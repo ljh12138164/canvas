@@ -1,5 +1,10 @@
 import { supabaseNote } from "../../supabase/note";
-import { Folders, Profiles, Workspace } from "../../../types/note/workspace";
+import {
+  Filts,
+  Folders,
+  Profiles,
+  Workspace,
+} from "../../../types/note/workspace";
 import { nanoid } from "nanoid";
 
 /**
@@ -22,7 +27,7 @@ export const createWorkspace = async ({
     .insert<Workspace>({ title: name, userId, inconId, inviteCode })
     .select("*");
   if (error) throw new Error("服务器错误");
-  await supabaseNote(token).from("folder").insert<Folders>({
+  await supabaseNote(token).from("folders").insert<Folders>({
     title: "默认文件夹",
     workspaceId: data[0].id,
     userId,
@@ -60,10 +65,12 @@ export const getWorkspaceById = async ({
   token: string;
   userId: string;
   workspaceId: string;
-}): Promise<Workspace & { profiles: Profiles; folders: Folders[] }> => {
+}): Promise<
+  Workspace & { profiles: Profiles; folders: (Folders & { files: Filts[] })[] }
+> => {
   const { data, error } = await supabaseNote(token)
     .from("workspace")
-    .select("*,profiles(*),folders(*)")
+    .select("*,profiles(*),folders(*,files(*))")
     .eq("id", workspaceId)
     .eq("userId", userId);
   if (error) throw new Error("服务器错误");
