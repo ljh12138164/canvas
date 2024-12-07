@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import Sider from "@/components/border/Sider.vue";
-import ThemeChange from "@/components/common/ThemeChange.vue";
 import { useBoard } from "@/hooks/board";
 import useUser from "@/store/user";
 import { ref, watch } from "vue";
 import { RouterView, useRoute } from "vue-router";
+import NavHeader from "./NavHeader.vue";
 const route = useRoute();
 // const router = useRouter();
+
 const routerParams = ref(route.params.worskpaceId);
 const userData = useUser().userData!;
 const { folders, foldersError, foldersIsLoading } = useBoard(
@@ -31,9 +32,7 @@ watch(
       />
     </section>
     <section class="editor-container">
-      <nav class="nav-container">
-        <ThemeChange />
-      </nav>
+      <NavHeader />
       <keep-alive>
         <main class="editor-main">
           <RouterView />
@@ -61,15 +60,7 @@ watch(
   display: flex;
   flex-direction: column;
 }
-.nav-container {
-  width: 100%;
-  height: 50px;
-  border-bottom: 2px solid #92929f9a;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 20px;
-}
+
 .editor {
   flex: 1;
   width: 100%;

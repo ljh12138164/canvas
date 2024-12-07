@@ -81,3 +81,14 @@ export async function routerLoginAfter(
     next();
   }
 }
+
+/**
+ * 下载文件
+ */
+export function downloadFile(blob: Blob, name: string) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  a.remove();
+}

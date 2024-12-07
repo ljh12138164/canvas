@@ -12,6 +12,8 @@ import Image from "./Image.vue";
 import AlignButton from "./AlignButton.vue";
 import ListButton from "./ListButton.vue";
 import FontSizeButton from "./FontSizeButton.vue";
+import LineHeightButton from "./LineHeightButton.vue";
+import TableInsert from "./TableInsert.vue";
 
 const props = defineProps<{
   editor: Editor | null;
@@ -42,6 +44,8 @@ const props = defineProps<{
       <AlignButton :editor="props.editor" />
       <ListButton :editor="props.editor" />
       <FontSizeButton :editor="props.editor" />
+      <LineHeightButton :editor="props.editor" />
+      <TableInsert :editor="props.editor" />
     </div>
   </section>
 </template>
