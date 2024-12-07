@@ -52,9 +52,6 @@ const isOpen = ref(false);
       <GridForm />
       <DialogFooter>
         <slot name="footer" />
-        <DialogClose as-child>
-          <Button variant="outline">取消</Button></DialogClose
-        >
       </DialogFooter>
     </DialogContent>
   </Dialog>
@@ -73,9 +70,6 @@ const isOpen = ref(false);
       <GridForm />
       <DrawerFooter class="pt-2">
         <slot name="footer" />
-        <DrawerClose as-child>
-          <Button variant="outline">取消</Button>
-        </DrawerClose>
       </DrawerFooter>
     </DrawerContent>
   </Drawer>

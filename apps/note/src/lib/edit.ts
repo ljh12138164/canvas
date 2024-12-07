@@ -53,3 +53,11 @@ export const list = [
     },
   },
 ];
+
+export const LineHeightExtension = [
+  { label: "默认", value: "normal" },
+  { label: "单倍", value: "1" },
+  { label: "1.2", value: "1.2" },
+  { label: "1.5", value: "1.5" },
+  { label: "双倍", value: "2" },
+];

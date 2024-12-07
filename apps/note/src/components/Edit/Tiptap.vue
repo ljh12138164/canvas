@@ -2,7 +2,7 @@
 import Collaboration from "@tiptap/extension-collaboration";
 import { Editor, EditorContent } from "@tiptap/vue-3";
 import { nanoid } from "nanoid";
-import { onBeforeUnmount, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import * as Y from "yjs";
 import StarterKitComponent from "./StarterKit.vue";
 // 编辑器扩展
@@ -28,6 +28,7 @@ import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
 import ImageResize from "tiptap-extension-resize-image";
+import { LineHeightExtension } from "../editExtenstions/LineHeight";
 
 // 协作
 import {
@@ -40,8 +41,10 @@ import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
 import { all, createLowlight } from "lowlight";
-import { ScrollArea } from "../ui/scroll-area";
 import { FontSizeExtension } from "../editExtenstions/fontSize";
+import { ScrollArea } from "../ui/scroll-area";
+import Ruler from "./Ruler.vue";
+import useEditor from "@/store/editor";
 
 // 创建doc
 const doc = new Y.Doc();
@@ -76,63 +79,6 @@ hocuspocusConnection.setAwarenessField("user", {
 
 const editor = ref<Editor>(
   new Editor({
-    // enableContentCheck: true,
-    // onCreate({ editor }) {
-    //   // 设置编辑器
-    //   useEditorStore().setEditorData(editor as Editor);
-    //   // 设置工具栏
-    //   useEditorStore().setTiptapKit(editor as Editor);
-    //   // 设置协同
-    //   useEditorStore().setHocuspocusConnection(hocuspocusConnection);
-    //   // 设置加载
-    //   useEditorStore().setLoadEditor(false);
-    // },
-    // onDestroy() {
-    //   // 设置编辑器
-    //   useEditorStore().setEditorData(null);
-    //   // 设置工具栏
-    //   useEditorStore().setTiptapKit([] as any);
-    //   // 设置协同
-    //   useEditorStore().setHocuspocusConnection(null);
-    //   // 设置加载
-    //   useEditorStore().setLoadEditor(true);
-    // },
-    // onUpdate({ editor }) {
-    //   // 设置编辑器
-    //   useEditorStore().setEditorData(editor as Editor);
-    //   // 设置工具栏
-    //   useEditorStore().setTiptapKit(editor as Editor);
-    // },
-    // onSelectionUpdate({ editor }) {
-    //   // 设置编辑器
-    //   useEditorStore().setEditorData(editor as Editor);
-    //   // 设置工具栏
-    //   useEditorStore().setTiptapKit(editor as Editor);
-    // },
-    // onTransaction({ editor }) {
-    //   // 设置编辑器
-    //   useEditorStore().setEditorData(editor as Editor);
-    //   // 设置工具栏
-    //   useEditorStore().setTiptapKit(editor as Editor);
-    // },
-    // onFocus({ editor }) {
-    //   // 设置编辑器
-    //   useEditorStore().setEditorData(editor as Editor);
-    //   // 设置工具栏
-    //   useEditorStore().setTiptapKit(editor as Editor);
-    // },
-    // onBlur({ editor }) {
-    //   // 设置编辑器
-    //   useEditorStore().setEditorData(editor as Editor);
-    //   // 设置工具栏
-    //   useEditorStore().setTiptapKit(editor as Editor);
-    // },
-    // onContentError({ editor }) {
-    //   // 设置编辑器
-    //   useEditorStore().setEditorData(editor as Editor);
-    //   // 设置工具栏
-    //   useEditorStore().setTiptapKit(editor as Editor);
-    // },
     extensions: [
       CodeBlockLowlight.configure({
         lowlight,
@@ -141,6 +87,9 @@ const editor = ref<Editor>(
       StarterKit.configure({
         codeBlock: false,
         history: false,
+      }),
+      LineHeightExtension.configure({
+        types: ["heading", "paragraph"],
       }),
       // 协同
       Collaboration.configure({
@@ -195,6 +144,7 @@ const editor = ref<Editor>(
       Color,
       // 自定义命令
       FontSizeExtension,
+      LineHeightExtension,
       // Commands.configure({
       //   suggestion,
       // }),
@@ -239,7 +189,9 @@ const editor = ref<Editor>(
       `,
   })
 );
-
+onMounted(() => {
+  useEditor().setEditorData(editor.value as Editor);
+});
 onBeforeUnmount(() => {
   editor.value.destroy();
 });
@@ -250,6 +202,7 @@ onBeforeUnmount(() => {
   <main class="flex flex-col">
     <ScrollArea class="overflow-x-auto">
       <StarterKitComponent :editor="editor as Editor" />
+      <Ruler />
     </ScrollArea>
     <EditorContent :editor="editor as Editor" />
   </main>
