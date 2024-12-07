@@ -1,17 +1,24 @@
-import { Session } from "@supabase/supabase-js";
+import { Sessions } from "@/types/user";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const useUser = defineStore("user", () => {
+  const isLoading = ref(true);
+  const setIsLoading = (value: boolean) => (isLoading.value = value);
   // 为了完整类型推理，推荐使用箭头函数
-  const userData = ref<{
-    session: Session;
+  const user = ref<{
+    session: Sessions;
   } | null>(null);
-  const setUserData = (data: { session: Session }) => (userData.value = data);
+  const setUserData = (data: { session: Sessions }) => (user.value = data);
 
+  const userData = computed(() => user.value);
+  const initLoading = computed(() => isLoading.value);
   return {
     userData,
     setUserData,
+    // 初始化
+    setIsLoading,
+    initLoading,
   };
 });
 

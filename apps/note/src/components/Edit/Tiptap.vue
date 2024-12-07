@@ -83,6 +83,7 @@ const editor = ref<Editor>(
       CodeBlockLowlight.configure({
         lowlight,
       }),
+      // theme
       FontFamily,
       StarterKit.configure({
         codeBlock: false,

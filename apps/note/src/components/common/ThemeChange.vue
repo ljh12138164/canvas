@@ -15,7 +15,7 @@ const mode = useColorMode();
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button variant="outline">
+      <Button variant="outline" class="bg-[#fff] dark:bg-[#272727]">
         <Icon
           icon="radix-icons:moon"
           class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
@@ -28,8 +28,18 @@ const mode = useColorMode();
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
-      <DropdownMenuItem @click="mode = 'light'"> 亮色 </DropdownMenuItem>
-      <DropdownMenuItem @click="mode = 'dark'"> 暗色 </DropdownMenuItem>
+      <DropdownMenuItem
+        @click="mode = 'light'"
+        :class="mode === 'light' ? 'bg-muted ' : ''"
+      >
+        亮色
+      </DropdownMenuItem>
+      <DropdownMenuItem
+        @click="mode = 'dark'"
+        :class="mode === 'dark' ? 'bg-[#272727]' : ''"
+      >
+        暗色
+      </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

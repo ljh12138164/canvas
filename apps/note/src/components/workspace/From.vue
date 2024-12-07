@@ -17,7 +17,11 @@ import { Input } from "../ui/input";
 import { CardFooter } from "../ui/card";
 import { useCreateWorkspace } from "@/hooks/workspace";
 import useUser from "@/store/user";
+import { toast } from "@/lib";
+import { useRouter } from "vue-router";
+import { useQueryClient } from "@tanstack/vue-query";
 const { userData } = useUser();
+const router = useRouter();
 const token = userData?.session.access_token as string;
 const { createWorkspaceLoading, createWorkspace } = useCreateWorkspace(token);
 const formSchema = toTypedSchema(
@@ -26,6 +30,7 @@ const formSchema = toTypedSchema(
     inconId: z.string().optional(),
   })
 );
+const queryClient = useQueryClient();
 const showEmoji = ref("");
 const form = useForm({
   validationSchema: formSchema,
@@ -44,9 +49,17 @@ const onSubmit = form.handleSubmit((values) => {
       },
     },
     {
-      onSuccess: () => {
+      onSuccess: (res) => {
+        toast.dismiss();
+        toast.success("创建成功");
         form.resetForm();
         showEmoji.value = "";
+        router.push(`/workspace/${res.id}`);
+        queryClient.invalidateQueries({ queryKey: ["workspace"] });
+      },
+      onError: () => {
+        toast.dismiss();
+        toast.error("创建失败");
       },
     }
   );
@@ -57,37 +70,53 @@ const onChangeEmoji = (emoji: string) => {
 };
 </script>
 <template>
-  <form @submit="onSubmit">
+  <form @submit="onSubmit" class="flex flex-col gap-4">
+    <FormField v-slot="{ componentField }" name="inconId">
+      <FormItem class="flex gap-2 items-center">
+        <FormControl>
+          <EmojiPopup @onChangeEmoji="onChangeEmoji">
+            <template #trigger>
+              <Button
+                type="button"
+                variant="outline"
+                class="w-full h-[60px] bg-[#fff] dark:bg-[#272727] hover:bg-[#fff] dark:hover:bg-[#272727]"
+              >
+                <input
+                  class="bg-[#fff] dark:bg-[#272727] emojiInput"
+                  type="text"
+                  v-bind="componentField"
+                />
+                <span v-if="showEmoji" class="emoji">{{ showEmoji }}</span>
+                <span v-else class="text-muted-foreground">选择图标</span>
+              </Button>
+            </template>
+          </EmojiPopup>
+          <FormLabel style="margin-left: 10px; margin-top: 0">图标</FormLabel>
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
     <FormField v-slot="{ componentField }" name="title">
       <FormItem v-auto-animate>
         <FormLabel>工作间名称</FormLabel>
         <FormControl>
-          <Input type="text" placeholder="工作间名称" v-bind="componentField" />
+          <Input
+            class="bg-[#fff] dark:bg-[#272727]"
+            type="text"
+            placeholder="工作间名称"
+            v-bind="componentField"
+          />
         </FormControl>
-        <FormDescription> 工作间名称 </FormDescription>
         <FormMessage />
       </FormItem>
     </FormField>
-    <FormField v-slot="{ componentField }" name="inconId">
-      <FormItem>
-        <FormLabel>图标</FormLabel>
-        <FormControl>
-          <EmojiPopup @onChangeEmoji="onChangeEmoji">
-            <template #trigger>
-              <Button type="button" variant="outline">
-                <input class="emojiInput" type="text" v-bind="componentField" />
-                <span v-if="showEmoji" class="emoji">{{ showEmoji }}</span>
-                <span v-else>选择图标</span>
-              </Button>
-            </template>
-          </EmojiPopup>
-        </FormControl>
-        <FormDescription> 图标 </FormDescription>
-        <FormMessage />
-      </FormItem>
-    </FormField>
-    <CardFooter>
-      <Button :disabled="createWorkspaceLoading" type="submit">
+
+    <CardFooter as-child class="flex justify-end">
+      <Button
+        :disabled="createWorkspaceLoading"
+        type="submit"
+        class="w-[100px]"
+      >
         {{ createWorkspaceLoading ? "创建中..." : "创建" }}
       </Button>
     </CardFooter>

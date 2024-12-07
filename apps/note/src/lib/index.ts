@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/server/supabase/user";
 import useUser from "@/store/user";
+import { Sessions } from "@/types/user";
 import { RouteLocationNormalized } from "vue-router";
 import {
   toast as toastify,
@@ -57,7 +58,7 @@ export async function routerCheckLogin(
   if (!data) {
     next("/login");
   } else {
-    setUserData({ session: data.session });
+    setUserData({ session: data.session as Sessions });
     next();
   }
 }
@@ -91,4 +92,11 @@ export function downloadFile(blob: Blob, name: string) {
   a.download = name;
   a.click();
   a.remove();
+}
+
+/**
+ * 随机颜色
+ */
+export function randomColor() {
+  return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }
