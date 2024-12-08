@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { useGetWorkspaceById } from "@/hooks/workspace";
-import type { Workspace } from "@/types/board";
-import type { Profiles } from "@/types/user";
-import { ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import Skeleton from "../ui/skeleton/Skeleton.vue";
+import { useGetWorkspaceById, useGetWorkspaces } from '@/hooks/workspace';
+import type { Workspace } from '@/types/board';
+import type { Profiles } from '@/types/user';
+import { ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import Skeleton from '../ui/skeleton/Skeleton.vue';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
+} from '../ui/tooltip';
 const props = defineProps<{
   workspaces: (Workspace & { profiles: Profiles })[] | undefined;
   isLoading: boolean;
@@ -29,14 +29,15 @@ watch(
     activeWorkspaceId.value = newVal as string;
   }
 );
-const handleClick = (id: string) => {
-  if (workspaceIsFetching.value) return;
-  router.push(`/workspace/${id}`);
-};
 const { workspaceIsFetching } = useGetWorkspaceById(
   props.token,
   route.params.workspaceId as string
 );
+const { workspacesIsLoading } = useGetWorkspaces(props.token);
+const handleClick = (id: string) => {
+  if (workspaceIsFetching.value || workspacesIsLoading.value) return;
+  router.push(`/workspace/${id}`);
+};
 </script>
 <template>
   <div class="workspace-list-container">
@@ -53,7 +54,9 @@ const { workspaceIsFetching } = useGetWorkspaceById(
             <div
               class="workspace-item hover:bg-[#dcdcdc] dark:hover:bg-[#454648] transition-colors duration-300"
               @click="handleClick(workspace.id as string)"
-              :disabled="props.isFetching || workspaceIsFetching"
+              :disabled="
+                props.isFetching || workspacesIsLoading || workspaceIsFetching
+              "
               :class="{
                 'bg-[#dcdcdc] dark:bg-[#454648]':
                   activeWorkspaceId === workspace.id,

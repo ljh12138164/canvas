@@ -1,11 +1,12 @@
-import { supabaseNote } from "../../supabase/note";
+import { supabaseNote } from '../../supabase/note';
 import {
+  Collaborators,
   Filts,
   Folders,
   Profiles,
   Workspace,
-} from "../../../types/note/workspace";
-import { nanoid } from "nanoid";
+} from '../../../types/note/workspace';
+import { nanoid } from 'nanoid';
 
 /**
  * 创建工作区
@@ -23,15 +24,15 @@ export const createWorkspace = async ({
 }): Promise<Workspace> => {
   const inviteCode = nanoid(6);
   const { data, error } = await supabaseNote(token)
-    .from("workspace")
+    .from('workspace')
     .insert<Workspace>({ title: name, userId, inconId, inviteCode })
-    .select("*");
-  if (error) throw new Error("服务器错误");
-  await supabaseNote(token).from("folders").insert<Folders>({
-    title: "默认文件夹",
+    .select('*');
+  if (error) throw new Error('服务器错误');
+  await supabaseNote(token).from('folders').insert<Folders>({
+    title: '默认文件夹',
     workspaceId: data[0].id,
     userId,
-    inconId: "📄",
+    inconId: '📄',
   });
   return data[0];
 };
@@ -46,12 +47,31 @@ export const getWorkspaces = async ({
   token: string;
   userId: string;
 }): Promise<(Workspace & { profiles: Profiles })[]> => {
-  const { data, error } = await supabaseNote(token)
-    .from("workspace")
-    .select("*,profiles(*)")
-    .eq("userId", userId);
-  if (error) throw new Error("服务器错误");
-  return data;
+  const [
+    { data: workspaces, error: workspacesError },
+    { data: collaborators, error: collaboratorsError },
+  ] = await Promise.all([
+    supabaseNote(token)
+      .from('workspace')
+      .select('*,profiles(*)')
+      .eq('userId', userId),
+    supabaseNote(token)
+      .from('collaborators')
+      .select('*,workspace(*,profiles(*))')
+      .eq('userId', userId),
+  ]);
+  if (workspacesError || collaboratorsError) throw new Error('服务器错误');
+
+  return [
+    ...workspaces,
+    ...collaborators.map((collaborator) =>
+      !workspaces.find(
+        (workspace) => workspace.id === collaborator.workspace.id
+      )
+        ? collaborator.workspace
+        : null
+    ),
+  ].filter((workspace) => workspace !== null);
 };
 
 /**
@@ -69,11 +89,19 @@ export const getWorkspaceById = async ({
   Workspace & { profiles: Profiles; folders: (Folders & { files: Filts[] })[] }
 > => {
   const { data, error } = await supabaseNote(token)
-    .from("workspace")
-    .select("*,profiles(*),folders(*,files(*))")
-    .eq("id", workspaceId)
-    .eq("userId", userId);
-  if (error) throw new Error("服务器错误");
+    .from('workspace')
+    .select('*,profiles(*),folders(*,files(*)),collaborators(*)')
+    .eq('id', workspaceId);
+  if (error) throw new Error('服务器错误');
+  console.log({ data });
+  if (
+    !data.length ||
+    (data[0].userId !== userId &&
+      !data[0].collaborators.find(
+        (collaborator: Collaborators) => collaborator.userId === userId
+      ))
+  )
+    throw new Error('无权限');
   return data[0];
 };
 
@@ -90,10 +118,10 @@ export const checkPermission = async ({
   userId: string;
 }): Promise<boolean> => {
   const { data, error } = await supabaseNote(token)
-    .from("workspace")
-    .select("*")
-    .eq("id", workspaceId)
-    .eq("userId", userId);
-  if (error) throw new Error("服务器错误");
+    .from('workspace')
+    .select('*')
+    .eq('id', workspaceId)
+    .eq('userId', userId);
+  if (error) throw new Error('服务器错误');
   return data.length > 0;
 };

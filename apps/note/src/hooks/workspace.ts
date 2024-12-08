@@ -36,7 +36,7 @@ export const useCreateWorkspace = (token: string) => {
 };
 
 type getWorkspacesResponse = InferResponseType<
-  typeof client.workspace.$get,
+  typeof client.workspace.workspaces.$get,
   200
 >;
 /**
@@ -53,7 +53,7 @@ export const useGetWorkspaces = (token: string) => {
   } = useQuery<getWorkspacesResponse, Error>({
     queryKey: ['workspaces'],
     queryFn: async () => {
-      const res = await client.workspace.$get(undefined, {
+      const res = await client.workspace.workspaces.$get(undefined, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -71,8 +71,11 @@ export const useGetWorkspaces = (token: string) => {
 };
 
 type getWorkspaceByIdResponse = InferResponseType<
-  (typeof client.workspace)[':workspaceId']['$get'],
+  (typeof client.workspace.workspaces)[':workspaceId']['$get'],
   200
+>;
+type getWorkspaceByIdRequest = InferRequestType<
+  (typeof client.workspace.workspaces)[':workspaceId']['$get']
 >;
 /**
  * 获取工作区
@@ -85,16 +88,16 @@ export const useGetWorkspaceById = (token: string, id: string) => {
     error: workspaceError,
     isFetching: workspaceIsFetching,
     isLoading: workspaceIsLoading,
-  } = useQuery<getWorkspaceByIdResponse, Error>({
+  } = useQuery<getWorkspaceByIdResponse, Error, getWorkspaceByIdResponse>({
     queryKey: ['workspaceItem'],
     queryFn: async () => {
-      const res = await client.workspace[':workspaceId'].$get(
+      const res = await client.workspace.workspaces[':workspaceId'].$get(
         { param: { workspaceId: id } },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
       if (!res.ok) throw new Error(res.statusText);
       return res.json();

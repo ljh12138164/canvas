@@ -1,16 +1,16 @@
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { UserButton, useUser } from "@clerk/clerk-react";
-import { useEffect } from "react";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { UserButton, useUser } from '@clerk/clerk-react';
+import { useEffect } from 'react';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 // import { ThemeToggle } from "../../components/command/Theme";
-import userStore from "@/store/user";
-import { ThemeToggle } from "@/components/command/Theme";
-import { Separator } from "@/components/ui/separator";
-import { useTheme } from "@/components/ui/theme-provider";
-import { observer } from "mobx-react-lite";
-import { TfiMenuAlt } from "react-icons/tfi";
-import SiderBar from "../../components/board/SiderBar";
+import userStore from '@/store/user';
+import { ThemeToggle } from '@/components/command/Theme';
+import { Separator } from '@/components/ui/separator';
+import { useTheme } from '@/components/ui/theme-provider';
+import { observer } from 'mobx-react-lite';
+import { TfiMenuAlt } from 'react-icons/tfi';
+import SiderBar from '../../components/board/SiderBar';
 
 const Container = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ const MainContainer = styled.div<{ theme: string }>`
   overflow: hidden;
   width: 100%;
   background-color: ${(props) =>
-    props.theme === "light" ? "white" : "#191924"};
+    props.theme === 'light' ? 'white' : '#191924'};
 `;
 const MainHeader = styled.div`
   display: flex;
@@ -62,14 +62,13 @@ const App = observer(() => {
   const router = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    if (router.pathname === "/dashboard") {
-      navigate("/dashboard/home");
+    if (router.pathname === '/dashboard') {
+      navigate('/dashboard/home');
     }
   }, [router, navigate]);
   useEffect(() => {
     if (!isLoaded || !isSignedIn || !user) return;
     userStore.setUserData(user);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, isSignedIn, user]);
 
   if (!isLoaded) return;
@@ -135,9 +134,9 @@ const App = observer(() => {
   //   </Container>
   // );
 
-  if (!isSignedIn) return <Navigate to="/sign-in" />;
+  if (!isSignedIn) return <Navigate to='/sign-in' />;
   return (
-    <Container className="bg-[#e5e7eba0] dark:bg-[#1c1c22]">
+    <Container className='bg-[#e5e7eba0] dark:bg-[#1c1c22]'>
       <Media>
         <SiderBar user={user} />
       </Media>
@@ -149,17 +148,17 @@ const App = observer(() => {
                 <SheetTrigger>
                   <TfiMenuAlt />
                 </SheetTrigger>
-                <SheetContent side="left">
+                <SheetContent side='left'>
                   <SiderBar user={user} />
                 </SheetContent>
               </Sheet>
             </Mobile>
-            <div className="flex flex-row w-full items-center justify-end md:justify-between">
+            <div className='flex flex-row w-full items-center justify-end md:justify-between'>
               <ThemeToggle />
               <UserButton />
             </div>
           </MainHeader>
-          <Separator className="my-2" />
+          <Separator className='my-2' />
           <Outlet />
         </MainContainer>
       </Main>
