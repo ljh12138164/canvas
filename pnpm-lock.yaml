@@ -46,8 +46,8 @@ importers:
         specifier: ^8.5.1
         version: 8.5.1(vue@3.5.13(typescript@5.7.2))
       hono:
-        specifier: ^4.6.0
-        version: 4.6.12
+        specifier: ^4.6.13
+        version: 4.6.13
       lucide-vue-next:
         specifier: ^0.461.0
         version: 0.461.0(vue@3.5.13(typescript@5.7.2))
@@ -703,8 +703,8 @@ importers:
         specifier: ^11
         version: 11.10.0
       hono:
-        specifier: ^4.6.0
-        version: 4.6.12
+        specifier: 4.6.13
+        version: 4.6.13
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -834,13 +834,13 @@ importers:
         version: 1.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@hono/clerk-auth':
         specifier: ^2.0.0
-        version: 2.0.0(@clerk/backend@1.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(hono@4.6.12)
+        version: 2.0.0(@clerk/backend@1.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(hono@4.6.13)
       '@hono/node-server':
         specifier: 1.13.7
-        version: 1.13.7(hono@4.6.12)
+        version: 1.13.7(hono@4.6.13)
       '@hono/zod-validator':
         specifier: ^0.4.1
-        version: 0.4.1(hono@4.6.12)(zod@3.23.8)
+        version: 0.4.1(hono@4.6.13)(zod@3.23.8)
       '@react-email/components':
         specifier: 0.0.28
         version: 0.0.28(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -875,8 +875,8 @@ importers:
         specifier: ^2.19.0
         version: 2.19.0
       hono:
-        specifier: ^4.6.0
-        version: 4.6.12
+        specifier: ^4.6.13
+        version: 4.6.13
       jose:
         specifier: ^5.9.6
         version: 5.9.6
@@ -11459,14 +11459,18 @@ snapshots:
       y-prosemirror: 1.2.13(prosemirror-model@1.24.0)(prosemirror-state@1.4.3)(prosemirror-view@1.37.0)(y-protocols@1.0.6(yjs@13.6.20))(yjs@13.6.20)
       yjs: 13.6.20
 
-  '@hono/clerk-auth@2.0.0(@clerk/backend@1.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(hono@4.6.12)':
+  '@hono/clerk-auth@2.0.0(@clerk/backend@1.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(hono@4.6.13)':
     dependencies:
       '@clerk/backend': 1.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      hono: 4.6.12
+      hono: 4.6.13
 
   '@hono/node-server@1.13.7(hono@4.6.12)':
     dependencies:
       hono: 4.6.12
+
+  '@hono/node-server@1.13.7(hono@4.6.13)':
+    dependencies:
+      hono: 4.6.13
 
   '@hono/node-ws@1.0.4(@hono/node-server@1.13.7(hono@4.6.12))':
     dependencies:
@@ -11475,11 +11479,6 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-
-  '@hono/zod-validator@0.4.1(hono@4.6.12)(zod@3.23.8)':
-    dependencies:
-      hono: 4.6.12
-      zod: 3.23.8
 
   '@hono/zod-validator@0.4.1(hono@4.6.13)(zod@3.23.8)':
     dependencies:

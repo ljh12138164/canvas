@@ -42,11 +42,20 @@ export const useCreateWorkspace = (userId: string) => {
   });
   return { createWorkspace, isCreating };
 };
+
+type WorkspaceResponseType = InferResponseType<
+  (typeof client.board)[':id']['$get'],
+  200
+>;
 /**
  *  ## 获取工作间
  */
 export const useWorkspace = (id: string) => {
-  const { isLoading, data, error } = useQuery({
+  const { isLoading, data, error } = useQuery<
+    WorkspaceResponseType,
+    Error,
+    WorkspaceResponseType
+  >({
     queryKey: ['workspace', id],
     queryFn: async () => {
       const res = await client.board[':id'].$get({
