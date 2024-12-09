@@ -12,12 +12,12 @@ import {
 import { downloadFile } from '@/lib';
 import useEditor from '@/store/editor';
 import { Icon } from '@iconify/vue';
-import { Folders } from '@/types/board';
+import { Files, Folders } from '@/types/board';
 import { useMediaQuery } from '@vueuse/core';
 
 const isMobile = useMediaQuery('(max-width: 768px)');
 const props = defineProps<{
-  folders: Folders[] | undefined;
+  folders: (Folders & { files: Files[] })[] | undefined;
   isLoading: boolean;
   foldersError: Error | null;
 }>();
@@ -45,11 +45,11 @@ const onSaveText = () => {
 <template>
   <nav class="nav-container">
     <div v-show="isMobile">
-      <Sheet align="left">
+      <Sheet align="left" class="p-0">
         <SheetTrigger>
           <Icon icon="mdi:menu" />
         </SheetTrigger>
-        <SheetContent side="left" class="w-[40dvw]">
+        <SheetContent side="left" class="w-[40dvw] p-4">
           <Sider
             :folders="props.folders"
             :isLoading="props.isLoading"

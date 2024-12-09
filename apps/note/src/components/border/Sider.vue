@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Folders } from '@/types/board';
+import type { Files, Folders } from '@/types/board';
 import { Icon } from '@iconify/vue/dist/iconify.js';
 // @ts-ignore
 import ResponsePop from '../common/ResponsePop.vue';
@@ -20,7 +20,7 @@ onMounted(() => {
 const { isLoading, foldersError, folders } = defineProps<{
   isLoading: boolean;
   foldersError: Error | null;
-  folders: Folders[] | undefined;
+  folders: (Folders & { files: Files[] })[] | undefined;
 }>();
 </script>
 <template>
@@ -77,7 +77,7 @@ const { isLoading, foldersError, folders } = defineProps<{
         <div>暂无数据</div>
       </div>
       <div v-else>
-        <div variant="ghost" class="folderList">
+        <div class="folderList">
           <FoladerItem
             :is-loading="isLoading"
             v-for="folder in folders"
@@ -109,6 +109,6 @@ const { isLoading, foldersError, folders } = defineProps<{
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  // gap: 2px;
 }
 </style>

@@ -1,4 +1,4 @@
-import { Context } from "hono";
+import { Context } from 'hono';
 
 /**
  * 401错误
@@ -6,7 +6,7 @@ import { Context } from "hono";
  * @returns
  */
 export const error401 = (c: Context) => {
-  return c.json({ message: "请先登录" }, 401);
+  return c.json({ message: '请先登录' }, 401);
 };
 /**
  * 404错误
@@ -14,7 +14,7 @@ export const error401 = (c: Context) => {
  * @returns
  */
 export const error404 = (c: Context) => {
-  return c.json({ message: "资源不存在" }, 404);
+  return c.json({ message: '资源不存在' }, 404);
 };
 /**
  * 500错误
@@ -22,7 +22,7 @@ export const error404 = (c: Context) => {
  * @returns
  */
 export const error500 = (c: Context) => {
-  return c.json({ message: "服务器错误" }, 500);
+  return c.json({ message: '服务器错误' }, 500);
 };
 /**
  * 400错误
@@ -40,11 +40,12 @@ export const error400 = (c: Context, message: string) => {
  * @returns
  */
 export const errorCheck = (error: Error) => {
-  if (error.message === "未找到工作区") return 404;
-  if (error.message === "未找到用户") return 404;
-  if (error.message === "无权限") return 403;
-  if (error.message === "服务器错误") return 500;
-  if (error.message === "已加入" || error.message === "已加入工作区")
+  if (error.message === '未找到工作区') return 404;
+  if (error.message === '工作区不存在') return 404;
+  if (error.message === '未找到用户') return 404;
+  if (error.message === '无权限') return 403;
+  if (error.message === '服务器错误') return 500;
+  if (error.message === '已加入' || error.message === '已加入工作区')
     return 400;
 
   return 400;

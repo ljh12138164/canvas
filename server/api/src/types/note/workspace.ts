@@ -17,7 +17,7 @@ export interface Folders extends Workspace {
 }
 
 export interface Filts extends Folders {
-  folderId: string;
+  foldId: string;
 }
 // 协作
 export interface Collaborators {
