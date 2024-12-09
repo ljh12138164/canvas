@@ -74,9 +74,9 @@ type getWorkspaceByIdResponse = InferResponseType<
   (typeof client.workspace.workspaces)[':workspaceId']['$get'],
   200
 >;
-type getWorkspaceByIdRequest = InferRequestType<
-  (typeof client.workspace.workspaces)[':workspaceId']['$get']
->;
+// type getWorkspaceByIdRequest = InferRequestType<
+//   (typeof client.workspace.workspaces)[':workspaceId']['$get']
+// >;
 /**
  * 获取工作区
  * @param id

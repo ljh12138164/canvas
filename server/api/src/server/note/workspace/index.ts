@@ -106,7 +106,11 @@ export const getWorkspaceById = async ({
 };
 
 /**
- * 检查权限
+ * ## 检查权限
+ * @param token 令牌
+ * @param workspaceId 工作区id
+ * @param userId 用户id
+ * @returns 是否有权限
  */
 export const checkPermission = async ({
   token,
@@ -119,9 +123,16 @@ export const checkPermission = async ({
 }): Promise<boolean> => {
   const { data, error } = await supabaseNote(token)
     .from('workspace')
-    .select('*')
-    .eq('id', workspaceId)
-    .eq('userId', userId);
+    .select('*,collaborators(*)')
+    .eq('id', workspaceId);
   if (error) throw new Error('服务器错误');
-  return data.length > 0;
+  if (data.length === 0) throw new Error('工作区不存在');
+  if (data[0].userId === userId) return true;
+  if (
+    data[0].collaborators.find(
+      (collaborator: Collaborators) => collaborator.userId === userId
+    )
+  )
+    return true;
+  return false;
 };
