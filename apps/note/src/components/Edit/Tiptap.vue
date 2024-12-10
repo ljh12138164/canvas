@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import Collaboration from '@tiptap/extension-collaboration';
+import { getWorkspaceByIdResponse } from '@/hooks/workspace';
 // 编辑器扩展
+import Collaboration from '@tiptap/extension-collaboration';
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor';
 import { Color } from '@tiptap/extension-color';
 import Focus from '@tiptap/extension-focus';
@@ -43,7 +44,6 @@ import ts from 'highlight.js/lib/languages/typescript';
 import html from 'highlight.js/lib/languages/xml';
 import { all, createLowlight } from 'lowlight';
 import { FontSizeExtension } from '../editExtenstions/fontSize';
-import { ScrollArea } from '../ui/scroll-area';
 import Ruler from './Ruler.vue';
 
 // 创建doc
@@ -144,6 +144,7 @@ const editor = ref<Editor>(
       }),
       Color,
       // 自定义命令
+      // 字体
       FontSizeExtension,
       LineHeightExtension,
       // Commands.configure({
@@ -188,8 +189,12 @@ const editor = ref<Editor>(
           </tbody>
         </table>
       `,
-  }),
+  })
 );
+const props = defineProps<{
+  workspace: getWorkspaceByIdResponse | undefined;
+}>();
+
 onMounted(() => {
   useEditor().setEditorData(editor.value as Editor);
 });
@@ -201,10 +206,9 @@ onBeforeUnmount(() => {
 
 <template>
   <main class="flex flex-col">
-    <ScrollArea class="overflow-x-auto">
-      <StarterKitComponent :editor="editor as Editor" />
-      <Ruler />
-    </ScrollArea>
+    <StarterKitComponent :editor="editor as Editor" />
+
+    <Ruler />
     <EditorContent :editor="editor as Editor" />
   </main>
   <!--
@@ -296,7 +300,7 @@ onBeforeUnmount(() => {
     }
   }
   // 任务列表
-  ul[data-type="taskList"] {
+  ul[data-type='taskList'] {
     list-style: none;
     margin-left: 0;
     padding: 0;
@@ -316,11 +320,11 @@ onBeforeUnmount(() => {
       }
     }
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       cursor: pointer;
     }
 
-    ul[data-type="taskList"] {
+    ul[data-type='taskList'] {
       margin: 0;
     }
   }
@@ -355,7 +359,7 @@ onBeforeUnmount(() => {
 
     .selectedCell:after {
       background: var(--gray-2);
-      content: "";
+      content: '';
       left: 0;
       right: 0;
       top: 0;
@@ -441,7 +445,7 @@ onBeforeUnmount(() => {
     background: var(--black);
     border-radius: 0.5rem;
     color: var(--white);
-    font-family: "JetBrainsMono", monospace;
+    font-family: 'JetBrainsMono', monospace;
     margin: 1.5rem 0;
     padding: 0.75rem 1rem;
 

@@ -70,7 +70,7 @@ export const useGetWorkspaces = (token: string) => {
   };
 };
 
-type getWorkspaceByIdResponse = InferResponseType<
+export type getWorkspaceByIdResponse = InferResponseType<
   (typeof client.workspace.workspaces)[':workspaceId']['$get'],
   200
 >;

@@ -13,6 +13,7 @@ import FileItem from './FileItem.vue';
 import ResponsePop from '../common/ResponsePop.vue';
 import FileFrom from './FileFrom.vue';
 import CardContent from '../ui/card/CardContent.vue';
+
 defineProps<{
   folder: Folders & { files: Files[] };
   isSmall: boolean;
@@ -33,7 +34,7 @@ watch(
     <Tooltip>
       <TooltipTrigger
         ><div
-          class="folder-item bg-[#f1f1f1] hover:bg-[#dbdbdb] hover:text-black transition-all duration-300"
+          class="folder-item bg-[#f1f1f1] dark:bg-[#242424] hover:bg-[#dbdbdb] dark:hover:bg-gray-800 hover:text-black transition-all duration-300"
           :class="{
             smallItem: isSmall,
           }"

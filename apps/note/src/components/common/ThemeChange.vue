@@ -13,9 +13,9 @@ const mode = useColorMode();
 </script>
 
 <template>
-  <DropdownMenu>
+  <DropdownMenu class="border-none">
     <DropdownMenuTrigger as-child>
-      <Button variant="outline" class="bg-[#fff] dark:bg-[#272727]">
+      <Button variant="ghost" class="bg-[#fff] dark:bg-[#272727]">
         <Icon
           icon="radix-icons:moon"
           class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"

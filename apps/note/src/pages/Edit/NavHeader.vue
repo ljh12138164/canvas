@@ -2,77 +2,132 @@
 import Sider from '@/components/border/Sider.vue';
 import ThemeChange from '@/components/common/ThemeChange.vue';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   Menubar,
   MenubarContent,
+  MenubarItem,
   MenubarMenu,
   MenubarTrigger,
 } from '@/components/ui/menubar';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { downloadFile } from '@/lib';
 import useEditor from '@/store/editor';
-import { Icon } from '@iconify/vue';
 import { Files, Folders } from '@/types/board';
+import { Icon } from '@iconify/vue';
 import { useMediaQuery } from '@vueuse/core';
-
-const isMobile = useMediaQuery('(max-width: 768px)');
+import { nanoid } from 'nanoid';
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 const props = defineProps<{
   folders: (Folders & { files: Files[] })[] | undefined;
   isLoading: boolean;
   foldersError: Error | null;
 }>();
+const route = useRoute();
+const folderId = ref('');
+const fileId = ref('');
+const fileName = ref('');
+watch(
+  () => route.params,
+  () => {
+    if (route.params.folderId) {
+      folderId.value = route.params.folderId as string;
+    }
+    if (route.params.fileId) {
+      fileId.value = route.params.fileId as string;
+    }
+    if (route.params.fileId) {
+      fileName.value =
+        props.folders
+          ?.find((item) => item.id === folderId.value)
+          ?.files.find((item) => item.id === fileId.value)?.title + nanoid(6) ||
+        nanoid(6) + '文件';
+    } else {
+      fileName.value =
+        props.folders?.find((item) => item.id === folderId.value)?.title +
+          nanoid(6) || nanoid(6) + '文件夹';
+    }
+  },
+  {
+    immediate: true,
+  }
+);
+const isMobile = useMediaQuery('(max-width: 768px)');
 const onSaveJson = () => {
   const jsonData = useEditor().editorDatas?.getJSON();
   const blob = new Blob([JSON.stringify(jsonData)], {
     type: 'application/json',
   });
-  // TODO:文档名
-  downloadFile(blob, 'data.json');
+  downloadFile(blob, fileName.value + '.json');
 };
 const onSaveHtml = () => {
   const htmlData = useEditor().editorDatas?.getHTML();
   if (!htmlData) return;
   const blob = new Blob([htmlData], { type: 'text/html' });
-  downloadFile(blob, 'data.html');
+  downloadFile(blob, fileName.value + '.html');
 };
 const onSaveText = () => {
   const textData = useEditor().editorDatas?.getText();
   if (!textData) return;
   const blob = new Blob([textData], { type: 'text/plain' });
-  downloadFile(blob, 'data.txt');
+  downloadFile(blob, fileName.value + '.txt');
 };
 </script>
 <template>
   <nav class="nav-container">
-    <div v-show="isMobile">
-      <Sheet align="left" class="p-0">
-        <SheetTrigger>
-          <Icon icon="mdi:menu" />
-        </SheetTrigger>
-        <SheetContent side="left" class="w-[40dvw] p-4">
-          <Sider
-            :folders="props.folders"
-            :isLoading="props.isLoading"
-            :foldersError="props.foldersError"
-          />
-        </SheetContent>
-      </Sheet>
-    </div>
     <Menubar v-if="useEditor().editorDatas">
+      <MenubarMenu v-if="isMobile">
+        <Sheet align="left" class="p-0">
+          <SheetTrigger>
+            <Icon icon="mdi:menu" width="20" height="20" />
+          </SheetTrigger>
+          <SheetContent side="left" class="w-[40dvw] p-4">
+            <Sider
+              :folders="props.folders"
+              :isLoading="props.isLoading"
+              :foldersError="props.foldersError"
+            />
+          </SheetContent>
+        </Sheet>
+      </MenubarMenu>
       <MenubarMenu>
-        <MenubarTrigger>文件</MenubarTrigger>
-        <MenubarContent :as-child="true">
-          <div>
-            <Button variant="outline" @click="onSaveJson">下载json文件</Button>
-            <Button variant="outline" @click="onSaveHtml">下载html文件</Button>
-            <Button variant="outline" @click="onSaveText">下载txt文件</Button>
-          </div>
+        <MenubarTrigger class="font-bold">导出文件</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem as-child>
+            <Button
+              variant="ghost"
+              @click="onSaveJson"
+              class="btn-item cursor-pointer"
+            >
+              <Icon icon="mdi:file-document-outline" />
+              JSON导出
+            </Button>
+          </MenubarItem>
+          <MenubarItem as-child>
+            <Button
+              variant="ghost"
+              @click="onSaveHtml"
+              class="btn-item cursor-pointer"
+            >
+              <Icon icon="mdi:file-document-outline" />
+              HTML导出
+            </Button>
+          </MenubarItem>
+          <MenubarItem as-child>
+            <Button
+              variant="ghost"
+              @click="onSaveText"
+              class="btn-item cursor-pointer"
+            >
+              <Icon icon="mdi:file-document-outline" />
+              文本导出
+            </Button>
+          </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
-    </Menubar>
-    <div v-if="useEditor().editorDatas">
       <ThemeChange />
-    </div>
+    </Menubar>
+    <div v-if="useEditor().editorDatas"></div>
   </nav>
 </template>
 
@@ -83,6 +138,13 @@ const onSaveText = () => {
   border-bottom: 2px solid #92929f9a;
   display: flex;
   align-items: center;
-  padding-right: 20px;
+  padding: 0 10px;
+}
+.btn-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  cursor: pointer;
 }
 </style>

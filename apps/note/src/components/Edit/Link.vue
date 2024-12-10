@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Icon } from '@iconify/vue';
 import type { Editor } from '@tiptap/vue-3';
 import { ref } from 'vue';
+import TiptopDown from '../common/TiptopDown.vue';
 const link = ref('');
 const props = defineProps<{
   editor: Editor | null;
@@ -28,23 +23,20 @@ const handleDefaultLink = () => {
 };
 </script>
 <template>
-  <DropdownMenu v-if="props.editor">
-    <DropdownMenuTrigger>
-      <Button
-        @click="handleDefaultLink"
-        class="font-family-btn"
-        variant="outline"
-      >
-        <Icon icon="lucide:link" />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent>
+  <TiptopDown
+    title="链接"
+    :editor="props.editor"
+    :label="link"
+    icon="lucide:link"
+    :trigger="handleDefaultLink"
+  >
+    <template #dropdown>
       <section class="link-container">
         <Input v-model="link" placeholder="输入链接" />
         <Button variant="outline" size="sm" @click="handleLink">确定</Button>
       </section>
-    </DropdownMenuContent>
-  </DropdownMenu>
+    </template>
+  </TiptopDown>
 </template>
 
 <style scoped lang="scss">

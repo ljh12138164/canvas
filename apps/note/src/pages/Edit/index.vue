@@ -56,7 +56,11 @@ watch(workspaceError, (newVal) => {
           />
         </section>
       </ResizablePanel>
-      <ResizableHandle id="handle-demo-handle-1" with-handle />
+      <ResizableHandle
+        v-show="!isMobile"
+        id="handle-demo-handle-1"
+        with-handle
+      />
       <ResizablePanel
         id="handle-demo-panel-2 "
         class="editor-containe"

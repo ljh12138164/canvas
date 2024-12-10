@@ -3,11 +3,7 @@ import { fontTitle } from '@/lib/edit';
 import type { Level } from '@tiptap/extension-heading';
 import type { Editor } from '@tiptap/vue-3';
 import { computed } from 'vue';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
+import { Button } from '../ui/button';
 
 const props = defineProps<{
   editor: Editor | null;
@@ -22,14 +18,13 @@ const headingLevel = computed(() => {
 });
 </script>
 <template>
-  <DropdownMenu v-if="props.editor">
-    <DropdownMenuTrigger>
-      <Button class="font-family-btn" variant="outline"
-        >{{ headingLevel === 0 ? "正文" : `${headingLevel}级标题` }}
-        <Icon icon="heroicons:chevron-down" />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent class="font-family-dropdown">
+  <TiptopDown
+    title="标题"
+    :editor="props.editor"
+    :label="headingLevel"
+    icon="heroicons:chevron-down"
+  >
+    <template #dropdown>
       <Button
         @click="
           () => {
@@ -58,8 +53,8 @@ const headingLevel = computed(() => {
         }"
         >{{ item.label }}</Button
       >
-    </DropdownMenuContent>
-  </DropdownMenu>
+    </template>
+  </TiptopDown>
 </template>
 
 <style scoped lang="scss">

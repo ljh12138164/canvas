@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import Editor from '@/components/Edit/Tiptap.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { getWorkspaceByIdResponse } from '@/hooks/workspace';
+
+const props = defineProps<{
+  workspace: getWorkspaceByIdResponse | undefined;
+}>();
 </script>
 <template>
-  <ScrollArea class="h-full py-6 bg-[rgb(248,250,254)]">
-    <div class="editor">
-      <div class="editor-container">
-        <Editor />
-      </div>
-    </div>
+  <ScrollArea class="h-full w-full bg-[rgb(248,250,254)]">
+    <Editor :workspace="props.workspace" />
   </ScrollArea>
 </template>
 
 <style lang="scss" scoped>
-.editor {
+/* .editor {
   flex: 1;
   height: 100%;
   display: flex;
@@ -27,5 +28,5 @@ import { ScrollArea } from '@/components/ui/scroll-area';
     min-width: calc(100dvw - 300px);
     max-width: calc(100dvw - 300px);
   }
-}
+} */
 </style>
