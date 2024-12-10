@@ -4,7 +4,7 @@ import { jebt } from './jebt';
 import { cors } from 'hono/cors';
 import { note } from './note';
 import { form } from './form';
-import { gemini } from './gemini';
+import { ai } from './gemini';
 // import { hc } from 'hono/client';
 
 // import { emails } from "./email";
@@ -23,7 +23,7 @@ const app = new Hono()
   .route('/jebt', jebt)
   .route('/note', note)
   .route('/form', form)
-  .route('/gemini', gemini);
+  .route('/ai', ai);
 // .route('/email', emails);
 
 export type App = typeof app;

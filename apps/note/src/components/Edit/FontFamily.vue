@@ -1,49 +1,60 @@
 <script setup lang="ts">
 import { fontFamily } from '@/lib/edit';
-import { Icon } from '@iconify/vue';
+import TiptopDown from '../common/TiptopDown.vue';
 import type { Editor } from '@tiptap/vue-3';
+import { DropdownMenuItem } from '../ui/dropdown-menu';
+import { onMounted, ref } from 'vue';
 import { Button } from '../ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
 
 const props = defineProps<{
   editor: Editor | null;
 }>();
+const activeFontFamily = ref('Arial');
+onMounted(() => {
+  fontFamily.forEach((item) => {
+    if (
+      props.editor?.isActive('textStyle', {
+        fontFamily: item.value,
+      })
+    ) {
+      return item.label;
+    }
+  });
+  return 'Arial';
+});
 </script>
 <template>
-  <DropdownMenu v-if="props.editor">
-    <DropdownMenuTrigger>
-      <Button class="font-family-btn" variant="outline"
-        >{{
-          props.editor?.isActive("textStyle", {
-            fontFamily: "Arial",
-          })
-        }}
-        <Icon icon="heroicons:chevron-down" />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent class="font-family-dropdown">
-      <Button
-        @click="props.editor?.chain().focus().setFontFamily(item.value).run()"
-        v-for="item in fontFamily"
-        :key="item.label"
-        class="font-family-item"
-        variant="ghost"
-        :style="{
-          fontFamily: item.value,
-        }"
-        :class="{
-          active: props.editor?.isActive('textStyle', {
+  <TiptopDown
+    label="字体"
+    :editor="props.editor"
+    :title="activeFontFamily"
+    icon="heroicons:chevron-down"
+  >
+    <template #dropdown>
+      <DropdownMenuItem v-for="item in fontFamily" as-child>
+        <Button
+          @click="
+            () => {
+              props.editor?.chain().focus().setFontFamily(item.value).run();
+              activeFontFamily = item.label;
+            }
+          "
+          :key="item.label"
+          class="font-family-item cursor-pointer"
+          variant="ghost"
+          :style="{
             fontFamily: item.value,
-          }),
-        }"
-        >{{ item.label }}</Button
-      >
-    </DropdownMenuContent>
-  </DropdownMenu>
+          }"
+          :class="{
+            active: props.editor?.isActive('textStyle', {
+              fontFamily: item.value,
+            }),
+          }"
+          >{{ item.label }}</Button
+        >
+      </DropdownMenuItem>
+    </template>
+  </TiptopDown>
 </template>
 
 <style scoped lang="scss">
@@ -62,7 +73,8 @@ const props = defineProps<{
 }
 .font-family-item {
   height: 30px;
-  width: 100px;
+  width: 100%;
+  cursor: pointer;
   flex-shrink: 0;
   gap: 4px;
   padding: 0 8px;

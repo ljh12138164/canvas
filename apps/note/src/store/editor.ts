@@ -21,11 +21,13 @@ const useEditor = defineStore('editor', () => {
       label: '撤销',
       icon: 'mdi:undo',
       onClick: (editor: Editor) => editor?.chain().focus().undo().run(),
+      disabled: (editor: Editor) => !editor?.can().undo(),
     },
     {
       label: '重做',
       icon: 'mdi:redo',
       onClick: (editor: Editor) => editor?.chain().focus().redo().run(),
+      disabled: (editor: Editor) => !editor?.can().redo(),
     },
     {
       label: '加粗',
@@ -74,6 +76,7 @@ const useEditor = defineStore('editor', () => {
       icon: 'tabler:trash',
       onClick: (editor: Editor) =>
         editor?.chain().focus().unsetAllMarks().run(),
+      disabled: (editor: Editor) => !editor?.can().unsetAllMarks(),
     },
   ]);
 

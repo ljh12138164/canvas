@@ -61,3 +61,22 @@ export const LineHeightExtension = [
   { label: '1.5', value: '1.5' },
   { label: '双倍', value: '2' },
 ];
+
+export const fontSizeExtension = [
+  { label: '10px', value: '10px' },
+  { label: '12px', value: '12px' },
+  { label: '14px', value: '14px' },
+  { label: '16px', value: '16px' },
+  { label: '18px', value: '18px' },
+  { label: '20px', value: '20px' },
+  { label: '24px', value: '24px' },
+  { label: '28px', value: '28px' },
+  { label: '32px', value: '32px' },
+  { label: '36px', value: '36px' },
+  { label: '40px', value: '40px' },
+  { label: '48px', value: '48px' },
+  { label: '56px', value: '56px' },
+  { label: '64px', value: '64px' },
+  { label: '72px', value: '72px' },
+  { label: '80px', value: '80px' },
+];

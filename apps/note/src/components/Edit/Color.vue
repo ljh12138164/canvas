@@ -6,6 +6,12 @@ import { watch } from 'vue';
 import { defineProps, ref } from 'vue';
 import { Button } from '../ui/button';
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
@@ -19,22 +25,20 @@ watch(
   color,
   debounce((newVal: string) => {
     props.editor?.chain().focus().setColor(newVal).run();
-  }, 100),
+  }, 100)
 );
 </script>
 <template>
-  <DropdownMenu v-if="props.editor">
-    <DropdownMenuTrigger>
-      <Button class="font-family-btn" variant="outline">
-        <span>颜色</span>
-        <Icon icon="heroicons:chevron-down" />
-        <div class="h-0.5 w-full" />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent asChild>
+  <TiptopDown
+    title="字体颜色"
+    :editor="props.editor"
+    label="字体颜色"
+    icon="lucide:palette"
+  >
+    <template #dropdown>
       <v-color-picker v-model="color" />
-    </DropdownMenuContent>
-  </DropdownMenu>
+    </template>
+  </TiptopDown>
 </template>
 
 <style scoped lang="scss"></style>

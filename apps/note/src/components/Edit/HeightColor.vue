@@ -1,15 +1,7 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue';
 import type { Editor } from '@tiptap/vue-3';
 import { debounce } from 'lodash';
-import { watch } from 'vue';
-import { defineProps, ref } from 'vue';
-import { Button } from '../ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
+import { defineProps, ref, watch } from 'vue';
 
 const props = defineProps<{
   editor: Editor | null;
@@ -20,22 +12,21 @@ watch(
   color,
   debounce((newVal: string) => {
     props.editor?.chain().focus().toggleHighlight({ color: newVal }).run();
-  }, 100),
+  }, 100)
 );
 </script>
 <template>
-  <DropdownMenu v-if="props.editor">
-    <DropdownMenuTrigger>
-      <Button class="font-family-btn" variant="outline">
-        <span>高亮</span>
-        <Icon icon="heroicons:chevron-down" />
-        <div class="h-0.5 w-full" />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent asChild>
+  <TiptopDown
+    title="字体高亮"
+    :editor="props.editor"
+    label="字体高亮"
+    icon="lucide:highlight"
+    :height="200"
+  >
+    <template #dropdown>
       <v-color-picker v-model="color" />
-    </DropdownMenuContent>
-  </DropdownMenu>
+    </template>
+  </TiptopDown>
 </template>
 
 <style scoped lang="scss"></style>

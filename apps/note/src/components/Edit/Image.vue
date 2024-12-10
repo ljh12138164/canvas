@@ -9,16 +9,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+
 import { Input } from '@/components/ui/input';
 import { toast } from '@/lib';
-import { Icon } from '@iconify/vue';
 import type { Editor } from '@tiptap/vue-3';
 import { ref } from 'vue';
+import TiptopDown from '../common/TiptopDown.vue';
 const link = ref('');
 const inputRef = ref<HTMLInputElement>();
 const props = defineProps<{
@@ -45,13 +41,14 @@ const handleImageClick = () => {
 };
 </script>
 <template>
-  <DropdownMenu v-if="props.editor">
-    <DropdownMenuTrigger>
-      <Button class="font-family-btn" variant="outline">
-        <Icon icon="lucide:image" />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent asChild class="flex flex-col gap-2">
+  <TiptopDown
+    title="图片"
+    :editor="props.editor"
+    label="图片"
+    icon="lucide:image"
+    :height="200"
+  >
+    <template #dropdown>
       <section class="link-container">
         <Button
           variant="outline"
@@ -72,7 +69,7 @@ const handleImageClick = () => {
             <DialogFooter>
               <DialogClose>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   class="w-full"
                   size="sm"
                   @click="handleLink"
@@ -90,8 +87,8 @@ const handleImageClick = () => {
         class="hidden"
         @change="handleImage"
       />
-    </DropdownMenuContent>
-  </DropdownMenu>
+    </template>
+  </TiptopDown>
 </template>
 
 <style scoped lang="scss">

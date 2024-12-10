@@ -1,67 +1,49 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/vue";
-import type { Editor } from "@tiptap/vue-3";
-import { ref } from "vue";
+import { Button } from '@/components/ui/button';
+import type { Editor } from '@tiptap/vue-3';
+import { fontSizeExtension } from '@/lib/edit';
+import { ref } from 'vue';
+import TiptopDown from '../common/TiptopDown.vue';
+import DropdownMenuItem from '../ui/dropdown-menu/DropdownMenuItem.vue';
 
 const props = defineProps<{
   editor: Editor | null;
 }>();
 const fontSize = ref(
-  props.editor?.getAttributes("textStyle").fontSize
-    ? props.editor.getAttributes("textStyle").fontSize.replace("px", "")
-    : "16"
+  props.editor?.getAttributes('textStyle').fontSize
+    ? props.editor.getAttributes('textStyle').fontSize.replace('px', '')
+    : '16'
 );
-const input = ref<HTMLInputElement | null>(null);
-const updateFontSize = (newSize: number) => {
-  const size = newSize;
-  // if (size === "") {
-  //   props.editor?.chain().focus().setFontSize("16px").run();
-  //   // props.editor?.commands.focus();
-  //   fontSize.value = "16";
-  //   return;
-  // }
-  if (size <= 0) {
-    props.editor?.chain().focus().setFontSize("1px").run();
-    // props.editor?.commands.focus();
-    fontSize.value = "1";
-    return;
-  }
-  if (size > 100) {
-    props.editor?.chain().focus().setFontSize("100px").run();
-    // props.editor?.commands.focus();
-    fontSize.value = "100";
-    return;
-  }
-
-  if (!isNaN(size) && size > 0) {
-    props.editor
-      ?.chain()
-      .focus()
-      .setFontSize(size + "px")
-      .run();
-    fontSize.value = size.toString();
-    input.value?.focus();
-    return;
-    // props.editor?.commands.focus();
-  }
-};
 </script>
 <template>
-  <div class="flex items-center gap-2">
-    <Button variant="outline" @click="updateFontSize(Number(fontSize) - 1)">
-      <Icon class="w-4 h-4" icon="mdi:minus" />
-    </Button>
-    <input
-      ref="input"
-      min="1"
-      class="w-20"
-      type="number"
-      v-model="fontSize"
-      @input="updateFontSize(Number($event.target?.value!))"
-    />
-    <Button variant="outline" @click="updateFontSize(Number(fontSize) + 1)">
-      <Icon class="w-4 h-4" icon="mdi:plus" />
-    </Button>
-  </div>
+  <TiptopDown
+    :editor="props.editor"
+    :title="fontSize + 'px'"
+    label="字号"
+    icon="heroicons:chevron-down"
+    :height="200"
+  >
+    <template #dropdown>
+      <DropdownMenuItem v-for="item in fontSizeExtension" as-child>
+        <Button
+          variant="ghost"
+          @click="
+            () => {
+              props.editor?.chain().focus().setFontSize(item.value).run();
+              fontSize = item.label;
+            }
+          "
+          class="font-size-item cursor-pointer"
+          >{{ item.label }}</Button
+        >
+      </DropdownMenuItem>
+    </template>
+  </TiptopDown>
 </template>
+
+<style scoped lang="scss">
+.font-size-item {
+  cursor: pointer;
+  width: 100%;
+}
+</style>
