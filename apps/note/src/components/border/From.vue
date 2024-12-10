@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/form';
 import { useCreateFolder } from '@/hooks/floders';
 import useUser from '@/store/user';
+import { useQueryClient } from '@tanstack/vue-query';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
 import { ref, watch } from 'vue';
@@ -16,12 +17,11 @@ import { useRoute } from 'vue-router';
 import * as z from 'zod';
 import EmojiPopup from '../common/EmojiPopup.vue';
 import { Input } from '../ui/input';
-import { useQueryClient } from '@tanstack/vue-query';
 const formSchema = toTypedSchema(
   z.object({
     title: z.string().optional(),
     inconId: z.string().optional(),
-  })
+  }),
 );
 const clinetQuery = useQueryClient();
 const route = useRoute();
@@ -31,7 +31,7 @@ watch(
   () => {
     workspaceId.value = route.params.workspaceId as string;
   },
-  { immediate: true }
+  { immediate: true },
 );
 const token = useUser().userData?.session.access_token as string;
 // const userId = useUser().userData?.session.user.id as string;
@@ -64,7 +64,7 @@ const onSubmit = form.handleSubmit((values) => {
         });
         showEmoji.value = '';
       },
-    }
+    },
   );
 });
 const onChangeEmoji = (emoji: string) => {

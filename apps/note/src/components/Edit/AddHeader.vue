@@ -3,6 +3,7 @@ import { fontTitle } from '@/lib/edit';
 import type { Level } from '@tiptap/extension-heading';
 import type { Editor } from '@tiptap/vue-3';
 import { computed } from 'vue';
+import TiptopDown from '../common/TiptopDown.vue';
 import { Button } from '../ui/button';
 
 const props = defineProps<{
@@ -10,11 +11,9 @@ const props = defineProps<{
 }>();
 const headingLevel = computed(() => {
   for (let i = 0; i < fontTitle.length; i++) {
-    if (props.editor?.isActive('heading', { level: i })) {
-      return i;
-    }
+    if (props.editor?.isActive('heading', { level: i })) return 'h' + i;
   }
-  return 0;
+  return '段落';
 });
 </script>
 <template>

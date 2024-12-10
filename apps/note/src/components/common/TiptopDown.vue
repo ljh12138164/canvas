@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { Editor } from '@tiptap/vue-3';
-import { Button } from '../ui/button';
 import { Icon } from '@iconify/vue';
+import type { Editor } from '@tiptap/vue-3';
+import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
 
 const props = defineProps<{
   editor: Editor | null;
   icon: string;
-  title: string;
+  title: string | number;
   height?: number;
-  label: string;
+  label: string | number;
   trigger?: () => void;
 }>();
 </script>

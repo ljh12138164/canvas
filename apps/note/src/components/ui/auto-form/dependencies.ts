@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext } from 'radix-vue';
 import { useFieldValue, useFormValues } from 'vee-validate';
 import type { Ref } from 'vue';
@@ -7,6 +8,7 @@ import { type Dependency, DependencyType, type EnumValues } from './interface';
 import { getFromPath, getIndexIfArray } from './utils';
 
 export const [injectDependencies, provideDependencies] = createContext<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Ref<Dependency<z.infer<z.ZodObject<any>>>[] | undefined>
 >('AutoFormDependencies');
 
@@ -35,14 +37,12 @@ export default function useDependencies(fieldName: string) {
     const source = dep.sourceField as string;
     const index = getIndexIfArray(fieldName) ?? -1;
     const [sourceLast, ...sourceInitial] = source.split('.').toReversed();
-    const [_targetLast, ...targetInitial] = (dep.targetField as string)
+    const [, ...targetInitial] = (dep.targetField as string)
       .split('.')
       .toReversed();
 
     if (index >= 0 && sourceInitial.join(',') === targetInitial.join(',')) {
-      const [_currentLast, ...currentInitial] = fieldName
-        .split('.')
-        .toReversed();
+      const [, ...currentInitial] = fieldName.split('.').toReversed();
       return getFromPath(form.value, currentInitial.join('.') + sourceLast);
     }
 

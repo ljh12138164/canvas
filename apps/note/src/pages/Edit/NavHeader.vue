@@ -12,7 +12,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { downloadFile } from '@/lib';
 import useEditor from '@/store/editor';
-import { Files, Folders } from '@/types/board';
+import type { Files, Folders } from '@/types/board';
 import { Icon } from '@iconify/vue';
 import { useMediaQuery } from '@vueuse/core';
 import { nanoid } from 'nanoid';
@@ -50,7 +50,7 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 );
 const isMobile = useMediaQuery('(max-width: 768px)');
 const onSaveJson = () => {

@@ -27,11 +27,11 @@ watch(
   () => route.params.workspaceId,
   (newVal) => {
     activeWorkspaceId.value = newVal as string;
-  }
+  },
 );
 const { workspaceIsFetching } = useGetWorkspaceById(
   props.token,
-  route.params.workspaceId as string
+  route.params.workspaceId as string,
 );
 const { workspacesIsLoading } = useGetWorkspaces(props.token);
 const handleClick = (id: string) => {

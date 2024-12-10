@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { align } from '@/lib/edit';
 import { Icon } from '@iconify/vue';
 import type { Editor } from '@tiptap/vue-3';
+import TiptopDown from '../common/TiptopDown.vue';
 
 const props = defineProps<{
   editor: Editor | null;

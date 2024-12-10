@@ -70,11 +70,11 @@ const props = defineProps<{
 }
 .starter-kit {
   display: flex;
-  background-color: #f1f4f9;
+  background-color: white;
   padding: 0.5px 4px;
   align-items: center;
   overflow-x: scroll;
-  max-height: 50px;
+  height: 45px;
   gap: 4px;
   overflow-y: hidden;
 }

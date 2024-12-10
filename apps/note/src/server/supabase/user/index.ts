@@ -132,7 +132,7 @@ export async function updateCurrentUser({
     let deletePromise: Promise<boolean> = Promise.resolve(true);
     if (oldImageUrl !== DEFAULT_AVATAR)
       deletePromise = deleteImageClound({ image: oldImageUrl });
-    const [result, _] = await Promise.all([
+    const [result] = await Promise.all([
       uploadImageclound({ file: imageUrl }),
       deletePromise,
     ]);

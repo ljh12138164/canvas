@@ -12,7 +12,7 @@ watch(
   () => route.params.workspaceId,
   (newVal) => {
     workspaceId.value = newVal;
-  }
+  },
 );
 
 const token = useUser().userData?.session.access_token as string;

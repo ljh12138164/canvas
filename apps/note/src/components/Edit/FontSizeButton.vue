@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import type { Editor } from '@tiptap/vue-3';
 import { fontSizeExtension } from '@/lib/edit';
+import type { Editor } from '@tiptap/vue-3';
 import { ref } from 'vue';
 import TiptopDown from '../common/TiptopDown.vue';
 import DropdownMenuItem from '../ui/dropdown-menu/DropdownMenuItem.vue';
@@ -12,7 +12,7 @@ const props = defineProps<{
 const fontSize = ref(
   props.editor?.getAttributes('textStyle').fontSize
     ? props.editor.getAttributes('textStyle').fontSize.replace('px', '')
-    : '16'
+    : '16',
 );
 </script>
 <template>

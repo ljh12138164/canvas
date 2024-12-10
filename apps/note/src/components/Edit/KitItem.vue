@@ -8,12 +8,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip';
-const { iconName, isActive, onClick, label, editor } = defineProps<{
+const { iconName, isActive, onClick, label, editor, disabled } = defineProps<{
   iconName: string;
   editor: Editor | null;
   isActive: boolean | undefined;
   onClick?: (editor: Editor) => void;
   label: string;
+  disabled?: boolean;
 }>();
 </script>
 <template>
@@ -24,6 +25,7 @@ const { iconName, isActive, onClick, label, editor } = defineProps<{
           variant="ghost"
           @click="onClick && onClick(editor as Editor)"
           class="kitBtn"
+          :disabled="disabled"
           :style="{ backgroundColor: isActive ? '#e5e5e5cc' : 'transparent' }"
         >
           <Icon :icon="iconName" class="kit-icon" />
