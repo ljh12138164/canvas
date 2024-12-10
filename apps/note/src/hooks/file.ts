@@ -1,6 +1,6 @@
 import { client } from '@/server';
 import { useMutation } from '@tanstack/vue-query';
-import { InferRequestType, InferResponseType } from 'hono';
+import type { InferRequestType, InferResponseType } from 'hono';
 
 type CreateFilesResponse = InferResponseType<
   (typeof client.file.createFile)['$post'],

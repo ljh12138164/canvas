@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const animate = require('tailwindcss-animate');
 
 /** @type {import('tailwindcss').Config} */

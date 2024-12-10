@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export { default as DonutChart } from './DonutChart.vue';
 
 import type { Spacing } from '@unovis/ts';

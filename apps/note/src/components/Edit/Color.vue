@@ -4,18 +4,19 @@ import type { Editor } from '@tiptap/vue-3';
 import { debounce } from 'lodash';
 import { watch } from 'vue';
 import { defineProps, ref } from 'vue';
+import TiptopDown from '../common/TiptopDown.vue';
 import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
 const props = defineProps<{
   editor: Editor | null;
 }>();
@@ -25,7 +26,7 @@ watch(
   color,
   debounce((newVal: string) => {
     props.editor?.chain().focus().setColor(newVal).run();
-  }, 100)
+  }, 100),
 );
 </script>
 <template>

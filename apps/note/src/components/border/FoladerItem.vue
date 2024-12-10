@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { Files, Folders } from '@/types/board';
+import type { Files, Folders } from '@/types/board';
 import { Icon } from '@iconify/vue';
 import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import ResponsePop from '../common/ResponsePop.vue';
+import CardContent from '../ui/card/CardContent.vue';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip';
-import { useRoute } from 'vue-router';
-import FileItem from './FileItem.vue';
-import ResponsePop from '../common/ResponsePop.vue';
 import FileFrom from './FileFrom.vue';
-import CardContent from '../ui/card/CardContent.vue';
+import FileItem from './FileItem.vue';
 
 defineProps<{
   folder: Folders & { files: Files[] };
@@ -26,7 +26,7 @@ watch(
   () => route.params.folderId,
   () => {
     folderItemRef.value = route.params.folderId as string;
-  }
+  },
 );
 </script>
 <template>

@@ -16,7 +16,7 @@ watch(
   () => route.params.workspaceId,
   (newVal) => {
     workspaceId.value = newVal as string;
-  }
+  },
 );
 onBeforeMount(() => {
   queryClient.invalidateQueries({ queryKey: ['collaborators'] });
@@ -24,7 +24,7 @@ onBeforeMount(() => {
 const token = userData?.session.access_token as string;
 const { collaborators, isLoading: collaboratorsIsLoading } = useCollaborators(
   workspaceId.value,
-  token
+  token,
 );
 // const { inviteCollaborator } = useInviteCollaborator(token);
 </script>

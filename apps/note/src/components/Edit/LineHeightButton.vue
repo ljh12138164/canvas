@@ -14,7 +14,7 @@ const lineHeight = ref(props.editor?.getAttributes('paragraph').lineHeight);
     title="行高"
     :editor="props.editor"
     label="行高"
-    icon="lucide:text-height"
+    icon="whh:lineheight"
     :height="200"
   >
     <template #dropdown>

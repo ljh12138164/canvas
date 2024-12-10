@@ -1,5 +1,5 @@
 import { createPinia } from 'pinia';
-// @ts-ignore
+// @ts-expect-error pinia-plugin-persist is not typed
 import piniaPersist from 'pinia-plugin-persist';
 
 const pinia = createPinia().use(piniaPersist);

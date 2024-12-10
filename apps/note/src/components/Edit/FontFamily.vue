@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { fontFamily } from '@/lib/edit';
-import TiptopDown from '../common/TiptopDown.vue';
 import type { Editor } from '@tiptap/vue-3';
-import { DropdownMenuItem } from '../ui/dropdown-menu';
 import { onMounted, ref } from 'vue';
+import TiptopDown from '../common/TiptopDown.vue';
 import { Button } from '../ui/button';
+import { DropdownMenuItem } from '../ui/dropdown-menu';
 
 const props = defineProps<{
   editor: Editor | null;

@@ -18,14 +18,14 @@ const userData = useUser().userData!;
 
 const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
   userData.session.access_token,
-  routerParams.value as string
+  routerParams.value as string,
 );
 const isMobile = useMediaQuery('(max-width: 768px)');
 watch(
   () => route.params.folderId,
   () => {
     routerParams.value = route.params.workspaceId;
-  }
+  },
 );
 watch(workspaceError, (newVal) => {
   if (newVal?.message === '无权限') {

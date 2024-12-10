@@ -29,7 +29,7 @@ watch(
     workspaceId.value = route.params.workspaceId as string;
     queryClient.invalidateQueries({ queryKey: ['workspaceItem'] });
     queryClient.invalidateQueries({ queryKey: ['collaborators'] });
-  }
+  },
 );
 
 onBeforeMount(() => {

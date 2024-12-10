@@ -2,6 +2,7 @@
 import type { Editor } from '@tiptap/vue-3';
 import { debounce } from 'lodash';
 import { defineProps, ref, watch } from 'vue';
+import TiptopDown from '../common/TiptopDown.vue';
 
 const props = defineProps<{
   editor: Editor | null;
@@ -12,7 +13,7 @@ watch(
   color,
   debounce((newVal: string) => {
     props.editor?.chain().focus().toggleHighlight({ color: newVal }).run();
-  }, 100)
+  }, 100),
 );
 </script>
 <template>
@@ -20,7 +21,7 @@ watch(
     title="字体高亮"
     :editor="props.editor"
     label="字体高亮"
-    icon="lucide:highlight"
+    icon="ant-design:highlight-outlined"
     :height="200"
   >
     <template #dropdown>

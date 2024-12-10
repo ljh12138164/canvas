@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import type { Files, Folders } from '@/types/board';
 import { Icon } from '@iconify/vue/dist/iconify.js';
+import { onMounted, ref } from 'vue';
 // @ts-ignore
 import ResponsePop from '../common/ResponsePop.vue';
+import FoladerItem from './FoladerItem.vue';
 import From from './From.vue';
 import SiderbarItem from './SiderbarItem.vue';
-import { onMounted, ref } from 'vue';
-import FoladerItem from './FoladerItem.vue';
 const asiderRef = ref<HTMLElement>();
 // import FromCard from './FromCard.vue';
 const isSmall = ref(false);
 onMounted(() => {
   isSmall.value = (asiderRef.value as HTMLElement).clientWidth < 100;
   const newObserver = new ResizeObserver(
-    (entries) => (isSmall.value = entries[0].contentRect.width < 100)
+    (entries) => (isSmall.value = entries[0].contentRect.width < 100),
   );
   newObserver.observe(asiderRef.value as HTMLElement);
 });

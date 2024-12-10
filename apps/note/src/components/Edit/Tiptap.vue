@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getWorkspaceByIdResponse } from '@/hooks/workspace';
+import type { getWorkspaceByIdResponse } from '@/hooks/workspace';
 // 编辑器扩展
 import Collaboration from '@tiptap/extension-collaboration';
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor';
@@ -189,7 +189,7 @@ const editor = ref<Editor>(
           </tbody>
         </table>
       `,
-  })
+  }),
 );
 const props = defineProps<{
   workspace: getWorkspaceByIdResponse | undefined;

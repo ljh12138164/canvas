@@ -16,7 +16,15 @@ export default Extension.create({
         }: {
           editor: Editor;
           range: Range;
-          props: any;
+          props: {
+            command: ({
+              editor,
+              range,
+            }: {
+              editor: Editor;
+              range: Range;
+            }) => void;
+          };
         }) => {
           props.command({ editor, range });
         },
