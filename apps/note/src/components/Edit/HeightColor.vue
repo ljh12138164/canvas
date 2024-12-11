@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Editor } from '@tiptap/vue-3';
 import { debounce } from 'lodash';
-import { defineProps, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import TiptopDown from '../common/TiptopDown.vue';
 
 const props = defineProps<{
@@ -13,7 +13,7 @@ watch(
   color,
   debounce((newVal: string) => {
     props.editor?.chain().focus().toggleHighlight({ color: newVal }).run();
-  }, 100),
+  }, 100)
 );
 </script>
 <template>

@@ -12,7 +12,7 @@ export interface Member {
   id: string;
   userId: string;
   workspaceId: string;
-  role: "admin" | "member";
+  role: 'admin' | 'member';
   email: string;
   userImage: string;
   username: string;
@@ -28,13 +28,23 @@ export interface Project {
 }
 // 任务状态
 export enum TaskStatus {
-  ALL = "全部",
-  BACKLOG = "储备",
-  IN_REVIEW = "等待审核",
-  TODO = "待办",
-  IN_PROGRESS = "进行中",
-  DONE = "完成",
+  ALL = '全部',
+  BACKLOG = '储备',
+  IN_REVIEW = '等待审核',
+  TODO = '待办',
+  IN_PROGRESS = '进行中',
+  DONE = '完成',
 }
+
+// 任务优先级
+export enum TasksPriority {
+  ALL = '全部',
+  SUGGESTION = '建议',
+  GENERAL = '一般',
+  IMPORTANT = '重要',
+  URGENT = '紧急',
+}
+
 export interface Task {
   id: string;
   name: string;
@@ -46,6 +56,7 @@ export interface Task {
   status: TaskStatus;
   description: string;
   assigneeId: string;
+  priority: TasksPriority;
 }
 // 任务包含工作区信息
 export interface TaskWithWorkspace extends Task {

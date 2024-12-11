@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@nuxtjs/color-mode": "3.5.2",
+    "@tanstack/vue-query": "^5.62.0",
+    "@tanstack/vue-query-devtools": "^5.62.0",
     "@unovis/ts": "^1.4.5",
     "@unovis/vue": "^1.4.5",
     "@vee-validate/zod": "^4.14.7",
@@ -21,7 +23,9 @@
     "embla-carousel-vue": "^8.5.1",
     "hono": "^4.6.13",
     "lucide-vue-next": "^0.461.0",
+    "nanoid": "^5.0.9",
     "nuxt": "^3.14.1592",
+    "nuxt-lucide-icons": "1.0.5",
     "radix-vue": "^1.9.10",
     "shadcn-nuxt": "0.11.3",
     "tailwind-merge": "^2.5.5",

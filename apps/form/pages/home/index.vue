@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import useBearStore from "~/stores";
-
+import useBearStore from '~/stores';
+import { toast } from '~/lib';
 const bears = useBearStore();
 </script>
 
-<template></template>
+<template>
+  <UiButton variant="outline" @click="toast.success('Hello')">Button</UiButton>
+</template>

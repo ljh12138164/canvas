@@ -1,7 +1,10 @@
-import { Server } from "@hocuspocus/server";
-import * as Y from "yjs";
-// import { Webhook, Events } from "@hocuspocus/extension-webhook";
+import { Server, Hocuspocus } from '@hocuspocus/server';
+import * as Y from 'yjs';
 
+// import { Webhook, Events } from "@hocuspocus/extension-webhook";
+// import { createBunWebSocket } from 'hono/bun';
+// import type { ServerWebSocket } from 'bun';
+// const hocuspocus = new Hocuspocus({});
 const server = Server.configure({
   extensions: [
     // new Webhook({
@@ -17,7 +20,7 @@ const server = Server.configure({
     //   debounceMaxWait: 10000,
     // }),
   ],
-  port: 8080,
+  // port: 8080,
   yDocOptions: { gc: false, gcFilter: () => false },
   /**
    * 认证 hook
@@ -47,6 +50,10 @@ const server = Server.configure({
   },
 });
 server.listen();
+// const honoServer = serve({
+//   fetch: app.fetch,
+//   port: 8080,
+// });
 /**
  * 创建空文档
  * @returns
