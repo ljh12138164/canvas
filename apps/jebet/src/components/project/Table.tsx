@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { TaskWithWorkspace } from "@/types/workspace";
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
-import styled from "styled-components";
-import { Badge } from "../ui/badge";
-import ProjectOpacte from "./ProjectOpacte";
-import TaskDate from "./TaskDate";
+import { Button } from '@/components/ui/button';
+import { TaskWithWorkspace } from '@/types/workspace';
+import { ColumnDef } from '@tanstack/react-table';
+import { ArrowUpDown } from 'lucide-react';
+import styled from 'styled-components';
+import { Badge } from '../ui/badge';
+import ProjectOpacte from './ProjectOpacte';
+import TaskDate from './TaskDate';
 const MemberContainer = styled.div`
   display: flex;
   align-items: center;
@@ -18,32 +18,32 @@ const MemberAvatar = styled.img`
 `;
 export const columns: ColumnDef<TaskWithWorkspace>[] = [
   {
-    accessorKey: "name",
+    accessorKey: 'name',
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           名称
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
     },
     cell: ({ row }) => {
-      return <p className="line-clamp-1">{row.original.name}</p>;
+      return <p className='line-clamp-1'>{row.original.name}</p>;
     },
   },
   {
-    accessorKey: "assignee",
+    accessorKey: 'assignee',
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           指派人
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
     },
@@ -52,7 +52,7 @@ export const columns: ColumnDef<TaskWithWorkspace>[] = [
         (item) => item.userId === row.original.assigneeId
       );
       return (
-        <MemberContainer className="line-clamp-1">
+        <MemberContainer className='line-clamp-1'>
           <MemberAvatar src={member?.userImage} alt={member?.username} />
           {member?.username}
         </MemberContainer>
@@ -60,42 +60,42 @@ export const columns: ColumnDef<TaskWithWorkspace>[] = [
     },
   },
   {
-    accessorKey: "lastTime",
+    accessorKey: 'lastTime',
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           结束时间
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
     },
     cell: ({ row }) => {
       return (
-        <MemberContainer className="line-clamp-1">
+        <MemberContainer className='line-clamp-1'>
           <TaskDate lastTime={row.original.lastTime} />
         </MemberContainer>
       );
     },
   },
   {
-    accessorKey: "status",
+    accessorKey: 'status',
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           状态
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
     },
     cell: ({ row }) => {
       return (
-        <MemberContainer className="line-clamp-1">
+        <MemberContainer className='line-clamp-1'>
           {/* @ts-ignore */}
           <Badge variant={row.original.status}>{row.original.status}</Badge>
         </MemberContainer>
@@ -103,9 +103,26 @@ export const columns: ColumnDef<TaskWithWorkspace>[] = [
     },
   },
   {
-    accessorKey: "操作",
+    accessorKey: 'priority',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          状态
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
-      return <ProjectOpacte type="list" task={row.original} />;
+      return <p>{row.original.priority}</p>;
+    },
+  },
+  {
+    accessorKey: '操作',
+    cell: ({ row }) => {
+      return <ProjectOpacte type='list' task={row.original} />;
     },
   },
 ];

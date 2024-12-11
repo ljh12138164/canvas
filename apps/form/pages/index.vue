@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-const router = useRouter();
+import Toaster from '@/components/ui/toast/Toaster.vue';
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
 </script>
 
-<template></template>
+<template>
+  <Toaster />
+  <NuxtPage />
+  <VueQueryDevtools position="bottom" />
+</template>
