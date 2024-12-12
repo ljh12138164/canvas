@@ -8,25 +8,16 @@ const props = defineProps<{
 }>();
 </script>
 <template>
-  <ScrollArea class="h-full w-full bg-[rgb(248,250,254)]">
-    <Editor :workspace="props.workspace" />
-  </ScrollArea>
+  <div class="editor-wrapper">
+    <ScrollArea class="h-full w-full bg-[rgb(248,250,254)]">
+      <Editor :workspace="props.workspace" />
+    </ScrollArea>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-/* .editor {
-  flex: 1;
+.editor-wrapper {
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &-container {
-    display: flex;
-    flex-direction: column;
-    max-height: calc(100dvh - 150px);
-    min-width: calc(100dvw - 300px);
-    max-width: calc(100dvw - 300px);
-  }
-} */
+  width: 100%;
+}
 </style>

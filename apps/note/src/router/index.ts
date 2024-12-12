@@ -1,4 +1,4 @@
-import { routerCheckLogin, routerLoginAfter } from '@/lib';
+import { routerCheckLogin } from '@/lib';
 import {
   type RouteRecordRaw,
   createRouter,
@@ -10,6 +10,7 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('@/pages/home/index.vue'),
     redirect: '/workspace/home',
+    beforeEnter: routerCheckLogin,
     children: [
       {
         path: '/workspace/',
@@ -18,18 +19,18 @@ const routes: RouteRecordRaw[] = [
         children: [
           {
             path: 'home',
-            beforeEnter: routerCheckLogin,
             component: () => import('@/pages/workspace/home.vue'),
+            beforeEnter: routerCheckLogin,
           },
           {
             path: ':workspaceId',
-            beforeEnter: routerCheckLogin,
             component: () => import('@/pages/workspace/workspaceItem.vue'),
+            beforeEnter: routerCheckLogin,
           },
           {
             path: ':workspaceId/member',
-            beforeEnter: routerCheckLogin,
             component: () => import('@/pages/workspace/member.vue'),
+            beforeEnter: routerCheckLogin,
           },
         ],
       },
@@ -38,7 +39,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     component: () => import('@/pages/login/index.vue'),
-    beforeEnter: routerLoginAfter,
+    beforeEnter: routerCheckLogin,
   },
 
   {

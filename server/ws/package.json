@@ -17,9 +17,14 @@
     "@hocuspocus/extension-webhook": "^2.14.0",
     "@hono/node-server": "1.13.7",
     "@hono/node-ws": "^1.0.4",
+    "@types/express": "^5.0.0",
+    "@types/express-ws": "^3.0.5",
     "bun": "^1.1.36",
+    "express": "^4.21.2",
+    "express-ws": "^5.0.2",
     "hono": "^4.6.0",
     "nanoid": "^5.0.8",
+    "socket.io": "^4.8.1",
     "yjs": "^13.6.20"
   }
 }

@@ -48,38 +48,37 @@ export const toast = new Toast();
  * @param next
  */
 export async function routerCheckLogin(
+  to: RouteLocationNormalized,
   _: RouteLocationNormalized,
-  __: RouteLocationNormalized,
-  next: (go?: string) => void,
+  next: (go?: string) => void
 ) {
-  const data = await getCurrentUser();
-  const { setUserData } = useUser();
+  try {
+    const data = await getCurrentUser();
+    const { setUserData } = useUser();
 
-  if (!data) {
-    next('/login');
-  } else {
-    setUserData({ session: data.session as Sessions });
-    next();
-  }
-}
-
-/**
- * 登录界面登录后
- * @param _
- * @param __
- * @param next
- */
-export async function routerLoginAfter(
-  _: RouteLocationNormalized,
-  __: RouteLocationNormalized,
-  next: (go?: string) => void,
-) {
-  const data = await getCurrentUser();
-  if (data) {
-    toast.success('用户已登录');
-    next('/');
-  } else {
-    next();
+    if (!data) {
+      // 用户未登录，只在非登录页时重定向到登录页
+      if (to.path !== '/login') {
+        return next('/login');
+      }
+    } else {
+      // 用户已登录
+      if (data?.session) {
+        setUserData({ session: data?.session as Sessions });
+      }
+      // 已登录用户访问登录页时重定向到首页
+      if (to.path === '/login') {
+        return next('/');
+      }
+    }
+    // 其他情况直接放行
+    return next();
+  } catch (error) {
+    console.error('routerCheckLogin error:', error);
+    if (to.path !== '/login') {
+      return next('/login');
+    }
+    return next();
   }
 }
 

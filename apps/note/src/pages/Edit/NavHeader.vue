@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Sider from '@/components/border/Sider.vue';
 import ThemeChange from '@/components/common/ThemeChange.vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,7 +8,8 @@ import {
   MenubarMenu,
   MenubarTrigger,
 } from '@/components/ui/menubar';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Separator } from '@/components/ui/separator';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import { downloadFile } from '@/lib';
 import useEditor from '@/store/editor';
 import type { Files, Folders } from '@/types/board';
@@ -50,7 +50,7 @@ watch(
   },
   {
     immediate: true,
-  },
+  }
 );
 const isMobile = useMediaQuery('(max-width: 768px)');
 const onSaveJson = () => {
@@ -75,59 +75,55 @@ const onSaveText = () => {
 </script>
 <template>
   <nav class="nav-container">
-    <Menubar v-if="useEditor().editorDatas">
-      <MenubarMenu v-if="isMobile">
-        <Sheet align="left" class="p-0">
-          <SheetTrigger>
-            <Icon icon="mdi:menu" width="20" height="20" />
-          </SheetTrigger>
-          <SheetContent side="left" class="w-[40dvw] p-4">
-            <Sider
-              :folders="props.folders"
-              :isLoading="props.isLoading"
-              :foldersError="props.foldersError"
-            />
-          </SheetContent>
-        </Sheet>
-      </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger class="font-bold">导出文件</MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem as-child>
-            <Button
-              variant="ghost"
-              @click="onSaveJson"
-              class="btn-item cursor-pointer"
-            >
-              <Icon icon="mdi:file-document-outline" />
-              JSON导出
-            </Button>
-          </MenubarItem>
-          <MenubarItem as-child>
-            <Button
-              variant="ghost"
-              @click="onSaveHtml"
-              class="btn-item cursor-pointer"
-            >
-              <Icon icon="mdi:file-document-outline" />
-              HTML导出
-            </Button>
-          </MenubarItem>
-          <MenubarItem as-child>
-            <Button
-              variant="ghost"
-              @click="onSaveText"
-              class="btn-item cursor-pointer"
-            >
-              <Icon icon="mdi:file-document-outline" />
-              文本导出
-            </Button>
-          </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
-      <ThemeChange />
-    </Menubar>
-    <div v-if="useEditor().editorDatas"></div>
+    <header
+      v-if="useEditor().editorDatas"
+      class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
+    >
+      <div class="flex items-center gap-2 px-4" v-if="!isMobile">
+        <SidebarTrigger class="-ml-1" />
+        <Separator orientation="vertical" class="mr-2 h-4" />
+      </div>
+      <Menubar v-if="useEditor().editorDatas">
+        <MenubarMenu>
+          <MenubarTrigger class="font-bold">导出文件</MenubarTrigger>
+          <MenubarContent>
+            <MenubarItem as-child>
+              <Button
+                variant="ghost"
+                @click="onSaveJson"
+                class="btn-item cursor-pointer"
+              >
+                <Icon icon="mdi:file-document-outline" />
+                JSON导出
+              </Button>
+            </MenubarItem>
+            <MenubarItem as-child>
+              <Button
+                variant="ghost"
+                @click="onSaveHtml"
+                class="btn-item cursor-pointer"
+              >
+                <Icon icon="mdi:file-document-outline" />
+                HTML导出
+              </Button>
+            </MenubarItem>
+            <MenubarItem as-child>
+              <Button
+                variant="ghost"
+                @click="onSaveText"
+                class="btn-item cursor-pointer"
+              >
+                <Icon icon="mdi:file-document-outline" />
+                文本导出
+              </Button>
+            </MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+        <ThemeChange />
+      </Menubar>
+    </header>
+
+    <div></div>
   </nav>
 </template>
 

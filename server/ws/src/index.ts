@@ -1,10 +1,11 @@
-import { Server, Hocuspocus } from '@hocuspocus/server';
+import { Server } from '@hocuspocus/server';
 import * as Y from 'yjs';
-
-// import { Webhook, Events } from "@hocuspocus/extension-webhook";
-// import { createBunWebSocket } from 'hono/bun';
-// import type { ServerWebSocket } from 'bun';
-// const hocuspocus = new Hocuspocus({});
+import { Server as SocketIOServer } from 'socket.io';
+import express from 'express';
+import { createServer } from 'http';
+import expressWebsockets from 'express-ws';
+// Setup your express instance using the express-ws extension
+const { app } = expressWebsockets(express());
 const server = Server.configure({
   extensions: [
     // new Webhook({
@@ -49,10 +50,26 @@ const server = Server.configure({
     const update = Y.encodeStateAsUpdate(document);
   },
 });
-server.listen();
-// const honoServer = serve({
-//   fetch: app.fetch,
-//   port: 8080,
+const httpServer = createServer(app);
+app.get('/', (request: any, response: any) => {
+  response.send('Hello World!');
+});
+
+app.ws('/note/collaboration', (websocket: any, request: any) => {
+  const context = {
+    user: {
+      id: 1234,
+      name: 'Jane',
+    },
+  };
+
+  server.handleConnection(websocket, request, context);
+});
+const io = new SocketIOServer(httpServer);
+// Start the server
+app.listen(8080, () => console.log('服务启动成功8080'));
+// httpServer.listen((port: any) => {
+//   console.log(`服务启动成功${port}`);
 // });
 /**
  * 创建空文档
