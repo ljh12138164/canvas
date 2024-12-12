@@ -14,7 +14,7 @@ export const uploadImageclound = async ({ file }: { file: File }) => {
     // 桶名字
     .from('USER_IMAGE')
     .upload(fileName, file);
-  if (error) throw new Error('服务器错误');
+  if (error) return DEFAULT_AVATAR;
   return USER_IMAGE_URL + data.fullPath;
 };
 
@@ -27,13 +27,13 @@ export const deleteImageClound = async ({
   image,
 }: {
   image: string;
-}): Promise<true> => {
+}): Promise<boolean> => {
   const { error } = await supabaseNote.storage
     //  桶名字
     .from('USER_IMAGE')
     // 删除图片路径
     .remove([image]);
-  if (error) throw new Error('服务器错误');
+  if (error) return false;
   return true;
 };
 
@@ -42,19 +42,25 @@ export const deleteImageClound = async ({
  */
 export async function getCurrentUser() {
   // 获取用户信息
-  const { data: session } = await supabaseNote.auth.getSession();
-  if (!session.session) return null;
-  //获取用户权限
-  const { data, error } = await supabaseNote.auth.getUser();
-  if (error) throw new Error('服务器错误');
-  return { user: data?.user, session: session.session };
+  try {
+    const { data: session } = await supabaseNote.auth.getSession();
+    if (!session?.session) throw new Error('未登录');
+    //获取用户权限
+    const { data, error } = await supabaseNote.auth.getUser();
+
+    if (error) throw new Error('未登录');
+    return { user: data?.user, session: session.session };
+  } catch {
+    throw new Error('未登录');
+  }
 }
 /**
  * ## 登出
  */
 export async function logout() {
   const { error } = await supabaseNote.auth.signOut();
-  if (error) throw new Error('服务器错误');
+  if (error) return false;
+  return true;
 }
 
 /**
@@ -136,7 +142,7 @@ export async function updateCurrentUser({
       uploadImageclound({ file: imageUrl }),
       deletePromise,
     ]);
-    userData.data.image = result;
+    if (result) userData.data.image = result as string;
   }
   // 更新用户信息
   const { data, error } = await supabaseNote.auth.updateUser(userData);

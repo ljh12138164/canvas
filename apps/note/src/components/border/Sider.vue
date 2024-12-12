@@ -1,110 +1,111 @@
 <script setup lang="ts">
-import type { Files, Folders } from '@/types/board';
-import { Icon } from '@iconify/vue/dist/iconify.js';
-import { onMounted, ref } from 'vue';
-// @ts-ignore
+import { ChevronRight, Plus } from 'lucide-vue-next';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '../ui/collapsible';
+import {
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from '../ui/sidebar';
+import { Skeleton } from '../ui/skeleton';
+import { useGetWorkspaceById } from '@/hooks/workspace';
 import ResponsePop from '../common/ResponsePop.vue';
-import FoladerItem from './FoladerItem.vue';
-import From from './From.vue';
-import SiderbarItem from './SiderbarItem.vue';
-const asiderRef = ref<HTMLElement>();
-// import FromCard from './FromCard.vue';
-const isSmall = ref(false);
-onMounted(() => {
-  isSmall.value = (asiderRef.value as HTMLElement).clientWidth < 100;
-  const newObserver = new ResizeObserver(
-    (entries) => (isSmall.value = entries[0].contentRect.width < 100),
-  );
-  newObserver.observe(asiderRef.value as HTMLElement);
-});
-const { isLoading, foldersError, folders } = defineProps<{
-  isLoading: boolean;
-  foldersError: Error | null;
-  folders: (Folders & { files: Files[] })[] | undefined;
+import FileFrom from './FileFrom.vue';
+
+const props = defineProps<{
+  token: string;
+  routerParams: string;
 }>();
+
+const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
+  props.token,
+  props.routerParams
+);
 </script>
 <template>
-  <aside class="asider" ref="asiderRef">
-    <header class="asider-header">工作站</header>
-
-    <aside class="asider-siderbar">
-      <SiderbarItem>
-        <template #default>
-          <ResponsePop title="创建文档">
-            <template #trigger>
-              <div class="w-full h-full">
-                <p
-                  class="flex items-center gap-2"
-                  :style="{
-                    'justify-content': isSmall ? 'center' : 'flex-start',
-                  }"
-                >
-                  <Icon icon="gg:add" />
-                  <span v-show="!isSmall">创建文档</span>
-                </p>
-              </div>
-            </template>
-            <template #content>
-              <div>
-                <From />
-              </div>
-            </template>
-          </ResponsePop>
-        </template>
-      </SiderbarItem>
-      <SiderbarItem>
-        <template #default>
-          <div class="w-full h-full">
-            <p
-              class="flex items-center gap-2"
-              :style="{
-                'justify-content': isSmall ? 'center' : 'flex-start',
-              }"
-            >
-              <Icon icon="gg:trash" />
-              <span v-show="!isSmall">回收站</span>
-            </p>
-          </div>
-        </template>
-      </SiderbarItem>
-    </aside>
-    <main class="asider-main">
-      <div v-if="isLoading">加载中...</div>
-      <div v-else-if="foldersError">
-        <div>{{ foldersError.message }}</div>
-      </div>
-      <div v-else-if="folders?.length === 0">
-        <div>暂无数据</div>
-      </div>
-      <div v-else>
-        <div class="folderList">
-          <FoladerItem
-            :is-loading="isLoading"
-            v-for="folder in folders"
-            :key="folder.id"
-            :folder="folder"
-            :is-small="isSmall"
-          />
-        </div>
-      </div>
-    </main>
-  </aside>
+  <div>
+    <SidebarMenuItem v-if="!workspaceIsLoading">
+      <Collapsible
+        as-child
+        class="group/collapsible"
+        v-for="item in workspace?.folders"
+        :key="item.title"
+      >
+        <section>
+          <CollapsibleTrigger as-child>
+            <div class="flex items-center gap-2">
+              <SidebarMenuButton :tooltip="item.title">
+                <ChevronRight
+                  class="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
+                />
+                <span>{{ item.inconId }}</span>
+                <span class="group-data-[collapsible=icon]:hidden">{{
+                  item.title
+                }}</span>
+                <ResponsePop title="新建文件">
+                  <template #trigger>
+                    <Plus class="ml-auto" />
+                  </template>
+                  <template #content>
+                    <FileFrom />
+                  </template>
+                </ResponsePop>
+              </SidebarMenuButton>
+            </div>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarMenuSub v-for="items in item?.files" :key="items.title">
+              <SidebarMenuSubItem :key="items.id">
+                <SidebarMenuSubButton as-child>
+                  <span>{{ items.inconId }}</span>
+                  <span>{{ items.title }}</span>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </section></Collapsible
+      >
+    </SidebarMenuItem>
+    <div v-else-if="workspaceError">
+      <div>{{ workspaceError.message }}</div>
+    </div>
+    <div v-else>
+      <Skeleton class="h-10 w-full" />
+    </div>
+  </div>
 </template>
+<!-- <main class="asider-main">
+  <div v-if="isLoading">加载中...</div>
+  <div v-else-if="foldersError">
+    <div>{{ foldersError.message }}</div>
+  </div>
+  <div v-else-if="folders?.length === 0">
+    <div>暂无数据</div>
+  </div>
+  <div v-else>
+    <div class="folderList">
+      <FoladerItem
+        :is-loading="isLoading"
+        v-for="folder in folders"
+        :key="folder.id"
+        :folder="folder"
+        :is-small="isSmall"
+      />
+    </div>
+  </div>
+</main> -->
 
 <style lang="scss" scoped>
 /* .footer-button {
   margin-top: 10px;
   width: 100%;
 } */
-.asider {
-  padding: 10px 5px;
-}
-.asider-siderbar {
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+
 .folderList {
   width: 100%;
   display: flex;
