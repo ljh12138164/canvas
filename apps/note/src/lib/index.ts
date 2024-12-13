@@ -99,3 +99,5 @@ export function downloadFile(blob: Blob, name: string) {
 export function randomColor() {
   return '#' + Math.floor(Math.random() * 16777215).toString(16);
 }
+// 高亮
+export const COLORS = ['#DC2626', '#D97706', '#059669', '#7C3AED', '#9333EA'];

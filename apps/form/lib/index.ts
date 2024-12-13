@@ -1,4 +1,5 @@
 import { useToast } from '@/components/ui/toast/use-toast';
+import { getCurrentUser } from '~/database/supabase/user';
 export const DEFAULT_AVATAR =
   'https://spvppoqewfwqyzlsmtru.supabase.co/storage/v1/object/public/ASSETS/avatar.svg';
 export const USER_IMAGE_URL =
@@ -27,3 +28,13 @@ class Toast {
 }
 
 export const toast = new Toast();
+
+/**
+ * 检查用户是否登录
+ * @returns
+ */
+export const checkUserLogin = async () => {
+  const user = await getCurrentUser();
+
+  return user;
+};
