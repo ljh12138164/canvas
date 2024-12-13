@@ -1,14 +1,14 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tool } from "@/types/Edit";
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tool } from '@/types/Edit';
 import {
   LuImage,
-  LuLayout,
+  LuLayoutDashboard,
   LuPencil,
   LuSettings,
   LuShapes,
   LuType,
-} from "react-icons/lu";
-import SiderBarItem from "./SiderBarItem";
+} from 'react-icons/lu';
+import SiderBarItem from './SiderBarItem';
 interface SiderBarProps {
   acitiveTool: Tool;
   onChangeActiveTool: (tool: Tool) => void;
@@ -16,15 +16,15 @@ interface SiderBarProps {
 const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
   return (
     <aside
-      id="editSider"
-      className="w-[100px] z-[55]  bg-white  border-r border-t-black border-slate-200 overflow-y-auto"
-      style={{ flexBasis: "100px" }}
+      id='editSider'
+      className='w-[100px] z-[55]  bg-white  border-r border-t-black border-slate-200 overflow-y-auto'
+      style={{ flexBasis: '100px' }}
     >
       <ScrollArea>
-        <ul className="flex flex-col">
+        <ul className='flex flex-col'>
           <SiderBarItem
-            icon={LuLayout}
-            label="设计"
+            icon={LuLayoutDashboard}
+            label='设计'
             isActive={acitiveTool === Tool.Layout}
             onClick={() => {
               onChangeActiveTool(Tool.Layout);
@@ -32,7 +32,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
           />
           <SiderBarItem
             icon={LuImage}
-            label="图片"
+            label='图片'
             isActive={acitiveTool === Tool.Image}
             onClick={() => {
               onChangeActiveTool(Tool.Image);
@@ -40,7 +40,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
           />
           <SiderBarItem
             icon={LuType}
-            label="文本"
+            label='文本'
             isActive={acitiveTool === Tool.Font}
             onClick={() => {
               onChangeActiveTool(Tool.Font);
@@ -48,7 +48,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
           />
           <SiderBarItem
             icon={LuShapes}
-            label="图形"
+            label='图形'
             isActive={acitiveTool === Tool.Shapes}
             onClick={() => {
               onChangeActiveTool(Tool.Shapes);
@@ -56,7 +56,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
           />
           <SiderBarItem
             icon={LuPencil}
-            label="绘画"
+            label='绘画'
             isActive={acitiveTool === Tool.Draw}
             onClick={() => {
               onChangeActiveTool(Tool.Draw);
@@ -64,7 +64,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
           />
           <SiderBarItem
             icon={LuSettings}
-            label="设置"
+            label='设置'
             isActive={acitiveTool === Tool.Settings}
             onClick={() => {
               onChangeActiveTool(Tool.Settings);

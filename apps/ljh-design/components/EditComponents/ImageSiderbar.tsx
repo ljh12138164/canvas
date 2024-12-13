@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { Edit, IMAGE_BLUSK, ImageType, Tool } from '@/types/Edit';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { LuAlertTriangle, LuLoader } from 'react-icons/lu';
+import { LuBadgeAlert, LuLoader } from 'react-icons/lu';
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
 import { ImageBox } from './ImageBox';
@@ -126,7 +126,7 @@ const ImageSiderbar = ({
       )}
       {getImageError && imageList === ImageType.Recommend && (
         <div className='flex flex-col gap-y-4 justify-center items-center flex-1'>
-          <LuAlertTriangle className='size-4  text-muted-foreground'></LuAlertTriangle>
+          <LuBadgeAlert className='size-4  text-muted-foreground'></LuBadgeAlert>
           <p className=' text-muted-foreground text-xs'>获取图片失败</p>
         </div>
       )}

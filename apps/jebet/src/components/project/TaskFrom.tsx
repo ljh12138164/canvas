@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from '../ui/select';
 import { Textarea } from '../ui/textarea';
-import { TaskPriority } from '../../types/workspace';
+import { TasksPriority } from '../../types/workspace';
 
 const zShema = z.object({
   name: z
@@ -40,7 +40,7 @@ const zShema = z.object({
   assigneeId: z.string({
     message: '请选择指派人',
   }),
-  priority: z.nativeEnum(TaskPriority),
+  priority: z.nativeEnum(TasksPriority),
   description: z
     .string({
       message: '请输入任务描述',
@@ -261,18 +261,18 @@ const TaskFrom = ({
             <Select
               {...register('priority')}
               onValueChange={(value) => {
-                setValue('priority', value as TaskPriority);
+                setValue('priority', value as TasksPriority);
               }}
             >
               <SelectTrigger>
                 <SelectValue placeholder='请选择优先级' />
               </SelectTrigger>
               <SelectContent>
-                {/* <SelectItem value={TaskPriority.ALL}>全部</SelectItem> */}
-                <SelectItem value={TaskPriority.SUGGESTION}>建议</SelectItem>
-                <SelectItem value={TaskPriority.GENERAL}>一般</SelectItem>
-                <SelectItem value={TaskPriority.IMPORTANT}>重要</SelectItem>
-                <SelectItem value={TaskPriority.URGENT}>紧急</SelectItem>
+                {/* <SelectItem value={TasksPriority.ALL}>全部</SelectItem> */}
+                <SelectItem value={TasksPriority.SUGGESTION}>建议</SelectItem>
+                <SelectItem value={TasksPriority.GENERAL}>一般</SelectItem>
+                <SelectItem value={TasksPriority.IMPORTANT}>重要</SelectItem>
+                <SelectItem value={TasksPriority.URGENT}>紧急</SelectItem>
               </SelectContent>
             </Select>
             <p className='text-red-500 text-sm'>

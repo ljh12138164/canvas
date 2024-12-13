@@ -62,7 +62,7 @@ const BoardDelete = ({
                         closeRef.current?.click();
                         queryClient.invalidateQueries({ queryKey: [userId] });
                       },
-                      onError: (error) => {
+                      onError: () => {
                         toast.dismiss();
                         toast.error('删除失败');
                       },

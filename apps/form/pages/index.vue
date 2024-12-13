@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Toaster from '@/components/ui/toast/Toaster.vue';
-import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
+import { Toaster } from '~/components/ui/toast';
 </script>
 
 <template>
-  <Toaster />
-  <NuxtPage />
-  <VueQueryDevtools position="bottom" />
+  <div>
+    <Toaster />
+    <NuxtPage />
+  </div>
 </template>

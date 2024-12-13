@@ -41,7 +41,7 @@ const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
             <div class="flex items-center gap-2">
               <SidebarMenuButton :tooltip="item.title">
                 <ChevronRight
-                  class="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
+                  class="transition-transform duration-200group-data-[state=open]/collapsible:rotate-90"
                 />
                 <span>{{ item.inconId }}</span>
                 <span class="group-data-[collapsible=icon]:hidden">{{
