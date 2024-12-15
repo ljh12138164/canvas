@@ -1,14 +1,11 @@
 import { Hono } from 'hono';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { stream, streamText, streamSSE } from 'hono/streaming';
+import { stream } from 'hono/streaming';
+import { model } from '../../../server/ai';
 
 // import { zValidator } from '@hono/zod-validator';
 // import { z } from 'zod';
 
-const genAi = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-const model = genAi.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
-export const gemini = new Hono()
+export const chat = new Hono()
   .post('/chat', async (c) => {
     const prompt = '说说ai的原理';
     const result = await model.generateContent(prompt);

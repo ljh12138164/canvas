@@ -2,7 +2,7 @@
 import type { WithClassAsProps } from './interface'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { ArrowRight } from 'lucide-vue-next'
+import { ArrowRightIcon } from '@radix-icons/vue'
 import { useCarousel } from './useCarousel'
 
 const props = defineProps<WithClassAsProps>()
@@ -24,7 +24,7 @@ const { orientation, canScrollNext, scrollNext } = useCarousel()
     @click="scrollNext"
   >
     <slot>
-      <ArrowRight class="h-4 w-4 text-current" />
+      <ArrowRightIcon class="h-4 w-4 text-current" />
       <span class="sr-only">Next Slide</span>
     </slot>
   </Button>

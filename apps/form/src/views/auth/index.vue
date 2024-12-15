@@ -42,7 +42,7 @@ async function onSubmit(event: Event) {
       toast.error(error.message)
     } else {
       toast.success('登录成功')
-      router.push('/home')
+      router.push('/board')
     }
   } else {
     //校验
@@ -77,7 +77,7 @@ onBeforeMount(async () => {
   const user = await checkUserLogin()
   if (user) {
     toast.success('已登录')
-    router.push('/home')
+    router.push('/board')
   }
 })
 </script>

@@ -1,4 +1,4 @@
-import type { Component, VNode } from 'vue'
+import type { Component, VNode, WritableComputedRef } from 'vue'
 import type { ToastProps } from '.'
 import { computed, ref } from 'vue'
 
@@ -113,10 +113,13 @@ function dispatch(action: Action) {
       break
   }
 }
-// @ts-ignore
-function useToast() {
+function useToast(): {
+  toasts: ReturnType<typeof computed>
+  toast: typeof toast
+  dismiss: (toastId?: string) => void
+} {
   return {
-    toasts: computed(() => state.value.toasts),
+    toasts: computed(() => state.value.toasts) as WritableComputedRef<ToasterToast[]>,
     toast,
     dismiss: (toastId?: string) => dispatch({ type: actionTypes.DISMISS_TOAST, toastId }),
   }
