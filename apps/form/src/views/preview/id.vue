@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { AutoForm, AutoFormField } from '@/components/ui/auto-form'
-import { Button } from '@/components/ui/button'
+import { AutoForm } from '@/components/ui/auto-form'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { toast } from '@/components/ui/toast'
-import { h } from 'vue'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import * as z from 'zod'
-
-enum Sports {
-  Football = 'Football/Soccer',
-  Basketball = 'Basketball',
-  Baseball = 'Baseball',
-  Hockey = 'Hockey (Ice)',
-  None = "I don't like sports",
-}
-
+const route = useRoute()
+const id = ref(route.params.id)
+watch(
+  () => route.params.id,
+  (newId) => {
+    id.value = newId
+  },
+)
+const localFormData = JSON.parse(localStorage.getItem(`formData:${id.value}`) || '[]')
 const schema = z.object({
   username: z
     .string({
@@ -22,70 +21,8 @@ const schema = z.object({
     .min(2, {
       message: 'Username must be at least 2 characters.',
     }),
-
-  password: z
-    .string({
-      required_error: 'Password is required.',
-    })
-    .min(8, {
-      message: 'Password must be at least 8 characters.',
-    }),
-
-  favouriteNumber: z.coerce
-    .number({
-      invalid_type_error: 'Favourite number must be a number.',
-    })
-    .min(1, {
-      message: 'Favourite number must be at least 1.',
-    })
-    .max(10, {
-      message: 'Favourite number must be at most 10.',
-    })
-    .default(1)
-    .optional(),
-
-  acceptTerms: z.boolean().refine((value) => value, {
-    message: 'You must accept the terms and conditions.',
-    path: ['acceptTerms'],
-  }),
-
-  sendMeMails: z.boolean().optional(),
-
-  birthday: z.coerce.date().optional(),
-
-  color: z.enum(['red', 'green', 'blue']).optional(),
-
-  // Another enum example
-  marshmallows: z.enum(['not many', 'a few', 'a lot', 'too many']),
-
-  // Native enum example
-  sports: z.nativeEnum(Sports).describe('What is your favourite sport?'),
-
-  bio: z
-    .string()
-    .min(10, {
-      message: 'Bio must be at least 10 characters.',
-    })
-    .max(160, {
-      message: 'Bio must not be longer than 30 characters.',
-    })
-    .optional(),
-
-  customParent: z.string().optional(),
-
-  file: z.string().optional(),
 })
 
-function onSubmit(values: Record<string, any>) {
-  toast({
-    title: 'You submitted the following values:',
-    description: h(
-      'pre',
-      { class: 'mt-2 w-[340px] rounded-md bg-slate-950 p-4' },
-      h('code', { class: 'text-white' }, JSON.stringify(values, null, 2)),
-    ),
-  })
-}
 const fieldConfig = {
   password: {
     label: 'Your secure password',
@@ -134,23 +71,10 @@ const fieldConfig = {
       class="w-full space-y-6"
       :schema="schema"
       :field-config="fieldConfig as any"
-      @submit="onSubmit"
-    >
-      <template #acceptTerms="slotProps">
-        <AutoFormField v-bind="slotProps" />
-        <div class="!mt-2 text-sm">
-          我同意 <button class="text-primary underline">条款和条件</button>。
-        </div>
-      </template>
-
-      <template #customParent="slotProps">
-        <div class="flex items-end space-x-2">
-          <AutoFormField v-bind="slotProps" class="w-full" />
-          <Button type="button"> 检查 </Button>
-        </div>
-      </template>
-
-      <Button type="submit" class="w-full"> 提交 </Button>
-    </AutoForm>
+      v-if="localFormData"
+    />
+    <div v-else>
+      <p>暂无数据</p>
+    </div>
   </ScrollArea>
 </template>

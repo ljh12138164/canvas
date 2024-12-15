@@ -2,6 +2,8 @@ import { useToast } from '@/components/ui/toast'
 import { getCurrentUser } from '@/server/supabase/user'
 import type { RouteLocationNormalized } from 'vue-router'
 import { useUser } from '../stores/user'
+import { z } from 'zod'
+import type { FormSubmit } from '@/types/form'
 
 export const DEFAULT_AVATAR =
   'https://spvppoqewfwqyzlsmtru.supabase.co/storage/v1/object/public/ASSETS/avatar.svg'
@@ -79,5 +81,23 @@ export async function routerCheckLogin(
       return next('/auth')
     }
     return next()
+  }
+}
+
+export const defaultInput = () => {
+  return z.string()
+}
+
+/**
+ * 表单数据
+ * @param id
+ * @returns
+ */
+export const setFormItem = (
+  zod: z.ZodObject<any, any, any, any>,
+  type: Record<FormSubmit, boolean>,
+) => {
+  for (const key in type) {
+    return zod
   }
 }

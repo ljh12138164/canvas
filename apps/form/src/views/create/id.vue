@@ -2,8 +2,7 @@
 import FormCreate from '@/components/form/FormCreate.vue'
 import { Button } from '@/components/ui/button'
 import { ref, watch } from 'vue'
-import { useRouter, useRoute, RouterLink } from 'vue-router'
-const router = useRouter()
+import { useRoute } from 'vue-router'
 const route = useRoute()
 const id = ref(route.params.id)
 watch(
