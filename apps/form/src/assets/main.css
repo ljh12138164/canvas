@@ -33,8 +33,11 @@ a,
     padding: 0 2rem;
   }
 }
-
+html,
 body {
   height: '100dvh';
   width: '100dvw';
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }

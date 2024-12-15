@@ -7,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils'
 
 import { DateFormatter, getLocalTimeZone } from '@internationalized/date'
-import { CalendarIcon } from 'lucide-vue-next'
+import { CalendarIcon } from '@radix-icons/vue'
 import AutoFormLabel from './AutoFormLabel.vue'
 import { beautifyObjectName } from './utils'
 
@@ -36,7 +36,7 @@ const df = new DateFormatter('en-US', {
                     !slotProps.componentField.modelValue && 'text-muted-foreground',
                   )"
                 >
-                  <CalendarIcon class="mr-2 h-4 w-4" :size="16" />
+                  <CalendarIcon class="mr-2 h-4 w-4" />
                   {{ slotProps.componentField.modelValue ? df.format(slotProps.componentField.modelValue.toDate(getLocalTimeZone())) : "Pick a date" }}
                 </Button>
               </PopoverTrigger>
