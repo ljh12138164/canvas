@@ -21,6 +21,7 @@ import {
 } from '../ui/dialog'
 import type { FormItem } from '@/types/form'
 import { watch } from 'vue'
+import { defaultInput } from '@/lib'
 const closeRef = ref<HTMLButtonElement | null>(null)
 const router = useRouter()
 const route = useRoute()
@@ -36,6 +37,7 @@ const list1 = ref<FormItem[]>([
     name: '输入框',
     id: '1',
     type: 'input',
+    default: defaultInput,
   },
   {
     name: '单选框',
