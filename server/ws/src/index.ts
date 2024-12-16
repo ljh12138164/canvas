@@ -1,11 +1,12 @@
 import { Server } from '@hocuspocus/server';
 import * as Y from 'yjs';
-import { Server as SocketIOServer } from 'socket.io';
 import express from 'express';
 import { createServer } from 'http';
 import expressWebsockets from 'express-ws';
+
 // Setup your express instance using the express-ws extension
-const { app } = expressWebsockets(express());
+const apps = express();
+const { app } = expressWebsockets(apps);
 const server = Server.configure({
   extensions: [
     // new Webhook({
@@ -51,10 +52,6 @@ const server = Server.configure({
   },
 });
 const httpServer = createServer(app);
-app.get('/', (request: any, response: any) => {
-  response.send('Hello World!');
-});
-
 app.ws('/note/collaboration', (websocket: any, request: any) => {
   const context = {
     user: {
@@ -65,9 +62,11 @@ app.ws('/note/collaboration', (websocket: any, request: any) => {
 
   server.handleConnection(websocket, request, context);
 });
-const io = new SocketIOServer(httpServer);
+apps.get('/chat', (websocket: any, request: any) => {
+  console.log('连接成功');
+});
+httpServer.listen(8080);
 // Start the server
-app.listen(8080, () => console.log('服务启动成功8080'));
 // httpServer.listen((port: any) => {
 //   console.log(`服务启动成功${port}`);
 // });

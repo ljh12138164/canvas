@@ -189,11 +189,11 @@ const editor = ref<Editor>(
           </tbody>
         </table>
       `,
-  }),
+  })
 );
-const props = defineProps<{
-  workspace: getWorkspaceByIdResponse | undefined;
-}>();
+// const props = defineProps<{
+//   workspace: getWorkspaceByIdResponse | undefined;
+// }>();
 
 onMounted(() => {
   useEditor().setEditorData(editor.value as Editor);

@@ -19,14 +19,14 @@ import { useMemoizedFn } from 'ahooks';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { LuSettings, LuUser } from 'react-icons/lu';
+import { LuMessageSquare, LuSettings, LuUser } from 'react-icons/lu';
 import { TfiMenuAlt } from 'react-icons/tfi';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ProjectList from './ProjectList';
 import { Workspace } from '@/types/workspace';
 
-type PathRush = 'home' | 'member' | 'setting';
+type PathRush = 'home' | 'member' | 'setting' | 'chat';
 const Asider = styled.aside`
   flex-basis: 250px;
   width: 100%;
@@ -149,6 +149,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
     return router.pathname === `/dashboard/${workspaceId}/${path}`;
   };
   const handleJump = useMemoizedFn((path: PathRush) => {
+    console.log(path);
     if (isLoading) return;
     const workspaceId = parmas?.workspaceId;
     if (!workspaceId) {
@@ -291,6 +292,33 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
             <ButtonContainer>
               <LuSettings />
               <span>设置</span>
+            </ButtonContainer>
+          </RouterDiv>
+        </Button>
+        <Button
+          asChild
+          className='cursor-pointer'
+          onClick={() => handleJump('chat')}
+          variant='ghost'
+        >
+          <RouterDiv
+            active={checkActive('chat')}
+            variant='ghost'
+            theme={theme === 'light'}
+            className={
+              checkActive('chat')
+                ? `text-black font-semibold border-2 border-[${
+                    theme === 'light' ? '#ebf0fa' : '#1c1c22'
+                  }]`
+                : `opacity-80 ${
+                    theme === 'light' ? 'text-black' : 'text-white'
+                  }`
+            }
+            asChild
+          >
+            <ButtonContainer>
+              <LuMessageSquare />
+              <span>聊天</span>
             </ButtonContainer>
           </RouterDiv>
         </Button>

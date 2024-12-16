@@ -1,24 +1,27 @@
 /* eslint-disable react-refresh/only-export-components */
-import { ScrollArea } from "@/components/ui/scrollArea";
-import Suspensed from "@/page/suspense";
-import { lazy } from "react";
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import styled from "styled-components";
-import Index from "../page/error/Index";
-import Task from "@/page/dashboard/project/task";
-const SignIn = lazy(() => import("../page/auth/SignIn"));
-const Create = lazy(() => import("../page/dashboard/create"));
-const Setting = lazy(() => import("../page/dashboard/setting"));
+import { ScrollArea } from '@/components/ui/scrollArea';
+import Suspensed from '@/page/suspense';
+import { lazy } from 'react';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
+import styled from 'styled-components';
+import Index from '../page/error/Index';
+import Task from '@/page/dashboard/project/task';
+
+const SignIn = lazy(() => import('../page/auth/SignIn'));
+const Create = lazy(() => import('../page/dashboard/create'));
+const Setting = lazy(() => import('../page/dashboard/setting'));
 const WorkspaceSetting = lazy(
-  () => import("../page/dashboard/workspace/setting")
+  () => import('../page/dashboard/workspace/setting')
 );
-const Member = lazy(() => import("../page/dashboard/member"));
-const Home = lazy(() => import("../page/dashboard/home"));
-const Dashboard = lazy(() => import("../page/dashboard"));
-const WorkSpace = lazy(() => import("../page/dashboard/workspace"));
-const Join = lazy(() => import("../page/dashboard/join/index"));
-const Project = lazy(() => import("../page/dashboard/project"));
-const ProjectSetting = lazy(() => import("../page/dashboard/project/setting"));
+const Member = lazy(() => import('../page/dashboard/member'));
+const Home = lazy(() => import('../page/dashboard/home'));
+const Dashboard = lazy(() => import('../page/dashboard'));
+const WorkSpace = lazy(() => import('../page/dashboard/workspace'));
+const Join = lazy(() => import('../page/dashboard/join/index'));
+const Project = lazy(() => import('../page/dashboard/project'));
+const ProjectSetting = lazy(() => import('../page/dashboard/project/setting'));
+const Chat = lazy(() => import('../page/chat/Chat'));
+
 const WorkContains = styled.div`
   width: calc(100dvw - 280px);
   height: calc(100dvh - 93.4px);
@@ -35,11 +38,11 @@ const Scroll = styled(ScrollArea)`
 `;
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <div>22</div>,
   },
   {
-    path: "/sign-in",
+    path: '/sign-in',
     element: (
       <Suspensed>
         <SignIn />
@@ -47,7 +50,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: "/dashboard",
+    path: '/dashboard',
     element: (
       <Suspensed>
         <Dashboard />
@@ -55,7 +58,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/dashboard/home",
+        path: '/dashboard/home',
         element: (
           <Suspensed>
             <Home />
@@ -63,7 +66,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/create",
+        path: '/dashboard/create',
         element: (
           <Suspensed>
             <WorkContains>
@@ -75,19 +78,19 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/:workspaceId",
+        path: '/dashboard/:workspaceId',
         element: (
           <Suspensed>
             <WorkContains>
               <Scroll>
-                <Navigate to="home" replace />,
+                <Navigate to='home' replace />,
               </Scroll>
             </WorkContains>
           </Suspensed>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/home",
+        path: '/dashboard/:workspaceId/home',
         element: (
           <Suspensed>
             <WorkContains>
@@ -99,7 +102,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/:workspaceId/setting",
+        path: '/dashboard/:workspaceId/setting',
         element: (
           <Suspensed>
             <WorkContains>
@@ -111,7 +114,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/:workspaceId/member",
+        path: '/dashboard/:workspaceId/member',
         element: (
           <Suspensed>
             <WorkContains>
@@ -123,7 +126,19 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/:workspaceId/setting",
+        path: '/dashboard/:workspaceId/chat',
+        element: (
+          <Suspensed>
+            <WorkContains>
+              <Scroll>
+                <Chat />
+              </Scroll>
+            </WorkContains>
+          </Suspensed>
+        ),
+      },
+      {
+        path: '/dashboard/:workspaceId/setting',
         element: (
           <Suspensed>
             <WorkContains>
@@ -135,19 +150,19 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/:workspaceId/:projectId",
+        path: '/dashboard/:workspaceId/:projectId',
         element: (
           <Suspensed>
             <WorkContains>
               <Scroll>
-                <Navigate to="home" replace />
+                <Navigate to='home' replace />
               </Scroll>
             </WorkContains>
           </Suspensed>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/:projectId/home",
+        path: '/dashboard/:workspaceId/:projectId/home',
         element: (
           <Suspensed>
             <WorkContains>
@@ -159,7 +174,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/:workspaceId/:projectId/setting",
+        path: '/dashboard/:workspaceId/:projectId/setting',
         element: (
           <Suspensed>
             <WorkContains>
@@ -171,7 +186,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/:workspaceId/:projectId/:taskId",
+        path: '/dashboard/:workspaceId/:projectId/:taskId',
         element: (
           <Suspensed>
             <WorkContains>
@@ -183,7 +198,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/join/:id",
+        path: '/dashboard/join/:id',
         element: (
           <Suspensed>
             <WorkContains>
@@ -198,7 +213,7 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: "*",
+    path: '*',
     element: <Index />,
   },
 ]);
