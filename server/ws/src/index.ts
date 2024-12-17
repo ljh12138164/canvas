@@ -52,6 +52,7 @@ const server = Server.configure({
   },
 });
 const httpServer = createServer(app);
+// 协同服务器
 app.ws('/note/collaboration', (websocket: any, request: any) => {
   const context = {
     user: {
@@ -66,10 +67,6 @@ apps.get('/chat', (websocket: any, request: any) => {
   console.log('连接成功');
 });
 httpServer.listen(8080);
-// Start the server
-// httpServer.listen((port: any) => {
-//   console.log(`服务启动成功${port}`);
-// });
 /**
  * 创建空文档
  * @returns

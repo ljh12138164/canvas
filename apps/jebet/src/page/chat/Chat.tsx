@@ -1,12 +1,10 @@
-import styled from 'styled-components';
-import Edit from '@/components/edit';
+import Tiptap from '@/components/edit';
+import ChatMessageList from '@/components/edit/ChatMessageList';
 import useStore from '@/store/user';
-import { Navigate, useParams } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { observe } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
-import { io } from 'socket.io-client';
+import toast from 'react-hot-toast';
+import { Navigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 const ChatContainer = styled.div`
   position: relative;
@@ -23,7 +21,7 @@ const Content = styled.main`
 `;
 const ChatMessage = styled.div`
   flex: 1;
-  height: calc(100% - 200px);
+  height: calc(100% - 250px);
 `;
 const EditContainer = styled.div`
   flex: 1;
@@ -35,30 +33,32 @@ const ChatHeaderContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 30px;
 `;
-const Header = styled.div`Access to XMLHttpRequest at 'http://localhost:8088/socket.io/?EIO=4&transport=polling&t=8hr94dvt' from origin 'http://localhost:8100' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+const Header = styled.div`
   flex: 1;
   height: 50px;
 `;
 const Chat = observer(() => {
   const store = useStore;
   const params = useParams();
-  useEffect(() => {
-    const socket = io('http://localhost:8088');
-    socket.on('connect', () => {
-      console.log('连接成功');
-    });
-    socket.on('message', (message) => {
-      console.log(message);
-    });
-  }, []);
-
-  if (store.userData === null || store.activeProject === null) return null;
+  // useEffect(() => {
+  //   const socket = io('http://localhost:8088');
+  //   socket.on('connect', () => {
+  //     console.log('连接成功');
+  //   });
+  //   socket.on('message', (message) => {
+  //     console.log(message);
+  //   });
+  // }, []);
+  if (store.userData === null || store.workspace === null) return <></>;
+  const activeWorkSpace = store.workspace.find(
+    (item) => item.id === params.workspaceId
+  );
   if (!store.userData) {
     toast.error('请先登录');
     return <Navigate to='/sign-in' replace />;
   }
-  if (!store.activeProject) {
-    toast.error('未选择项目');
+  if (!activeWorkSpace) {
+    toast.error('未找到工作区');
     return <Navigate to='/dashboard' replace />;
   }
   if (!params.workspaceId) {
@@ -72,9 +72,11 @@ const Chat = observer(() => {
           <Header>{}</Header>
           <Header>在线人数</Header>
         </ChatHeaderContainer>
-        <ChatMessage></ChatMessage>
+        <ChatMessage>
+          <ChatMessageList></ChatMessageList>
+        </ChatMessage>
         <EditContainer>
-          <Edit />
+          <Tiptap workspace={activeWorkSpace} />
         </EditContainer>
       </Content>
     </ChatContainer>

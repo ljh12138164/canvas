@@ -1,10 +1,8 @@
-.tiptap {
-  min-height: 150px !important;
-  padding: 0px 5px;
+.tiptaps {
+  padding: 0px 10px;
   overflow: hidden !important;
   background-color: white;
-  /* margin: 10px 0; */
-  border: 1.5px solid #c7c7c7;
+  //   border: 1.5px solid #c7c7c7;
   &:focus-visible {
     outline: none;
   }
@@ -12,7 +10,7 @@
 .bubble-menu {
   width: 80dvw;
 }
-.tiptap {
+.tiptaps {
   h1,
   h2,
   h3,
@@ -22,6 +20,17 @@
     line-height: 1.1;
     margin-top: 2.5rem;
     text-wrap: pretty;
+  }
+  // 处理mention
+  .mention {
+    background-color: var(--purple-light);
+    border-radius: 0.4rem;
+    box-decoration-break: clone;
+    color: var(--purple);
+    padding: 0.1rem 0.3rem;
+    &::after {
+      content: '\200B';
+    }
   }
 
   h1,
@@ -49,7 +58,8 @@
   }
 
   ul li {
-    list-style-type: disc;
+    margin-left: 20px;
+    list-style-type: disc !important;
 
     p {
       margin-top: 0.25em;
@@ -57,6 +67,7 @@
     }
   }
   ol li {
+    margin-left: 20px;
     list-style-type: decimal;
     p {
       margin-top: 0.25em;
@@ -349,7 +360,7 @@
   }
 }
 
-.tiptap p.is-editor-empty:first-child::before {
+.tiptaps p.is-editor-empty:first-child::before {
   color: #adb5bd;
   content: attr(data-placeholder);
   float: left;
@@ -357,7 +368,7 @@
   pointer-events: none;
 }
 
-.tiptap p.is-empty::before {
+.tiptaps p.is-empty::before {
   color: #adb5bd;
   content: attr(data-placeholder);
   float: left;
@@ -365,10 +376,44 @@
   pointer-events: none;
 }
 
-.tiptap.dark {
+.tiptaps.dark {
   background-color: #000;
   border: 1.5px solid #c7c7c7;
 }
-.tiptap.light {
+.tiptaps.light {
   background-color: #fff;
+}
+/* Dropdown menu */
+.dropdown-menu {
+  background: var(--white);
+  border: 1px solid var(--gray-1);
+  border-radius: 0.7rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  overflow: auto;
+  // padding: 0.4rem;
+  position: relative;
+  transition: all 0.3s ease;
+
+  button {
+    align-items: center;
+    background-color: transparent;
+    display: flex;
+    gap: 0.25rem;
+    text-align: left;
+    width: 100%;
+    padding: 0.4rem;
+
+    transition: all 0.3s ease;
+    &:hover,
+    &:hover.is-selected {
+      background: var(--gray-3);
+    }
+
+    &.is-selected {
+      background: var(--gray-2);
+    }
+  }
 }
