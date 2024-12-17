@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Toaster } from 'react-hot-toast';
 import { RouterProvider } from 'react-router-dom';
+import 'quill/dist/quill.core.css';
 import { ThemeProvider } from './components/ui/theme-provider';
 import './index.css';
 import Index from './page/error/Index';
