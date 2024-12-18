@@ -191,14 +191,15 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {data?.map((item: Workspace) => (
-                    <SelectItems key={item.id} value={item.id}>
-                      <div className='flex items-center justify-start gap-2 '>
-                        <SelectImage src={item.imageUrl} alt={item.name} />
-                        <p>{item.name}</p>
-                      </div>
-                    </SelectItems>
-                  ))}
+                  {Array.isArray(data) &&
+                    data?.map((item: Workspace) => (
+                      <SelectItems key={item.id} value={item.id}>
+                        <div className='flex items-center justify-start gap-2 '>
+                          <SelectImage src={item.imageUrl} alt={item.name} />
+                          <p>{item.name}</p>
+                        </div>
+                      </SelectItems>
+                    ))}
                   {data?.length === 0 && !isLoading && <p>无数据，请创建</p>}
                   {isLoading && <p>加载中</p>}
                 </SelectGroup>

@@ -1,5 +1,4 @@
 import { Member, Workspace } from '@/types/workspace.js';
-import ListItem from '@tiptap/extension-list-item';
 import Mention from '@tiptap/extension-mention';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
@@ -19,21 +18,24 @@ const TiptapToolbarContainer = styled.div`
   border-right: 1px solid #e0e0e0;
   border-left: 1px solid #e0e0e0;
 `;
-const content = '<p>写点什么吧</p>';
+
 interface TiptapProps {
   workspace: Workspace & { member: Member[] };
 }
 const Tiptap = ({ workspace }: TiptapProps) => {
   const { theme } = useTheme();
+
   const editor = useEditor({
     editorProps: {
       attributes: {
         class: theme === 'dark' ? 'tiptap dark' : 'tiptap light',
       },
     },
+    onUpdate: ({ editor }) => {
+      localStorage.setItem(workspace.id, JSON.stringify(editor.getHTML()));
+    },
     extensions: [
       StarterKit,
-      ListItem,
       Underline,
       Mention.configure({
         HTMLAttributes: {
@@ -43,9 +45,8 @@ const Tiptap = ({ workspace }: TiptapProps) => {
       }),
       Placeholder.configure({ placeholder: '请输入内容' }),
     ],
-    content,
+    content: JSON.parse(localStorage.getItem(workspace.id) || '{}'),
   });
-
   return (
     <section className='h-full w-full'>
       <TiptapToolbarContainer>

@@ -28,48 +28,56 @@ const TiptapToolbar = ({ editor }: TiptapToolbar) => {
       icon: <BoldIcon />,
       onClick: () => editor.chain().focus().toggleBold().run(),
       active: editor.isActive('bold'),
+      disabled: true,
     },
     {
       key: 'italic',
       icon: <ItalicIcon />,
       onClick: () => editor.chain().focus().toggleItalic().run(),
       active: editor.isActive('italic'),
+      disabled: true,
     },
     {
       key: 'underline',
       icon: <UnderlineIcon />,
       onClick: () => editor.chain().focus().toggleUnderline().run(),
       active: editor.isActive('underline'),
+      disabled: true,
     },
     {
       key: 'strike',
       icon: <StrikethroughIcon />,
       onClick: () => editor.chain().focus().toggleStrike().run(),
       active: editor.isActive('strike'),
+      disabled: true,
     },
     {
       key: 'list',
       icon: <ListIcon />,
       onClick: () => editor.chain().focus().toggleBulletList().run(),
       active: editor.isActive('list'),
+      disabled: true,
     },
     {
       key: 'ordered-list',
       icon: <ListOrderedIcon />,
       onClick: () => editor.chain().focus().toggleOrderedList().run(),
       active: editor.isActive('ordered-list'),
+      disabled: true,
     },
     {
       key: 'undo',
       icon: <UndoIcon />,
       onClick: () => editor.chain().focus().undo().run(),
       active: editor.isActive('undo'),
+      disabled: editor.can().undo(),
     },
     {
       key: 'redo',
       icon: <RedoIcon />,
       onClick: () => editor.chain().focus().redo().run(),
       active: editor.isActive('redo'),
+      disabled: editor.can().redo(),
     },
   ];
   return (
@@ -81,9 +89,7 @@ const TiptapToolbar = ({ editor }: TiptapToolbar) => {
         variant='outline'
         className='rounded-none'
         onClick={() => {
-          console.log(editor.getJSON());
-          console.log(editor.getText());
-          console.log(editor.getHTML());
+          //TODO: 发送消息
         }}
       >
         发送
