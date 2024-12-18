@@ -5,3 +5,10 @@ export interface Message {
   sender: string;
   createdAt: Date;
 }
+
+export interface ActiveUser {
+  userId: string;
+  username: string;
+  avatar: string;
+  socketId?: string;
+}

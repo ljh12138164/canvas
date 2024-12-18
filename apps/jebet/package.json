@@ -54,6 +54,7 @@
     "hono": "^4.6.13",
     "input-otp": "^1.4.1",
     "jose": "^5.9.6",
+    "localforage": "^1.10.0",
     "lucide-react": "^0.447.0",
     "mobx": "^6.13.5",
     "mobx-react-lite": "^4.0.7",

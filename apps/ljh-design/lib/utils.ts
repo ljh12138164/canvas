@@ -192,7 +192,12 @@ interface IndexDBChanagePros {
   editData?: BoardData;
 }
 /**
- *
+ * 更新indexDB
+ * @param type 类型
+ * @param data 数据
+ * @param deletItem 删除的id
+ * @param editData 编辑的数据
+ * @returns
  */
 export function indexDBChange({
   type,
@@ -212,7 +217,8 @@ export function indexDBChange({
   }
 }
 /**
- *
+ * 获取indexDB数据
+ * @returns 数据
  */
 export async function getIndexDB() {
   const arr: Board[] = [];
@@ -222,9 +228,9 @@ export async function getIndexDB() {
   return arr;
 }
 /**
- *
- * @param id
- * @returns
+ * 获取指定id的数据
+ * @param id 数据id
+ * @returns 数据
  */
 export async function getTryBoardById(id: string) {
   return await localforage.getItem<Board>(id);

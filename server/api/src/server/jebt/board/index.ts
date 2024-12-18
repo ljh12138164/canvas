@@ -325,10 +325,11 @@ export const joinJebtWorkspace = async (
 ): Promise<Workspace> => {
   const { data: memberData, error: memberError } = await supabaseJebt
     .from('member')
-    .select('workspaceId,role')
-    .eq('userId', userId);
+    .select('workspaceId,role,userId')
+    .eq('workspaceId', id);
   if (memberError) throw new Error('服务器错误');
-  if (memberData.length > 0) throw new Error('已加入');
+  if (memberData.some((item) => item.userId === userId))
+    throw new Error('已加入');
   const { data, error } = await supabaseJebt
     .from('member')
     .insert([
