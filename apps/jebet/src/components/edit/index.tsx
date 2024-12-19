@@ -10,7 +10,6 @@ import { useTheme } from '../ui/theme-provider';
 import suggestion from './suggest.js';
 import './tiptap.scss';
 import TiptapToolbar from './TiptapToolbar';
-// define your extension array
 const TiptapToolbarContainer = styled.div`
   height: 2rem;
   display: flex;
@@ -21,8 +20,9 @@ const TiptapToolbarContainer = styled.div`
 
 interface TiptapProps {
   workspace: Workspace & { member: Member[] };
+  userId: string;
 }
-const Tiptap = ({ workspace }: TiptapProps) => {
+const Tiptap = ({ workspace, userId }: TiptapProps) => {
   const { theme } = useTheme();
 
   const editor = useEditor({
@@ -50,7 +50,13 @@ const Tiptap = ({ workspace }: TiptapProps) => {
   return (
     <section className='h-full w-full'>
       <TiptapToolbarContainer>
-        {editor && <TiptapToolbar editor={editor} />}
+        {editor && (
+          <TiptapToolbar
+            editor={editor}
+            userId={userId}
+            workspace={workspace}
+          />
+        )}
       </TiptapToolbarContainer>
       <ScrollArea className='h-full w-full '>
         {/* tiptap实例 */}

@@ -5,18 +5,15 @@ const image = ref<string | null>(null)
 const filetype = ref<string | null>(null)
 const files = ref<File | null>(null)
 const handleChange = (e: Event) => {
-  const file = e.target?.files?.[0]
+  const file = (e.target as HTMLInputElement).files?.[0]
   const reader = new FileReader()
-  files.value = file
-  filetype.value = file?.type
-  reader.readAsDataURL(file)
+  files.value = file ?? null
+  filetype.value = file?.type ?? null
+  reader.readAsDataURL(file as Blob)
   reader.onload = () => {
     image.value = reader.result as string
   }
-  if (file) {
-    console.log(file)
-  }
-  e.target.value = ''
+  ;(e.target as HTMLInputElement).value = ''
 }
 
 const handleUpload = () => {

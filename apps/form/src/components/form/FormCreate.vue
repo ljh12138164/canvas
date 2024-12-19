@@ -37,7 +37,7 @@ const list1 = ref<FormItem[]>([
     name: '输入框',
     id: '1',
     type: 'input',
-    default: defaultInput,
+    default: defaultInput(),
   },
   {
     name: '单选框',

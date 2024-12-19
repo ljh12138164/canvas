@@ -11,4 +11,14 @@ export interface ActiveUser {
   username: string;
   avatar: string;
   socketId?: string;
+  roomSize: number;
+}
+
+export interface ChatMessage {
+  id: string;
+  created_at: Date;
+  message: string;
+  role: 'user' | 'assistant';
+  userId: string;
+  workspaceId: string;
 }

@@ -1,11 +1,14 @@
 import ChatMeta from '@/components/chat/ChatMeta';
 import Tiptap from '@/components/edit';
 import ChatMessageList from '@/components/edit/ChatMessageList';
+import { useToast } from '@/hooks/use-toast';
 import chatStore from '@/store/chat';
 import useStore from '@/store/user';
+import { ActiveUser, Message } from '@/types/chat';
+import { useQueryClient } from '@tanstack/react-query';
 import { observer } from 'mobx-react-lite';
+import { nanoid } from 'nanoid';
 import { useEffect } from 'react';
-import toast from 'react-hot-toast';
 import { Navigate, useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import styled from 'styled-components';
@@ -34,13 +37,13 @@ const EditContainer = styled.div`
 const ChatHeaderContainer = styled.div`
   flex: 1;
   height: 50px;
-  display: grid;
-  grid-template-columns: 1fr 30px;
 `;
-
+// @ts-ignore
 const Chat = observer(() => {
+  const queryClient = useQueryClient();
   const store = useStore;
   const params = useParams();
+  const { toast } = useToast();
   useEffect(() => {
     if (store.userData === null || store.workspace === null) return;
     const activeWorkSpace = store.workspace.find(
@@ -48,9 +51,17 @@ const Chat = observer(() => {
     );
     if (!activeWorkSpace) return;
     if (chatStore.socket) return;
-    const socket = io('http://localhost:8088');
+    const socket = io('http://localhost:8088', {
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 1000,
+      timeout: 5000,
+      transports: ['websocket'],
+    });
+
+    // 连接成功
     socket.on('connect', () => {
-      // 连接成功
+      chatStore.setIsConnected(true);
       socket.emit('connectChat', {
         userId: store.userData?.id,
         username: store.userData?.username,
@@ -58,62 +69,121 @@ const Chat = observer(() => {
         workspaceId: activeWorkSpace.id,
       });
       chatStore.socket = socket;
-    });
-    socket.on('leaveChat', (data) => {
-      console.log('有人离开聊天', data);
-      chatStore.setActiveUser(
-        chatStore.activeUser.filter((item) => item?.socketId !== data.socketId)
-      );
-      chatStore.setConnectCount(data.roomSize);
+      //初始化
+      socket.on(`initChat`, (data: ActiveUser) => {
+        console.log(data);
+        chatStore.setConnectCount(data.roomSize);
+      });
+
       // 断开连接
+      socket.on(`leaveChat`, (data: ActiveUser) => {
+        chatStore.setConnectCount(data.roomSize);
+      });
+      // 有人加入聊天
+      socket.on(`joinChat`, (data: ActiveUser) => {
+        toast({
+          title: `${data.username}加入聊天`,
+          description: '请稍后再试',
+          variant: 'default',
+        });
+      });
+
+      socket.on('connect_error', () => {
+        toast({
+          title: '聊天服务连接失败',
+          description: '请稍后再试',
+          variant: 'destructive',
+        });
+      });
+
+      socket.on('reconnect', () => {
+        toast({
+          title: '重新连接成功',
+          description: '请稍后再试',
+          variant: 'default',
+        });
+      });
     });
-    socket.on(`joinChat`, (data) => {
-      console.log('有人加入聊天', data);
-      if (!chatStore.activeUser.some((item) => item.userId === data.userId))
-        chatStore.setActiveUser([
-          data,
+    socket.on('disconnect', () => {
+      chatStore.setIsConnected(false);
+    });
+    socket.on('sendMessage', (data) => {
+      const oldData = queryClient.getQueryData([activeWorkSpace.id]) as {
+        pageParams: number[];
+        pages: {
+          messages: { data: Message[]; count: number; page: number };
+        }[];
+      };
+      queryClient.setQueryData([activeWorkSpace.id], {
+        pageParams: oldData.pageParams,
+        pages: [
           {
-            avatar: store.userData?.imageUrl,
-            username: store.userData?.username,
-            userId: store.userData?.id,
+            messages: {
+              data: [
+                {
+                  content: data.message,
+                  timestamp: new Date().getTime(),
+                  userId: data.userId,
+                  workspaceId: data.workspaceId,
+                  id: nanoid(),
+                },
+                ...oldData.pages[0].messages.data,
+              ],
+              count: oldData.pages[0].messages.count + 1,
+              page: oldData.pages[0].messages.page + 1,
+            },
           },
-        ]);
-      else chatStore.setActiveUser([data]);
+        ],
+      });
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [store.userData, store.workspace, params.workspaceId]);
-
+  }, [store.userData, store.workspace, params.workspaceId, toast, queryClient]);
   // 如果用户未登录，则返回
   if (store.userData === null || store.workspace === null) return <></>;
   const activeWorkSpace = store.workspace.find(
     (item) => item.id === params.workspaceId
   );
   if (!store.userData) {
-    toast.error('请先登录');
+    toast({
+      title: '请先登录',
+      description: '请稍后再试',
+      variant: 'destructive',
+    });
     return <Navigate to='/sign-in' replace />;
   }
   if (!activeWorkSpace) {
-    toast.error('未找到工作区');
+    toast({
+      title: '未找到工作区',
+      description: '请稍后再试',
+      variant: 'destructive',
+    });
     return <Navigate to='/dashboard' replace />;
   }
   if (!params.workspaceId) {
-    toast.error('未选择工作区');
+    toast({
+      title: '未选择工作区',
+      description: '请稍后再试',
+      variant: 'destructive',
+    });
     return <Navigate to='/dashboard' replace />;
   }
   return (
     <ChatContainer>
       <Content>
         <ChatHeaderContainer>
-          <ChatMeta></ChatMeta>
+          <ChatMeta
+            isConnected={chatStore.isConnected}
+            workspace={activeWorkSpace}
+          />
         </ChatHeaderContainer>
         <ChatMessage>
-          <ChatMessageList></ChatMessageList>
+          <ChatMessageList workspace={activeWorkSpace}></ChatMessageList>
         </ChatMessage>
         <EditContainer>
-          <Tiptap workspace={activeWorkSpace} />
+          <Tiptap workspace={activeWorkSpace} userId={store.userData.id} />
         </EditContainer>
       </Content>
     </ChatContainer>

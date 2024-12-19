@@ -25,8 +25,6 @@ const io = new Server(httpServer as HTTPServer, {
   },
 });
 io.on('connection', (socket) => {
-  // 连接成功事件
-  socket.send('initChat');
   socket.on('connectChat', (data) => {
     // 添加用户元数据
     const userMeta = {
@@ -38,36 +36,49 @@ io.on('connection', (socket) => {
       timestamps: new Date(),
       socketId: socket.id,
     };
-    socket.join(data.id);
-    const roomSize = io.sockets.adapter.rooms.get(data.id)?.size || 0;
+    socket.join(data.workspaceId);
+    const roomSize = io.sockets.adapter.rooms.get(data.workspaceId)?.size || 0;
 
     // 广播用户加入信息和元数据
-    socket.to(data.id).emit(`joinChat`, {
+    socket.to(data.workspaceId).emit(`joinChat`, {
       ...data,
       roomSize,
       userMeta,
       type: 'join', // 标识消息类型
     });
+
+    // 断开连接
     socket.on('disconnect', () => {
-      socket.to(data.id).emit('leaveChat', {
+      console.log('用户断开连接:', socket.id);
+      const roomSize =
+        io.sockets.adapter.rooms.get(data.workspaceId)?.size || 0;
+      socket.to(data.workspaceId).emit(`leaveChat`, {
         socketId: socket.id,
-        roomId: data.id,
-        roomSize: io.sockets.adapter.rooms.get(data.id)?.size || 0,
+        roomId: data.workspaceId,
+        roomSize,
         // 时间戳
         timestamp: new Date(),
       });
     });
+    // 发送消息
   });
-  // 发送消息
-  socket.on('sendMessage', (data) => {
-    const roomSize = io.sockets.adapter.rooms.get(data.id)?.size || 0;
+  socket.on('initChat', (data) => {
+    const roomSize = io.sockets.adapter.rooms.get(data.workspaceId)?.size || 0;
+    // 广播初始化消息
+    socket.to(data.workspaceId).emit(`initChat`, {
+      roomSize,
+    });
+  });
+  socket.on(`sendMessage`, (data) => {
+    console.log('sendMessage', data);
+    const roomSize = io.sockets.adapter.rooms.get(data.workspaceId)?.size || 0;
 
     // 在消息中添加发送时间和用户信息
     const messageData = {
       ...data,
       roomSize,
       meta: {
-        timestamp: new Date().toISOString(),
+        timestamp: data.timestamp,
         socketId: socket.id,
         userId: data.userId,
         username: data.username,
@@ -75,6 +86,9 @@ io.on('connection', (socket) => {
       },
     };
 
-    socket.to(data.id).emit('receiveMessage', messageData);
+    socket.to(data.workspaceId).emit('sendMessage', messageData);
+  });
+  socket.on('error', (error) => {
+    console.error('WebSocket 错误:', error);
   });
 });
