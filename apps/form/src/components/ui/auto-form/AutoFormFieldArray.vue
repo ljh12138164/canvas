@@ -1,15 +1,20 @@
 <script setup lang="ts" generic="T extends z.ZodAny">
-import type { Config, ConfigItem } from './interface'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { FormItem, FormMessage } from '@/components/ui/form'
 import { Separator } from '@/components/ui/separator'
 import { PlusIcon, TrashIcon } from 'lucide-vue-next'
-import { FieldArray, FieldContextKey, useField } from 'vee-validate'
+import { FieldArray, FieldContextKey, useField, type FieldContext } from 'vee-validate'
 import { computed, provide } from 'vue'
 import * as z from 'zod'
 import AutoFormField from './AutoFormField.vue'
 import AutoFormLabel from './AutoFormLabel.vue'
+import type { Config, ConfigItem } from './interface'
 import { beautifyObjectName, getBaseType } from './utils'
 
 const props = defineProps<{
@@ -20,27 +25,22 @@ const props = defineProps<{
   disabled?: boolean
 }>()
 
-function isZodArray(
-  item: z.ZodArray<any> | z.ZodDefault<any>,
-): item is z.ZodArray<any> {
+function isZodArray(item: z.ZodArray<any> | z.ZodDefault<any>): item is z.ZodArray<any> {
   return item instanceof z.ZodArray
 }
 
-function isZodDefault(
-  item: z.ZodArray<any> | z.ZodDefault<any>,
-): item is z.ZodDefault<any> {
+function isZodDefault(item: z.ZodArray<any> | z.ZodDefault<any>): item is z.ZodDefault<any> {
   return item instanceof z.ZodDefault
 }
 
 const itemShape = computed(() => {
-  if (!props.schema)
-    return
+  if (!props.schema) return
 
   const schema: z.ZodAny = isZodArray(props.schema)
     ? props.schema._def.type
     : isZodDefault(props.schema)
-    // @ts-expect-error missing schema
-      ? props.schema._def.innerType._def.type
+      ? // @ts-expect-error missing schema
+        props.schema._def.innerType._def.type
       : null
 
   return {
@@ -50,8 +50,7 @@ const itemShape = computed(() => {
 })
 
 const fieldContext = useField(props.fieldName)
-// @ts-expect-error ignore missing `id`
-provide(FieldContextKey, fieldContext)
+provide<FieldContext>(FieldContextKey, fieldContext)
 </script>
 
 <template>
@@ -77,12 +76,7 @@ provide(FieldContextKey, fieldContext)
                   />
 
                   <div class="!my-4 flex justify-end">
-                    <Button
-                      type="button"
-                      size="icon"
-                      variant="secondary"
-                      @click="remove(index)"
-                    >
+                    <Button type="button" size="icon" variant="secondary" @click="remove(index)">
                       <TrashIcon :size="16" />
                     </Button>
                   </div>

@@ -1,16 +1,16 @@
 import { ClerkProvider } from '@clerk/clerk-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import 'quill/dist/quill.core.css';
 import { createRoot } from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Toaster } from 'react-hot-toast';
+import { Toaster as ShaducnToast } from '@/components/ui/toaster';
 import { RouterProvider } from 'react-router-dom';
-import 'quill/dist/quill.core.css';
 import { ThemeProvider } from './components/ui/theme-provider';
 import './index.css';
 import Index from './page/error/Index';
 import { router } from './router';
-
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -64,6 +64,7 @@ root.render(
           },
         }}
       />
+      <ShaducnToast />
     </ErrorBoundary>
   </QueryClientProvider>
 );

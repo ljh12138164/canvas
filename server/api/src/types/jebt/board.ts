@@ -70,3 +70,12 @@ export interface TaskWithWorkspace extends Task {
   workspace: Workspace & { member: Member[] };
   project: Project;
 }
+
+export interface ChatMessage {
+  id: string;
+  created_at: Date;
+  message: string;
+  role: 'user' | 'assistant';
+  userId: string;
+  workspaceId: string;
+}
