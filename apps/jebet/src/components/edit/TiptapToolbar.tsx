@@ -4,24 +4,23 @@ import { Message } from '@/types/chat';
 import { Workspace } from '@/types/workspace';
 import { useQueryClient } from '@tanstack/react-query';
 import { Editor } from '@tiptap/react';
-import {
-  BoldIcon,
-  ItalicIcon,
-  ListIcon,
-  ListOrderedIcon,
-  RedoIcon,
-  StrikethroughIcon,
-  UnderlineIcon,
-  UndoIcon,
-} from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 import { Button } from '../ui/button';
 import TiptapButton from './TiptapButton';
+
 interface TiptapToolbar {
   editor: Editor;
   userId: string;
   workspace: Workspace;
+  tiptapToolBar: {
+    key: string;
+    icon: React.ReactNode;
+    title: string;
+    onClick: () => void;
+    active: boolean;
+    disabled: boolean;
+  }[];
 }
 const SubmitButton = styled(Button)`
   border-radius: 0;
@@ -30,7 +29,7 @@ const SubmitButton = styled(Button)`
   margin-left: auto;
 `;
 const TiptapToolbar = observer(
-  ({ editor, userId, workspace }: TiptapToolbar) => {
+  ({ editor, userId, workspace, tiptapToolBar }: TiptapToolbar) => {
     const queryClient = useQueryClient();
     const { messageLoading } = useGetMessage(
       workspace.id,
@@ -41,72 +40,19 @@ const TiptapToolbar = observer(
       workspace.id,
       userId
     );
-    const tiptapToolBar = [
-      {
-        key: 'bold',
-        icon: <BoldIcon />,
-        onClick: () => editor.chain().focus().toggleBold().run(),
-        active: editor.isActive('bold'),
-        disabled: true,
-      },
-      {
-        key: 'italic',
-        icon: <ItalicIcon />,
-        onClick: () => editor.chain().focus().toggleItalic().run(),
-        active: editor.isActive('italic'),
-        disabled: true,
-      },
-      {
-        key: 'underline',
-        icon: <UnderlineIcon />,
-        onClick: () => editor.chain().focus().toggleUnderline().run(),
-        active: editor.isActive('underline'),
-        disabled: true,
-      },
-      {
-        key: 'strike',
-        icon: <StrikethroughIcon />,
-        onClick: () => editor.chain().focus().toggleStrike().run(),
-        active: editor.isActive('strike'),
-        disabled: true,
-      },
-      {
-        key: 'list',
-        icon: <ListIcon />,
-        onClick: () => editor.chain().focus().toggleBulletList().run(),
-        active: editor.isActive('list'),
-        disabled: true,
-      },
-      {
-        key: 'ordered-list',
-        icon: <ListOrderedIcon />,
-        onClick: () => editor.chain().focus().toggleOrderedList().run(),
-        active: editor.isActive('ordered-list'),
-        disabled: true,
-      },
-      {
-        key: 'undo',
-        icon: <UndoIcon />,
-        onClick: () => editor.chain().focus().undo().run(),
-        active: editor.isActive('undo'),
-        disabled: editor.can().undo(),
-      },
-      {
-        key: 'redo',
-        icon: <RedoIcon />,
-        onClick: () => editor.chain().focus().redo().run(),
-        active: editor.isActive('redo'),
-        disabled: editor.can().redo(),
-      },
-    ];
+
     return (
       <>
         {tiptapToolBar.map((item) => (
           <TiptapButton {...item} />
         ))}
         <SubmitButton
-          variant='outline'
-          className='rounded-none'
+          variant='ghost'
+          className={
+            messagePending
+              ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 border-l-2 border-zinc-200 dark:border-zinc-700 dark:hover:bg-zinc-700 h-7'
+              : 'hover:bg-zinc-100 dark:hover:bg-zinc-800 border-l-2 border-zinc-200 dark:border-zinc-700 dark:hover:bg-zinc-700 h-7'
+          }
           disabled={messagePending || messageLoading}
           onClick={() => {
             createMessage(editor.getHTML(), {
@@ -114,10 +60,11 @@ const TiptapToolbar = observer(
                 console.log(data);
                 if (chatStore.socket) {
                   chatStore.socket.emit('sendMessage', {
-                    workspaceId: workspace.id,
-                    message: editor.getHTML(),
-                    userId: userId,
-                    timestamp: new Date().getTime(),
+                    id: data.message.id,
+                    workspaceId: data.message.workspaceId,
+                    message: data.message.message,
+                    userId: data.message.userId,
+                    created_at: data.message.created_at,
                   });
                   // 设置数据
                   const oldData = queryClient.getQueryData([workspace.id]) as {
@@ -136,8 +83,9 @@ const TiptapToolbar = observer(
                       {
                         messages: {
                           data: [
+                            ...oldData.pages[0].messages.data,
                             {
-                              content: data.message.message,
+                              message: data.message.message,
                               timestamp: new Date(
                                 data.message.created_at
                               ).getTime(),
@@ -145,12 +93,12 @@ const TiptapToolbar = observer(
                               workspaceId: data.message.workspaceId,
                               id: data.message.id,
                             },
-                            ...oldData.pages[0].messages.data,
                           ],
                           count: oldData.pages[0].messages.count + 1,
                           page: oldData.pages[0].messages.page + 1,
                         },
                       },
+                      ...oldData.pages.slice(1),
                     ],
                   });
                 }

@@ -14,13 +14,13 @@ export const chat = new Hono()
       z.object({
         workspaceId: z.string(),
         userId: z.string(),
-        page: z.string(),
+        pageTo: z.string(),
       })
     ),
     async (c) => {
-      const { workspaceId, userId, page } = c.req.valid('query');
+      const { workspaceId, userId, pageTo } = c.req.valid('query');
       const [error, messages] = await to(
-        getChatMessage(workspaceId, userId, Number.isNaN(+page) ? 0 : +page)
+        getChatMessage(workspaceId, userId, Number.isNaN(+pageTo) ? 0 : +pageTo)
       );
       if (error) return c.json(error.message, errorCheck(error));
       return c.json({ messages });

@@ -1,7 +1,7 @@
-import { supabaseJebt } from '../../supabase/jebt';
-import { checkMember } from '../board';
 import to from 'await-to-js';
 import { ChatMessage } from '../../../types/jebt/board';
+import { supabaseJebt } from '../../supabase/jebt';
+import { checkUser } from '../board';
 
 const PAGE_SIZE = 10;
 /**
@@ -13,9 +13,9 @@ const PAGE_SIZE = 10;
 export const getChatMessage = async (
   workspaceId: string,
   userId: string,
-  page: number
-): Promise<{ data: ChatMessage[]; count: number | null; page: number }> => {
-  const [error] = await to(checkMember(userId, workspaceId));
+  pageTo: number
+): Promise<{ data: ChatMessage[]; count: number | null; pageTo: number }> => {
+  const [error] = await to(checkUser(userId, workspaceId));
   if (error) throw new Error(error.message);
 
   const {
@@ -29,12 +29,13 @@ export const getChatMessage = async (
     })
     .eq('workspaceId', workspaceId)
     .order('created_at', { ascending: false })
-    .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+    // 通过游标返回页数，因为用了socket.io，所以需要通过游标返回页数
+    .range(pageTo, pageTo + PAGE_SIZE - 1);
   if (supabaseError) throw new Error('服务器错误');
   return {
     data,
     count,
-    page,
+    pageTo: pageTo + PAGE_SIZE,
   };
 };
 
@@ -50,7 +51,7 @@ export const sendChatMessage = async (
   userId: string,
   message: string
 ): Promise<ChatMessage> => {
-  const [error] = await to(checkMember(userId, workspaceId));
+  const [error] = await to(checkUser(userId, workspaceId));
   if (error) throw new Error(error.message);
 
   const { data, error: supabaseError } = await supabaseJebt

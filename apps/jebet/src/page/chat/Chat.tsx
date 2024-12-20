@@ -1,13 +1,14 @@
 import ChatMeta from '@/components/chat/ChatMeta';
+import UserButtons from '@/components/command/UserButtons';
 import Tiptap from '@/components/edit';
 import ChatMessageList from '@/components/edit/ChatMessageList';
+import { ScrollArea } from '@/components/ui/scrollArea';
 import { useToast } from '@/hooks/use-toast';
 import chatStore from '@/store/chat';
 import useStore from '@/store/user';
-import { ActiveUser, Message } from '@/types/chat';
+import { ActiveUser, ChatMessage as Message } from '@/types/chat';
 import { useQueryClient } from '@tanstack/react-query';
 import { observer } from 'mobx-react-lite';
-import { nanoid } from 'nanoid';
 import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
@@ -26,7 +27,7 @@ const Content = styled.main`
   // background-color: #f0f0f0;
   height: 100%;
 `;
-const ChatMessage = styled.div`
+const ChatMessage = styled(ScrollArea)`
   flex: 1;
   height: calc(100% - 250px);
 `;
@@ -70,8 +71,7 @@ const Chat = observer(() => {
       });
       chatStore.socket = socket;
       //初始化
-      socket.on(`initChat`, (data: ActiveUser) => {
-        console.log(data);
+      socket.on(`${activeWorkSpace.id}:initChat`, (data: ActiveUser) => {
         chatStore.setConnectCount(data.roomSize);
       });
 
@@ -81,9 +81,9 @@ const Chat = observer(() => {
       });
       // 有人加入聊天
       socket.on(`joinChat`, (data: ActiveUser) => {
+        chatStore.setConnectCount(data.roomSize);
         toast({
-          title: `${data.username}加入聊天`,
-          description: '请稍后再试',
+          description: <UserButtons user={data}></UserButtons>,
           variant: 'default',
         });
       });
@@ -103,45 +103,55 @@ const Chat = observer(() => {
           variant: 'default',
         });
       });
+      socket.on(
+        'sendMessage',
+        (data: {
+          id: string;
+          workspaceId: string;
+          message: string;
+          userId: string;
+          created_at: string;
+        }) => {
+          const oldData = queryClient.getQueryData([activeWorkSpace.id]) as {
+            pageParams: number[];
+            pages: {
+              messages: {
+                data: Message[];
+                count: number;
+                page: number;
+              };
+            }[];
+          };
+          queryClient.setQueryData([activeWorkSpace.id], {
+            pageParams: oldData.pageParams,
+            pages: [
+              {
+                messages: {
+                  data: [
+                    ...oldData.pages[0].messages.data,
+                    {
+                      message: data.message,
+                      created_at: data.created_at,
+                      userId: data.userId,
+                      workspaceId: data.workspaceId,
+                      id: data.id,
+                    },
+                  ],
+                  count: oldData.pages[0].messages.count + 1,
+                  page: oldData.pages[0].messages.page + 1,
+                },
+                ...oldData.pages.slice(1),
+              },
+            ],
+          });
+        }
+      );
     });
     socket.on('disconnect', () => {
       chatStore.setIsConnected(false);
     });
-    socket.on('sendMessage', (data) => {
-      const oldData = queryClient.getQueryData([activeWorkSpace.id]) as {
-        pageParams: number[];
-        pages: {
-          messages: { data: Message[]; count: number; page: number };
-        }[];
-      };
-      queryClient.setQueryData([activeWorkSpace.id], {
-        pageParams: oldData.pageParams,
-        pages: [
-          {
-            messages: {
-              data: [
-                {
-                  content: data.message,
-                  timestamp: new Date().getTime(),
-                  userId: data.userId,
-                  workspaceId: data.workspaceId,
-                  id: nanoid(),
-                },
-                ...oldData.pages[0].messages.data,
-              ],
-              count: oldData.pages[0].messages.count + 1,
-              page: oldData.pages[0].messages.page + 1,
-            },
-          },
-        ],
-      });
-    });
-
-    return () => {
-      socket.disconnect();
-    };
   }, [store.userData, store.workspace, params.workspaceId, toast, queryClient]);
-  // 如果用户未登录，则返回
+  // 如果用户未登录，则返回 TODO:龙骨架加载
   if (store.userData === null || store.workspace === null) return <></>;
   const activeWorkSpace = store.workspace.find(
     (item) => item.id === params.workspaceId
@@ -180,7 +190,10 @@ const Chat = observer(() => {
           />
         </ChatHeaderContainer>
         <ChatMessage>
-          <ChatMessageList workspace={activeWorkSpace}></ChatMessageList>
+          <ChatMessageList
+            workspace={activeWorkSpace}
+            userId={store.userData.id}
+          />
         </ChatMessage>
         <EditContainer>
           <Tiptap workspace={activeWorkSpace} userId={store.userData.id} />

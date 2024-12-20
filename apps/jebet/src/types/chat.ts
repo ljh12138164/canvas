@@ -1,7 +1,7 @@
 export interface Message {
   id: string;
   content: string;
-  role: 'user' | 'assistant';
+  role: 'member' | 'admin';
   sender: string;
   createdAt: Date;
 }
@@ -16,9 +16,19 @@ export interface ActiveUser {
 
 export interface ChatMessage {
   id: string;
-  created_at: Date;
+  created_at: string;
   message: string;
-  role: 'user' | 'assistant';
   userId: string;
   workspaceId: string;
+}
+
+export interface Paginations<T> {
+  pages: {
+    message: {
+      count: number | null;
+      pageTo: number;
+      data: T[];
+    };
+  }[];
+  pageParams: number[];
 }
