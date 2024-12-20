@@ -25,7 +25,11 @@ const TiptapButton = ({
       variant='ghost'
       onClick={onClick}
       disabled={!disabled}
-      className={active ? 'bg-zinc-100' : ''}
+      className={
+        active
+          ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+          : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'
+      }
     >
       {icon}
     </TiptopButtons>

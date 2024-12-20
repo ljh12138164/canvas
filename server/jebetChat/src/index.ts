@@ -46,7 +46,9 @@ io.on('connection', (socket) => {
       userMeta,
       type: 'join', // 标识消息类型
     });
-
+    socket.emit(`${data.workspaceId}:initChat`, {
+      roomSize,
+    });
     // 断开连接
     socket.on('disconnect', () => {
       console.log('用户断开连接:', socket.id);
@@ -70,7 +72,6 @@ io.on('connection', (socket) => {
     });
   });
   socket.on(`sendMessage`, (data) => {
-    console.log('sendMessage', data);
     const roomSize = io.sockets.adapter.rooms.get(data.workspaceId)?.size || 0;
 
     // 在消息中添加发送时间和用户信息
