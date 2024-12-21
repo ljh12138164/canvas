@@ -2,7 +2,6 @@ import ChatMeta from '@/components/chat/ChatMeta';
 import UserButtons from '@/components/command/UserButtons';
 import Tiptap from '@/components/edit';
 import ChatMessageList from '@/components/edit/ChatMessageList';
-import { ScrollArea } from '@/components/ui/scrollArea';
 import { useToast } from '@/hooks/use-toast';
 import chatStore from '@/store/chat';
 import useStore from '@/store/user';
@@ -27,10 +26,7 @@ const Content = styled.main`
   // background-color: #f0f0f0;
   height: 100%;
 `;
-const ChatMessage = styled(ScrollArea)`
-  flex: 1;
-  height: calc(100% - 250px);
-`;
+
 const EditContainer = styled.div`
   flex: 1;
   height: 150px;
@@ -189,12 +185,11 @@ const Chat = observer(() => {
             workspace={activeWorkSpace}
           />
         </ChatHeaderContainer>
-        <ChatMessage>
-          <ChatMessageList
-            workspace={activeWorkSpace}
-            userId={store.userData.id}
-          />
-        </ChatMessage>
+
+        <ChatMessageList
+          workspace={activeWorkSpace}
+          userId={store.userData.id}
+        />
         <EditContainer>
           <Tiptap workspace={activeWorkSpace} userId={store.userData.id} />
         </EditContainer>
