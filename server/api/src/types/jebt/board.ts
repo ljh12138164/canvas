@@ -85,3 +85,16 @@ export interface ChatMessage {
   workspaceId: string;
   type: MessageType;
 }
+
+export interface StoageData {
+  id: string;
+  name: string;
+  description: string;
+  file: string;
+  type: string;
+  size: number;
+  isTrash: Date | null;
+  workspaceId: string;
+  created_at: string;
+  updated_at: string;
+}
