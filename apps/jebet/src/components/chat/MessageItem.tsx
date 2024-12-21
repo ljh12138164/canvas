@@ -11,7 +11,6 @@ import styled from 'styled-components';
 
 interface MessageItemProps {
   message: ChatMessage;
-  isSelf: boolean;
 }
 const MessageItemContainer = styled.div`
   width: 100%;

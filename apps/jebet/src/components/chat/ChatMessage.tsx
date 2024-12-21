@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 import UserMessageButton from '../command/UserMessageButton';
 import MessageItem from './MessageItem';
+import { MessageType } from '@/types/chat';
 const UserButtonsContainer = styled.div``;
 interface ChatMessageProps {
   workspace: Workspace & { member: Member[] };
@@ -16,18 +17,25 @@ interface ChatMessageProps {
         message: string;
         userId: string;
         workspaceId: string;
+        type: MessageType;
       }[];
       count: number | null;
       pageTo: number;
     };
   }>;
 }
+const ImageContainer = styled.img`
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+`;
 const MessageContainer = styled.section`
   display: flex;
   width: 100%;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 1rem;
 `;
+
 const MessageDescpt = styled.div<{ isSelf: boolean }>`
   display: flex;
   flex-direction: ${(props) => (props.isSelf ? 'row-reverse' : 'row')};
@@ -51,10 +59,18 @@ const ChatMessage = observer(
                   <UserButtonsContainer>
                     <UserMessageButton user={sendUser} />
                   </UserButtonsContainer>
-                  <MessageItem
-                    message={messageData}
-                    isSelf={sendUser.userId === userId}
-                  />
+                  {messageData.type === MessageType.TEXT && (
+                    <MessageItem message={messageData} />
+                  )}
+                  {messageData.type === MessageType.IMAGE && (
+                    <a
+                      href={messageData.message}
+                      target='_blank'
+                      className='flex items-center justify-center'
+                    >
+                      <ImageContainer src={messageData.message} />
+                    </a>
+                  )}
                 </MessageDescpt>
               );
             }

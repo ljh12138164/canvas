@@ -1,17 +1,21 @@
+import { useMessage } from '@/hooks/useMessage';
 import { useGetMessage } from '@/server/hooks/chat';
+import chatStore from '@/store/chat';
 import { Member, Workspace } from '@/types/workspace';
+import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 import ChatMessage from '../chat/ChatMessage';
-import { observer } from 'mobx-react-lite';
-import chatStore from '@/store/chat';
-import { useMessage } from '@/hooks/useMessage';
+import { ChevronDown } from 'lucide-react';
 
 interface ChatMessageListProps {
   workspace: Workspace & { member: Member[] };
   userId: string;
 }
 const ChatMessageContainer = styled.main`
+  position: relative;
   flex: 1;
+  display: flex;
+  flex-direction: column-reverse;
   height: calc(100% - 250px);
   overflow: auto;
   &::-webkit-scrollbar {
@@ -24,6 +28,7 @@ const MessageContainer = styled.div`
   width: 100%;
   padding: 10px 2px;
 `;
+
 const ChatMessageList = observer(
   ({ workspace, userId }: ChatMessageListProps) => {
     const {
@@ -47,19 +52,29 @@ const ChatMessageList = observer(
     return (
       <ChatMessageContainer ref={messageRef}>
         <MessageContainer>
-          <div className='h-10' ref={topRef}>
-            {!messageLoading && (
-              <>
-                {messageHasNextPage ? (
-                  <p className='text-sm text-zinc-500 text-center hover:text-zinc-700'>
-                    {isFetchingNextPage ? '加载中...' : '加载更多'}
-                  </p>
-                ) : (
-                  <p className='text-sm text-zinc-500'>没有更多了</p>
-                )}
-              </>
-            )}
-          </div>
+          {!messageLoading && (
+            <>
+              {messageHasNextPage ? (
+                <p className='text-sm text-zinc-500 text-center mb-4'>
+                  {isFetchingNextPage ? '加载中...' : '加载更多'}
+                </p>
+              ) : (
+                <p className='text-sm h-full text-zinc-500 flex mb-4  flex-col items-center justify-center'>
+                  <span className='flex items-center justify-center'>
+                    <ChevronDown
+                      onClick={() =>
+                        bottomRef.current?.scrollIntoView({
+                          behavior: 'smooth',
+                        })
+                      }
+                    />
+                    回到底部
+                  </span>
+                </p>
+              )}
+            </>
+          )}
+          <div className='h-5' ref={topRef}></div>
           {/* 消息显示 */}
           {!messageLoading && message?.pages?.length && (
             <ChatMessage
@@ -77,3 +92,7 @@ const ChatMessageList = observer(
 );
 
 export default ChatMessageList;
+{
+  /* <ChevronDown /> */
+}
+//
