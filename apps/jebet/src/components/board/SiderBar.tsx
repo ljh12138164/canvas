@@ -10,9 +10,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { useTheme } from '@/components/ui/theme-provider';
 import { useWorkspace } from '@/server/hooks/board';
 import userStore from '@/store/user';
+import { Workspace } from '@/types/workspace';
 import { SignedIn, UserButton } from '@clerk/clerk-react';
 import { UserResource } from '@clerk/types';
 import { useMemoizedFn } from 'ahooks';
@@ -24,7 +24,6 @@ import { TfiMenuAlt } from 'react-icons/tfi';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ProjectList from './ProjectList';
-import { Workspace } from '@/types/workspace';
 
 type PathRush = 'home' | 'member' | 'setting' | 'chat';
 const Asider = styled.aside`
@@ -42,22 +41,16 @@ const RouterContainer = styled.div`
   flex-direction: column;
   gap: 10px;
 `;
-const RouterDiv = styled(Button)<{ theme: boolean; active: boolean }>`
+const RouterDiv = styled(Button)`
   width: 100%;
   height: 3rem;
   display: flex;
   align-items: center;
   border-radius: var(--radius);
-  background-color: ${(props) =>
-    props.active ? (props.theme ? 'white' : '#1c1c22') : '#e5e7eba0'};
   padding: 1px;
   transition: all 0.2s;
-  &:hover {
-    background-color: ${(props) =>
-      props.theme ? 'white' : props.active ? '#1c1c22' : '#e5e7eba0'};
-    color: ${(props) => (props.theme ? 'black' : 'white')};
-  }
 `;
+
 const UserButtonContainer = styled.div`
   height: 50px;
   display: flex;
@@ -133,7 +126,6 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
   const navigate = useNavigate();
   const parmas = useParams();
   const { isLoading, data, error } = useWorkspace(user.id);
-  // const location = useLocation();
 
   useEffect(() => {
     if (isLoading || error) return;
@@ -141,8 +133,8 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
       userStore.setWorkspace(data);
     }
   }, [data, isLoading, error]);
-  // const [isLoadings, setLoadings] = useState(true);
 
+  // 判断是否是当前路径
   const checkActive = (path: PathRush) => {
     const workspaceId = parmas?.workspaceId;
     if (!workspaceId) return router.pathname === `/dashboard/${path}`;
@@ -159,7 +151,6 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
     }
     navigate(`/dashboard/${workspaceId}/${path}`);
   });
-  const { theme } = useTheme();
   return (
     <Asider>
       {/* 菜单 */}
@@ -209,120 +200,58 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           {error && <div>获取失败</div>}
         </SelectContainer>
         <Title>菜单</Title>
-        <Button
-          className='cursor-pointer'
+        <RouterDiv
+          variant='ghost'
+          className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('home') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
+          asChild
           onClick={() => {
             handleJump('home');
           }}
-          asChild
-          variant='ghost'
         >
-          <RouterDiv
-            active={checkActive('home')}
-            variant='ghost'
-            theme={theme === 'light'}
-            className={
-              checkActive('home')
-                ? `text-black font-semibold border-2 border-[${
-                    theme === 'light' ? '#ebf0fa' : '#1c1c22'
-                  }]`
-                : `opacity-80 ${
-                    theme === 'light' ? 'text-black' : 'text-white bg-white'
-                  }`
-            }
-            asChild
-          >
-            <ButtonContainer>
-              <TfiMenuAlt />
-              <span>主页</span>
-            </ButtonContainer>
-          </RouterDiv>
-        </Button>
-        <Button
-          asChild
-          className='cursor-pointer'
+          <ButtonContainer>
+            <TfiMenuAlt />
+            <span>主页</span>
+          </ButtonContainer>
+        </RouterDiv>
+        <RouterDiv
           onClick={() => {
             handleJump('member');
           }}
           variant='ghost'
-        >
-          <RouterDiv
-            active={checkActive('member')}
-            variant='ghost'
-            theme={theme === 'light'}
-            className={
-              checkActive('member')
-                ? `text-black font-semibold border-2 border-[${
-                    theme === 'light' ? '#ebf0fa' : '#1c1c22'
-                  }]`
-                : `opacity-80 ${
-                    theme === 'light' ? 'text-black' : 'text-white'
-                  }`
-            }
-            asChild
-          >
-            <ButtonContainer>
-              <LuUser />
-              <span>成员</span>
-            </ButtonContainer>
-          </RouterDiv>
-        </Button>
-        <Button
-          className='cursor-pointer'
+          className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('member') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
           asChild
-          variant='ghost'
+        >
+          <ButtonContainer>
+            <LuUser />
+            <span>成员</span>
+          </ButtonContainer>
+        </RouterDiv>
+
+        <RouterDiv
           onClick={() => {
             handleJump('setting');
           }}
-        >
-          <RouterDiv
-            active={checkActive('setting')}
-            variant='ghost'
-            theme={theme === 'light'}
-            className={
-              checkActive('setting')
-                ? `text-black font-semibold border-2 border-[${
-                    theme === 'light' ? '#ebf0fa' : '#1c1c22'
-                  }]`
-                : `opacity-80 ${
-                    theme === 'light' ? 'text-black' : 'text-white'
-                  }`
-            }
-            asChild
-          >
-            <ButtonContainer>
-              <LuSettings />
-              <span>设置</span>
-            </ButtonContainer>
-          </RouterDiv>
-        </Button>
-        <Button
+          variant='ghost'
+          className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('setting') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
           asChild
-          className='cursor-pointer'
+        >
+          <ButtonContainer>
+            <LuSettings />
+            <span>设置</span>
+          </ButtonContainer>
+        </RouterDiv>
+
+        <RouterDiv
           onClick={() => handleJump('chat')}
           variant='ghost'
+          className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('chat') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
+          asChild
         >
-          <RouterDiv
-            active={checkActive('chat')}
-            variant='ghost'
-            theme={theme === 'light'}
-            className={
-              checkActive('chat')
-                ? `text-black font-semibold border-2 border-[${
-                    theme === 'light' ? '#ebf0fa' : '#1c1c22'
-                  }]`
-                : `opacity-80 ${
-                    theme === 'light' ? 'text-black' : 'text-white'
-                  }`
-            }
-            asChild
-          >
-            <ButtonContainer>
-              <LuMessageSquare />
-              <span>聊天</span>
-            </ButtonContainer>
-          </RouterDiv>
-        </Button>
+          <ButtonContainer>
+            <LuMessageSquare />
+            <span>聊天</span>
+          </ButtonContainer>
+        </RouterDiv>
         <Separator />
 
         {parmas?.workspaceId && userStore.workspace && (
@@ -338,7 +267,6 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           <NameText>{user.username}</NameText>
           <EmailText>{user.emailAddresses[0].emailAddress}</EmailText>
         </UserDataContainer>
-        <div>sdf</div>
       </UserButtonContainer>
     </Asider>
   );

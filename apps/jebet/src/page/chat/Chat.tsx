@@ -5,7 +5,7 @@ import ChatMessageList from '@/components/edit/ChatMessageList';
 import { useToast } from '@/hooks/use-toast';
 import chatStore from '@/store/chat';
 import useStore from '@/store/user';
-import { ActiveUser, ChatMessage as Message } from '@/types/chat';
+import { ActiveUser, ChatMessage as Message, MessageType } from '@/types/chat';
 import { useQueryClient } from '@tanstack/react-query';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
@@ -107,6 +107,7 @@ const Chat = observer(() => {
           message: string;
           userId: string;
           created_at: string;
+          type: MessageType;
         }) => {
           const oldData = queryClient.getQueryData([activeWorkSpace.id]) as {
             pageParams: number[];
@@ -124,14 +125,15 @@ const Chat = observer(() => {
               {
                 messages: {
                   data: [
-                    ...oldData.pages[0].messages.data,
                     {
                       message: data.message,
                       created_at: data.created_at,
                       userId: data.userId,
                       workspaceId: data.workspaceId,
                       id: data.id,
+                      type: data.type,
                     },
+                    ...oldData.pages[0].messages.data,
                   ],
                   count: oldData.pages[0].messages.count + 1,
                   page: oldData.pages[0].messages.page + 1,
@@ -185,7 +187,6 @@ const Chat = observer(() => {
             workspace={activeWorkSpace}
           />
         </ChatHeaderContainer>
-
         <ChatMessageList
           workspace={activeWorkSpace}
           userId={store.userData.id}

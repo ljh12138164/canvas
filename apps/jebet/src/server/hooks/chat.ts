@@ -1,5 +1,5 @@
 import { client } from '@/server/index';
-import { Message } from '@/types/chat';
+import { Message, MessageType } from '@/types/chat';
 import {
   useInfiniteQuery,
   useMutation,
@@ -112,9 +112,9 @@ export const useGetMessage = (
             id: string;
             created_at: string;
             message: string;
-            role: 'user' | 'assistant';
             userId: string;
             workspaceId: string;
+            type: MessageType;
           }[];
           count: number | null;
           pageTo: number;
@@ -154,4 +154,24 @@ export const useCreateMessage = (workspaceId: string, userId: string) => {
   });
 
   return { createMessage, messagePending };
+};
+
+/**
+ * ## 上传图片
+ */
+export const useUploadImage = (workspaceId: string, userId: string) => {
+  const { mutate: uploadImage, isPending: uploadImagePending } = useMutation({
+    mutationFn: async (file: File) => {
+      const data = await client.chat.file.$post({
+        form: {
+          workspaceId,
+          userId,
+          file,
+        },
+      });
+      if (!data.ok) throw new Error(data.statusText);
+      return data.json();
+    },
+  });
+  return { uploadImage, uploadImagePending };
 };

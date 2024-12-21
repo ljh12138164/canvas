@@ -1,7 +1,7 @@
 import to from 'await-to-js';
-import { ChatMessage } from '../../../types/jebt/board';
+import { ChatMessage, MessageType } from '../../../types/jebt/board';
 import { supabaseJebt } from '../../supabase/jebt';
-import { checkUser } from '../board';
+import { checkUser, uploadImageclound } from '../board';
 
 const PAGE_SIZE = 10;
 /**
@@ -56,7 +56,31 @@ export const sendChatMessage = async (
 
   const { data, error: supabaseError } = await supabaseJebt
     .from('chat')
-    .insert({ workspaceId, userId, message })
+    .insert({ workspaceId, userId, message, type: MessageType.TEXT })
+    .select('*');
+  if (supabaseError) throw new Error('服务器错误');
+  return data[0];
+};
+
+/**
+ * ## 上传图片
+ * @param workspaceId
+ * @param userId
+ * @param file
+ * @returns
+ */
+export const uploadImage = async (
+  workspaceId: string,
+  userId: string,
+  file: File
+): Promise<ChatMessage> => {
+  const [error] = await to(checkUser(userId, workspaceId));
+  if (error) throw new Error(error.message);
+  const [errors, imageUrl] = await to(uploadImageclound({ file }));
+  if (errors) throw new Error(errors.message);
+  const { data, error: supabaseError } = await supabaseJebt
+    .from('chat')
+    .insert({ workspaceId, userId, message: imageUrl, type: MessageType.IMAGE })
     .select('*');
   if (supabaseError) throw new Error('服务器错误');
   return data[0];

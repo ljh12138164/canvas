@@ -1,3 +1,9 @@
+export enum MessageType {
+  TEXT = 'text',
+  IMAGE = 'image',
+  FILE = 'file',
+}
+
 export interface Message {
   id: string;
   content: string;
@@ -20,6 +26,7 @@ export interface ChatMessage {
   message: string;
   userId: string;
   workspaceId: string;
+  type: MessageType;
 }
 
 export interface Paginations<T> {
