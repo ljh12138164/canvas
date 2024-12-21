@@ -21,7 +21,7 @@ const Join = lazy(() => import('../page/dashboard/join/index'));
 const Project = lazy(() => import('../page/dashboard/project'));
 const ProjectSetting = lazy(() => import('../page/dashboard/project/setting'));
 const Chat = lazy(() => import('../page/chat/Chat'));
-
+const Storage = lazy(() => import('../page/storage'));
 const WorkContains = styled.div`
   width: calc(100dvw - 280px);
   height: calc(100dvh - 93.4px);
@@ -132,6 +132,18 @@ export const router = createBrowserRouter([
             <WorkContains>
               <Scroll>
                 <Chat />
+              </Scroll>
+            </WorkContains>
+          </Suspensed>
+        ),
+      },
+      {
+        path: '/dashboard/:workspaceId/storage',
+        element: (
+          <Suspensed>
+            <WorkContains>
+              <Scroll>
+                <Storage />
               </Scroll>
             </WorkContains>
           </Suspensed>

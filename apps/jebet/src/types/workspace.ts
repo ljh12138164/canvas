@@ -63,3 +63,17 @@ export interface TaskWithWorkspace extends Task {
   workspace: Workspace & { member: Member[] };
   project: Project;
 }
+
+// 文件数据
+export interface StoageData {
+  id: string;
+  name: string;
+  description: string;
+  file: string;
+  type: string;
+  size: number;
+  isTrash: Date | null;
+  workspaceId: string;
+  created_at: string;
+  updated_at: string;
+}

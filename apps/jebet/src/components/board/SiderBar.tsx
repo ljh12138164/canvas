@@ -24,8 +24,9 @@ import { TfiMenuAlt } from 'react-icons/tfi';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ProjectList from './ProjectList';
+import { File } from 'lucide-react';
 
-type PathRush = 'home' | 'member' | 'setting' | 'chat';
+type PathRush = 'home' | 'member' | 'setting' | 'chat' | 'storage';
 const Asider = styled.aside`
   flex-basis: 250px;
   width: 100%;
@@ -141,7 +142,6 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
     return router.pathname === `/dashboard/${workspaceId}/${path}`;
   };
   const handleJump = useMemoizedFn((path: PathRush) => {
-    console.log(path);
     if (isLoading) return;
     const workspaceId = parmas?.workspaceId;
     if (!workspaceId) {
@@ -252,6 +252,18 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
             <span>聊天</span>
           </ButtonContainer>
         </RouterDiv>
+        <RouterDiv
+          onClick={() => handleJump('storage')}
+          variant='ghost'
+          className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('storage') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
+          asChild
+        >
+          <ButtonContainer>
+            <File />
+            <span>团队空间</span>
+          </ButtonContainer>
+        </RouterDiv>
+
         <Separator />
 
         {parmas?.workspaceId && userStore.workspace && (
