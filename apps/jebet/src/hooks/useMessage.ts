@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 
 interface UseMessageProps {
   messageLoading: boolean;
-  hasNextPage: boolean;
+  messageHasNextPage: boolean;
   isFetchingNextPage: boolean;
   fetchNextPage: () => void;
 }
 
 export const useMessage = ({
   messageLoading,
-  hasNextPage,
+  messageHasNextPage,
   isFetchingNextPage,
   fetchNextPage,
 }: UseMessageProps) => {
@@ -42,7 +42,12 @@ export const useMessage = ({
 
   // 观察者模式获取下一页
   useEffect(() => {
-    if (!initData || !hasNextPage || !isFetchingNextPage || !topRef.current)
+    if (
+      !initData ||
+      !messageHasNextPage ||
+      !isFetchingNextPage ||
+      !topRef.current
+    )
       return;
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -56,6 +61,7 @@ export const useMessage = ({
     return () => {
       observer.disconnect();
     };
-  }, [initData, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [initData, messageHasNextPage, isFetchingNextPage, fetchNextPage]);
+
   return { topRef, bottomRef, messageRef };
 };

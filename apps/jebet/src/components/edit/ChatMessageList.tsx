@@ -10,6 +10,14 @@ interface ChatMessageListProps {
   workspace: Workspace & { member: Member[] };
   userId: string;
 }
+const ChatMessageContainer = styled.main`
+  flex: 1;
+  height: calc(100% - 250px);
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 const MessageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -37,27 +45,33 @@ const ChatMessageList = observer(
     });
     // console.log(message);
     return (
-      <MessageContainer ref={messageRef}>
-        <div className='h-10' ref={topRef}>
-          {messageHasNextPage ? (
-            <p className='text-sm text-zinc-500 text-center hover:text-zinc-700'>
-              {isFetchingNextPage ? '加载中...' : '加载更多'}
-            </p>
-          ) : (
-            <p className='text-sm text-zinc-500'>没有更多了</p>
+      <ChatMessageContainer ref={messageRef}>
+        <MessageContainer>
+          <div className='h-10' ref={topRef}>
+            {!messageLoading && (
+              <>
+                {messageHasNextPage ? (
+                  <p className='text-sm text-zinc-500 text-center hover:text-zinc-700'>
+                    {isFetchingNextPage ? '加载中...' : '加载更多'}
+                  </p>
+                ) : (
+                  <p className='text-sm text-zinc-500'>没有更多了</p>
+                )}
+              </>
+            )}
+          </div>
+          {/* 消息显示 */}
+          {!messageLoading && message?.pages?.length && (
+            <ChatMessage
+              userId={userId}
+              workspace={workspace}
+              message={message}
+            />
           )}
-        </div>
-        {/* 消息显示 */}
-        {!messageLoading && message?.pages?.length && (
-          <ChatMessage
-            userId={userId}
-            workspace={workspace}
-            message={message}
-          />
-        )}
-        {messageLoading && <div>加载中</div>}
-        <div className='h-10' ref={bottomRef} />
-      </MessageContainer>
+          {messageLoading && <div>加载中</div>}
+          <div className='h-10' ref={bottomRef} />
+        </MessageContainer>
+      </ChatMessageContainer>
     );
   }
 );
