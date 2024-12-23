@@ -21,3 +21,13 @@ export interface Profiles {
   image: string
   email: string
 }
+
+export interface Form {
+  id: string
+  name: string
+  description: string
+  userId: string
+  created_at: string
+  update_at: string
+  schema: string
+}

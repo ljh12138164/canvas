@@ -1,4 +1,5 @@
 import CreateStorage from '@/components/storage/Create';
+import TableMain from '@/components/storage/TableMain';
 import { ScrollArea } from '@/components/ui/scrollArea';
 import { Separator } from '@/components/ui/separator';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -74,6 +75,7 @@ const Storage = observer(() => {
           </section>
         </StoageTitle>
         <Separator className='my-2' />
+        <TableMain workspace={activeWorkSpace} userId={store.userData.id} />
       </ScrollArea>
     </StoageContainer>
   );
