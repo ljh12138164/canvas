@@ -4,7 +4,10 @@ export interface FormItem {
   id: string
   name: string
   type: string
-  default?: z.ZodType<any>
+  // default?: z.ZodType<any>
+  isRequired?: boolean
+  placeholder?: string
+  defaultValue?: string
 }
 
 export type FormSubmit =

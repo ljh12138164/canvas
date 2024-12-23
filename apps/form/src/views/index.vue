@@ -9,7 +9,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useUser } from '@/stores/user'
-import { ChartBarIcon, HomeIcon, Menu, Search, ShoppingCartIcon } from 'lucide-vue-next'
+import { ChartBarIcon, HomeIcon, Menu, MenuIcon, Search, ShoppingCartIcon } from 'lucide-vue-next'
 // @ts-ignore
 import { Icon } from '@iconify/vue'
 import { KeepAlive, ref, watch } from 'vue'
@@ -42,7 +42,7 @@ watch(
             </RouteButton>
             <RouteButton title="表单管理" path="/form" :active="activePath === '/form'">
               <template #icon>
-                <ShoppingCartIcon class="h-4 w-4" />
+                <MenuIcon class="h-4 w-4" />
               </template>
             </RouteButton>
             <RouteButton title="创建表单" path="/create" :active="activePath === '/create'">

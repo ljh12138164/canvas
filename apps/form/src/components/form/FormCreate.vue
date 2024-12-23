@@ -2,8 +2,8 @@
 import { useMediaQuery } from '@vueuse/core'
 import { Link, Trash } from 'lucide-vue-next'
 import { nanoid } from 'nanoid'
-import { ref } from 'vue'
-import { useDraggable, VueDraggable, type SortableEvent } from 'vue-draggable-plus'
+import { onBeforeMount, ref } from 'vue'
+import { VueDraggable } from 'vue-draggable-plus'
 import { Button } from '../ui/button'
 import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer'
 import { ScrollArea } from '../ui/scroll-area'
@@ -21,7 +21,7 @@ import {
 } from '../ui/dialog'
 import type { FormItem } from '@/types/form'
 import { watch } from 'vue'
-import { defaultInput } from '@/lib'
+import { getFormDataById, getIndexDB, indexDBChange } from '@/lib/utils'
 const closeRef = ref<HTMLButtonElement | null>(null)
 const router = useRouter()
 const route = useRoute()
@@ -32,30 +32,48 @@ watch(
     id.value = newId
   },
 )
+// 组件列表
 const list1 = ref<FormItem[]>([
   {
     name: '输入框',
     id: '1',
     type: 'input',
-    default: defaultInput(),
+    isRequired: false,
+    placeholder: '请输入',
+    defaultValue: '',
   },
   {
     name: '单选框',
     id: '2',
     type: 'radio',
+    isRequired: false,
+    placeholder: '请选择',
+    defaultValue: '',
   },
   {
     name: '多选框',
     id: '3',
     type: 'checkbox',
+    isRequired: false,
+    placeholder: '请选择',
+    defaultValue: '',
   },
   {
     name: '下拉框',
     id: '4',
     type: 'select',
+    isRequired: false,
+    placeholder: '请选择',
+    defaultValue: '',
   },
 ])
-const list2 = ref<FormItem[]>(JSON.parse(localStorage.getItem(`formData:${id}`) || '[]'))
+const list2 = ref<FormItem[]>([])
+onBeforeMount(async () => {
+  const data = await getFormDataById(id.value + '')
+  if (data) {
+    list2.value = JSON.parse(data.schema)
+  }
+})
 const activeArea = ref<string>('')
 const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -66,12 +84,21 @@ const onClone = (element: Record<'name' | 'id' | 'type', string>) => {
     name: length ? `${element.name}(${length})` : element.name,
     id: nanoid(),
     type: element.type,
+    isRequired: false,
+    placeholder: '请输入',
+    defaultValue: '',
   }
 }
 // 预览
-const handlePreview = () => {
-  localStorage.setItem(`formData:${id}`, JSON.stringify(list2.value))
-  router.push(`/preview/${nanoid()}`)
+const handlePreview = async () => {
+  await indexDBChange({
+    type: 'edit',
+    editData: {
+      id: id.value + '',
+      schema: JSON.stringify(list2.value),
+    },
+  })
+  router.push(`/preview/${id.value}`)
 }
 // 激活组件
 const handleActiveArea = (id: string) => {
@@ -82,9 +109,25 @@ const handleActiveArea = (id: string) => {
   }
 }
 // 删除组件
-const handleDelete = (id: string) => {
+const handleDelete = async (id: string) => {
   list2.value = list2.value.filter((item) => item.id !== id)
   activeArea.value = ''
+  await handleUpdate()
+}
+// 更新组件
+const handleUpdate = async () => {
+  await indexDBChange({
+    type: 'edit',
+    editData: {
+      id: id.value + '',
+      schema: JSON.stringify(list2.value),
+    },
+  })
+}
+// 更新表单单个组件
+const handleUpdateItem = (id: string, data: FormItem) => {
+  list2.value = list2.value.map((item) => (item.id === id ? data : item))
+  handleUpdate()
 }
 </script>
 <template>
@@ -119,6 +162,7 @@ const handleDelete = (id: string) => {
               v-model="list2"
               :animation="150"
               :clone="onClone"
+              :change="handleUpdate"
               style="scrollbar-width: none"
               group="people"
               class="flex min-h-[calc(100dvh-210px)] flex-col gap-2 p-4 w-300px m-auto bg-gray-500/5 rounded overflow-auto"
