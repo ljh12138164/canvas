@@ -111,11 +111,12 @@ const ImageSiderbar = ({
           {activeTool === Tool.Image && imageList === ImageType.Recommend && (
             <ImageBox editor={editor}></ImageBox>
           )}
-          {activeTool === Tool.Image &&
-            imageList === ImageType.Cloud &&
-            userId && (
-              <UserImageBox editor={editor} userId={userId}></UserImageBox>
-            )}
+          {
+            activeTool === Tool.Image && imageList === ImageType.Cloud
+            // userId && (
+            //   <UserImageBox editor={editor} userId={userId}></UserImageBox>
+            // )
+          }
         </div>
       </ScrollArea>
 

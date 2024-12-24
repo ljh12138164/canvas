@@ -47,7 +47,7 @@ const SignIn = () => {
         email: data.accoute,
         password: data.password,
       })
-        .then((data) => {
+        .then(() => {
           toast.dismiss();
           toast.success('登录成功');
           router.push('/board');
