@@ -1,16 +1,16 @@
-import { create } from "zustand";
-const initData = {
-  userId: "",
-  isLoading: true,
-};
-export interface AuthStore {
-  userId: string;
-  isLoading: boolean;
-  setUserId: (userId: string) => void;
-  setIsLoading: (isLoading: boolean) => void;
+import { create } from 'zustand';
+import type { Sessions } from '@/types/user';
+
+interface UserState {
+  loading: boolean;
+  user: Sessions | null;
+  setUser: (user: Sessions) => void;
+  setLoading: (loading: boolean) => void;
 }
-export const authStore = create<AuthStore>((set) => ({
-  ...initData,
-  setUserId: (userId: string) => set({ userId, isLoading: false }),
-  setIsLoading: (isLoading: boolean) => set({ isLoading }),
+
+export const useUser = create<UserState>((set) => ({
+  loading: true,
+  user: null,
+  setUser: (user: Sessions) => set({ user, loading: false }),
+  setLoading: (loading: boolean) => set({ loading }),
 }));
