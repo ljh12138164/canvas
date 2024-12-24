@@ -1,4 +1,4 @@
-import * as material from 'material-colors';
+import material from 'material-colors';
 import * as fabric from 'fabric';
 import { Effect } from '@/lib/utils';
 export type TBlendMode =
