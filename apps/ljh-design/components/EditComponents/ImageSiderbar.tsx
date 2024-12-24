@@ -10,7 +10,7 @@ import { Separator } from '../ui/separator';
 import { ImageBox } from './ImageBox';
 import ToolSiderbarClose from './ToolSiberbarClose';
 import ToolSiderbar from './ToolSiderbar';
-import { UserImageBox } from './UserImageBox';
+// import { UserImageBox } from './UserImageBox';
 import { uploadImageclound } from '@/server/image';
 interface ImageSiderbarProps {
   editor: Edit | undefined;

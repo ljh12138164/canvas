@@ -1,19 +1,14 @@
-"use client";
-import { AuthStore, authStore } from "@/store/auth";
-import { createContext, useContext } from "react";
+'use client';
+import { useUser } from '@/store/auth';
+import { redirect } from 'next/navigation';
 
-const LoadingContext = createContext<AuthStore>(authStore.getState());
 export default function LoginProtect({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const auth = authStore();
-  return (
-    <LoadingContext.Provider value={auth}>{children}</LoadingContext.Provider>
-  );
+  const { user, loading } = useUser();
+  if (loading) return;
+  if (!user) redirect('/board/sign-in');
+  return children;
 }
-export const useUserId = () => {
-  const { userId, isLoading, setUserId } = useContext(LoadingContext);
-  return { userId, isLoading, setUserId };
-};
