@@ -1,10 +1,13 @@
-"use client";
-import BoardMain from "@/components/Board/BoardMain";
-import useUser from "@/hook/useUser";
+'use client';
+import BoardMain from '@/components/Board/BoardMain';
+import useUser from '@/hook/useUser';
+import { redirect } from 'next/navigation';
 const Board = () => {
-  const { userId, isLoading: isLoadingUser } = useUser();
-  if (isLoadingUser) return;
-  return <BoardMain userId={userId}></BoardMain>;
+  const { user, loading } = useUser();
+  console.log(user);
+  if (loading) return;
+  if (!user) redirect('/board/sign-in');
+  return <BoardMain userId={user?.user.id}></BoardMain>;
 };
 
 export default Board;

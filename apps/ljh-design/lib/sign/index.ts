@@ -1,4 +1,4 @@
-import { JWTPayload, SignJWT, jwtVerify } from "jose";
+import { JWTPayload, SignJWT, jwtVerify } from 'jose';
 
 type Payload = {
   userid: string;
@@ -10,8 +10,8 @@ export function jwtEncode(payload: Payload) {
     process.env.NEXT_PUBLIC_JWT_SECRET
   );
   return new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setExpirationTime("30d")
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('30d')
     .sign(JWT_SECRET);
 }
 interface DecodeResult extends JWTPayload {
@@ -19,7 +19,7 @@ interface DecodeResult extends JWTPayload {
   expiresAt: Date;
 }
 export async function jwtDecode(
-  token: string | null = ""
+  token: string | null = ''
 ): Promise<DecodeResult | null> {
   if (!token) return null;
   const JWT_SECRET = new TextEncoder().encode(
@@ -27,7 +27,7 @@ export async function jwtDecode(
   );
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET, {
-      algorithms: ["HS256"],
+      algorithms: ['HS256'],
     });
     return payload as DecodeResult;
   } catch {
@@ -35,7 +35,7 @@ export async function jwtDecode(
   }
 }
 export async function getLocalToken(): Promise<string | null> {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   if (!token) return null;
   return token;
 }

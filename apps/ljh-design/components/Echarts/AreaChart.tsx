@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef } from "react";
-import * as echarts from "echarts";
-import { useEchart } from "@/hook/useEcharts";
+import { useEffect, useMemo, useRef } from 'react';
+import * as echarts from 'echarts';
+import { useEchart } from '@/hook/useEcharts';
 
 const AreaChart = () => {
   const echartRef = useRef<HTMLDivElement>(null);
@@ -8,7 +8,7 @@ const AreaChart = () => {
   const option = useMemo(() => {
     return {
       title: {
-        text: "ECharts 入门示例",
+        text: 'ECharts 入门示例',
       },
     };
   }, []);

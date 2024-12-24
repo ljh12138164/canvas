@@ -1,5 +1,5 @@
-import Board from "@/components/Board/Board";
-import { inter, myFont } from "@/lib/font";
+import Board from '@/components/Board/Board';
+import { inter, myFont } from '@/lib/font';
 
 export default async function Home() {
   return (

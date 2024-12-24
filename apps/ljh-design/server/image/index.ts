@@ -37,5 +37,5 @@ export const deleteImageClound = async ({ image }: DeleteImageClound) => {
   if (error) {
     throw new Error(error.message);
   }
-  return data;
+  return true;
 };
