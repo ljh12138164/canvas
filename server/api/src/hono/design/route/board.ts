@@ -1,4 +1,3 @@
-import { checkoutCookie } from "../../../libs/sign-in";
 import {
   authSaveBoard,
   createBoard,
@@ -7,15 +6,21 @@ import {
   getUserBoard,
   copyBoard,
   updateBoard,
-} from "../../../server/design/board";
-import { zValidator } from "@hono/zod-validator";
-import { Hono } from "hono";
-import { z } from "zod";
+  getUserImage,
+  getUserBoardList,
+} from '../../../server/design/board';
+import { zValidator } from '@hono/zod-validator';
+import { Hono } from 'hono';
+import { z } from 'zod';
+import { checkToken, getSupabaseAuth } from '../../../libs/middle';
+import to from 'await-to-js';
+import { errorCheck } from '../../../libs/error';
 const board = new Hono()
+  .use(checkToken(process.env.SUPABASE_DESIGN_JWT!))
   .post(
-    "/",
+    '/',
     zValidator(
-      "json",
+      'json',
       z.object({
         name: z.string(),
         json: z.string(),
@@ -24,80 +29,60 @@ const board = new Hono()
       })
     ),
     async (c) => {
-      let user;
-      try {
-        user = await checkoutCookie(c);
-      } catch {
-        return c.json({ message: "请先登录" }, 401);
-      }
-      const { name, json, width, height } = c.req.valid("json");
-      try {
-        const board = await createBoard({
-          userId: user.userid,
-          name,
-          json,
-          width,
-          height,
-        });
-        return c.json(board);
-      } catch (error) {
-        console.log(error);
-        return c.json({ message: "创建失败" }, 400);
-      }
+      const { name, json, width, height } = c.req.valid('json');
+      const { auth, token } = getSupabaseAuth(c);
+      const [error, board] = await to(
+        createBoard(
+          {
+            userId: auth.sub,
+            name,
+            json,
+            width,
+            height,
+          },
+          token
+        )
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(board);
     }
   )
-  .get(
-    "/:id",
-    zValidator("param", z.object({ id: z.string() })),
-    zValidator("query", z.object({ userId: z.string() })),
+  .get('/getBoardList', async (c) => {
+    const { auth, token } = getSupabaseAuth(c);
+    const [error, board] = await to(
+      getUserBoardList({ userid: auth.sub, token })
+    );
+    console.log(error, board);
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+    return c.json(board);
+  })
+  .get('/:id', zValidator('param', z.object({ id: z.string() })), async (c) => {
+    const { id } = c.req.param();
+    const { auth, token } = getSupabaseAuth(c);
+
+    const [error, board] = await to(getBoard({ id, userid: auth.sub, token }));
+    if (error) {
+      return c.json({ message: error.message }, errorCheck(error));
+    }
+    return c.json(board);
+  })
+  .post(
+    '/getBoard',
+    zValidator('json', z.object({ pageParam: z.number() })),
     async (c) => {
-      const { id } = c.req.param();
-      const { userId } = c.req.query();
-      let user;
-      try {
-        user = await checkoutCookie(c);
-      } catch {
-        return c.json({ message: "获取失败" }, 400);
-      }
-      if (!user) {
-        return c.json({ message: "无权限" }, 403);
-      }
-      try {
-        const board = await getBoard({ id, userid: user.userid });
-        return c.json(board);
-      } catch (error) {
-        console.log(error);
-        return c.json({ message: "获取失败" }, 400);
-      }
+      const { pageParam } = c.req.valid('json');
+      const { auth, token } = getSupabaseAuth(c);
+      const [error, board] = await to(
+        getUserBoard({ userid: auth.sub, pageParam, token })
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(board);
     }
   )
   .post(
-    "/getBoard",
-    zValidator("json", z.object({ userid: z.string(), pageParam: z.number() })),
-    async (c) => {
-      const { pageParam } = c.req.valid("json");
-      let user;
-      try {
-        user = await checkoutCookie(c);
-        if (!user) {
-          return c.json({ message: "无权限" }, 403);
-        }
-      } catch {
-        return c.json({ message: "请先登录" }, 401);
-      }
-      try {
-        const board = await getUserBoard({ userid: user.userid, pageParam });
-        return c.json(board);
-      } catch (error) {
-        console.log(error);
-        return c.json({ message: "获取失败" }, 400);
-      }
-    }
-  )
-  .post(
-    "/editBoard",
+    '/editBoard',
     zValidator(
-      "json",
+      'json',
       z.object({
         id: z.string(),
         width: z.number(),
@@ -106,107 +91,91 @@ const board = new Hono()
       })
     ),
     async (c) => {
-      const { id, name, width, height } = c.req.valid("json");
-      let user;
-      try {
-        user = await checkoutCookie(c);
-      } catch {
-        return c.json({ message: "请先登录" }, 401);
-      }
-      try {
-        const board = await updateBoard({
+      const { id, name, width, height } = c.req.valid('json');
+      const { auth, token } = getSupabaseAuth(c);
+      const [error, board] = await to(
+        updateBoard({
           id,
           name,
-          userId: user.userid,
+          userId: auth.sub,
           width,
           height,
-        });
-        return c.json(board);
-      } catch {
-        return c.json({ message: "更新失败" }, 400);
-      }
+          token,
+        })
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(board);
     }
   )
   .post(
-    "/deleteBoard",
-    zValidator("json", z.object({ id: z.string() })),
+    '/deleteBoard',
+    zValidator('json', z.object({ id: z.string() })),
     async (c) => {
-      const { id } = c.req.valid("json");
-      let user;
-      try {
-        user = await checkoutCookie(c);
-      } catch {
-        return c.json({ message: "请先登录" }, 401);
-      }
-      try {
-        const board = await deleteBoard({ id, userid: user.userid });
-        return c.json(board);
-      } catch {
-        return c.json({ message: "删除失败" }, 400);
-      }
+      const { id } = c.req.valid('json');
+      const { auth, token } = getSupabaseAuth(c);
+
+      const [error, board] = await to(
+        deleteBoard({ id, userid: auth.sub, token })
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(board);
     }
   )
-  .post("/clone", async (c) => {
+  .post('/clone', async (c) => {
     const { name, json, width, height } = await c.req.json();
     if (!name || !width || !height) {
-      return c.json({ message: "请输入完整信息" }, 400);
+      return c.json({ message: '请输入完整信息' }, 400);
     }
-    let user;
-    try {
-      user = await checkoutCookie(c);
-    } catch {
-      return c.json({ message: "请先登录" }, 401);
-    }
-    try {
-      const board = await copyBoard({
-        userId: user.userid,
+    const { auth, token } = getSupabaseAuth(c);
+    const [error, board] = await to(
+      copyBoard({
+        userId: auth.sub,
         board: {
           name,
           json,
           width,
           height,
         },
-      });
-      return c.json(board);
-    } catch {
-      return c.json({ message: "复制失败" }, 400);
-    }
+        token,
+      })
+    );
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+    return c.json(board);
+  })
+  .post('/image', async (c) => {
+    const { auth, token } = getSupabaseAuth(c);
+    const [error, data] = await to(getUserImage({ userId: auth.sub, token }));
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+    return c.json(data);
   })
   .post(
-    "/:id",
-    zValidator("param", z.object({ id: z.string() })),
+    '/:id',
+    zValidator('param', z.object({ id: z.string() })),
     zValidator(
-      "json",
+      'json',
       z.object({
         json: z.string().optional(),
         name: z.string().optional(),
         width: z.number().optional(),
         height: z.number().optional(),
         isTemplate: z.boolean().optional(),
-        userId: z.string(),
       })
     ),
     async (c) => {
       const { id } = c.req.param();
-      const value = c.req.valid("json");
-      let user;
-      try {
-        user = await checkoutCookie(c);
-      } catch {
-        return c.json({ message: "请先登录" }, 401);
-      }
-      if (!user) {
-        return c.json({ message: "无权限" }, 401);
-      }
-      try {
-        const board = await authSaveBoard({
+      const value = c.req.valid('json');
+      const { auth, token } = getSupabaseAuth(c);
+
+      const [error, board] = await to(
+        authSaveBoard({
           id,
           ...value,
-        });
-        return c.json(board);
-      } catch {
-        return c.json({ message: "更新失败" }, 400);
-      }
+          userId: auth.sub,
+          token,
+        })
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(board);
     }
   );
 

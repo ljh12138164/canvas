@@ -32,7 +32,6 @@ export const uploadImageclound = async ({ file }: UploadImageClound) => {
 interface DeleteImageClound {
   image: string
 }
-// @ts-ignore
 export const deleteImageClound = async ({ image }: DeleteImageClound): Promise<boolean> => {
   const { data, error } = await supabaseForm.storage
     //  桶名字

@@ -45,7 +45,7 @@ const UserButton = () => {
               onClick={async () => {
                 await logout();
                 toast.success('登出成功');
-                redirect('/board/sign-in');
+                redirect('/sign-in');
               }}
             >
               <LuLogOut className='size-4 mr-2 ' />

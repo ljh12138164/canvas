@@ -20,12 +20,12 @@ import toast from 'react-hot-toast';
 const BoardDelete = ({
   children,
   board,
-  userId,
+  token,
   setChange,
   id,
 }: {
   children: React.ReactNode;
-  userId: string | undefined;
+  token: string | undefined;
   board: Board;
   setChange?: (res: boolean) => void;
   id: string;
@@ -35,9 +35,7 @@ const BoardDelete = ({
   const queryClient = useQueryClient();
   return (
     <section onClick={(e) => e.stopPropagation()}>
-      {/* @ts-ignore */}
       <Dialog>
-        {/* @ts-ignore */}
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -54,13 +52,13 @@ const BoardDelete = ({
               className='w-full'
               onClick={(e) => {
                 e.stopPropagation();
-                if (userId) {
+                if (token) {
                   mutate(
                     { id },
                     {
                       onSuccess: () => {
                         closeRef.current?.click();
-                        queryClient.invalidateQueries({ queryKey: [userId] });
+                        queryClient.invalidateQueries({ queryKey: ['board'] });
                       },
                       onError: () => {
                         toast.dismiss();
@@ -84,7 +82,6 @@ const BoardDelete = ({
             >
               {isPending ? <Loader2 className='size-4 animate-spin' /> : '确定'}
             </Button>
-            {/* @ts-ignore */}
             <DialogClose asChild>
               <Button
                 variant='outline'

@@ -30,11 +30,11 @@ export default function useDependencies(fieldName: string) {
   function getSourceValue(dep: Dependency<any>) {
     const source = dep.sourceField as string
     const index = getIndexIfArray(fieldName) ?? -1
-    const [sourceLast, ...sourceInitial] = source.split('.').slice().reverse()
-    const [_targetLast, ...targetInitial] = (dep.targetField as string).split('.').slice().reverse()
+    const [sourceLast, ...sourceInitial] = source.split('.').reverse()
+    const [_targetLast, ...targetInitial] = (dep.targetField as string).split('.').reverse()
 
     if (index >= 0 && sourceInitial.join(',') === targetInitial.join(',')) {
-      const [_currentLast, ...currentInitial] = fieldName.split('.').slice().reverse()
+      const [_currentLast, ...currentInitial] = fieldName.split('.').reverse()
       return getFromPath(form.value, currentInitial.join('.') + sourceLast)
     }
 

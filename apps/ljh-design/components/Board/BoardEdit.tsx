@@ -1,9 +1,9 @@
-"use client";
-import { useBoardUpdateQuery } from "@/hook/query/useBoardQuery";
-import { Board, BoardResponse } from "@/types/board";
-import { UseMutateFunction } from "@tanstack/react-query";
-import { useRef } from "react";
-import { Button } from "../ui/button";
+'use client';
+import { useBoardUpdateQuery } from '@/hook/query/useBoardQuery';
+import { Board, BoardResponse } from '@/types/board';
+import { UseMutateFunction } from '@tanstack/react-query';
+import { useRef } from 'react';
+import { Button } from '../ui/button';
 import {
   Dialog,
   DialogClose,
@@ -13,19 +13,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import BoardCreateFrom from "./BoardCreateFrom";
+} from '../ui/dialog';
+import BoardCreateFrom from './BoardCreateFrom';
 
 const BoardEdit = ({
   children,
   id,
   data,
   setChange,
-  userId,
+  token,
 }: {
   children: React.ReactNode;
   data: Board;
-  userId: string | undefined;
+  token: string | undefined;
   id: string;
   setChange?: (change: boolean) => void;
 }) => {
@@ -34,20 +34,18 @@ const BoardEdit = ({
 
   return (
     <div onClick={(e) => e.stopPropagation()}>
-      {/* @ts-ignore */}
       <Dialog>
-        {/* @ts-ignore */}
         <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] rounded-lg ">
+        <DialogContent className='sm:max-w-[425px] rounded-lg '>
           <DialogHeader>
             <DialogTitle>编辑画布</DialogTitle>
             <DialogDescription>编辑你的画布</DialogDescription>
           </DialogHeader>
           <BoardCreateFrom
             setChange={setChange}
-            type="edit"
+            type='edit'
             defaultValues={data}
-            userId={userId}
+            token={token}
             mutate={
               mutate as UseMutateFunction<
                 BoardResponse,
@@ -63,13 +61,12 @@ const BoardEdit = ({
             }
             closeref={ref}
           >
-            <DialogFooter className="mt-6 flex gap-1">
-              {/* @ts-ignore */}
+            <DialogFooter className='mt-6 flex gap-1'>
               <DialogClose asChild>
                 <Button
-                  variant="outline"
+                  variant='outline'
                   ref={ref}
-                  type="button"
+                  type='button'
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
@@ -78,7 +75,7 @@ const BoardEdit = ({
                 </Button>
               </DialogClose>
               <Button
-                type="submit"
+                type='submit'
                 disabled={isPending}
                 onClick={(e) => {
                   e.stopPropagation();

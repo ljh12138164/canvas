@@ -10,11 +10,11 @@ import { Separator } from '../ui/separator';
 import { ImageBox } from './ImageBox';
 import ToolSiderbarClose from './ToolSiberbarClose';
 import ToolSiderbar from './ToolSiderbar';
-// import { UserImageBox } from './UserImageBox';
+import { UserImageBox } from './UserImageBox';
 import { uploadImageclound } from '@/server/image';
 interface ImageSiderbarProps {
   editor: Edit | undefined;
-  userId: string | undefined;
+  token: string | undefined;
   activeTool: Tool;
   onChangeActive: (tool: Tool) => void;
 }
@@ -22,7 +22,7 @@ const ImageSiderbar = ({
   activeTool,
   onChangeActive,
   editor,
-  userId,
+  token,
 }: ImageSiderbarProps) => {
   const { getImageLoading, getImageError } = useImageQuery();
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -33,7 +33,7 @@ const ImageSiderbar = ({
     toast.loading('上传图片中...');
     try {
       if (e.target.files?.[0]) {
-        if (userId) {
+        if (token) {
           const url = await uploadImageclound({
             file: e.target.files?.[0],
           });
@@ -67,7 +67,7 @@ const ImageSiderbar = ({
       style={{ flexBasis: '300px' }}
     >
       <ToolSiderbar title='图片' description='插入图片'></ToolSiderbar>
-      {userId && (
+      {token && (
         <>
           <div className='flex gap-x-2 px-4 my-2'>
             <Button
@@ -111,12 +111,11 @@ const ImageSiderbar = ({
           {activeTool === Tool.Image && imageList === ImageType.Recommend && (
             <ImageBox editor={editor}></ImageBox>
           )}
-          {
-            activeTool === Tool.Image && imageList === ImageType.Cloud
-            // userId && (
-            //   <UserImageBox editor={editor} userId={userId}></UserImageBox>
-            // )
-          }
+          {activeTool === Tool.Image &&
+            imageList === ImageType.Cloud &&
+            token && (
+              <UserImageBox editor={editor} token={token}></UserImageBox>
+            )}
         </div>
       </ScrollArea>
 

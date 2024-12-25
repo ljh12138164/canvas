@@ -27,14 +27,14 @@ interface NavBarProps {
   activeTool: Tool;
   onChangeTool: (tool: Tool) => void;
   isPending?: boolean;
-  userId: string | undefined;
+  token: string | undefined;
 }
 const NavBar = ({
   activeTool,
   onChangeTool,
   editor,
   isPending,
-  userId,
+  token,
 }: NavBarProps) => {
   const { openFilePicker } = useFilePicker({
     accept: '.json',
@@ -50,11 +50,9 @@ const NavBar = ({
   });
   return (
     <nav className='w-full text-xl font-medium h-[4rem] bg-white flex items-center px-4 border-b border-gray-200 justify-center  xl:justify-start'>
-      <Logo to={userId ? `/board` : '/try/board'}></Logo>
+      <Logo to={token ? `/board` : '/try/board'}></Logo>
       <div className='ml-4 w-full flex gap-4 h-[4rem] items-center '>
-        {/* @ts-ignore */}
         <DropdownMenu modal={false}>
-          {/* @ts-ignore */}
           <DropdownMenuTrigger asChild>
             <Button size='sm' variant='ghost' className='font-bold text-xl'>
               文件
@@ -135,9 +133,7 @@ const NavBar = ({
           )}
         </div>
         <div className='ml-auto flex items-center gap-x-4'>
-          {/* @ts-ignore */}
           <DropdownMenu modal={false}>
-            {/* @ts-ignore */}
             <DropdownMenuTrigger asChild>
               <Button
                 variant={'ghost'}

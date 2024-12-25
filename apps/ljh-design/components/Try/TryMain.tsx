@@ -1,12 +1,21 @@
 'use client';
-import { jwtDecode } from '@/lib/sign';
 import { getIndexDB } from '@/lib/utils';
-import { Board } from '@/types/board';
+import { Board, BoardData } from '@/types/board';
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { LuList } from 'react-icons/lu';
 import BoardCreate from '../Board/BoardCreate';
 import BoardItem from '../Board/BoardItem';
+import { BoardTable } from '../Board/BoardTable';
+import { columns } from '../Board/BoardTableColume';
+import { ScrollArea } from '../ui/scroll-area';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 import {
   Table,
   TableBody,
@@ -14,40 +23,28 @@ import {
   TableHeader,
   TableRow,
 } from '../ui/table';
-import { ScrollArea } from '../ui/scroll-area';
+import { Skeleton } from '../ui/skeleton';
 const TryMain = () => {
   const [loading, setLoading] = useState(true);
   const [change, setChange] = useState(false);
-  const [data, setData] = useState<Board[]>([]);
+  const [data, setData] = useState<BoardData[]>([]);
+  const [list, setList] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    let user;
-    (async () => {
-      user = await jwtDecode(token);
-      if (user) {
-        toast.loading('已登录，跳转中...');
-        redirect('/board');
-      }
-      const data = await getIndexDB();
-      setData(data as Board[]);
-      setLoading(false);
-    })();
-  }, [loading]);
-  useEffect(() => {
     (async () => {
       const data = await getIndexDB();
-      setData(data as Board[]);
+      setData(data as BoardData[]);
       setChange(false);
+      setLoading(false);
     })();
   }, [change]);
 
-  if (loading) return;
+  if (loading) return <Skeleton className='h-screen w-full' />;
   return (
     <div>
       <BoardCreate
         setChange={setChange}
-        userId={undefined}
+        token={undefined}
         data={data}
       ></BoardCreate>
       {!loading && !data.length && (
@@ -56,7 +53,38 @@ const TryMain = () => {
           <span>😢😢😢</span>
         </p>
       )}
-      {data?.length ? (
+      {!loading && data?.length && (
+        <section className='text-[1rem] x px-2 font-bold mt-3 w-full flex justify-between items-center text-muted-foreground'>
+          <span className='flex items-center gap-2'>
+            <LuList className='size-4' />
+            面板列表
+          </span>
+          <div className='w-36'>
+            <Select
+              value={list ? 'list' : 'grid'}
+              onValueChange={(value) => {
+                setList(value === 'list');
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue
+                  placeholder={list ? '列表' : '网格'}
+                  className='text-sm '
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem disabled={list || loading} value='list'>
+                  列表
+                </SelectItem>
+                <SelectItem disabled={!list || loading} value='grid'>
+                  网格
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </section>
+      )}
+      {list && data?.length ? (
         <div
           onClick={(e) => {
             if (loading) e.stopPropagation();
@@ -84,7 +112,7 @@ const TryMain = () => {
                     <BoardItem
                       setChange={setChange}
                       board={item}
-                      userId={undefined}
+                      token={undefined}
                     />
                   </TableRow>
                 ))}
@@ -95,6 +123,8 @@ const TryMain = () => {
       ) : (
         <></>
       )}
+      {/* @ts-ignore */}
+      {!list && <BoardTable columns={columns} data={data || []} />}
     </div>
   );
 };

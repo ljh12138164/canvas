@@ -18,20 +18,18 @@ export const BoardCopy = ({
   children,
   board,
   setChange,
-  userId,
+  token,
 }: {
   children: React.ReactNode;
   setChange?: (change: boolean) => void;
   board: Board;
-  userId: string | undefined;
+  token: string | undefined;
 }) => {
   const closeRef = useRef<HTMLButtonElement>(null);
-  const { mutate, isPending } = useBoardCopyQuery();
+  const { mutate, isPending } = useBoardCopyQuery({ token: token || '' });
   return (
     <section onClick={(e) => e.stopPropagation()}>
-      {/* @ts-ignore */}
       <Dialog>
-        {/* @ts-ignore */}
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -42,11 +40,10 @@ export const BoardCopy = ({
             type='copy'
             defaultValues={board}
             closeref={closeRef}
-            userId={userId}
+            token={token}
             mutate={mutate as any}
           >
             <DialogFooter className='mt-6 flex gap-1'>
-              {/* @ts-ignore */}
               <DialogClose asChild>
                 <Button
                   variant='outline'

@@ -9,6 +9,6 @@ export default function LoginProtect({
 }) {
   const { user, loading } = useUser();
   if (loading) return;
-  if (!user) redirect('/board/sign-in');
+  if (!user) redirect('/sign-in');
   return children;
 }

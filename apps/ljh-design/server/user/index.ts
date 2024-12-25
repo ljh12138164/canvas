@@ -1,12 +1,13 @@
 import supabase from '@/server/supabase';
 import { deleteImageClound, uploadImageclound } from '../image';
+import { Sessions } from '@/types/user';
 const DEFAULT_AVATAR =
   'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/avatar.svg';
 
 /**
  * ## 获取用户消息
  */
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<Sessions | null> {
   // 获取用户信息
   try {
     const { data: session } = await supabase.auth.getSession();
