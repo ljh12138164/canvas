@@ -16,7 +16,7 @@ const TrySider = () => {
           ljh-design
         </span>
       </div>
-      <Separator></Separator>
+      <Separator className='my-2' />
       <ul className='flex flex-col h-full w-full justify-between pb-2'>
         <li className='p-4'>
           <SiderBarItem
@@ -24,16 +24,16 @@ const TrySider = () => {
             label='主页'
             Icon={Home}
             isActive={pathName === '/try/board'}
-          ></SiderBarItem>
+          />
         </li>
         <li className='p-4'>
-          <Separator className='mb-2'></Separator>
+          <Separator className='mb-2' />
           <SiderBarItem
             href='/try/board/userData'
             label='个人中心'
             Icon={User}
             isActive={pathName === '/try/board/userData'}
-          ></SiderBarItem>
+          />
         </li>
       </ul>
     </aside>

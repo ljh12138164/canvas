@@ -13,7 +13,7 @@
     - ##### types 类型
     - ##### email 邮件服务(未使用)
 
-## 设计应用(next15 + react19 + zustand + shadcn) 3000端口
+## 设计应用(next15 + react19 + zustand + shadcn) 8400端口
 
 - ### apps/ljh-design 设计应用
 

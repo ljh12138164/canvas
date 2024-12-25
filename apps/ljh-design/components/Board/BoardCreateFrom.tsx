@@ -36,9 +36,9 @@ const zod = z.object({
 interface BoardCreateFromProps {
   type: 'create' | 'edit' | 'copy';
   children: React.ReactNode;
+  token: string | undefined;
   defaultValues?: any;
   closeref: RefObject<HTMLButtonElement | null>;
-  userId: string | undefined;
   setChange?: (change: boolean) => void;
   mutate:
     | UseMutateFunction<
@@ -57,7 +57,7 @@ const BoardCreateFrom = ({
   type,
   children,
   closeref,
-  userId,
+  token,
   defaultValues,
   mutate,
   setChange,
@@ -78,8 +78,8 @@ const BoardCreateFrom = ({
         },
   });
   const onSubmit = (data: z.infer<typeof zod>) => {
-    if (userId) {
-      query.invalidateQueries({ queryKey: [userId] });
+    if (token) {
+      query.invalidateQueries({ queryKey: ['board'] });
       toast.loading('创建中');
       if (mutate) {
         mutate(
@@ -91,7 +91,7 @@ const BoardCreateFrom = ({
           },
           {
             onSuccess: () => {
-              query.invalidateQueries({ queryKey: [userId] });
+              query.invalidateQueries({ queryKey: ['board'] });
               toast.dismiss();
               toast.success(type === 'create' ? '创建成功' : '更新成功');
               if (closeref?.current) {

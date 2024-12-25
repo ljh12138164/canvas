@@ -42,15 +42,15 @@ import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
+const Canvas = ({ token, data }: { token: string; data: Board }) => {
   const initWidth = useRef(data.width);
   const initHeight = useRef(data.height);
   const initState = useRef(data.json);
-  const { mutate, isPending } = useBoardAutoSaveQuery({ id: data.id });
+  const { mutate, isPending } = useBoardAutoSaveQuery({ id: data.id, token });
 
   const debounceMutate = useMemoizedFn(
     debounce((data: { json: string; width: number; height: number }) => {
-      mutate({ ...data, userId });
+      mutate({ ...data });
     }, 1000)
   );
   const { init } = useCanvas({
@@ -231,7 +231,7 @@ const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
       }}
     >
       <NavBar
-        userId={userId}
+        token={token}
         isPending={isPending}
         editor={editor()}
         activeTool={tool}
@@ -253,7 +253,7 @@ const Canvas = ({ userId, data }: { userId: string; data: Board }) => {
           onChangeActive={onChangeActive}
         ></ShapeSidle>
         <ImageSiderbar
-          userId={userId}
+          token={token}
           editor={editor()}
           activeTool={tool}
           onChangeActive={onChangeActive}

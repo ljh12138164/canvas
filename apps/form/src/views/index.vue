@@ -10,7 +10,6 @@ import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useUser } from '@/stores/user'
 import { ChartBarIcon, HomeIcon, Menu, MenuIcon, Search, ShoppingCartIcon } from 'lucide-vue-next'
-// @ts-ignore
 import { Icon } from '@iconify/vue'
 import { KeepAlive, ref, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'

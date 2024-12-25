@@ -96,7 +96,6 @@ export const columns: ColumnDef<TaskWithWorkspace>[] = [
     cell: ({ row }) => {
       return (
         <MemberContainer className='line-clamp-1'>
-          {/* @ts-ignore */}
           <Badge variant={row.original.status}>{row.original.status}</Badge>
         </MemberContainer>
       );

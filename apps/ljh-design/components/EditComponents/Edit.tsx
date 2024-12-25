@@ -2,18 +2,16 @@
 
 import { useBoardEditQuery } from '@/hook/query/useBoardQuery';
 
-import useUser from '@/hook/useUser';
 import { Loader2, TriangleAlert } from 'lucide-react';
 import Link from 'next/link';
 import LoginProtect from '../Sign/LoginProtect';
 import { Button } from '../ui/button';
 import Canvas from './Canvas';
 
-export default function Edit({ params }: { params: string }) {
-  const { user } = useUser();
+export default function Edit({ token, id }: { token: string; id: string }) {
   const { isLoading, error, data } = useBoardEditQuery({
-    id: params,
-    userId: user?.user.id,
+    id,
+    token,
   });
   return (
     <LoginProtect>
@@ -32,9 +30,7 @@ export default function Edit({ params }: { params: string }) {
           </Button>
         </div>
       )}
-      {data && user?.user.id && (
-        <Canvas userId={user?.user.id} data={data[0]} />
-      )}
+      {data && <Canvas token={token} data={data[0]} />}
     </LoginProtect>
   );
 }

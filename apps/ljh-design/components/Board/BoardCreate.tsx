@@ -18,11 +18,11 @@ import {
 import BoardCreateFrom from './BoardCreateFrom';
 
 const BoardCreate = ({
-  userId,
+  token,
   setChange,
   data,
 }: {
-  userId: string | undefined;
+  token: string | undefined;
   setChange?: (change: boolean) => void;
   data: Board[];
 }) => {
@@ -64,7 +64,7 @@ const BoardCreate = ({
                 <BoardCreateFrom
                   setChange={setChange}
                   type='create'
-                  userId={userId}
+                  token={token}
                   mutate={mutate as any}
                   closeref={ref}
                 >

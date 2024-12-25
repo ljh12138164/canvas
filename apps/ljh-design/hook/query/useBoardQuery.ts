@@ -1,42 +1,42 @@
-import { getLocalToken } from "@/lib/sign";
-import { client } from "@/server";
-import { Board, BoardResponse } from "@/types/board";
-import { PAGE_SIZE } from "@/types/Edit";
+import { getLocalToken } from '@/lib/sign';
+import { client } from '@/server';
+import { Board, BoardResponse } from '@/types/board';
+import { PAGE_SIZE } from '@/types/Edit';
 import {
   useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
-} from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
-import { isArray } from "lodash";
-import { redirect } from "next/navigation";
-import toast from "react-hot-toast";
+} from '@tanstack/react-query';
+import { InferRequestType, InferResponseType } from 'hono';
+import { isArray } from 'lodash';
+import { redirect } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export type ResponseType = InferResponseType<typeof client.board.$post>;
-type RequestType = InferRequestType<typeof client.board.$post>["json"];
+type RequestType = InferRequestType<typeof client.board.$post>['json'];
 
 type UpdateResponseType = InferResponseType<
-  (typeof client.board)["editBoard"]["$post"]
+  (typeof client.board)['editBoard']['$post']
 >;
 
 type DeleteResponseType = InferResponseType<
-  (typeof client.board)["deleteBoard"]["$post"]
+  (typeof client.board)['deleteBoard']['$post']
 >;
 
 type AutoSaveResponseType = InferResponseType<
-  (typeof client.board)[":id"]["$post"],
+  (typeof client.board)[':id']['$post'],
   200
 >;
 type AutoSaveRequestType = InferRequestType<
-  (typeof client.board)[":id"]["$post"]
->["json"];
+  (typeof client.board)[':id']['$post']
+>['json'];
 
 type CopyResponseType = InferResponseType<
-  (typeof client.board)["clone"]["$post"]
+  (typeof client.board)['clone']['$post']
 >;
 type CopyRequestType = InferRequestType<
-  (typeof client.board)["clone"]["$post"]
+  (typeof client.board)['clone']['$post']
 >;
 /**
  * 创建看板
@@ -50,7 +50,7 @@ export const useBoardQuery = () => {
   >({
     mutationFn: async (board) => {
       const token = await getLocalToken();
-      if (!token) redirect("/board/sign-in");
+      if (!token) redirect('/sign-in');
       const response = await client.board.$post(
         {
           json: board,
@@ -61,7 +61,7 @@ export const useBoardQuery = () => {
           },
         }
       );
-      if (!response.ok) throw new Error("创建失败");
+      if (!response.ok) throw new Error('创建失败');
       return response.json();
     },
   });
@@ -74,21 +74,17 @@ export const useBoardQuery = () => {
  */
 export const useBoardEditQuery = ({
   id,
-  userId,
+  token,
 }: {
   id: string;
-  userId: string | undefined;
+  token: string;
 }) => {
   const { data, isLoading, error } = useQuery<Board[], Error, Board[]>({
-    enabled: !!userId,
-    queryKey: ["project", id],
+    queryKey: ['project', id],
     queryFn: async () => {
-      const token = await getLocalToken();
-      if (!token) redirect("/board/sign-in");
-      const response = await client.board[":id"].$get(
+      const response = await client.board[':id'].$get(
         {
           param: { id },
-          query: { userId: userId || "" },
         },
         {
           headers: {
@@ -103,8 +99,8 @@ export const useBoardEditQuery = ({
         !isArray(data)
       ) {
         toast.dismiss();
-        toast.error("看板不存在");
-        redirect("/board");
+        toast.error('看板不存在');
+        redirect('/board');
       }
       return data as Board[];
     },
@@ -116,7 +112,7 @@ export const useBoardEditQuery = ({
  * @param userid
  * @returns
  */
-export const useBoardUserQuery = ({ userid }: { userid: string }) => {
+export const useBoardUserQuery = ({ token }: { token: string }) => {
   const {
     data,
     isLoading,
@@ -125,15 +121,12 @@ export const useBoardUserQuery = ({ userid }: { userid: string }) => {
     isFetching,
     fetchNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery<BoardResponse[], Error>({
-    queryKey: [userid],
-    // @ts-ignore
+  } = useInfiniteQuery({
+    queryKey: ['board'],
     queryFn: async ({ pageParam }) => {
-      const token = await getLocalToken();
-      if (!token) redirect("/board/sign-in");
       const response = await client.board.getBoard.$post(
         {
-          json: { userid, pageParam: pageParam as number },
+          json: { pageParam: pageParam as number },
         },
         {
           headers: {
@@ -141,9 +134,8 @@ export const useBoardUserQuery = ({ userid }: { userid: string }) => {
           },
         }
       );
-      if (!response.ok) throw new Error("获取失败");
-      const data = await response.json();
-      return data;
+      if (!response.ok) throw new Error('获取失败');
+      return response.json();
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
@@ -180,7 +172,7 @@ export const useBoardUpdateQuery = (id: string) => {
   >({
     mutationFn: async (board) => {
       const token = await getLocalToken();
-      if (!token) redirect("/board/sign-in");
+      if (!token) redirect('/sign-in');
       const response = await client.board.editBoard.$post(
         {
           json: { id, ...board },
@@ -191,7 +183,7 @@ export const useBoardUpdateQuery = (id: string) => {
           },
         }
       );
-      if (!response.ok) throw new Error("更新失败");
+      if (!response.ok) throw new Error('更新失败');
       return response.json();
     },
   });
@@ -210,7 +202,7 @@ export const useBoardDeleteQuery = () => {
   >({
     mutationFn: async ({ id }) => {
       const token = await getLocalToken();
-      if (!token) redirect("/board/sign-in");
+      if (!token) redirect('/sign-in');
       const response = await client.board.deleteBoard.$post(
         {
           json: { id },
@@ -221,16 +213,16 @@ export const useBoardDeleteQuery = () => {
           },
         }
       );
-      if (!response.ok) throw new Error("删除失败");
+      if (!response.ok) throw new Error('删除失败');
       return response.json();
     },
     onSuccess: () => {
       toast.dismiss();
-      toast.success("删除成功");
+      toast.success('删除成功');
     },
     onError: () => {
       toast.dismiss();
-      toast.error("删除失败");
+      toast.error('删除失败');
     },
   });
   return { mutate, isPending, error };
@@ -241,7 +233,13 @@ export const useBoardDeleteQuery = () => {
  * @param id
  * @returns
  */
-export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
+export const useBoardAutoSaveQuery = ({
+  id,
+  token,
+}: {
+  id: string;
+  token: string;
+}) => {
   const queryClient = useQueryClient();
   const { mutate, isPending, error } = useMutation<
     AutoSaveResponseType,
@@ -249,9 +247,7 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
     AutoSaveRequestType
   >({
     mutationFn: async (board) => {
-      const token = await getLocalToken();
-      if (!token) redirect("/board/sign-in");
-      const response = await client.board[":id"].$post(
+      const response = await client.board[':id'].$post(
         {
           param: { id },
           json: { ...board },
@@ -262,11 +258,11 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
           },
         }
       );
-      if (!response.ok) throw new Error("更新失败");
+      if (!response.ok) throw new Error('更新失败');
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["project", id] });
+      queryClient.invalidateQueries({ queryKey: ['project', id] });
     },
   });
   return { mutate, isPending, error };
@@ -277,15 +273,13 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
  * @param id
  * @returns
  */
-export const useBoardCopyQuery = () => {
+export const useBoardCopyQuery = ({ token }: { token: string }) => {
   const { mutate, isPending, error } = useMutation<
     CopyResponseType,
     Error,
     CopyRequestType
   >({
     mutationFn: async (board) => {
-      const token = await getLocalToken();
-      if (!token) redirect("/board/sign-in");
       const response = await client.board.clone.$post(
         {
           json: { ...board },
@@ -296,9 +290,50 @@ export const useBoardCopyQuery = () => {
           },
         }
       );
-      if (!response.ok) throw new Error("复制失败");
+      if (!response.ok) throw new Error('复制失败');
       return response.json();
     },
   });
   return { mutate, isPending, error };
+};
+
+/**
+ * ## 获取用户图片
+ * @param token
+ * @returns
+ */
+export const useBoardImageQuery = ({ token }: { token: string }) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['image'],
+    enabled: !!token,
+    queryFn: async () => {
+      const response = await client.board.image.$post(undefined, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error('获取失败');
+      return response.json();
+    },
+  });
+  return { data, isLoading, error };
+};
+
+/**
+ * 获取用户看板列表
+ * @param token
+ * @returns
+ */
+export const useBoardListQuery = ({ token }: { token: string }) => {
+  const { data, isLoading, error, isFetching } = useQuery({
+    queryKey: ['boardList'],
+    queryFn: async () => {
+      const response = await client.board.getBoardList.$get(undefined, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error('获取失败');
+      return response.json();
+    },
+  });
+  return { data, isLoading, error, isFetching };
 };

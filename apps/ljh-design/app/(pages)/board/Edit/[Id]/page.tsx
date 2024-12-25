@@ -1,5 +1,5 @@
 import { Providers } from '@/app/_provide/providers';
-import Edit from '@/components/EditComponents/Edit';
+import EditMain from '@/components/EditComponents/EditMain';
 import { inter, myFont } from '@/lib/font';
 import { Toaster } from 'react-hot-toast';
 
@@ -13,7 +13,7 @@ export default async function Home({ params }: { params: Params }) {
       className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden`}
     >
       <Providers>
-        <Edit params={Id} />
+        <EditMain id={Id} />
       </Providers>
       <Toaster
         position='top-center'

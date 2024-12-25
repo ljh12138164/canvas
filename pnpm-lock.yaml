@@ -141,7 +141,7 @@ importers:
         version: 4.1.1(vite@6.0.3(@types/node@22.10.2)(jiti@1.21.6)(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0)(yaml@2.6.1))(vue@3.5.13(typescript@5.6.3))
       '@vitest/eslint-plugin':
         specifier: 1.1.10
-        version: 1.1.10(@typescript-eslint/utils@8.18.0(eslint@9.17.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.17.0(jiti@1.21.6))(typescript@5.6.3)(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jsdom@25.0.1(canvas@2.11.2(encoding@0.1.13)))(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0))
+        version: 1.1.10(@typescript-eslint/utils@8.18.0(eslint@9.17.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.17.0(jiti@1.21.6))(typescript@5.6.3)(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jsdom@25.0.1(canvas@2.11.2))(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0))
       '@vue/eslint-config-prettier':
         specifier: ^10.1.0
         version: 10.1.0(@types/eslint@9.6.1)(eslint@9.17.0(jiti@1.21.6))(prettier@3.4.2)
@@ -168,7 +168,7 @@ importers:
         version: 9.32.0(eslint@9.17.0(jiti@1.21.6))
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1(canvas@2.11.2(encoding@0.1.13))
+        version: 25.0.1(canvas@2.11.2)
       npm-run-all2:
         specifier: ^7.0.1
         version: 7.0.1
@@ -192,7 +192,7 @@ importers:
         version: 7.6.8(rollup@4.28.1)(vite@6.0.3(@types/node@22.10.2)(jiti@1.21.6)(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0)(yaml@2.6.1))(vue@3.5.13(typescript@5.6.3))
       vitest:
         specifier: ^2.1.5
-        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jsdom@25.0.1(canvas@2.11.2(encoding@0.1.13)))(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0)
+        version: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jsdom@25.0.1(canvas@2.11.2))(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0)
       vue-tsc:
         specifier: ^2.1.10
         version: 2.1.10(typescript@5.6.3)
@@ -524,6 +524,9 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.62.3
         version: 5.62.7(@tanstack/react-query@5.62.7(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.20.6(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
       '@types/bcryptjs':
         specifier: ^2.4.6
         version: 2.4.6
@@ -4990,7 +4993,6 @@ packages:
 
   bun@1.1.38:
     resolution: {integrity: sha512-cr+UDFiEasyw0kKEbbD7kDewrI2vTo17JssVVjzBv/eNskeL2wikJ+4RNgUfoRqgthCjDZux7r6ELGgIGq6aWw==}
-    cpu: [arm64, x64]
     os: [darwin, linux, win32]
     hasBin: true
 
@@ -12465,6 +12467,12 @@ snapshots:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
+  '@tanstack/react-table@8.20.6(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)':
+    dependencies:
+      '@tanstack/table-core': 8.20.5
+      react: 19.0.0-rc-69d4b800-20241021
+      react-dom: 19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021)
+
   '@tanstack/table-core@8.20.5': {}
 
   '@tanstack/virtual-core@3.10.9': {}
@@ -13633,13 +13641,13 @@ snapshots:
       vite: 6.0.3(@types/node@22.10.2)(jiti@1.21.6)(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0)(yaml@2.6.1)
       vue: 3.5.13(typescript@5.6.3)
 
-  '@vitest/eslint-plugin@1.1.10(@typescript-eslint/utils@8.18.0(eslint@9.17.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.17.0(jiti@1.21.6))(typescript@5.6.3)(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jsdom@25.0.1(canvas@2.11.2(encoding@0.1.13)))(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0))':
+  '@vitest/eslint-plugin@1.1.10(@typescript-eslint/utils@8.18.0(eslint@9.17.0(jiti@1.21.6))(typescript@5.6.3))(eslint@9.17.0(jiti@1.21.6))(typescript@5.6.3)(vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jsdom@25.0.1(canvas@2.11.2))(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0))':
     dependencies:
       '@typescript-eslint/utils': 8.18.0(eslint@9.17.0(jiti@1.21.6))(typescript@5.6.3)
       eslint: 9.17.0(jiti@1.21.6)
     optionalDependencies:
       typescript: 5.6.3
-      vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jsdom@25.0.1(canvas@2.11.2(encoding@0.1.13)))(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0)
+      vitest: 2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jsdom@25.0.1(canvas@2.11.2))(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0)
 
   '@vitest/expect@2.1.8':
     dependencies:
@@ -15506,8 +15514,8 @@ snapshots:
       '@typescript-eslint/parser': 8.18.0(eslint@8.57.1)(typescript@5.7.2)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.2(eslint@8.57.1)
       eslint-plugin-react-hooks: 5.1.0(eslint@8.57.1)
@@ -15530,7 +15538,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1):
+  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
@@ -15542,22 +15550,22 @@ snapshots:
       is-glob: 4.0.3
       stable-hash: 0.0.4
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.18.0(eslint@8.57.1)(typescript@5.7.2)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -15568,7 +15576,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.16.0
       is-glob: 4.0.3
@@ -16660,7 +16668,7 @@ snapshots:
       - utf-8-validate
     optional: true
 
-  jsdom@25.0.1(canvas@2.11.2(encoding@0.1.13)):
+  jsdom@25.0.1(canvas@2.11.2):
     dependencies:
       cssstyle: 4.1.0
       data-urls: 5.0.0
@@ -19726,7 +19734,7 @@ snapshots:
       terser: 5.37.0
       yaml: 2.6.1
 
-  vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jsdom@25.0.1(canvas@2.11.2(encoding@0.1.13)))(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0):
+  vitest@2.1.8(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jsdom@25.0.1(canvas@2.11.2))(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0):
     dependencies:
       '@vitest/expect': 2.1.8
       '@vitest/mocker': 2.1.8(vite@5.4.11(@types/node@22.10.2)(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0))
@@ -19751,7 +19759,7 @@ snapshots:
     optionalDependencies:
       '@edge-runtime/vm': 3.2.0
       '@types/node': 22.10.2
-      jsdom: 25.0.1(canvas@2.11.2(encoding@0.1.13))
+      jsdom: 25.0.1(canvas@2.11.2)
     transitivePeerDependencies:
       - less
       - lightningcss

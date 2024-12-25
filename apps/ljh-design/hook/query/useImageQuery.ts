@@ -1,5 +1,5 @@
-import { client } from "@/server";
-import { useQuery } from "@tanstack/react-query";
+import { client } from '@/server';
+import { useQuery } from '@tanstack/react-query';
 
 export const useImageQuery = () => {
   const {
@@ -7,11 +7,11 @@ export const useImageQuery = () => {
     data: imageData,
     error: getImageError,
   } = useQuery({
-    queryKey: ["image"],
+    queryKey: ['image'],
     queryFn: async () => {
       const response = await client.image.$get();
       if (!response.ok) {
-        throw new Error("请求错误");
+        throw new Error('请求错误');
       }
       const { data } = await response.json();
       return data;

@@ -6,17 +6,29 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useBoardUserQuery } from '@/hook/query/useBoardQuery';
+import {
+  useBoardListQuery,
+  useBoardUserQuery,
+} from '@/hook/query/useBoardQuery';
 import { useQueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
-import { useEffect, useRef } from 'react';
-import { LuLoader } from 'react-icons/lu';
+import { useEffect, useRef, useState } from 'react';
+import { LuList, LuLoader } from 'react-icons/lu';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { Skeleton } from '../ui/skeleton';
 import BoardCreate from './BoardCreate';
 import BoardItem from './BoardItem';
-const BoardMain = ({ userId }: { userId: string }) => {
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
+import { BoardTable } from './BoardTable';
+import { columns } from './BoardTableColume';
+const BoardMain = ({ token }: { token: string }) => {
   const footerRef = useRef<HTMLTableSectionElement>(null);
   const {
     data,
@@ -26,9 +38,17 @@ const BoardMain = ({ userId }: { userId: string }) => {
     fetchNextPage,
     isFetchingNextPage,
     isFetching,
-  } = useBoardUserQuery({
-    userid: userId,
+  } = useBoardUserQuery({ token });
+  const {
+    data: boardData,
+    isLoading: boardLoading,
+    isFetching: boardFetching,
+  } = useBoardListQuery({
+    token,
   });
+  const [list, setList] = useState<boolean>(
+    !!localStorage.getItem('showList') || false
+  );
   const query = useQueryClient();
   useEffect(() => {
     if (!hasNextPage || !footerRef.current) return;
@@ -45,44 +65,70 @@ const BoardMain = ({ userId }: { userId: string }) => {
   }, [hasNextPage, fetchNextPage]);
   return (
     <>
-      {userId && (
-        <ScrollArea className='w-full h-full overflow-auto '>
-          {isLoading && (
-            <>
-              <Skeleton className='w-full h-[200px]' />
-              <div className='h-[28px]' />
-              <div className='flex flex-col gap-2'>
-                <Skeleton className='w-full h-[96px]' />
-                <Skeleton className='w-full h-[96px]' />
-                <Skeleton className='w-full h-[96px]' />
-              </div>
-            </>
+      <ScrollArea className='w-full h-full overflow-auto '>
+        {isLoading && (
+          <>
+            <Skeleton className='w-full h-[200px]' />
+            <div className='h-[28px]' />
+            <div className='flex flex-col gap-2'>
+              <Skeleton className='w-full h-[96px]' />
+              <Skeleton className='w-full h-[96px]' />
+              <Skeleton className='w-full h-[96px]' />
+            </div>
+          </>
+        )}
+        {!isLoading && !boardLoading && !error && (
+          <BoardCreate token={token} data={(data?.pages || []) as any} />
+        )}
+        {error && <div className='h-[200px]'></div>}
+        <div className=' flex flex-col  gap-2 h-[calc(100dvh-300px)]   text-5xl'>
+          {error && (
+            <Button
+              variant='outline'
+              className=' w-fit text-black px-6 py-4 m-auto'
+              onClick={() => query.invalidateQueries({ queryKey: [token] })}
+            >
+              重试
+            </Button>
           )}
-          {!isLoading && !error && (
-            <BoardCreate userId={userId} data={(data?.pages || []) as any} />
+          {!isLoading && !boardLoading && !data?.pages.length && !error && (
+            <p className='text-xl text-muted-foreground flex  h-full flex-col gap-2'>
+              <span>还没有创建画布</span>
+              <span>😢😢😢</span>
+            </p>
           )}
-          {error && <div className='h-[200px]'></div>}
-          <div className=' flex flex-col  gap-2 h-[calc(100dvh-300px)]   text-5xl'>
-            {error && (
-              <Button
-                variant='outline'
-                className=' w-fit text-black px-6 py-4 m-auto'
-                onClick={() => query.invalidateQueries({ queryKey: [userId] })}
-              >
-                重试
-              </Button>
-            )}
-            {!isLoading && !data?.pages.length && !error && (
-              <p className='text-xl text-muted-foreground flex items-center justify-center h-full flex-col gap-2'>
-                <span>还没有创建画布</span>
-                <span>😢😢😢</span>
-              </p>
-            )}
-            {!isLoading && !error && data?.pages.length && (
-              <p className='text-[1rem] x px-2 font-bold mt-3 text-muted-foreground'>
+          {!isLoading && !boardLoading && !error && data?.pages.length && (
+            <section className='text-[1rem] x px-2 font-bold mt-3 w-full flex justify-between items-center text-muted-foreground'>
+              <span className='flex items-center gap-2'>
+                <LuList className='size-4' />
                 面板列表
-              </p>
-            )}
+              </span>
+              <div className='w-36'>
+                <Select
+                  value={list ? 'list' : 'grid'}
+                  onValueChange={(value) => {
+                    setList(value === 'list');
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder={list ? '列表' : '网格'}
+                      className='text-sm '
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem disabled={list || isLoading} value='list'>
+                      列表
+                    </SelectItem>
+                    <SelectItem disabled={!list || isLoading} value='grid'>
+                      网格
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </section>
+          )}
+          {list && !isLoading && !boardLoading && (
             <ScrollArea>
               {data?.pages.length && (
                 <div
@@ -101,7 +147,6 @@ const BoardMain = ({ userId }: { userId: string }) => {
                     </TableHeader>
                     <TableBody>
                       {data?.pages.map((item) =>
-                        // @ts-ignore
                         item.map((item) => (
                           <TableRow
                             onClick={() => {
@@ -111,7 +156,13 @@ const BoardMain = ({ userId }: { userId: string }) => {
                             key={item.id}
                             className='h-20 cursor-pointer'
                           >
-                            <BoardItem board={item} userId={userId} />
+                            <BoardItem
+                              board={{
+                                ...item,
+                                updated_at: item.updated_at as string,
+                              }}
+                              token={token}
+                            />
                           </TableRow>
                         ))
                       )}
@@ -137,9 +188,16 @@ const BoardMain = ({ userId }: { userId: string }) => {
                 )}
               </footer>
             </ScrollArea>
-          </div>
-        </ScrollArea>
-      )}
+          )}
+          {!list && !isLoading && !boardLoading && (
+            <BoardTable
+              columns={columns}
+              // @ts-ignore
+              data={data?.pages.flat() || []}
+            />
+          )}
+        </div>
+      </ScrollArea>
     </>
   );
 };
