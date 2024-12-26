@@ -4,6 +4,7 @@ import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '../ui/
 defineProps<{
   content: string
   class?: string
+  asChild?: boolean
 }>()
 </script>
 <template>
@@ -12,7 +13,9 @@ defineProps<{
       <TooltipTrigger>
         <p :class="class">{{ content }}</p>
       </TooltipTrigger>
-      <TooltipContent> {{ content }} </TooltipContent>
+      <TooltipContent :as-child="asChild || false">
+        <p>{{ content }}</p>
+      </TooltipContent>
     </Tooltip>
   </TooltipProvider>
 </template>

@@ -1,28 +1,27 @@
 <script setup lang="ts">
-import type { FormItem } from '@/types/form'
+import type { CreateFormItem } from '@/types/form'
+import { FormType } from './FormCreate.vue'
 import InputItem from './FormItem/InputItem.vue'
-
 defineProps<{
   id: string
-  list: FormItem[]
-  data: FormItem | undefined
+  data: CreateFormItem | undefined
+  updateList2: (id: string, type: FormType, newValue: string | boolean) => void
 }>()
 </script>
 <template>
-  <div v-if="data">
+  <div class="flex flex-col gap-2" v-if="data">
     <div v-if="data.type === 'input'">
-      <InputItem :data="data" />
+      <InputItem :updateList2="updateList2" :id="id" :data="data" />
     </div>
-    <div v-else-if="data.type === 'select'"></div>
-    <div v-else-if="data.type === 'checkbox'"></div>
-    <div v-else-if="data.type === 'radio'"></div>
-    <div v-else-if="data.type === 'textarea'"></div>
-    <div v-else-if="data.type === 'date'"></div>
-    <div v-else-if="data.type === 'datetime'"></div>
-    <div v-else-if="data.type === 'time'"></div>
-    <div v-else-if="data.type === 'number'"></div>
-    <div v-else-if="data.type === 'integer'"></div>
-    <div v-else-if="data.type === 'float'"></div>
-    <div v-else-if="data.type === 'boolean'"></div>
+    <div v-if="data.type === 'select'">
+      <!-- <SelectItem :updateList2="updateList2" :id="id" :data="data" /> -->
+    </div>
+
+    <div v-if="data.type === 'checkbox'">
+      <!-- <CheckboxItem :updateList2="updateList2" :id="id" :data="data" /> -->
+    </div>
+    <div v-if="data.type === 'radio'">
+      <!-- <RadioItem :updateList2="updateList2" :id="id" :data="data" /> -->
+    </div>
   </div>
 </template>

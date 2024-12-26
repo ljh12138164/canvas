@@ -12,11 +12,11 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { DEFAULT_AVATAR } from '@/lib'
 import { logout } from '@/server/supabase/user'
-import { useUser } from '@/stores/user'
 import type { PropType } from 'vue'
 import { useRouter } from 'vue-router'
+import useUserStore from '@/stores/user'
 type Side = 'end' | 'start' | 'center'
-const { user } = useUser()
+const { userData } = useUserStore()
 const router = useRouter()
 const props = defineProps({
   side: {
@@ -34,7 +34,7 @@ const logoutClick = async () => {
     <DropdownMenuTrigger as-child>
       <Button variant="secondary" size="icon" class="rounded-full">
         <Avatar>
-          <AvatarImage :src="user?.user.user_metadata.image || DEFAULT_AVATAR" />
+          <AvatarImage :src="userData?.user.user_metadata.image || DEFAULT_AVATAR" />
           <AvatarFallback>
             <Skeleton class="h-full w-full" />
           </AvatarFallback>

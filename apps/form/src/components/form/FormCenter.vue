@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-const el2 = ref()
 const props = defineProps<{
   list: { id: string; name: string }[]
 }>()
@@ -16,7 +15,7 @@ const handleActiveArea = (id: string) => {
     v-for="item in props.list"
     :key="item.id"
     @click="handleActiveArea(item.id)"
-    class="cursor-move h-50px rounded p-3"
+    class="cursor-move h-50px rounded p-3 hover:bg-gray-500/5 hover:border-gray-500/5"
     :class="{ 'bg-gray-500/5': activeArea === item.id }"
   >
     {{ item.name }}

@@ -8,14 +8,14 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { useUser } from '@/stores/user'
+import useUser from '@/stores/user'
 import { ChartBarIcon, HomeIcon, Menu, MenuIcon, Search, ShoppingCartIcon } from 'lucide-vue-next'
 import { Icon } from '@iconify/vue'
 import { KeepAlive, ref, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 
 const route = useRoute()
-const { user } = useUser()
+const { userData } = useUser()
 const activePath = ref('/' + route.path.split('/')[1])
 watch(
   () => route.path,
@@ -61,18 +61,18 @@ watch(
             <CardContent class="p-2 flex justify-around items-center">
               <UserButton />
               <div class="flex flex-col gap-2 text-sm text-muted-foreground">
-                <TooltipComponents :title="user?.user.user_metadata.name ?? ''">
+                <TooltipComponents :title="userData?.user.user_metadata.name ?? ''">
                   <p
                     class="text-[0.75rem] text-left max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
                   >
-                    用户名：{{ user?.user.user_metadata.name }}
+                    用户名：{{ userData?.user.user_metadata.name }}
                   </p>
                 </TooltipComponents>
-                <TooltipComponents :title="user?.user.user_metadata.email ?? ''">
+                <TooltipComponents :title="userData?.user.user_metadata.email ?? ''">
                   <p
                     class="text-[0.75rem] max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
                   >
-                    邮箱：{{ user?.user.user_metadata.email }}
+                    邮箱：{{ userData?.user.user_metadata.email }}
                   </p>
                 </TooltipComponents>
               </div>
@@ -118,18 +118,18 @@ watch(
                 <CardContent class="p-2 flex justify-around items-center">
                   <UserButton />
                   <div class="flex flex-col gap-2 text-sm text-muted-foreground">
-                    <TooltipComponents :title="user?.user.user_metadata.name ?? ''">
+                    <TooltipComponents :title="userData?.user.user_metadata.name ?? ''">
                       <p
                         class="text-[0.75rem] text-left max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
                       >
-                        用户名：{{ user?.user.user_metadata.name }}
+                        用户名：{{ userData?.user.user_metadata.name }}
                       </p>
                     </TooltipComponents>
-                    <TooltipComponents :title="user?.user.user_metadata.email ?? ''">
+                    <TooltipComponents :title="userData?.user.user_metadata.email ?? ''">
                       <p
                         class="text-[0.75rem] max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
                       >
-                        邮箱：{{ user?.user.user_metadata.email }}
+                        邮箱：{{ userData?.user.user_metadata.email }}
                       </p>
                     </TooltipComponents>
                   </div>

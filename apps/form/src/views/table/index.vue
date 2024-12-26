@@ -11,11 +11,11 @@ import {
 } from '@/components/ui/dialog'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useGetrBoard } from '@/hooks/board'
-import { useUser } from '@/stores/user'
+import useUser from '@/stores/user'
 import { Plus } from 'lucide-vue-next'
 
-const token = useUser()?.user?.session.access_token as string
-const userId = useUser()?.user?.user.id as string
+const token = useUser()?.userData?.session.access_token as string
+const userId = useUser()?.userData?.user.id as string
 const { data, isLoading, error } = useGetrBoard(token, userId)
 </script>
 <template>
