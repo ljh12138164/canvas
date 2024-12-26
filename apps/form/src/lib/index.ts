@@ -1,9 +1,8 @@
 import { useToast } from '@/components/ui/toast'
 import { getCurrentUser } from '@/server/supabase/user'
 import type { RouteLocationNormalized } from 'vue-router'
-import { useUser } from '../stores/user'
 import { z } from 'zod'
-import type { FormSubmit } from '@/types/form'
+import useUser from '@/stores/user'
 
 export const DEFAULT_AVATAR =
   'https://spvppoqewfwqyzlsmtru.supabase.co/storage/v1/object/public/ASSETS/avatar.svg'
@@ -56,7 +55,7 @@ export async function routerCheckLogin(
 ) {
   try {
     const data = await getCurrentUser()
-    const { setUser } = useUser()
+    const { setUserData } = useUser()
 
     if (!data) {
       // 用户未登录，只在非登录页时重定向到登录页
@@ -66,7 +65,7 @@ export async function routerCheckLogin(
     } else {
       // 用户已登录
       if (data) {
-        setUser(data)
+        setUserData(data)
       }
       // 已登录用户访问登录页时重定向到首页
       if (to.path === '/auth') {
@@ -84,11 +83,6 @@ export async function routerCheckLogin(
   }
 }
 
-// 默认输入框
-export const defaultInput = () => {
-  return z.string()
-}
-
 /**
  * 表单数据
  * @param id
@@ -96,7 +90,7 @@ export const defaultInput = () => {
  */
 export const setFormItem = (
   zod: z.ZodObject<any, any, any, any>,
-  type: Record<FormSubmit, boolean>,
+  type: Record<string, boolean>,
 ) => {
   for (const key in type) {
     return zod

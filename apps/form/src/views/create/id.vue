@@ -14,5 +14,5 @@ watch(
 </script>
 <template>
   <FormCreate />
-  <Button>保存</Button>
+  <Button variant="outline">保存</Button>
 </template>

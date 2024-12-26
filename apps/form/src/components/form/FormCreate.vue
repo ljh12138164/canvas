@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useMediaQuery } from '@vueuse/core'
-import { Link, Trash } from 'lucide-vue-next'
+import { Copy, Link, Trash } from 'lucide-vue-next'
 import { nanoid } from 'nanoid'
-import { onBeforeMount, ref } from 'vue'
+import { computed, onBeforeMount, Ref, ref } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { Button } from '../ui/button'
 import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer'
@@ -19,9 +19,11 @@ import {
   DialogFooter,
   DialogClose,
 } from '../ui/dialog'
-import type { FormItem } from '@/types/form'
+import type { CreateFormItem, FormItem } from '@/types/form'
 import { watch } from 'vue'
 import { getFormDataById, getIndexDB, indexDBChange } from '@/lib/utils'
+export type FormType = 'name' | 'type' | 'label' | 'isRequired' | 'placeholder' | 'defaultValue'
+
 const closeRef = ref<HTMLButtonElement | null>(null)
 const router = useRouter()
 const route = useRoute()
@@ -33,9 +35,11 @@ watch(
   },
 )
 // 组件列表
-const list1 = ref<FormItem[]>([
+const list1 = ref<CreateFormItem[]>([
   {
     name: '输入框',
+    inputType: 'text',
+    label: '输入框',
     id: '1',
     type: 'input',
     isRequired: false,
@@ -46,6 +50,7 @@ const list1 = ref<FormItem[]>([
     name: '单选框',
     id: '2',
     type: 'radio',
+    label: '单选框',
     isRequired: false,
     placeholder: '请选择',
     defaultValue: '',
@@ -54,6 +59,7 @@ const list1 = ref<FormItem[]>([
     name: '多选框',
     id: '3',
     type: 'checkbox',
+    label: '多选框',
     isRequired: false,
     placeholder: '请选择',
     defaultValue: '',
@@ -62,31 +68,48 @@ const list1 = ref<FormItem[]>([
     name: '下拉框',
     id: '4',
     type: 'select',
+    label: '下拉框',
     isRequired: false,
     placeholder: '请选择',
     defaultValue: '',
   },
 ])
-const list2 = ref<FormItem[]>([])
+const list2 = ref<CreateFormItem[]>([])
+//   初始化赋值
+const setList2 = (list: CreateFormItem[]) => (list2.value = list)
+// 添加
+const pushList2 = (item: CreateFormItem) => (list2.value = [...list2.value, item])
+// 删除
+const deleteList2 = (id: string) => (list2.value = list2.value.filter((item) => item.id !== id))
+// 更新
+const updateList2 = (id: string, type: FormType, newValue: string | boolean) => {
+  list2.value = list2.value.map((item) => {
+    if (item.id === id) {
+      ;(item as any)[type] = newValue
+    }
+    return item
+  })
+}
 onBeforeMount(async () => {
   const data = await getFormDataById(id.value + '')
-  if (data) {
-    list2.value = JSON.parse(data.schema)
-  }
+  if (data) setList2(JSON.parse(data.schema))
 })
 const activeArea = ref<string>('')
 const isMobile = useMediaQuery('(max-width: 768px)')
 
 const [parent] = useAutoAnimate()
-const onClone = (element: Record<'name' | 'id' | 'type', string>) => {
-  const length = list2.value.filter((item) => item.type === element.type).length
+const onClone = (
+  element: Record<
+    'name' | 'id' | 'type' | 'isRequired' | 'placeholder' | 'defaultValue' | 'label',
+    string
+  >,
+) => {
+  const length = list2.value.filter((item: CreateFormItem) => item.type === element.type).length
+
   return {
+    ...element,
     name: length ? `${element.name}(${length})` : element.name,
     id: nanoid(),
-    type: element.type,
-    isRequired: false,
-    placeholder: '请输入',
-    defaultValue: '',
   }
 }
 // 预览
@@ -100,6 +123,17 @@ const handlePreview = async () => {
   })
   router.push(`/preview/${id.value}`)
 }
+
+// 更新组件到indexDB中
+const handleUpdate = async () => {
+  await indexDBChange({
+    type: 'edit',
+    editData: {
+      id: id.value + '',
+      schema: JSON.stringify(list2.value),
+    },
+  })
+}
 // 激活组件
 const handleActiveArea = (id: string) => {
   if (activeArea.value === id) {
@@ -110,23 +144,16 @@ const handleActiveArea = (id: string) => {
 }
 // 删除组件
 const handleDelete = async (id: string) => {
-  list2.value = list2.value.filter((item) => item.id !== id)
+  deleteList2(id)
   activeArea.value = ''
   await handleUpdate()
 }
-// 更新组件
-const handleUpdate = async () => {
-  await indexDBChange({
-    type: 'edit',
-    editData: {
-      id: id.value + '',
-      schema: JSON.stringify(list2.value),
-    },
-  })
-}
-// 更新表单单个组件
-const handleUpdateItem = (id: string, data: FormItem) => {
-  list2.value = list2.value.map((item) => (item.id === id ? data : item))
+
+// 复制组件
+const handleCopy = (id: string) => {
+  const data = list2.value.find((item) => item.id === id)
+  const nanoidId = nanoid()
+  if (data) pushList2({ ...data, id: nanoidId })
   handleUpdate()
 }
 </script>
@@ -175,6 +202,14 @@ const handleUpdateItem = (id: string, data: FormItem) => {
                 :class="[activeArea === item.id ? 'bg-gray-500/20 border-indigo-500' : '']"
               >
                 <span> {{ item.name }} </span>
+
+                <div
+                  v-if="activeArea === item.id"
+                  @click.stop=""
+                  class="absolute bg-indigo-600 p-[4px] top-[50%] cursor-pointer translate-y-[-50%] transition-all duration-300 translate-x-[-50%] right-[30px] rounded-full hover:bg-indigo-600/70"
+                >
+                  <Copy @click="handleCopy(item.id)" class="w-4 h-4" />
+                </div>
                 <Dialog v-if="activeArea === item.id">
                   <DialogTrigger as-child>
                     <div
@@ -207,6 +242,7 @@ const handleUpdateItem = (id: string, data: FormItem) => {
           >
             <FormItemConfig
               :list="list2"
+              :updateList2="updateList2"
               :id="activeArea"
               :data="list2.find((item) => item.id === activeArea)"
             />
@@ -228,15 +264,15 @@ const handleUpdateItem = (id: string, data: FormItem) => {
       </ScrollArea>
       <ScrollArea class="h-[calc(100dvh-120px)] bg-gray-500/5" v-if="activeArea && !isMobile">
         <FormItemConfig
-          :list="list2"
-          :id="activeArea"
           :data="list2.find((item) => item.id === activeArea)"
+          :updateList2="updateList2"
+          :id="activeArea"
         />
       </ScrollArea>
     </div>
     <main class="flex justify-between">
-      <preview-list class="w-full" :list="list1" />
-      <preview-list class="w-full" :list="list2" />
+      <!-- <preview-list class="w-full" :list="list1" />
+      <preview-list class="w-full" :list="list2" /> -->
     </main>
   </section>
 </template>

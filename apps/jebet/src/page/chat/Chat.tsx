@@ -48,7 +48,7 @@ const Chat = observer(() => {
     );
     if (!activeWorkSpace) return;
     if (chatStore.socket) return;
-    const socket = io('http://localhost:8088', {
+    const socket = io('http://localhost:8088/api/chat', {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
