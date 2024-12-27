@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { CreateFormItem } from '@/types/form'
-import { FormType } from './FormCreate.vue'
+import type { CreateFormItem, FormType } from '@/types/form'
 import InputItem from './FormItem/InputItem.vue'
 defineProps<{
   id: string
@@ -9,8 +8,9 @@ defineProps<{
 }>()
 </script>
 <template>
-  <div class="flex flex-col gap-2" v-if="data">
+  <div class="flex flex-col pb-20 gap-2" v-if="data">
     <div v-if="data.type === 'input'">
+      <!-- @vue-ignore -->
       <InputItem :updateList2="updateList2" :id="id" :data="data" />
     </div>
     <div v-if="data.type === 'select'">
