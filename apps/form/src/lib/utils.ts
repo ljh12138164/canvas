@@ -1,8 +1,9 @@
 import { Config } from '@/components/ui/auto-form'
-import { CreateFormItem, FormItem } from '@/types/form'
+import { CreateFormItem, FormInput, FormItem } from '@/types/form'
 import type { Updater } from '@tanstack/vue-query'
 import { type ClassValue, clsx } from 'clsx'
 import localforage from 'localforage'
+import { nanoid } from 'nanoid'
 import { twMerge } from 'tailwind-merge'
 import type { Ref } from 'vue'
 import { z } from 'zod'
@@ -73,42 +74,89 @@ export async function getFormDataById(id: string) {
 }
 
 /**
- * 生成zod校验
- * @param schema 数据
- * @returns 数据
+ * ### 是否有描述
+ * @param
  */
-// const schema = z.object({
-//   username: z.string().min(2),
-// })
-export function getZodSchema(schema: CreateFormItem, fieldConfig: Ref<Record<string, any>>) {
-  let zodSchema
-  let obj = {}
-  if (schema.type === 'input') {
-    if (schema.inputType === 'text') {
-      zodSchema = z.string({ [schema.id]: z.string() })
-      obj = { ...obj, type: 'text' }
-      if (schema.defaultValue) zodSchema = zodSchema.default(String(schema.defaultValue))
-    }
-    if (schema.inputType === 'number') {
-      zodSchema = z.number({ [schema.id]: z.number() })
-      obj = { ...obj, type: 'number' }
-      if (schema.defaultValue)
-        zodSchema = zodSchema.default(isNaN(+schema.defaultValue) ? 0 : +schema.defaultValue)
-    }
-    if (!schema.isRequired) zodSchema = zodSchema?.optional()
-    if (schema.label) obj = { ...obj, label: schema.label }
-    fieldConfig.value = { ...fieldConfig.value, [schema.id]: obj }
-    //   password: {
-    //     label: 'Your secure password',
-    //     inputProps: {
-    //       type: 'password',
-    //       placeholder: '••••••••',
-    //     },
-    //   },
-    return z.object({ [schema.id]: zodSchema as z.ZodType })
+export const hasDescription = (schema: Zod.ZodType, value: string) => {
+  if (value) return schema.describe(value)
+  return schema
+}
+/**
+ * ### 是否必选
+ * @param schema zod
+ * @param value 描述
+ * @returns zod
+ */
+export const hasOptional = (schema: Zod.ZodType, value: boolean) => {
+  if (value) return schema.optional()
+  return schema
+}
+
+/**
+ * ## 生成input的zod校验
+ * @param schema 数据
+ * @param fieldConfig<Ref<Record<string, any>>>  配置
+ * @returns zod校验
+ **/
+export const inputZod = function (schema: FormInput, fieldConfig: Ref<Record<string, any>>) {
+  let obj: Record<string | 'inputProps', any> = {
+    inputProps: {},
   }
-  if (schema.type === 'checkbox') return z.object({ [schema.id]: z.boolean() })
-  if (schema.type === 'radio') return z.object({ [schema.id]: z.string() })
+  let zodSchema
+  // 文本
+  if (schema.inputType === 'text') {
+    zodSchema = z.string()
+    obj.type = 'text'
+    if (schema.isRequired) zodSchema = zodSchema.optional()
+    else zodSchema = zodSchema.min(1)
+    zodSchema = hasDescription(zodSchema, schema.description)
+    if (schema.defaultValue) zodSchema = zodSchema.default(schema.defaultValue as string)
+  }
+  // 数字
+  if (schema.inputType === 'number') {
+    zodSchema = z.number()
+    obj.type = 'number'
+    if (schema.isRequired) zodSchema = zodSchema.optional()
+    else zodSchema = zodSchema.min(1)
+    zodSchema = hasDescription(zodSchema, schema.description)
+    if (schema.defaultValue) zodSchema = zodSchema.default(schema.defaultValue as number)
+  }
+  // 标签
+  if (schema.label) obj.inputProps.label = schema.label
+  else {
+    obj.inputProps.label = nanoid()
+    obj.hideLabel = true
+  }
+  // 占位符
+  if (schema.placeholder) obj.inputProps.placeholder = schema.placeholder
+  // 隐藏标签
+  if (schema.hiddenLabel) obj.hideLabel = true
+  // 必填
+  if (schema.isRequired) zodSchema = zodSchema?.optional()
+
+  if (!Object.keys(obj.inputProps).length) delete obj.inputProps
+  console.log(fieldConfig.value)
+  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
+  return zodSchema
+}
+
+/**
+ * ## 生成zod校验
+ * @param schema 数据
+ * @param fieldConfig<Ref<Record<string, any>>>  配置
+ * @returns zod校验
+ */
+export function getZodSchema(schema: CreateFormItem, fieldConfig: Ref<Record<string, any>>) {
+  // 输入框
+  if (schema.type === 'input') {
+    const zodSchema = inputZod(schema, fieldConfig)
+    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
+  }
+  // 复选框
+  if (schema.type === 'checkbox') return z.object({ [schema.name]: z.boolean() })
+  // 单选框
+  if (schema.type === 'radio') return z.object({ [schema.name]: z.string() })
+  // 下拉框
   // if (schema.type === 'select') return z.string({ [schema.id]: z.string() })
   // if (schema.type === 'textarea') return z.string({ [schema.id]: z.string() })
   // if (schema.type === 'date') return z.string({ [schema.id]: z.string() })
@@ -117,7 +165,7 @@ export function getZodSchema(schema: CreateFormItem, fieldConfig: Ref<Record<str
   // if (schema.type === 'datetime-local') return z.string({ [schema.id]: z.string() })
   // if (schema.type === 'email') return z.string({ [schema.id]: z.string() })
   // if (schema.type === 'number') return z.string({ [schema.id]: z.number() })
-  return undefined
+  return null
 }
 
 /**
