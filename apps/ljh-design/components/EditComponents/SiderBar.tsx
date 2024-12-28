@@ -21,7 +21,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
       style={{ flexBasis: '100px' }}
     >
       <ScrollArea>
-        <ul className='flex flex-col'>
+        <ul className='flex flex-col w-[6.2rem]'>
           <SiderBarItem
             icon={LuLayoutDashboard}
             label='设计'

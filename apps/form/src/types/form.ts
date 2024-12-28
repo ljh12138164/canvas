@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid'
+
 export type Type =
   | 'input'
   | 'checkbox'
@@ -73,6 +75,22 @@ export const formItemList = [
     defaultValue: '',
   },
 ]
+//下拉的默认值
+export const selectDefaultValue = [
+  {
+    name: '选项一',
+    id: nanoid(),
+  },
+  {
+    name: '选项二',
+    id: nanoid(),
+  },
+  {
+    name: '选项三',
+    id: nanoid(),
+  },
+]
+
 // 可更改表单项
 export type FormType =
   | 'name'
@@ -82,6 +100,8 @@ export type FormType =
   | 'placeholder'
   | 'defaultValue'
   | 'description'
+  | 'hiddenLabel'
+  | 'inputType'
 
 // 基础表单项
 export interface FormItem {

@@ -40,7 +40,7 @@ declare module 'fabric' {
     filtersArray: FilterArrayEffect[];
   }
 }
-
+//
 export const buildEditor = ({
   canvas,
   fillColor,

@@ -6,16 +6,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import useUser from '@/hook/useUser';
 import { logout } from '@/server/user';
 import { User } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LuLogOut } from 'react-icons/lu';
 import { Skeleton } from '../ui/skeleton';
+import useUsers from '@/hook/useUser';
 
 const UserButton = () => {
-  const { user, loading } = useUser();
+  const { user, loading } = useUsers({ redirects: false });
 
   return (
     <>

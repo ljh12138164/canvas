@@ -43,7 +43,11 @@ const pushList2 = (item: CreateFormItem) => (list2.value = [...list2.value, item
 // 删除
 const deleteList2 = (id: string) => (list2.value = list2.value.filter((item) => item.id !== id))
 // 更新
-const updateList2 = (id: string, type: FormType, newValue: string | boolean) => {
+const updateList2 = (
+  id: string,
+  type: FormType,
+  newValue: string | boolean | number | undefined,
+) => {
   list2.value = list2.value.map((item) => {
     if (item.id === id) {
       ;(item as any)[type] = newValue

@@ -26,7 +26,7 @@ const BoardCreate = ({
   setChange?: (change: boolean) => void;
   data: Board[];
 }) => {
-  const { mutate, isPending } = useBoardQuery();
+  const { mutate, isPending } = useBoardQuery(token);
 
   const ref = useRef<HTMLButtonElement>(null);
   return (
@@ -44,9 +44,7 @@ const BoardCreate = ({
             {data?.length ? '创建你的画布以开始使用' : '创建第一个画布'}
           </div>
           <span>
-            {/* @ts-ignore */}
             <Dialog>
-              {/* @ts-ignore */}
               <DialogTrigger asChild>
                 <Button
                   variant='outline'
@@ -69,7 +67,6 @@ const BoardCreate = ({
                   closeref={ref}
                 >
                   <DialogFooter className='mt-6 flex gap-1'>
-                    {/* @ts-ignore */}
                     <DialogClose asChild>
                       <Button variant='outline' ref={ref} type='button'>
                         取消
