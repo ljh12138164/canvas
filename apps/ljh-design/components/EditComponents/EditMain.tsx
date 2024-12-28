@@ -1,3 +1,4 @@
+'use client';
 import { useUser } from '@/store/auth';
 import { redirect } from 'next/navigation';
 import Edit from './Edit';

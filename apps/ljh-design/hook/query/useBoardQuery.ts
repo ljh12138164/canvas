@@ -1,4 +1,3 @@
-import { getLocalToken } from '@/lib/sign';
 import { client } from '@/server';
 import { Board, BoardResponse } from '@/types/board';
 import { PAGE_SIZE } from '@/types/Edit';
@@ -42,14 +41,13 @@ type CopyRequestType = InferRequestType<
  * 创建看板
  * @returns
  */
-export const useBoardQuery = () => {
+export const useBoardQuery = (token: string | undefined) => {
   const { mutate, isPending, error } = useMutation<
     ResponseType,
     Error,
     RequestType
   >({
     mutationFn: async (board) => {
-      const token = await getLocalToken();
       if (!token) redirect('/sign-in');
       const response = await client.board.$post(
         {
@@ -112,7 +110,7 @@ export const useBoardEditQuery = ({
  * @param userid
  * @returns
  */
-export const useBoardUserQuery = ({ token }: { token: string }) => {
+export const useBoardUserQuery = ({ token }: { token: string | undefined }) => {
   const {
     data,
     isLoading,
@@ -160,7 +158,7 @@ export const useBoardUserQuery = ({ token }: { token: string }) => {
  * @param id
  * @returns
  */
-export const useBoardUpdateQuery = (id: string) => {
+export const useBoardUpdateQuery = (id: string, token: string | undefined) => {
   const { mutate, isPending, error } = useMutation<
     UpdateResponseType,
     Error,
@@ -171,8 +169,6 @@ export const useBoardUpdateQuery = (id: string) => {
     }
   >({
     mutationFn: async (board) => {
-      const token = await getLocalToken();
-      if (!token) redirect('/sign-in');
       const response = await client.board.editBoard.$post(
         {
           json: { id, ...board },
@@ -194,15 +190,13 @@ export const useBoardUpdateQuery = (id: string) => {
  * @param id
  * @returns
  */
-export const useBoardDeleteQuery = () => {
+export const useBoardDeleteQuery = (token: string | undefined) => {
   const { mutate, isPending, error } = useMutation<
     DeleteResponseType,
     Error,
     { id: string }
   >({
     mutationFn: async ({ id }) => {
-      const token = await getLocalToken();
-      if (!token) redirect('/sign-in');
       const response = await client.board.deleteBoard.$post(
         {
           json: { id },
