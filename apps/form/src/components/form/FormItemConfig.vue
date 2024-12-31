@@ -5,7 +5,11 @@ import SelectItem from './FormItem/SelectItem.vue'
 defineProps<{
   id: string
   data: CreateFormItem | undefined
-  updateList2: (id: string, type: FormType, newValue: string | boolean | number | undefined) => void
+  updateList2: (
+    id: string,
+    type: FormType,
+    newValue: string | boolean | number | undefined | { name: string; id: string }[],
+  ) => void
 }>()
 </script>
 <template>

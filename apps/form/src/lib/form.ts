@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { CreateFormItem, FormInput } from '@/types/form'
+import type { CreateFormItem, FormInput, Select } from '@/types/form'
 import { Ref } from 'vue'
 
 /**
@@ -45,8 +45,26 @@ z.string().min(2).default('123').describe('123').optional()
  * @param schema 数据
  * @returns zod
  */
-export const selectZod = (schema: CreateFormItem, fieldConfig: Ref<Record<string, any>>) => {
-  return z.object({ [schema.defaultTypeName]: z.string() })
+export const selectZod = (schema: Select, fieldConfig: Ref<Record<string, any>>) => {
+  let obj: Record<string, any> = {
+    inputProps: {},
+  }
+  let zodSchema
+  zodSchema = z.enum(schema.options.map((item) => item.name) as [string, ...string[]])
+  if (schema.description && !schema.hiddenLabel) {
+    zodSchema = hasDescription(zodSchema, schema.description)
+  } else {
+    obj.hideLabel = true
+  }
+
+  // 非必填
+  if (!schema.isRequired) zodSchema = zodSchema.optional()
+  // 占位符
+  obj = genAutoFormPlaceHolder(obj, schema.placeholder)
+  // 检查inputProps是否存在
+  obj = checkInputProps(obj)
+  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
+  return zodSchema
 }
 /**
  * ###  zod的顺序说明 先用string和number等基础类型---required（min）必填---description标签---default默认---!required（optional）非必填
@@ -68,13 +86,10 @@ export const inputZod = function (schema: FormInput, fieldConfig: Ref<Record<str
     // 必填
     if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' })
     // 标签
-    if (schema.description && !schema.hiddenLabel) {
+    if (schema.description && !schema.hiddenLabel)
       zodSchema = hasDescription(zodSchema, schema.description)
-      // obj.inputProps.label = schema.description
-    } else {
-      obj.hideLabel = true
-      // delete obj.inputProps.label
-    }
+    else obj.hideLabel = true
+
     // 默认值
     zodSchema = zodSchema.default(String(schema.defaultValue))
     // 非必填
@@ -87,13 +102,9 @@ export const inputZod = function (schema: FormInput, fieldConfig: Ref<Record<str
     // 必填
     if (schema.isRequired) zodSchema = zodSchema.min(0, { message: '必填' })
     // 标签
-    if (schema.description && !schema.hiddenLabel) {
+    if (schema.description && !schema.hiddenLabel)
       zodSchema = hasDescription(zodSchema, schema.description)
-      // obj.inputProps.label = schema.description
-    } else {
-      obj.hideLabel = true
-      // delete obj.inputProps.label
-    }
+    else obj.hideLabel = true
     // 默认值
     zodSchema = zodSchema.default(
       Number.isNaN(Number(schema.defaultValue)) ? 0 : Number(schema.defaultValue),
@@ -105,8 +116,6 @@ export const inputZod = function (schema: FormInput, fieldConfig: Ref<Record<str
   obj = genAutoFormPlaceHolder(obj, schema.placeholder)
   // 检查inputProps是否存在
   obj = checkInputProps(obj)
-  console.log(obj, zodSchema)
-  console.log('zodSchema?.description:::', zodSchema?.description)
 
   // 生成autoForm的配置
   fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }

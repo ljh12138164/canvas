@@ -46,7 +46,7 @@ const deleteList2 = (id: string) => (list2.value = list2.value.filter((item) => 
 const updateList2 = (
   id: string,
   type: FormType,
-  newValue: string | boolean | number | undefined,
+  newValue: string | boolean | number | undefined | { name: string; id: string }[],
 ) => {
   list2.value = list2.value.map((item) => {
     if (item.id === id) {
