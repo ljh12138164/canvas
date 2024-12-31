@@ -21,6 +21,21 @@ export type Type =
   | 'enum'
   | 'regex'
   | 'custom'
+//下拉的默认值
+export const selectDefaultValue = [
+  {
+    name: '选项一',
+    id: nanoid(),
+  },
+  {
+    name: '选项二',
+    id: nanoid(),
+  },
+  {
+    name: '选项三',
+    id: nanoid(),
+  },
+]
 // 可clone的表单项
 export const formItemList = [
   {
@@ -73,21 +88,7 @@ export const formItemList = [
     description: '',
     placeholder: '请选择',
     defaultValue: '',
-  },
-]
-//下拉的默认值
-export const selectDefaultValue = [
-  {
-    name: '选项一',
-    id: nanoid(),
-  },
-  {
-    name: '选项二',
-    id: nanoid(),
-  },
-  {
-    name: '选项三',
-    id: nanoid(),
+    options: selectDefaultValue,
   },
 ]
 
@@ -102,6 +103,7 @@ export type FormType =
   | 'description'
   | 'hiddenLabel'
   | 'inputType'
+  | 'options'
 
 // 基础表单项
 export interface FormItem {
@@ -136,6 +138,7 @@ export interface Radio extends FormItem {
 export interface Select extends FormItem {
   type: 'select'
   defaultTypeName: '下拉框'
+  options: { name: string; id: string }[]
 }
 // 表单项
 export type CreateFormItem = FormInput | Checkbox | Radio | Select

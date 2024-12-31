@@ -3,25 +3,30 @@ import { AutoForm } from '@/components/ui/auto-form'
 import { ZodObjectOrWrapped } from '@/components/ui/auto-form/utils'
 import { Button } from '@/components/ui/button'
 import { getZodSchema } from '@/lib/form'
-import { selectDefaultValue } from '@/types/form'
 import { Label } from '@/components/ui/label'
-import { CreateFormItem, FormType } from '@/types/form'
-import { Trash2Icon } from 'lucide-vue-next'
+import { Select, FormType } from '@/types/form'
+import { CheckIcon, Trash2Icon } from 'lucide-vue-next'
 import { Icon } from '@iconify/vue'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { nanoid } from 'nanoid'
 import { useToast } from '@/components/ui/toast'
+import LabelChange from '@/components/common/LabelChange.vue'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const { toast } = useToast()
-const list = ref(selectDefaultValue)
 const newItem = ref('')
 const activeItem = ref<string | null>(null)
 const props = defineProps<{
   id: string
-  data: CreateFormItem
-  updateList2: (id: string, type: FormType, newValue: string | boolean | number | undefined) => void
+  data: Select
+  updateList2: (
+    id: string,
+    type: FormType,
+    newValue: string | boolean | number | undefined | { name: string; id: string }[],
+  ) => void
 }>()
+const list = ref(props.data?.options)
 // 默认值
 const defaultValue = ref(props.data?.defaultValue)
 // 占位符
@@ -47,52 +52,40 @@ watch(
     defaultLabel.value = newValue?.label
     defaultDescription.value = newValue?.description
     defaultIsRequired.value = newValue?.isRequired
+    defaultIsHidden.value = newValue?.hiddenLabel
+    list.value = newValue?.options
   },
 )
 schema.value = getZodSchema(props.data, fieldConfig)
 const updateSchema = () => {
+  props.updateList2(props.id, 'options', list.value)
   schema.value = getZodSchema(props.data, fieldConfig)
   // console.log(schema.value, fieldConfig.value)
 }
-
 // 监听默认值
+watch(list, (newValue) => {
+  props.updateList2(props.id, 'options', newValue)
+  updateSchema()
+})
 watch(defaultValue, (newValue) => {
-  schema.value = null
-  props.updateList2(props.id, 'defaultValue', newValue as string)
-  updateSchema()
-})
-watch(defaultPlaceholder, (newValue) => {
-  schema.value = null
-  props.updateList2(props.id, 'placeholder', newValue as string)
-  updateSchema()
-})
-watch(defaultLabel, (newValue) => {
-  schema.value = null
-  props.updateList2(props.id, 'label', newValue as string)
-  updateSchema()
-})
-watch(defaultDescription, (newValue) => {
-  schema.value = null
-  props.updateList2(props.id, 'description', newValue as string)
-  updateSchema()
-})
-watch(defaultIsRequired, (newValue) => {
-  schema.value = null
-  props.updateList2(props.id, 'isRequired', !newValue as boolean)
+  props.updateList2(props.id, 'options', newValue)
   updateSchema()
 })
 watch(defaultIsHidden, (newValue) => {
-  schema.value = null
-  props.updateList2(props.id, 'hiddenLabel', newValue as boolean)
+  props.updateList2(props.id, 'hiddenLabel', newValue)
   updateSchema()
 })
-
+// 删除选项
 const delectItem = (id: string) => {
   list.value = list.value.filter((item) => item.id !== id)
+  updateSchema()
 }
+// 更新选项
 const updateItem = (id: string, value: string) => {
   list.value = list.value.map((item) => (item.id === id ? { ...item, name: value } : item))
+  updateSchema()
 }
+// 添加选项
 const addItem = () => {
   if (newItem.value) {
     if (list.value.find((item) => item.name === newItem.value)) {
@@ -106,6 +99,7 @@ const addItem = () => {
       name: newItem.value,
       id: nanoid(),
     })
+    updateSchema()
     newItem.value = ''
   } else {
     toast({
@@ -115,12 +109,14 @@ const addItem = () => {
   }
 }
 const updateList = (type: FormType, newValue: string | boolean | number | undefined) => {
+  console.log(newValue, type)
   props.updateList2(props.id, type, newValue)
   updateSchema()
 }
 </script>
 <template>
   <AutoForm v-if="schema" :schema="schema as ZodObjectOrWrapped" :fieldConfig="fieldConfig" />
+
   <section class="p-4 flex flex-col gap-2">
     <!-- 占位符 -->
     <LabelChange
@@ -132,7 +128,10 @@ const updateList = (type: FormType, newValue: string | boolean | number | undefi
       placeholder="请输入占位符"
     />
     <!-- 枚举 -->
-    <span>选项</span>
+    <p class="flex items-center">
+      <span>选项</span>
+      <!-- <span class="text-gray-500 ml-auto">默认值 </span> -->
+    </p>
     <VueDraggable
       ref="el"
       v-model="list"
@@ -142,16 +141,16 @@ const updateList = (type: FormType, newValue: string | boolean | number | undefi
       class="flex flex-col gap-2 p-4 w-full m-auto bg-gray-500/5 rounded"
     >
       <Button
-        v-for="item in list"
+        v-for="(item, index) in list"
         :key="item.id"
         variant="outline"
-        class="cursor-move relative h-30 text-left bg-gray-500/5 rounded p-3"
+        class="cursor-move relative h-30 text-left bg-gray-500/5 rounded p-3 grid grid-cols-[15px_1fr_20px]"
       >
         <span class="flex-1">
           <Icon icon="material-symbols-light:drag-pan-rounded" />
         </span>
         <input
-          class="flex h-9 border-0 w-[calc(100%-20px)] rounded-md dark:hover:bg-white/5 hover:bg-gray-500/15 border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          class="flex h-9 border-0 w-full rounded-md dark:hover:bg-white/5 hover:bg-gray-500/15 border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           type="text"
           :value="item.name"
           @focus="activeItem = item.id"
@@ -161,10 +160,29 @@ const updateList = (type: FormType, newValue: string | boolean | number | undefi
         <button @click.stop="delectItem(item.id)" class="absolute right-0 top-0">
           <Trash2Icon class="w-4 h-4" />
         </button>
+        <!-- <div class="h-8 w-4"> -->
+        <!-- <Button
+            variant="outline"
+            class="w-full h-full mt-1 dark:hover:bg-white/5 hover:bg-gray-500/15"
+            @click="
+              () => {
+                if (index === defaultValue) {
+                  defaultValue = ''
+                  props.updateList2(props.id, 'defaultValue', '')
+                } else {
+                  defaultValue = index
+                  props.updateList2(props.id, 'defaultValue', index)
+                }
+              }
+            "
+          >
+            <CheckIcon v-if="index === defaultValue" />
+          </Button> -->
+        <!-- </div> -->
       </Button>
       <div class="flex gap-2">
         <input
-          class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          class="flex h-9 w-full rounded-md border border-input bg-transparent px-6 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           type="text"
           placeholder="请输入选项值"
           v-model="newItem"
@@ -181,14 +199,30 @@ const updateList = (type: FormType, newValue: string | boolean | number | undefi
       />
       隐藏标签
     </div>
-    <div v-if="!defaultIsHidden">
-      <Label for="description" class="text-sm">输入框标签</Label>
-      <input
-        class="'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'"
-        id="description"
-        v-model="defaultDescription"
-        placeholder="请输入标签"
-      />
-    </div>
+    <LabelChange
+      v-if="!defaultIsHidden"
+      :updateList="updateList"
+      changeType="description"
+      v-model="defaultDescription"
+      label="下拉框标签"
+      type="text"
+      placeholder="请输入标签"
+    />
+    <!-- <LabelChange
+      :updateList="updateList"
+      changeType="hiddenLabel"
+      v-model="defaultIsRequired"
+      label="是否必填"
+      type="checkbox"
+      placeholder="请输入是否必填"
+    /> -->
+    <LabelChange
+      :updateList="updateList"
+      changeType="isRequired"
+      v-model="defaultIsRequired"
+      label="是否必填"
+      type="checkbox"
+      placeholder="请输入是否必填"
+    />
   </section>
 </template>
