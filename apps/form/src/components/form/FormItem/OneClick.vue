@@ -4,7 +4,7 @@ import { ZodObjectOrWrapped } from '@/components/ui/auto-form/utils'
 import { Button } from '@/components/ui/button'
 import { getZodSchema } from '@/lib/form'
 import { Label } from '@/components/ui/label'
-import { Select, FormType } from '@/types/form'
+import { Select, FormType, Radio } from '@/types/form'
 import { CheckIcon, Trash2Icon } from 'lucide-vue-next'
 import { Icon } from '@iconify/vue'
 import { computed, ref, watch } from 'vue'
@@ -13,17 +13,18 @@ import { nanoid } from 'nanoid'
 import { useToast } from '@/components/ui/toast'
 import LabelChange from '@/components/common/LabelChange.vue'
 import { Checkbox } from '@/components/ui/checkbox'
+import { DateValue } from '@internationalized/date'
 
 const { toast } = useToast()
 const newItem = ref('')
 const activeItem = ref<string | null>(null)
 const props = defineProps<{
   id: string
-  data: Select
+  data: Radio
   updateList2: (
     id: string,
     type: FormType,
-    newValue: string | boolean | number | undefined | { name: string; id: string }[],
+    newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
   ) => void
 }>()
 const list = ref(props.data?.options)
@@ -108,7 +109,10 @@ const addItem = () => {
     })
   }
 }
-const updateList = (type: FormType, newValue: string | boolean | number | undefined) => {
+const updateList = (
+  type: FormType,
+  newValue: string | boolean | number | undefined | DateValue,
+) => {
   console.log(newValue, type)
   props.updateList2(props.id, type, newValue)
   updateSchema()
@@ -116,9 +120,7 @@ const updateList = (type: FormType, newValue: string | boolean | number | undefi
 </script>
 <template>
   <AutoForm v-if="schema" :schema="schema as ZodObjectOrWrapped" :fieldConfig="fieldConfig" />
-
   <section class="p-4 flex flex-col gap-2">
-    <!-- 占位符 -->
     <LabelChange
       :updateList="updateList"
       changeType="placeholder"

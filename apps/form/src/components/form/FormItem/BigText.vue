@@ -3,18 +3,13 @@ import LabelChange from '@/components/common/LabelChange.vue'
 import { AutoForm } from '@/components/ui/auto-form'
 import { ZodObjectOrWrapped } from '@/components/ui/auto-form/utils'
 import { getZodSchema } from '@/lib/form'
-import { FormInput, FormType } from '@/types/form'
-import { DateValue } from '@internationalized/date'
+import { BigText, FormType } from '@/types/form'
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
   id: string
-  data: FormInput
-  updateList2: (
-    id: string,
-    type: FormType,
-    newValue: string | boolean | number | undefined | DateValue,
-  ) => void
+  data: BigText
+  updateList2: (id: string, type: FormType, newValue: string | boolean | number | undefined) => void
 }>()
 // 默认值
 const defaultValue = ref(props.data?.defaultValue)
@@ -28,8 +23,7 @@ const defaultDescription = ref(props.data?.description)
 const defaultIsRequired = ref(props.data?.isRequired)
 // 隐藏标签
 const defaultIsHidden = ref(props.data?.hiddenLabel)
-// 输入框类型
-const inputType = ref(props.data?.inputType)
+
 // 表单数据
 const schema = ref<ZodObjectOrWrapped | null>(null)
 // 表单配置
@@ -49,8 +43,6 @@ watch(
     defaultIsRequired.value = newValue?.isRequired
     // 隐藏标签
     defaultIsHidden.value = newValue?.hiddenLabel
-    // 输入框类型
-    inputType.value = newValue?.inputType
   },
 )
 schema.value = getZodSchema(props.data, fieldConfig)
@@ -58,18 +50,10 @@ const updateSchema = () => {
   schema.value = getZodSchema(props.data, fieldConfig)
   // console.log(schema.value, fieldConfig.value)
 }
-const updateList = (
-  type: FormType,
-  newValue: string | boolean | number | undefined | DateValue,
-) => {
-  //@ts-ignore
+const updateList = (type: FormType, newValue: string | boolean | number | undefined) => {
   props.updateList2(props.id, type, newValue)
   updateSchema()
 }
-watch(inputType, (newValue) => {
-  if (newValue === 'number') defaultValue.value = 0
-  else defaultValue.value = ''
-})
 </script>
 <template>
   <AutoForm v-if="schema" :schema="schema as ZodObjectOrWrapped" :fieldConfig="fieldConfig" />
@@ -82,24 +66,13 @@ watch(inputType, (newValue) => {
       type="text"
       placeholder="请输入占位符"
     />
-    <LabelChange
-      :updateList="updateList"
-      changeType="inputType"
-      v-model="inputType"
-      label="输入框类型"
-      type="select"
-      placeholder="请选择输入框类型"
-      :options="[
-        { label: '文本', value: 'text' },
-        { label: '数字', value: 'number' },
-      ]"
-    />
+
     <LabelChange
       :updateList="updateList"
       changeType="defaultValue"
       v-model="defaultValue"
       label="输入框默认值"
-      :type="inputType"
+      type="text"
       placeholder="请输入默认值"
     />
     <LabelChange

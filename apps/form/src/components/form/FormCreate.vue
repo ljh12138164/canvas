@@ -22,6 +22,7 @@ import {
 import { formItemList, FormType, type CreateFormItem, type FormItem } from '@/types/form'
 import { watch } from 'vue'
 import { getFormDataById, getIndexDB, indexDBChange } from '@/lib/utils'
+import { DateValue } from '@internationalized/date'
 
 const closeRef = ref<HTMLButtonElement | null>(null)
 const router = useRouter()
@@ -46,7 +47,7 @@ const deleteList2 = (id: string) => (list2.value = list2.value.filter((item) => 
 const updateList2 = (
   id: string,
   type: FormType,
-  newValue: string | boolean | number | undefined | { name: string; id: string }[],
+  newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
 ) => {
   list2.value = list2.value.map((item) => {
     if (item.id === id) {
@@ -66,10 +67,22 @@ const isMobile = useMediaQuery('(max-width: 768px)')
 const [parent] = useAutoAnimate()
 const onClone = (
   element: Record<
-    'name' | 'id' | 'type' | 'isRequired' | 'placeholder' | 'defaultValue' | 'label',
+    | 'name'
+    | 'id'
+    | 'type'
+    | 'isRequired'
+    | 'placeholder'
+    | 'defaultValue'
+    | 'label'
+    | 'options'
+    | 'hiddenLabel'
+    | 'description'
+    | 'defaultValue'
+    | 'defaultTypeName',
     string
   >,
 ) => {
+  //@ts-ignore
   const length = list2.value.filter((item: CreateFormItem) => item.type === element.type).length
   return {
     ...element,
