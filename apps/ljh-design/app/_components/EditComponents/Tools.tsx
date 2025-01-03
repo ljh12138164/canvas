@@ -1,5 +1,5 @@
-import TooltipComponents from "@/components/shadui-Components/Tooltip";
-import { Button } from "@/components/ui/button";
+import TooltipComponents from "@/app/_components/shadui-Components/Tooltip";
+import { Button } from "@/app/_components/ui/button";
 import { cn, isText } from "@/app/_lib/utils";
 import { Tool, Edit } from "@/app/_types/Edit";
 import { BsBorderWidth, BsTransparency } from "react-icons/bs";
@@ -16,7 +16,7 @@ import {
 import { LuArrowDown, LuArrowUp, LuChevronDown, LuCopy } from "react-icons/lu";
 import { TbColorFilter } from "react-icons/tb";
 import FontSizeInput from "./FontSizeInput";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/app/_components/ui/scroll-area";
 interface ToolBarProps {
   editor: Edit | undefined;
   activeTool: Tool;

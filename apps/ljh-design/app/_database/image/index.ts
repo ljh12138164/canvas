@@ -29,7 +29,7 @@ interface DeleteImageClound {
   image: string;
 }
 export const deleteImageClound = async ({ image }: DeleteImageClound) => {
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     //  桶名字
     .from("UPLOAD_IMG")
     // 删除图片路径

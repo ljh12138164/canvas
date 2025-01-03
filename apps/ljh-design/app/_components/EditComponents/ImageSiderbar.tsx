@@ -1,4 +1,4 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import { useImageQuery } from "@/app/_hook/query/useImageQuery";
 import { cn } from "@/app/_lib/utils";
 import { Edit, IMAGE_BLUSK, ImageType, Tool } from "@/app/_types/Edit";
@@ -11,7 +11,7 @@ import { ImageBox } from "./ImageBox";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
 import { UserImageBox } from "./UserImageBox";
-import { uploadImageclound } from "@/database/server/image";
+import { uploadImageclound } from "@/app/_database/image";
 interface ImageSiderbarProps {
   editor: Edit | undefined;
   token: string | undefined;

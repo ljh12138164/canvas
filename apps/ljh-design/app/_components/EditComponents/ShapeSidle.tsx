@@ -5,7 +5,7 @@ import { IoTriangle } from "react-icons/io5";
 import { Tool } from "@/app/_types/Edit";
 import { cn } from "@/app/_lib/utils";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import ShapeTool from "./ShapeTool";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";

@@ -30,7 +30,7 @@ const BoardEdit = ({
   setChange?: (change: boolean) => void;
 }) => {
   const ref = useRef<HTMLButtonElement>(null);
-  const { mutate, isPending } = useBoardUpdateQuery(id);
+  const { mutate, isPending } = useBoardUpdateQuery(id, token);
 
   return (
     <div onClick={(e) => e.stopPropagation()}>

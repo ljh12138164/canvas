@@ -1,6 +1,6 @@
 import { FaMinus, FaPlus } from "react-icons/fa6";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/app/_components/ui/input";
+import { Button } from "@/app/_components/ui/button";
 import { Edit } from "@/app/_types/Edit";
 interface FontSizeInputProps {
   editor: Edit | undefined;

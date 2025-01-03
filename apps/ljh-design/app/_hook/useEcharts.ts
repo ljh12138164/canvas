@@ -1,26 +1,39 @@
 import { useMemoizedFn } from "ahooks";
 import { ECharts } from "echarts";
+import * as echarts from "echarts";
 import { useEffect, useRef } from "react";
-const arr: ECharts[] = [];
+//  @ts-ignore
+const echartsArr = new Set<ECharts>();
 /**
  *
  * @param 自动调整echarts大小
  */
 window.addEventListener("reset", () => {
-  arr.forEach((item) => {
+  [...echartsArr].forEach((item) => {
     item.resize();
   });
 });
+
 /**
  * ### 使用echarts
  * @returns
  */
-export const useEchart = ({ echarts }: { echarts: ECharts }) => {
-  const echartspush = useMemoizedFn((echarts: ECharts) => arr.push(echarts));
-  const echartRef = useRef<ECharts>(echarts);
+export const useEchart = () => {
+  const echartspush = useMemoizedFn((echarts: ECharts) =>
+    echartsArr.add(echarts)
+  );
+  const echartRef = useRef<HTMLDivElement | null>(null);
+  const charts = useRef<ECharts | null>(null);
   useEffect(() => {
-    arr.push(echarts);
-  }, []);
+    if (!echartRef.current) return;
+    charts.current = echarts.init(echartRef.current);
+    // 添加到echartsArr
+    echartspush(charts.current);
+    return () => {
+      if (!charts.current) return;
+      echartsArr.delete(charts.current);
+    };
+  }, [echartspush]);
   // 返回echarts 实例
-  return echartRef;
+  return { echartRef, charts };
 };

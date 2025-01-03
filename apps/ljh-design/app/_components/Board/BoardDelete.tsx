@@ -30,7 +30,7 @@ const BoardDelete = ({
   setChange?: (res: boolean) => void;
   id: string;
 }) => {
-  const { mutate, isPending } = useBoardDeleteQuery();
+  const { mutate, isPending } = useBoardDeleteQuery(token);
   const closeRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
   return (

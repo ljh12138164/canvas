@@ -1,9 +1,9 @@
 import { cn } from "@/app/_lib/utils";
 import { Tool, Edit, Font } from "@/app/_types/Edit";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/_components/ui/button";
 
 interface TextSidebarProps {
   editor: Edit | undefined;

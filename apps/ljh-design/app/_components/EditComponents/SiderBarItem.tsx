@@ -1,6 +1,6 @@
 import { cn } from "@/app/_lib/utils";
 import type { IconType } from "react-icons";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/_components/ui/button";
 interface SiderBarItemProps {
   icon: IconType;
   label: string;
