@@ -1,12 +1,12 @@
-import TooltipComponents from "@/components/shadui-Components/Tooltip";
-import { Button } from "@/components/ui/button";
+import TooltipComponents from "@/app/_components/shadui-Components/Tooltip";
+import { Button } from "@/app/_components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
+} from "@/app/_components/ui/dropdown-menu";
+import { Separator } from "@/app/_components/ui/separator";
 import { Edit, Tool } from "@/app/_types/Edit";
 import { Fragment } from "react";
 import { BsCloud, BsCloudCheck } from "react-icons/bs";

@@ -1,10 +1,7 @@
-import { useEffect, useMemo, useRef } from "react";
-import * as echarts from "echarts";
 import { useEchart } from "@/app/_hook/useEcharts";
+import { useEffect, useMemo } from "react";
 
 const AreaChart = () => {
-  const echartRef = useRef<HTMLDivElement>(null);
-
   const option = useMemo(() => {
     return {
       title: {
@@ -12,13 +9,12 @@ const AreaChart = () => {
       },
     };
   }, []);
-  const { echartspush } = useEchart();
+  // 获取echart实例
+  const { echartRef, charts } = useEchart();
   useEffect(() => {
     if (!echartRef.current) return;
-    const chart = echarts.init(echartRef.current);
-    chart.setOption(option);
-    echartspush(chart);
-  }, [echartspush, option]);
+    charts.current?.setOption(option);
+  }, [option]);
 
   return <div ref={echartRef}></div>;
 };

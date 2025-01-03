@@ -1,6 +1,6 @@
 "use client";
 import { getIndexDB } from "@/app/_lib/utils";
-import { Board, BoardData } from "@/app/_types/board";
+import { BoardData } from "@/app/_types/board";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LuList } from "react-icons/lu";
@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Skeleton } from "../ui/skeleton";
 import {
   Table,
   TableBody,
@@ -23,7 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Skeleton } from "../ui/skeleton";
 const TryMain = () => {
   const [loading, setLoading] = useState(true);
   const [change, setChange] = useState(false);

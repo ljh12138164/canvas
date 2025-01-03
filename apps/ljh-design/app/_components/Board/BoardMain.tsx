@@ -40,9 +40,9 @@ const BoardMain = ({ token }: { token: string }) => {
     isFetching,
   } = useBoardUserQuery({ token });
   const {
-    data: boardData,
+    // data: boardData,
     isLoading: boardLoading,
-    isFetching: boardFetching,
+    // isFetching: boardFetching,
   } = useBoardListQuery({
     token,
   });

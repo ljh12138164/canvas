@@ -1,8 +1,8 @@
 import { Tool } from "@/app/_types/Edit";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/_components/ui/button";
 import { LuMinimize, LuZoomIn, LuZoomOut } from "react-icons/lu";
 import { Edit } from "@/app/_types/Edit";
-import TooltipComponents from "@/components/shadui-Components/Tooltip";
+import TooltipComponents from "@/app/_components/shadui-Components/Tooltip";
 interface FooterProps {
   editor: Edit | undefined;
 }

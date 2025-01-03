@@ -16,7 +16,7 @@ export async function getCurrentUser(): Promise<Sessions | null> {
     const { data, error } = await supabase.auth.getUser();
 
     if (error) throw new Error("未登录");
-    return { user: data?.user, session: session.session };
+    return { user: data?.user, session: session.session } as Sessions;
   } catch {
     return null;
   }

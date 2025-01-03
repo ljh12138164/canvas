@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { Slider } from "@/components/ui/slider";
+import { Button } from "@/app/_components/ui/button";
+import { Label } from "@/app/_components/ui/label";
+import { ScrollArea } from "@/app/_components/ui/scroll-area";
+import { Separator } from "@/app/_components/ui/separator";
+import { Slider } from "@/app/_components/ui/slider";
 import { cn } from "@/app/_lib/utils";
 import type { Filter } from "@/app/_types/Edit";
 import {

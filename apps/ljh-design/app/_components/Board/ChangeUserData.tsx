@@ -8,7 +8,6 @@ import {
 } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Profiles } from "@/app/_types/user";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -30,7 +29,7 @@ const zodShema = z.object({
 
 const ChangeUserData = ({ data }: { data: Sessions }) => {
   console.log(data);
-  const { register, handleSubmit, setValue, setError, reset } = useForm({
+  const { register, handleSubmit, setValue, setError } = useForm({
     resolver: zodResolver(zodShema),
     defaultValues: {
       name: data.user.user_metadata.name,

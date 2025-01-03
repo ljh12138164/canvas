@@ -1,4 +1,4 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import { Tool } from "@/app/_types/Edit";
 import {
   LuImage,

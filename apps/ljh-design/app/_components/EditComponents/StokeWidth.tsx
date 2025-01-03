@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { Button } from "@/app/_components/ui/button";
+import { Label } from "@/app/_components/ui/label";
+import { Slider } from "@/app/_components/ui/slider";
 import { Edit } from "@/app/_types/Edit";
 import { STROKE_WIDTH } from "@/app/_types/Edit";
 interface StokeWidthProps {

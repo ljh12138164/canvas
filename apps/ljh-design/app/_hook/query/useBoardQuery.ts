@@ -1,5 +1,5 @@
 import { client } from "@/app/_database";
-import { Board, BoardResponse } from "@/app/_types/board";
+import { Board } from "@/app/_types/board";
 import { PAGE_SIZE } from "@/app/_types/Edit";
 import {
   useInfiniteQuery,

@@ -1,17 +1,15 @@
 import { Providers } from "@/app/_provide/providers";
 import { inter, myFont } from "@/app/_lib/font";
 import { Toaster } from "react-hot-toast";
+import Edit from "@/app/_components/RiceEdit/Edit";
 
-type Params = Promise<{
-  id: string;
-}>;
 export default async function Home() {
   return (
-    <section
+    <div
       className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden`}
     >
       <Providers>
-        <div>222</div>
+        <Edit />
       </Providers>
       <Toaster
         position="top-center"
@@ -30,6 +28,6 @@ export default async function Home() {
           },
         }}
       ></Toaster>
-    </section>
+    </div>
   );
 }
