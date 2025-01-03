@@ -1,6 +1,6 @@
 import { Providers } from "@/app/_provide/providers";
-import TryCanvas from "@/components/Try/TryCanvas";
-import { inter, myFont } from "@/lib/font";
+import TryCanvas from "@/app/_components/Try/TryCanvas";
+import { inter, myFont } from "@/app/_lib/font";
 import { Toaster } from "react-hot-toast";
 
 type Params = Promise<{

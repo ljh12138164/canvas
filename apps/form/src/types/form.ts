@@ -1,3 +1,4 @@
+import { IList } from '@/components/form/FormSub.vue'
 import { DateValue } from '@internationalized/date'
 import { nanoid } from 'nanoid'
 
@@ -128,6 +129,19 @@ export const formItemList = [
     placeholder: '请输入',
     defaultValue: '',
   },
+  {
+    name: '子表单',
+    id: '8',
+    type: 'array',
+    defaultTypeName: '子表单',
+    hiddenLabel: false,
+    label: '子表单',
+    isRequired: false,
+    description: '',
+    placeholder: '请输入',
+    defaultValue: '',
+    children: [],
+  },
 ]
 
 // 可更改表单项
@@ -191,6 +205,19 @@ export interface Slider extends FormItem {
   type: 'slider'
   defaultTypeName: '滑动按钮'
 }
+export interface Array extends FormItem {
+  type: 'array'
+  defaultTypeName: '子表单'
+  children: CreateFormItem[]
+}
 // 表单项
-export type CreateFormItem = FormInput | Files | Radio | Select | DatePicker | BigText | Slider
+export type CreateFormItem =
+  | FormInput
+  | Files
+  | Radio
+  | Select
+  | DatePicker
+  | BigText
+  | Slider
+  | Array
 // 可更改表单项

@@ -1,7 +1,6 @@
 import { useToast } from '@/components/ui/toast'
 import { getCurrentUser } from '@/server/supabase/user'
 import type { RouteLocationNormalized } from 'vue-router'
-import { z } from 'zod'
 import useUser from '@/stores/user'
 
 export const DEFAULT_AVATAR =
@@ -80,19 +79,5 @@ export async function routerCheckLogin(
       return next('/auth')
     }
     return next()
-  }
-}
-
-/**
- * 表单数据
- * @param id
- * @returns
- */
-export const setFormItem = (
-  zod: z.ZodObject<any, any, any, any>,
-  type: Record<string, boolean>,
-) => {
-  for (const key in type) {
-    return zod
   }
 }
