@@ -1,5 +1,5 @@
-import UserData from "@/components/Board/UserData";
-import { inter, myFont } from "@/lib/font";
+import UserData from "@/app/_components/Board/UserData";
+import { inter, myFont } from "@/app/_lib/font";
 export default async function Home() {
   return (
     <main

@@ -1,4 +1,4 @@
-import { inter, myFont } from "@/lib/font";
+import { inter, myFont } from "@/app/_lib/font";
 export default async function Home() {
   return (
     <div

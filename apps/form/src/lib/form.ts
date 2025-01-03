@@ -213,7 +213,7 @@ export const bigTextZod = (schema: BigText, fieldConfig: Ref<Record<string, any>
  * @param fieldConfig<Ref<Record<string, any>>>  配置
  * @returns zod校验
  */
-export const sliderZod = (schema: Slider, fieldConfig: Ref<Record<string, any>>) => {
+export const sliderZod = (schema: Slider, fieldConfig: Ref<Record<string, any>>): z.ZodType => {
   let obj: Record<string, any> = {
     inputProps: {},
     component: 'switch',
@@ -345,7 +345,6 @@ export function getZodSchema(schema: CreateFormItem, fieldConfig: Ref<Record<str
     const zodSchema = sliderZod(schema, fieldConfig)
     return z.object({ [schema.description || schema.defaultTypeName]: zodSchema as z.ZodType })
   }
-
   return null
 }
 
@@ -356,44 +355,3 @@ export function getZodSchema(schema: CreateFormItem, fieldConfig: Ref<Record<str
 export function getFieldConfig(schema: CreateFormItem, zod: z.ZodType) {
   return {}
 }
-
-// const fieldConfig = {
-//   password: {
-//     label: 'Your secure password',
-//     inputProps: {
-//       type: 'password',
-//       placeholder: '••••••••',
-//     },
-//   },
-//   favouriteNumber: {
-//     description: 'Your favourite number between 1 and 10.',
-//   },
-//   acceptTerms: {
-//     label: 'Accept terms and conditions.',
-//     inputProps: {
-//       required: true,
-//     },
-//   },
-
-//   birthday: {
-//     description: 'We need your birthday to send you a gift.',
-//   },
-
-//   sendMeMails: {
-//     component: 'switch',
-//   },
-
-//   bio: {
-//     component: 'textarea',
-//   },
-
-//   marshmallows: {
-//     label: 'How many marshmallows fit in your mouth?',
-//     component: 'radio',
-//   },
-
-//   file: {
-//     label: 'Text file',
-//     component: 'file',
-//   },
-// }

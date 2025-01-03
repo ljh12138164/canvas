@@ -23,6 +23,7 @@ import { formItemList, FormType, type CreateFormItem, type FormItem } from '@/ty
 import { watch } from 'vue'
 import { getFormDataById, getIndexDB, indexDBChange } from '@/lib/utils'
 import { DateValue } from '@internationalized/date'
+import FormSub, { IList } from './FormSub.vue'
 
 const closeRef = ref<HTMLButtonElement | null>(null)
 const router = useRouter()
@@ -139,6 +140,10 @@ const handleCopy = (id: string) => {
   if (data) pushList2({ ...data, id: nanoidId })
   handleUpdate()
 }
+const handleUpdates = (value: IList[]) => {
+  console.log(value)
+}
+const test = ref<IList[]>([])
 </script>
 <template>
   <section class="flex flex-col px-1 gap-2 w-full rounded h-[calc(100dvh-170px)] overflow-hidden">
@@ -185,8 +190,13 @@ const handleCopy = (id: string) => {
             >
               <DrawerTrigger as-child>
                 <section>
-                  <span> {{ item.name }} </span>
-
+                  <span v-if="item.type !== 'array'">
+                    {{ item.name }}
+                  </span>
+                  <div v-else-if="item.type === 'array'">
+                    <p>{{ item.name }}</p>
+                    <FormSub :modelValue="test" @update:modelValue="handleUpdates" />
+                  </div>
                   <div
                     v-if="activeArea === item.id"
                     @click.stop=""
@@ -260,3 +270,9 @@ const handleCopy = (id: string) => {
     </main>
   </section>
 </template>
+<style scoped>
+.drag-area {
+  min-height: 50px;
+  outline: 1px dashed;
+}
+</style>
