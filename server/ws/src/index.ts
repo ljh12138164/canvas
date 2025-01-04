@@ -1,12 +1,10 @@
-import { Server } from '@hocuspocus/server';
-import * as Y from 'yjs';
-import express from 'express';
-import { createServer } from 'http';
-import expressWebsockets from 'express-ws';
+import { Server } from "@hocuspocus/server";
+import * as Y from "yjs";
+import express from "express";
+import expressWebsockets from "express-ws";
 
 // Setup your express instance using the express-ws extension
-const apps = express();
-const { app } = expressWebsockets(apps);
+const { app } = expressWebsockets(express());
 const server = Server.configure({
   extensions: [
     // new Webhook({
@@ -51,22 +49,26 @@ const server = Server.configure({
     const update = Y.encodeStateAsUpdate(document);
   },
 });
-const httpServer = createServer(app);
+// const httpServer = createServer(express());
+// app.get("/", (request, response) => {
+//   response.send("Hello World!");
+// });
 // 协同服务器
-app.ws('/note/collaboration', (websocket: any, request: any) => {
+app.ws("/note/collaboration", (websocket, request) => {
   const context = {
     user: {
       id: 1234,
-      name: 'Jane',
+      name: "Jane",
     },
   };
 
   server.handleConnection(websocket, request, context);
 });
-apps.get('/chat', (websocket: any, request: any) => {
-  console.log('连接成功');
+// 画布服务器
+app.ws("/design/:id", (websocket, request) => {
+  console.log(request.params);
 });
-httpServer.listen(8080);
+app.listen(8080);
 /**
  * 创建空文档
  * @returns

@@ -7,6 +7,7 @@ interface HistoryProps {
   debounceMutate?: (data: {
     json: string;
     width: number;
+    image: string;
     height: number;
   }) => void;
 }
@@ -41,11 +42,25 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
       .find((item) => (item as InitFabicObject).name === "board");
     const width = workspace?.width || 0;
     const height = workspace?.height || 0;
+    const left = workspace?.left || 0;
+    const top = workspace?.top || 0;
     if (workspace) {
+      canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+      const image = canvas.toDataURL({
+        width,
+        height,
+        left,
+        top,
+        format: "png",
+        quality: 1,
+        multiplier: 1,
+      });
+      authZoom();
       debounceMutate?.({
         json: JSON.stringify(currentState),
         width,
         height,
+        image,
       });
     }
   };

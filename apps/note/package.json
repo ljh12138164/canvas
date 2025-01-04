@@ -100,6 +100,7 @@
     "vue3-emoji-picker": "^1.1.8",
     "vue3-toastify": "^0.2.4",
     "vuetify": "^3.7.4",
+    "y-indexeddb": "^9.0.12",
     "y-prosemirror": "^1.2.13",
     "y-protocols": "^1.0.6",
     "yjs": "^13.6.20",

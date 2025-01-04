@@ -1,7 +1,9 @@
 .tiptap {
   min-height: 150px !important;
+  max-height: 500px !important;
   padding: 0px 10px;
-  overflow: hidden !important;
+  overflow-y: scroll !important;
+  scrollbar-width: none !important;
   background-color: white;
   /* margin: 10px 0; */
   border-right: 1.5px solid #c7c7c7;

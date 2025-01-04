@@ -1,13 +1,12 @@
-import { Hono } from 'hono';
-import { serve } from '@hono/node-server';
-import { Server } from 'socket.io';
-import type { Server as HTTPServer } from 'node:http';
-import { cors } from 'hono/cors';
-
+import { Hono } from "hono";
+import { serve } from "@hono/node-server";
+import { Server } from "socket.io";
+import type { Server as HTTPServer } from "node:http";
+import { cors } from "hono/cors";
 //ws 服务
 const app = new Hono().use(
   cors({
-    origin: (origin) => origin || '*',
+    origin: (origin) => origin || "*",
     credentials: true,
   })
 );
@@ -20,12 +19,14 @@ const httpServer = serve({
 const io = new Server(httpServer as HTTPServer, {
   /* options */
   cors: {
-    origin: '*',
+    origin: "*",
     credentials: true,
   },
 });
-io.on('connection', (socket) => {
-  socket.on('connectChat', (data) => {
+
+io.on("connection", (socket) => {
+  // 连接聊天
+  socket.on("connectChat", (data) => {
     // 添加用户元数据
     const userMeta = {
       workspaceId: data.workspaceId,
@@ -44,14 +45,14 @@ io.on('connection', (socket) => {
       ...data,
       roomSize,
       userMeta,
-      type: 'join', // 标识消息类型
+      type: "join", // 标识消息类型
     });
     socket.emit(`${data.workspaceId}:initChat`, {
       roomSize,
     });
     // 断开连接
-    socket.on('disconnect', () => {
-      console.log('用户断开连接:', socket.id);
+    socket.on("disconnect", () => {
+      console.log("用户断开连接:", socket.id);
       const roomSize =
         io.sockets.adapter.rooms.get(data.workspaceId)?.size || 0;
       socket.to(data.workspaceId).emit(`leaveChat`, {
@@ -64,13 +65,15 @@ io.on('connection', (socket) => {
     });
     // 发送消息
   });
-  socket.on('initChat', (data) => {
+  // 初始化聊天
+  socket.on("initChat", (data) => {
     const roomSize = io.sockets.adapter.rooms.get(data.workspaceId)?.size || 0;
     // 广播初始化消息
     socket.to(data.workspaceId).emit(`initChat`, {
       roomSize,
     });
   });
+  // 发送消息
   socket.on(`sendMessage`, (data) => {
     const roomSize = io.sockets.adapter.rooms.get(data.workspaceId)?.size || 0;
 
@@ -87,9 +90,15 @@ io.on('connection', (socket) => {
       },
     };
 
-    socket.to(data.workspaceId).emit('sendMessage', messageData);
+    socket.to(data.workspaceId).emit("sendMessage", messageData);
   });
-  socket.on('error', (error) => {
-    console.error('WebSocket 错误:', error);
+  // 错误处理
+  socket.on("error", (error) => {
+    console.error("WebSocket 错误:", error);
+  });
+
+  // 意识感知
+  socket.on("awareness", (data) => {
+    socket.to(data.documentId).emit("awareness", data.awareness);
   });
 });

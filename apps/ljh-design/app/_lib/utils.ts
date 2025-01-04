@@ -6,6 +6,7 @@ import { Board, BoardData } from "@/app/_types/board";
 import localforage from "localforage";
 import { nanoid } from "nanoid";
 import { twMerge } from "tailwind-merge";
+import { InitFabicObject } from "../_types/Edit";
 localforage.config({
   name: "ljh-design",
   version: 1.0,
@@ -235,3 +236,56 @@ export async function getIndexDB() {
 export async function getTryBoardById(id: string) {
   return await localforage.getItem<Board>(id);
 }
+
+/**
+ * 获取画布工作区
+ * @param canvas 画布
+ * @returns 工作区
+ */
+export const getWorkspace = (canvas: fabric.Canvas): fabric.Rect =>
+  canvas
+    .getObjects()
+    .find(
+      (item: InitFabicObject | fabric.FabricObject) =>
+        (item as InitFabicObject).name === "board"
+    ) as fabric.Rect;
+/**
+ * 通过fabric.js的JSON数据生成图片
+ * @param fabrics 包含JSON数据和画布尺寸的对象
+ * @returns Promise<string> 返回生成的图片base64数据
+ */
+export const importJsonToFabric = (fabrics: { json: any }): Promise<string> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // 创建临时画布元素
+      const tempCanvasEl = document.createElement("canvas");
+      tempCanvasEl.id = "temp-canvas";
+      tempCanvasEl.style.display = "none";
+      document.body.appendChild(tempCanvasEl);
+
+      // 初始化fabric画布
+      const canvas = new fabric.Canvas(tempCanvasEl);
+      await canvas.loadFromJSON(fabrics.json);
+      const { top, left, width, height } = getWorkspace(canvas);
+      // 设置画布缩放
+      canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+      // 渲染完成后导出图片
+      const dataURL = canvas.toDataURL({
+        format: "png",
+        quality: 1,
+        width: width,
+        height: height,
+        left: left,
+        top: top,
+        multiplier: 1,
+      });
+
+      // 清理临时画布
+      canvas.dispose();
+      tempCanvasEl.remove();
+      resolve(dataURL);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

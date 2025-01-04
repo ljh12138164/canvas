@@ -501,7 +501,7 @@ importers:
         specifier: ^1.1.2
         version: 1.1.3(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)(types-react-dom@19.0.0-rc.1)(types-react@19.0.0-rc.1)
       '@radix-ui/react-dialog':
-        specifier: ^1.1.2
+        specifier: ^1.1.3
         version: 1.1.3(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)(types-react-dom@19.0.0-rc.1)(types-react@19.0.0-rc.1)
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.1.2
@@ -668,6 +668,9 @@ importers:
       react-icons:
         specifier: ^5.4.0
         version: 5.4.0(react@19.0.0-rc-69d4b800-20241021)
+      react-photo-view:
+        specifier: ^1.2.6
+        version: 1.2.6(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
       react-quill:
         specifier: ^2.0.0
         version: 2.0.0(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)
@@ -695,6 +698,18 @@ importers:
       validator:
         specifier: ^13.12.0
         version: 13.12.0
+      vaul:
+        specifier: ^1.1.1
+        version: 1.1.2(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)(types-react-dom@19.0.0-rc.1)(types-react@19.0.0-rc.1)
+      y-indexeddb:
+        specifier: ^9.0.12
+        version: 9.0.12(yjs@13.6.21)
+      y-websocket:
+        specifier: ^1.5.4
+        version: 1.5.4(yjs@13.6.21)
+      yjs:
+        specifier: ^13.6.21
+        version: 13.6.21
       zod:
         specifier: ^3.23.8
         version: 3.24.1
@@ -996,6 +1011,9 @@ importers:
       vuetify:
         specifier: ^3.7.4
         version: 3.7.5(typescript@5.7.2)(vue@3.5.13(typescript@5.7.2))
+      y-indexeddb:
+        specifier: ^9.0.12
+        version: 9.0.12(yjs@13.6.20)
       y-prosemirror:
         specifier: ^1.2.13
         version: 1.2.15(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(yjs@13.6.20))(yjs@13.6.20)
@@ -1042,6 +1060,9 @@ importers:
       '@clerk/backend':
         specifier: ^1.17.2
         version: 1.21.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@dnd-kit/core':
+        specifier: ^6.3.1
+        version: 6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@google/generative-ai':
         specifier: ^0.21.0
         version: 0.21.0
@@ -1131,15 +1152,6 @@ importers:
         specifier: ^6.0.1
         version: 6.0.3(@types/node@20.17.10)(jiti@1.21.6)(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0)(yaml@2.6.1)
 
-  server/designWs:
-    dependencies:
-      y-websocket:
-        specifier: ^2.1.0
-        version: 2.1.0(yjs@13.6.20)
-      yjs:
-        specifier: ^13.6.20
-        version: 13.6.20
-
   server/jebetChat:
     dependencies:
       '@hocuspocus/server':
@@ -1148,6 +1160,9 @@ importers:
       '@hono/node-server':
         specifier: 1.13.7
         version: 1.13.7(hono@4.6.14)
+      '@hono/node-ws':
+        specifier: ^1.0.4
+        version: 1.0.5(@hono/node-server@1.13.7(hono@4.6.14))
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -1157,8 +1172,11 @@ importers:
       socket.io:
         specifier: ^4.8.0
         version: 4.8.1
+      y-websocket:
+        specifier: ^1.5.4
+        version: 1.5.4(yjs@13.6.20)
       yjs:
-        specifier: ^13.6.20
+        specifier: ^13.6.12
         version: 13.6.20
     devDependencies:
       '@types/bun':
@@ -8258,6 +8276,12 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
+  react-photo-view@1.2.6:
+    resolution: {integrity: sha512-Fq17yxkMIv0oFp7HOJr39HgCZRP6A9K5T5rixJ4flSUYT2OO3V8vNxEExjhIKgIrfmTu+mDnHYEsI9RRWi1JHw==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
   react-promise-suspense@0.3.4:
     resolution: {integrity: sha512-I42jl7L3Ze6kZaq+7zXWSunBa3b1on5yfvUW6Eo/3fFOj6dZ5Bqmcd264nJbTK/gn1HjjILAjSwnZbV4RpSaNQ==}
 
@@ -9984,6 +10008,12 @@ packages:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
 
+  y-indexeddb@9.0.12:
+    resolution: {integrity: sha512-9oCFRSPPzBK7/w5vOkJBaVCQZKHXB/v6SIT+WYhnJxlEC61juqG0hBrAf+y3gmSMLFLwICNH9nQ53uscuse6Hg==}
+    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
+    peerDependencies:
+      yjs: ^13.0.0
+
   y-leveldb@0.1.2:
     resolution: {integrity: sha512-6ulEn5AXfXJYi89rXPEg2mMHAyyw8+ZfeMMdOtBbV8FJpQ1NOrcgi6DTAcXof0dap84NjHPT2+9d0rb6cFsjEg==}
     peerDependencies:
@@ -10005,8 +10035,8 @@ packages:
     peerDependencies:
       yjs: ^13.0.0
 
-  y-websocket@2.1.0:
-    resolution: {integrity: sha512-WHYDRqomaGkkaujtowCDwL8KYk+t1zQCGIgKyvxvchhjTQlMgWXRHJK+FDEcWmHA7I7o/4fy0eniOrtmz0e4mA==}
+  y-websocket@1.5.4:
+    resolution: {integrity: sha512-Y3021uy0anOIHqAPyAZbNDoR05JuMEGjRNI8c+K9MHzVS8dWoImdJUjccljAznc8H2L7WkIXhRHZ1igWNRSgPw==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
     hasBin: true
     peerDependencies:
@@ -10040,6 +10070,10 @@ packages:
 
   yjs@13.6.20:
     resolution: {integrity: sha512-Z2YZI+SYqK7XdWlloI3lhMiKnCdFCVC4PchpdO+mCYwtiTwncjUbnRK9R1JmkNfdmHyDXuWN3ibJAt0wsqTbLQ==}
+    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
+
+  yjs@13.6.21:
+    resolution: {integrity: sha512-/fzzyeCAfr3Qwx1D71zvumm64x+Q5MEFel6EhWlA1IBFxWPb7tei4J2a8CJyjpYHfVrRij5q3RJTK9W2Iqjouw==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
 
   yn@3.1.1:
@@ -10400,9 +10434,22 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
+  '@dnd-kit/accessibility@3.1.1(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      tslib: 2.8.1
+
   '@dnd-kit/accessibility@3.1.1(react@19.0.0)':
     dependencies:
       react: 19.0.0
+      tslib: 2.8.1
+
+  '@dnd-kit/core@6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@dnd-kit/accessibility': 3.1.1(react@18.3.1)
+      '@dnd-kit/utilities': 3.2.2(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
       tslib: 2.8.1
 
   '@dnd-kit/core@6.3.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
@@ -10411,6 +10458,11 @@ snapshots:
       '@dnd-kit/utilities': 3.2.2(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
+      tslib: 2.8.1
+
+  '@dnd-kit/utilities@3.2.2(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
       tslib: 2.8.1
 
   '@dnd-kit/utilities@3.2.2(react@19.0.0)':
@@ -10990,6 +11042,14 @@ snapshots:
   '@hono/node-ws@1.0.5(@hono/node-server@1.13.7(hono@4.6.13))':
     dependencies:
       '@hono/node-server': 1.13.7(hono@4.6.13)
+      ws: 8.18.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@hono/node-ws@1.0.5(@hono/node-server@1.13.7(hono@4.6.14))':
+    dependencies:
+      '@hono/node-server': 1.13.7(hono@4.6.14)
       ws: 8.18.0
     transitivePeerDependencies:
       - bufferutil
@@ -18396,6 +18456,11 @@ snapshots:
 
   react-is@18.3.1: {}
 
+  react-photo-view@1.2.6(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021):
+    dependencies:
+      react: 19.0.0-rc-69d4b800-20241021
+      react-dom: 19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021)
+
   react-promise-suspense@0.3.4:
     dependencies:
       fast-deep-equal: 2.0.1
@@ -19973,6 +20038,15 @@ snapshots:
       - '@types/react'
       - '@types/react-dom'
 
+  vaul@1.1.2(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)(types-react-dom@19.0.0-rc.1)(types-react@19.0.0-rc.1):
+    dependencies:
+      '@radix-ui/react-dialog': 1.1.3(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)(types-react-dom@19.0.0-rc.1)(types-react@19.0.0-rc.1)
+      react: 19.0.0-rc-69d4b800-20241021
+      react-dom: 19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021)
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/react-dom'
+
   vee-validate@4.14.7(vue@3.5.13(typescript@5.6.3)):
     dependencies:
       '@vue/devtools-api': 7.6.8
@@ -20563,11 +20637,28 @@ snapshots:
   xtend@4.0.2:
     optional: true
 
+  y-indexeddb@9.0.12(yjs@13.6.20):
+    dependencies:
+      lib0: 0.2.99
+      yjs: 13.6.20
+
+  y-indexeddb@9.0.12(yjs@13.6.21):
+    dependencies:
+      lib0: 0.2.99
+      yjs: 13.6.21
+
   y-leveldb@0.1.2(yjs@13.6.20):
     dependencies:
       level: 6.0.1
       lib0: 0.2.99
       yjs: 13.6.20
+    optional: true
+
+  y-leveldb@0.1.2(yjs@13.6.21):
+    dependencies:
+      level: 6.0.1
+      lib0: 0.2.99
+      yjs: 13.6.21
     optional: true
 
   y-prosemirror@1.2.15(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(yjs@13.6.20))(yjs@13.6.20):
@@ -20584,7 +20675,12 @@ snapshots:
       lib0: 0.2.99
       yjs: 13.6.20
 
-  y-websocket@2.1.0(yjs@13.6.20):
+  y-protocols@1.0.6(yjs@13.6.21):
+    dependencies:
+      lib0: 0.2.99
+      yjs: 13.6.21
+
+  y-websocket@1.5.4(yjs@13.6.20):
     dependencies:
       lib0: 0.2.99
       lodash.debounce: 4.0.8
@@ -20593,6 +20689,19 @@ snapshots:
     optionalDependencies:
       ws: 6.2.3
       y-leveldb: 0.1.2(yjs@13.6.20)
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  y-websocket@1.5.4(yjs@13.6.21):
+    dependencies:
+      lib0: 0.2.99
+      lodash.debounce: 4.0.8
+      y-protocols: 1.0.6(yjs@13.6.21)
+      yjs: 13.6.21
+    optionalDependencies:
+      ws: 6.2.3
+      y-leveldb: 0.1.2(yjs@13.6.21)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -20620,6 +20729,10 @@ snapshots:
       fd-slicer: 1.1.0
 
   yjs@13.6.20:
+    dependencies:
+      lib0: 0.2.99
+
+  yjs@13.6.21:
     dependencies:
       lib0: 0.2.99
 

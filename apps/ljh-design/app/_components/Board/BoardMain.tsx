@@ -150,8 +150,7 @@ const BoardMain = ({ token }: { token: string }) => {
                         item.map((item) => (
                           <TableRow
                             onClick={() => {
-                              if (!isFetching)
-                                redirect(`/board/Edit/${item.id}`);
+                              if (!isFetching) redirect(`/Edit/${item.id}`);
                             }}
                             key={item.id}
                             className="h-20 cursor-pointer"

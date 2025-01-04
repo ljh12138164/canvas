@@ -1,10 +1,10 @@
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
+} from "../../ui/tooltip";
 
 interface TiptapToolbar {
   tiptapToolBar: {
@@ -30,7 +30,7 @@ const TiptapToolbar = ({ tiptapToolBar }: TiptapToolbar) => {
                   variant="ghost"
                   onClick={item.onClick}
                   disabled={!item.disabled}
-                  className={`p-0 h-8 w-8 ${
+                  className={`p-0 h-8 w-12 rounded-none ${
                     item.active
                       ? "bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700"
                       : "hover:bg-zinc-100 dark:hover:bg-zinc-800"

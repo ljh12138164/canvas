@@ -1,3 +1,4 @@
+"use client";
 import ColorSoiberbar from "@/app/_components/EditComponents/ColorSiberbar";
 import Footer from "@/app/_components/EditComponents/Footer";
 import ImageSiderbar from "@/app/_components/EditComponents/ImageSiderbar";
@@ -42,6 +43,11 @@ import { useMemoizedFn } from "ahooks";
 import * as fabric from "fabric";
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
+import * as Y from "yjs";
+import { WebsocketProvider } from "y-websocket";
+//创建文档
+const ydoc = new Y.Doc();
+// 画布服务器
 const Canvas = ({ token, data }: { token: string; data: Board }) => {
   const initWidth = useRef(data.width);
   const initHeight = useRef(data.height);
@@ -100,7 +106,26 @@ const Canvas = ({ token, data }: { token: string; data: Board }) => {
   //画布历史
   const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } =
     useHistoty({ canvas, authZoom, debounceMutate });
+  // // indexDB
+  // const yIndexDb = new Y.IndexedDBPersistence(data.id, ydoc);
+  // yIndexDb.whenSynced.then(() => {
+  //   console.log("Y-doc is synced with IndexedDB");
+  // });
 
+  // 协同
+  useEffect(() => {
+    const websocket = new WebsocketProvider(
+      process.env.NEXT_PUBLIC_WS_URL!,
+      data.id,
+      ydoc
+    );
+    return () => {
+      websocket.destroy();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 画布事件
   useCanvasEvent({
     canvas,
     tool,
@@ -110,6 +135,7 @@ const Canvas = ({ token, data }: { token: string; data: Board }) => {
   });
 
   const { copy, pasty } = useClipboard({ canvas });
+  // 键盘事件
   useKeyBoard({
     canvas,
     undo,
@@ -216,6 +242,7 @@ const Canvas = ({ token, data }: { token: string; data: Board }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [init]);
+  // 初始化
   useLoading({
     canvas,
     initState,
