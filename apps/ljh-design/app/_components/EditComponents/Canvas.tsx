@@ -16,6 +16,7 @@ import useKeyBoard from "@/app/_hook/useKeyBoard";
 import { useLoading } from "@/app/_hook/useLoding";
 import useResponse from "@/app/_hook/useResponse";
 import { useWindowEvent } from "@/app/_hook/useWindowEvent";
+import { useYjs } from "@/app/_hook/useYjs";
 import { buildEditor } from "@/app/_store/editor";
 import { Board } from "@/app/_types/board";
 import {
@@ -41,24 +42,26 @@ import {
 } from "@/app/_types/Edit";
 import { useMemoizedFn } from "ahooks";
 import * as fabric from "fabric";
-import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
-import * as Y from "yjs";
-import { WebsocketProvider } from "y-websocket";
-//创建文档
-const ydoc = new Y.Doc();
+
 // 画布服务器
 const Canvas = ({ token, data }: { token: string; data: Board }) => {
+  // 画板初始数据
   const initWidth = useRef(data.width);
   const initHeight = useRef(data.height);
   const initState = useRef(data.json);
+  // 画布容器
+  const containEl = useRef<HTMLDivElement>(null);
+  // 画布
+  const canvasEl = useRef<HTMLCanvasElement>(null);
   const { mutate, isPending } = useBoardAutoSaveQuery({ id: data.id, token });
 
-  const debounceMutate = useMemoizedFn(
-    debounce((data: { json: string; width: number; height: number }) => {
-      mutate({ ...data });
-    }, 1000)
-  );
+  const debounceMutate = useMemoizedFn(() => {});
+  // debounce((data: { json: string; width: number; height: number }) => {
+  //   mutate({ ...data });
+  // }, 1000)
+
+  // 画布初始化
   const { init } = useCanvas({
     initWidth: initWidth.current as number,
     initHeight: initHeight.current as number,
@@ -106,25 +109,16 @@ const Canvas = ({ token, data }: { token: string; data: Board }) => {
   //画布历史
   const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } =
     useHistoty({ canvas, authZoom, debounceMutate });
-  // // indexDB
-  // const yIndexDb = new Y.IndexedDBPersistence(data.id, ydoc);
-  // yIndexDb.whenSynced.then(() => {
-  //   console.log("Y-doc is synced with IndexedDB");
-  // });
-
-  // 协同
-  useEffect(() => {
-    const websocket = new WebsocketProvider(
-      process.env.NEXT_PUBLIC_WS_URL!,
-      data.id,
-      ydoc
-    );
-    return () => {
-      websocket.destroy();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  // 初始化
+  const { isLoading } = useLoading({
+    canvas,
+    initState,
+    canvasHistory,
+    authZoom,
+    setHistoryIndex: setHitoryIndex,
+  });
+  // 协同hooks
+  const { ydoc, websocket, yMap } = useYjs({ data, isLoading, canvas });
   // 画布事件
   useCanvasEvent({
     canvas,
@@ -132,8 +126,10 @@ const Canvas = ({ token, data }: { token: string; data: Board }) => {
     save,
     setSelectedObject,
     setTool,
+    isLoading,
+    websocket,
   });
-
+  // 画布剪切板
   const { copy, pasty } = useClipboard({ canvas });
   // 键盘事件
   useKeyBoard({
@@ -144,7 +140,9 @@ const Canvas = ({ token, data }: { token: string; data: Board }) => {
     copy,
     pasty,
   });
+  // 画布事件
   useWindowEvent();
+  // 工具栏
   const onChangeActive = (tools: Tool) => {
     if (tools === Tool.Draw) {
       editor()?.enableDraw();
@@ -216,8 +214,7 @@ const Canvas = ({ token, data }: { token: string; data: Board }) => {
     }
     return undefined;
   };
-  const containEl = useRef<HTMLDivElement>(null);
-  const canvasEl = useRef<HTMLCanvasElement>(null);
+
   //初始化
   useEffect(() => {
     if (!canvasEl.current) return;
@@ -242,14 +239,7 @@ const Canvas = ({ token, data }: { token: string; data: Board }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [init]);
-  // 初始化
-  useLoading({
-    canvas,
-    initState,
-    canvasHistory,
-    authZoom,
-    setHistoryIndex: setHitoryIndex,
-  });
+
   return (
     <div
       className="h-full w-full flex flex-col items-center relative bg-slate-100"

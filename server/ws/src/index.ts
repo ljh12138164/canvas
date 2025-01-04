@@ -1,5 +1,6 @@
 import { Server } from "@hocuspocus/server";
 import * as Y from "yjs";
+import * as fabric from "fabric";
 import express from "express";
 import expressWebsockets from "express-ws";
 
@@ -67,6 +68,13 @@ app.ws("/note/collaboration", (websocket, request) => {
 // 画布服务器
 app.ws("/design/:id", (websocket, request) => {
   console.log(request.params);
+  // 处理错误的id
+  if (!request.params.id) return websocket.close();
+  websocket.on(`add:${request.params.id}`, (item: fabric.Object) => {
+    console.log("add", item);
+    // 发送给所有连接的客户端
+    websocket.emit(`add:${request.params.id}`, item);
+  });
 });
 app.listen(8080);
 /**
