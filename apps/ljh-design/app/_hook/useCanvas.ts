@@ -2,6 +2,7 @@ import { STROKE_COLOR, STROKE_WIDTH } from "@/app/_types/Edit";
 import * as fabric from "fabric";
 import { useMemoizedFn } from "ahooks";
 import { RefObject } from "react";
+import * as Y from "yjs";
 
 interface CanvasProps {
   initWidth?: RefObject<number> | number;

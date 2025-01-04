@@ -7,7 +7,7 @@ import { CheckIcon } from "@radix-ui/react-icons";
 import { cn } from "@/app/_lib/utils";
 
 interface CheckboxProps extends CheckboxPrimitive.CheckboxProps {
-  ref: React.Ref<HTMLButtonElement>;
+  ref?: React.Ref<HTMLButtonElement>;
 }
 const Checkbox = ({ className, ref, ...props }: CheckboxProps) => (
   <CheckboxPrimitive.Root

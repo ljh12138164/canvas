@@ -20,14 +20,40 @@ import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import "./tiptap.css";
 import TiptapToolbar from "./TiptapToolbar";
 import { useTheme } from "next-themes";
+import { UseFormSetError, UseFormSetValue } from "react-hook-form";
 
-const Tiptap = () => {
+const Tiptap = ({
+  content = "",
+  setValue,
+  editorab = true,
+  setError,
+}: {
+  content: string;
+  setValue: UseFormSetValue<{
+    explanation: string;
+    title: string;
+    relativeTheme: string;
+    tap: string[];
+  }>;
+  editorab?: boolean;
+  setError: UseFormSetError<{
+    explanation: string;
+    title: string;
+    tap: string[];
+    relativeTheme: string;
+  }>;
+}) => {
   const { theme } = useTheme();
   const editor = useEditor({
     editorProps: {
       attributes: {
         class: theme === "dark" ? "tiptap dark" : "tiptap light",
       },
+    },
+    onUpdate: ({ editor }) => {
+      if (!editor.getText())
+        return setError("explanation", { message: "不能为空" });
+      setValue("explanation", editor.getHTML());
     },
     extensions: [
       StarterKit,
@@ -39,7 +65,8 @@ const Tiptap = () => {
 
       Placeholder.configure({ placeholder: "请输入内容" }),
     ],
-    content: "",
+    editable: editorab,
+    content: content,
   });
 
   const tiptapToolBar = [

@@ -1,6 +1,7 @@
 import { JSON_KEY } from "@/app/_types/Edit";
 import { Canvas } from "fabric";
 import { RefObject, useEffect, useRef } from "react";
+import * as Y from "yjs";
 
 type UseLoadingStateProps = {
   authZoom: () => void;

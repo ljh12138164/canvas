@@ -23,10 +23,10 @@ const SiderBarRoutes = () => {
             href="/board/formue"
             label="论坛"
             Icon={MessageSquare}
-            isActive={pathname === "/board/formue"}
+            isActive={pathname.split("/").includes("formue")}
           />
         </li>
-        <Separator></Separator>
+        <Separator />
         <li className="p-4">
           <SiderBarItem
             href="/board/user"

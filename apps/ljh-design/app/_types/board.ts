@@ -7,6 +7,7 @@ export interface Board {
   width: number | string;
   height: number | string;
   url?: string;
+  image?: string;
   isTemplate?: boolean;
 }
 

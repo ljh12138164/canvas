@@ -8,19 +8,19 @@ import {
   updateBoard,
   getUserImage,
   getUserBoardList,
-} from '../../../server/design/board';
-import { zValidator } from '@hono/zod-validator';
-import { Hono } from 'hono';
-import { z } from 'zod';
-import { checkToken, getSupabaseAuth } from '../../../libs/middle';
-import to from 'await-to-js';
-import { errorCheck } from '../../../libs/error';
+} from "../../../server/design/board";
+import { zValidator } from "@hono/zod-validator";
+import { Hono } from "hono";
+import { z } from "zod";
+import { checkToken, getSupabaseAuth } from "../../../libs/middle";
+import to from "await-to-js";
+import { errorCheck } from "../../../libs/error";
 const board = new Hono()
   .use(checkToken(process.env.SUPABASE_DESIGN_JWT!))
   .post(
-    '/',
+    "/",
     zValidator(
-      'json',
+      "json",
       z.object({
         name: z.string(),
         json: z.string(),
@@ -29,7 +29,7 @@ const board = new Hono()
       })
     ),
     async (c) => {
-      const { name, json, width, height } = c.req.valid('json');
+      const { name, json, width, height } = c.req.valid("json");
       const { auth, token } = getSupabaseAuth(c);
       const [error, board] = await to(
         createBoard(
@@ -47,16 +47,15 @@ const board = new Hono()
       return c.json(board);
     }
   )
-  .get('/getBoardList', async (c) => {
+  .get("/getBoardList", async (c) => {
     const { auth, token } = getSupabaseAuth(c);
     const [error, board] = await to(
       getUserBoardList({ userid: auth.sub, token })
     );
-    console.log(error, board);
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(board);
   })
-  .get('/:id', zValidator('param', z.object({ id: z.string() })), async (c) => {
+  .get("/:id", zValidator("param", z.object({ id: z.string() })), async (c) => {
     const { id } = c.req.param();
     const { auth, token } = getSupabaseAuth(c);
 
@@ -67,10 +66,10 @@ const board = new Hono()
     return c.json(board);
   })
   .post(
-    '/getBoard',
-    zValidator('json', z.object({ pageParam: z.number() })),
+    "/getBoard",
+    zValidator("json", z.object({ pageParam: z.number() })),
     async (c) => {
-      const { pageParam } = c.req.valid('json');
+      const { pageParam } = c.req.valid("json");
       const { auth, token } = getSupabaseAuth(c);
       const [error, board] = await to(
         getUserBoard({ userid: auth.sub, pageParam, token })
@@ -80,9 +79,9 @@ const board = new Hono()
     }
   )
   .post(
-    '/editBoard',
+    "/editBoard",
     zValidator(
-      'json',
+      "json",
       z.object({
         id: z.string(),
         width: z.number(),
@@ -91,7 +90,7 @@ const board = new Hono()
       })
     ),
     async (c) => {
-      const { id, name, width, height } = c.req.valid('json');
+      const { id, name, width, height } = c.req.valid("json");
       const { auth, token } = getSupabaseAuth(c);
       const [error, board] = await to(
         updateBoard({
@@ -108,10 +107,10 @@ const board = new Hono()
     }
   )
   .post(
-    '/deleteBoard',
-    zValidator('json', z.object({ id: z.string() })),
+    "/deleteBoard",
+    zValidator("json", z.object({ id: z.string() })),
     async (c) => {
-      const { id } = c.req.valid('json');
+      const { id } = c.req.valid("json");
       const { auth, token } = getSupabaseAuth(c);
 
       const [error, board] = await to(
@@ -121,10 +120,10 @@ const board = new Hono()
       return c.json(board);
     }
   )
-  .post('/clone', async (c) => {
+  .post("/clone", async (c) => {
     const { name, json, width, height } = await c.req.json();
     if (!name || !width || !height) {
-      return c.json({ message: '请输入完整信息' }, 400);
+      return c.json({ message: "请输入完整信息" }, 400);
     }
     const { auth, token } = getSupabaseAuth(c);
     const [error, board] = await to(
@@ -142,28 +141,29 @@ const board = new Hono()
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(board);
   })
-  .post('/image', async (c) => {
+  .post("/image", async (c) => {
     const { auth, token } = getSupabaseAuth(c);
     const [error, data] = await to(getUserImage({ userId: auth.sub, token }));
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(data);
   })
   .post(
-    '/:id',
-    zValidator('param', z.object({ id: z.string() })),
+    "/:id",
+    zValidator("param", z.object({ id: z.string() })),
     zValidator(
-      'json',
+      "json",
       z.object({
         json: z.string().optional(),
         name: z.string().optional(),
         width: z.number().optional(),
         height: z.number().optional(),
+        image: z.string().optional(),
         isTemplate: z.boolean().optional(),
       })
     ),
     async (c) => {
       const { id } = c.req.param();
-      const value = c.req.valid('json');
+      const value = c.req.valid("json");
       const { auth, token } = getSupabaseAuth(c);
 
       const [error, board] = await to(

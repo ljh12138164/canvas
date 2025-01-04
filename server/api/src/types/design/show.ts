@@ -7,6 +7,9 @@ export interface Show {
   updated_at?: string;
   explanation: string;
   relativeTheme: string;
+  tags: string[];
+  image: string;
+  json: string;
 }
 // 收藏模板
 export interface Collections {
@@ -31,6 +34,7 @@ export interface Tag {
   userId: string;
   created_at: string;
   updated_at?: string;
+  isTrash: Date | null;
 }
 
 // 评论
