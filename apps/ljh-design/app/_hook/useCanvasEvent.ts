@@ -1,12 +1,15 @@
 import { Tool } from "@/app/_types/Edit";
 import * as fabric from "fabric";
 import { useEffect } from "react";
+import { WebsocketProvider } from "y-websocket";
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
   tool: Tool;
   setSelectedObject: (object: fabric.Object[]) => void;
   setTool: (tool: Tool) => void;
   save: (skip?: boolean, des?: string) => void;
+  websocket: WebsocketProvider | null;
+  isLoading: boolean;
 }
 
 /***
@@ -19,28 +22,43 @@ const useCanvasEvent = ({
   save,
   setSelectedObject,
   setTool,
+  websocket,
+  isLoading,
 }: CanvasEventProps) => {
   useEffect(() => {
-    if (canvas) {
-      //创建
-      canvas.on("object:added", () => {
-        save();
+    if (canvas && !isLoading) {
+      // 添加对象
+      canvas.on("object:added", (item) => {
+        // console.log(item);
+        websocket?.emit("add", [item]);
+        // yMap.set("json", canvas.toJSON());
+        // save();
       });
-      canvas.on("object:removed", () => {
-        save();
+      canvas.on("object:removed", (item) => {
+        websocket?.emit("remove", [item]);
+        // console.log(item);
+        // yMap.set("json", canvas.toJSON());
+        // save();
       });
-      canvas.on("object:modified", () => {
-        save();
+      canvas.on("object:modified", (item) => {
+        websocket?.emit("update", [item]);
+        // console.log(item);
+        // yMap.set("json", canvas.toJSON());
+        // save();
       });
       canvas.on("selection:created", (e) => {
+        websocket?.emit("select", [e.selected || []]);
+        console.log(e);
         setSelectedObject(e.selected || []);
       });
       //更新
       canvas.on("selection:updated", (e) => {
+        console.log(e);
         setSelectedObject(e.selected || []);
       });
       //删除
-      canvas.on("selection:cleared", () => {
+      canvas.on("selection:cleared", (e) => {
+        console.log(e);
         if (
           tool == Tool.Font ||
           tool === Tool.Fill ||
@@ -57,7 +75,7 @@ const useCanvasEvent = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvas]);
+  }, [canvas, isLoading]);
 };
 
 export default useCanvasEvent;
