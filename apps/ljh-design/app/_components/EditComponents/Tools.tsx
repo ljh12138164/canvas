@@ -42,6 +42,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
   const seltectedObject = editor?.canvas?.getActiveObjects()[0];
   const textYype = isText(seltectedObject);
   const isImage = selectedObject?.type === "image";
+  console.log(selectedObject);
   return (
     <ScrollArea className="h-[3.3rem]  p-[0.1rem]  space-x-4 bg-white items-center flex w-full z-[50]">
       <div className="flex items-center h-full  gap-2 w-full  overflow-y-hidden">

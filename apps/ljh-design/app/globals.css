@@ -103,3 +103,19 @@
   color: #999;
   text-transform: uppercase;
 }
+/* 全局滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--foreground);
+  border-radius: 10px;
+  border: 2px solid var(--background);
+}

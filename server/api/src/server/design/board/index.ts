@@ -71,8 +71,9 @@ export const getBoard = async ({
   const { data, error } = await supabaseDesign(token)
     .from("board")
     .select("*")
-    .eq("id", id)
-    .eq("userId", userid);
+    .eq("id", id);
+  // TODO: 需要修改
+  // .eq("userId", userid);
   if (error) throw new Error("服务器错误");
   return data;
 };

@@ -1,6 +1,8 @@
 import material from "material-colors";
 import * as fabric from "fabric";
 import { Effect } from "@/app/_lib/utils";
+import * as Y from "yjs";
+import { WebsocketProvider } from "y-websocket";
 export type TBlendMode =
   | "multiply"
   | "add"
@@ -82,6 +84,7 @@ export const canfilterArr = [
   "vibrance",
   "grayscale",
 ];
+// 可以改变的滤镜
 export const CanfilterSetting: CanFilterChangeType[] = [
   // ok
   {
@@ -679,6 +682,8 @@ export interface buildEditorProps {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
+  yMaps: Y.Map<string>;
+  websockets: WebsocketProvider | null;
   pasty: () => void;
   save: (skip?: boolean) => void;
   canRedo: () => boolean;
@@ -839,4 +844,14 @@ export const PAGE_SIZE = 7;
 export enum ImageType {
   Cloud,
   Recommend,
+}
+// 用户状态
+export interface UserState {
+  name: string;
+  color: string;
+  clientId: string;
+  image: string;
+  // 选择的对象
+  select: string[];
+  isSelf: boolean;
 }
