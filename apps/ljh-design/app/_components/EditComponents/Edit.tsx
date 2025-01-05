@@ -7,8 +7,17 @@ import Link from "next/link";
 import LoginProtect from "../Sign/LoginProtect";
 import { Button } from "../ui/button";
 import Canvas from "./Canvas";
+import { Sessions } from "@/app/_types/user";
 
-export default function Edit({ token, id }: { token: string; id: string }) {
+export default function Edit({
+  token,
+  id,
+  user,
+}: {
+  token: string;
+  id: string;
+  user: Sessions;
+}) {
   const { isLoading, error, data } = useBoardEditQuery({
     id,
     token,
@@ -30,7 +39,7 @@ export default function Edit({ token, id }: { token: string; id: string }) {
           </Button>
         </div>
       )}
-      {data && <Canvas token={token} data={data[0]} />}
+      {data && <Canvas user={user} token={token} data={data[0]} />}
     </LoginProtect>
   );
 }

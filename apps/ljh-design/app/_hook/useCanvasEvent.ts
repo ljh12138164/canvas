@@ -1,15 +1,17 @@
 import { Tool } from "@/app/_types/Edit";
 import * as fabric from "fabric";
 import { useEffect } from "react";
-import { WebsocketProvider } from "y-websocket";
+import * as Y from "yjs";
+import { Board } from "../_types/board";
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
   tool: Tool;
   setSelectedObject: (object: fabric.Object[]) => void;
   setTool: (tool: Tool) => void;
   save: (skip?: boolean, des?: string) => void;
-  websocket: WebsocketProvider | null;
   isLoading: boolean;
+  data: Board;
+  yMaps?: Y.Map<string>;
 }
 
 /***
@@ -18,47 +20,55 @@ interface CanvasEventProps {
  */
 const useCanvasEvent = ({
   canvas,
+  yMaps,
   tool,
   save,
+  data,
   setSelectedObject,
   setTool,
-  websocket,
   isLoading,
 }: CanvasEventProps) => {
   useEffect(() => {
-    if (canvas && !isLoading) {
+    if (canvas) {
       // 添加对象
       canvas.on("object:added", (item) => {
-        // console.log(item);
-        websocket?.emit("add", [item]);
+        // 添加到ymap
+        yMaps?.set(
+          item.target.id,
+          JSON.stringify({ ...item.target, changeType: "add" })
+        );
         // yMap.set("json", canvas.toJSON());
         // save();
       });
       canvas.on("object:removed", (item) => {
-        websocket?.emit("remove", [item]);
+        // 从ymap中删除
+        // yMaps?.delete(item.target.id);
+        // websocket?.emit("remove", [item]);
         // console.log(item);
         // yMap.set("json", canvas.toJSON());
         // save();
       });
       canvas.on("object:modified", (item) => {
-        websocket?.emit("update", [item]);
+        // websocket?.emit("update", [item]);
+        // 更新ymap
+        // yMaps?.set(item.target.id, item.target);
         // console.log(item);
         // yMap.set("json", canvas.toJSON());
         // save();
       });
       canvas.on("selection:created", (e) => {
-        websocket?.emit("select", [e.selected || []]);
-        console.log(e);
-        setSelectedObject(e.selected || []);
+        // websocket?.emit("select", [e.selected || []]);
+        // console.log(e);
+        // setSelectedObject(e.selected || []);
       });
       //更新
       canvas.on("selection:updated", (e) => {
-        console.log(e);
-        setSelectedObject(e.selected || []);
+        // console.log(e);
+        // setSelectedObject(e.selected || []);
       });
       //删除
       canvas.on("selection:cleared", (e) => {
-        console.log(e);
+        // console.log(e);
         if (
           tool == Tool.Font ||
           tool === Tool.Fill ||
@@ -70,12 +80,12 @@ const useCanvasEvent = ({
           tool === Tool.Opacity
         )
           setTool(Tool.Select);
-        setSelectedObject([]);
+        // setSelectedObject([]);
       });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvas, isLoading]);
+  }, [canvas]);
 };
 
 export default useCanvasEvent;
