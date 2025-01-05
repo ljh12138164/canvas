@@ -7,7 +7,7 @@ const EditMain = ({ id }: { id: string }) => {
   const { user, loading } = useUser({ redirects: true });
   if (loading) return;
   if (!user) redirect("/sign-in");
-  return <Edit token={user.session.access_token} id={id} />;
+  return <Edit token={user.session.access_token} id={id} user={user} />;
 };
 
 export default EditMain;

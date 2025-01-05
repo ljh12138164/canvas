@@ -289,3 +289,23 @@ export const importJsonToFabric = (fabrics: { json: any }): Promise<string> => {
     }
   });
 };
+
+/**
+ * ## 添加物体
+ *
+ */
+export const addObject = (
+  canvas: fabric.Canvas,
+  item: fabric.Object,
+  id: string
+) => {
+  canvas.add(item);
+  canvas.renderAll();
+};
+/**
+ * 随机颜色
+ * @returns
+ */
+export const randomColor = () => {
+  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+};

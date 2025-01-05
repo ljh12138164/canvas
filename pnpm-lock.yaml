@@ -704,6 +704,9 @@ importers:
       y-indexeddb:
         specifier: ^9.0.12
         version: 9.0.12(yjs@13.6.21)
+      y-protocols:
+        specifier: ^1.0.6
+        version: 1.0.6(yjs@13.6.21)
       y-websocket:
         specifier: ^1.5.4
         version: 1.5.4(yjs@13.6.21)
@@ -1152,6 +1155,61 @@ importers:
         specifier: ^6.0.1
         version: 6.0.3(@types/node@20.17.10)(jiti@1.21.6)(sass-embedded@1.83.0)(sass@1.83.0)(terser@5.37.0)(yaml@2.6.1)
 
+  server/design:
+    dependencies:
+      '@hono/node-server':
+        specifier: 1.13.7
+        version: 1.13.7(hono@4.6.14)
+      '@hono/node-ws':
+        specifier: ^1.0.4
+        version: 1.0.5(@hono/node-server@1.13.7(hono@4.6.14))
+      '@types/express':
+        specifier: ^5.0.0
+        version: 5.0.0
+      '@types/express-ws':
+        specifier: ^3.0.5
+        version: 3.0.5
+      '@types/ws':
+        specifier: ^8.5.13
+        version: 8.5.13
+      bun:
+        specifier: ^1.1.36
+        version: 1.1.38
+      express:
+        specifier: ^4.21.2
+        version: 4.21.2
+      express-ws:
+        specifier: ^5.0.2
+        version: 5.0.2(express@4.21.2)
+      fabric:
+        specifier: ^6.5.3
+        version: 6.5.3(encoding@0.1.13)
+      hono:
+        specifier: ^4.6.0
+        version: 4.6.14
+      nanoid:
+        specifier: ^5.0.8
+        version: 5.0.9
+      nest:
+        specifier: ^0.1.6
+        version: 0.1.6
+      socket.io:
+        specifier: ^4.8.1
+        version: 4.8.1
+      y-protocols:
+        specifier: ^1.0.6
+        version: 1.0.6(yjs@13.6.21)
+      y-websocket:
+        specifier: ^1.5.4
+        version: 1.5.4(yjs@13.6.21)
+      yjs:
+        specifier: ^13.6.20
+        version: 13.6.21
+    devDependencies:
+      '@types/bun':
+        specifier: latest
+        version: 1.1.14
+
   server/jebetChat:
     dependencies:
       '@hocuspocus/server':
@@ -1227,6 +1285,12 @@ importers:
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
+      y-protocols:
+        specifier: ^1.0.6
+        version: 1.0.6(yjs@13.6.20)
+      y-websocket:
+        specifier: ^1.5.4
+        version: 1.5.4(yjs@13.6.20)
       yjs:
         specifier: ^13.6.20
         version: 13.6.20

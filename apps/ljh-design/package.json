@@ -81,6 +81,7 @@
     "validator": "^13.12.0",
     "vaul": "^1.1.1",
     "y-indexeddb": "^9.0.12",
+    "y-protocols": "^1.0.6",
     "y-websocket": "^1.5.4",
     "yjs": "^13.6.21",
     "zod": "^3.23.8",

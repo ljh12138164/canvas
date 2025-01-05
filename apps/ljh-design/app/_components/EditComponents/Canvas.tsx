@@ -40,12 +40,21 @@ import {
   STROKE_WIDTH,
   Tool,
 } from "@/app/_types/Edit";
+import { Sessions } from "@/app/_types/user";
 import { useMemoizedFn } from "ahooks";
 import * as fabric from "fabric";
 import { useEffect, useRef, useState } from "react";
 
 // 画布服务器
-const Canvas = ({ token, data }: { token: string; data: Board }) => {
+const Canvas = ({
+  user,
+  token,
+  data,
+}: {
+  user: Sessions;
+  token: string;
+  data: Board;
+}) => {
   // 画板初始数据
   const initWidth = useRef(data.width);
   const initHeight = useRef(data.height);
@@ -118,16 +127,17 @@ const Canvas = ({ token, data }: { token: string; data: Board }) => {
     setHistoryIndex: setHitoryIndex,
   });
   // 协同hooks
-  const { ydoc, websocket, yMap } = useYjs({ data, isLoading, canvas });
+  const { websockets, yMaps } = useYjs({ data, isLoading, canvas, user });
   // 画布事件
   useCanvasEvent({
     canvas,
+    yMaps,
+    data,
     tool,
     save,
     setSelectedObject,
     setTool,
     isLoading,
-    websocket,
   });
   // 画布剪切板
   const { copy, pasty } = useClipboard({ canvas });

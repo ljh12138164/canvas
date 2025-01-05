@@ -27,6 +27,7 @@ import {
   TRIANGLE_OPTION,
 } from "@/app/_types/Edit";
 import * as fabric from "fabric";
+import { nanoid } from "nanoid";
 import toast from "react-hot-toast";
 //输入
 
@@ -38,6 +39,10 @@ interface FilterArrayEffect {
 declare module "fabric" {
   interface FabricImage {
     filtersArray: FilterArrayEffect[];
+    id: string;
+  }
+  interface FabricObject {
+    id: string;
   }
 }
 //
@@ -417,7 +422,9 @@ export const buildEditor = ({
 
       img.scaleToWidth(workspace?.width || 0);
       img.scaleToHeight(workspace?.height || 0);
+      img.id = nanoid();
       addToCanvas(img);
+      toast.dismiss();
       toast.success("添加成功");
     },
     delete: () => {
@@ -623,6 +630,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
+    //
     setStrokeColor: (color: string) => {
       setStrokeColor(color);
       canvas.getActiveObjects()?.forEach((obj) => {
@@ -646,10 +654,11 @@ export const buildEditor = ({
         fill: fillColor,
         stroke: strokeColor,
       });
+      circle.id = nanoid();
       center(circle);
       canvas.add(circle);
-      //选中对象
       canvas.setActiveObject(circle);
+      //选中对象
     },
     //矩形
     addRectangle: () => {
@@ -658,6 +667,7 @@ export const buildEditor = ({
         fill: fillColor,
         stroke: strokeColor,
       });
+      rect.id = nanoid();
       center(rect);
       canvas.add(rect);
       canvas.setActiveObject(rect);
@@ -671,6 +681,7 @@ export const buildEditor = ({
         rx: 10,
         ry: 10,
       });
+      rectangle.id = nanoid();
       center(rectangle);
       canvas.add(rectangle);
       canvas.setActiveObject(rectangle);
@@ -682,10 +693,12 @@ export const buildEditor = ({
         fill: fillColor,
         stroke: strokeColor,
       });
+      triangle.id = nanoid();
       center(triangle);
       canvas.add(triangle);
       canvas.setActiveObject(triangle);
     },
+    // 旋转三角形
     addRotateTriangle: () => {
       const triangle = new fabric.Triangle({
         ...TRIANGLE_OPTION,
@@ -694,6 +707,7 @@ export const buildEditor = ({
         //180反转
         angle: 180,
       });
+      triangle.id = nanoid();
       center(triangle);
       canvas.add(triangle);
       canvas.setActiveObject(triangle);
@@ -721,6 +735,7 @@ export const buildEditor = ({
           stroke: strokeColor,
         }
       );
+      diamod.id = nanoid();
       center(diamod);
       canvas.add(diamod);
       canvas.setActiveObject(diamod);

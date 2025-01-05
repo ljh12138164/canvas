@@ -1,8 +1,8 @@
 import { Server } from "@hocuspocus/server";
-import * as Y from "yjs";
-import * as fabric from "fabric";
 import express from "express";
 import expressWebsockets from "express-ws";
+// @ts-ignore
+import * as Y from "yjs";
 
 // Setup your express instance using the express-ws extension
 const { app } = expressWebsockets(express());
@@ -39,7 +39,7 @@ const server = Server.configure({
    */
   onLoadDocument: async (payload) => {
     const { documentName } = payload;
-    console.log(documentName);
+    // console.log(documentName);
   },
   /**
    * 保存文档 hook
@@ -65,17 +65,40 @@ app.ws("/note/collaboration", (websocket, request) => {
 
   server.handleConnection(websocket, request, context);
 });
-// 画布服务器
-app.ws("/design/:id", (websocket, request) => {
-  console.log(request.params);
-  // 处理错误的id
-  if (!request.params.id) return websocket.close();
-  websocket.on(`add:${request.params.id}`, (item: fabric.Object) => {
-    console.log("add", item);
-    // 发送给所有连接的客户端
-    websocket.emit(`add:${request.params.id}`, item);
-  });
-});
+
+// // 房间
+// const clients: Map<string, Set<any>> = new Map();
+// // 画布服务器
+// app.ws("/design/:id", (websocket, request) => {
+//   websocket.on("connection", (websockets) => {
+//     console.log("连接");
+//     setupWSConnection(websockets, websocket);
+//   });
+//   // setupWSConnection(websocket, request);
+//   // // console.log(request.socket);
+//   // // 处理错误的id
+//   // clients.set(
+//   //   request.params.id,
+//   //   clients.get(request.params.id)
+//   //     ? clients.get(request.params.id)?.add(websocket)!
+//   //     : new Set([websocket])
+//   // );
+//   // websocket.on("message", (message) => {
+//   //   const client = clients.get(request.params.id);
+//   //   // 当接收到消息时，广播给所有 画布客户端
+//   //   if (client?.size) {
+//   //     client?.forEach((client) => {
+//   //       // console.log("message", message.toString());
+//   //       client.send(message);
+//   //     });
+//   //   }
+//   // });
+//   // websocket.on("close", () => {
+//   //   // 当连接关闭时，从集合中移除
+//   //   clients.get(request.params.id)?.delete(websocket);
+//   // });
+// });
+
 app.listen(8080);
 /**
  * 创建空文档
