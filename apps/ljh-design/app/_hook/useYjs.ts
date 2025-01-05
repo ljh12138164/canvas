@@ -4,17 +4,14 @@ import { IndexeddbPersistence } from "y-indexeddb";
 import { WebsocketProvider } from "y-websocket";
 import * as Y from "yjs";
 import { Board } from "../_types/board";
-// import * as awarenessProtocol from "y-protocols";
+import { getAddObject, randomColor } from "../_lib/utils";
+import { UserState } from "../_types/Edit";
 import { Sessions } from "../_types/user";
-import { randomColor } from "../_lib/utils";
 
 //创建文档
 const ydoc = new Y.Doc();
-// const awareness = new awarenessProtocol.Awareness(ydoc);
-// console.log(awareness);
 interface YjsProps {
   data: Board;
-  isLoading: boolean;
   canvas: fabric.Canvas | null;
   user: Sessions;
 }
@@ -23,8 +20,9 @@ interface YjsProps {
  * @param data 画板数据
  * @returns {ydoc:Y.Doc,websocket:WebsocketProvider} 文档和websocket的连接
  */
-export const useYjs = ({ data, isLoading, canvas, user }: YjsProps) => {
+export const useYjs = ({ data, canvas, user }: YjsProps) => {
   const [yMap] = useState<Y.Map<any>>(ydoc.getMap(`${data.id}:json`));
+  const [userState, setUserState] = useState<[number, UserState][]>([]);
   const [websockets, setWebsockets] = useState<WebsocketProvider | null>(null);
   const [yMaps] = useState<Y.Map<string>>(ydoc.getMap<string>(data.id));
   // 本地降级处理
@@ -39,6 +37,7 @@ export const useYjs = ({ data, isLoading, canvas, user }: YjsProps) => {
     return () => {
       yIndexDb.destroy();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 协同
@@ -53,45 +52,55 @@ export const useYjs = ({ data, isLoading, canvas, user }: YjsProps) => {
       name: user.user.user_metadata.name,
       color: randomColor(),
       clientId: websocket.awareness.clientID,
+      image: user.user.user_metadata.image,
+      select: [],
     });
     setWebsockets(websocket);
-    websocket.awareness.on("update", (event) => {
-      console.log(event);
+    // 设置用户状态
+    setUserState(
+      [...(websocket.awareness.getStates()?.entries() || [])].map((item) => [
+        item[0],
+        { ...item[1], isSelf: item[0] === websocket.awareness.clientID },
+      ]) as [number, UserState][]
+    );
+    // 监听更新
+    websocket.awareness.on("update", () => {
+      setUserState(
+        [...(websocket.awareness.getStates()?.entries() || [])].map((item) => [
+          item[0],
+          { ...item[1], isSelf: item[0] === websocket.awareness.clientID },
+        ]) as [number, UserState][]
+      );
     });
     return () => {
       websocket.destroy();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 监听canvas事件
   useEffect(() => {
     if (!canvas) return;
-    // 监听ymap
-    // yMaps.observe((event) => {
-    //   const data = event.keysChanged;
-    //   const farbicObj = JSON.parse(
-    //     (
-    //       event.currentTarget._map.get([...data][0])?.content as unknown as {
-    //         arr: string[];
-    //       }
-    //     ).arr[0]
-    //   ) as fabric.Object;
-    //   console.log(farbicObj);
-    //   // canvas?.add(farbicObj);
-    //   // canvas?.renderAll();
-    //   // canvas.add(event.target);
-    // });
-    ydoc.on("update", (event) => {
-      console.log(event);
+    // 清除初始的ymap
+    yMaps.clear();
+    // 监听doc的更新
+    ydoc.on("update", () => {
+      // console.log(event);
     });
+    // 对map的更改
+    yMaps.observe((event) => {
+      console.log(event);
+      const obj = getAddObject(event);
+      const changeType = obj.changeType;
+      const changeClientId = obj.changeClientId;
+      console.log(changeType, changeClientId);
+      // const getType=obj.
+      // if (addObject) {
+      //   canvas.add(addObject);
+      // }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvas]);
 
-  // ymap监听
-  useEffect(() => {
-    if (isLoading) return;
-    yMap.observe((event) => {
-      console.log(event.target);
-    });
-  }, [isLoading]);
-  return { ydoc, yMap, yMaps, websockets };
+  return { ydoc, yMap, yMaps, websockets, userState };
 };

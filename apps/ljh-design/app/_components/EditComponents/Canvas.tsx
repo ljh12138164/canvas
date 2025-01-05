@@ -63,7 +63,7 @@ const Canvas = ({
   const containEl = useRef<HTMLDivElement>(null);
   // 画布
   const canvasEl = useRef<HTMLCanvasElement>(null);
-  const { mutate, isPending } = useBoardAutoSaveQuery({ id: data.id, token });
+  const { isPending } = useBoardAutoSaveQuery({ id: data.id, token });
 
   const debounceMutate = useMemoizedFn(() => {});
   // debounce((data: { json: string; width: number; height: number }) => {
@@ -119,7 +119,7 @@ const Canvas = ({
   const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } =
     useHistoty({ canvas, authZoom, debounceMutate });
   // 初始化
-  const { isLoading } = useLoading({
+  useLoading({
     canvas,
     initState,
     canvasHistory,
@@ -127,17 +127,16 @@ const Canvas = ({
     setHistoryIndex: setHitoryIndex,
   });
   // 协同hooks
-  const { websockets, yMaps } = useYjs({ data, isLoading, canvas, user });
+  const { userState, yMaps, websockets } = useYjs({ data, canvas, user });
+  // console.log(websockets?.awareness.getStates());
   // 画布事件
   useCanvasEvent({
     canvas,
-    yMaps,
-    data,
     tool,
     save,
     setSelectedObject,
     setTool,
-    isLoading,
+    websockets,
   });
   // 画布剪切板
   const { copy, pasty } = useClipboard({ canvas });
@@ -191,6 +190,8 @@ const Canvas = ({
         canvasHeight,
         canvasColor,
         canvasHistory: canvasHistory.current,
+        yMaps,
+        websockets,
         pasty,
         save,
         canRedo,
@@ -263,47 +264,45 @@ const Canvas = ({
         editor={editor()}
         activeTool={tool}
         onChangeTool={onChangeActive}
-      ></NavBar>
+        userState={userState}
+      />
       <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
-        <SiderBar
-          acitiveTool={tool}
-          onChangeActiveTool={onChangeActive}
-        ></SiderBar>
+        <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} />
         <TextSidebar
           editor={editor()}
           activeTool={tool}
           onChangeActive={onChangeActive}
-        ></TextSidebar>
+        />
         <ShapeSidle
           editor={editor()}
           activeTool={tool}
           onChangeActive={onChangeActive}
-        ></ShapeSidle>
+        />
         <ImageSiderbar
           token={token}
           editor={editor()}
           activeTool={tool}
           onChangeActive={onChangeActive}
-        ></ImageSiderbar>
+        />
         <ColorSoiberbar
           editor={editor()}
           activeTool={tool}
           onChangeActive={onChangeActive}
-        ></ColorSoiberbar>
+        />
         <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
           <Tools
             editor={editor()}
             activeTool={tool}
             onChangeActiveTool={onChangeActive}
             key={JSON.stringify(editor()?.canvas.getActiveObject())}
-          ></Tools>
+          />
           <section
             className="flex flex-col relative flex-1 overflow-hidden"
             ref={containEl}
           >
             <canvas ref={canvasEl}></canvas>
           </section>
-          <Footer editor={editor()}></Footer>
+          <Footer editor={editor()} />
         </main>
       </div>
     </div>

@@ -43,6 +43,8 @@ declare module "fabric" {
   }
   interface FabricObject {
     id: string;
+    changeType?: string;
+    changeClientId?: string;
   }
 }
 //
@@ -69,6 +71,8 @@ export const buildEditor = ({
   canvasHeight,
   canvasColor,
   canvasHistory,
+  yMaps,
+  websockets,
   pasty,
   save,
   canRedo,
@@ -98,6 +102,16 @@ export const buildEditor = ({
   setFillColor,
   setStrokeWidth,
 }: buildEditorProps): Edit => {
+  const addObject = (object: fabric.Object, type: "add" | "update") => {
+    yMaps.set(
+      object.id,
+      JSON.stringify({
+        ...object,
+        changeType: type,
+        changeClientId: websockets?.awareness.clientID,
+      })
+    );
+  };
   //获取画布工作区
   const getWorkspace = () =>
     canvas
@@ -656,6 +670,7 @@ export const buildEditor = ({
       });
       circle.id = nanoid();
       center(circle);
+      addObject(circle, "add");
       canvas.add(circle);
       canvas.setActiveObject(circle);
       //选中对象
@@ -669,6 +684,7 @@ export const buildEditor = ({
       });
       rect.id = nanoid();
       center(rect);
+      addObject(rect, "add");
       canvas.add(rect);
       canvas.setActiveObject(rect);
     },
@@ -683,6 +699,7 @@ export const buildEditor = ({
       });
       rectangle.id = nanoid();
       center(rectangle);
+      addObject(rectangle, "add");
       canvas.add(rectangle);
       canvas.setActiveObject(rectangle);
     },
@@ -695,6 +712,7 @@ export const buildEditor = ({
       });
       triangle.id = nanoid();
       center(triangle);
+      addObject(triangle, "add");
       canvas.add(triangle);
       canvas.setActiveObject(triangle);
     },
@@ -709,6 +727,7 @@ export const buildEditor = ({
       });
       triangle.id = nanoid();
       center(triangle);
+      addObject(triangle, "add");
       canvas.add(triangle);
       canvas.setActiveObject(triangle);
     },
@@ -737,6 +756,7 @@ export const buildEditor = ({
       );
       diamod.id = nanoid();
       center(diamod);
+      addObject(diamod, "add");
       canvas.add(diamod);
       canvas.setActiveObject(diamod);
     },

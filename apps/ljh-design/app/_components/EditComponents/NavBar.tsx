@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
 import { Separator } from "@/app/_components/ui/separator";
-import { Edit, Tool } from "@/app/_types/Edit";
+import { Edit, Tool, UserState } from "@/app/_types/Edit";
 import { Fragment } from "react";
 import { BsCloud, BsCloudCheck } from "react-icons/bs";
 import { CiFileOn } from "react-icons/ci";
@@ -19,15 +19,25 @@ import {
   LuMousePointerClick,
   LuRedo2,
   LuUndo2,
+  LuUser,
 } from "react-icons/lu";
 import { useFilePicker } from "use-file-picker";
 import Logo from "../Comand/Logo";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
+import { ScrollArea } from "../ui/scroll-area";
 interface NavBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
   onChangeTool: (tool: Tool) => void;
   isPending?: boolean;
   token: string | undefined;
+  userState: [number, UserState][];
 }
 const NavBar = ({
   activeTool,
@@ -35,6 +45,7 @@ const NavBar = ({
   editor,
   isPending,
   token,
+  userState,
 }: NavBarProps) => {
   const { openFilePicker } = useFilePicker({
     accept: ".json",
@@ -113,7 +124,6 @@ const NavBar = ({
             onClick={() => {
               editor?.redo();
             }}
-            className=""
           >
             <LuRedo2 size="20"></LuRedo2>
           </Button>
@@ -133,6 +143,54 @@ const NavBar = ({
           )}
         </div>
         <div className="ml-auto flex items-center gap-x-4">
+          <div className="flex items-center gap-2 text-xs">
+            <LuUser size={20} />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p>
+                    当前在线：
+                    {userState.length}
+                  </p>
+                </TooltipTrigger>
+                <TooltipContent
+                  className="z-[1000] max-h-[200px] overflow-y-scroll"
+                  asChild
+                >
+                  <ScrollArea className="max-h-[200px]">
+                    <section className="flex flex-col gap-2">
+                      {token &&
+                        userState &&
+                        userState?.map((item) => {
+                          return (
+                            <div
+                              key={item[0]}
+                              className="flex items-center gap-2"
+                            >
+                              <Avatar>
+                                <AvatarImage src={item[1].image}></AvatarImage>
+                                <AvatarFallback className="bg-gray-200">
+                                  {item[1].name}
+                                </AvatarFallback>
+                              </Avatar>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <p className="text-xs  text-ellipsis max-w-14 whitespace-nowrap">
+                                    {item[1].name}
+                                    {item[1].isSelf && "（我）"}
+                                  </p>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          );
+                        })}
+                    </section>
+                  </ScrollArea>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button

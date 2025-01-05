@@ -7,20 +7,44 @@ import localforage from "localforage";
 import { nanoid } from "nanoid";
 import { twMerge } from "tailwind-merge";
 import { InitFabicObject } from "../_types/Edit";
+import * as Y from "yjs";
+
+declare module "yjs" {
+  interface AbstractStruct {
+    content: {
+      arr: any[];
+    };
+  }
+}
 localforage.config({
   name: "ljh-design",
   version: 1.0,
   storeName: "ljh-design",
 });
+/**
+ * 合并class
+ * @param inputs 类
+ * @returns 合并后的类
+ */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+/**
+ * ### 将rgba对象转换为字符串
+ * @param color rgba对象
+ * @returns 字符串
+ */
 export function rgbaObjToString(color: RGBColor | "transparent") {
   if (color === "transparent") {
     return "rgba(0, 0, 0, 0)";
   }
   return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a || 1})`;
 }
+/**
+ * ### 判断是否是文本
+ * @param fabricObject 物体
+ * @returns 是否是文本
+ */
 export function isText(fabricObject: FabricObject) {
   if (!fabricObject) return false;
   return (
@@ -29,6 +53,10 @@ export function isText(fabricObject: FabricObject) {
     fabricObject.type === "textbox"
   );
 }
+/**
+ * ### 滤镜类型
+ * @type {Effect}
+ */
 export type Effect = fabric.filters.BaseFilter<
   string,
   Record<string, any>
@@ -294,18 +322,29 @@ export const importJsonToFabric = (fabrics: { json: any }): Promise<string> => {
  * ## 添加物体
  *
  */
-export const addObject = (
-  canvas: fabric.Canvas,
-  item: fabric.Object,
-  id: string
-) => {
-  canvas.add(item);
-  canvas.renderAll();
-};
+// export const addObject = (
+//   canvas: fabric.Canvas,
+//   item: fabric.Object,
+//   id: string
+// ) => {
+//   canvas.add(item);
+//   canvas.renderAll();
+// };
 /**
  * 随机颜色
  * @returns
  */
 export const randomColor = () => {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+};
+
+/**
+ * ### 获取添加的对象
+ */
+export const getAddObject = (event: Y.YMapEvent<string>) => {
+  const key = [...event.keysChanged][0];
+  // @ts-ignore
+  const value = (event.target._map.get(key)?.content).arr?.[0];
+  if (!value) return;
+  return JSON.parse(value);
 };

@@ -1,4 +1,5 @@
 import ws from "ws";
+// @ts-ignore
 import { setupWSConnection } from "../node_modules/y-websocket/bin/utils";
 import http from "http";
 
@@ -18,12 +19,12 @@ server.on("upgrade", (request, socket, head) => {
   /**
    * @param {any} ws
    */
-  const handleAuth = (ws) => {
+  const handleAuth = (ws: any) => {
     wss.emit("connection", ws, request);
   };
   wss.handleUpgrade(request, socket, head, handleAuth);
 });
-
+// @ts-ignore
 server.listen(port, host, () => {
   console.log(`running at '${host}' on port ${port}`);
 });
