@@ -17,6 +17,7 @@ import { useLoading } from "@/app/_hook/useLoding";
 import useResponse from "@/app/_hook/useResponse";
 import { useWindowEvent } from "@/app/_hook/useWindowEvent";
 import { useYjs } from "@/app/_hook/useYjs";
+import { getUserColor } from "@/app/_lib/utils";
 import { buildEditor } from "@/app/_store/editor";
 import { Board } from "@/app/_types/board";
 import {
@@ -39,6 +40,7 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
   Tool,
+  UserState,
 } from "@/app/_types/Edit";
 import { Sessions } from "@/app/_types/user";
 import { useMemoizedFn } from "ahooks";
@@ -55,6 +57,13 @@ const Canvas = ({
   token: string;
   data: Board;
 }) => {
+  const userData = useRef<UserState>({
+    id: user.user.id,
+    name: user.user.user_metadata.name,
+    color: getUserColor(user.user.id),
+    image: user.user.user_metadata.image,
+    select: [],
+  });
   // 画板初始数据
   const initWidth = useRef(data.width);
   const initHeight = useRef(data.height);
@@ -127,16 +136,25 @@ const Canvas = ({
     setHistoryIndex: setHitoryIndex,
   });
   // 协同hooks
-  const { userState, yMaps, websockets } = useYjs({ data, canvas, user });
+  const { userState, yMaps, websockets } = useYjs({
+    data,
+    canvas,
+    user,
+    userData,
+  });
   // console.log(websockets?.awareness.getStates());
   // 画布事件
   useCanvasEvent({
     canvas,
+    yMaps,
     tool,
+    userState,
     save,
+    user,
     setSelectedObject,
     setTool,
     websockets,
+    userData,
   });
   // 画布剪切板
   const { copy, pasty } = useClipboard({ canvas });
@@ -192,6 +210,7 @@ const Canvas = ({
         canvasHistory: canvasHistory.current,
         yMaps,
         websockets,
+        user,
         pasty,
         save,
         canRedo,
