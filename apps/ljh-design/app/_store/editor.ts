@@ -5,6 +5,7 @@ import {
   isText,
   transformToTest,
 } from "@/app/_lib/utils";
+import { getWorkspace, center } from "@/app/_lib/editor/editor";
 import {
   buildEditorProps,
   CRICLE_OPTION,
@@ -19,6 +20,7 @@ import {
   FontWeightType,
   InitFabicObject,
   JSON_KEY,
+  NewFabicObject,
   OPACITY,
   RECTANGLE_OPTION,
   STROKE_DASH_ARRAY,
@@ -45,6 +47,10 @@ declare module "fabric" {
     id: string;
     changeType?: string;
     changeClientId?: string;
+  }
+  interface FabricObjectProps {
+    id?: string;
+    type?: string;
   }
 }
 //
@@ -73,6 +79,7 @@ export const buildEditor = ({
   canvasHistory,
   yMaps,
   websockets,
+  user,
   pasty,
   save,
   canRedo,
@@ -102,27 +109,19 @@ export const buildEditor = ({
   setFillColor,
   setStrokeWidth,
 }: buildEditorProps): Edit => {
-  const addObject = (object: fabric.Object, type: "add" | "update") => {
+  const addObject = (options: NewFabicObject, type: "add" | "update") => {
     yMaps.set(
-      object.id,
+      options.id!,
       JSON.stringify({
-        ...object,
+        ...options,
         changeType: type,
-        changeClientId: websockets?.awareness.clientID,
+        changeClientId: user.user.id,
       })
     );
   };
-  //获取画布工作区
-  const getWorkspace = () =>
-    canvas
-      .getObjects()
-      .find(
-        (item: InitFabicObject | fabric.FabricObject) =>
-          (item as InitFabicObject).name === "board"
-      );
   //生成保存选项
   const genertateSaveOption = () => {
-    const { width, height, left, top } = getWorkspace() as fabric.Rect;
+    const { width, height, left, top } = getWorkspace(canvas) as fabric.Rect;
     return {
       width: width,
       height: height,
@@ -219,21 +218,15 @@ export const buildEditor = ({
     authZoom();
   };
   //居中
-  const center = (object: fabric.Object) => {
-    const workspace = getWorkspace();
-    //居中
-    const centers = workspace?.getCenterPoint();
-    canvas._centerObject(object, centers as fabric.Point);
-    // canvas.centerObject(object);
-  };
+
   //添加到画布
   const addToCanvas = (object: fabric.Object) => {
-    center(object);
+    center(object, canvas);
     canvas.add(object);
     canvas.setActiveObject(object);
   };
   const fixImageSize = (imageObj: fabric.FabricImage) => {
-    const workspace = getWorkspace();
+    const workspace = getWorkspace(canvas);
     imageObj.scaleToWidth(workspace?.width || 0);
     imageObj.scaleToHeight(workspace?.height || 0);
   };
@@ -287,9 +280,9 @@ export const buildEditor = ({
       //防止过小
       canvas.zoomToPoint(center, zoomRatio < 0.2 ? 0.2 : zoomRatio);
     },
-    getWorkspace: () => getWorkspace() as InitFabicObject,
+    getWorkspace: () => getWorkspace(canvas) as InitFabicObject,
     changeSize: async (size: { width: number; height: number }) => {
-      const workspace = getWorkspace();
+      const workspace = getWorkspace(canvas);
       if (workspace) {
         setCanvasWidth(size.width);
         setCanvasHeight(size.height);
@@ -302,7 +295,7 @@ export const buildEditor = ({
     },
     changeBackground: (color: string) => {
       setCanvasColor(color);
-      const workspace = getWorkspace();
+      const workspace = getWorkspace(canvas);
       if (workspace) {
         workspace.fill = color;
       }
@@ -424,10 +417,12 @@ export const buildEditor = ({
       });
       setImageFilter([]);
     },
+    //添加图像
     addImage: async (value: string) => {
+      toast.dismiss();
       toast.loading("添加中...");
       setImageLoading(true);
-      const workspace = getWorkspace();
+      const workspace = getWorkspace(canvas);
       const img = await fabric.FabricImage.fromURL(value, {
         crossOrigin: "anonymous",
       });
@@ -485,6 +480,7 @@ export const buildEditor = ({
       const value = canvas?.getActiveObjects()?.[0]?.get("underline") || false;
       return value;
     },
+    // 斜体
     changeFontItalic: (value: FontStyle) => {
       setFontItalics(value);
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -494,6 +490,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
+    // 下划线
     changeFontUnderline: (value: boolean) => {
       setFontUnderline(value);
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -503,7 +500,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
-    //
+    // 字体
     setFontFamily: (value: string) => {
       setFontFamily(value);
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -513,7 +510,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
-    //斜体
+    // 删除线
     changeFontLineThrough: (value: boolean) => {
       setFontThickness(value);
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -523,6 +520,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
+    // 字体粗细
     changeFontWeight: (value: FontWeightType) => {
       setFontWeight(value);
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -532,19 +530,23 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
+    // 获取删除线
     getActiveFontLineThrough: () => {
       const value =
         canvas?.getActiveObjects()?.[0]?.get("linethrough") || false;
       return value;
     },
+    // 获取线条宽度
     getActiveStrokeWeight: () => {
       const value =
         canvas?.getActiveObjects()?.[0]?.get("fontWeight") || FONT_WEIGHT;
       return value;
     },
+    // 获取字体
     getActiveFontFamily: () => {
       return canvas?.getActiveObjects()?.[0]?.get("fontFamily") || FONT_FAMILY;
     },
+    // 添加文本
     addText: (text, options) => {
       const textObj = new fabric.Textbox(text, {
         ...TEXTBOX_OPTION,
@@ -555,6 +557,7 @@ export const buildEditor = ({
       canvas.setActiveObject(textObj);
       canvas.renderAll();
     },
+    // 透明度
     changeOpacty: (opacity: number) => {
       setOpacity(opacity);
       canvas.getActiveObjects().forEach((item) => {
@@ -564,6 +567,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
+    // 获取透明度
     getOpacty: () => {
       const selected = selectedObject?.[0];
       if (!selected) {
@@ -571,24 +575,26 @@ export const buildEditor = ({
       }
       return selected?.get("opacity") || OPACITY;
     },
-    //前后
+    // 向前
     bringForward: () => {
       canvas
         .getActiveObjects()
         .forEach((item) => canvas.bringObjectForward(item));
-      const workspace = getWorkspace();
+      const workspace = getWorkspace(canvas);
       if (workspace) canvas.sendObjectBackwards(workspace);
       canvas.renderAll();
     },
+    // 向后
     sendBackwards: () => {
       canvas
         .getActiveObjects()
         .forEach((item) => canvas.sendObjectBackwards(item));
-      const workspace = getWorkspace();
+      const workspace = getWorkspace(canvas);
       if (workspace) canvas.sendObjectBackwards(workspace);
 
       canvas.renderAll();
     },
+    // 清除滤镜
     cleanFilter: () => {
       setImageFilter([]);
       canvas.getActiveObjects().forEach((item) => {
@@ -600,6 +606,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
+    // 设置线条虚线
     changeStokeDashArray: (type) => {
       setStrokeDashArray(type);
       canvas.getActiveObjects().forEach((obj) => {
@@ -607,6 +614,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
+    // 获取线条虚线
     getActiveStokeDashArray: () => {
       const selectedObj = selectedObject?.[0];
       if (!selectedObj) {
@@ -614,6 +622,7 @@ export const buildEditor = ({
       }
       return selectedObj.get("strokeDashArray") || STROKE_DASH_ARRAY;
     },
+    // 获取线条宽度
     getActiveStrokeWidth: () => {
       const selectedObj = selectedObject?.[0];
       if (!selectedObj) {
@@ -621,6 +630,7 @@ export const buildEditor = ({
       }
       return selectedObj.get("strokeWidth") || STROKE_WIDTH;
     },
+    // 获取线条颜色
     getActiveStokeColor: () => {
       const selectedObj = selectedObject?.[0];
       if (!selectedObj) {
@@ -663,100 +673,111 @@ export const buildEditor = ({
     },
     //园
     addCircle: () => {
-      const circle = new fabric.Circle({
+      const id = nanoid();
+      const addOptions = {
         ...CRICLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
-      });
-      circle.id = nanoid();
-      center(circle);
-      addObject(circle, "add");
+        id,
+      };
+      const circle = new fabric.Circle(addOptions);
+      center(circle, canvas);
+      addObject({ ...addOptions, type: "Circle" }, "add");
       canvas.add(circle);
       canvas.setActiveObject(circle);
       //选中对象
     },
     //矩形
     addRectangle: () => {
-      const rect = new fabric.Rect({
+      const id = nanoid();
+      const addOptions = {
         ...RECTANGLE_OPTION,
+
         fill: fillColor,
         stroke: strokeColor,
-      });
-      rect.id = nanoid();
-      center(rect);
-      addObject(rect, "add");
+        id,
+      };
+      const rect = new fabric.Rect(addOptions);
+      center(rect, canvas);
+      addObject({ ...addOptions, type: "Rect" }, "add");
       canvas.add(rect);
       canvas.setActiveObject(rect);
     },
     //圆角矩形
     addSoftRectangle: () => {
-      const rectangle = new fabric.Rect({
+      const id = nanoid();
+      const addOptions = {
         ...RECTANGLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
         rx: 10,
         ry: 10,
-      });
-      rectangle.id = nanoid();
-      center(rectangle);
-      addObject(rectangle, "add");
+        id,
+      };
+      const rectangle = new fabric.Rect(addOptions);
+      center(rectangle, canvas);
+      addObject({ ...addOptions, type: "Rect" }, "add");
       canvas.add(rectangle);
       canvas.setActiveObject(rectangle);
     },
     //三角形
     addTriangle: () => {
-      const triangle = new fabric.Triangle({
+      const id = nanoid();
+      const addOptions = {
         ...TRIANGLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
-      });
-      triangle.id = nanoid();
-      center(triangle);
-      addObject(triangle, "add");
+        id,
+      };
+      const triangle = new fabric.Triangle(addOptions);
+      center(triangle, canvas);
+      addObject({ ...addOptions, type: "Triangle" }, "add");
       canvas.add(triangle);
       canvas.setActiveObject(triangle);
     },
     // 旋转三角形
     addRotateTriangle: () => {
-      const triangle = new fabric.Triangle({
+      const id = nanoid();
+      const addOptions = {
         ...TRIANGLE_OPTION,
         fill: fillColor,
         stroke: strokeColor,
         //180反转
         angle: 180,
-      });
-      triangle.id = nanoid();
-      center(triangle);
-      addObject(triangle, "add");
+        id,
+      };
+      const triangle = new fabric.Triangle(addOptions);
+      center(triangle, canvas);
+      addObject({ ...addOptions, type: "Triangle" }, "add");
       canvas.add(triangle);
       canvas.setActiveObject(triangle);
     },
     addDiamod: () => {
-      const diamod = new fabric.Polygon(
-        [
-          {
-            x: DIAMOD_WIDTH / 2,
-            y: 0,
-          },
-          {
-            x: DIAMOD_WIDTH,
-            y: DIAMOD_HEGHT / 2,
-          },
-          { x: DIAMOD_WIDTH / 2, y: DIAMOD_HEGHT },
-          {
-            x: 0,
-            y: DIAMOD_WIDTH / 2,
-          },
-        ],
+      const id = nanoid();
+      const addOptions = {
+        ...DIAMOD_OPTION,
+        fill: fillColor,
+        stroke: strokeColor,
+        id,
+      };
+      const points = [
         {
-          ...DIAMOD_OPTION,
-          fill: fillColor,
-          stroke: strokeColor,
-        }
-      );
-      diamod.id = nanoid();
-      center(diamod);
-      addObject(diamod, "add");
+          x: DIAMOD_WIDTH / 2,
+          y: 0,
+        },
+        {
+          x: DIAMOD_WIDTH,
+          y: DIAMOD_HEGHT / 2,
+        },
+        { x: DIAMOD_WIDTH / 2, y: DIAMOD_HEGHT },
+        {
+          x: 0,
+          y: DIAMOD_WIDTH / 2,
+        },
+      ];
+      const diamod = new fabric.Polygon(points, addOptions);
+      center(diamod, canvas);
+      addObject({ ...addOptions, type: "Polygon", points }, "add");
       canvas.add(diamod);
       canvas.setActiveObject(diamod);
     },

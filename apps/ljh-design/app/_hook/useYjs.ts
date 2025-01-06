@@ -1,10 +1,15 @@
 import * as fabric from "fabric";
-import { useEffect, useState } from "react";
+import { useEffect, useState, RefObject } from "react";
 import { IndexeddbPersistence } from "y-indexeddb";
 import { WebsocketProvider } from "y-websocket";
 import * as Y from "yjs";
 import { Board } from "../_types/board";
-import { getAddObject, randomColor } from "../_lib/utils";
+import { randomColor } from "../_lib/utils";
+import {
+  getUserState,
+  getAddObject,
+  typeToActive,
+} from "../_lib/editor/editor";
 import { UserState } from "../_types/Edit";
 import { Sessions } from "../_types/user";
 
@@ -14,13 +19,14 @@ interface YjsProps {
   data: Board;
   canvas: fabric.Canvas | null;
   user: Sessions;
+  userData: RefObject<UserState>;
 }
 /**
  * ### 协同hooks
  * @param data 画板数据
  * @returns {ydoc:Y.Doc,websocket:WebsocketProvider} 文档和websocket的连接
  */
-export const useYjs = ({ data, canvas, user }: YjsProps) => {
+export const useYjs = ({ data, canvas, user, userData }: YjsProps) => {
   const [yMap] = useState<Y.Map<any>>(ydoc.getMap(`${data.id}:json`));
   const [userState, setUserState] = useState<[number, UserState][]>([]);
   const [websockets, setWebsockets] = useState<WebsocketProvider | null>(null);
@@ -44,33 +50,23 @@ export const useYjs = ({ data, canvas, user }: YjsProps) => {
   useEffect(() => {
     const websocket = new WebsocketProvider(
       process.env.NEXT_PUBLIC_WS_URL!,
-      data.id,
+      data?.id,
       ydoc
     );
     // 设置本地状态
-    websocket.awareness.setLocalState({
-      name: user.user.user_metadata.name,
-      color: randomColor(),
-      clientId: websocket.awareness.clientID,
-      image: user.user.user_metadata.image,
-      select: [],
-    });
+    websocket.awareness.setLocalStateField("user", userData.current);
+
     setWebsockets(websocket);
     // 设置用户状态
-    setUserState(
-      [...(websocket.awareness.getStates()?.entries() || [])].map((item) => [
-        item[0],
-        { ...item[1], isSelf: item[0] === websocket.awareness.clientID },
-      ]) as [number, UserState][]
-    );
+    const userState = getUserState(websocket);
+
+    setUserState(userState);
     // 监听更新
     websocket.awareness.on("update", () => {
-      setUserState(
-        [...(websocket.awareness.getStates()?.entries() || [])].map((item) => [
-          item[0],
-          { ...item[1], isSelf: item[0] === websocket.awareness.clientID },
-        ]) as [number, UserState][]
-      );
+      setUserState([...websocket.awareness.getStates().entries()] as [
+        number,
+        UserState,
+      ][]);
     });
     return () => {
       websocket.destroy();
@@ -80,7 +76,7 @@ export const useYjs = ({ data, canvas, user }: YjsProps) => {
 
   // 监听canvas事件
   useEffect(() => {
-    if (!canvas) return;
+    if (!canvas || !websockets) return;
     // 清除初始的ymap
     yMaps.clear();
     // 监听doc的更新
@@ -91,16 +87,15 @@ export const useYjs = ({ data, canvas, user }: YjsProps) => {
     yMaps.observe((event) => {
       console.log(event);
       const obj = getAddObject(event);
+      if (!obj) return;
       const changeType = obj.changeType;
       const changeClientId = obj.changeClientId;
-      console.log(changeType, changeClientId);
-      // const getType=obj.
-      // if (addObject) {
-      //   canvas.add(addObject);
-      // }
+      // if()
+      if (user.user.id === changeClientId) return;
+      typeToActive(changeType, obj, canvas);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvas]);
+  }, [canvas, websockets, yMaps]);
 
   return { ydoc, yMap, yMaps, websockets, userState };
 };

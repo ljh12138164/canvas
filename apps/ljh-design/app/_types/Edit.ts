@@ -3,6 +3,7 @@ import * as fabric from "fabric";
 import { Effect } from "@/app/_lib/utils";
 import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
+import { Sessions } from "./user";
 export type TBlendMode =
   | "multiply"
   | "add"
@@ -542,7 +543,36 @@ export const CANVAS_COLOR = "#ffffff";
 
 export const IMAGE_BLUSK =
   "https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/";
+export interface NewFabicObject {
+  radius?: number;
+  left?: number;
+  top?: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  width?: number;
+  height?: number;
+  angle?: number;
+  rx?: number;
+  ry?: number;
+  objectCaching?: boolean;
+  includeDefaultValues?: boolean;
+  excludeFromExport?: boolean;
+  noScaleCache?: boolean;
+  hoverCursor?: CSSStyleDeclaration["cursor"] | null;
+  moveCursor?: CSSStyleDeclaration["cursor"] | null;
+  fontSize?: number;
+  fontFamily?: string;
+  type: "Circle" | "Rect" | "Triangle" | "Polygon";
+  id: string;
+  points?: { x: number; y: number }[];
+}
+export interface AddFabicObject extends NewFabicObject {
+  changeType: string;
+  changeClientId: string;
+}
 
+//原型
 export const CRICLE_OPTION = {
   radius: 100,
   left: 100,
@@ -562,6 +592,7 @@ export const RECTANGLE_OPTION = {
   stroke: STROKE_COLOR,
   strokeWidth: STROKE_WIDTH,
 };
+//
 export const TRIANGLE_OPTION = {
   left: 100,
   top: 100,
@@ -572,6 +603,7 @@ export const TRIANGLE_OPTION = {
   height: 200,
 };
 export type FontStyle = "normal" | "italic";
+// 钻石图案
 export const DIAMOD_OPTION = {
   left: 100,
   top: 100,
@@ -582,7 +614,6 @@ export const DIAMOD_OPTION = {
   height: 200,
 };
 export const TEXTBOX_OPTION = {
-  // type: "textbox",
   left: 100,
   top: 100,
   fill: FILL_COLOR,
@@ -684,6 +715,7 @@ export interface buildEditorProps {
   canvasHistory: fabric.FabricObject[];
   yMaps: Y.Map<string>;
   websockets: WebsocketProvider | null;
+  user: Sessions;
   pasty: () => void;
   save: (skip?: boolean) => void;
   canRedo: () => boolean;
@@ -847,11 +879,13 @@ export enum ImageType {
 }
 // 用户状态
 export interface UserState {
+  id: string;
   name: string;
   color: string;
-  clientId: string;
   image: string;
   // 选择的对象
   select: string[];
-  isSelf: boolean;
+  isSelf?: boolean;
 }
+
+export type YjsObject = "add" | "change" | "delete";
