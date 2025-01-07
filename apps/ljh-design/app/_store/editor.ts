@@ -1,11 +1,11 @@
-import { center, getWorkspace } from '@/app/_lib/editor/editor';
+import { center, getWorkspace } from "@/app/_lib/editor/editor";
 import {
   createFilter,
   downloadImage,
   Effect,
   isText,
   transformToTest,
-} from '@/app/_lib/utils';
+} from "@/app/_lib/utils";
 import {
   AddObject,
   buildEditorProps,
@@ -22,10 +22,10 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
   TEXTBOX_OPTION,
-} from '@/app/_types/Edit';
-import * as fabric from 'fabric';
-import { nanoid } from 'nanoid';
-import toast from 'react-hot-toast';
+} from "@/app/_types/Edit";
+import * as fabric from "fabric";
+import { nanoid } from "nanoid";
+import toast from "react-hot-toast";
 //输入
 
 interface FilterArrayEffect {
@@ -33,13 +33,14 @@ interface FilterArrayEffect {
   effect: Effect;
 }
 //返回fabric类型
-declare module 'fabric' {
+declare module "fabric" {
   interface FabricImage {
     filtersArray: FilterArrayEffect[];
     id: string;
   }
   interface FabricObject {
     id: string;
+    FarbicType?: string;
     changeType?: string;
     changeClientId?: string;
   }
@@ -104,16 +105,8 @@ export const buildEditor = ({
   setFillColor,
   setStrokeWidth,
 }: buildEditorProps): Edit => {
-  const addObject = (options: NewFabicObject, type: 'add' | 'update') => {
-    yMaps.set(
-      options.id!,
-      JSON.stringify({
-        ...options,
-        changeType: type,
-        changeClientId: user.user.id,
-      })
-    );
-  };
+  // const addObjects = (options: NewFabicObject, type: "add" | "update") => {
+  // };
   //生成保存选项
   const genertateSaveOption = () => {
     const { width, height, left, top } = getWorkspace(canvas) as fabric.Rect;
@@ -139,17 +132,17 @@ export const buildEditor = ({
 
     // 将画布中的图片转换为内联数据URL
     canvas.getObjects().forEach((obj) => {
-      if (obj.type === 'image' && obj.get('src')) {
-        const originalSrc = obj.get('src');
+      if (obj.type === "image" && obj.get("src")) {
+        const originalSrc = obj.get("src");
         const img = new Image();
         img.src = originalSrc;
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement("canvas");
         canvas.width = obj.width;
         canvas.height = obj.height;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         ctx?.drawImage(img, 0, 0, obj.width, obj.height);
-        const dataURL = canvas.toDataURL('image/png');
-        obj?.set('src', dataURL);
+        const dataURL = canvas.toDataURL("image/png");
+        obj?.set("src", dataURL);
       }
     });
 
@@ -161,21 +154,21 @@ export const buildEditor = ({
         width: Number(newoption.width),
         height: Number(newoption.height),
       },
-      encoding: 'UTF-8',
+      encoding: "UTF-8",
       suppressPreamble: false,
     });
 
     // 替换可能导致错误的字符
     const cleanedSvg = dataUrl.replace(
       /&(?!amp;|lt;|gt;|quot;|#39;)/g,
-      '&amp;'
+      "&amp;"
     );
 
     const svgBlob = new Blob([cleanedSvg], {
-      type: 'image/svg+xml;charset=utf-8',
+      type: "image/svg+xml;charset=utf-8",
     });
     const svgUrl = URL.createObjectURL(svgBlob);
-    downloadImage(svgUrl, 'svg');
+    downloadImage(svgUrl, "svg");
     URL.revokeObjectURL(svgUrl);
     authZoom();
   };
@@ -183,8 +176,8 @@ export const buildEditor = ({
   const savePng = () => {
     const option = genertateSaveOption();
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-    const dataUrl = canvas.toDataURL({ ...option, format: 'png' });
-    downloadImage(dataUrl, 'png');
+    const dataUrl = canvas.toDataURL({ ...option, format: "png" });
+    downloadImage(dataUrl, "png");
     authZoom();
   };
 
@@ -192,8 +185,8 @@ export const buildEditor = ({
   const savejpg = () => {
     const option = genertateSaveOption();
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-    const dataUrl = canvas.toDataURL({ ...option, format: 'png' });
-    downloadImage(dataUrl, 'jpg');
+    const dataUrl = canvas.toDataURL({ ...option, format: "png" });
+    downloadImage(dataUrl, "jpg");
     authZoom();
   };
   //保存json
@@ -201,9 +194,9 @@ export const buildEditor = ({
     const dataUrl = canvas.toObject(JSON_KEY);
     transformToTest(dataUrl);
     const fileString = `data:text/json;charset=utf-8,${encodeURIComponent(
-      JSON.stringify(dataUrl, null, '\t')
+      JSON.stringify(dataUrl, null, "\t")
     )}`;
-    downloadImage(fileString, 'json');
+    downloadImage(fileString, "json");
     authZoom();
   };
   //加载json
@@ -354,7 +347,7 @@ export const buildEditor = ({
     changeImageFilter: (filter: string) => {
       setImageFilter([...imageFilter, filter]);
       canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
-        if (item.type === 'image') {
+        if (item.type === "image") {
           const imageObj = item as fabric.FabricImage;
           //创建滤镜
           const effects = createFilter(filter);
@@ -376,7 +369,7 @@ export const buildEditor = ({
     changeImageFilterSetting: (filter: string, value: Effect) => {
       if (!value) return;
       canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
-        if (item.type === 'image') {
+        if (item.type === "image") {
           const imageObj = item as fabric.FabricImage;
           imageObj.filtersArray = [
             ...imageObj.filtersArray.filter((item) => item.name !== filter),
@@ -396,7 +389,7 @@ export const buildEditor = ({
       setImageFilter([...imageFilter].filter((item) => item !== filter));
 
       canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
-        if (item.type === 'image') {
+        if (item.type === "image") {
           const imageObj = item as fabric.FabricImage;
           imageObj.filtersArray = imageObj.filtersArray.filter(
             (item) => item.name !== filter
@@ -413,11 +406,11 @@ export const buildEditor = ({
     //添加图像
     addImage: async (value: string) => {
       toast.dismiss();
-      toast.loading('添加中...');
+      toast.loading("添加中...");
       setImageLoading(true);
       const workspace = getWorkspace(canvas);
       const img = await fabric.FabricImage.fromURL(value, {
-        crossOrigin: 'anonymous',
+        crossOrigin: "anonymous",
       });
       toast.dismiss();
       setImageLoading(false);
@@ -427,7 +420,7 @@ export const buildEditor = ({
       img.id = nanoid();
       addToCanvas(img);
       toast.dismiss();
-      toast.success('添加成功');
+      toast.success("添加成功");
     },
     delete: () => {
       canvas?.getActiveObjects().forEach((item) => canvas.remove(item));
@@ -436,7 +429,7 @@ export const buildEditor = ({
     },
     getActiveFontSize: () => {
       const value =
-        canvas?.getActiveObjects()?.[0]?.get('fontSize') || FONT_SIZE;
+        canvas?.getActiveObjects()?.[0]?.get("fontSize") || FONT_SIZE;
       return value;
     },
     changeFontSize: (value: number) => {
@@ -449,7 +442,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
-    changeFontAlign: (value: fabric.Textbox['textAlign']) => {
+    changeFontAlign: (value: fabric.Textbox["textAlign"]) => {
       setFontAlign(value);
 
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -460,17 +453,17 @@ export const buildEditor = ({
       canvas.renderAll();
     },
     getActiveFontAlign: () => {
-      const value = canvas?.getActiveObjects()?.[0]?.get('textAlign') || 'left';
+      const value = canvas?.getActiveObjects()?.[0]?.get("textAlign") || "left";
       return value;
     },
     //
     getActiveFontItalic: () => {
       const value =
-        canvas?.getActiveObjects()?.[0]?.get('fontStyle') || 'normal';
+        canvas?.getActiveObjects()?.[0]?.get("fontStyle") || "normal";
       return value;
     },
     getActiveFontUnderline: () => {
-      const value = canvas?.getActiveObjects()?.[0]?.get('underline') || false;
+      const value = canvas?.getActiveObjects()?.[0]?.get("underline") || false;
       return value;
     },
     // 斜体
@@ -526,26 +519,30 @@ export const buildEditor = ({
     // 获取删除线
     getActiveFontLineThrough: () => {
       const value =
-        canvas?.getActiveObjects()?.[0]?.get('linethrough') || false;
+        canvas?.getActiveObjects()?.[0]?.get("linethrough") || false;
       return value;
     },
     // 获取线条宽度
     getActiveStrokeWeight: () => {
       const value =
-        canvas?.getActiveObjects()?.[0]?.get('fontWeight') || FONT_WEIGHT;
+        canvas?.getActiveObjects()?.[0]?.get("fontWeight") || FONT_WEIGHT;
       return value;
     },
     // 获取字体
     getActiveFontFamily: () => {
-      return canvas?.getActiveObjects()?.[0]?.get('fontFamily') || FONT_FAMILY;
+      return canvas?.getActiveObjects()?.[0]?.get("fontFamily") || FONT_FAMILY;
     },
     // 添加文本
     addText: (text, options) => {
-      const textObj = new fabric.Textbox(text, {
-        ...TEXTBOX_OPTION,
+      const id = nanoid();
+      const option = {
         ...options,
-        fill: fillColor,
-      });
+        ...TEXTBOX_OPTION,
+        type: "Textbox",
+        id,
+      };
+      const textObj = new fabric.Textbox(text, option);
+      // addObjects({ ...option, type: "Textbox", text }, "add");
       addToCanvas(textObj);
       canvas.setActiveObject(textObj);
       canvas.renderAll();
@@ -566,7 +563,7 @@ export const buildEditor = ({
       if (!selected) {
         return OPACITY;
       }
-      return selected?.get('opacity') || OPACITY;
+      return selected?.get("opacity") || OPACITY;
     },
     // 向前
     bringForward: () => {
@@ -591,7 +588,7 @@ export const buildEditor = ({
     cleanFilter: () => {
       setImageFilter([]);
       canvas.getActiveObjects().forEach((item) => {
-        if (item.type === 'image') {
+        if (item.type === "image") {
           (item as fabric.FabricImage).filtersArray = [];
           (item as fabric.FabricImage).filters = [];
           (item as fabric.FabricImage).applyFilters();
@@ -603,7 +600,7 @@ export const buildEditor = ({
     changeStokeDashArray: (type) => {
       setStrokeDashArray(type);
       canvas.getActiveObjects().forEach((obj) => {
-        obj.set('strokeDashArray', type);
+        obj.set("strokeDashArray", type);
       });
       canvas.renderAll();
     },
@@ -613,7 +610,7 @@ export const buildEditor = ({
       if (!selectedObj) {
         return STROKE_DASH_ARRAY;
       }
-      return selectedObj.get('strokeDashArray') || STROKE_DASH_ARRAY;
+      return selectedObj.get("strokeDashArray") || STROKE_DASH_ARRAY;
     },
     // 获取线条宽度
     getActiveStrokeWidth: () => {
@@ -621,7 +618,7 @@ export const buildEditor = ({
       if (!selectedObj) {
         return STROKE_WIDTH;
       }
-      return selectedObj.get('strokeWidth') || STROKE_WIDTH;
+      return selectedObj.get("strokeWidth") || STROKE_WIDTH;
     },
     // 获取线条颜色
     getActiveStokeColor: () => {
@@ -629,7 +626,7 @@ export const buildEditor = ({
       if (!selectedObj) {
         return fillColor;
       }
-      return selectedObj.get('stroke') || strokeColor;
+      return selectedObj.get("stroke") || strokeColor;
     },
     //颜色
     setFillColor: (color: string) => {
@@ -653,9 +650,9 @@ export const buildEditor = ({
       canvas.getActiveObjects()?.forEach((obj) => {
         //如果是文本
         if (
-          obj.type === 'text' ||
-          obj.type === 'i-text' ||
-          obj.type === 'textbox'
+          obj.type === "text" ||
+          obj.type === "i-text" ||
+          obj.type === "textbox"
         ) {
           obj.set({ fill: color });
           return;
@@ -664,116 +661,6 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
-    //园
-    // addCircle: () => {
-    //   const id = nanoid();
-    //   const addOptions = {
-    //     ...CRICLE_OPTION,
-    //     fill: fillColor,
-    //     stroke: strokeColor,
-    //     id,
-    //   };
-    //   const circle = new fabric.Circle(addOptions);
-    //   center(circle, canvas);
-    //   addObject({ ...addOptions, type: 'Circle' }, 'add');
-    //   canvas.add(circle);
-    //   canvas.setActiveObject(circle);
-    //   //选中对象
-    // },
-    // //矩形
-    // addRectangle: () => {
-    //   const id = nanoid();
-    //   const addOptions = {
-    //     ...RECTANGLE_OPTION,
-
-    //     fill: fillColor,
-    //     stroke: strokeColor,
-    //     id,
-    //   };
-    //   const rect = new fabric.Rect(addOptions);
-    //   center(rect, canvas);
-    //   addObject({ ...addOptions, type: 'Rect' }, 'add');
-    //   canvas.add(rect);
-    //   canvas.setActiveObject(rect);
-    // },
-    // //圆角矩形
-    // addSoftRectangle: () => {
-    //   const id = nanoid();
-    //   const addOptions = {
-    //     ...RECTANGLE_OPTION,
-    //     fill: fillColor,
-    //     stroke: strokeColor,
-    //     rx: 10,
-    //     ry: 10,
-    //     id,
-    //   };
-    //   const rectangle = new fabric.Rect(addOptions);
-    //   center(rectangle, canvas);
-    //   addObject({ ...addOptions, type: 'Rect' }, 'add');
-    //   canvas.add(rectangle);
-    //   canvas.setActiveObject(rectangle);
-    // },
-    // //三角形
-    // addTriangle: () => {
-    //   const id = nanoid();
-    //   const addOptions = {
-    //     ...TRIANGLE_OPTION,
-    //     fill: fillColor,
-    //     stroke: strokeColor,
-    //     id,
-    //   };
-    //   const triangle = new fabric.Triangle(addOptions);
-    //   center(triangle, canvas);
-    //   addObject({ ...addOptions, type: 'Triangle' }, 'add');
-    //   canvas.add(triangle);
-    //   canvas.setActiveObject(triangle);
-    // },
-    // // 旋转三角形
-    // addRotateTriangle: () => {
-    //   const id = nanoid();
-    //   const addOptions = {
-    //     ...TRIANGLE_OPTION,
-    //     fill: fillColor,
-    //     stroke: strokeColor,
-    //     //180反转
-    //     angle: 180,
-    //     id,
-    //   };
-    //   const triangle = new fabric.Triangle(addOptions);
-    //   center(triangle, canvas);
-    //   addObject({ ...addOptions, type: 'Triangle' }, 'add');
-    //   canvas.add(triangle);
-    //   canvas.setActiveObject(triangle);
-    // },
-    // addDiamod: () => {
-    //   const id = nanoid();
-    //   const addOptions = {
-    //     ...DIAMOD_OPTION,
-    //     fill: fillColor,
-    //     stroke: strokeColor,
-    //     id,
-    //   };
-    //   const points = [
-    //     {
-    //       x: DIAMOD_WIDTH / 2,
-    //       y: 0,
-    //     },
-    //     {
-    //       x: DIAMOD_WIDTH,
-    //       y: DIAMOD_HEGHT / 2,
-    //     },
-    //     { x: DIAMOD_WIDTH / 2, y: DIAMOD_HEGHT },
-    //     {
-    //       x: 0,
-    //       y: DIAMOD_WIDTH / 2,
-    //     },
-    //   ];
-    //   const diamod = new fabric.Polygon(points, addOptions);
-    //   center(diamod, canvas);
-    //   addObject({ ...addOptions, type: 'Polygon', points }, 'add');
-    //   canvas.add(diamod);
-    //   canvas.setActiveObject(diamod);
-    // },
     addObject: (value: AddObject) => {
       const id = nanoid();
       const addOptions = {
@@ -783,28 +670,44 @@ export const buildEditor = ({
         ...value.otherOption,
         // 之前设置的属性
         fill: fillColor,
+        FarbicType: value.addType,
         stroke: strokeColor,
         id,
       };
-      let obj: fabric.FabricObject;
+      let objs: fabric.FabricObject | null = null;
       switch (value.addType) {
-        case 'Circle':
-          obj = new fabric.Circle(addOptions);
+        case "Circle":
+          objs = new fabric.Circle(addOptions);
           break;
-        case 'Rect':
-          obj = new fabric.Rect(addOptions);
+        case "Rect":
+          objs = new fabric.Rect(addOptions);
           break;
-        case 'Triangle':
-          obj = new fabric.Triangle(addOptions);
+        case "Triangle":
+          objs = new fabric.Triangle(addOptions);
           break;
-        case 'Polygon':
-          obj = new fabric.Polygon(value.points, addOptions);
+        case "Polygon":
+          objs = new fabric.Polygon(value.points, addOptions);
+          break;
+        case "Path":
+          objs = new fabric.Path(
+            value.path as fabric.TSimplePathData,
+            addOptions
+          );
           break;
       }
-      center(obj, canvas);
-      addObject({ ...addOptions, type: value.addType }, 'add');
-      canvas.add(obj);
-      canvas.setActiveObject(obj);
+      if (!objs) return;
+      center(objs, canvas);
+      // addObjects(
+      //   {
+      //     ...addOptions,
+      //     type: value.addType,
+      //     points: value.points,
+      //     path: value.path,
+      //   },
+      //   "add"
+      // );
+      canvas.add(objs);
+      canvas.setActiveObject(objs);
     },
   };
 };
