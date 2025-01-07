@@ -1,29 +1,30 @@
-"use client";
-import ColorSoiberbar from "@/app/_components/EditComponents/ColorSiberbar";
-import Footer from "@/app/_components/EditComponents/Footer";
-import ImageSiderbar from "@/app/_components/EditComponents/ImageSiderbar";
-import NavBar from "@/app/_components/EditComponents/NavBar";
-import ShapeSidle from "@/app/_components/EditComponents/ShapeSidle";
-import SiderBar from "@/app/_components/EditComponents/SiderBar";
-import TextSidebar from "@/app/_components/EditComponents/TextSidebar";
-import Tools from "@/app/_components/EditComponents/Tools";
-import { useBoardAutoSaveQuery } from "@/app/_hook/query/useBoardQuery";
-import useCanvas from "@/app/_hook/useCanvas";
-import useCanvasEvent from "@/app/_hook/useCanvasEvent";
-import { useClipboard } from "@/app/_hook/useCliph";
-import useHistoty from "@/app/_hook/useHistory";
-import useKeyBoard from "@/app/_hook/useKeyBoard";
-import { useLoading } from "@/app/_hook/useLoding";
-import useResponse from "@/app/_hook/useResponse";
-import { useWindowEvent } from "@/app/_hook/useWindowEvent";
-import { useYjs } from "@/app/_hook/useYjs";
-import { getUserColor } from "@/app/_lib/utils";
-import { buildEditor } from "@/app/_store/editor";
-import { Board } from "@/app/_types/board";
+'use client';
+import ColorSoiberbar from '@/app/_components/EditComponents/ColorSiberbar';
+import Footer from '@/app/_components/EditComponents/Footer';
+import ImageSiderbar from '@/app/_components/EditComponents/ImageSiderbar';
+import NavBar from '@/app/_components/EditComponents/NavBar';
+import ShapeSidle from '@/app/_components/EditComponents/ShapeSidle';
+import SiderBar from '@/app/_components/EditComponents/SiderBar';
+import TextSidebar from '@/app/_components/EditComponents/TextSidebar';
+import Tools from '@/app/_components/EditComponents/Tools';
+import { useBoardAutoSaveQuery } from '@/app/_hook/query/useBoardQuery';
+import useCanvas from '@/app/_hook/useCanvas';
+import useCanvasEvent from '@/app/_hook/useCanvasEvent';
+import { useClipboard } from '@/app/_hook/useCliph';
+import useHistoty from '@/app/_hook/useHistory';
+import useKeyBoard from '@/app/_hook/useKeyBoard';
+import { useLoading } from '@/app/_hook/useLoding';
+import useResponse from '@/app/_hook/useResponse';
+import { useWindowEvent } from '@/app/_hook/useWindowEvent';
+import { useYjs } from '@/app/_hook/useYjs';
+import { getUserColor } from '@/app/_lib/utils';
+import { buildEditor } from '@/app/_store/editor';
+import { Board } from '@/app/_types/board';
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
+  DefalutUser,
   FILL_COLOR,
   FONT_ALIGN,
   FONT_FAMILY,
@@ -40,12 +41,11 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
   Tool,
-  UserState,
-} from "@/app/_types/Edit";
-import { Sessions } from "@/app/_types/user";
-import { useMemoizedFn } from "ahooks";
-import * as fabric from "fabric";
-import { useEffect, useRef, useState } from "react";
+} from '@/app/_types/Edit';
+import { Sessions } from '@/app/_types/user';
+import { useMemoizedFn } from 'ahooks';
+import * as fabric from 'fabric';
+import { useEffect, useRef, useState } from 'react';
 
 // 画布服务器
 const Canvas = ({
@@ -57,12 +57,11 @@ const Canvas = ({
   token: string;
   data: Board;
 }) => {
-  const userData = useRef<UserState>({
+  const userData = useRef<DefalutUser>({
     id: user.user.id,
     name: user.user.user_metadata.name,
     color: getUserColor(user.user.id),
     image: user.user.user_metadata.image,
-    select: [],
   });
   // 画板初始数据
   const initWidth = useRef(data.width);
@@ -109,7 +108,7 @@ const Canvas = ({
   const [fontUnderline, setFontUnderline] = useState<boolean>(FONT_UNDERLINE);
   const [fontItalics, setFontItalics] = useState<FontStyle>(FONT_ITALICS);
   const [fontAlign, setFontAlign] =
-    useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
+    useState<fabric.Textbox['textAlign']>(FONT_ALIGN);
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
   //图片
   const [imageLoading, setImageLoading] = useState<boolean>(false);
@@ -142,7 +141,6 @@ const Canvas = ({
     user,
     userData,
   });
-  // console.log(websockets?.awareness.getStates());
   // 画布事件
   useCanvasEvent({
     canvas,
@@ -272,9 +270,9 @@ const Canvas = ({
 
   return (
     <div
-      className="h-full w-full flex flex-col items-center relative bg-slate-100"
+      className='h-full w-full flex flex-col items-center relative bg-slate-100'
       style={{
-        scrollbarWidth: "none",
+        scrollbarWidth: 'none',
       }}
     >
       <NavBar
@@ -285,7 +283,7 @@ const Canvas = ({
         onChangeTool={onChangeActive}
         userState={userState}
       />
-      <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
+      <div className='h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out'>
         <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} />
         <TextSidebar
           editor={editor()}
@@ -308,7 +306,7 @@ const Canvas = ({
           activeTool={tool}
           onChangeActive={onChangeActive}
         />
-        <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
+        <main className='flex-1 h-full w-full flex flex-col overflow-hidden'>
           <Tools
             editor={editor()}
             activeTool={tool}
@@ -316,10 +314,10 @@ const Canvas = ({
             key={JSON.stringify(editor()?.canvas.getActiveObject())}
           />
           <section
-            className="flex flex-col relative flex-1 overflow-hidden"
+            className='flex flex-col relative flex-1 overflow-hidden'
             ref={containEl}
           >
-            <canvas ref={canvasEl}></canvas>
+            <canvas ref={canvasEl} />
           </section>
           <Footer editor={editor()} />
         </main>

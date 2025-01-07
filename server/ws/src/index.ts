@@ -1,8 +1,8 @@
-import { Server } from "@hocuspocus/server";
-import express from "express";
-import expressWebsockets from "express-ws";
+import { Server } from '@hocuspocus/server';
+import express from 'express';
+import expressWebsockets from 'express-ws';
 // @ts-ignore
-import * as Y from "yjs";
+import * as Y from 'yjs';
 
 // Setup your express instance using the express-ws extension
 const { app } = expressWebsockets(express());
@@ -55,17 +55,16 @@ const server = Server.configure({
 //   response.send("Hello World!");
 // });
 // 协同服务器
-app.ws("/note/collaboration", (websocket, request) => {
+app.ws('/note/collaboration', (websocket, request) => {
   const context = {
     user: {
       id: 1234,
-      name: "Jane",
+      name: 'Jane',
     },
   };
 
   server.handleConnection(websocket, request, context);
 });
-
 // // 房间
 // const clients: Map<string, Set<any>> = new Map();
 // // 画布服务器

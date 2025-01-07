@@ -3,18 +3,18 @@ import {
   InitFabicObject,
   UserState,
   YjsObject,
-} from "@/app/_types/Edit";
-import { Sessions } from "@/app/_types/user";
-import * as fabric from "fabric";
-import { WebsocketProvider } from "y-websocket";
-import * as Y from "yjs";
+} from '@/app/_types/Edit';
+import { Sessions } from '@/app/_types/user';
+import * as fabric from 'fabric';
+import { WebsocketProvider } from 'y-websocket';
+import * as Y from 'yjs';
 //获取画布工作区
 export const getWorkspace = (canvas: fabric.Canvas) =>
   canvas
     .getObjects()
     .find(
       (item: InitFabicObject | fabric.FabricObject) =>
-        (item as InitFabicObject).name === "board"
+        (item as InitFabicObject).name === 'board'
     );
 /**
  * ### 居中对象
@@ -44,11 +44,15 @@ export const getAddObject = (
  * @returns  [number, UserState][]
  */
 export const getUserState = (
-  websockets: WebsocketProvider
+  websockets: WebsocketProvider,
+  user: Sessions
 ): [number, UserState][] => {
   return [...websockets.awareness.getStates()?.entries()].map((item) => [
     item[0],
-    { ...item[1], isSelf: item[0] === websockets.awareness.clientID },
+    {
+      user: { ...item[1].user, isSelf: item[1].user.id === user.user.id },
+      select: item[1].select,
+    },
   ]) as [number, UserState][];
 };
 
@@ -58,19 +62,19 @@ export const getUserState = (
  */
 export const genType = (obj: AddFabicObject) => {
   switch (obj.type) {
-    case "Rect":
+    case 'Rect':
       return new fabric.Rect({
         ...obj,
       });
-    case "Circle":
+    case 'Circle':
       return new fabric.Circle({
         ...obj,
       });
-    case "Triangle":
+    case 'Triangle':
       return new fabric.Triangle({
         ...obj,
       });
-    case "Polygon":
+    case 'Polygon':
       const points = obj.points;
       return new fabric.Polygon(points, {
         ...obj,
@@ -92,7 +96,7 @@ export const typeToActive = (
   if (!canvas) return;
   switch (type) {
     //添加图像
-    case "add":
+    case 'add':
       const newObj = genType(obj);
       if (!newObj) return;
       canvas?.add(newObj);
@@ -100,10 +104,10 @@ export const typeToActive = (
       center(newObj, canvas);
       return;
     // 修改图像
-    case "change":
-      return "change";
+    case 'change':
+      return 'change';
     // 删除图像
-    case "delete":
-      return "delete";
+    case 'delete':
+      return 'delete';
   }
 };

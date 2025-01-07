@@ -1,9 +1,9 @@
-import { Tool, UserState } from "@/app/_types/Edit";
-import * as fabric from "fabric";
-import { useEffect, RefObject } from "react";
-import { WebsocketProvider } from "y-websocket";
-import * as Y from "yjs";
-import { Sessions } from "../_types/user";
+import { DefalutUser, Tool, UserState } from '@/app/_types/Edit';
+import * as fabric from 'fabric';
+import { useEffect, RefObject } from 'react';
+import { WebsocketProvider } from 'y-websocket';
+import * as Y from 'yjs';
+import { Sessions } from '../_types/user';
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
   tool: Tool;
@@ -13,7 +13,7 @@ interface CanvasEventProps {
   userState: [number, UserState][];
   user: Sessions | null;
   websockets: WebsocketProvider | null;
-  userData?: RefObject<UserState>;
+  userData?: RefObject<DefalutUser>;
   yMaps?: Y.Map<string>;
 }
 
@@ -45,7 +45,7 @@ const useCanvasEvent = ({
       // yMap.set("json", canvas.toJSON());
       // save();
       // });
-      canvas.on("object:removed", (element) => {
+      canvas.on('object:removed', (element) => {
         if (!user) return;
         yMaps?.delete(element.target.id);
         // 从ymap中删除
@@ -55,7 +55,7 @@ const useCanvasEvent = ({
         // yMap.set("json", canvas.toJSON());
         // save();
       });
-      canvas.on("object:modified", () => {
+      canvas.on('object:modified', () => {
         if (!user) return;
         // websocket?.emit("update", [item]);
         // 更新ymap
@@ -65,32 +65,29 @@ const useCanvasEvent = ({
         // save();
       });
       // 选择
-      canvas.on("selection:created", (e) => {
+      canvas.on('selection:created', (e) => {
         if (!user) return;
-
-        websockets?.awareness.setLocalStateField("user", {
+        websockets?.awareness.setLocalStateField('select', {
           ...userData?.current,
           select: canvas.getActiveObjects().map((item) => item.id),
         });
-
         setSelectedObject(e.selected || []);
       });
 
       // 更新选择
-      canvas.on("selection:updated", (e) => {
+      canvas.on('selection:updated', (e) => {
         if (!user) return;
-        websockets?.awareness.setLocalStateField("user", {
+        websockets?.awareness.setLocalStateField('select', {
           ...userData?.current,
           select: canvas.getActiveObjects().map((item) => item.id),
         });
-
         setSelectedObject(e.selected || []);
       });
 
       // 清除选择
-      canvas.on("selection:cleared", () => {
+      canvas.on('selection:cleared', () => {
         if (!user) return;
-        websockets?.awareness.setLocalStateField("user", {
+        websockets?.awareness.setLocalStateField('select', {
           ...userData?.current,
           select: canvas.getActiveObjects().map((item) => item.id),
         });
@@ -114,7 +111,7 @@ const useCanvasEvent = ({
   }, [canvas]);
   useEffect(() => {
     // console.log(userState);
-    console.log(websockets?.awareness.getStates());
+    // console.log(websockets?.awareness.getStates());
   }, [userState]);
 };
 

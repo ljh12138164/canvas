@@ -11,20 +11,20 @@
   },
   "dependencies": {
     "@hono/node-server": "1.13.7",
-    "@hono/node-ws": "^1.0.4",
+    "@hono/node-ws": "^1.0.5",
     "@types/express": "^5.0.0",
     "@types/express-ws": "^3.0.5",
     "@types/ws": "^8.5.13",
-    "bun": "^1.1.36",
+    "bun": "^1.1.42",
     "express": "^4.21.2",
     "express-ws": "^5.0.2",
-    "fabric": "^6.5.3",
-    "hono": "^4.6.0",
-    "nanoid": "^5.0.8",
+    "fabric": "^6.5.4",
+    "hono": "^4.6.16",
+    "nanoid": "^5.0.9",
     "nest": "^0.1.6",
     "socket.io": "^4.8.1",
     "y-protocols": "^1.0.6",
-    "y-websocket": "^1.5.4",
-    "yjs": "^13.6.20"
+    "y-websocket": "^2.1.0",
+    "yjs": "^13.6.21"
   }
 }

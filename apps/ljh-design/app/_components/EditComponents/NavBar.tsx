@@ -114,7 +114,7 @@ const NavBar = ({
             }}
             className=''
           >
-            <LuUndo2 size='20'></LuUndo2>
+            <LuUndo2 size='20' />
           </Button>
         </TooltipComponents>
         <TooltipComponents label='重做'>
@@ -126,7 +126,7 @@ const NavBar = ({
               editor?.redo();
             }}
           >
-            <LuRedo2 size='20'></LuRedo2>
+            <LuRedo2 size='20' />
           </Button>
         </TooltipComponents>
         <Separator orientation='vertical' className='mx-2 h-[60%]' />
@@ -171,19 +171,19 @@ const NavBar = ({
                               <Avatar
                                 className={`size-8 border-2 `}
                                 style={{
-                                  borderColor: getUserColor(item[1].clientId),
+                                  borderColor: getUserColor(item[1].user.id),
                                 }}
                               >
-                                <AvatarImage src={item[1].image} />
+                                <AvatarImage src={item[1].user.image} />
                                 <AvatarFallback className='bg-gray-200'>
-                                  {item[1].name}
+                                  {item[1].user.name}
                                 </AvatarFallback>
                               </Avatar>
                               <TooltipProvider>
                                 <Tooltip>
                                   <p className='text-xs  text-ellipsis max-w-14 whitespace-nowrap'>
-                                    {item[1].name}
-                                    {item[1].isSelf && '（我）'}
+                                    {item[1].user.name}
+                                    {item[1].user.isSelf && '（我）'}
                                   </p>
                                 </Tooltip>
                               </TooltipProvider>
