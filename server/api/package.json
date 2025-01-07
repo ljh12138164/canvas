@@ -7,53 +7,50 @@
   "main": "dist/api.js",
   "exports": {
     ".": {
-      "types": "./dist/hono/index.d.ts",
-      "import": "./dist/hono/index.js",
-      "require": "./dist/hono/index.umd.cjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.cjs"
     }
   },
   "scripts": {
     "dev": "pnpm run api",
     "restart": "rimraf dist && vite build && tsc",
-    "api": "rimraf dist && vite build && tsc && vercel dev --listen=8000",
+    "api": "tsup  && vercel dev --listen=8000",
     "local": "bun run --hot ./local.ts",
     "deploy:prod": "vercel --prod",
     "deploy": "vercel",
     "zhipu": "bun run --hot --port=1234 ./zhipu.ts"
   },
   "dependencies": {
-    "@clerk/backend": "^1.17.2",
+    "@clerk/backend": "^1.21.4",
     "@dnd-kit/core": "^6.3.1",
     "@google/generative-ai": "^0.21.0",
     "@hono/clerk-auth": "^2.0.0",
     "@hono/node-server": "1.13.7",
-    "@hono/zod-validator": "^0.4.1",
-    "@react-email/components": "0.0.28",
-    "@supabase/supabase-js": "^2.46.1",
+    "@hono/zod-validator": "^0.4.2",
+    "@react-email/components": "0.0.31",
+    "@supabase/supabase-js": "^2.47.10",
     "@tanstack/vue-table": "^8.20.5",
-    "@types/bcryptjs": "2.4.0",
+    "@types/bcryptjs": "2.4.6",
     "@types/blueimp-md5": "^2.18.2",
-    "@types/node": "^20",
-    "@types/react": "^18.3.11",
-    "@vitejs/plugin-react": "^4.3.3",
+    "@types/node": "^22.10.5",
+    "@vitejs/plugin-react": "^4.3.4",
     "await-to-js": "^3.0.0",
-    "bcryptjs": "^2.4.0",
+    "bcryptjs": "^2.4.3",
     "blueimp-md5": "^2.19.0",
-    "hono": "^4.6.13",
+    "hono": "^4.6.16",
     "jose": "^5.9.6",
-    "nanoid": "^5.0.8",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "nanoid": "^5.0.9",
     "resend": "^4.0.1",
     "rimraf": "^6.0.1",
-    "typescript": "^5.6.3",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
     "unsplash-js": "^7.0.19",
     "zhipuai-sdk-nodejs-v4": "^0.1.12",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.28.1",
-    "vercel": "^39.2.0",
-    "vite": "^6.0.1"
+    "vercel": "^39.2.6",
+    "vite": "^6.0.7"
   }
 }

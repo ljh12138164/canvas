@@ -1,17 +1,16 @@
-import * as fabric from "fabric";
-import { useEffect, useState, RefObject } from "react";
-import { IndexeddbPersistence } from "y-indexeddb";
-import { WebsocketProvider } from "y-websocket";
-import * as Y from "yjs";
-import { Board } from "../_types/board";
-import { randomColor } from "../_lib/utils";
+import * as fabric from 'fabric';
+import { RefObject, useEffect, useState } from 'react';
+import { IndexeddbPersistence } from 'y-indexeddb';
+import { WebsocketProvider } from 'y-websocket';
+import * as Y from 'yjs';
 import {
-  getUserState,
   getAddObject,
+  getUserState,
   typeToActive,
-} from "../_lib/editor/editor";
-import { UserState } from "../_types/Edit";
-import { Sessions } from "../_types/user";
+} from '../_lib/editor/editor';
+import { Board } from '../_types/board';
+import { DefalutUser, UserState } from '../_types/Edit';
+import { Sessions } from '../_types/user';
 
 //创建文档
 const ydoc = new Y.Doc();
@@ -19,7 +18,7 @@ interface YjsProps {
   data: Board;
   canvas: fabric.Canvas | null;
   user: Sessions;
-  userData: RefObject<UserState>;
+  userData: RefObject<DefalutUser>;
 }
 /**
  * ### 协同hooks
@@ -33,12 +32,12 @@ export const useYjs = ({ data, canvas, user, userData }: YjsProps) => {
   const [yMaps] = useState<Y.Map<string>>(ydoc.getMap<string>(data.id));
   // 本地降级处理
   useEffect(() => {
-    yMap.set("json", data.json);
+    yMap.set('json', data.json);
     // indexDB
     const yIndexDb = new IndexeddbPersistence(data.id, ydoc);
     yIndexDb.clearData();
-    yIndexDb.on("synced", () => {
-      console.log("同步");
+    yIndexDb.on('synced', () => {
+      console.log('同步');
     });
     return () => {
       yIndexDb.destroy();
@@ -54,19 +53,16 @@ export const useYjs = ({ data, canvas, user, userData }: YjsProps) => {
       ydoc
     );
     // 设置本地状态
-    websocket.awareness.setLocalStateField("user", userData.current);
+    websocket.awareness.setLocalStateField('user', userData.current);
 
     setWebsockets(websocket);
     // 设置用户状态
-    const userState = getUserState(websocket);
+    const userState = getUserState(websocket, user);
 
     setUserState(userState);
     // 监听更新
-    websocket.awareness.on("update", () => {
-      setUserState([...websocket.awareness.getStates().entries()] as [
-        number,
-        UserState,
-      ][]);
+    websocket.awareness.on('update', () => {
+      setUserState(getUserState(websocket, user));
     });
     return () => {
       websocket.destroy();
@@ -80,12 +76,12 @@ export const useYjs = ({ data, canvas, user, userData }: YjsProps) => {
     // 清除初始的ymap
     yMaps.clear();
     // 监听doc的更新
-    ydoc.on("update", () => {
+    ydoc.on('update', () => {
       // console.log(event);
     });
     // 对map的更改
     yMaps.observe((event) => {
-      console.log(event);
+      console.log('ymapEvent', event.target);
       const obj = getAddObject(event);
       if (!obj) return;
       const changeType = obj.changeType;
