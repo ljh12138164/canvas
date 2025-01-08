@@ -2,8 +2,10 @@
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
 </script>
 <template>
-  <RouterView />
-  <VueQueryDevtools />
+  <main>
+    <RouterView />
+    <VueQueryDevtools />
+  </main>
 </template>
 <style lang="scss">
 html {

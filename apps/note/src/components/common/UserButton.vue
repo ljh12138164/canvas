@@ -7,17 +7,20 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { logout } from '@/server/supabase/user';
-import type { User } from '@supabase/supabase-js';
+import { Sessions } from '@/types/user';
 import { useRouter } from 'vue-router';
 import DropdownMenuContent from '../ui/dropdown-menu/DropdownMenuContent.vue';
 import { Skeleton } from '../ui/skeleton';
 const router = useRouter();
 const props = defineProps<{
-  user: User | undefined;
+  user: Sessions | undefined;
   isLoading: boolean;
 }>();
-const handleLogout = () => {
-  logout();
+const handleLogout = async () => {
+  await logout();
+  router.push('/login');
+};
+const handleLogin = () => {
   router.push('/login');
 };
 </script>
@@ -28,11 +31,11 @@ const handleLogout = () => {
         <DropdownMenuTrigger>
           <Avatar>
             <AvatarImage
-              :src="props.user?.user_metadata.image"
+              :src="props.user?.user.user_metadata.avatar_url"
               alt="@radix-vue"
             />
             <AvatarFallback>{{
-              props.user?.user_metadata.name
+              props.user?.user.user_metadata.name
             }}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
@@ -50,7 +53,12 @@ const handleLogout = () => {
       </DropdownMenu>
     </div>
     <div class="h-10 w-10" v-else>
-      <Button class="w-full h-full rounded-sm" variant="outline">登录</Button>
+      <Button
+        class="w-full h-full rounded-sm"
+        variant="outline"
+        @click="handleLogin"
+        >登录</Button
+      >
     </div>
   </div>
   <div v-else>

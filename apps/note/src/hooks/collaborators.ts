@@ -22,7 +22,7 @@ export const useCollaborators = (workspaceId: string, token: string) => {
     Error,
     getCollaboratorsResponse
   >({
-    queryKey: ['collaborators'],
+    queryKey: ['collaborators',workspaceId],
     queryFn: async () => {
       const res = await client.collaborators[':workspaceId'].$get(
         {

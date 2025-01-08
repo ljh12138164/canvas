@@ -1,19 +1,39 @@
 <script setup lang="ts">
-import { ScrollArea } from '@/components/ui/scroll-area';
-import FromCard from '@/components/workspace/FromCard.vue';
-import userData from '@/store/user';
-import InviteDialog from './InviteDialog.vue';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import FromCard from "@/components/workspace/FromCard.vue";
+import userData from "@/store/user";
+import InviteDialog from "./InviteDialog.vue";
+import { useGetWorkspaces } from "@/hooks/workspace";
 const token = userData()?.userData?.session.access_token as string;
+const {
+  workspaces,
+  workspacesError,
+  workspacesIsLoading,
+  workspacesIsFetching,
+} = useGetWorkspaces(token);
 </script>
 <template>
-  <section class="home-container border border-gray-200 dark:border-gray-800">
-    <ScrollArea class="h-[85dvh]">
-      <div class="flex flex-col gap-4">
-        <FromCard />
-        <InviteDialog :token="token" />
-      </div>
-    </ScrollArea>
-  </section>
+  <div>
+    <aside class="aside-container min-w-[80px] bg-[#f0f0f0] dark:bg-[#121212]">
+      <WorkspaceList
+        :isFetching="workspacesIsFetching"
+        :workspaces="workspaces"
+        :isLoading="workspacesIsLoading"
+        :error="workspacesError"
+        :token="token"
+      />
+    </aside>
+    <section
+      class="home-container border border-gray-200 dark:border-gray-800 main-content-container"
+    >
+      <ScrollArea class="h-[85dvh]">
+        <div class="flex flex-col gap-4">
+          <FromCard />
+          <InviteDialog :token="token" />
+        </div>
+      </ScrollArea>
+    </section>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -22,5 +42,8 @@ const token = userData()?.userData?.session.access_token as string;
   padding: 10px;
   border-radius: 10px;
   margin: 0 10px;
+}
+.main-content-container {
+  flex: 1;
 }
 </style>

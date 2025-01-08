@@ -9,30 +9,27 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('@/pages/home/index.vue'),
+  },
+  {
+    path: '/workspace',
+    component: () => import('@/pages/workspace/index.vue'),
     redirect: '/workspace/home',
     beforeEnter: routerCheckLogin,
     children: [
       {
-        path: '/workspace/',
-        component: () => import('@/pages/workspace/index.vue'),
-        redirect: '/workspace/home',
-        children: [
-          {
-            path: 'home',
-            component: () => import('@/pages/workspace/home.vue'),
-            beforeEnter: routerCheckLogin,
-          },
-          {
-            path: ':workspaceId',
-            component: () => import('@/pages/workspace/workspaceItem.vue'),
-            beforeEnter: routerCheckLogin,
-          },
-          {
-            path: ':workspaceId/member',
-            component: () => import('@/pages/workspace/member.vue'),
-            beforeEnter: routerCheckLogin,
-          },
-        ],
+        path: 'home',
+        component: () => import('@/pages/workspace/home.vue'),
+        beforeEnter: routerCheckLogin,
+      },
+      {
+        path: ':workspaceId',
+        component: () => import('@/pages/workspace/workspaceItem.vue'),
+        beforeEnter: routerCheckLogin,
+      },
+      {
+        path: ':workspaceId/member',
+        component: () => import('@/pages/workspace/member.vue'),
+        beforeEnter: routerCheckLogin,
       },
     ],
   },
