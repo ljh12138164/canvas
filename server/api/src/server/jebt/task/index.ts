@@ -48,7 +48,6 @@ export const createJebtTask = async ({
       },
     ])
     .select("*");
-  console.log({ data, taskError });
   if (taskError) throw new Error("服务器错误");
   return data;
 };

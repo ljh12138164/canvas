@@ -52,7 +52,6 @@ io.on("connection", (socket) => {
     });
     // 断开连接
     socket.on("disconnect", () => {
-      console.log("用户断开连接:", socket.id);
       const roomSize =
         io.sockets.adapter.rooms.get(data.workspaceId)?.size || 0;
       socket.to(data.workspaceId).emit(`leaveChat`, {

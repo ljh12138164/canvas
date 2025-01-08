@@ -180,7 +180,6 @@ export const authSaveBoard = async ({
     .eq("id", id)
     .eq("userId", userId)
     .select("*");
-  console.log(data);
   if (error || data.length === 0) throw new Error(error?.message || "更新失败");
   return data[0];
 };

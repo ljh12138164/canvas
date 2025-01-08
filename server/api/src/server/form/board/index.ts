@@ -53,7 +53,6 @@ export const getBoard = async ({
     .from('form')
     .select('*')
     .eq('userId', userId);
-  console.log(data, error);
   if (error) throw new Error('服务器错误');
 
   return data;
