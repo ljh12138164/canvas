@@ -15,18 +15,20 @@ const {
 </script>
 <template>
   <!-- <FromCard /> -->
-  <aside class="aside-container min-w-[80px] bg-[#f0f0f0] dark:bg-[#121212]">
-    <WorkspaceList
-      :isFetching="workspacesIsFetching"
-      :workspaces="workspaces"
-      :isLoading="workspacesIsLoading"
-      :error="workspacesError"
-      :token="token"
-    />
-  </aside>
-  <section class="main-content-container">
-    <RouterView />
-  </section>
+  <div class="flex h-[100dvh] w-full">
+    <aside class="aside-container min-w-[80px] bg-[#f0f0f0] dark:bg-[#121212]">
+      <WorkspaceList
+        :isFetching="workspacesIsFetching"
+        :workspaces="workspaces"
+        :isLoading="workspacesIsLoading"
+        :error="workspacesError"
+        :token="token"
+      />
+    </aside>
+    <section class="main-content-container">
+      <RouterView />
+    </section>
+  </div>
 </template>
 
 <style lang="scss" scoped>

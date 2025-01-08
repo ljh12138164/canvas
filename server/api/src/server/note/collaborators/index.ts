@@ -61,7 +61,6 @@ export const getCollaborators = async ({
     .from("workspace")
     .select("*,collaborators(*,profiles(*))")
     .eq("id", workspaceId);
-  console.log({ data, error });
   if (error) {
     throw new Error("服务器错误");
   }

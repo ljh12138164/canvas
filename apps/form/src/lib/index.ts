@@ -74,7 +74,6 @@ export async function routerCheckLogin(
     // 其他情况直接放行
     return next()
   } catch (error) {
-    console.error('routerCheckLogin error:', error)
     if (to.path !== '/auth') {
       return next('/auth')
     }

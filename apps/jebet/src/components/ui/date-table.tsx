@@ -128,7 +128,6 @@ export function DataTable<TData, TValue>({
           size='sm'
           className={!table.getCanNextPage() ? 'cursor-not-allowed' : ''}
           onClick={() => {
-            console.log(table);
             table.nextPage();
           }}
           disabled={!table.getCanNextPage()}

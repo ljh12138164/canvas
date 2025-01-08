@@ -24,7 +24,6 @@ export const uploadImageclound = async ({
     // 桶名字
     .from('WROKSPACE')
     .upload(fileName, file);
-  console.log(data, error);
   if (error) {
     throw new Error('服务器错误');
   }
@@ -123,7 +122,6 @@ export const getJebtFileList = async ({
     .from('stoages')
     .select('*')
     .eq('workspaceId', workspaceId);
-  console.log(data, error);
   if (error) throw new Error('服务器错误');
   return data;
 };

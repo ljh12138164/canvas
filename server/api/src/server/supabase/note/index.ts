@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = process.env.SUPABASE_NOTE_URL;
 const supabaseKey = process.env.SUPABASE_NOTE_ANON_KEY;
 export const supabaseNote = (token?: string) =>
@@ -9,3 +9,5 @@ export const supabaseNote = (token?: string) =>
       },
     },
   });
+
+export const supabaseNoteWebhook = createClient(supabaseUrl!, supabaseKey!);

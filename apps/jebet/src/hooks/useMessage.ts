@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface UseMessageProps {
   messageLoading: boolean;
@@ -34,7 +34,7 @@ export const useMessage = ({
       // 判断不在初始化状态，并且消息的高度大于消息容器的高度
       messageRef.current.scrollHeight > messageRef.current.clientHeight
     ) {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
       timer = setTimeout(() => {
         setInitData(true);
       }, 1000);
@@ -49,7 +49,6 @@ export const useMessage = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           if (!messageHasNextPage || isFetchingNextPage || !initData) return;
-          console.log('fetchNextPage');
           fetchNextPage();
         }
       },

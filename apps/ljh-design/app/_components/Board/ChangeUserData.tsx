@@ -28,7 +28,6 @@ const zodShema = z.object({
 });
 
 const ChangeUserData = ({ data }: { data: Sessions }) => {
-  console.log(data);
   const { register, handleSubmit, setValue, setError } = useForm({
     resolver: zodResolver(zodShema),
     defaultValues: {
