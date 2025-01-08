@@ -97,7 +97,7 @@ export const useGetWorkspaceById = (token: string, id: string) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
       if (!res.ok) throw new Error(res.statusText);
       return res.json();
