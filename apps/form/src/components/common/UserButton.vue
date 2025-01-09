@@ -26,7 +26,7 @@ const props = defineProps({
 })
 const logoutClick = async () => {
   await logout()
-  router.push('/login')
+  router.push('/auth')
 }
 </script>
 <template>

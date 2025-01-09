@@ -3,8 +3,9 @@ import LabelChange from '@/components/common/LabelChange.vue'
 import { AutoForm } from '@/components/ui/auto-form'
 import { ZodObjectOrWrapped } from '@/components/ui/auto-form/utils'
 import { getZodSchema } from '@/lib/form'
-import { FormInput, FormType, Slider } from '@/types/form'
+import { FormType, Slider } from '@/types/form'
 import { DateValue } from '@internationalized/date'
+import { ZodType } from 'zod'
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
@@ -28,9 +29,11 @@ const defaultDescription = ref(props.data?.description)
 const defaultIsRequired = ref(props.data?.isRequired)
 // 隐藏标签
 const defaultIsHidden = ref(props.data?.hiddenLabel)
+// 默认标签
+const defaultTypeName = ref(props.data?.defaultTypeName)
 
 // 表单数据
-const schema = ref<ZodObjectOrWrapped | null>(null)
+const schema = ref<ZodType<any> | null | undefined>(null)
 // 表单配置
 const fieldConfig = ref<Record<string, any>>({})
 watch(
@@ -48,6 +51,8 @@ watch(
     defaultIsRequired.value = newValue?.isRequired
     // 隐藏标签
     defaultIsHidden.value = newValue?.hiddenLabel
+    // 默认
+    defaultTypeName.value = newValue?.defaultTypeName
   },
 )
 schema.value = getZodSchema(props.data, fieldConfig)
@@ -77,17 +82,8 @@ const updateList = (
     />
     <LabelChange
       :updateList="updateList"
-      changeType="hiddenLabel"
-      v-model="defaultIsHidden"
-      label="是否隐藏标签"
-      type="checkbox"
-      placeholder="请输入是否隐藏标签"
-    />
-    <LabelChange
-      v-if="!defaultIsHidden"
-      :updateList="updateList"
-      changeType="description"
-      v-model="defaultDescription"
+      changeType="defaultTypeName"
+      v-model="defaultTypeName"
       label="输入框标签"
       type="text"
       placeholder="请输入标签"

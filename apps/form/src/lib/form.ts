@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import type {
+  Array,
   BigText,
   CreateFormItem,
   DatePicker,
@@ -216,7 +217,6 @@ export const bigTextZod = (schema: BigText, fieldConfig: Ref<Record<string, any>
 export const sliderZod = (schema: Slider, fieldConfig: Ref<Record<string, any>>): z.ZodType => {
   let obj: Record<string, any> = {
     inputProps: {},
-    component: 'switch',
   }
   let zodSchema
   zodSchema = z.boolean()
@@ -227,17 +227,18 @@ export const sliderZod = (schema: Slider, fieldConfig: Ref<Record<string, any>>)
       path: [schema.defaultTypeName],
     })
   // 标签
-  if (schema.description && !schema.hiddenLabel)
-    zodSchema = hasDescription(zodSchema, schema.description)
-  else obj.hideLabel = true
+  // if (schema.description && !schema.hiddenLabel)
+  //   zodSchema = hasDescription(zodSchema, schema.description)
+  // else obj.hideLabel = true
   // 默认值
   zodSchema = zodSchema.default(Boolean(schema.defaultValue))
   // 非必填
   if (!schema.isRequired) zodSchema = zodSchema.optional()
   // 占位符
-  obj = genAutoFormPlaceHolder(obj, schema.placeholder)
+  // obj = genAutoFormPlaceHolder(obj, schema.placeholder)
   // 检查inputProps是否存在
   obj = checkInputProps(obj)
+  obj.component = 'switch'
   // 生成autoForm的配置
   fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
   return zodSchema
@@ -303,47 +304,85 @@ export const fileZod = (schema: Files, fieldConfig: Ref<Record<string, any>>) =>
   fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
   return zodSchema
 }
+
+/**
+ * ## 数组
+ * @param schema 数据
+ * @param fieldConfig<Ref<Record<string, any>>>  配置
+ * @returns zod校验
+ */
+export const arrayZod = (schema: Array, fieldConfig: Ref<Record<string, any>>): z.ZodType => {
+  let zodObject: Record<string, z.ZodType> = {}
+  // 遍历子项并合并所有的schema
+  schema.children.forEach((item) => {
+    const itemSchema = getZodSchema(item, fieldConfig, 'arr')
+    if (itemSchema) {
+      zodObject = { ...zodObject, [item.defaultTypeName]: itemSchema }
+    }
+  })
+  console.log(zodObject)
+  // 将合并后的对象schema包装成数组
+  if (schema.description) return z.array(z.object(zodObject)).describe(schema.description)
+  return z.array(z.object(zodObject))
+}
 /**
  * ## 生成zod校验
  * @param schema 数据
  * @param fieldConfig<Ref<Record<string, any>>>  配置
  * @returns zod校验
  */
-export function getZodSchema(schema: CreateFormItem, fieldConfig: Ref<Record<string, any>>) {
+export function getZodSchema(
+  schema: CreateFormItem,
+  fieldConfig: Ref<Record<string, any>>,
+  type?: 'arr',
+) {
   // 输入框
   if (schema.type === 'input') {
     const zodSchema = inputZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
     return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 文件
   if (schema.type === 'file') {
     const zodSchema = fileZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
     return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 单选框
   if (schema.type === 'radio') {
     const zodSchema = radioZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
     return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 下拉框
   if (schema.type === 'select') {
     const zodSchema = selectZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
     return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 日期
   if (schema.type === 'date') {
     const zodSchema = dateZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
     return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 大文本
   if (schema.type === 'bigText') {
     const zodSchema = bigTextZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
     return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 滑动按钮
   if (schema.type === 'slider') {
     const zodSchema = sliderZod(schema, fieldConfig)
-    return z.object({ [schema.description || schema.defaultTypeName]: zodSchema as z.ZodType })
+    if (type === 'arr') return zodSchema
+    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
+  }
+  // 数组
+  if (schema.type === 'array') {
+    const zodSchema = arrayZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
+    return z.object({ [schema.defaultTypeName]: zodSchema })
   }
   return null
 }

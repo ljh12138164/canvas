@@ -22,7 +22,7 @@ const handlePreview = async () => {
       schema: props.payment.schema,
     },
   })
-  router.push(`/preview/${props.payment.id}`)
+  router.push(`/workspace/preview/${props.payment.id}`)
 }
 </script>
 <template>

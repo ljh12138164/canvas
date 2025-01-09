@@ -5,6 +5,6 @@ import { nanoid } from 'nanoid'
 </script>
 <template>
   <Button as-child>
-    <RouterLink :to="{ path: '/create/' + nanoid() }">创建表单</RouterLink>
+    <RouterLink :to="{ path: '/workspace/create/' + nanoid() }">创建表单</RouterLink>
   </Button>
 </template>

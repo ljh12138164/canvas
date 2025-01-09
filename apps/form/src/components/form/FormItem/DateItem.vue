@@ -6,6 +6,7 @@ import { getZodSchema } from '@/lib/form'
 import { DatePicker, FormType } from '@/types/form'
 import { DateValue } from '@internationalized/date'
 import { ref, watch } from 'vue'
+import { ZodType } from 'zod'
 const props = defineProps<{
   id: string
   data: DatePicker
@@ -29,7 +30,7 @@ const defaultIsHidden = ref(props.data?.hiddenLabel)
 // 下边文字
 // const defaultUnderText = ref(props.data?.underText)
 // 表单数据
-const schema = ref<ZodObjectOrWrapped | null>(null)
+const schema = ref<ZodType<any> | null | undefined>(null)
 // 表单配置
 const fieldConfig = ref<Record<string, any>>({})
 watch(

@@ -2,7 +2,7 @@
   <VueDraggable class="drag-area" tag="ul" v-model="list" group="g1">
     <li v-for="el in modelValue" :key="el.name">
       <p>{{ el.name }}</p>
-      <FormSub v-model="el.children" />
+      <form-sub v-model="el.children" />
     </li>
   </VueDraggable>
 </template>
@@ -24,6 +24,7 @@ const props = defineProps<Props>()
 interface Emits {
   (e: 'update:modelValue', value: IList[]): void
 }
+console.log(props.modelValue)
 
 const emits = defineEmits<Emits>()
 const list = computed({

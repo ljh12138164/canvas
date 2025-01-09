@@ -121,14 +121,6 @@ const updateList = (
 <template>
   <AutoForm v-if="schema" :schema="schema as ZodObjectOrWrapped" :fieldConfig="fieldConfig" />
   <section class="p-4 flex flex-col gap-2">
-    <LabelChange
-      :updateList="updateList"
-      changeType="placeholder"
-      v-model="defaultPlaceholder"
-      label="输入框占位符"
-      type="text"
-      placeholder="请输入占位符"
-    />
     <!-- 枚举 -->
     <p class="flex items-center">
       <span>选项</span>
@@ -195,6 +187,7 @@ const updateList = (
       :updateList="updateList"
       changeType="isRequired"
       v-model="defaultIsRequired"
+      default="defaultIsRequired"
       label="是否必填"
       type="checkbox"
       placeholder="请输入是否必填"

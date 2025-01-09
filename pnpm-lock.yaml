@@ -54,6 +54,9 @@ importers:
       '@vueuse/core':
         specifier: ^12.3.0
         version: 12.3.0(typescript@5.7.2)
+      add:
+        specifier: ^2.0.6
+        version: 2.0.6
       api:
         specifier: workspace:*
         version: link:../../server/api
@@ -96,6 +99,9 @@ importers:
       pinia-plugin-persist:
         specifier: ^1.0.0
         version: 1.0.0(pinia@2.3.0(typescript@5.7.2)(vue@3.5.13(typescript@5.7.2)))(vue@3.5.13(typescript@5.7.2))
+      pnpm:
+        specifier: ^9.15.3
+        version: 9.15.3
       radix-vue:
         specifier: ^1.9.12
         version: 1.9.12(vue@3.5.13(typescript@5.7.2))
@@ -1205,7 +1211,7 @@ importers:
     devDependencies:
       '@types/bun':
         specifier: latest
-        version: 1.1.15
+        version: 1.1.16
 
   server/jebetChat:
     dependencies:
@@ -1236,7 +1242,7 @@ importers:
     devDependencies:
       '@types/bun':
         specifier: latest
-        version: 1.1.15
+        version: 1.1.16
 
   server/ws:
     dependencies:
@@ -1384,7 +1390,7 @@ importers:
         version: 2.15.0(y-protocols@1.0.6(yjs@13.6.21))(yjs@13.6.21)
       '@types/bun':
         specifier: latest
-        version: 1.1.15
+        version: 1.1.16
 
 packages:
 
@@ -3933,8 +3939,8 @@ packages:
   '@types/body-parser@1.19.5':
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
 
-  '@types/bun@1.1.15':
-    resolution: {integrity: sha512-Fi7ND1jCq8O5iU3s9z3TKHggD0hidgpe7wSxyisviXpbMmY4B1KiokF3f/mmjOoDrEcf873tSpixgen7Wm9X0g==}
+  '@types/bun@1.1.16':
+    resolution: {integrity: sha512-E+ue6NMcn4FXC5bDRE1W/BXUVs01h5Mt02qH8/8HGCox9akuh8KNOFdwvaQS9TDgT2RmUyJYFRRqA60WtTnm2g==}
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
@@ -4926,8 +4932,8 @@ packages:
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
 
-  bun-types@1.1.42:
-    resolution: {integrity: sha512-beMbnFqWbbBQHll/bn3phSwmoOQmnX2nt8NI9iOQKFbgR5Z6rlH3YuaMdlid8vp5XGct3/W4QVQBmhoOEoe4nw==}
+  bun-types@1.1.43:
+    resolution: {integrity: sha512-W0wCtVH+bwFp7p3Zgs03CqxEDmXxEvmmUM/FBKgWIv9T8gyeotvIjIbHzuDScc2DphhRNtr7hJLCR5PspYL5qw==}
 
   bun@1.1.42:
     resolution: {integrity: sha512-PckeNolMEBaBEzixTMvp0jJD9r/9lly8AfctILi1ve14zwwChFjsxI4TJLQO2yezzOjVeG0u7xf8WQFbS7GjAA==}
@@ -12755,9 +12761,9 @@ snapshots:
       '@types/connect': 3.4.38
       '@types/node': 22.10.5
 
-  '@types/bun@1.1.15':
+  '@types/bun@1.1.16':
     dependencies:
-      bun-types: 1.1.42
+      bun-types: 1.1.43
 
   '@types/connect@3.4.38':
     dependencies:
@@ -14190,7 +14196,7 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  bun-types@1.1.42:
+  bun-types@1.1.43:
     dependencies:
       '@types/node': 20.12.14
       '@types/ws': 8.5.13

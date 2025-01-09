@@ -6,13 +6,17 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'index',
+      name: 'home',
+      component: () => import('../views/home/index.vue'),
+    },
+    {
+      path: '/workspace',
+      name: 'workspace',
       component: () => import('../views/index.vue'),
-      redirect: '/board',
       beforeEnter: routerCheckLogin,
       children: [
         {
-          path: '/board',
+          path: '/workspace/board',
           name: 'board',
           component: () => import('../views/board/index.vue'),
           meta: {
@@ -20,7 +24,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/form',
+          path: '/workspace/form',
           name: 'form',
           component: () => import('../views/table/index.vue'),
           meta: {
@@ -28,7 +32,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/create',
+          path: '/workspace/create',
           name: 'create',
           component: () => import('../views/create/index.vue'),
           meta: {
@@ -36,7 +40,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/create/:id',
+          path: '/workspace/create/:id',
           name: 'createById',
           component: () => import('../views/create/id.vue'),
           meta: {
@@ -44,7 +48,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/preview',
+          path: '/workspace/preview',
           name: 'preview',
           component: () => import('../views/preview/index.vue'),
           meta: {
@@ -52,7 +56,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/preview/:id',
+          path: '/workspace/preview/:id',
           name: 'previewById',
           component: () => import('../views/preview/id.vue'),
           meta: {
@@ -60,7 +64,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/table',
+          path: '/workspace/table',
           name: 'table',
           component: () => import('../views/table/index.vue'),
           meta: {
@@ -68,7 +72,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/demo',
+          path: '/workspace/demo',
           name: 'demo',
           component: () => import('../views/demo/index.vue'),
           meta: {
@@ -76,6 +80,9 @@ const router = createRouter({
           },
         },
       ],
+      meta: {
+        title: '看板',
+      },
     },
     {
       path: '/auth',
@@ -84,6 +91,14 @@ const router = createRouter({
       component: () => import('../views/auth/index.vue'),
       meta: {
         title: '登录',
+      },
+    },
+    {
+      path: '/demo',
+      name: 'demo',
+      component: () => import('../views/demo/index.vue'),
+      meta: {
+        title: 'demo',
       },
     },
   ],
