@@ -5,6 +5,7 @@ import { ZodObjectOrWrapped } from '@/components/ui/auto-form/utils'
 import { getZodSchema } from '@/lib/form'
 import { BigText, FormType } from '@/types/form'
 import { ref, watch } from 'vue'
+import { ZodType } from 'zod'
 
 const props = defineProps<{
   id: string
@@ -25,7 +26,7 @@ const defaultIsRequired = ref(props.data?.isRequired)
 const defaultIsHidden = ref(props.data?.hiddenLabel)
 
 // 表单数据
-const schema = ref<ZodObjectOrWrapped | null>(null)
+const schema = ref<ZodType<any> | null | undefined>(null)
 // 表单配置
 const fieldConfig = ref<Record<string, any>>({})
 watch(

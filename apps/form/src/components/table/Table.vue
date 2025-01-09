@@ -48,39 +48,6 @@ export interface Payment {
   email: string
 }
 
-// const data: Payment[] = [
-//   {
-//     id: 'm5gr84i9',
-//     amount: 316,
-//     status: 'success',
-//     email: 'ken99@yahoo.com',
-//   },
-//   {
-//     id: '3u1reuv4',
-//     amount: 242,
-//     status: 'success',
-//     email: 'Abe45@gmail.com',
-//   },
-//   {
-//     id: 'derv1ws0',
-//     amount: 837,
-//     status: 'processing',
-//     email: 'Monserrat44@gmail.com',
-//   },
-//   {
-//     id: '5kma53ae',
-//     amount: 874,
-//     status: 'success',
-//     email: 'Silas22@gmail.com',
-//   },
-//   {
-//     id: 'bhqecj4p',
-//     amount: 721,
-//     status: 'failed',
-//     email: 'carmella@hotmail.com',
-//   },
-// ]
-
 const props = defineProps<{
   data: Form[]
 }>()
@@ -89,26 +56,6 @@ const columnHelper = createColumnHelper<Form>()
 
 // 表单的显示
 const columns = [
-  //   columnHelper.display({
-  //     id: 'select',
-  //     header: ({ table }) =>
-  //       h(Checkbox, {
-  //         checked:
-  //           table.getIsAllPageRowsSelected() ||
-  //           (table.getIsSomePageRowsSelected() && 'indeterminate'),
-  //         'onUpdate:checked': (value) => table.toggleAllPageRowsSelected(!!value),
-  //         ariaLabel: 'Select all',
-  //       }),
-  //     cell: ({ row }) => {
-  //       return h(Checkbox, {
-  //         checked: row.getIsSelected(),
-  //         'onUpdate:checked': (value) => row.toggleSelected(!!value),
-  //         ariaLabel: 'Select row',
-  //       })
-  //     },
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   }),
   columnHelper.accessor('name', {
     enablePinning: true,
     header: ({ column }) => {
@@ -278,6 +225,7 @@ const keyof = {
       </DropdownMenu>
     </div>
     <div class="rounded-md border">
+      <!-- @vue-ignore -->
       <Table>
         <TableHeader>
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">

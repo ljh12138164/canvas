@@ -1,5 +1,3 @@
-import { IList } from '@/components/form/FormSub.vue'
-import { DateValue } from '@internationalized/date'
 import { nanoid } from 'nanoid'
 
 export type Type =
@@ -156,6 +154,7 @@ export type FormType =
   | 'hiddenLabel'
   | 'inputType'
   | 'options'
+  | 'defaultTypeName'
 
 // 基础表单项
 export interface FormItem {

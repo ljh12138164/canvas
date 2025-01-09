@@ -20,8 +20,9 @@ const activePath = ref('/' + route.path.split('/')[1])
 watch(
   () => route.path,
   (newVal) => {
-    activePath.value = '/' + newVal.split('/')[1]
+    activePath.value = '/' + newVal.split('/')[2]
   },
+  { immediate: true },
 )
 </script>
 
@@ -34,22 +35,26 @@ watch(
         <Logo />
         <div class="flex-1">
           <nav class="grid items-start px-2 text-sm font-medium lg:px-4">
-            <RouteButton title="仪表板" path="/board" :active="activePath === '/board'">
+            <RouteButton title="仪表板" path="/workspace/board" :active="activePath === '/board'">
               <template #icon>
                 <HomeIcon class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton title="表单管理" path="/form" :active="activePath === '/form'">
+            <RouteButton title="表单管理" path="/workspace/form" :active="activePath === '/form'">
               <template #icon>
                 <MenuIcon class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton title="创建表单" path="/create" :active="activePath === '/create'">
+            <RouteButton
+              title="创建表单"
+              path="/workspace/create"
+              :active="activePath === '/create'"
+            >
               <template #icon>
                 <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton title="预览" path="/preview" :active="activePath === '/preview'">
+            <RouteButton title="预览" path="/workspace/preview" :active="activePath === '/preview'">
               <template #icon>
                 <ChartBarIcon class="h-4 w-4" />
               </template>

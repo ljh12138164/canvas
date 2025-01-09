@@ -2,7 +2,8 @@
 import { useMediaQuery } from '@vueuse/core'
 import { Copy, Link, Trash } from 'lucide-vue-next'
 import { nanoid } from 'nanoid'
-import { computed, onBeforeMount, Ref, ref } from 'vue'
+import { computed, onBeforeMount, Ref, ref, watch } from 'vue'
+import FormArrayConfig from './FormArrayConfig.vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { Button } from '../ui/button'
 import { Drawer, DrawerContent, DrawerOverlay, DrawerTrigger } from '../ui/drawer'
@@ -19,8 +20,7 @@ import {
   DialogFooter,
   DialogClose,
 } from '../ui/dialog'
-import { formItemList, FormType, type CreateFormItem, type FormItem } from '@/types/form'
-import { watch } from 'vue'
+import { Array, formItemList, FormType, type CreateFormItem, type FormItem } from '@/types/form'
 import { getFormDataById, getIndexDB, indexDBChange } from '@/lib/utils'
 import { DateValue } from '@internationalized/date'
 import FormSub, { IList } from './FormSub.vue'
@@ -35,9 +35,13 @@ watch(
     id.value = newId
   },
 )
+const props = defineProps<{
+  updateSchema: (data: any) => void
+}>()
 // 组件列表
 const list1 = ref<CreateFormItem[]>(formItemList as CreateFormItem[])
 const list2 = ref<CreateFormItem[]>([])
+const subId = ref<string[]>([])
 //   初始化赋值
 const setList2 = (list: CreateFormItem[]) => (list2.value = list)
 // 添加
@@ -45,7 +49,7 @@ const pushList2 = (item: CreateFormItem) => (list2.value = [...list2.value, item
 // 删除
 const deleteList2 = (id: string) => (list2.value = list2.value.filter((item) => item.id !== id))
 // 更新
-const updateList2 = (
+const updateList2 = async (
   id: string,
   type: FormType,
   newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
@@ -56,10 +60,35 @@ const updateList2 = (
     }
     return item
   })
+  await handleUpdate()
 }
+const updateArray = async (
+  id: string[],
+  type: FormType,
+  newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
+) => {
+  // 更新数组
+  list2.value = list2.value.map((item) => {
+    if (item.id === id[0]) {
+      ;(item as Array)?.children.map((items: CreateFormItem) => {
+        if (items.id === id[1]) {
+          ;(items as any)[type] = newValue
+        }
+        return items
+      })
+    }
+    return item
+  })
+  await handleUpdate()
+}
+
 onBeforeMount(async () => {
   const data = await getFormDataById(id.value + '')
-  if (data) setList2(JSON.parse(data.schema))
+
+  if (data) {
+    props.updateSchema(data.schema)
+    setList2(JSON.parse(data.schema))
+  }
 })
 const onOpen = ref(false)
 const activeArea = ref<string>('')
@@ -83,12 +112,30 @@ const onClone = (
     string
   >,
 ) => {
-  //@ts-ignore
-  const length = list2.value.filter((item: CreateFormItem) => item.type === element.type).length
+  let existingNames = new Set(
+    list2.value
+      .filter((item: CreateFormItem) => item.type === element.type)
+      .map((item) => item.name),
+  )
+  list2.value.forEach((item: CreateFormItem) => {
+    if (item.type === 'array') {
+      item.children.forEach((child: CreateFormItem) => {
+        existingNames.add(child.name)
+      })
+    }
+  })
+  let baseName = element.name
+  let newName = baseName
+  let counter = 1
+  while (existingNames.has(newName)) {
+    newName = `${baseName}(${counter})`
+    counter++
+  }
+
   return {
     ...element,
-    name: length ? `${element.name}(${length})` : element.name,
-    defaultTypeName: length ? `${element.name}(${length})` : element.name,
+    name: newName,
+    defaultTypeName: newName,
     id: nanoid(),
   }
 }
@@ -101,11 +148,12 @@ const handlePreview = async () => {
       schema: JSON.stringify(list2.value),
     },
   })
-  router.push(`/preview/${id.value}`)
+  router.push(`/workspace/preview/${id.value}`)
 }
 
 // 更新组件到indexDB中
 const handleUpdate = async () => {
+  props.updateSchema(list2.value)
   await indexDBChange({
     type: 'edit',
     editData: {
@@ -114,36 +162,86 @@ const handleUpdate = async () => {
     },
   })
 }
+
+const parentHandleUpdate = () => {}
 // 激活组件
 const handleActiveArea = (id: string) => {
+  const find = list2.value.find((item) => item.id === id)
   if (activeArea.value === id) {
     activeArea.value = ''
   } else {
     activeArea.value = id
   }
 }
+// 激活子组件
+const handleActiveSub = (id: string, fatherId: string) => {
+  if (subId.value.includes(id)) {
+    subId.value = []
+  } else {
+    subId.value = [fatherId, id]
+  }
+}
+
 // 删除组件
 const handleDelete = async (id: string) => {
   deleteList2(id)
   activeArea.value = ''
+  subId.value = []
   await handleUpdate()
 }
 watch(activeArea, () => {
+  if (subId.value.length) return
   if (!activeArea.value) onOpen.value = false
   if (activeArea.value) onOpen.value = true
 })
-
+watch(subId, () => {
+  if (activeArea.value) return
+  if (!subId.value.length) onOpen.value = false
+  if (subId.value.length) onOpen.value = true
+})
 // 复制组件
-const handleCopy = (id: string) => {
+const handleCopy = async (id: string) => {
   const data = list2.value.find((item) => item.id === id)
   const nanoidId = nanoid()
   if (data) pushList2({ ...data, id: nanoidId })
-  handleUpdate()
+  await handleUpdate()
 }
-const handleUpdates = (value: IList[]) => {
-  console.log(value)
+const parmasClone = (
+  element: Record<
+    | 'name'
+    | 'id'
+    | 'type'
+    | 'isRequired'
+    | 'placeholder'
+    | 'defaultValue'
+    | 'label'
+    | 'options'
+    | 'hiddenLabel'
+    | 'description'
+    | 'defaultValue'
+    | 'defaultTypeName',
+    string
+  >,
+) => {
+  if (element.type === 'array') return
+  return element
 }
-const test = ref<IList[]>([])
+const datas = ref<CreateFormItem | undefined>(undefined)
+
+watch(activeArea, () => {
+  if (activeArea.value) {
+    subId.value = []
+    datas.value = list2.value.find((item) => item.id === activeArea.value)
+  }
+})
+watch(subId, () => {
+  if (subId.value.length) {
+    activeArea.value = ''
+    datas.value = (list2.value.find((item) => item.id === subId.value[0]) as Array)?.children.find(
+      (item: CreateFormItem) => item.id === subId.value[1],
+    )
+  }
+})
 </script>
 <template>
   <section class="flex flex-col px-1 gap-2 w-full rounded h-[calc(100dvh-170px)] overflow-hidden">
@@ -151,7 +249,7 @@ const test = ref<IList[]>([])
       ref="parent"
       class="grid grid-cols-2 gap-2"
       v-auto-animate
-      :class="{ 'grid-cols-3': activeArea && !isMobile }"
+      :class="{ 'grid-cols-3': (activeArea || subId.length) && !isMobile }"
     >
       <ScrollArea class="h-[calc(100dvh-120px)] w-full bg-gray-500/5">
         <VueDraggable
@@ -173,9 +271,17 @@ const test = ref<IList[]>([])
       >
         <Drawer v-model:open="onOpen">
           <VueDraggable
+            @drop.stop=""
+            @click.stop=""
+            @mouseover.stop=""
+            @mouseleave.stop=""
+            @mouseenter.stop=""
+            @dragstart.stop=""
+            @dragend.stop=""
+            @dragover.stop=""
             v-model="list2"
             :animation="150"
-            :clone="onClone"
+            :clone="parmasClone"
             :change="handleUpdate"
             style="scrollbar-width: none"
             group="people"
@@ -185,22 +291,55 @@ const test = ref<IList[]>([])
               v-for="item in list2"
               :key="item.id"
               @click="handleActiveArea(item.id)"
-              class="cursor-move h-50px rounded p-3 border relative hover:border-indigo-500 transition-all duration-300"
-              :class="[activeArea === item.id ? 'bg-gray-500/20 border-indigo-500' : '']"
+              class="cursor-move h-50px rounded p-3 border relative transition-all duration-300"
+              :class="[
+                `${'hover:border-indigo-500'} ${
+                  activeArea === item.id && item.type !== 'array'
+                    ? 'bg-gray-500/20 border-indigo-500'
+                    : ''
+                }`,
+              ]"
             >
               <DrawerTrigger as-child>
                 <section>
                   <span v-if="item.type !== 'array'">
                     {{ item.name }}
                   </span>
-                  <div v-else-if="item.type === 'array'">
+                  <div v-else-if="item.type === 'array'" @click.stop="handleActiveArea(item.id)">
                     <p>{{ item.name }}</p>
-                    <FormSub :modelValue="test" @update:modelValue="handleUpdates" />
+                    <VueDraggable
+                      @drop.stop=""
+                      @click.stop=""
+                      @mouseover.stop=""
+                      @mouseleave.stop=""
+                      @mouseenter.stop=""
+                      @dragstart.stop=""
+                      @dragend.stop=""
+                      @dragover.stop=""
+                      v-model="item.children"
+                      :animation="150"
+                      :clone="parmasClone"
+                      :change="parentHandleUpdate"
+                      style="scrollbar-width: none"
+                      group="people"
+                      class="flex flex-col gap-2 p-4 w-300px m-auto bg-gray-500/5 rounded overflow-auto"
+                    >
+                      <div
+                        v-for="el in item.children"
+                        :key="el.name"
+                        @click.stop="handleActiveSub(el.id, item.id)"
+                        :class="[subId.includes(el.id) ? 'bg-gray-500/20 border-indigo-500' : '']"
+                        class="cursor-move h-50px rounded p-3 border relative hover:border-indigo-500 transition-all duration-300"
+                      >
+                        <p>{{ el.name }}</p>
+                      </div>
+                    </VueDraggable>
                   </div>
                   <div
                     v-if="activeArea === item.id"
                     @click.stop=""
-                    class="absolute bg-indigo-600 p-[4px] top-[50%] cursor-pointer translate-y-[-50%] transition-all duration-300 translate-x-[-50%] right-[30px] rounded-full hover:bg-indigo-600/70"
+                    class="absolute bg-indigo-600 p-[4px] cursor-pointer translate-y-[-50%] transition-all duration-300 translate-x-[-50%] right-[30px] rounded-full hover:bg-indigo-600/70"
+                    :class="[`${item.type !== 'array' ? 'top-[50%]' : 'top-[15%]'}`]"
                   >
                     <Copy @click="handleCopy(item.id)" class="w-4 h-4" />
                   </div>
@@ -208,7 +347,8 @@ const test = ref<IList[]>([])
                     <DialogTrigger as-child>
                       <div
                         @click.stop=""
-                        class="absolute bg-indigo-600 p-[4px] top-[50%] cursor-pointer translate-y-[-50%] transition-all duration-300 translate-x-[-50%] right-0 rounded-full hover:bg-indigo-600/70"
+                        class="absolute bg-indigo-600 p-[4px] cursor-pointer translate-y-[-50%] transition-all duration-300 translate-x-[-50%] right-0 rounded-full hover:bg-indigo-600/70"
+                        :class="`${item.type !== 'array' ? 'top-[50%]' : 'top-[15%]'}`"
                       >
                         <Trash class="w-4 h-4" />
                       </div>
@@ -235,14 +375,14 @@ const test = ref<IList[]>([])
             v-if="isMobile"
             class="scrollbar-none h-[calc(100dvh-120px)] flex flex-col"
           >
-            <FormItemConfig
-              :updateList2="updateList2"
-              :id="activeArea"
-              :data="list2.find((item) => item.id === activeArea)"
-            />
+            <ScrollArea class="h-full pb-10 bg-gray-500/5" v-if="activeArea">
+              <FormItemConfig :data="datas" :updateList2="updateList2" :id="activeArea" />
+            </ScrollArea>
+            <ScrollArea class="h-full pb-10 bg-gray-500/5" v-if="subId.length">
+              <FormArrayConfig :data="datas" :list2="list2" :updateList="updateArray" :id="subId" />
+            </ScrollArea>
           </DrawerContent>
         </Drawer>
-
         <Button
           variant="outline"
           class="w-full hover:bg-white dark:hover:bg-gray-500/5 absolute bottom-0"
@@ -257,17 +397,15 @@ const test = ref<IList[]>([])
         </Button>
       </ScrollArea>
       <ScrollArea class="h-[calc(100dvh-120px)] pb-10 bg-gray-500/5" v-if="activeArea && !isMobile">
-        <FormItemConfig
-          :data="list2.find((item) => item.id === activeArea)"
-          :updateList2="updateList2"
-          :id="activeArea"
-        />
+        <FormItemConfig :data="datas" :updateList2="updateList2" :id="activeArea" />
+      </ScrollArea>
+      <ScrollArea
+        class="h-[calc(100dvh-120px)] pb-10 bg-gray-500/5"
+        v-if="subId.length && !isMobile"
+      >
+        <FormArrayConfig :data="datas" :updateList="updateArray" :id="subId" />
       </ScrollArea>
     </div>
-    <main class="flex justify-between">
-      <!-- <preview-list class="w-full" :list="list1" />
-      <preview-list class="w-full" :list="list2" /> -->
-    </main>
   </section>
 </template>
 <style scoped>

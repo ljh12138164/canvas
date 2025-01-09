@@ -1,18 +1,17 @@
 <script setup lang="ts">
+import LabelChange from '@/components/common/LabelChange.vue'
 import { AutoForm } from '@/components/ui/auto-form'
 import { ZodObjectOrWrapped } from '@/components/ui/auto-form/utils'
 import { Button } from '@/components/ui/button'
-import { getZodSchema } from '@/lib/form'
-import { Label } from '@/components/ui/label'
-import { Select, FormType } from '@/types/form'
-import { CheckIcon, Trash2Icon } from 'lucide-vue-next'
-import { Icon } from '@iconify/vue'
-import { computed, ref, watch } from 'vue'
-import { VueDraggable } from 'vue-draggable-plus'
-import { nanoid } from 'nanoid'
 import { useToast } from '@/components/ui/toast'
-import LabelChange from '@/components/common/LabelChange.vue'
-import { Checkbox } from '@/components/ui/checkbox'
+import { getZodSchema } from '@/lib/form'
+import { FormType, Select } from '@/types/form'
+import { Icon } from '@iconify/vue'
+import { Trash2Icon } from 'lucide-vue-next'
+import { nanoid } from 'nanoid'
+import { ref, watch } from 'vue'
+import { VueDraggable } from 'vue-draggable-plus'
+import { ZodType } from 'zod'
 
 const { toast } = useToast()
 const newItem = ref('')
@@ -41,7 +40,7 @@ const defaultIsRequired = ref(!props.data?.isRequired)
 const defaultIsHidden = ref(props.data?.hiddenLabel)
 
 // 表单数据
-const schema = ref<ZodObjectOrWrapped | null>(null)
+const schema = ref<ZodType<any> | null | undefined>(null)
 // 表单配置
 const fieldConfig = ref<Record<string, any>>({})
 watch(
@@ -193,6 +192,7 @@ const updateList = (type: FormType, newValue: string | boolean | number | undefi
       :updateList="updateList"
       changeType="isRequired"
       v-model="defaultIsRequired"
+      :default="defaultIsRequired"
       label="是否必填"
       type="checkbox"
       placeholder="请输入是否必填"

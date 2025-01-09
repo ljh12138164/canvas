@@ -1,75 +1,20 @@
 <script setup lang="ts">
-import { AutoForm, AutoFormField } from '@/components/ui/auto-form'
+import { AutoForm } from '@/components/ui/auto-form'
 import { Button } from '@/components/ui/button'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { toast } from '@/components/ui/toast'
 import { h } from 'vue'
 import * as z from 'zod'
 
-enum Sports {
-  Football = 'Football/Soccer',
-  Basketball = 'Basketball',
-  Baseball = 'Baseball',
-  Hockey = 'Hockey (Ice)',
-  None = "I don't like sports",
-}
-
 const schema = z.object({
-  username: z
-    .string({
-      required_error: 'Username is required.',
-    })
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    }),
-  password: z
-    .string({
-      required_error: 'Password is required.',
-    })
-    .min(8, {
-      message: 'Password must be at least 8 characters.',
-    }),
-  favouriteNumber: z.coerce
-    .number({
-      invalid_type_error: 'Favourite number must be a number.',
-    })
-    .min(1, {
-      message: 'Favourite number must be at least 1.',
-    })
-    .max(10, {
-      message: 'Favourite number must be at most 10.',
-    })
-    .default(1)
-    .optional(),
-
-  acceptTerms: z.boolean().refine((value) => value, {
-    message: 'You must accept the terms and conditions.',
-    path: ['acceptTerms'],
-  }),
-
-  sendMeMails: z.boolean().optional(),
-
-  birthday: z.coerce.date().optional(),
-
-  color: z.enum(['red', 'green', 'blue']).optional(),
-
-  // Another enum example
-  marshmallows: z.enum(['not many', 'a few', 'a lot', 'too many']),
-
-  // Native enum example
-  sports: z.nativeEnum(Sports).describe('What is your favourite sport?'),
-
-  bio: z
-    .string()
-    .min(10, {
-      message: 'Bio must be at least 10 characters.',
-    })
-    .max(160, {
-      message: 'Bio must not be longer than 30 characters.',
-    })
-    .optional(),
-  customParent: z.string().optional(),
-  file: z.string().optional(),
+  guestListName: z.string(),
+  invitedGuests: z
+    .array(
+      z.object({
+        name: z.string(),
+        age: z.coerce.number(),
+      }),
+    )
+    .describe('Guests invited to the party'),
 })
 
 function onSubmit(values: Record<string, any>) {
@@ -82,71 +27,10 @@ function onSubmit(values: Record<string, any>) {
     ),
   })
 }
-const fieldConfig = {
-  password: {
-    label: 'Your secure password',
-    inputProps: {
-      type: 'password',
-      placeholder: '••••••••',
-    },
-  },
-  favouriteNumber: {
-    description: 'Your favourite number between 1 and 10.',
-  },
-  acceptTerms: {
-    label: 'Accept terms and conditions.',
-    inputProps: {
-      required: true,
-    },
-  },
-
-  birthday: {
-    description: 'We need your birthday to send you a gift.',
-  },
-
-  sendMeMails: {
-    component: 'switch',
-  },
-
-  bio: {
-    component: 'textarea',
-  },
-
-  marshmallows: {
-    label: 'How many marshmallows fit in your mouth?',
-    component: 'radio',
-  },
-
-  file: {
-    label: 'Text file',
-    component: 'file',
-  },
-}
 </script>
 
 <template>
-  <ScrollArea class="h-[calc(100dvh-120px)] flex px-10 overflow-hidden">
-    <AutoForm
-      class="w-full space-y-6"
-      :schema="schema"
-      :field-config="fieldConfig as any"
-      @submit="onSubmit"
-    >
-      <template #acceptTerms="slotProps">
-        <AutoFormField v-bind="slotProps" />
-        <div class="!mt-2 text-sm">
-          我同意 <button class="text-primary underline">条款和条件</button>。
-        </div>
-      </template>
-
-      <template #customParent="slotProps">
-        <div class="flex items-end space-x-2">
-          <AutoFormField v-bind="slotProps" class="w-full" />
-          <Button type="button"> 检查 </Button>
-        </div>
-      </template>
-
-      <Button type="submit" class="w-full"> 提交 </Button>
-    </AutoForm>
-  </ScrollArea>
+  <AutoForm class="w-2/3 space-y-6" :schema="schema" @submit="onSubmit">
+    <Button type="submit"> Submit </Button>
+  </AutoForm>
 </template>
