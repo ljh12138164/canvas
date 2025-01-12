@@ -5,16 +5,9 @@
     "dist"
   ],
   "main": "dist/api.js",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs.cjs"
-    }
-  },
   "scripts": {
     "dev": "npm-run-all --parallel api builds",
-    "builds": "tsup --watch ",
+    "builds": "tsup --watch",
     "api": "vercel dev --listen=8000",
     "local": "bun run --hot ./local.ts",
     "deploy:prod": "vercel --prod",
@@ -34,22 +27,22 @@
     "@types/bcryptjs": "2.4.6",
     "@types/blueimp-md5": "^2.18.2",
     "@types/node": "^22.10.5",
-    "@vitejs/plugin-react": "^4.3.4",
     "await-to-js": "^3.0.0",
     "bcryptjs": "^2.4.3",
     "blueimp-md5": "^2.19.0",
     "hono": "^4.6.16",
     "jose": "^5.9.6",
     "nanoid": "^5.0.9",
+    "npm-run-all": "^4.1.5",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "resend": "^4.0.1",
     "rimraf": "^6.0.1",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "unsplash-js": "^7.0.19",
     "zhipuai-sdk-nodejs-v4": "^0.1.12",
-    "zod": "^3.24.1",
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "vercel": "^38.0.0"

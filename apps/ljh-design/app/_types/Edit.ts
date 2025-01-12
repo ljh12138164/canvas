@@ -528,6 +528,7 @@ export enum Tool {
   zoomIn,
   zoomOut,
   FilterSetting,
+  Ai,
 }
 export type FontWeightType = "normal" | "bold";
 //返回

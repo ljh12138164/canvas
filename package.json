@@ -12,6 +12,7 @@
     "dev:ws": "turbo --filter=api --filter=ws dev",
     "build:design": "turbo --filter=design build",
     "build:jebet": "turbo --filter=jebet build",
+    "deploy": "cd server/api && pnpm run deploy:prod",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

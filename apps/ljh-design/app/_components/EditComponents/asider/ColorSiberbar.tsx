@@ -24,6 +24,7 @@ import ImageSetting from "./ImageSetting";
 import StokeWidth from "./StokeWidth";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
+import { AiChatSider } from "./AiChatSider";
 
 interface ColorSoiberbarProps {
   editor: Edit | undefined;
@@ -57,7 +58,8 @@ const ColorSoiberbar = ({
       activeTool === Tool.Filter ||
       activeTool === Tool.Draw ||
       activeTool === Tool.Settings ||
-      activeTool === Tool.FilterSetting
+      activeTool === Tool.FilterSetting ||
+      activeTool === Tool.Ai
     )
       return activeTool;
     return "";
@@ -73,7 +75,7 @@ const ColorSoiberbar = ({
   return (
     <aside
       className={cn(
-        "z-[600] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col",
+        "z-[40] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col",
         onShow() ? "visible" : "hidden"
       )}
     >
@@ -81,8 +83,12 @@ const ColorSoiberbar = ({
         onChangeActive={onChangeActive}
         front={onShow() === Tool.FilterSetting}
         title={ToolItem[onShow() as keyof typeof ToolItem] || ""}
-        description={`更改${ToolItem[onShow() as keyof typeof ToolItem] || ""}`}
-      ></ToolSiderbar>
+        description={
+          onShow() !== Tool.Ai
+            ? `更改${ToolItem[onShow() as keyof typeof ToolItem] || ""}`
+            : "Ai对话"
+        }
+      />
       <ScrollArea className="z-[601] h-full">
         <div className="p-4 space-y-4">
           {onShow() === Tool.Fill && (
@@ -92,7 +98,7 @@ const ColorSoiberbar = ({
               onChange={(color) => {
                 editor?.setFillColor(color);
               }}
-            ></ColorPicker>
+            />
           )}
           {onShow() === Tool.StrokeColor && (
             <ColorPicker
@@ -183,7 +189,7 @@ const ColorSoiberbar = ({
                         activeTool={activeTool}
                         onChangeActive={onChangeActive}
                         isShow={check(item) && item !== "none"}
-                      ></ImageSetting>
+                      />
                     )}
                   </Button>
                 );
@@ -192,11 +198,9 @@ const ColorSoiberbar = ({
           )}
           {/* 滤镜设置 */}
           {onShow() === Tool.FilterSetting && (
-            <FilterSetting
-              editor={editor}
-              filterSetting={filterSetting}
-            ></FilterSetting>
+            <FilterSetting editor={editor} filterSetting={filterSetting} />
           )}
+          {/* 画笔 */}
           {onShow() === Tool.Draw && (
             <section>
               <div className=" pb-6  pt-2 w-full flex mb-2   justify-center gap-4 flex-col">
@@ -212,9 +216,9 @@ const ColorSoiberbar = ({
                   onValueChange={(value) => {
                     editor?.setDrewWidths(value[0]);
                   }}
-                ></Slider>
+                />
               </div>
-              <Separator></Separator>
+              <Separator />
               <ColorPicker
                 value={editor?.drewColor || STROKE_COLOR}
                 onChange={(color) => {
@@ -222,9 +226,12 @@ const ColorSoiberbar = ({
                 }}
                 noshow={true}
                 key={Tool.Draw}
-              ></ColorPicker>
+              />
             </section>
           )}
+          {/* ai */}
+          {onShow() === Tool.Ai && <AiChatSider />}
+          {/* 设置 */}
           {onShow() === Tool.Settings && (
             <form className="flex flex-col gap-2">
               <div className="space-y-2">
@@ -281,9 +288,7 @@ const ColorSoiberbar = ({
           )}
         </div>
       </ScrollArea>
-      <ToolSiderbarClose
-        onClose={() => onChangeActive(Tool.Select)}
-      ></ToolSiderbarClose>
+      <ToolSiderbarClose onClose={() => onChangeActive(Tool.Select)} />
     </aside>
   );
 };

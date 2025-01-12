@@ -48,9 +48,7 @@ const TextSidebar = ({
           ))}
         </section>
       </ScrollArea>
-      <ToolSiderbarClose
-        onClose={() => onChangeActive(Tool.Select)}
-      ></ToolSiderbarClose>
+      <ToolSiderbarClose onClose={() => onChangeActive(Tool.Select)} />
     </aside>
   );
 };
