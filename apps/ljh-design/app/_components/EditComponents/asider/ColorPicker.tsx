@@ -9,7 +9,6 @@ interface ColorPickerProps {
 const ColorPicker = ({ value, onChange, noshow = false }: ColorPickerProps) => {
   return (
     <div className="w-full space-y-4">
-      {/* @ts-ignore */}
       <ChromePicker
         disableAlpha
         color={value}
@@ -20,7 +19,6 @@ const ColorPicker = ({ value, onChange, noshow = false }: ColorPickerProps) => {
         }}
       />
       {!noshow && (
-        // @ts-ignore
         <CirclePicker
           color={value}
           onChangeComplete={(color) => {

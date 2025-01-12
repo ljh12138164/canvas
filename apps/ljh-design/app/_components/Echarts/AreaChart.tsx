@@ -14,7 +14,7 @@ const AreaChart = () => {
   useEffect(() => {
     if (!echartRef.current) return;
     charts.current?.setOption(option);
-  }, [option]);
+  }, [option, charts, echartRef]);
 
   return <div ref={echartRef}></div>;
 };

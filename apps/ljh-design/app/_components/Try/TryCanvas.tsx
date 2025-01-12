@@ -1,6 +1,6 @@
 "use client";
 import { redirect } from "next/navigation";
-import TryEdit from "../EditComponents/TryEdit";
+import TryEdit from "../EditComponents/editor/TryEdit";
 import { useTryStore } from "@/app/_hook/useTryData";
 import toast from "react-hot-toast";
 const TryCanvas = ({ id }: { id: string }) => {

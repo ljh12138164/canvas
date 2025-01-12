@@ -1,5 +1,5 @@
 import { Providers } from "@/app/_provide/providers";
-import EditMain from "@/app/_components/EditComponents/EditMain";
+import EditMain from "@/app/_components/EditComponents/editor/EditMain";
 import { inter, myFont } from "@/app/_lib/font";
 import { Toaster } from "react-hot-toast";
 

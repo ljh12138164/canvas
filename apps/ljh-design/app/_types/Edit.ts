@@ -13,9 +13,6 @@ import {
 } from "react-icons/fa";
 import { FaDiamond, FaGear, FaSquareFull } from "react-icons/fa6";
 import { IoTriangle } from "react-icons/io5";
-import { WebsocketProvider } from "y-websocket";
-import * as Y from "yjs";
-import { Sessions } from "./user";
 export type TBlendMode =
   | "multiply"
   | "add"
@@ -988,9 +985,6 @@ export interface buildEditorProps {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
-  yMaps: Y.Map<string>;
-  websockets: WebsocketProvider | null;
-  user: Sessions;
   pasty: () => void;
   save: (skip?: boolean) => void;
   canRedo: () => boolean;

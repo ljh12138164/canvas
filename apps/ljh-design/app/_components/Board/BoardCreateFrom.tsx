@@ -99,6 +99,7 @@ const BoardCreateFrom = ({
               }
             },
             onError: (error) => {
+              console.error(error);
               toast.dismiss();
               toast.error(type === "create" ? "创建失败" : "更新失败");
             },
