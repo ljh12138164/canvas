@@ -4,7 +4,8 @@
   "files": [
     "dist"
   ],
-  "main": "dist/api.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "npm-run-all --parallel api builds",
     "builds": "tsup --watch",
