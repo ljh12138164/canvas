@@ -2,14 +2,13 @@
 
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { cn } from "@/app/_lib/utils";
 import { CheckIcon } from "@radix-ui/react-icons";
 
-import { cn } from "@/app/_lib/utils";
-
-interface CheckboxProps extends CheckboxPrimitive.CheckboxProps {
-  ref?: React.Ref<HTMLButtonElement>;
-}
-const Checkbox = ({ className, ref, ...props }: CheckboxProps) => (
+const Checkbox = React.forwardRef<
+  React.ElementRef<typeof CheckboxPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
+>(({ className, ...props }, ref) => (
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
@@ -24,7 +23,7 @@ const Checkbox = ({ className, ref, ...props }: CheckboxProps) => (
       <CheckIcon className="h-4 w-4" />
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
-);
+));
 Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 
 export { Checkbox };

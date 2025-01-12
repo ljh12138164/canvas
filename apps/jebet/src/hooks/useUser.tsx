@@ -17,12 +17,12 @@ const useUserAndWorkspace = () => {
     // 初始化中
     if (!workspace || userData === null) return;
     // 未登录
-    if (!userData) return navigate("/sign-in");
+    if (!userData) navigate("/sign-in");
     // 工作区不存在
     const activeWorkspace = workspace?.find((item) => item.id === workspaceId);
-    if (!activeWorkspace) return navigate("/dashboard/home");
+    if (!activeWorkspace) navigate("/dashboard/home");
     // 初始化完成
-    setActiveWorkspace(activeWorkspace);
+    setActiveWorkspace(activeWorkspace!);
     setUser(userData);
     setLoading(false);
   }, [navigate, workspaceId, workspace, userData]);

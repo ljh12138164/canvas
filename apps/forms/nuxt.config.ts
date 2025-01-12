@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@nuxt/icon",
     "@formkit/auto-animate/nuxt",
+    "@nuxtjs/color-mode",
   ],
   css: ["@/assets/main.css"],
   supabase: {

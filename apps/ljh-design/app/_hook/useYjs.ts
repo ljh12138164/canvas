@@ -90,7 +90,7 @@ export const useYjs = ({ data, canvas, user, userData }: YjsProps) => {
       // 根据类型进行活动
       typeToActive(changeType, obj, canvas, yMaps);
     });
-  }, [canvas, websockets, yMaps]);
+  }, [canvas, websockets, yMaps, user.user.id]);
 
   return { ydoc, yMap, yMaps, websockets, userState };
 };

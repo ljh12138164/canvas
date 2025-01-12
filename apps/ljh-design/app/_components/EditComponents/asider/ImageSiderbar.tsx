@@ -5,8 +5,8 @@ import { Edit, IMAGE_BLUSK, ImageType, Tool } from "@/app/_types/Edit";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { LuBadgeAlert, LuLoader } from "react-icons/lu";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
+import { Button } from "../../ui/button";
+import { Separator } from "../../ui/separator";
 import { ImageBox } from "./ImageBox";
 import ToolSiderbarClose from "./ToolSiberbarClose";
 import ToolSiderbar from "./ToolSiderbar";
@@ -66,7 +66,7 @@ const ImageSiderbar = ({
       )}
       style={{ flexBasis: "300px" }}
     >
-      <ToolSiderbar title="图片" description="插入图片"></ToolSiderbar>
+      <ToolSiderbar title="图片" description="插入图片" />
       {token && (
         <>
           <div className="flex gap-x-2 px-4 my-2">
@@ -85,7 +85,7 @@ const ImageSiderbar = ({
               <span className="text-sm font-medium">用户图片</span>
             </Button>
           </div>
-          <Separator orientation="horizontal"></Separator>
+          <Separator orientation="horizontal" />
         </>
       )}
       <ScrollArea className="scroll-mt-12">
@@ -109,19 +109,17 @@ const ImageSiderbar = ({
         </div>
         <div className="p-4 pb-20 grid grid-cols-2 gap-4 mt-4">
           {activeTool === Tool.Image && imageList === ImageType.Recommend && (
-            <ImageBox editor={editor}></ImageBox>
+            <ImageBox editor={editor} />
           )}
           {activeTool === Tool.Image &&
             imageList === ImageType.Cloud &&
-            token && (
-              <UserImageBox editor={editor} token={token}></UserImageBox>
-            )}
+            token && <UserImageBox editor={editor} token={token} />}
         </div>
       </ScrollArea>
 
       {getImageLoading && imageList === ImageType.Recommend && (
         <div className="flex justify-center items-center h-full">
-          <LuLoader className="size-4 text-muted-foreground animate-spin"></LuLoader>
+          <LuLoader className="size-4 text-muted-foreground animate-spin" />
         </div>
       )}
       {getImageError && imageList === ImageType.Recommend && (
@@ -130,9 +128,7 @@ const ImageSiderbar = ({
           <p className=" text-muted-foreground text-xs">获取图片失败</p>
         </div>
       )}
-      <ToolSiderbarClose
-        onClose={() => onChangeActive(Tool.Select)}
-      ></ToolSiderbarClose>
+      <ToolSiderbarClose onClose={() => onChangeActive(Tool.Select)} />
     </aside>
   );
 };

@@ -13,8 +13,9 @@
     }
   },
   "scripts": {
-    "dev": "pnpm run api ",
-    "api": "tsup && vercel dev --listen=8000",
+    "dev": "npm-run-all --parallel api builds",
+    "builds": "tsup --watch ",
+    "api": "vercel dev --listen=8000",
     "local": "bun run --hot ./local.ts",
     "deploy:prod": "vercel --prod",
     "deploy": "vercel",
@@ -51,7 +52,6 @@
     "react-dom": "19.0.0"
   },
   "devDependencies": {
-    "vercel": "^38.0.0",
-    "vite": "6.0.7"
+    "vercel": "^38.0.0"
   }
 }

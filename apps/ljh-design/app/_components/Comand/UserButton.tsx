@@ -3,7 +3,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@/app/_components/ui/Avatar";
+} from "@/app/_components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,

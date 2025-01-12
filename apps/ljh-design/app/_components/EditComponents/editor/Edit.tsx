@@ -4,8 +4,8 @@ import { useBoardEditQuery } from "@/app/_hook/query/useBoardQuery";
 
 import { Loader2, TriangleAlert } from "lucide-react";
 import Link from "next/link";
-import LoginProtect from "../Sign/LoginProtect";
-import { Button } from "../ui/button";
+import LoginProtect from "../../Sign/LoginProtect";
+import { Button } from "../../ui/button";
 import Canvas from "./Canvas";
 import { Sessions } from "@/app/_types/user";
 
