@@ -3,6 +3,7 @@ import { Tool } from "@/app/_types/Edit";
 import {
   LuImage,
   LuLayoutDashboard,
+  LuMessageSquare,
   LuPencil,
   LuSettings,
   LuShapes,
@@ -17,11 +18,12 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
   return (
     <aside
       id="editSider"
-      className="w-[100px] z-[55]  bg-white  border-r border-t-black border-slate-200 overflow-y-auto"
+      className="w-[100px] z-[40]  bg-white  border-r border-t-black border-slate-200 overflow-y-auto"
       style={{ flexBasis: "100px" }}
     >
       <ScrollArea>
         <ul className="flex flex-col w-[6.2rem]">
+          {/* 设计 */}
           <SiderBarItem
             icon={LuLayoutDashboard}
             label="设计"
@@ -30,6 +32,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
               onChangeActiveTool(Tool.Layout);
             }}
           />
+          {/* 图片 */}
           <SiderBarItem
             icon={LuImage}
             label="图片"
@@ -38,6 +41,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
               onChangeActiveTool(Tool.Image);
             }}
           />
+          {/* 文本 */}
           <SiderBarItem
             icon={LuType}
             label="文本"
@@ -46,6 +50,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
               onChangeActiveTool(Tool.Font);
             }}
           />
+          {/* 图形 */}
           <SiderBarItem
             icon={LuShapes}
             label="图形"
@@ -54,6 +59,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
               onChangeActiveTool(Tool.Shapes);
             }}
           />
+          {/* 绘画 */}
           <SiderBarItem
             icon={LuPencil}
             label="绘画"
@@ -62,6 +68,16 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
               onChangeActiveTool(Tool.Draw);
             }}
           />
+          {/* ai */}
+          <SiderBarItem
+            icon={LuMessageSquare}
+            label="AI"
+            isActive={acitiveTool === Tool.Ai}
+            onClick={() => {
+              onChangeActiveTool(Tool.Ai);
+            }}
+          />
+          {/* 设置 */}
           <SiderBarItem
             icon={LuSettings}
             label="设置"
