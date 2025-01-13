@@ -14,7 +14,7 @@ watch(
   color,
   debounce((newVal: string) => {
     props.editor?.chain().focus().setColor(newVal).run();
-  }, 100)
+  }, 100),
 );
 </script>
 <template>

@@ -11,25 +11,23 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useGetWorkspaceById } from '@/hooks/workspace';
-import useUser from '@/store/user';
 import { useQueryClient } from '@tanstack/vue-query';
 import { onBeforeMount } from 'vue';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const queryClient = useQueryClient();
-const token = useUser()?.userData?.session.access_token as string;
 
 const route = useRoute();
 const workspaceId = ref(route.params.workspaceId as string);
 const { workspace, workspaceError, workspaceIsLoading, workspaceIsFetching } =
-  useGetWorkspaceById(token, workspaceId.value);
+  useGetWorkspaceById(workspaceId.value);
 watch(
   () => route.params.workspaceId,
   () => {
     workspaceId.value = route.params.workspaceId as string;
     queryClient.invalidateQueries({ queryKey: ['workspaceItem'] });
     queryClient.invalidateQueries({ queryKey: ['collaborators'] });
-  },
+  }
 );
 
 onBeforeMount(() => {

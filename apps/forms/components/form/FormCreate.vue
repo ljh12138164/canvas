@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { useMediaQuery } from "@vueuse/core";
-import { Copy, Link, Trash } from "lucide-vue-next";
-import { nanoid } from "nanoid";
-import { Button } from "@/components/ui/button";
+import { useMediaQuery } from '@vueuse/core';
+import { Copy, Link, Trash } from 'lucide-vue-next';
+import { nanoid } from 'nanoid';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -12,47 +12,43 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { toTypedSchema } from "@vee-validate/zod";
-import { Save } from "lucide-vue-next";
-import { useField, useForm } from "vee-validate";
-import { computed, onBeforeMount, type Ref, ref, watch } from "vue";
-import FormArrayConfig from "./FormArrayConfig.vue";
-import { VueDraggable } from "vue-draggable-plus";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { toTypedSchema } from '@vee-validate/zod';
+import { Save } from 'lucide-vue-next';
+import { useField, useForm } from 'vee-validate';
+import { computed, onBeforeMount, type Ref, ref, watch } from 'vue';
+import FormArrayConfig from './FormArrayConfig.vue';
+import { VueDraggable } from 'vue-draggable-plus';
 import {
   Drawer,
   DrawerContent,
   DrawerOverlay,
   DrawerTrigger,
-} from "../ui/drawer";
-import { ScrollArea } from "../ui/scroll-area";
-import { useAutoAnimate } from "@formkit/auto-animate/vue";
-import { useRoute, useRouter } from "vue-router";
-import FormItemConfig from "./FormItemConfig.vue";
+} from '../ui/drawer';
+import { ScrollArea } from '../ui/scroll-area';
+import { useAutoAnimate } from '@formkit/auto-animate/vue';
+import { useRoute, useRouter } from 'vue-router';
+import FormItemConfig from './FormItemConfig.vue';
 import {
   type Array,
   formItemList,
   type FormType,
   type CreateFormItem,
   type FormItem,
-} from "@/types/form";
-import { getFormDataById, getIndexDB, indexDBChange } from "@/lib/index";
-import { type DateValue } from "@internationalized/date";
-import FormSub, { type IList } from "./FormSub.vue";
-import { useToast } from "@/components/ui/toast";
-import { useCreateBoard } from "@/hooks/board";
-
-import * as z from "zod";
-import { getZodSchema } from "@/lib/form";
+} from '@/types/form';
+import { getFormDataById, getIndexDB, indexDBChange } from '@/lib/index';
+import { type DateValue } from '@internationalized/date';
+import FormSub, { type IList } from './FormSub.vue';
+import { useToast } from '@/components/ui/toast';
+import { useCreateBoard } from '@/hooks/board';
+import * as z from 'zod';
+import { getZodSchema } from '@/lib/form';
 const { toast } = useToast();
-const user = useSupabaseUser();
-// @ts-ignore
-const token = user?._object.$ssupabase_session?.access_token!;
 const route = useRoute();
 const id = ref(route.params.id);
-const { mutate: createBoard } = useCreateBoard(token);
+const { mutate: createBoard } = useCreateBoard();
 // 提交的表单数据
 const schema = ref<z.ZodObject<any, any, any, any>[]>([]);
 
@@ -125,31 +121,31 @@ const updateArray = async (
 };
 
 onBeforeMount(async () => {
-  const data = await getFormDataById(id.value + "");
+  const data = await getFormDataById(id.value + '');
 
   if (data) {
     setList2(JSON.parse(data.schema));
   }
 });
 const onOpen = ref(false);
-const activeArea = ref<string>("");
-const isMobile = useMediaQuery("(max-width: 768px)");
+const activeArea = ref<string>('');
+const isMobile = useMediaQuery('(max-width: 768px)');
 
 const [parent] = useAutoAnimate();
 const onClone = (
   element: Record<
-    | "name"
-    | "id"
-    | "type"
-    | "isRequired"
-    | "placeholder"
-    | "defaultValue"
-    | "label"
-    | "options"
-    | "hiddenLabel"
-    | "description"
-    | "defaultValue"
-    | "defaultTypeName",
+    | 'name'
+    | 'id'
+    | 'type'
+    | 'isRequired'
+    | 'placeholder'
+    | 'defaultValue'
+    | 'label'
+    | 'options'
+    | 'hiddenLabel'
+    | 'description'
+    | 'defaultValue'
+    | 'defaultTypeName',
     string
   >
 ) => {
@@ -159,7 +155,7 @@ const onClone = (
       .map((item) => item.name)
   );
   list2.value.forEach((item: CreateFormItem) => {
-    if (item.type === "array") {
+    if (item.type === 'array') {
       item.children.forEach((child: CreateFormItem) => {
         existingNames.add(child.name);
       });
@@ -183,9 +179,9 @@ const onClone = (
 // 预览
 const handlePreview = async () => {
   await indexDBChange({
-    type: "edit",
+    type: 'edit',
     editData: {
-      id: id.value + "",
+      id: id.value + '',
       schema: JSON.stringify(list2.value),
     },
   });
@@ -195,9 +191,9 @@ const handlePreview = async () => {
 // 更新组件到indexDB中
 const handleUpdate = async () => {
   await indexDBChange({
-    type: "edit",
+    type: 'edit',
     editData: {
-      id: id.value + "",
+      id: id.value + '',
       schema: JSON.stringify(list2.value),
     },
   });
@@ -207,7 +203,7 @@ const parentHandleUpdate = () => {};
 // 激活组件
 const handleActiveArea = (id: string) => {
   if (activeArea.value === id) {
-    activeArea.value = "";
+    activeArea.value = '';
   } else {
     activeArea.value = id;
   }
@@ -224,7 +220,7 @@ const handleActiveSub = (id: string, fatherId: string) => {
 // 删除组件
 const handleDelete = async (id: string) => {
   deleteList2(id);
-  activeArea.value = "";
+  activeArea.value = '';
   subId.value = [];
   await handleUpdate();
 };
@@ -248,22 +244,22 @@ const handleCopy = async (id: string) => {
 const fieldConfig = ref<Record<string, any>>({});
 const parmasClone = (
   element: Record<
-    | "name"
-    | "id"
-    | "type"
-    | "isRequired"
-    | "placeholder"
-    | "defaultValue"
-    | "label"
-    | "options"
-    | "hiddenLabel"
-    | "description"
-    | "defaultValue"
-    | "defaultTypeName",
+    | 'name'
+    | 'id'
+    | 'type'
+    | 'isRequired'
+    | 'placeholder'
+    | 'defaultValue'
+    | 'label'
+    | 'options'
+    | 'hiddenLabel'
+    | 'description'
+    | 'defaultValue'
+    | 'defaultTypeName',
     string
   >
 ) => {
-  if (element.type === "array") return;
+  if (element.type === 'array') return;
   return element;
 };
 const datas = ref<CreateFormItem | undefined>(undefined);
@@ -276,7 +272,7 @@ watch(activeArea, () => {
 });
 watch(subId, () => {
   if (subId.value.length) {
-    activeArea.value = "";
+    activeArea.value = '';
     datas.value = (
       list2.value.find((item) => item.id === subId.value[0]) as Array
     )?.children.find((item: CreateFormItem) => item.id === subId.value[1]);
@@ -290,9 +286,9 @@ const validationSchema = toTypedSchema(
   z.object({
     title: z.coerce
       .string()
-      .min(2, "标题至少需要2个字符")
-      .max(50, "标题不能超过50个字符"),
-    description: z.string().max(200, "描述不能超过200个字符").optional(),
+      .min(2, '标题至少需要2个字符')
+      .max(50, '标题不能超过50个字符'),
+    description: z.string().max(200, '描述不能超过200个字符').optional(),
   })
 );
 
@@ -300,21 +296,21 @@ const validationSchema = toTypedSchema(
 const { handleSubmit, resetForm, errors, values } = useForm({
   validationSchema,
   initialValues: {
-    title: "",
-    description: "",
+    title: '',
+    description: '',
   },
 });
 
 // 获取字段
-const { value: title } = useField<string>("title");
-const { value: description } = useField<string>("description");
+const { value: title } = useField<string>('title');
+const { value: description } = useField<string>('description');
 
 // 提交处理函数
 const onSubmit = handleSubmit((values) => {
   if (!list2.value.length) {
     toast({
-      title: "请先填写表单",
-      variant: "destructive",
+      title: '请先填写表单',
+      variant: 'destructive',
     });
     return;
   }

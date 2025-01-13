@@ -2,8 +2,8 @@
 import ThemeChange from '@/components/common/ThemeChange.vue';
 import UserButton from '@/components/common/UserButton.vue';
 import { getCurrentUser } from '@/server/supabase/user';
-import { Sessions } from '@/types/user';
-import { ref, onBeforeMount } from 'vue';
+import type { Sessions } from '@/types/user';
+import { onBeforeMount, ref } from 'vue';
 const loading = ref(true);
 const user = ref<Sessions | undefined>(undefined);
 

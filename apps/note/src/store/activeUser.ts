@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
 interface ActiveUser {
   name: string;
   id: string;
@@ -7,7 +7,7 @@ interface ActiveUser {
   image: string;
 }
 
-export const useActiveUserStore = defineStore("activeUser", () => {
+export const useActiveUserStore = defineStore('activeUser', () => {
   const activeUserList = ref<Map<string, ActiveUser>>(new Map());
   const getActiveUserList = computed(() => {
     return activeUserList.value;

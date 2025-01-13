@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { logout } from '@/server/supabase/user';
-import { Sessions } from '@/types/user';
+import type { Sessions } from '@/types/user';
 import { useRouter } from 'vue-router';
 import DropdownMenuContent from '../ui/dropdown-menu/DropdownMenuContent.vue';
 import { Skeleton } from '../ui/skeleton';

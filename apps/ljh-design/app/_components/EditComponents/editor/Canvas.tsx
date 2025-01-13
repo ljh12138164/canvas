@@ -1,25 +1,25 @@
-"use client";
-import ColorSoiberbar from "@/app/_components/EditComponents/asider/ColorSiberbar";
-import Footer from "@/app/_components/EditComponents/editor/Footer";
-import ImageSiderbar from "@/app/_components/EditComponents/asider/ImageSiderbar";
-import NavBar from "@/app/_components/EditComponents/editor/NavBar";
-import ShapeSidle from "@/app/_components/EditComponents/asider/ShapeSidle";
-import SiderBar from "@/app/_components/EditComponents/editor/SiderBar";
-import TextSidebar from "@/app/_components/EditComponents/asider/TextSidebar";
-import Tools from "@/app/_components/EditComponents/editor/Tools";
-import { useBoardAutoSaveQuery } from "@/app/_hook/query/useBoardQuery";
-import useCanvas from "@/app/_hook/useCanvas";
-import useCanvasEvent from "@/app/_hook/useCanvasEvent";
-import { useClipboard } from "@/app/_hook/useCliph";
-import useHistoty from "@/app/_hook/useHistory";
-import useKeyBoard from "@/app/_hook/useKeyBoard";
-import { useLoading } from "@/app/_hook/useLoding";
-import useResponse from "@/app/_hook/useResponse";
-import { useWindowEvent } from "@/app/_hook/useWindowEvent";
-import { useYjs } from "@/app/_hook/useYjs";
-import { getUserColor } from "@/app/_lib/utils";
-import { buildEditor } from "@/app/_store/editor";
-import { Board } from "@/app/_types/board";
+'use client';
+import ColorSoiberbar from '@/app/_components/EditComponents/asider/ColorSiberbar';
+import Footer from '@/app/_components/EditComponents/editor/Footer';
+import ImageSiderbar from '@/app/_components/EditComponents/asider/ImageSiderbar';
+import NavBar from '@/app/_components/EditComponents/editor/NavBar';
+import ShapeSidle from '@/app/_components/EditComponents/asider/ShapeSidle';
+import SiderBar from '@/app/_components/EditComponents/editor/SiderBar';
+import TextSidebar from '@/app/_components/EditComponents/asider/TextSidebar';
+import Tools from '@/app/_components/EditComponents/editor/Tools';
+import { useBoardAutoSaveQuery } from '@/app/_hook/query/useBoardQuery';
+import useCanvas from '@/app/_hook/useCanvas';
+import useCanvasEvent from '@/app/_hook/useCanvasEvent';
+import { useClipboard } from '@/app/_hook/useCliph';
+import useHistoty from '@/app/_hook/useHistory';
+import useKeyBoard from '@/app/_hook/useKeyBoard';
+import { useLoading } from '@/app/_hook/useLoding';
+import useResponse from '@/app/_hook/useResponse';
+import { useWindowEvent } from '@/app/_hook/useWindowEvent';
+import { useYjs } from '@/app/_hook/useYjs';
+import { getUserColor } from '@/app/_lib/utils';
+import { buildEditor } from '@/app/_store/editor';
+import { Board } from '@/app/_types/board';
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -41,22 +41,14 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
   Tool,
-} from "@/app/_types/Edit";
-import { Sessions } from "@/app/_types/user";
-import { useMemoizedFn } from "ahooks";
-import * as fabric from "fabric";
-import { useEffect, useRef, useState } from "react";
+} from '@/app/_types/Edit';
+import { Sessions } from '@/app/_types/user';
+import { useMemoizedFn } from 'ahooks';
+import * as fabric from 'fabric';
+import { useEffect, useRef, useState } from 'react';
 
 // 画布服务器
-const Canvas = ({
-  user,
-  token,
-  data,
-}: {
-  user: Sessions;
-  token: string;
-  data: Board;
-}) => {
+const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
   const userData = useRef<DefalutUser>({
     id: user.user.id,
     name: user.user.user_metadata.name,
@@ -71,7 +63,7 @@ const Canvas = ({
   const containEl = useRef<HTMLDivElement>(null);
   // 画布
   const canvasEl = useRef<HTMLCanvasElement>(null);
-  const { isPending } = useBoardAutoSaveQuery({ id: data.id, token });
+  const { isPending } = useBoardAutoSaveQuery({ id: data.id });
 
   const debounceMutate = useMemoizedFn(() => {});
   // debounce((data: { json: string; width: number; height: number }) => {
@@ -108,7 +100,7 @@ const Canvas = ({
   const [fontUnderline, setFontUnderline] = useState<boolean>(FONT_UNDERLINE);
   const [fontItalics, setFontItalics] = useState<FontStyle>(FONT_ITALICS);
   const [fontAlign, setFontAlign] =
-    useState<fabric.Textbox["textAlign"]>(FONT_ALIGN);
+    useState<fabric.Textbox['textAlign']>(FONT_ALIGN);
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
   //图片
   const [imageLoading, setImageLoading] = useState<boolean>(false);
@@ -267,20 +259,20 @@ const Canvas = ({
 
   return (
     <div
-      className="h-full w-full flex flex-col items-center relative bg-slate-100"
+      className='h-full w-full flex flex-col items-center relative bg-slate-100'
       style={{
-        scrollbarWidth: "none",
+        scrollbarWidth: 'none',
       }}
     >
       <NavBar
-        token={token}
+        userId={user.user.id}
         isPending={isPending}
         editor={editor()}
         activeTool={tool}
         onChangeTool={onChangeActive}
         userState={userState}
       />
-      <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
+      <div className='h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out'>
         <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} />
         <TextSidebar
           editor={editor()}
@@ -293,7 +285,7 @@ const Canvas = ({
           onChangeActive={onChangeActive}
         />
         <ImageSiderbar
-          token={token}
+          userId={user.user.id}
           editor={editor()}
           activeTool={tool}
           onChangeActive={onChangeActive}
@@ -303,7 +295,7 @@ const Canvas = ({
           activeTool={tool}
           onChangeActive={onChangeActive}
         />
-        <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
+        <main className='flex-1 h-full w-full flex flex-col overflow-hidden'>
           <Tools
             editor={editor()}
             activeTool={tool}
@@ -311,7 +303,7 @@ const Canvas = ({
             key={JSON.stringify(editor()?.canvas.getActiveObject())}
           />
           <section
-            className="flex flex-col relative flex-1 overflow-hidden"
+            className='flex flex-col relative flex-1 overflow-hidden'
             ref={containEl}
           >
             <canvas ref={canvasEl} />

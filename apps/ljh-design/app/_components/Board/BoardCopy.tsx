@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { Button } from "../ui/button";
+import { useRef } from 'react';
+import { Button } from '../ui/button';
 import {
   Dialog,
   DialogClose,
@@ -8,25 +8,25 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import BoardCreateFrom from "./BoardCreateFrom";
-import { Board } from "@/app/_types/board";
-import { useBoardCopyQuery } from "@/app/_hook/query/useBoardQuery";
-import { Loader2 } from "lucide-react";
+} from '../ui/dialog';
+import BoardCreateFrom from './BoardCreateFrom';
+import { Board } from '@/app/_types/board';
+import { useBoardCopyQuery } from '@/app/_hook/query/useBoardQuery';
+import { Loader2 } from 'lucide-react';
 
 export const BoardCopy = ({
   children,
   board,
   setChange,
-  token,
+  userId,
 }: {
   children: React.ReactNode;
   setChange?: (change: boolean) => void;
   board: Board;
-  token: string | undefined;
+  userId?: string;
 }) => {
   const closeRef = useRef<HTMLButtonElement>(null);
-  const { mutate, isPending } = useBoardCopyQuery({ token: token || "" });
+  const { mutate, isPending } = useBoardCopyQuery();
   return (
     <section onClick={(e) => e.stopPropagation()}>
       <Dialog>
@@ -37,18 +37,18 @@ export const BoardCopy = ({
           </DialogHeader>
           <BoardCreateFrom
             setChange={setChange}
-            type="copy"
+            type='copy'
             defaultValues={board}
             closeref={closeRef}
-            token={token}
+            userId={userId}
             mutate={mutate as any}
           >
-            <DialogFooter className="mt-6 flex gap-1">
+            <DialogFooter className='mt-6 flex gap-1'>
               <DialogClose asChild>
                 <Button
-                  variant="outline"
+                  variant='outline'
                   ref={closeRef}
-                  type="button"
+                  type='button'
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
@@ -57,13 +57,13 @@ export const BoardCopy = ({
                 </Button>
               </DialogClose>
               <Button
-                type="submit"
+                type='submit'
                 disabled={isPending}
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
               >
-                {isPending ? <Loader2 className="animate-spin" /> : "复制"}
+                {isPending ? <Loader2 className='animate-spin' /> : '复制'}
               </Button>
             </DialogFooter>
           </BoardCreateFrom>

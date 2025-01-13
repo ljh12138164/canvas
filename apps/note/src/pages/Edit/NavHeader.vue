@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import ThemeChange from "@/components/common/ThemeChange.vue";
-import { Button } from "@/components/ui/button";
+import ThemeChange from '@/components/common/ThemeChange.vue';
+import { Button } from '@/components/ui/button';
 import {
   Menubar,
   MenubarContent,
   MenubarItem,
   MenubarMenu,
   MenubarTrigger,
-} from "@/components/ui/menubar";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { downloadFile } from "@/lib";
-import useEditor from "@/store/editor";
-import type { Files, Folders } from "@/types/board";
-import { Icon } from "@iconify/vue";
-import { useMediaQuery } from "@vueuse/core";
-import { nanoid } from "nanoid";
-import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import { useActiveUserStore } from "@/store/activeUser";
-import useUserStore from "@/store/user";
+} from '@/components/ui/menubar';
+import { Separator } from '@/components/ui/separator';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
+import { downloadFile } from '@/lib';
+import { useActiveUserStore } from '@/store/activeUser';
+import useEditor from '@/store/editor';
+import useUserStore from '@/store/user';
+import type { Files, Folders } from '@/types/board';
+import { Icon } from '@iconify/vue';
+import { useMediaQuery } from '@vueuse/core';
+import { nanoid } from 'nanoid';
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 const activeUserStore = useActiveUserStore();
 const userStore = useUserStore();
 const user = userStore.userData?.session.user;
@@ -36,9 +36,9 @@ const props = defineProps<{
   foldersError: Error | null;
 }>();
 const route = useRoute();
-const folderId = ref("");
-const fileId = ref("");
-const fileName = ref("");
+const folderId = ref('');
+const fileId = ref('');
+const fileName = ref('');
 watch(
   () => route.params,
   () => {
@@ -53,36 +53,36 @@ watch(
         props.folders
           ?.find((item) => item.id === folderId.value)
           ?.files.find((item) => item.id === fileId.value)?.title + nanoid(6) ||
-        nanoid(6) + "文件";
+        nanoid(6) + '文件';
     } else {
       fileName.value =
         props.folders?.find((item) => item.id === folderId.value)?.title +
-          nanoid(6) || nanoid(6) + "文件夹";
+          nanoid(6) || nanoid(6) + '文件夹';
     }
   },
   {
     immediate: true,
-  }
+  },
 );
-const isMobile = useMediaQuery("(max-width: 768px)");
+const isMobile = useMediaQuery('(max-width: 768px)');
 const onSaveJson = () => {
   const jsonData = useEditor().editorDatas?.getJSON();
   const blob = new Blob([JSON.stringify(jsonData)], {
-    type: "application/json",
+    type: 'application/json',
   });
-  downloadFile(blob, fileName.value + ".json");
+  downloadFile(blob, fileName.value + '.json');
 };
 const onSaveHtml = () => {
   const htmlData = useEditor().editorDatas?.getHTML();
   if (!htmlData) return;
-  const blob = new Blob([htmlData], { type: "text/html" });
-  downloadFile(blob, fileName.value + ".html");
+  const blob = new Blob([htmlData], { type: 'text/html' });
+  downloadFile(blob, fileName.value + '.html');
 };
 const onSaveText = () => {
   const textData = useEditor().editorDatas?.getText();
   if (!textData) return;
-  const blob = new Blob([textData], { type: "text/plain" });
-  downloadFile(blob, fileName.value + ".txt");
+  const blob = new Blob([textData], { type: 'text/plain' });
+  downloadFile(blob, fileName.value + '.txt');
 };
 </script>
 <template>

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useGetWorkspaceById } from '@/hooks/workspace';
 import { ChevronRight, Plus } from 'lucide-vue-next';
+import ResponsePop from '../common/ResponsePop.vue';
 import {
   Collapsible,
   CollapsibleContent,
@@ -13,17 +15,13 @@ import {
   SidebarMenuSubItem,
 } from '../ui/sidebar';
 import { Skeleton } from '../ui/skeleton';
-import { useGetWorkspaceById } from '@/hooks/workspace';
-import ResponsePop from '../common/ResponsePop.vue';
 import FileFrom from './FileFrom.vue';
 
 const props = defineProps<{
-  token: string;
   routerParams: string;
 }>();
 
 const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
-  props.token,
   props.routerParams
 );
 </script>

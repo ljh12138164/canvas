@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Editor from "@/components/Edit/Tiptap.vue";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import type { getWorkspaceByIdResponse } from "@/hooks/workspace";
-import { Skeleton } from "@/components/ui/skeleton";
+import Editor from '@/components/Edit/Tiptap.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import type { getWorkspaceByIdResponse } from '@/hooks/workspace';
 
 const props = defineProps<{
   workspace: getWorkspaceByIdResponse | undefined;

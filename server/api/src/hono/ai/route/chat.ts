@@ -58,11 +58,8 @@ export const chat = new Hono()
         });
       }
       // 流式传输
-      if (chats) {
-        streams = await chats.sendMessageStream(prompt);
-      } else {
-        streams = await model?.generateContentStream(prompt);
-      }
+      if (chats) streams = await chats.sendMessageStream(prompt);
+      else streams = await model?.generateContentStream(prompt);
 
       return stream(c, async (stream) => {
         for await (const chunk of streams.stream) {

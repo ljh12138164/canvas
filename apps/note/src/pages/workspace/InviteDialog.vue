@@ -12,10 +12,8 @@ import { useQueryClient } from '@tanstack/vue-query';
 import { ref, watch } from 'vue';
 
 const queryClient = useQueryClient();
-const props = defineProps<{
-  token: string;
-}>();
-const { inviteCollaborator, isInviting } = useInviteCollaborator(props.token);
+
+const { inviteCollaborator, isInviting } = useInviteCollaborator();
 const value = ref<string[]>([]);
 const handleComplete = (value: string) => {
   console.log(value);
@@ -32,7 +30,7 @@ watch(value, (value) => {
           toast.success('加入成功');
           queryClient.invalidateQueries({ queryKey: ['collaborators'] });
         },
-      },
+      }
     );
   }
 });

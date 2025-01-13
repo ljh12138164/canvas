@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useGetWorkspaceById } from '@/hooks/workspace';
-import useUser from '@/store/user';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import Edit from './Edit.vue';
@@ -12,12 +11,11 @@ watch(
   () => route.params.workspaceId,
   (newVal) => {
     workspaceId.value = newVal;
-  },
+  }
 );
 
-const token = useUser().userData?.session.access_token as string;
 const { workspace, workspaceIsLoading, workspaceIsFetching } =
-  useGetWorkspaceById(token, workspaceId.value as string);
+  useGetWorkspaceById(workspaceId.value as string);
 </script>
 <template>
   <div v-if="workspaceIsLoading || workspaceIsFetching">加载中</div>
