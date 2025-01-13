@@ -239,7 +239,6 @@ export default function TryEdit({ id, data }: { id: string; data: Board }) {
     >
       <NavBar
         userState={[]}
-        token={undefined}
         isPending={isPending}
         editor={editor}
         activeTool={tool}
@@ -261,7 +260,6 @@ export default function TryEdit({ id, data }: { id: string; data: Board }) {
           onChangeActive={onChangeActive}
         ></ShapeSidle>
         <ImageSiderbar
-          token={undefined}
           editor={editor}
           activeTool={tool}
           onChangeActive={onChangeActive}

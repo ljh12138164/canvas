@@ -30,10 +30,9 @@ watch(
   },
 );
 const { workspaceIsFetching } = useGetWorkspaceById(
-  props.token,
   route.params.workspaceId as string,
 );
-const { workspacesIsLoading } = useGetWorkspaces(props.token);
+const { workspacesIsLoading } = useGetWorkspaces();
 const handleClick = (id: string) => {
   if (workspaceIsFetching.value || workspacesIsLoading.value) return;
   router.push(`/workspace/${id}`);

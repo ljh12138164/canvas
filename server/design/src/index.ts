@@ -4,7 +4,7 @@ import { setupWSConnection } from "../node_modules/y-websocket/bin/utils";
 import http from "http";
 
 const host = process.env.HOST || "localhost";
-const port = process.env.PORT || 1234;
+const port = process.env.PORT || 8888;
 const wss = new ws.Server({ noServer: true });
 const server = http.createServer((request, response) => {
   response.writeHead(200, { "Content-Type": "text/plain" });

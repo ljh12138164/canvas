@@ -13,7 +13,7 @@ watch(
   color,
   debounce((newVal: string) => {
     props.editor?.chain().focus().toggleHighlight({ color: newVal }).run();
-  }, 100)
+  }, 100),
 );
 </script>
 <template>

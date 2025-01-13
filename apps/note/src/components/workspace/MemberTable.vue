@@ -31,18 +31,16 @@ const router = useRouter();
 const props = defineProps<{
   collaborators: CollaboratorsData[] | undefined;
   isLoading: boolean;
-  token: string;
 }>();
-const { removeCollaborator, isRemoving } = useRemoveCollaborator(props.token);
+const { removeCollaborator, isRemoving } = useRemoveCollaborator();
 watch(
   () => props.collaborators,
   (newVal) => {
-    console.log(newVal?.[0].collaborators);
     if (!props.isLoading && newVal?.length === 0) {
       toast.error('未找到工作区');
       router.push('/workspace');
     }
-  },
+  }
 );
 </script>
 <template>
@@ -75,14 +73,14 @@ watch(
                         {{
                           format(
                             new Date(collaborators.created_at),
-                            "yyyy-MM-dd"
+                            'yyyy-MM-dd'
                           )
                         }}
                       </span>
                     </TooltipTrigger>
                     <TooltipContent>
                       {{
-                        format(new Date(collaborators.created_at), "yyyy-MM-dd")
+                        format(new Date(collaborators.created_at), 'yyyy-MM-dd')
                       }}
                     </TooltipContent>
                   </Tooltip>

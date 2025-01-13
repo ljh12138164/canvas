@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import From from '@/components/border/From.vue';
 import Sider from '@/components/border/Sider.vue';
+import ResponsePop from '@/components/common/ResponsePop.vue';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Collapsible } from '@/components/ui/collapsible';
-import { format } from 'date-fns';
 import {
   Sidebar,
   SidebarContent,
@@ -15,18 +17,16 @@ import {
   SidebarProvider,
   SidebarRail,
 } from '@/components/ui/sidebar';
+import SidebarGroupLabel from '@/components/ui/sidebar/SidebarGroupLabel.vue';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useGetWorkspaceById } from '@/hooks/workspace';
 import useUser from '@/store/user';
 import { useMediaQuery } from '@vueuse/core';
+import { format } from 'date-fns';
 import { ChevronsUpDown, Plus, Trash } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import NavHeader from './NavHeader.vue';
-import ResponsePop from '@/components/common/ResponsePop.vue';
-import From from '@/components/border/From.vue';
-import SidebarGroupLabel from '@/components/ui/sidebar/SidebarGroupLabel.vue';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const route = useRoute();
 const router = useRouter();
@@ -35,15 +35,14 @@ const routerParams = ref(route.params.workspaceId);
 const userData = useUser().userData!;
 
 const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
-  userData.session.access_token,
-  routerParams.value as string
+  routerParams.value as string,
 );
 const isMobile = useMediaQuery('(max-width: 768px)');
 watch(
   () => route.params.folderId,
   () => {
     routerParams.value = route.params.workspaceId;
-  }
+  },
 );
 watch(workspaceError, (newVal) => {
   if (newVal?.message === '无权限') {

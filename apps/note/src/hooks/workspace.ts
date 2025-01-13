@@ -1,7 +1,10 @@
 import { client } from '@/server';
+import { getNewToken } from '@/server/sign';
 import { useMutation, useQuery } from '@tanstack/vue-query';
 import type { InferRequestType, InferResponseType } from 'hono';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 type createWorkspaceRequest = InferRequestType<
   typeof client.workspace.create.$post
 >;
@@ -15,13 +18,15 @@ type createWorkspaceResponse = InferResponseType<
  * @param token
  * @returns
  */
-export const useCreateWorkspace = (token: string) => {
+export const useCreateWorkspace = () => {
   const {
     isPending: createWorkspaceLoading,
     error: createWorkspaceError,
     mutate: createWorkspace,
   } = useMutation<createWorkspaceResponse, Error, createWorkspaceRequest>({
     mutationFn: async (newWorkspace) => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
       const res = await client.workspace.create.$post(newWorkspace, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -44,7 +49,7 @@ type getWorkspacesResponse = InferResponseType<
  * @param token
  * @returns
  */
-export const useGetWorkspaces = (token: string) => {
+export const useGetWorkspaces = () => {
   const {
     data: workspaces,
     error: workspacesError,
@@ -53,6 +58,8 @@ export const useGetWorkspaces = (token: string) => {
   } = useQuery<getWorkspacesResponse, Error>({
     queryKey: ['workspaces'],
     queryFn: async () => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
       const res = await client.workspace.workspaces.$get(undefined, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -82,22 +89,24 @@ export type getWorkspaceByIdResponse = InferResponseType<
  * @param id
  * @returns
  */
-export const useGetWorkspaceById = (token: string, id: string) => {
+export const useGetWorkspaceById = (id: string) => {
   const {
     data: workspace,
     error: workspaceError,
     isFetching: workspaceIsFetching,
     isLoading: workspaceIsLoading,
   } = useQuery<getWorkspaceByIdResponse, Error, getWorkspaceByIdResponse>({
-    queryKey: ['workspaceItem'],
+    queryKey: ['workspaceItem', id],
     queryFn: async () => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
       const res = await client.workspace.workspaces[':workspaceId'].$get(
         { param: { workspaceId: id } },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (!res.ok) throw new Error(res.statusText);
       return res.json();

@@ -1,15 +1,15 @@
 export interface Message {
   // 角色
-  role: "user" | "model";
+  role: 'user' | 'model';
   // 消息
-  message: { text: string }[];
+  parts: { text: string }[];
 }
 
 export interface MessageArr {
   id: string;
-  name: string;
+  name?: string;
   // 会话列表
-  messages: Message[];
+  history: Message[];
 }
 
 export interface Ai {

@@ -1,14 +1,14 @@
-import { Ai, Message, MessageArr } from "@/app/_types/ai";
-import localforage from "localforage";
-import { nanoid } from "nanoid";
+import { Message, MessageArr } from '@/app/_types/ai';
+import localforage from 'localforage';
+import { nanoid } from 'nanoid';
 localforage.config({
-  name: "ljh-design-ai",
+  name: 'ljh-design-ai',
   version: 1.0,
-  storeName: "ljh-design-ai",
+  storeName: 'ljh-design-ai',
 });
 
 interface IndexDBChanagePros {
-  type: "add" | "delete";
+  type: 'add' | 'delete';
   data?: MessageArr;
   deletItem?: string;
   id: string;
@@ -28,22 +28,14 @@ export async function indexDBChange({
   deletItem,
   id,
 }: IndexDBChanagePros): Promise<boolean> {
-  if (type === "delete" && deletItem) {
+  if (type === 'delete' && deletItem) {
     await localforage.removeItem(deletItem);
     return true;
   }
-  if (type === "add" && data) {
-    const arr = await localforage.getItem<Ai[]>(id);
-    // 如果存在，则添加到数组中
-    if (arr) {
-      arr.push(data);
-      await localforage.setItem(id, arr);
-      return true;
-    } else {
-      // 如果不存在，则创建数组并添加数据
-      await localforage.setItem(id, [data]);
-      return true;
-    }
+  // 添加和编辑
+  if (type === 'add' && data) {
+    await localforage.setItem(id, data);
+    return true;
   }
 
   return false;
@@ -65,24 +57,27 @@ export async function getIndexDB(): Promise<MessageArr[]> {
  * @param id 数据id
  * @returns 数据
  */
-export async function getTryBoardById(id: string): Promise<Message | null> {
-  const res = await localforage.getItem<Message>(id);
-  return res;
+export async function getAiChatById(id: string): Promise<MessageArr | null> {
+  const res = await localforage.getItem<MessageArr>(id);
+  return res || null;
 }
 
 /**
  * ### 创建新对话
  * @param id 对话id
+ * @param newMessage 新消息
+ * @param name 对话名称
  * @returns
  */
 export async function createAi(
   id: string,
-  newMessage: Message
+  newMessage: Message[],
+  name: string
 ): Promise<boolean> {
   indexDBChange({
-    type: "add",
-    // 每个对话一个id
-    data: { id: nanoid(), messages: [newMessage], name: "新对话" + nanoid(4) },
+    type: 'add',
+    // 每个对话一个id，用于删除
+    data: { id: nanoid(), history: newMessage, name },
     id,
   });
   return true;

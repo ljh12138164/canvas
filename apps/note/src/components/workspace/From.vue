@@ -20,8 +20,7 @@ import EmojiPopup from '../common/EmojiPopup.vue';
 import { CardFooter } from '../ui/card';
 import { Input } from '../ui/input';
 const router = useRouter();
-const token = useUser().userData?.session.access_token as string;
-const { createWorkspaceLoading, createWorkspace } = useCreateWorkspace(token);
+const { createWorkspaceLoading, createWorkspace } = useCreateWorkspace();
 const formSchema = toTypedSchema(
   z.object({
     title: z.string().optional(),
@@ -115,7 +114,7 @@ const onChangeEmoji = (emoji: string) => {
         type="submit"
         class="w-[100px]"
       >
-        {{ createWorkspaceLoading ? "创建中..." : "创建" }}
+        {{ createWorkspaceLoading ? '创建中...' : '创建' }}
       </Button>
     </CardFooter>
   </form>

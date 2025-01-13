@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ScrollArea } from "@/components/ui/scroll-area";
-import FromCard from "@/components/workspace/FromCard.vue";
-import userData from "@/store/user";
-import InviteDialog from "./InviteDialog.vue";
+import { ScrollArea } from '@/components/ui/scroll-area';
+import FromCard from '@/components/workspace/FromCard.vue';
+import userData from '@/store/user';
+import InviteDialog from './InviteDialog.vue';
 // import { useGetWorkspaces } from "@/hooks/workspace";
 // import WorkspaceList from "@/components/workspace/WorkspaceList.vue";
 const token = userData()?.userData?.session.access_token as string;

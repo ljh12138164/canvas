@@ -1,6 +1,9 @@
 import { client } from '@/server';
+import { getNewToken } from '@/server/sign';
 import { useMutation, useQuery } from '@tanstack/vue-query';
 import type { InferRequestType, InferResponseType } from 'hono';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 // type getCollaboratorsRequest = InferRequestType<
 //   (typeof client.collaborators)[":workspaceId"]["$get"]
@@ -16,14 +19,16 @@ type getCollaboratorsResponse = InferResponseType<
  * @param token
  * @returns
  */
-export const useCollaborators = (workspaceId: string, token: string) => {
+export const useCollaborators = (workspaceId: string) => {
   const { data: collaborators, isLoading } = useQuery<
     getCollaboratorsResponse,
     Error,
     getCollaboratorsResponse
   >({
-    queryKey: ['collaborators',workspaceId],
+    queryKey: ['collaborators', workspaceId],
     queryFn: async () => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
       const res = await client.collaborators[':workspaceId'].$get(
         {
           param: { workspaceId },
@@ -53,13 +58,15 @@ type inviteCollaboratorResponse = InferResponseType<
  * 邀请协作者
  * @returns
  */
-export const useInviteCollaborator = (token: string) => {
+export const useInviteCollaborator = () => {
   const { mutate: inviteCollaborator, isPending: isInviting } = useMutation<
     inviteCollaboratorResponse,
     Error,
     inviteCollaboratorRequest
   >({
     mutationFn: async (data) => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
       const res = await client.collaborators.invite.$post(data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,13 +92,15 @@ type removeCollaboratorResponse = InferResponseType<
  * @param token
  * @returns
  */
-export const useRemoveCollaborator = (token: string) => {
+export const useRemoveCollaborator = () => {
   const { mutate: removeCollaborator, isPending: isRemoving } = useMutation<
     removeCollaboratorResponse,
     Error,
     removeCollaboratorRequest
   >({
     mutationFn: async (data) => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
       const res = await client.collaborators.collaborators.$delete(data, {
         headers: {
           Authorization: `Bearer ${token}`,
