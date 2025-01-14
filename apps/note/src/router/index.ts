@@ -50,6 +50,11 @@ const routes: RouteRecordRaw[] = [
         beforeEnter: routerCheckLogin,
       },
       {
+        path: ':folderId/files/:fileId',
+        component: () => import('@/pages/edit/Home.vue'),
+        beforeEnter: routerCheckLogin,
+      },
+      {
         path: ':folderId/:fileId',
         component: () => import('@/pages/edit/Home.vue'),
         beforeEnter: routerCheckLogin,

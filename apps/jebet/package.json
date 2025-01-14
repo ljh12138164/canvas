@@ -55,6 +55,7 @@
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.13",
     "emojibase": "^16.0.0",
+    "framer-motion": "^11.18.0",
     "hono": "^4.6.16",
     "input-otp": "^1.4.2",
     "jose": "^5.9.6",

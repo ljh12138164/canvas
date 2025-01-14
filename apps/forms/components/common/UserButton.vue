@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,23 +8,24 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Skeleton } from "@/components/ui/skeleton";
-import { DEFAULT_AVATAR } from "@/lib";
-import { logout } from "@/database/supabase/user";
-import type { PropType } from "vue";
-type Side = "end" | "start" | "center";
+} from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
+import { DEFAULT_AVATAR } from '@/lib';
+import { logout } from '@/database/supabase/user';
+import type { PropType } from 'vue';
+type Side = 'end' | 'start' | 'center';
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
+// if (!user.value) await navigateTo('/auth');
 const props = defineProps({
   side: {
     type: String as PropType<Side>,
-    default: "end",
+    default: 'end',
   },
 });
 const logoutClick = async () => {
   await logout(supabase);
-  await navigateTo("/auth");
+  // await navigateTo('/auth');
 };
 </script>
 <template>
@@ -32,7 +33,7 @@ const logoutClick = async () => {
     <DropdownMenuTrigger as-child>
       <Button variant="secondary" size="icon" class="rounded-full">
         <Avatar>
-          <AvatarImage :src="user.user_metadata.image || DEFAULT_AVATAR" />
+          <AvatarImage :src="user?.user_metadata?.image || DEFAULT_AVATAR" />
           <AvatarFallback>
             <Skeleton class="h-full w-full" />
           </AvatarFallback>

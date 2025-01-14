@@ -1,12 +1,14 @@
-import DrawerFromCard from '@/components/board/DrawerFromCard';
-import { useProjectList } from '@/server/hooks/project';
-import useStore from '@/store/user';
-import { useMemoizedFn } from 'ahooks';
-import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import { ScrollArea } from '../ui/scrollArea';
+import DrawerFromCard from "@/components/board/DrawerFromCard";
+import { useProjectList } from "@/server/hooks/project";
+import useStore from "@/store/user";
+import { useMemoizedFn } from "ahooks";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import { ScrollArea } from "../ui/scrollArea";
+import { useQueryClient } from "@tanstack/react-query";
+import { useGetTaskList } from "@/server/hooks/tasks";
 
 const TitleP = styled.p`
   font-size: 1rem;
@@ -40,6 +42,7 @@ const ProjecttList = styled.div`
 `;
 const ProjectList = observer(
   ({ workspaceId, userId }: { workspaceId: string; userId: string }) => {
+    const queryClient = useQueryClient();
     const { projectId } = useParams();
     const store = useStore;
     const navigate = useNavigate();
@@ -61,7 +64,7 @@ const ProjectList = observer(
       <>
         <TitleContain>
           <TitleP>项目</TitleP>
-          <DrawerFromCard type='project'></DrawerFromCard>
+          <DrawerFromCard type="project"></DrawerFromCard>
         </TitleContain>
         <ListContain>
           {isLoadingProjectList && <div>加载中...</div>}
@@ -72,16 +75,22 @@ const ProjectList = observer(
                 <ProjectItem
                   onClick={() => {
                     if (!checkActive(project.id)) {
+                      queryClient.invalidateQueries({
+                        queryKey: ["projectList", workspaceId],
+                      });
+                      queryClient.invalidateQueries({
+                        queryKey: ["taskList", workspaceId, projectId],
+                      });
                       navigate(`/dashboard/${workspaceId}/${project.id}`);
                     }
                   }}
                   key={project.id}
-                  className={checkActive(project.id) ? 'active bg-white' : ''}
+                  className={checkActive(project.id) ? "active bg-white" : ""}
                 >
                   <img
-                    className='rounded-sm'
+                    className="rounded-sm"
                     src={project.imageUrl}
-                    alt='项目图片'
+                    alt="项目图片"
                     width={20}
                     height={20}
                   />

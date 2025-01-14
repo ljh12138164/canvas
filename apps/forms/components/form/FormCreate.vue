@@ -280,7 +280,6 @@ watch(subId, () => {
 });
 
 ///////////////表单提交
-
 // 定义表单验证架构
 const validationSchema = toTypedSchema(
   z.object({
@@ -325,7 +324,6 @@ const onSubmit = handleSubmit((values) => {
       schema.value.push(schemas);
     }
   });
-  console.log(schema.value);
   // createBoard({
   //   json: {
   //     name: values.title,
@@ -565,7 +563,6 @@ const onSubmit = handleSubmit((values) => {
               errors.title
             }}</span>
           </div>
-
           <div class="space-y-2">
             <label for="description" class="text-sm font-medium">描述</label>
             <Textarea
@@ -581,7 +578,6 @@ const onSubmit = handleSubmit((values) => {
           </div>
         </form>
       </DialogHeader>
-
       <DialogFooter>
         <Button type="submit" @click="onSubmit">创建</Button>
         <DialogClose>

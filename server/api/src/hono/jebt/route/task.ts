@@ -5,6 +5,7 @@ import { z } from "zod";
 import { errorCheck } from "../../../libs/error";
 import to from "await-to-js";
 import {
+  addJebtTaskRemark,
   createJebtTask,
   deleteJebtTask,
   getJebtTask,
@@ -184,5 +185,26 @@ const task = new Hono()
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     }
+  )
+  // 添加评论
+  .post(
+    "/addRemark",
+    zValidator(
+      "json",
+      z.object({
+        taskId: z.string(),
+        content: z.string(),
+        currentUserId: z.string(),
+      })
+    ),
+    async (c) => {
+      const { taskId, content, currentUserId } = c.req.valid("json");
+      const [error, data] = await to(
+        addJebtTaskRemark({ taskId, content, currentUserId })
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    }
   );
+
 export default task;

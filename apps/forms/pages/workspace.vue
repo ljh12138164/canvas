@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import DarkButton from "@/components/common/DarkButton.vue";
-import Logo from "@/components/common/Logo.vue";
-import UserButton from "@/components/common/UserButton.vue";
-import TooltipComponents from "@/components/form/TooltipComponents.vue";
-import RouteButton from "@/components/home/RouteButton.vue";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import DarkButton from '@/components/common/DarkButton.vue';
+import Logo from '@/components/common/Logo.vue';
+import UserButton from '@/components/common/UserButton.vue';
+import TooltipComponents from '@/components/form/TooltipComponents.vue';
+import RouteButton from '@/components/home/RouteButton.vue';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   ChartBarIcon,
   HomeIcon,
@@ -15,18 +15,19 @@ import {
   MenuIcon,
   Search,
   ShoppingCartIcon,
-} from "lucide-vue-next";
-import { Icon } from "@iconify/vue";
-import { KeepAlive, ref, watch } from "vue";
-import { RouterView, useRoute } from "vue-router";
+} from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
+import { KeepAlive, ref, watch } from 'vue';
+import { RouterView, useRoute } from 'vue-router';
+
 const { value: userData } = useSupabaseUser();
-if (!userData) navigateTo("/");
+// if (!userData) navigateTo("/");
 const route = useRoute();
-const activePath = ref("/" + route.path.split("/")[1]);
+const activePath = ref('/' + route.path.split('/')[1]);
 watch(
   () => route.path,
   (newVal) => {
-    activePath.value = "/" + newVal.split("/")[2];
+    activePath.value = '/' + newVal.split('/')[2];
   },
   { immediate: true }
 );
@@ -85,7 +86,7 @@ watch(
         <div class="mt-auto p-4">
           <Card>
             <CardContent class="p-2 flex justify-around items-center">
-              <UserButton />
+              <!-- <UserButton /> -->
               <div class="flex flex-col gap-2 text-sm text-muted-foreground">
                 <TooltipComponents :title="userData?.user_metadata.name ?? ''">
                   <p

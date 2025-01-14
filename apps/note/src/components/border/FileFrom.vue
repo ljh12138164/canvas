@@ -8,7 +8,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { createFiles } from '@/hooks/file';
-import useUser from '@/store/user';
 import { useQueryClient } from '@tanstack/vue-query';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
@@ -21,7 +20,7 @@ const formSchema = toTypedSchema(
   z.object({
     title: z.string().optional(),
     inconId: z.string().optional(),
-  }),
+  })
 );
 const clinetQuery = useQueryClient();
 const route = useRoute();
@@ -32,18 +31,17 @@ watch(
   () => {
     workspaceId.value = route.params.workspaceId as string;
   },
-  { immediate: true },
+  { immediate: true }
 );
 watch(
   () => route.params.folderId,
   () => {
     folderId.value = route.params.folderId as string;
   },
-  { immediate: true },
+  { immediate: true }
 );
-const token = useUser().userData?.session.access_token as string;
 // const userId = useUser().userData?.session.user.id as string;
-const { createFileIsPending, createFile } = createFiles(token);
+const { createFileIsPending, createFile } = createFiles();
 
 const showEmoji = ref('');
 const form = useForm({
@@ -73,7 +71,7 @@ const onSubmit = form.handleSubmit((values) => {
         });
         showEmoji.value = '';
       },
-    },
+    }
   );
 });
 const onChangeEmoji = (emoji: string) => {

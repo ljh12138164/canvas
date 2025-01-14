@@ -3,6 +3,7 @@ import { checkToken, getSupabaseAuth } from '../../../libs/middle';
 import to from 'await-to-js';
 import {
   createWorkspace,
+  getDoc,
   getWorkspaceById,
   getWorkspaces,
 } from '../../../server/note/workspace';
@@ -36,7 +37,6 @@ const workspace = new Hono()
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(workspaces);
   })
-
   // 创建工作区
   .post(
     '/create',
@@ -60,6 +60,26 @@ const workspace = new Hono()
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(workspace);
+    }
+  )
+  .get(
+    '/doc',
+    zValidator(
+      'query',
+      z.object({
+        id: z.string(),
+        type: z.enum(['file', 'folder']),
+        workspaceId: z.string(),
+      })
+    ),
+    async (c) => {
+      const { id, type, workspaceId } = c.req.valid('query');
+      const { token, auth } = getSupabaseAuth(c);
+      const [error, doc] = await to(
+        getDoc({ token, userId: auth.sub, id, type, workspaceId })
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(doc);
     }
   );
 

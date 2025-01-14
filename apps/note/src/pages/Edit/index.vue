@@ -23,7 +23,7 @@ import { useGetWorkspaceById } from '@/hooks/workspace';
 import useUser from '@/store/user';
 import { useMediaQuery } from '@vueuse/core';
 import { format } from 'date-fns';
-import { ChevronsUpDown, Plus, Trash } from 'lucide-vue-next';
+import { Plus, Trash } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import NavHeader from './NavHeader.vue';
@@ -35,14 +35,14 @@ const routerParams = ref(route.params.workspaceId);
 const userData = useUser().userData!;
 
 const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
-  routerParams.value as string,
+  routerParams.value as string
 );
 const isMobile = useMediaQuery('(max-width: 768px)');
 watch(
   () => route.params.folderId,
   () => {
     routerParams.value = route.params.workspaceId;
-  },
+  }
 );
 watch(workspaceError, (newVal) => {
   if (newVal?.message === '无权限') {
@@ -69,7 +69,6 @@ console.log(userData);
                   workspace?.inconId
                 }}</span>
                 <Skeleton v-else class="size-4" />
-                <!-- <component :is="activeTeam.logo" class="size-4" /> -->
               </div>
               <div class="grid flex-1 text-left text-sm leading-tight">
                 <span
@@ -103,7 +102,7 @@ console.log(userData);
               <SidebarGroupLabel class="font-semibold text-sm"
                 >工作区</SidebarGroupLabel
               >
-              <SidebarMenuButton>
+              <SidebarMenuButton class="hover:bg-slate-50 transition-all">
                 <template #default>
                   <ResponsePop title="创建文档">
                     <template #trigger>
@@ -123,7 +122,7 @@ console.log(userData);
                 </template>
               </SidebarMenuButton>
 
-              <SidebarMenuButton>
+              <SidebarMenuButton class="hover:bg-slate-50 transition-all">
                 <template #default>
                   <div class="w-full h-full flex items-center gap-2">
                     <Trash />
@@ -138,44 +137,33 @@ console.log(userData);
         </SidebarGroup>
         <SidebarGroup>
           <SidebarMenu>
-            <Sider
-              :token="userData.session.access_token"
-              :routerParams="routerParams as string"
-            />
+            <Sider :routerParams="routerParams as string" />
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
       <!-- footer -->
       <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <Avatar class="h-8 w-8 rounded-lg">
-                <AvatarImage
-                  :src="userData.session.user.user_metadata.image"
-                  :alt="userData.session.user.user_metadata.name"
-                />
-                <AvatarFallback class="rounded-lg">
-                  {{ userData.session.user.user_metadata.name }}
-                </AvatarFallback>
-              </Avatar>
-              <div class="grid flex-1 text-left text-sm leading-tight">
-                <span class="truncate font-semibold">{{
-                  userData.session.user.user_metadata.name
-                }}</span>
-                <span class="truncate text-xs">{{
-                  userData.session.user.user_metadata.email
-                }}</span>
-              </div>
-              <ChevronsUpDown class="ml-auto size-4" />
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <section class="footer-container">
+          <Avatar class="h-8 w-8 rounded-lg">
+            <AvatarImage
+              :src="userData.session.user.user_metadata.image"
+              :alt="userData.session.user.user_metadata.name"
+            />
+            <AvatarFallback class="rounded-lg">
+              {{ userData.session.user.user_metadata.name }}
+            </AvatarFallback>
+          </Avatar>
+          <div class="grid flex-1 text-left text-sm leading-tight">
+            <span class="truncate font-semibold">{{
+              userData.session.user.user_metadata.name
+            }}</span>
+            <span class="truncate text-xs">{{
+              userData.session.user.user_metadata.email
+            }}</span>
+          </div>
+        </section>
+        <SidebarRail />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
     <!-- 内容 -->
     <SidebarInset>
@@ -186,9 +174,7 @@ console.log(userData);
       />
 
       <keep-alive>
-        <main class="editor-main">
-          <RouterView />
-        </main>
+        <RouterView />
       </keep-alive>
     </SidebarInset>
   </SidebarProvider>
@@ -223,9 +209,19 @@ console.log(userData);
   width: 100%;
   height: 100%;
   overflow: hidden;
-  &-main {
-    flex: 1;
-    height: 100%;
+}
+.sider-button {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 10px;
+
+  &:hover {
+    border: 1px solid #f0f0f0;
   }
+}
+.footer-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 </style>

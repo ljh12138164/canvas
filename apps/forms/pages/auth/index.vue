@@ -1,42 +1,32 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Toaster } from "@/components/ui/toast";
-import { toast } from "@/lib";
-import { cn } from "@/lib/utils";
-import { to } from "await-to-js";
-import { ref } from "vue";
-import { login, signup } from "~/database/supabase/user";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Toaster } from '@/components/ui/toast';
+import { toast } from '@/lib';
+import { cn } from '@/lib/utils';
+import { to } from 'await-to-js';
+import { ref } from 'vue';
+import { login, signup } from '~/database/supabase/user';
 const isLoading = ref(false);
 const isLogin = ref(true);
-const email = ref("");
-const password = ref("");
-const name = ref("");
+const email = ref('');
+const password = ref('');
+const name = ref('');
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
-if (user.value) await navigateTo("/workspace/board");
-async function onSubmit(event: Event) {
-  event.preventDefault();
+if (user?.value) await navigateTo('/workspace/board');
+async function onSubmit() {
+  console.log(email.value, password.value);
   isLoading.value = true;
 
   if (isLogin.value) {
-    //校验
-    if (
-      email.value?.length < 3 ||
-      password.value?.length < 3 ||
-      password.value?.length > 12
-    ) {
-      toast.error("请输入邮箱和密码");
+    if (!email.value?.includes('@')) {
+      toast.error('邮箱格式不正确');
       isLoading.value = false;
       return;
     }
-    if (!email.value?.includes("@")) {
-      toast.error("邮箱格式不正确");
-      isLoading.value = false;
-      return;
-    }
-    toast.info("登录中...");
+    toast.info('登录中...');
     const [error] = await to(
       login(
         {
@@ -49,8 +39,8 @@ async function onSubmit(event: Event) {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("登录成功");
-      await navigateTo("/workspace/board");
+      toast.success('登录成功');
+      await navigateTo('/workspace/board');
     }
   } else {
     //校验
@@ -59,16 +49,16 @@ async function onSubmit(event: Event) {
       password.value?.length < 3 ||
       password.value?.length > 12
     ) {
-      toast.error("请输入邮箱和密码");
+      toast.error('请输入邮箱和密码');
       isLoading.value = false;
       return;
     }
-    if (!email.value?.includes("@")) {
-      toast.error("邮箱格式不正确");
+    if (!email.value?.includes('@')) {
+      toast.error('邮箱格式不正确');
       isLoading.value = false;
       return;
     }
-    toast.info("注册中...");
+    toast.info('注册中...');
     const [error] = await to(
       signup(
         {
@@ -82,8 +72,8 @@ async function onSubmit(event: Event) {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("请前往邮箱接受验证");
-      await navigateTo("/");
+      toast.success('请前往邮箱接受验证');
+      await navigateTo('/');
     }
   }
   isLoading.value = false;
@@ -105,17 +95,17 @@ async function onSubmit(event: Event) {
     </div>
     <div>
       <Button @click="isLogin = !isLogin" class="absolute top-12 right-12">
-        {{ isLogin ? "注册" : "登录" }}
+        {{ isLogin ? '注册' : '登录' }}
       </Button>
       <div
         class="mx-auto flex w-full max-w-[350px] relative flex-col justify-center space-y-6"
       >
         <div class="flex flex-col space-y-2 text-center">
           <h1 class="text-2xl font-semibold tracking-tight">
-            {{ isLogin ? "登录" : "注册" }}
+            {{ isLogin ? '登录' : '注册' }}
           </h1>
           <p class="text-sm text-muted-foreground">
-            {{ isLogin ? "请输入邮箱" : "请输入邮箱" }}
+            {{ isLogin ? '请输入邮箱' : '请输入邮箱' }}
           </p>
         </div>
         <div :class="cn('grid gap-6', $attrs.class ?? '')">
@@ -167,7 +157,7 @@ async function onSubmit(event: Event) {
                 />
               </div>
               <Button type="button" :disabled="isLoading" @click="onSubmit">
-                {{ isLogin ? "登录" : "注册" }}
+                {{ isLogin ? '登录' : '注册' }}
               </Button>
             </div>
           </form>

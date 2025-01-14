@@ -1,7 +1,7 @@
 export enum MessageType {
-  TEXT = 'text',
-  IMAGE = 'image',
-  FILE = 'file',
+  TEXT = "text",
+  IMAGE = "image",
+  FILE = "file",
 }
 
 export interface Workspace {
@@ -17,7 +17,7 @@ export interface Member {
   id: string;
   userId: string;
   workspaceId: string;
-  role: 'admin' | 'member';
+  role: "admin" | "member";
   email: string;
   userImage: string;
   username: string;
@@ -27,7 +27,7 @@ export interface Member {
 // 工作区成员
 export interface WorkspaceWithMember extends Workspace {
   userId: string;
-  role: 'admin' | 'member';
+  role: "admin" | "member";
 }
 
 export interface Project {
@@ -41,22 +41,29 @@ export interface Project {
 }
 // 任务状态
 export enum TaskStatus {
-  ALL = '全部',
-  BACKLOG = '储备',
-  TODO = '待办',
-  DONE = '完成',
-  IN_PROGRESS = '进行中',
-  IN_REVIEW = '等待审核',
+  ALL = "全部",
+  BACKLOG = "储备",
+  TODO = "待办",
+  DONE = "完成",
+  IN_PROGRESS = "进行中",
+  IN_REVIEW = "等待审核",
 }
 // 任务优先级
 export enum TasksPriority {
-  ALL = '全部',
-  SUGGESTION = '建议',
-  GENERAL = '一般',
-  IMPORTANT = '重要',
-  URGENT = '紧急',
+  ALL = "全部",
+  SUGGESTION = "建议",
+  GENERAL = "一般",
+  IMPORTANT = "重要",
+  URGENT = "紧急",
 }
 
+export interface Remark {
+  id: string;
+  content: string;
+  created_at: string;
+  taskId: string;
+  userId: string;
+}
 export interface Task {
   id: string;
   name: string;

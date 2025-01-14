@@ -8,7 +8,5 @@ const jumpt = async () => {
 };
 </script>
 <template>
-  <ClientOnly>
     <Button @click="jumpt"> 创建表单 </Button>
-  </ClientOnly>
 </template>

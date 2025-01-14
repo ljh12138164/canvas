@@ -1,8 +1,8 @@
-import { FiEdit3 } from 'react-icons/fi';
-import { Project } from '@/types/workspace';
-import { useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import { Button } from '@/components/ui/button';
+import { FiEdit3 } from "react-icons/fi";
+import { Project } from "@/types/workspace";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import { Button } from "@/components/ui/button";
 
 const ProjectNavContainer = styled.nav`
   display: flex;
@@ -37,24 +37,21 @@ export default function ProjectNav({ project }: { project: Project }) {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
   return (
-    <>
-      <ProjectNavContainer>
-        <ProjectItem>
-          <ProjectItemIcon src={project.imageUrl} alt={project.name} />
-          <ProjectItemName>{project.name}</ProjectItemName>
-        </ProjectItem>
+    <ProjectNavContainer>
+      <ProjectItem>
+        <ProjectItemIcon src={project.imageUrl} alt={project.name} />
+        <ProjectItemName>{project.name}</ProjectItemName>
+      </ProjectItem>
 
-        <EditText
-          variant='outline'
-          onClick={() =>
-            navigate(`/dashboard/${workspaceId}/${project.id}/setting`)
-          }
-        >
-          <FiEdit3 />
-          <span>编辑</span>
-        </EditText>
-      </ProjectNavContainer>
-      <></>
-    </>
+      <EditText
+        variant="outline"
+        onClick={() =>
+          navigate(`/dashboard/${workspaceId}/${project.id}/setting`)
+        }
+      >
+        <FiEdit3 />
+        <span>编辑</span>
+      </EditText>
+    </ProjectNavContainer>
   );
 }

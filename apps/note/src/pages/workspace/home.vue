@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { ScrollArea } from '@/components/ui/scroll-area';
 import FromCard from '@/components/workspace/FromCard.vue';
-import userData from '@/store/user';
 import InviteDialog from './InviteDialog.vue';
 // import { useGetWorkspaces } from "@/hooks/workspace";
 // import WorkspaceList from "@/components/workspace/WorkspaceList.vue";
-const token = userData()?.userData?.session.access_token as string;
 // const {
 //   workspaces,
 //   workspacesError,
 //   workspacesIsLoading,
 //   workspacesIsFetching,
-// } = useGetWorkspaces(token);
+// } = useGetWorkspaces();
 </script>
 <template>
   <div class="flex">
@@ -21,7 +19,6 @@ const token = userData()?.userData?.session.access_token as string;
         :workspaces="workspaces"
         :isLoading="workspacesIsLoading"
         :error="workspacesError"
-        :token="token"
       />
     </aside> -->
     <section
@@ -30,7 +27,7 @@ const token = userData()?.userData?.session.access_token as string;
       <ScrollArea class="h-[85dvh]">
         <div class="flex flex-col gap-4">
           <FromCard />
-          <InviteDialog :token="token" />
+          <InviteDialog />
         </div>
       </ScrollArea>
     </section>

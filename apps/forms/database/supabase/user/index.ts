@@ -1,5 +1,5 @@
-import { DEFAULT_AVATAR, USER_IMAGE_URL } from "@/lib";
-import { nanoid } from "nanoid";
+import { DEFAULT_AVATAR, USER_IMAGE_URL } from '@/lib';
+import { nanoid } from 'nanoid';
 
 /**
  * @description 上传图片到云端
@@ -11,10 +11,10 @@ export const uploadImageclound = async (
   supabase: any
 ) => {
   // 设置照片名字
-  const fileName = `${nanoid()}-${file.name}`.replace("/", "");
+  const fileName = `${nanoid()}-${file.name}`.replace('/', '');
   const { data, error } = await supabase.storage
     // 桶名字
-    .from("USER_IMAGE")
+    .from('USER_IMAGE')
     .upload(fileName, file);
   if (error) return DEFAULT_AVATAR;
   return USER_IMAGE_URL + data.fullPath;
@@ -35,7 +35,7 @@ export const deleteImageClound = async (
 ): Promise<boolean> => {
   const { error } = await supabase.storage
     //  桶名字
-    .from("USER_IMAGE")
+    .from('USER_IMAGE')
     // 删除图片路径
     .remove([image]);
   if (error) return false;
@@ -49,14 +49,14 @@ export async function getCurrentUser(supabase: any) {
   // 获取用户信息
   try {
     const { data: session } = await supabase.auth.getSession();
-    if (!session?.session) throw new Error("未登录");
+    if (!session?.session) throw new Error('未登录');
     //获取用户权限
     const { data, error } = await supabase.auth.getUser();
 
-    if (error) throw new Error("未登录");
+    if (error) throw new Error('未登录');
     return { user: data?.user, session: session.session };
   } catch {
-    throw new Error("未登录");
+    throw new Error('未登录');
   }
 }
 /**
@@ -95,7 +95,7 @@ export async function signup(
       },
     },
   });
-  if (error) throw new Error("服务器错误");
+  if (error) throw new Error('服务器错误');
   return data;
 }
 
@@ -114,11 +114,12 @@ export async function login(
   },
   supabase: any
 ) {
+  console.log(email, password);
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
     password: password,
   });
-  if (error) throw new Error("服务器错误");
+  if (error) throw new Error('服务器错误');
   return data;
 }
 
@@ -160,6 +161,6 @@ export async function updateCurrentUser(
   }
   // 更新用户信息
   const { data, error } = await supabase.auth.updateUser(userData);
-  if (error) throw new Error("服务器错误");
+  if (error) throw new Error('服务器错误');
   return data.user;
 }

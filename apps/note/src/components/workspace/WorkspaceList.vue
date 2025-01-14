@@ -15,7 +15,6 @@ const props = defineProps<{
   workspaces: (Workspace & { profiles: Profiles })[] | undefined;
   isLoading: boolean;
   isFetching: boolean;
-  token: string;
   error: Error | null;
 }>();
 
@@ -27,10 +26,10 @@ watch(
   () => route.params.workspaceId,
   (newVal) => {
     activeWorkspaceId.value = newVal as string;
-  },
+  }
 );
 const { workspaceIsFetching } = useGetWorkspaceById(
-  route.params.workspaceId as string,
+  route.params.workspaceId as string
 );
 const { workspacesIsLoading } = useGetWorkspaces();
 const handleClick = (id: string) => {

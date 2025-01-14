@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip';
+
 const { iconName, isActive, onClick, label, editor, disabled } = defineProps<{
   iconName: string;
   editor: Editor | null;
@@ -17,6 +18,7 @@ const { iconName, isActive, onClick, label, editor, disabled } = defineProps<{
   disabled?: boolean;
 }>();
 </script>
+
 <template>
   <TooltipProvider>
     <Tooltip>
@@ -26,12 +28,12 @@ const { iconName, isActive, onClick, label, editor, disabled } = defineProps<{
           @click="onClick && onClick(editor as Editor)"
           class="kitBtn"
           :disabled="disabled"
-          :style="{ backgroundColor: isActive ? '#e5e5e5cc' : 'transparent' }"
+          :class="{ 'is-active': isActive }"
         >
           <Icon :icon="iconName" class="kit-icon" />
         </Button>
       </TooltipTrigger>
-      <TooltipContent :duration="100">
+      <TooltipContent :duration="100" class="tooltip-content">
         <span>{{ label }}</span>
       </TooltipContent>
     </Tooltip>
@@ -41,15 +43,41 @@ const { iconName, isActive, onClick, label, editor, disabled } = defineProps<{
 <style scoped lang="scss">
 .kitBtn {
   cursor: pointer;
-  height: 24px;
-  min-width: 24px;
-  transition: all 0.3s ease;
+  height: 32px;
+  min-width: 32px;
+  padding: 0 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background-color: transparent;
+
   &:hover {
-    background-color: #e5e5e5cc;
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  &.is-active {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #1a73e8;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
+
 .kit-icon {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
+}
+
+:deep(.tooltip-content) {
+  background-color: #333;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
 }
 </style>

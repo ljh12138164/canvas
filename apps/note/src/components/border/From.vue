@@ -21,7 +21,7 @@ const formSchema = toTypedSchema(
   z.object({
     title: z.string().optional(),
     inconId: z.string().optional(),
-  }),
+  })
 );
 const clinetQuery = useQueryClient();
 const route = useRoute();
@@ -31,11 +31,10 @@ watch(
   () => {
     workspaceId.value = route.params.workspaceId as string;
   },
-  { immediate: true },
+  { immediate: true }
 );
-const token = useUser().userData?.session.access_token as string;
 // const userId = useUser().userData?.session.user.id as string;
-const { createFolderIsLoading, createFolder } = useCreateFolder(token);
+const { createFolderIsLoading, createFolder } = useCreateFolder();
 
 const showEmoji = ref('');
 const form = useForm({
@@ -64,7 +63,7 @@ const onSubmit = form.handleSubmit((values) => {
         });
         showEmoji.value = '';
       },
-    },
+    }
   );
 });
 const onChangeEmoji = (emoji: string) => {
