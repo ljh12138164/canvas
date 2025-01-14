@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import WorkspaceList from '@/components/workspace/WorkspaceList.vue';
 import { useGetWorkspaces } from '@/hooks/workspace';
-import useUser from '@/store/user';
-
 import { RouterView } from 'vue-router';
-const { userData } = useUser();
-const token = userData?.session.access_token as string;
 const {
   workspaces,
   workspacesError,
@@ -22,7 +18,6 @@ const {
         :workspaces="workspaces"
         :isLoading="workspacesIsLoading"
         :error="workspacesError"
-        :token="token"
       />
     </aside>
     <section class="main-content-container">

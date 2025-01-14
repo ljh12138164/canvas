@@ -1,21 +1,49 @@
-import { Hono } from "hono";
-
+import { Hono } from 'hono';
+import { getDocs, saveDocument } from '../../../server/note/webhook';
+import { to } from 'await-to-js';
+import { getDoc } from '../../../server/note/workspace';
 //工作原理
 // webhook 扩展最多可监听四个可配置的事件/钩子，这些事件/钩子将触发对配置的 url 的 POST 请求。
 export const webhook = new Hono()
-  .post("/save", async (c) => {
+  .post('/save', async (c) => {
     const json = await c.req.json();
-    console.log(json);
-    if (c.req.header("token") !== "459824aaffa928e05f5b1caec411ae5f") {
-      return c.text("认证失败");
+    console.log(json.event);
+    if (json.event === 'change') {
+      const documentName = json.payload.documentName.split('/');
+      const document = JSON.stringify(json.payload.document);
+      const workspaceId = documentName[1];
+      const folderId = documentName[2];
+      const fileId = documentName[3];
+      const [err] = await to(
+        saveDocument({
+          document,
+          workspaceId,
+          folderId,
+          fileId,
+        })
+      );
+      if (err) return c.json({ message: '服务器错误' });
+      return c.json({
+        message: 'suceess',
+      });
+    } else {
+      const documentName = json.payload.documentName.split('/');
+      const workspaceId = documentName[1];
+      const folderId = documentName[2];
+      const fileId = documentName[3];
+      const [err, document] = await to(
+        getDocs({
+          workspaceId,
+          id: fileId ? fileId : folderId,
+          type: fileId ? 'file' : 'folder',
+        })
+      );
+      console.log(document);
+      return c.text(document!);
     }
-    // console.log(c.req.);
-    return c.json({
-      message: "suceess",
-    });
   })
-  .get("/", (c) => {
+  .get('/', (c) => {
     return c.json({
-      message: "suceess",
+      message: 'suceess',
     });
   });

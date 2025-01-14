@@ -276,7 +276,6 @@ const ProjectContent = ({
                   }
                 }}
                 disabled={(date) => date < new Date()}
-                initialFocus
               />
             </PopoverContent>
           </Popover>
@@ -290,16 +289,20 @@ const ProjectContent = ({
               </div>
             )}
             {selectTap === "calendar" && <div>日历</div>}
-            {selectTap === "kanban" && (
-              <div
-                className={
-                  taskListFetching ? "opacity-50  max-w-full" : " max-w-full"
-                }
-              >
-                <Kanban taskList={taskList || []} />
-              </div>
-            )}
           </Container>
+        ) : (
+          <div>加载中</div>
+        )}
+        {!taskListLoading ? (
+          selectTap === "kanban" && (
+            <div
+              className={
+                taskListFetching ? "opacity-50  max-w-full" : " max-w-full"
+              }
+            >
+              <Kanban taskList={taskList || []} />
+            </div>
+          )
         ) : (
           <div>加载中</div>
         )}

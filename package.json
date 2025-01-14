@@ -4,6 +4,7 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "build:api": "cd server/api && pnpm run tsup",
     "dev:api": "turbo --filter=api dev",
     "dev:note": "turbo --filter=api --filter=note --filter=ws dev",
     "dev:design": "turbo --filter=api --filter=design --filter=design-ws dev && turbo --filter=api api:dev",

@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "npm-run-all --parallel api builds",
     "builds": "tsup --watch",
+    "tsup": "tsup",
     "api": "vercel dev --listen=8000",
     "local": "bun run --hot ./local.ts",
     "deploy:prod": "vercel --prod",

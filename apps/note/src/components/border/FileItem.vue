@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/tooltip';
 import type { Files } from '@/types/board';
 
+
 defineProps<{
   isLoading: boolean;
   file: Files[];
@@ -41,6 +42,7 @@ defineProps<{
                   file.title
                 }}</span>
               </span>
+              <section>
             </div>
           </TooltipTrigger>
           <TooltipContent side="right">

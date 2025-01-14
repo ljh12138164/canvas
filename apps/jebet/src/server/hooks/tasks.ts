@@ -45,7 +45,7 @@ export const useGetTaskList = ({
     Error,
     GetTaskListOutput
   >({
-    queryKey: ["taskList"],
+    queryKey: ["taskList", workspaceId, projectId],
     queryFn: async () => {
       const res = await client.task.get.$get({
         query: {
@@ -115,4 +115,57 @@ export const useUpdateTask = () => {
     },
   });
   return { updateTask, updateTaskLoading };
+};
+
+type GetTaskDetailOutput = InferResponseType<
+  typeof client.task.detail.$get,
+  200
+>;
+/**
+ * ## 获取任务详情
+ */
+export const useGetTaskDetail = (
+  workspaceId: string,
+  projectId: string,
+  currentUserId: string,
+  id: string
+) => {
+  const { data, isLoading, isFetching } = useQuery<GetTaskDetailOutput, Error>({
+    queryKey: ["taskDetail", workspaceId, projectId, id],
+    queryFn: async () => {
+      const res = await client.task.detail.$get({
+        query: {
+          workspaceId: workspaceId,
+          projectId: projectId,
+          currentUserId: currentUserId,
+          id: id,
+        },
+      });
+      if (!res.ok) throw new Error("获取任务详情失败");
+      return res.json();
+    },
+  });
+  return { data, isLoading, isFetching };
+};
+
+type CreateTaskRemarkInput = InferRequestType<
+  typeof client.task.addRemark.$post
+>;
+type CreateTaskRemarkOutput = InferResponseType<
+  typeof client.task.addRemark.$post,
+  200
+>;
+/**
+ * ### 创建任务评论
+ */
+export const useCreateTaskRemark = () => {
+  const { mutate: createTaskRemark, isPending: createTaskRemarkLoading } =
+    useMutation<CreateTaskRemarkOutput, Error, CreateTaskRemarkInput>({
+      mutationFn: async (data) => {
+        const res = await client.task.addRemark.$post(data);
+        if (!res.ok) throw new Error("创建任务评论失败");
+        return res.json();
+      },
+    });
+  return { createTaskRemark, createTaskRemarkLoading };
 };

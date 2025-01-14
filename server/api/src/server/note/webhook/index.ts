@@ -1,4 +1,4 @@
-import { supabaseNote, supabaseNoteWebhook } from "../../supabase/note/index";
+import { supabaseNoteWebhook } from '../../supabase/note/index';
 
 /**
  * @param document 文档
@@ -6,17 +6,60 @@ import { supabaseNote, supabaseNoteWebhook } from "../../supabase/note/index";
  */
 export const saveDocument = async ({
   document,
-  documentName,
+  workspaceId,
+  folderId,
+  fileId,
 }: {
   document: any;
-  documentName: string;
+  workspaceId: string;
+  folderId: string;
+  fileId: string | undefined;
 }) => {
-  console.log(document, documentName);
-  const { data, error } = await supabaseNoteWebhook
-    .from("workspace")
-    .select("*,profiles(*),folders(*,files(*)),collaborators(*)")
-    .eq("id", documentName);
-  if (error) throw new Error("服务器错误");
+  let supabase;
+  if (fileId) {
+    supabase = supabaseNoteWebhook
+      .from('files')
+      .update([
+        {
+          data: document,
+          updated_at: new Date().toISOString(),
+        },
+      ])
+      .eq('id', fileId)
+      .eq('foldId', folderId)
+      .eq('workspaceId', workspaceId);
+  } else {
+    supabase = supabaseNoteWebhook
+      .from('folders')
+      .update({
+        data: document,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', folderId)
+      .eq('workspaceId', workspaceId);
+  }
+  const { data, error } = await supabase;
+  console.log(error);
+  if (error) throw new Error('服务器错误');
+  return data;
+};
 
-  throw new Error("无权限");
+/**
+ * 获取文档
+ */
+export const getDocs = async ({
+  id,
+  type,
+  workspaceId,
+}: {
+  id: string;
+  type: 'file' | 'folder';
+  workspaceId: string;
+}): Promise<string> => {
+  const { data, error } = await supabaseNoteWebhook
+    .from(type === 'file' ? 'files' : 'folders')
+    .select('*')
+    .eq('id', id);
+  if (error) throw new Error('服务器错误');
+  return data[0].data;
 };

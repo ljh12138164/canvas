@@ -26,56 +26,65 @@ const props = defineProps<{
     class="starter-kit whitespace-nowrap overflow-y-hidden"
     v-if="props.editor"
   >
-    <KitItem
-      :editor="props.editor"
-      v-for="item in useEditor().tiptapKit"
-      :key="item.label"
-      :iconName="item.icon"
-      :isActive="item?.isActive ? item?.isActive(props.editor) : false"
-      :onClick="item.onClick"
-      :label="item.label"
-      :disabled="item.disabled ? item.disabled(props.editor) : false"
-    />
-    <!-- 字体 -->
-    <FontFamily :editor="props.editor" />
-    <!-- 标题 -->
-    <AddHeader :editor="props.editor" />
-    <!-- 颜色 -->
-    <Color :editor="props.editor" />
-    <!-- 高亮 -->
-    <HeightColor :editor="props.editor" />
-    <!-- 链接 -->
-    <Link :editor="props.editor" />
-    <!-- 图片 -->
-    <Image :editor="props.editor" />
-    <!-- 对齐 -->
-    <AlignButton :editor="props.editor" />
-    <!-- 列表 -->
-    <ListButton :editor="props.editor" />
-    <!-- 字体大小 -->
-    <FontSizeButton :editor="props.editor" />
-    <!-- 行高 -->
-    <LineHeightButton :editor="props.editor" />
-    <!-- 表格 -->
-    <TableInsert :editor="props.editor" />
+    <div class="flex items-center gap-1 px-2">
+      <div class="flex items-center gap-1 border-r border-gray-200 pr-2">
+        <KitItem
+          :editor="props.editor"
+          v-for="item in useEditor().tiptapKit"
+          :key="item.label"
+          :iconName="item.icon"
+          :isActive="item?.isActive ? item?.isActive(props.editor) : false"
+          :onClick="item.onClick"
+          :label="item.label"
+          :disabled="item.disabled ? item.disabled(props.editor) : false"
+        />
+      </div>
+
+      <div class="flex items-center gap-1 border-r border-gray-200 pr-2">
+        <FontFamily :editor="props.editor" />
+        <AddHeader :editor="props.editor" />
+        <FontSizeButton :editor="props.editor" />
+        <LineHeightButton :editor="props.editor" />
+      </div>
+
+      <div class="flex items-center gap-1 border-r border-gray-200 pr-2">
+        <Color :editor="props.editor" />
+        <HeightColor :editor="props.editor" />
+      </div>
+
+      <div class="flex items-center gap-1 border-r border-gray-200 pr-2">
+        <Link :editor="props.editor" />
+        <Image :editor="props.editor" />
+        <TableInsert :editor="props.editor" />
+      </div>
+
+      <div class="flex items-center gap-1">
+        <AlignButton :editor="props.editor" />
+        <ListButton :editor="props.editor" />
+      </div>
+    </div>
     <ScrollBar orientation="horizontal" />
   </ScrollArea>
 </template>
 
 <style scoped lang="scss">
-.starter-kit-separator {
-  // height: ;
-  background-color: #efeeeed1;
-  overflow-x: scroll;
-}
 .starter-kit {
   display: flex;
   background-color: white;
-  padding: 0.5px 4px;
+  padding: 4px 0;
   align-items: center;
-  overflow-x: scroll;
-  height: 45px;
-  gap: 4px;
-  overflow-y: hidden;
+  height: 48px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+  }
+
+  :deep(.scrollbar) {
+    height: 4px;
+    margin-top: 2px;
+  }
 }
 </style>

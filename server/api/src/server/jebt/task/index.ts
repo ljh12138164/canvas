@@ -1,8 +1,13 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import to from "await-to-js";
 import { nanoid } from "nanoid";
+import {
+  Remark,
+  Task,
+  TaskStatus,
+  TaskWithWorkspace,
+} from "../../../types/jebt/board";
 import { supabaseJebt } from "../../supabase/jebt";
-import { TaskStatus, TaskWithWorkspace } from "../../../types/jebt/board";
 import { checkMember, checkUser } from "../board";
 
 /**
@@ -185,15 +190,40 @@ export const getJebtTaskDetail = async ({
   workspaceId: string;
   projectId: string;
   currentUserId: string;
-}) => {
+}): Promise<Task & { remark: Remark[] }> => {
   const [error] = await to(checkUser(currentUserId, workspaceId));
   if (error) throw new Error("无权限");
   const { data, error: taskError } = await supabaseJebt
     .from("tasks")
-    .select("*")
+    .select("*,remark(*)")
     .eq("id", id)
     .eq("workspaceId", workspaceId)
     .eq("projectId", projectId);
+
   if (taskError) throw new Error("服务器错误");
-  return data;
+  return data[0];
+};
+
+/**
+ * 添加评论
+ * @param param0
+ * @returns
+ */
+export const addJebtTaskRemark = async ({
+  taskId,
+  content,
+  currentUserId,
+}: {
+  taskId: string;
+  content: string;
+  currentUserId: string;
+}) => {
+  const id = nanoid();
+  const { data, error: taskError } = await supabaseJebt
+    .from("remark")
+    .insert([{ id, taskId, content, userId: currentUserId }])
+    .select("*");
+  console.log(taskError);
+  if (taskError) throw new Error("服务器错误");
+  return data[0];
 };

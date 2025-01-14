@@ -3,6 +3,7 @@ import type { getWorkspaceByIdResponse } from '@/hooks/workspace';
 import { HIGHLIGHT_COLORS } from '@/lib';
 import { useActiveUserStore } from '@/store/activeUser';
 import useEditor from '@/store/editor';
+import type { Doc } from '@/hooks/doc';
 // 仓库
 import useUser from '@/store/user';
 // 协作
@@ -46,19 +47,25 @@ import { IndexeddbPersistence } from 'y-indexeddb';
 import * as Y from 'yjs';
 import { LineHeightExtension } from '../editExtenstions/LineHeight';
 import { FontSizeExtension } from '../editExtenstions/fontSize';
-import Ruler from './Ruler.vue';
+import { BubbleMenu } from '@tiptap/vue-3';
 import StarterKitComponent from './StarterKit.vue';
-
 import { watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
-const folderId = ref(route.params.workspaceId);
+const folderId = ref(route.params.folderId as string);
+const fileId = ref(route.params.fileId as string);
 watch(
-  () => route.params.workspaceId,
+  () => route.params.folderId,
   (newVal) => {
-    folderId.value = newVal;
-  },
+    folderId.value = newVal as string;
+  }
+);
+watch(
+  () => route.params.fileId,
+  (newVal) => {
+    fileId.value = newVal as string;
+  }
 );
 if (!folderId.value) {
   router.push('/');
@@ -76,9 +83,13 @@ const userHash = user.userData?.session.user.id
 const doc = new Y.Doc();
 const props = defineProps<{
   workspace: getWorkspaceByIdResponse;
+  doc: Doc | undefined;
 }>();
 // 本地持久化
-const provider = new IndexeddbPersistence(props.workspace.id!, doc);
+const provider = new IndexeddbPersistence(
+  fileId.value ? `${folderId.value}/${fileId.value}` : `/${folderId.value}`,
+  doc
+);
 provider.on('synced', () => {
   isLoading.value = false;
 });
@@ -92,15 +103,16 @@ lowlight.register('ts', ts);
 const websocket = new HocuspocusProviderWebsocket({
   url: import.meta.env.PUBLIC_WS,
 });
-
 // 协同
-const hocuspocusConnection = new HocuspocusProvider({
+const hocuspocusConnections = new HocuspocusProvider({
   websocketProvider: websocket,
-  name: folderId.value as string, // 服务端的 documentName
+  name: fileId.value
+    ? //  文件夹id/文件id
+      `/${props.workspace.id}/${folderId.value}/${fileId.value}`
+    : // 文件夹id
+      `/${props.workspace.id}/${folderId.value}`, // 服务端的 documentName
   document: doc,
   parameters: {
-    // token
-    Authorization: `Bearer ${user.userData?.session.access_token}`,
     // 文件夹id
     folderId: folderId.value as string,
     // 工作区id
@@ -108,19 +120,18 @@ const hocuspocusConnection = new HocuspocusProvider({
   },
   token: `Bearer ${user.userData?.session.access_token}`,
   // awareness:,
-  onSynced() {
-    console.log('同步');
-  },
+  onSynced() {},
   onAwarenessUpdate: ({ states }: { states: any }) => {
     activeUserStore.setActiveUserList(
       states.map(
         (item: { activeUser: { name: string; id: string; color: string } }) =>
-          item.activeUser,
-      ),
+          item.activeUser
+      )
     );
   },
 });
-hocuspocusConnection.setAwarenessField('activeUser', {
+
+hocuspocusConnections.setAwarenessField('activeUser', {
   // 设置本地用户信息，这样另外的客户端就能拿到这个信息来显示了
   name: user.userData?.session.user.user_metadata.name,
   id: user.userData?.session.user.id,
@@ -133,7 +144,7 @@ const editor = ref<Editor>(
     extensions: [
       // 协同光标
       CollaborationCursor.configure({
-        provider: hocuspocusConnection,
+        provider: hocuspocusConnections,
         user: {
           // 用户meta信息
           name: user.userData?.session.user.user_metadata.name,
@@ -203,36 +214,32 @@ const editor = ref<Editor>(
       //   suggestion,
       // }),
     ],
-    content: props.workspace.data,
-  }),
+  })
 );
-
 onMounted(() => {
   useEditor().setEditorData(editor.value as Editor);
 });
 onBeforeUnmount(() => {
   editor.value.destroy();
-  hocuspocusConnection.destroy();
+  hocuspocusConnections.destroy();
 });
 // 测试图标
 </script>
 
 <template>
-  <main class="flex flex-col" v-if="!isLoading">
-    <StarterKitComponent :editor="editor as Editor" />
-    <Ruler />
+  <main class="flex flex-col max-h-[calc(100dvh-250px)]" v-if="!isLoading">
+    <BubbleMenu
+      :editor="editor as Editor"
+      :tippy-options="{ duration: 100 }"
+      class="bubble-menu"
+      v-if="editor"
+    >
+      <StarterKitComponent :editor="editor as Editor" />
+    </BubbleMenu>
+    <!-- <StarterKitComponent :editor="editor as Editor" /> -->
+    <!-- <Ruler /> -->
     <EditorContent :editor="editor as Editor" />
   </main>
-  <!--
-  <BubbleMenu
-    :editor="editor"
-    :tippy-options="{ duration: 100 }"
-    class="bubble-menu"
-    v-if="editor && !useEditorStore().loadEditor"
-  >
-    <StarterKitComponent />
-  </BubbleMenu>
-  -->
 </template>
 
 <style lang="scss">
@@ -312,7 +319,7 @@ onBeforeUnmount(() => {
     }
   }
   // 任务列表
-  ul[data-type="taskList"] {
+  ul[data-type='taskList'] {
     list-style: none;
     margin-left: 0;
     padding: 0;
@@ -332,11 +339,11 @@ onBeforeUnmount(() => {
       }
     }
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       cursor: pointer;
     }
 
-    ul[data-type="taskList"] {
+    ul[data-type='taskList'] {
       margin: 0;
     }
   }
@@ -371,7 +378,7 @@ onBeforeUnmount(() => {
 
     .selectedCell:after {
       background: var(--gray-2);
-      content: "";
+      content: '';
       left: 0;
       right: 0;
       top: 0;
@@ -457,7 +464,7 @@ onBeforeUnmount(() => {
     background: var(--black);
     border-radius: 0.5rem;
     color: var(--white);
-    font-family: "JetBrainsMono", monospace;
+    font-family: 'JetBrainsMono', monospace;
     margin: 1.5rem 0;
     padding: 0.75rem 1rem;
 

@@ -94,13 +94,14 @@ const Kanban = ({ taskList }: { taskList: TaskWithWorkspace[] }) => {
   }, [taskList]);
   const [parent, setParent] = useState<UniqueIdentifier | null>(null);
   const handleDragEnd = useMemoizedFn((event: DragEndEvent) => {
-    const { over } = event;
-    setParent(over ? over.id : null);
+    const { over, active } = event;
+    console.log(over, active);
+    // setParent(over ? over.id : null);
   });
   if (!taskList) return null;
   return (
-    <KanbanNav>
-      <DndContext onDragEnd={handleDragEnd}>
+    <DndContext onDragEnd={handleDragEnd}>
+      <KanbanNav>
         {Object.entries(taskStateIcon).map(
           ([status, { icon: Icon, color, state, dropColor }]) => (
             <div style={{ minWidth: "200px", minHeight: "200px" }}>
@@ -121,8 +122,8 @@ const Kanban = ({ taskList }: { taskList: TaskWithWorkspace[] }) => {
             </div>
           )
         )}
-      </DndContext>
-    </KanbanNav>
+      </KanbanNav>
+    </DndContext>
   );
 };
 

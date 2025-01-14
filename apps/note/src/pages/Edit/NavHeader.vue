@@ -22,7 +22,6 @@ import useEditor from '@/store/editor';
 import useUserStore from '@/store/user';
 import type { Files, Folders } from '@/types/board';
 import { Icon } from '@iconify/vue';
-import { useMediaQuery } from '@vueuse/core';
 import { nanoid } from 'nanoid';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -62,9 +61,8 @@ watch(
   },
   {
     immediate: true,
-  },
+  }
 );
-const isMobile = useMediaQuery('(max-width: 768px)');
 const onSaveJson = () => {
   const jsonData = useEditor().editorDatas?.getJSON();
   const blob = new Blob([JSON.stringify(jsonData)], {
@@ -89,66 +87,96 @@ const onSaveText = () => {
   <nav class="nav-container">
     <header
       v-if="useEditor().editorDatas"
-      class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
+      class="flex h-14 w-full shrink-0 items-center justify-between gap-2 px-2 sm:px-4 transition-all duration-200 ease-in-out group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
     >
-      <div class="flex items-center gap-2 px-4" v-if="!isMobile">
-        <SidebarTrigger class="-ml-1" />
-        <Separator orientation="vertical" class="mr-2 h-4" />
+      <div class="flex items-center gap-2 sm:gap-3">
+        <SidebarTrigger
+          class="hover:bg-muted/60 rounded-md p-1 transition-colors"
+        />
+        <Separator orientation="vertical" class="h-5 hidden sm:block" />
       </div>
-      <Menubar v-if="useEditor().editorDatas">
-        <MenubarMenu>
-          <MenubarTrigger class="font-bold">导出文件</MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem as-child>
-              <Button
-                variant="ghost"
-                @click="onSaveJson"
-                class="btn-item cursor-pointer"
-              >
-                <Icon icon="mdi:file-document-outline" />
-                JSON导出
-              </Button>
-            </MenubarItem>
-            <MenubarItem as-child>
-              <Button
-                variant="ghost"
-                @click="onSaveHtml"
-                class="btn-item cursor-pointer"
-              >
-                <Icon icon="mdi:file-document-outline" />
-                HTML导出
-              </Button>
-            </MenubarItem>
-            <MenubarItem as-child>
-              <Button
-                variant="ghost"
-                @click="onSaveText"
-                class="btn-item cursor-pointer"
-              >
-                <Icon icon="mdi:file-document-outline" />
-                文本导出
-              </Button>
-            </MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
+
+      <div class="flex items-center gap-2 sm:gap-4">
+        <Menubar v-if="useEditor().editorDatas" class="border-none">
+          <MenubarMenu>
+            <MenubarTrigger
+              class="font-medium hover:bg-muted/60 px-2 sm:px-3 py-1.5 text-sm sm:text-base"
+            >
+              <span class="hidden sm:inline">导出文件</span>
+              <Icon icon="mdi:export" class="h-5 w-5 sm:hidden" />
+            </MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem as-child>
+                <Button
+                  variant="ghost"
+                  @click="onSaveJson"
+                  class="btn-item w-full justify-start"
+                >
+                  <Icon icon="mdi:file-document-outline" class="h-4 w-4" />
+                  <span class="hidden sm:inline">JSON导出</span>
+                  <span class="sm:hidden">JSON</span>
+                </Button>
+              </MenubarItem>
+              <MenubarItem as-child>
+                <Button
+                  variant="ghost"
+                  @click="onSaveHtml"
+                  class="btn-item w-full justify-start"
+                >
+                  <Icon icon="mdi:file-document-outline" class="h-4 w-4" />
+                  <span class="hidden sm:inline">HTML导出</span>
+                  <span class="sm:hidden">HTML</span>
+                </Button>
+              </MenubarItem>
+              <MenubarItem as-child>
+                <Button
+                  variant="ghost"
+                  @click="onSaveText"
+                  class="btn-item w-full justify-start"
+                >
+                  <Icon icon="mdi:file-document-outline" class="h-4 w-4" />
+                  <span class="hidden sm:inline">文本导出</span>
+                  <span class="sm:hidden">文本</span>
+                </Button>
+              </MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
         <ThemeChange />
-      </Menubar>
-      <div v-if="user">
+      </div>
+
+      <div v-if="user" class="flex items-center">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
-              <div class="flex items-center gap-2">
-                <Icon icon="mdi:account-circle" />
-                <span>{{ user.user_metadata.name }}</span>
-                <span>{{ activeUserStore.activeUserList.size }}</span>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent as-child>
-              <div
-                class="flex flex-col items-center gap-2 max-h-[300px] overflow-y-auto"
+            <TooltipTrigger
+              class="flex items-center gap-1.5 sm:gap-2 rounded-full bg-muted/60 px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm hover:bg-muted/80 transition-colors"
+            >
+              <Icon icon="mdi:account-circle" class="h-4 w-4 sm:h-5 sm:w-5" />
+              <span class="hidden sm:inline">{{
+                user.user_metadata.name
+              }}</span>
+              <span
+                class="rounded-full bg-primary/10 px-1.5 sm:px-2 py-0.5 text-xs font-medium text-primary"
               >
-                <img :src="user.user_metadata.image" alt="用户图片" />
-                <span class="active-user">{{ user.user_metadata.name }}</span>
+                {{ activeUserStore.activeUserList.size }}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              align="end"
+              class="w-[200px] sm:w-auto"
+            >
+              <div
+                class="flex flex-col items-center gap-2 sm:gap-3 p-2 max-h-[300px] overflow-y-auto"
+              >
+                <img
+                  :src="user.user_metadata.image"
+                  alt="用户图片"
+                  class="h-12 w-12 sm:h-16 sm:w-16 rounded-full object-cover"
+                />
+                <span class="text-xs sm:text-sm font-medium">{{
+                  user.user_metadata.name
+                }}</span>
               </div>
             </TooltipContent>
           </Tooltip>
@@ -160,23 +188,24 @@ const onSaveText = () => {
 
 <style scoped lang="scss">
 .nav-container {
-  width: 100%;
-  height: 50px;
-  border-bottom: 2px solid #92929f9a;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
+  @apply w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60;
 }
+
 .btn-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  width: 100%;
-  cursor: pointer;
+  @apply flex items-center gap-1.5 sm:gap-2 px-2 py-1.5 text-xs sm:text-sm transition-colors;
+
+  &:hover {
+    @apply bg-muted/60;
+  }
+
+  .iconify {
+    @apply h-4 w-4;
+  }
 }
-.active-user {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+
+@media (max-width: 640px) {
+  .nav-container {
+    @apply sticky top-0 z-50;
+  }
 }
 </style>

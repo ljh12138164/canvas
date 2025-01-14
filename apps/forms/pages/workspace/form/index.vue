@@ -6,7 +6,7 @@ import { useGetrBoard } from '@/hooks/board';
 import { Plus } from 'lucide-vue-next';
 // @ts-ignore
 const { value: userDate } = useSupabaseUser();
-if (!userDate) navigateTo('/auth');
+// if (!userDate) navigateTo('/auth');
 const { data, isLoading, error } = useGetrBoard(userDate?.id!);
 </script>
 <template>

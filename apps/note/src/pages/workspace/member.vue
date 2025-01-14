@@ -22,7 +22,7 @@ onBeforeMount(() => {
 const { collaborators, isLoading: collaboratorsIsLoading } = useCollaborators(
   workspaceId.value
 );
-// const { inviteCollaborator } = useInviteCollaborator(token);
+// const { inviteCollaborator } = useInviteCollaborator();
 </script>
 <template>
   <div class="container">
