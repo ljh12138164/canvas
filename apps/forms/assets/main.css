@@ -1,3 +1,16 @@
+@keyframes entrys {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.entry {
+  animation: entrys 0.35s ease-in-out;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none !important;

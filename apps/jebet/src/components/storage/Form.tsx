@@ -57,17 +57,17 @@ const Form = ({
   const fileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   function onSubmit(data: z.infer<typeof zodSchema>) {
-    if (!file || file.size === 0 || !defaultData?.file) {
+    if ((!file || file.size === 0) && !defaultData?.file) {
       toast.error('未选择文件');
       return;
     }
+    if (!file) return;
     if (type === 'create') {
       if (!workspace) return;
       return create(
         {
           form: {
-            // @ts-ignore
-            size: file.size,
+            size: file.size.toString(),
             name: data.name,
             description: data.description,
             workspaceId: workspace.id,
@@ -83,7 +83,7 @@ const Form = ({
             setFile(null);
             close.current?.click();
             queryClient.invalidateQueries({
-              queryKey: ['storage', workspace.id],
+              queryKey: ['stoages', workspace.id],
             });
           },
         }
@@ -100,7 +100,7 @@ const Form = ({
       return update(
         {
           json: {
-            id: defaultData?.id,
+            id: defaultData?.id || '',
             userId,
             workspaceId,
             name: data.name,
@@ -114,7 +114,7 @@ const Form = ({
             setFile(null);
             close.current?.click();
             queryClient.invalidateQueries({
-              queryKey: ['storage', workspaceId],
+              queryKey: ['stoages', workspaceId],
             });
           },
         }

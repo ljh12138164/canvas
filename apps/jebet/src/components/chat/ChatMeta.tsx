@@ -3,6 +3,7 @@ import { Workspace } from '@/types/workspace';
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 import { Badge } from '../ui/badge';
+import { Socket } from 'socket.io-client';
 const HeaderContainer = styled.div`
   display: grid;
   grid-template-columns: 50px 1fr 100px;
@@ -16,15 +17,15 @@ const ConnectedContent = styled.section`
 interface ChatMetaProps {
   isConnected: boolean;
   workspace: Workspace;
+  socket: Socket | null;
 }
-const ChatMeta = observer(({ workspace }: ChatMetaProps) => {
-  const { connectCount, isConnected } = chatStore;
-
+const ChatMeta = observer(({ workspace, socket }: ChatMetaProps) => {
+  const { connectCount } = chatStore;
+  console.log(socket);
   return (
     <HeaderContainer>
-      {connectCount && (
+      {socket && (
         <p className='text-sm text-muted-foreground whitespace-nowrap'>
-          {/*  TODO: 连接人数的显示 */}
           在线：{connectCount}
         </p>
       )}
@@ -32,7 +33,7 @@ const ChatMeta = observer(({ workspace }: ChatMetaProps) => {
         <p>{workspace.name}</p>
       </div>
       <ConnectedContent>
-        {isConnected ? (
+        {socket ? (
           <Badge
             variant='outline'
             className='bg-green-300 py-2 ml-auto  dark:bg-green-300/10 w-16 '

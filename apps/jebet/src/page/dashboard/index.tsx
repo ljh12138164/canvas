@@ -1,16 +1,16 @@
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { UserButton, useUser } from "@clerk/clerk-react";
-import { useEffect } from "react";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { UserButton, useUser } from '@clerk/clerk-react';
+import { useEffect } from 'react';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 // import { ThemeToggle } from "../../components/command/Theme";
-import userStore from "@/store/user";
-import { ThemeToggle } from "@/components/command/Theme";
-import { Separator } from "@/components/ui/separator";
-import { useTheme } from "@/components/ui/theme-provider";
-import { observer } from "mobx-react-lite";
-import { TfiMenuAlt } from "react-icons/tfi";
-import SiderBar from "../../components/board/SiderBar";
+import userStore from '@/store/user';
+import { ThemeToggle } from '@/components/command/Theme';
+import { Separator } from '@/components/ui/separator';
+import { useTheme } from '@/components/ui/theme-provider';
+import { observer } from 'mobx-react-lite';
+import { TfiMenuAlt } from 'react-icons/tfi';
+import SiderBar from '../../components/board/SiderBar';
 
 const Container = styled.div`
   display: flex;
@@ -20,7 +20,7 @@ const Container = styled.div`
 `;
 const Media = styled.div`
   width: 250px;
-  height: 100vh;
+  height: 100dvh;
   @media (max-width: 768px) {
     display: none;
   }
@@ -47,7 +47,7 @@ const MainContainer = styled.div<{ theme: string }>`
   overflow: hidden;
   width: 100%;
   background-color: ${(props) =>
-    props.theme === "light" ? "white" : "#191924"};
+    props.theme === 'light' ? 'white' : '#191924'};
 `;
 const MainHeader = styled.div`
   display: flex;
@@ -62,8 +62,8 @@ const App = observer(() => {
   const router = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    if (router.pathname === "/dashboard") {
-      navigate("/dashboard/home");
+    if (router.pathname === '/dashboard') {
+      navigate('/dashboard/home');
     }
   }, [router, navigate]);
   useEffect(() => {
@@ -71,72 +71,11 @@ const App = observer(() => {
     userStore.setUserData(user);
   }, [isLoaded, isSignedIn, user]);
 
-  if (!isLoaded) return;
-  // return (
-  //   <Container className="bg-[#fafafa]">
-  //     <Asider className="bg-[#fafafa]">
-  //       <RouterContainer>
-  //         <div>
-  //           <Logo />
-  //           <Separator className="mt-6" />
-  //         </div>
-  //         <Router to="/dashboard/home">
-  //           <RouterDiv
-  //             variant="ghost"
-  //             className={
-  //               router.pathname === "/dashboard/home" ? "bg-white " : ""
-  //             }
-  //           >
-  //             HOME
-  //           </RouterDiv>
-  //         </Router>
-  //         <Router to="/dashboard/home">
-  //           <RouterDiv
-  //             variant="ghost"
-  //             className={
-  //               router.pathname === "/dashboard/home"
-  //                 ? "bg-white text-[#676767]"
-  //                 : "text-[#c4c9d2]"
-  //             }
-  //           >
-  //             HOME
-  //           </RouterDiv>
-  //         </Router>
-  //         <Router to="/dashboard/home">
-  //           <RouterDiv
-  //             variant="ghost"
-  //             className={
-  //               router.pathname === "/dashboard/home"
-  //                 ? "bg-white text-[#676767]"
-  //                 : "text-[#c4c9d2]"
-  //             }
-  //           >
-  //             HOME
-  //           </RouterDiv>
-  //         </Router>
-  //         <Router to="/dashboard/home">
-  //           <RouterDiv
-  //             variant="ghost"
-  //             className={
-  //               router.pathname === "/dashboard/home"
-  //                 ? "bg-white text-[#676767]"
-  //                 : "text-[#c4c9d2]"
-  //             }
-  //           >
-  //             HOME
-  //           </RouterDiv>
-  //         </Router>
-  //         <Separator />
-  //       </RouterContainer>
-  //       {/* TODO:龙骨架 */}
-  //     </Asider>
-  //     <Main>加载中...</Main>
-  //   </Container>
-  // );
+  if (!isLoaded) return null;
 
-  if (!isSignedIn) return <Navigate to="/sign-in" />;
+  if (!isSignedIn) return <Navigate to='/sign-in' />;
   return (
-    <Container className="bg-[#e5e7eba0] dark:bg-[#1c1c22]">
+    <Container className='bg-[#e5e7eba0] dark:bg-[#1c1c22]'>
       <Media>
         <SiderBar user={user} />
       </Media>
@@ -148,17 +87,17 @@ const App = observer(() => {
                 <SheetTrigger>
                   <TfiMenuAlt />
                 </SheetTrigger>
-                <SheetContent side="left">
+                <SheetContent side='left'>
                   <SiderBar user={user} />
                 </SheetContent>
               </Sheet>
             </Mobile>
-            <div className="flex flex-row w-full items-center justify-end md:justify-between">
+            <div className='flex flex-row w-full items-center justify-end md:justify-between'>
               <ThemeToggle />
               <UserButton />
             </div>
           </MainHeader>
-          <Separator className="my-2" />
+          <Separator className='my-2' />
           <Outlet />
         </MainContainer>
       </Main>

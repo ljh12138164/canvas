@@ -4,13 +4,13 @@ import { DEFAULT_ICON } from '@/utils/board';
 import { UserResource } from '@clerk/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
+import { nanoid } from 'nanoid';
 import { ChangeEvent, RefObject, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { z } from 'zod';
-import { nanoid } from 'nanoid';
 import { Button } from '../ui/button';
 import {
   CardContent,
@@ -25,6 +25,7 @@ const zodShema = z.object({
   name: z.string().min(1, { message: '仪表盘名称不能为空' }),
   file: z.any().optional(),
 });
+
 const Footer = styled.div<{ type: 'create' | 'edit' }>`
   margin-top: 2rem;
   display: flex;

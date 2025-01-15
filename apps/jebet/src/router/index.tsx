@@ -1,30 +1,28 @@
-/* eslint-disable react-refresh/only-export-components */
-import { ScrollArea } from "@/components/ui/scrollArea";
-import Suspensed from "@/page/suspense";
-import { lazy } from "react";
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import styled from "styled-components";
-import Index from "../page/error/Index";
-import Task from "@/page/dashboard/project/task";
-import Demo from "@/page/demo";
+import { ScrollArea } from '@/components/ui/scrollArea';
+import { Suspensed, SuspensedChild } from '@/page/suspense';
+import { lazy } from 'react';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
+import styled from 'styled-components';
+import Index from '../page/error/Index';
+import Task from '@/page/dashboard/project/task';
 
-const SignIn = lazy(() => import("../page/auth/SignIn"));
-const Create = lazy(() => import("../page/dashboard/create"));
-const Setting = lazy(() => import("../page/dashboard/setting"));
+const SignIn = lazy(() => import('../page/auth/SignIn'));
+const Create = lazy(() => import('../page/dashboard/create'));
+const Setting = lazy(() => import('../page/dashboard/setting'));
 const WorkspaceSetting = lazy(
-  () => import("../page/dashboard/workspace/setting")
+  () => import('../page/dashboard/workspace/setting')
 );
-const Member = lazy(() => import("../page/dashboard/member"));
-const Home = lazy(() => import("../page/dashboard/home"));
-const Dashboard = lazy(() => import("../page/dashboard"));
-const WorkSpace = lazy(() => import("../page/dashboard/workspace"));
-const Join = lazy(() => import("../page/dashboard/join/index"));
-const Project = lazy(() => import("../page/dashboard/project"));
-const ProjectSetting = lazy(() => import("../page/dashboard/project/setting"));
-const Chat = lazy(() => import("../page/chat/Chat"));
-const Storage = lazy(() => import("../page/storage"));
-const Homes = lazy(() => import("../page/home"));
-const Detail = lazy(() => import("../page/dashboard/detail"));
+const Member = lazy(() => import('../page/dashboard/member'));
+const Home = lazy(() => import('../page/dashboard/home'));
+const Dashboard = lazy(() => import('../page/dashboard'));
+const WorkSpace = lazy(() => import('../page/dashboard/workspace'));
+const Join = lazy(() => import('../page/dashboard/join/index'));
+const Project = lazy(() => import('../page/dashboard/project'));
+const ProjectSetting = lazy(() => import('../page/dashboard/project/setting'));
+const Chat = lazy(() => import('../page/chat/Chat'));
+const Storage = lazy(() => import('../page/storage'));
+const Homes = lazy(() => import('../page/home'));
+const Detail = lazy(() => import('../page/dashboard/detail'));
 const WorkContains = styled.div`
   width: calc(100dvw - 280px);
   height: calc(100dvh - 93.4px);
@@ -41,11 +39,11 @@ const Scroll = styled(ScrollArea)`
 `;
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Homes />,
   },
   {
-    path: "/sign-in",
+    path: '/sign-in',
     element: (
       <Suspensed>
         <SignIn />
@@ -53,7 +51,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: "/dashboard",
+    path: '/dashboard',
     element: (
       <Suspensed>
         <Dashboard />
@@ -61,194 +59,186 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/dashboard/home",
+        path: '/dashboard/home',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <Home />
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/create",
+        path: '/dashboard/create',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <Create />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId",
+        path: '/dashboard/:workspaceId',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
-                <Navigate to="home" replace />,
+                <Navigate to='home' replace />,
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/home",
+        path: '/dashboard/:workspaceId/home',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <WorkSpace />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/setting",
+        path: '/dashboard/:workspaceId/setting',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <WorkspaceSetting />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/member",
+        path: '/dashboard/:workspaceId/member',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <Member />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/chat",
+        path: '/dashboard/:workspaceId/chat',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <Chat />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/storage",
+        path: '/dashboard/:workspaceId/storage',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <Storage />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/setting",
+        path: '/dashboard/:workspaceId/setting',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <Setting />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/:projectId",
+        path: '/dashboard/:workspaceId/:projectId',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
-                <Navigate to="home" replace />
+                <Navigate to='home' replace />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/:projectId/home",
+        path: '/dashboard/:workspaceId/:projectId/home',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <Project />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/:projectId/home/:taskId",
+        path: '/dashboard/:workspaceId/:projectId/home/:taskId',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <Detail />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/:projectId/demo",
+        path: '/dashboard/:workspaceId/:projectId/setting',
         element: (
-          <Suspensed>
-            <Demo />
-          </Suspensed>
-        ),
-      },
-      {
-        path: "/dashboard/:workspaceId/:projectId/setting",
-        element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <ProjectSetting />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/:workspaceId/:projectId/:taskId",
+        path: '/dashboard/:workspaceId/:projectId/:taskId',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <Task />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
       {
-        path: "/dashboard/join/:id",
+        path: '/dashboard/join/:id',
         element: (
-          <Suspensed>
+          <SuspensedChild>
             <WorkContains>
               <Scroll>
                 <Join />
               </Scroll>
             </WorkContains>
-          </Suspensed>
+          </SuspensedChild>
         ),
       },
     ],
   },
 
   {
-    path: "*",
+    path: '*',
     element: <Index />,
   },
 ]);

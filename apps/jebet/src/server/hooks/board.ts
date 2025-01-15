@@ -43,7 +43,7 @@ export const useCreateWorkspace = (userId: string) => {
   return { createWorkspace, isCreating };
 };
 
-type WorkspaceResponseType = InferResponseType<
+export type WorkspaceResponseType = InferResponseType<
   (typeof client.board)[':id']['$get'],
   200
 >;

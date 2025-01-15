@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-background">
+  <div class="min-h-screen bg-background entry">
     <!-- 导航栏 -->
     <header class="border-b">
       <div class="container flex h-16 items-center justify-between">

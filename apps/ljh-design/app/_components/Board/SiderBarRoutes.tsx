@@ -1,6 +1,6 @@
 "use client";
 import { Separator } from "@/app/_components/ui/separator";
-import { Home, User, MessageSquare } from "lucide-react";
+import { Home, User, MessageSquare ,Search} from "lucide-react";
 import { usePathname } from "next/navigation";
 import SiderBarItem from "./SiderBarItem";
 
@@ -24,6 +24,12 @@ const SiderBarRoutes = () => {
             label="论坛"
             Icon={MessageSquare}
             isActive={pathname.split("/").includes("formue")}
+          />
+          <SiderBarItem
+            href="/board/search"
+            label="搜索"
+            Icon={Search}
+            isActive={pathname.split("/").includes("search")}
           />
         </li>
         <Separator />

@@ -27,6 +27,7 @@
     "await-to-js": "^3.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cookie": "^1.0.2",
     "dayjs": "^1.11.13",
     "embla-carousel-vue": "^8.5.1",
     "hono": "^4.6.16",

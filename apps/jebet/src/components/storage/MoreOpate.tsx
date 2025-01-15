@@ -35,9 +35,11 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import Form from './Form';
+import { useQueryClient } from '@tanstack/react-query';
 
 const MoreOpate = observer(({ row }: { row: Row<StoageData> }) => {
   const workspaceId = useParams().workspaceId;
+  const queryClient = useQueryClient();
   const deleteRef = useRef<HTMLButtonElement>(null);
   const { deleteStoage, deleteStoagePending } = useDeleteStoage();
   if (!workspaceId || !useUser.userData) return;
@@ -153,6 +155,9 @@ const MoreOpate = observer(({ row }: { row: Row<StoageData> }) => {
                       {
                         onSuccess: () => {
                           toast.success('删除成功');
+                          queryClient.invalidateQueries({
+                            queryKey: ['stoages', workspaceId],
+                          });
                           deleteRef.current?.click();
                         },
                         onError: (error) => {

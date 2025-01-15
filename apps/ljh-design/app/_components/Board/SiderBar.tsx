@@ -8,7 +8,7 @@ const SiderBar = () => {
         <Logo to='/' />
         <span className='text-xl font-semibold text-primary'>ljh-design</span>
       </div>
-      <SiderBarRoutes></SiderBarRoutes>
+      <SiderBarRoutes />
     </aside>
   );
 };

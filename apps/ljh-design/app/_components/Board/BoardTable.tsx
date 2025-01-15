@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   ColumnDef,
@@ -11,14 +11,14 @@ import {
   ColumnFiltersState,
   VisibilityState,
   getFilteredRowModel,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/app/_components/ui/dropdown-menu";
-import { useState } from "react";
+} from '@/app/_components/ui/dropdown-menu';
+import { useMemo, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -26,10 +26,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/app/_components/ui/table";
-import { Button } from "@/app/_components/ui/button";
-import { Input } from "@/app/_components/ui/input";
-import { BoardTablePagination } from "./BoardTablePagination";
+} from '@/app/_components/ui/table';
+import { Button } from '@/app/_components/ui/button';
+import { Input } from '@/app/_components/ui/input';
+import { BoardTablePagination } from './BoardTablePagination';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -59,25 +59,33 @@ export function BoardTable<TData, TValue>({
       columnVisibility,
     },
   });
+  const BoardType = useMemo(() => {
+    return {
+      name: '用户',
+      created_at: '创建时间',
+      updated_at: '更新时间',
+      actions: '操作',
+    };
+  }, []);
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className='flex items-center py-4'>
         <Input
-          placeholder="搜索面板名字"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder='搜索面板名字'
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn('name')?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className='max-w-sm'
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant='outline' className='ml-auto'>
               筛选
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align='end'>
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -85,20 +93,20 @@ export function BoardTable<TData, TValue>({
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize"
+                    className='capitalize'
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {BoardType[column.id as keyof typeof BoardType]}
                   </DropdownMenuCheckboxItem>
                 );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className='rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -123,7 +131,7 @@ export function BoardTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -139,7 +147,7 @@ export function BoardTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className='h-24 text-center'
                 >
                   无结果
                 </TableCell>
@@ -148,7 +156,7 @@ export function BoardTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className='flex items-center justify-end space-x-2 py-4'>
         <BoardTablePagination table={table} />
       </div>
     </div>
