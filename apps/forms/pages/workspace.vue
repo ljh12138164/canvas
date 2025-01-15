@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import DarkButton from '@/components/common/DarkButton.vue';
-import Logo from '@/components/common/Logo.vue';
-import UserButton from '@/components/common/UserButton.vue';
-import TooltipComponents from '@/components/form/TooltipComponents.vue';
-import RouteButton from '@/components/home/RouteButton.vue';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import DarkButton from "@/components/common/DarkButton.vue";
+import Logo from "@/components/common/Logo.vue";
+import UserButton from "@/components/common/UserButton.vue";
+import TooltipComponents from "@/components/form/TooltipComponents.vue";
+import RouteButton from "@/components/home/RouteButton.vue";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   ChartBarIcon,
   HomeIcon,
@@ -15,19 +15,19 @@ import {
   MenuIcon,
   Search,
   ShoppingCartIcon,
-} from 'lucide-vue-next';
-import { Icon } from '@iconify/vue';
-import { KeepAlive, ref, watch } from 'vue';
-import { RouterView, useRoute } from 'vue-router';
+} from "lucide-vue-next";
+import { Icon } from "@iconify/vue";
+import { KeepAlive, ref, watch } from "vue";
+import { RouterView, useRoute } from "vue-router";
 
 const { value: userData } = useSupabaseUser();
 // if (!userData) navigateTo("/");
 const route = useRoute();
-const activePath = ref('/' + route.path.split('/')[1]);
+const activePath = ref("/" + route.path.split("/")[1]);
 watch(
   () => route.path,
   (newVal) => {
-    activePath.value = '/' + newVal.split('/')[2];
+    activePath.value = "/" + newVal.split("/")[2];
   },
   { immediate: true }
 );
@@ -35,7 +35,7 @@ watch(
 
 <template>
   <div
-    class="grid transition-all min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
+    class="grid entry transition-all min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
   >
     <div class="hidden border-r bg-muted/40 md:block">
       <div class="flex h-full max-h-screen flex-col gap-2">

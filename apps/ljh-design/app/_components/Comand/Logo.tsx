@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import logo from '@/app/public/logoImage.jpg';
 
 const Logo = ({ to }: { to: string }) => {
   return (
@@ -7,13 +8,7 @@ const Logo = ({ to }: { to: string }) => {
       href={to || '/'}
       className='h-12 w-12 cursor-pointer flex items-center justify-center'
     >
-      <Image
-        width={48}
-        quality={75}
-        height={48}
-        src='https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/favicon.ico'
-        alt='logo'
-      />
+      <Image width={48} quality={75} height={48} src={logo} alt='logo' />
     </Link>
   );
 };

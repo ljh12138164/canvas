@@ -2,7 +2,7 @@ import to from 'await-to-js';
 import { nanoid } from 'nanoid';
 import { generateInviteCode } from '../../../libs/utils';
 import { supabaseJebt } from '../../supabase/jebt';
-import { Member, Workspace } from '../../../types/jebt/board';
+import { Member, Project, Task, Workspace } from '../../../types/jebt/board';
 
 export const DEFAULT_ICON =
   'https://xllpazcrvbmwkyvnpylu.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg';
@@ -172,10 +172,16 @@ export const createJebtWorkspace = async ({
  */
 export const getJebtWorkspace = async (
   userId: string
-): Promise<(Workspace & { member: Member[] })[]> => {
+): Promise<
+  (Workspace & {
+    member: Member[];
+    projects: Project[];
+    tasks: Task[];
+  })[]
+> => {
   const { data, error } = await supabaseJebt
     .from('member')
-    .select('*,workspace(*,member(*))')
+    .select('*,workspace(*,member(*),projects(*),tasks(*))')
     .eq('userId', userId);
   if (error) throw new Error('服务器错误');
   return data.map((item) => item.workspace);

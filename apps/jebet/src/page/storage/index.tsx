@@ -1,3 +1,4 @@
+import { animate } from '@/components/project/ProjectContent';
 import CreateStorage from '@/components/storage/Create';
 import TableMain from '@/components/storage/TableMain';
 import { ScrollArea } from '@/components/ui/scrollArea';
@@ -17,6 +18,7 @@ const StoageContainer = styled.main<{ mobile: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  animation: ${animate} 0.4s ease-in-out;
 `;
 const StoageTitle = styled.h2`
   flex: 1;

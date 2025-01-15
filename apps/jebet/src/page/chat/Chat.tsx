@@ -8,10 +8,11 @@ import useStore from '@/store/user';
 import { ActiveUser, ChatMessage as Message, MessageType } from '@/types/chat';
 import { useQueryClient } from '@tanstack/react-query';
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import styled from 'styled-components';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const ChatContainer = styled.div`
   position: relative;
@@ -35,11 +36,35 @@ const ChatHeaderContainer = styled.div`
   flex: 1;
   height: 50px;
 `;
+
+const SkeletonContainer = styled.div`
+  width: 100%;
+  height: calc(100dvh - 100px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+`;
+
+const ChatHeaderSkeleton = styled.div`
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const MessageSkeleton = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+`;
+
 // @ts-ignore
 const Chat = observer(() => {
   const queryClient = useQueryClient();
   const store = useStore;
   const params = useParams();
+  const [socket, setSocket] = useState<Socket | null>(null);
   const { toast } = useToast();
   useEffect(() => {
     if (store.userData === null || store.workspace === null) return;
@@ -55,7 +80,6 @@ const Chat = observer(() => {
       timeout: 5000,
       transports: ['websocket'],
     });
-
     // 连接成功
     socket.on('connect', () => {
       chatStore.setIsConnected(true);
@@ -65,7 +89,8 @@ const Chat = observer(() => {
         avatar: store.userData?.imageUrl,
         workspaceId: activeWorkSpace.id,
       });
-      chatStore.socket = socket;
+      console.log('sadfasdfasfsdfasdfsafd');
+      setSocket(socket);
       //初始化
       socket.on(`${activeWorkSpace.id}:initChat`, (data: ActiveUser) => {
         chatStore.setConnectCount(data.roomSize);
@@ -149,8 +174,31 @@ const Chat = observer(() => {
       chatStore.setIsConnected(false);
     });
   }, [store.userData, store.workspace, params.workspaceId, toast, queryClient]);
-  // 如果用户未登录，则返回 TODO:龙骨架加载
-  if (store.userData === null || store.workspace === null) return <></>;
+  // 如果用户未登录，显示骨架屏
+  if (store.userData === null || store.workspace === null) {
+    return (
+      <SkeletonContainer>
+        <ChatHeaderSkeleton>
+          <Skeleton className='h-8 w-8 rounded-full' />
+          <Skeleton className='h-6 w-[200px]' />
+        </ChatHeaderSkeleton>
+
+        <div className='flex-1'>
+          {[1, 2, 3].map((i) => (
+            <MessageSkeleton key={i}>
+              <Skeleton className='h-8 w-8 rounded-full' />
+              <div className='flex-1 space-y-2'>
+                <Skeleton className='h-4 w-[250px]' />
+                <Skeleton className='h-4 w-[400px]' />
+              </div>
+            </MessageSkeleton>
+          ))}
+        </div>
+
+        <Skeleton className='h-[150px] w-full rounded-md' />
+      </SkeletonContainer>
+    );
+  }
   const activeWorkSpace = store.workspace.find(
     (item) => item.id === params.workspaceId
   );
@@ -183,6 +231,7 @@ const Chat = observer(() => {
       <Content>
         <ChatHeaderContainer>
           <ChatMeta
+            socket={socket}
             isConnected={chatStore.isConnected}
             workspace={activeWorkSpace}
           />

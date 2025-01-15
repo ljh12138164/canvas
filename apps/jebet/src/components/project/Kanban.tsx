@@ -1,41 +1,41 @@
-import { TaskStatus, TaskWithWorkspace } from "@/types/workspace";
-import { CircleDashedIcon, CircleIcon } from "lucide-react";
-import { useMemo, useState } from "react";
-import styled from "styled-components";
-import { Separator } from "../ui/separator";
-import KanbanDrop from "./KanbanDrop";
-import { useMemoizedFn } from "ahooks";
-import { DndContext, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
+import { TaskStatus, TaskWithWorkspace } from '@/types/workspace';
+import { CircleDashedIcon, CircleIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import styled from 'styled-components';
+import { Separator } from '../ui/separator';
+import KanbanDrop from './KanbanDrop';
+import { useMemoizedFn } from 'ahooks';
+import { DndContext, DragEndEvent, UniqueIdentifier } from '@dnd-kit/core';
 
 const taskStateIcon = {
   [TaskStatus.BACKLOG]: {
     icon: CircleDashedIcon,
-    dropColor: "gray",
-    color: "text-gray-500",
+    dropColor: 'gray',
+    color: 'text-gray-500',
     state: TaskStatus.BACKLOG,
   },
   [TaskStatus.IN_REVIEW]: {
     icon: CircleIcon,
-    color: "text-blue-500",
-    dropColor: "#6c7eae",
+    color: 'text-blue-500',
+    dropColor: '#6c7eae',
     state: TaskStatus.IN_REVIEW,
   },
   [TaskStatus.TODO]: {
     icon: CircleIcon,
-    color: "text-green-500",
-    dropColor: "green",
+    color: 'text-green-500',
+    dropColor: 'green',
     state: TaskStatus.TODO,
   },
   [TaskStatus.IN_PROGRESS]: {
     icon: CircleIcon,
-    color: "text-yellow-500",
-    dropColor: "#c6b87d",
+    color: 'text-yellow-500',
+    dropColor: '#c6b87d',
     state: TaskStatus.IN_PROGRESS,
   },
   [TaskStatus.DONE]: {
     icon: CircleIcon,
-    color: "text-red-500",
-    dropColor: "#d38686",
+    color: 'text-red-500',
+    dropColor: '#d38686',
     state: TaskStatus.DONE,
   },
 };
@@ -92,7 +92,7 @@ const Kanban = ({ taskList }: { taskList: TaskWithWorkspace[] }) => {
       ),
     };
   }, [taskList]);
-  const [parent, setParent] = useState<UniqueIdentifier | null>(null);
+  const [parent] = useState<UniqueIdentifier | null>(null);
   const handleDragEnd = useMemoizedFn((event: DragEndEvent) => {
     const { over, active } = event;
     console.log(over, active);
@@ -104,7 +104,7 @@ const Kanban = ({ taskList }: { taskList: TaskWithWorkspace[] }) => {
       <KanbanNav>
         {Object.entries(taskStateIcon).map(
           ([status, { icon: Icon, color, state, dropColor }]) => (
-            <div style={{ minWidth: "200px", minHeight: "200px" }}>
+            <div style={{ minWidth: '200px', minHeight: '200px' }}>
               <StateItem key={status}>
                 <Icon className={color} />
                 <span>{state}</span>

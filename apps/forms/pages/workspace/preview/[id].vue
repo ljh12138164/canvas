@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { AutoForm } from "@/components/ui/auto-form";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/components/ui/toast/use-toast";
 import { getZodSchema } from "@/lib/form";
 import { getFormDataById } from "@/lib/index";
 import { type CreateFormItem } from "@/types/form";
 import { onBeforeMount, ref, watch } from "vue";
-import { Button } from "@/components/ui/button";
 import { useRoute, useRouter } from "vue-router";
 import * as z from "zod";
-import { useToast } from "@/components/ui/toast/use-toast";
-import { toTypedSchema } from "@vee-validate/zod";
-import { useForm } from "vee-validate";
 
 const { toast } = useToast();
 const route = useRoute();
@@ -27,7 +25,9 @@ watch(
     id.value = newId;
   }
 );
+console.log(id.value);
 onBeforeMount(async () => {
+  if (!import.meta.client) return;
   const formDatas = JSON.parse(
     (await getFormDataById(id.value as string))?.schema || "{}"
   );
@@ -58,7 +58,7 @@ const handleSubmit = (e: any) => {
 
 <template>
   <ScrollArea
-    class="h-[calc(100dvh-120px)] flex px-10 overflow-hidden"
+    class="h-[calc(100dvh-120px)] flex px-10 overflow-hidden entry"
     v-if="!loading"
   >
     <section

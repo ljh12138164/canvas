@@ -24,6 +24,7 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "@typescript-eslint/ban-ts-comment": "off",
+      "react-refresh/only-export-components":"off"
     },
   }
 );

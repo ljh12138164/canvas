@@ -8,5 +8,9 @@ const jumpt = async () => {
 };
 </script>
 <template>
-    <Button @click="jumpt"> 创建表单 </Button>
+  <section class="entry">
+    <RouterLink :to="`/workspace/create/${nanoid()}`">
+      <Button>创建表单</Button>
+    </RouterLink>
+  </section>
 </template>

@@ -68,7 +68,7 @@ export const useGetMessage = (
       }
     },
     // 如果没有websocket实例，则每秒请求一次，实现消息的实时性
-    refetchInterval: isConnected ? false : 1000,
+    refetchInterval: isConnected ? false : 5000,
     // 初始化页数
     initialPageParam: 0,
     //判断是否有下一页

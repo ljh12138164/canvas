@@ -14,7 +14,13 @@ import {
 } from '../ui/drawerui';
 import FromCard from './FromCard';
 const DrawerFromCard = observer(
-  ({ type }: { type: 'workspace' | 'project' }) => {
+  ({
+    type,
+    children,
+  }: {
+    type: 'workspace' | 'project';
+    children?: React.ReactNode;
+  }) => {
     const isDesktop = useIsMobile();
     const [open, setOpen] = React.useState(false);
     const drawref = useRef<HTMLButtonElement | null>(null);
@@ -26,10 +32,14 @@ const DrawerFromCard = observer(
       return (
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger>
-            <IoIosAddCircleOutline
-              size={20}
-              className='cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200'
-            />
+            {children ? (
+              children
+            ) : (
+              <IoIosAddCircleOutline
+                size={20}
+                className='cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200'
+              />
+            )}
           </DialogTrigger>
           <DialogClose asChild>
             <Button variant='outline' className='hidden' ref={dialogref}>
@@ -42,7 +52,7 @@ const DrawerFromCard = observer(
               formType={type}
               userData={userData}
               closeRef={dialogref}
-            ></FromCard>
+            />
           </DialogContent>
         </Dialog>
       );
@@ -51,10 +61,14 @@ const DrawerFromCard = observer(
     return (
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger>
-          <IoIosAddCircleOutline
-            size={20}
-            className='cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200'
-          />
+          {children ? (
+            children
+          ) : (
+            <IoIosAddCircleOutline
+              size={20}
+              className='cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200'
+            />
+          )}
         </DrawerTrigger>
         <DrawerContent>
           <DrawerClose asChild>
@@ -65,7 +79,7 @@ const DrawerFromCard = observer(
             formType={type}
             userData={userData}
             closeRef={drawref}
-          ></FromCard>
+          />
         </DrawerContent>
       </Drawer>
     );

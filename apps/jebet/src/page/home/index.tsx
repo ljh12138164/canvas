@@ -1,8 +1,8 @@
-import { observer } from "mobx-react-lite";
-import styled from "styled-components";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import useStore from "@/store/user";
+import { observer } from 'mobx-react-lite';
+import styled from 'styled-components';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import useStore from '@/store/user';
 
 const HomeContainer = styled.div`
   min-height: 100vh;
@@ -24,7 +24,7 @@ const Title = styled.h1`
   font-weight: 800;
   margin-bottom: 1.5rem;
   background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.02em;
 `;
@@ -100,11 +100,8 @@ const Home = observer(() => {
   const store = useStore;
 
   const handleGetStarted = () => {
-    if (store.userData) {
-      navigate("/dashboard");
-    } else {
-      navigate("/sign-in");
-    }
+    if (store.userData) navigate('/dashboard');
+    else navigate('/sign-in');
   };
 
   return (
@@ -116,7 +113,7 @@ const Home = observer(() => {
           为现代团队打造的一站式项目管理平台，助力团队提升效率、加速项目进程
         </Subtitle>
         <CTAButton onClick={handleGetStarted}>
-          {store.userData ? "进入工作台" : "免费开始使用"}
+          {store.userData ? '进入工作台' : '免费开始使用'}
         </CTAButton>
       </Hero>
 

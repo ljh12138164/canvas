@@ -33,7 +33,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@/app/_components/ui/avatar';
+} from '@/app/_components/ui/Avatar';
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { getUserColor } from '@/app/_lib/utils';
 interface NavBarProps {

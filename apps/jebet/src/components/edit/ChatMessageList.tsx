@@ -5,7 +5,6 @@ import { Member, Workspace } from '@/types/workspace';
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 import ChatMessage from '../chat/ChatMessage';
-import { ChevronDown } from 'lucide-react';
 
 interface ChatMessageListProps {
   workspace: Workspace & { member: Member[] };
@@ -59,18 +58,7 @@ const ChatMessageList = observer(
                   {isFetchingNextPage ? '加载中...' : '加载更多'}
                 </p>
               ) : (
-                <p className='text-sm h-full text-zinc-500 flex mb-4  flex-col items-center justify-center'>
-                  <span className='flex items-center justify-center'>
-                    <ChevronDown
-                      onClick={() =>
-                        bottomRef.current?.scrollIntoView({
-                          behavior: 'smooth',
-                        })
-                      }
-                    />
-                    回到底部
-                  </span>
-                </p>
+                <p className='text-sm h-full text-zinc-500 flex mb-4  flex-col items-center justify-center'></p>
               )}
             </>
           )}
