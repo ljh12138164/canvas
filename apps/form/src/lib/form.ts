@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 import type {
   Array,
   BigText,
@@ -8,9 +8,9 @@ import type {
   Radio,
   Select,
   Slider,
-} from '@/types/form';
-import type { Ref } from 'vue';
-import type { Files } from '@/types/form';
+} from '@/types/form'
+import type { Ref } from 'vue'
+import type { Files } from '@/types/form'
 
 /**
  * ### zod的顺序说明 先用string和number等基础类型---required（min）必填---description标签---default默认---!required（optional）非必填
@@ -19,9 +19,9 @@ import type { Files } from '@/types/form';
  * @returns zod校验
  */
 export const checkInputProps = (obj: Record<string | 'inputProps', any>) => {
-  if (!Object.keys(obj.inputProps).length) delete obj.inputProps;
-  return obj;
-};
+  if (!Object.keys(obj.inputProps).length) delete obj.inputProps
+  return obj
+}
 
 /**
  * ### zod的顺序说明 先用string和number等基础类型---required（min）必填---description标签---default默认---!required（optional）非必填
@@ -32,11 +32,11 @@ export const checkInputProps = (obj: Record<string | 'inputProps', any>) => {
  */
 export const genAutoFormPlaceHolder = (
   obj: Record<string | 'inputProps', any>,
-  placeholder: string
+  placeholder: string,
 ) => {
-  if (placeholder) obj.inputProps.placeholder = placeholder;
-  return obj;
-};
+  if (placeholder) obj.inputProps.placeholder = placeholder
+  return obj
+}
 
 /**
  * ### zod的顺序说明 先用string和number等基础类型---required（min）必填---description标签---default默认---!required（optional）非必填
@@ -44,9 +44,9 @@ export const genAutoFormPlaceHolder = (
  * @param
  */
 export const hasDescription = (schema: z.ZodType, value: string) => {
-  if (value) return schema.describe(value);
-  return schema;
-};
+  if (value) return schema.describe(value)
+  return schema
+}
 
 //////////////////////////////////////// 下面是/😊😊
 //////////////////////////////////////// 基本类型😊😊
@@ -57,32 +57,27 @@ export const hasDescription = (schema: z.ZodType, value: string) => {
  * @param schema 数据
  * @returns zod
  */
-export const selectZod = (
-  schema: Select,
-  fieldConfig: Ref<Record<string, any>>
-) => {
+export const selectZod = (schema: Select, fieldConfig: Ref<Record<string, any>>) => {
   let obj: Record<string, any> = {
     inputProps: {},
-  };
-  let zodSchema;
-  zodSchema = z.enum(
-    schema.options.map((item) => item.name) as [string, ...string[]]
-  );
+  }
+  let zodSchema
+  zodSchema = z.enum(schema.options.map((item) => item.name) as [string, ...string[]])
   if (schema.description && !schema.hiddenLabel) {
-    zodSchema = hasDescription(zodSchema, schema.description);
+    zodSchema = hasDescription(zodSchema, schema.description)
   } else {
-    obj.hideLabel = true;
+    obj.hideLabel = true
   }
 
   // 非必填
-  if (!schema.isRequired) zodSchema = zodSchema.optional();
+  if (!schema.isRequired) zodSchema = zodSchema.optional()
   // 占位符
-  obj = genAutoFormPlaceHolder(obj, schema.placeholder);
+  obj = genAutoFormPlaceHolder(obj, schema.placeholder)
   // 检查inputProps是否存在
-  obj = checkInputProps(obj);
-  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj };
-  return zodSchema;
-};
+  obj = checkInputProps(obj)
+  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
+  return zodSchema
+}
 
 /**
  * ###  zod的顺序说明 先用string和number等基础类型---required（min）必填---description标签---default默认---!required（optional）非必填
@@ -91,62 +86,56 @@ export const selectZod = (
  * @param fieldConfig<Ref<Record<string, any>>>  配置
  * @returns zod校验
  **/
-export const inputZod = function (
-  schema: FormInput,
-  fieldConfig: Ref<Record<string, any>>
-) {
+export const inputZod = function (schema: FormInput, fieldConfig: Ref<Record<string, any>>) {
   let obj: Record<string | 'inputProps', any> = {
     inputProps: {},
-  };
-  let zodSchema;
+  }
+  let zodSchema
 
   // 文本
   if (schema.inputType === 'text') {
-    zodSchema = z.string();
-    obj.type = 'text';
+    zodSchema = z.string()
+    obj.type = 'text'
     // 必填
-    if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' });
+    if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' })
     // 标签
     if (schema.description && !schema.hiddenLabel)
-      zodSchema = hasDescription(zodSchema, schema.description);
-    else obj.hideLabel = true;
-    console.log(schema.defaultValue);
+      zodSchema = hasDescription(zodSchema, schema.description)
+    else obj.hideLabel = true
     // 默认值
     if (schema.defaultValue) {
-      zodSchema = zodSchema.default(schema.defaultValue);
-      obj.inputProps.defaultValue = schema.defaultValue;
+      zodSchema = zodSchema.default(schema.defaultValue)
+      obj.inputProps.defaultValue = schema.defaultValue
     }
     // 非必填
-    if (!schema.isRequired) zodSchema = zodSchema.optional();
+    if (!schema.isRequired) zodSchema = zodSchema.optional()
   }
   // 数字
   if (schema.inputType === 'number') {
-    zodSchema = z.number();
-    obj.type = 'number';
+    zodSchema = z.number()
+    obj.type = 'number'
     // 必填
-    if (schema.isRequired) zodSchema = zodSchema.min(0, { message: '必填' });
+    if (schema.isRequired) zodSchema = zodSchema.min(0, { message: '必填' })
     // 标签
     if (schema.description && !schema.hiddenLabel)
-      zodSchema = hasDescription(zodSchema, schema.description);
-    else obj.hideLabel = true;
+      zodSchema = hasDescription(zodSchema, schema.description)
+    else obj.hideLabel = true
     // 默认值
     zodSchema = zodSchema.default(
-      Number.isNaN(Number(schema.defaultValue))
-        ? 0
-        : Number(schema.defaultValue)
-    );
+      Number.isNaN(Number(schema.defaultValue)) ? 0 : Number(schema.defaultValue),
+    )
     // 非必填
-    if (!schema.isRequired) zodSchema = zodSchema.optional();
+    if (!schema.isRequired) zodSchema = zodSchema.optional()
   }
   // 占位符
-  obj = genAutoFormPlaceHolder(obj, schema.placeholder);
+  obj = genAutoFormPlaceHolder(obj, schema.placeholder)
   // 检查inputProps是否存在
-  obj = checkInputProps(obj);
+  obj = checkInputProps(obj)
 
   // 生成autoForm的配置
-  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj };
-  return zodSchema;
-};
+  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
+  return zodSchema
+}
 
 /**
  * ###  zod的顺序说明 先用string和number等基础类型---required（min）必填---description标签---default默认---!required（optional）非必填
@@ -155,37 +144,34 @@ export const inputZod = function (
  * @param fieldConfig<Ref<Record<string, any>>>  配置
  * @returns zod校验
  */
-export const dateZod = (
-  schema: DatePicker,
-  fieldConfig: Ref<Record<string, any>>
-) => {
+export const dateZod = (schema: DatePicker, fieldConfig: Ref<Record<string, any>>) => {
   let obj: Record<string, any> = {
     inputProps: {},
-  };
-  let zodSchema;
-  zodSchema = z.coerce.date();
+  }
+  let zodSchema
+  zodSchema = z.coerce.date()
   if (schema.description && !schema.hiddenLabel) {
-    zodSchema = hasDescription(zodSchema, schema.description);
+    zodSchema = hasDescription(zodSchema, schema.description)
   } else {
-    obj.hideLabel = true;
+    obj.hideLabel = true
   }
 
-  obj.inputProps.description = 'description';
+  obj.inputProps.description = 'description'
   // 非必填
-  if (!schema.isRequired) zodSchema = zodSchema.optional();
+  if (!schema.isRequired) zodSchema = zodSchema.optional()
   // 默认值
   // if (schema.defaultValue) {
   //   zodSchema = zodSchema.default(new Date(schema.defaultValue as string).toISOString())
   //   obj.inputProps.defaultValue = schema.defaultValue
   // }
   // 占位符
-  obj = genAutoFormPlaceHolder(obj, schema.placeholder);
+  obj = genAutoFormPlaceHolder(obj, schema.placeholder)
   // 检查inputProps是否存在
-  obj = checkInputProps(obj);
-  console.log(obj);
-  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj };
-  return zodSchema;
-};
+  obj = checkInputProps(obj)
+  console.log(obj)
+  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
+  return zodSchema
+}
 
 /** 
   
@@ -194,35 +180,32 @@ export const dateZod = (
  * @param fieldConfig<Ref<Record<string, any>>>  配置
  * @returns zod校验
  */
-export const bigTextZod = (
-  schema: BigText,
-  fieldConfig: Ref<Record<string, any>>
-) => {
+export const bigTextZod = (schema: BigText, fieldConfig: Ref<Record<string, any>>) => {
   let obj: Record<string, any> = {
     inputProps: {},
     component: 'textarea',
-  };
-  let zodSchema;
-  zodSchema = z.string();
+  }
+  let zodSchema
+  zodSchema = z.string()
   // 必填
-  if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' });
+  if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' })
   // 标签
   if (schema.description && !schema.hiddenLabel)
-    zodSchema = hasDescription(zodSchema, schema.description);
-  else obj.hideLabel = true;
+    zodSchema = hasDescription(zodSchema, schema.description)
+  else obj.hideLabel = true
 
   // 默认值
-  zodSchema = zodSchema.default(String(schema.defaultValue));
+  zodSchema = zodSchema.default(String(schema.defaultValue))
   // 非必填
-  if (!schema.isRequired) zodSchema = zodSchema.optional();
+  if (!schema.isRequired) zodSchema = zodSchema.optional()
   // 占位符
-  obj = genAutoFormPlaceHolder(obj, schema.placeholder);
+  obj = genAutoFormPlaceHolder(obj, schema.placeholder)
   // 检查inputProps是否存在
-  obj = checkInputProps(obj);
+  obj = checkInputProps(obj)
   // 生成autoForm的配置
-  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj };
-  return zodSchema;
-};
+  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
+  return zodSchema
+}
 
 /**
  * ## 滑动按钮
@@ -230,38 +213,35 @@ export const bigTextZod = (
  * @param fieldConfig<Ref<Record<string, any>>>  配置
  * @returns zod校验
  */
-export const sliderZod = (
-  schema: Slider,
-  fieldConfig: Ref<Record<string, any>>
-): z.ZodType => {
+export const sliderZod = (schema: Slider, fieldConfig: Ref<Record<string, any>>): z.ZodType => {
   let obj: Record<string, any> = {
     inputProps: {},
-  };
-  let zodSchema;
-  zodSchema = z.boolean();
+  }
+  let zodSchema
+  zodSchema = z.boolean()
   // 必填
   if (schema.isRequired)
     zodSchema = zodSchema.refine((value) => value, {
       message: '必填',
       path: [schema.defaultTypeName],
-    });
+    })
   // 标签
   // if (schema.description && !schema.hiddenLabel)
   //   zodSchema = hasDescription(zodSchema, schema.description)
   // else obj.hideLabel = true
   // 默认值
-  zodSchema = zodSchema.default(Boolean(schema.defaultValue));
+  zodSchema = zodSchema.default(Boolean(schema.defaultValue))
   // 非必填
-  if (!schema.isRequired) zodSchema = zodSchema.optional();
+  if (!schema.isRequired) zodSchema = zodSchema.optional()
   // 占位符
   // obj = genAutoFormPlaceHolder(obj, schema.placeholder)
   // 检查inputProps是否存在
-  obj = checkInputProps(obj);
-  obj.component = 'switch';
+  obj = checkInputProps(obj)
+  obj.component = 'switch'
   // 生成autoForm的配置
-  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj };
-  return zodSchema;
-};
+  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
+  return zodSchema
+}
 
 /**
  * ###  zod的顺序说明 先用string和number等基础类型---required（min）必填---description标签---default默认---!required（optional）非必填
@@ -269,68 +249,60 @@ export const sliderZod = (
  * @param schema 数据
  * @returns zod
  */
-export const radioZod = (
-  schema: Radio,
-  fieldConfig: Ref<Record<string, any>>
-) => {
+export const radioZod = (schema: Radio, fieldConfig: Ref<Record<string, any>>) => {
   let obj: Record<string, any> = {
     inputProps: {},
     component: 'radio',
-  };
-  let zodSchema;
-  zodSchema = z.enum(
-    schema.options.map((item) => item.name) as [string, ...string[]]
-  );
+  }
+  let zodSchema
+  zodSchema = z.enum(schema.options.map((item) => item.name) as [string, ...string[]])
   if (schema.description && !schema.hiddenLabel) {
-    zodSchema = hasDescription(zodSchema, schema.description);
+    zodSchema = hasDescription(zodSchema, schema.description)
   } else {
-    obj.hideLabel = true;
+    obj.hideLabel = true
   }
 
   // 非必填
-  if (!schema.isRequired) zodSchema = zodSchema.optional();
+  if (!schema.isRequired) zodSchema = zodSchema.optional()
   // 占位符
-  obj = genAutoFormPlaceHolder(obj, schema.placeholder);
+  obj = genAutoFormPlaceHolder(obj, schema.placeholder)
   // 检查inputProps是否存在
-  obj = checkInputProps(obj);
-  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj };
-  return zodSchema;
-};
+  obj = checkInputProps(obj)
+  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
+  return zodSchema
+}
 /**
  * 文件
  * @param schema 数据
  * @param fieldConfig<Ref<Record<string, any>>>  配置
  * @returns zod校验
  */
-export const fileZod = (
-  schema: Files,
-  fieldConfig: Ref<Record<string, any>>
-) => {
+export const fileZod = (schema: Files, fieldConfig: Ref<Record<string, any>>) => {
   let obj: Record<string, any> = {
     inputProps: {},
     component: 'file',
-  };
-  let zodSchema;
-  zodSchema = z.string();
+  }
+  let zodSchema
+  zodSchema = z.string()
   // 必填
-  if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' });
+  if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' })
   // 标签
   if (schema.description && !schema.hiddenLabel)
-    zodSchema = hasDescription(zodSchema, schema.description);
-  else obj.hideLabel = true;
+    zodSchema = hasDescription(zodSchema, schema.description)
+  else obj.hideLabel = true
 
   // 默认值
-  zodSchema = zodSchema.default(String(schema.defaultValue));
+  zodSchema = zodSchema.default(String(schema.defaultValue))
   // 非必填
-  if (!schema.isRequired) zodSchema = zodSchema.optional();
+  if (!schema.isRequired) zodSchema = zodSchema.optional()
   // 占位符
-  obj = genAutoFormPlaceHolder(obj, schema.placeholder);
+  obj = genAutoFormPlaceHolder(obj, schema.placeholder)
   // 检查inputProps是否存在
-  obj = checkInputProps(obj);
+  obj = checkInputProps(obj)
   // 生成autoForm的配置
-  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj };
-  return zodSchema;
-};
+  fieldConfig.value = { ...fieldConfig.value, [schema.defaultTypeName]: obj }
+  return zodSchema
+}
 
 /**
  * ## 数组
@@ -338,24 +310,20 @@ export const fileZod = (
  * @param fieldConfig<Ref<Record<string, any>>>  配置
  * @returns zod校验
  */
-export const arrayZod = (
-  schema: Array,
-  fieldConfig: Ref<Record<string, any>>
-): z.ZodType => {
-  let zodObject: Record<string, z.ZodType> = {};
+export const arrayZod = (schema: Array, fieldConfig: Ref<Record<string, any>>): z.ZodType => {
+  let zodObject: Record<string, z.ZodType> = {}
   // 遍历子项并合并所有的schema
   schema.children.forEach((item) => {
-    const itemSchema = getZodSchema(item, fieldConfig, 'arr');
+    const itemSchema = getZodSchema(item, fieldConfig, 'arr')
     if (itemSchema) {
-      zodObject = { ...zodObject, [item.defaultTypeName]: itemSchema };
+      zodObject = { ...zodObject, [item.defaultTypeName]: itemSchema }
     }
-  });
-  console.log(zodObject);
+  })
+  console.log(zodObject)
   // 将合并后的对象schema包装成数组
-  if (schema.description)
-    return z.array(z.object(zodObject)).describe(schema.description);
-  return z.array(z.object(zodObject));
-};
+  if (schema.description) return z.array(z.object(zodObject)).describe(schema.description)
+  return z.array(z.object(zodObject))
+}
 /**
  * ## 生成zod校验
  * @param schema 数据
@@ -365,63 +333,63 @@ export const arrayZod = (
 export function getZodSchema(
   schema: CreateFormItem,
   fieldConfig: Ref<Record<string, any>>,
-  type?: 'arr'
+  type?: 'arr',
 ) {
   // 输入框
   if (schema.type === 'input') {
-    const zodSchema = inputZod(schema, fieldConfig);
-    if (type === 'arr') return zodSchema;
-    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType });
+    const zodSchema = inputZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
+    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 文件
   if (schema.type === 'file') {
-    const zodSchema = fileZod(schema, fieldConfig);
-    if (type === 'arr') return zodSchema;
-    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType });
+    const zodSchema = fileZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
+    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 单选框
   if (schema.type === 'radio') {
-    const zodSchema = radioZod(schema, fieldConfig);
-    if (type === 'arr') return zodSchema;
-    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType });
+    const zodSchema = radioZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
+    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 下拉框
   if (schema.type === 'select') {
-    const zodSchema = selectZod(schema, fieldConfig);
-    if (type === 'arr') return zodSchema;
-    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType });
+    const zodSchema = selectZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
+    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 日期
   if (schema.type === 'date') {
-    const zodSchema = dateZod(schema, fieldConfig);
-    if (type === 'arr') return zodSchema;
-    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType });
+    const zodSchema = dateZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
+    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 大文本
   if (schema.type === 'bigText') {
-    const zodSchema = bigTextZod(schema, fieldConfig);
-    if (type === 'arr') return zodSchema;
-    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType });
+    const zodSchema = bigTextZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
+    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 滑动按钮
   if (schema.type === 'slider') {
-    const zodSchema = sliderZod(schema, fieldConfig);
-    if (type === 'arr') return zodSchema;
-    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType });
+    const zodSchema = sliderZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
+    return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }
   // 数组
   if (schema.type === 'array') {
-    const zodSchema = arrayZod(schema, fieldConfig);
-    if (type === 'arr') return zodSchema;
-    return z.object({ [schema.defaultTypeName]: zodSchema });
+    const zodSchema = arrayZod(schema, fieldConfig)
+    if (type === 'arr') return zodSchema
+    return z.object({ [schema.defaultTypeName]: zodSchema })
   }
-  return null;
+  return null
 }
 
 /**
  * 获取fieldConfig
  * @returns fieldConfig
  */
-export function getFieldConfig(schema: CreateFormItem, zod: z.ZodType) {
-  return {};
-}
+// export function getFieldConfig(schema: CreateFormItem, zod: z.ZodType) {
+//   return {}
+// }

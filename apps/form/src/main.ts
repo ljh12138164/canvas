@@ -9,6 +9,13 @@ import { zodI18nMap } from 'zod-i18n-map'
 import { VueQueryPlugin, type VueQueryPluginOptions } from '@tanstack/vue-query'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import { createPinia } from 'pinia'
+import { createI18n } from 'vue-i18n'
+
+const i18n = createI18n({
+  legacy: false, // you must set `false` to use the Composition API
+  locale: 'zh-CN', // set default locale
+  availableLocales: ['zh-CN', 'en'],
+})
 const pinia = createPinia()
 const vueQueryPluginOptions: VueQueryPluginOptions = {
   queryClientConfig: {
@@ -36,8 +43,10 @@ i18next.init({
   },
 })
 z.setErrorMap(zodI18nMap)
+
 app
   .use(router)
+  .use(i18n)
   .use(VueQueryPlugin, vueQueryPluginOptions)
   .use(autoAnimatePlugin)
   .use(pinia)

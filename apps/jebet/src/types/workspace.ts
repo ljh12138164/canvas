@@ -77,3 +77,11 @@ export interface StoageData {
   created_at: string;
   updated_at: string;
 }
+
+export interface Flow {
+  id: string;
+  name: string;
+  description: string;
+  workspaceId: string;
+  userId: string;
+}

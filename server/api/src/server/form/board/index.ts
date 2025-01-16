@@ -9,6 +9,7 @@ import { nanoid } from 'nanoid';
  */
 export const createBoard = async ({
   name,
+  id,
   description,
   userId,
   token,
@@ -17,6 +18,7 @@ export const createBoard = async ({
   name: string;
   description: string;
   userId: string;
+  id: string;
   token: string;
   schema: string;
 }): Promise<Form> => {
@@ -25,8 +27,8 @@ export const createBoard = async ({
     .insert([
       {
         name,
-        id: nanoid(),
-        description,
+        id,
+        descitption: description,
         schema,
         userId,
       },
@@ -104,11 +106,37 @@ export const updateBoard = async ({
   if (description) updateData.description = description;
   if (schema) updateData.schema = schema;
   if (Object.keys(updateData).length === 0) return true;
-  const { error } = await supabaseForm(token)
+  const { data, error } = await supabaseForm(token)
     .from('form')
     .update([updateData])
     .eq('id', boardId)
-    .eq('userId', userId);
+    .eq('userId', userId)
+    .select('*');
+  console.log(data);
   if (error) throw new Error('服务器错误');
   return true;
+};
+
+/**
+ * ## 获取表单详情
+ * @param param0
+ * @returns
+ */
+export const getBoardDetail = async ({
+  token,
+  userId,
+  boardId,
+}: {
+  token: string;
+  userId: string;
+  boardId: string;
+}): Promise<Form> => {
+  const { data, error } = await supabaseForm(token)
+    .from('form')
+    .select('*')
+    .eq('id', boardId)
+    .eq('userId', userId);
+  if (error) throw new Error('服务器错误');
+  if (!data) throw new Error('未找到资源');
+  return data[0];
 };
