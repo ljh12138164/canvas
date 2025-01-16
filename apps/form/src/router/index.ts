@@ -19,7 +19,7 @@ const router = createRouter({
           path: '/workspace/board',
           name: 'board',
           beforeEnter: routerCheckLogin,
-          component: () => import('../views/workspace/form/index.vue'),
+          component: () => import('../views/workspace/dashboard/index.vue'),
           meta: {
             title: '看板',
           },
@@ -31,6 +31,24 @@ const router = createRouter({
           component: () => import('../views/workspace/form/index.vue'),
           meta: {
             title: '表单',
+          },
+        },
+        {
+          path: '/workspace/form/detail/:id',
+          name: 'formDetail',
+          beforeEnter: routerCheckLogin,
+          component: () => import('../views/workspace/form/detail.vue'),
+          meta: {
+            title: '表单详情',
+          },
+        },
+        {
+          path: '/workspace/form/edit/:id',
+          name: 'formEdit',
+          beforeEnter: routerCheckLogin,
+          component: () => import('../views/workspace/form/edit.vue'),
+          meta: {
+            title: '表单编辑',
           },
         },
         {

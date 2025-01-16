@@ -19,10 +19,9 @@ const HomeContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2px;
+  gap: 1rem;
 `;
 const Home = observer(() => {
   const { userData } = useStore;
@@ -38,12 +37,10 @@ const Home = observer(() => {
         <p className='text-sm'>创建一个新的工作区开始使用</p>
       </div>
       <ButtonContainer>
+        <DrawerFromCard type='workspace'>
+          <Button variant='outline'>创建工作区</Button>
+        </DrawerFromCard>
         <JoinCard />
-        <Button>
-          <DrawerFromCard type='workspace'>
-            <Button>创建工作区</Button>
-          </DrawerFromCard>
-        </Button>
       </ButtonContainer>
     </HomeContainer>
   );

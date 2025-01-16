@@ -9,10 +9,9 @@ import { Toaster } from 'react-hot-toast';
 import { Toaster as ShaducnToast } from '@/components/ui/toaster';
 import { RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from './components/ui/theme-provider';
-import './index.css';
 import Index from './page/error/Index';
 import { router } from './router';
-// Import your publishable key
+import './index.css';
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!PUBLISHABLE_KEY) {

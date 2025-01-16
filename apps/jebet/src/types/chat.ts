@@ -39,3 +39,12 @@ export interface Paginations<T> {
   }[];
   pageParams: number[];
 }
+
+
+export interface Flow {
+  id: string;
+  name: string;
+  description: string;
+  workspaceId: string;
+  userId: string;
+}

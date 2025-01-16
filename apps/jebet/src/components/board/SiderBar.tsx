@@ -24,9 +24,9 @@ import { TfiMenuAlt } from 'react-icons/tfi';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ProjectList from './ProjectList';
-import { File } from 'lucide-react';
+import { File, Flower } from 'lucide-react';
 
-type PathRush = 'home' | 'member' | 'setting' | 'chat' | 'storage';
+type PathRush = 'home' | 'member' | 'setting' | 'chat' | 'storage' | 'flow';
 const Asider = styled.aside`
   flex-basis: 250px;
   width: 100%;
@@ -261,6 +261,17 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           <ButtonContainer>
             <File />
             <span>团队空间</span>
+          </ButtonContainer>
+        </RouterDiv>
+        <RouterDiv
+          onClick={() => handleJump('flow')}
+          variant='ghost'
+          className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('flow') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
+          asChild
+        >
+          <ButtonContainer>
+            <Flower />
+            <span>工作流</span>
           </ButtonContainer>
         </RouterDiv>
 

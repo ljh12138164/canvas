@@ -22,6 +22,7 @@ const ProjectSetting = lazy(() => import('../page/dashboard/project/setting'));
 const Chat = lazy(() => import('../page/chat/Chat'));
 const Storage = lazy(() => import('../page/storage'));
 const Homes = lazy(() => import('../page/home'));
+const Flow = lazy(() => import('../page/flow'));
 const Detail = lazy(() => import('../page/dashboard/detail'));
 const WorkContains = styled.div`
   width: calc(100dvw - 280px);
@@ -163,6 +164,18 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: '/dashboard/:workspaceId/flow',
+        element: (
+          <SuspensedChild>
+            <WorkContains>
+              <Scroll>
+                <Flow />
+              </Scroll>
+            </WorkContains>
+          </SuspensedChild>
+        ),
+      },
+      {
         path: '/dashboard/:workspaceId/:projectId',
         element: (
           <SuspensedChild>
@@ -236,7 +249,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: '*',
     element: <Index />,

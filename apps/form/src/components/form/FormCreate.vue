@@ -18,34 +18,32 @@ import { Textarea } from '@/components/ui/textarea'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Save } from 'lucide-vue-next'
 import { useField, useForm } from 'vee-validate'
-import { computed, onBeforeMount, type Ref, ref, watch } from 'vue'
+import { onBeforeMount, ref, watch } from 'vue'
 import FormArrayConfig from './FormArrayConfig.vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import { Drawer, DrawerContent, DrawerOverlay, DrawerTrigger } from '../ui/drawer'
+import { Drawer, DrawerContent } from '../ui/drawer'
 import { ScrollArea } from '../ui/scroll-area'
 import { useAutoAnimate } from '@formkit/auto-animate/vue'
 import { useRoute, useRouter } from 'vue-router'
 import FormItemConfig from './FormItemConfig.vue'
-import {
-  type Array,
-  formItemList,
-  type FormType,
-  type CreateFormItem,
-  type FormItem,
-} from '@/types/form'
-import { getFormDataById, getIndexDB, indexDBChange } from '@/lib/index'
+import { type Array, formItemList, type FormType, type CreateFormItem } from '@/types/form'
+import { getFormDataById, indexDBChange } from '@/lib/index'
 import { type DateValue } from '@internationalized/date'
-import FormSub, { type IList } from './FormSub.vue'
 import { useToast } from '@/components/ui/toast'
 import { useCreateBoard } from '@/hooks/board'
 import * as z from 'zod'
-import { getZodSchema } from '@/lib/form'
 const { toast } = useToast()
 const route = useRoute()
 const id = ref(route.params.id)
+const props = defineProps<{
+  schema?: string
+  id?: string
+  title?: string
+  description?: string
+}>()
 const { mutate: createBoard } = useCreateBoard()
 // 提交的表单数据
-const schema = ref<z.ZodObject<any, any, any, any>[]>([])
+// const schema = ref<z.ZodObject<any, any, any, any>[]>([])
 
 const closeRef = ref<HTMLButtonElement | null>(null)
 const router = useRouter()
@@ -102,10 +100,11 @@ const updateArray = async (
 }
 
 onBeforeMount(async () => {
-  const data = await getFormDataById(id.value + '')
-
-  if (data) {
-    setList2(JSON.parse(data.schema))
+  if (!props.schema) {
+    const data = await getFormDataById(id.value + '')
+    if (data) setList2(JSON.parse(data.schema))
+  } else {
+    setList2(JSON.parse(props.schema))
   }
 })
 const onOpen = ref(false)
@@ -222,7 +221,7 @@ const handleCopy = async (id: string) => {
   if (data) pushList2({ ...data, id: nanoidId })
   await handleUpdate()
 }
-const fieldConfig = ref<Record<string, any>>({})
+// const fieldConfig = ref<Record<string, any>>({})
 const parmasClone = (
   element: Record<
     | 'name'
@@ -270,11 +269,11 @@ const validationSchema = toTypedSchema(
 )
 
 // 使用vee-validate的useForm和useField
-const { handleSubmit, resetForm, errors, values } = useForm({
+const { handleSubmit, resetForm, errors } = useForm({
   validationSchema,
   initialValues: {
-    title: '',
-    description: '',
+    title: props.title || '',
+    description: props.description || '',
   },
 })
 
@@ -291,20 +290,28 @@ const onSubmit = handleSubmit((values) => {
     })
     return
   }
-  list2.value.forEach((item) => {
-    const schemas = getZodSchema(item, fieldConfig) as z.ZodObject<any, any, any, any>
-    if (schemas) {
-      schema.value.push(schemas)
-    }
-  })
-  // createBoard({
-  //   json: {
-  //     name: values.title,
-  //     schema: JSON.stringify(schema.value),
-  //     description: values.description,
-  //   },
-  // })
-  schema.value = []
+  if (!props.schema) {
+    createBoard(
+      {
+        json: {
+          id: id.value as string,
+          name: values.title,
+          schema: JSON.stringify(list2.value),
+          description: values.description,
+        },
+      },
+      {
+        onSuccess: async () => {
+          toast({ title: '创建成功' })
+          await indexDBChange({ type: 'delete', deletItem: id.value as string })
+          // 细节
+          router.push(`/workspace/form/detail/${id.value}`)
+        },
+      },
+    )
+  } else {
+    // 更新
+  }
 })
 </script>
 <template>

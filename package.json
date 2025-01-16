@@ -5,6 +5,19 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "build:api": "cd server/api && pnpm run tsup",
+    "rimraf:all":"pnpm run rimraf:root && pnpm run rimraf:api && pnpm run rimraf:note && pnpm run rimraf:jebet && pnpm run rimraf:forms && pnpm run rimraf:ws && pnpm run rimraf:design && pnpm run rimraf:jebetChat && pnpm run rimraf:designs",
+    
+    "rimraf:root":"rimraf node_modules",
+    "rimraf:api":"cd server/api && rimraf node_modules",
+    "rimraf:ws":"cd server/ws && rimraf node_modules",
+    "rimraf:jebetChat":"cd server/jebetChat && rimraf node_modules",
+    "rimraf:designs":"cd server/design && rimraf node_modules",
+
+    "rimraf:note":"cd apps/note && rimraf node_modules",
+    "rimraf:jebet":"cd apps/jebet && rimraf node_modules",
+    "rimraf:forms":"cd apps/form && rimraf node_modules",
+    "rimraf:design":"cd apps/ljh-design && rimraf node_modules",
+
     "dev:api": "turbo --filter=api dev",
     "dev:note": "turbo --filter=api --filter=note --filter=ws dev",
     "dev:design": "turbo --filter=api --filter=design --filter=design-ws dev && turbo --filter=api api:dev",
@@ -13,7 +26,7 @@
     "dev:ws": "turbo --filter=api --filter=ws dev",
     "build:design": "turbo --filter=design build",
     "build:jebet": "turbo --filter=jebet build",
-    "deploy": "cd server/api && pnpm run deploy:prod",
+    "deploy": "cd server/api && pnpm run tsup && pnpm run deploy:prod",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

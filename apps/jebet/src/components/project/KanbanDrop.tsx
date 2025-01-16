@@ -1,9 +1,9 @@
-import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
+import { UniqueIdentifier, useDroppable } from '@dnd-kit/core';
 
-import { TaskStatus, TaskWithWorkspace } from "@/types/workspace";
-import styled from "styled-components";
-import { ScrollArea } from "../ui/scrollArea";
-import KanbanItem from "./KanbanItem";
+import { TaskStatus, TaskWithWorkspace } from '@/types/workspace';
+import styled from 'styled-components';
+import { ScrollArea } from '../ui/scrollArea';
+import KanbanItem from './KanbanItem';
 
 const DropContainer = styled(ScrollArea)`
   display: flex;
@@ -11,6 +11,8 @@ const DropContainer = styled(ScrollArea)`
   gap: 10px;
   background-color: #f0f0f0a7;
   height: 300px;
+  position: relative;
+  z-index: 0;
 `;
 const DropItem = styled.div`
   display: flex;

@@ -5,6 +5,7 @@ import {
   createBoard,
   deleteBoard,
   getBoard,
+  getBoardDetail,
   updateBoard,
 } from '../../../server/form/board';
 import { zValidator } from '@hono/zod-validator';
@@ -29,6 +30,7 @@ export const board = new Hono()
     zValidator(
       'json',
       z.object({
+        id: z.string(),
         name: z.string(),
         description: z.string().optional(),
         schema: z.string(),
@@ -39,6 +41,7 @@ export const board = new Hono()
       const [error, result] = await to(
         createBoard({
           token,
+          id: c.req.valid('json').id,
           userId: auth.sub,
           name: c.req.valid('json').name,
           description: c.req.valid('json').description ?? '',
@@ -85,6 +88,20 @@ export const board = new Hono()
           description,
           schema,
         })
+      );
+      if (error) return c.json(error.message, errorCheck(error));
+      return c.json(result);
+    }
+  )
+  // 获取表单详情·
+  .get(
+    '/form/:id',
+    zValidator('param', z.object({ id: z.string() })),
+    async (c) => {
+      const { token, auth } = getSupabaseAuth(c);
+      const { id } = c.req.valid('param');
+      const [error, result] = await to(
+        getBoardDetail({ token, userId: auth.sub, boardId: id })
       );
       if (error) return c.json(error.message, errorCheck(error));
       return c.json(result);

@@ -39,7 +39,8 @@ export const animate = keyframes`
 const ProjectContentContainer = styled(Card)`
   flex: 1;
   padding: 20px;
-  z-index: 0;
+  position: relative;
+  z-index: 1;
   max-height: 100%;
   animation: ${animate} 0.4s ease-in-out;
 `;

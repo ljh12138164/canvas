@@ -46,6 +46,7 @@
     "@tiptap/starter-kit": "^2.11.0",
     "@types/node": "^22.10.5",
     "@types/react": "19.0.1",
+    "@xyflow/react": "^12.4.0",
     "ahooks": "^3.8.4",
     "api": "workspace:^",
     "class-variance-authority": "^0.7.1",
