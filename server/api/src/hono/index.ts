@@ -1,11 +1,11 @@
 import { Hono } from "hono";
-import { design } from "./design";
-import { jebt } from "./jebt";
 import { cors } from "hono/cors";
-import { note } from "./note";
-import { form } from "./form";
 import { ai } from "./ai";
+import { design } from "./design";
+import { form } from "./form";
+import { jebt } from "./jebt";
 import { storage } from "./jebt/route/stoage";
+import { note } from "./note";
 
 // 跨域
 const app = new Hono()

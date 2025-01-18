@@ -10,12 +10,18 @@ import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import useUser from '@/stores/user'
 import { Icon } from '@iconify/vue'
-import { ChartBarIcon, HomeIcon, Menu, MenuIcon, Search, ShoppingCartIcon } from 'lucide-vue-next'
+import {
+  ChartBarIcon,
+  HomeIcon,
+  LucideMousePointerSquareDashed,
+  Menu,
+  Search,
+  ShoppingCartIcon,
+} from 'lucide-vue-next'
 import { ref, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 
 const { userData } = useUser()
-// if (!userData) navigateTo("/");
 const route = useRoute()
 const activePath = ref('/' + route.path.split('/')[1])
 watch(
@@ -41,9 +47,9 @@ watch(
                 <HomeIcon class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton title="表单管理" path="/workspace/form" :active="activePath === '/form'">
+            <RouteButton title="表单" path="/workspace/form" :active="activePath === '/form'">
               <template #icon>
-                <MenuIcon class="h-4 w-4" />
+                <ShoppingCartIcon class="h-4 w-4" />
               </template>
             </RouteButton>
             <RouteButton
@@ -52,12 +58,21 @@ watch(
               :active="activePath === '/create'"
             >
               <template #icon>
-                <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
+                <LucideMousePointerSquareDashed class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton title="预览" path="/workspace/preview" :active="activePath === '/preview'">
+            <RouteButton title="提交总结" path="/workspace/sum" :active="activePath === '/sum'">
               <template #icon>
                 <ChartBarIcon class="h-4 w-4" />
+              </template>
+            </RouteButton>
+            <RouteButton
+              title="提交表单"
+              path="/workspace/submit"
+              :active="activePath === '/submit'"
+            >
+              <template #icon>
+                <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
               </template>
             </RouteButton>
           </nav>
@@ -98,24 +113,37 @@ watch(
           </SheetTrigger>
           <SheetContent side="left" class="flex flex-col">
             <nav class="grid gap-2 text-lg font-medium">
-              <RouteButton title="仪表板" path="/board" :active="activePath === '/board'">
+              <RouteButton title="仪表板" path="/workspace/board" :active="activePath === '/board'">
                 <template #icon>
                   <HomeIcon class="h-4 w-4" />
                 </template>
               </RouteButton>
-              <RouteButton title="表单" path="/form" :active="activePath === '/form'">
+              <RouteButton title="表单" path="/workspace/form" :active="activePath === '/form'">
                 <template #icon>
                   <ShoppingCartIcon class="h-4 w-4" />
                 </template>
               </RouteButton>
-              <RouteButton title="创建表单" path="/create" :active="activePath === '/create'">
+              <RouteButton
+                title="创建表单"
+                path="/workspace/create"
+                :active="activePath === '/create'"
+              >
                 <template #icon>
-                  <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
+                  <LucideMousePointerSquareDashed class="h-4 w-4" />
                 </template>
               </RouteButton>
-              <RouteButton title="预览" path="/preview" :active="activePath === '/preview'">
+              <RouteButton title="提交总结" path="/workspace/sum" :active="activePath === '/sum'">
                 <template #icon>
                   <ChartBarIcon class="h-4 w-4" />
+                </template>
+              </RouteButton>
+              <RouteButton
+                title="提交表单"
+                path="/workspace/submit"
+                :active="activePath === '/submit'"
+              >
+                <template #icon>
+                  <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
                 </template>
               </RouteButton>
             </nav>

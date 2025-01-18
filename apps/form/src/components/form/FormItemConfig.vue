@@ -44,7 +44,7 @@ defineProps<{
     <section v-if="data.type === 'radio'">
       <OneClick :updateList2="updateList2" :id="id" :data="data" />
     </section>
-    <section v-if="data.type === 'array'">
+    <section v-if="data.type === 'obj'">
       <ObjectItem :updateList2="updateList2" :id="id" :data="data" />
     </section>
   </div>

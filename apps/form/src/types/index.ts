@@ -31,3 +31,12 @@ export interface Form {
   update_at: string
   schema: string
 }
+
+export interface SumbitForm {
+  create_at: string
+  formId: string
+  id: string
+  userId: string
+  submit: string
+  inviteCode: string
+}

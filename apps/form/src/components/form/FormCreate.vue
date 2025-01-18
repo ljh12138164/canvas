@@ -21,7 +21,7 @@ import { useField, useForm } from 'vee-validate'
 import { onBeforeMount, ref, watch } from 'vue'
 import FormArrayConfig from './FormArrayConfig.vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import { Drawer, DrawerContent } from '../ui/drawer'
+import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer'
 import { ScrollArea } from '../ui/scroll-area'
 import { useAutoAnimate } from '@formkit/auto-animate/vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -59,6 +59,7 @@ watch(
 const list1 = ref<CreateFormItem[]>(formItemList as CreateFormItem[])
 const list2 = ref<CreateFormItem[]>([])
 const subId = ref<string[]>([])
+
 //   初始化赋值
 const setList2 = (list: CreateFormItem[]) => (list2.value = list)
 // 添加
@@ -135,7 +136,7 @@ const onClone = (
       .map((item) => item.name),
   )
   list2.value.forEach((item: CreateFormItem) => {
-    if (item.type === 'array') {
+    if (item.type === 'obj') {
       item.children.forEach((child: CreateFormItem) => {
         existingNames.add(child.name)
       })
@@ -165,7 +166,7 @@ const handlePreview = async () => {
       schema: JSON.stringify(list2.value),
     },
   })
-  router.push(`/workspace/preview/${id.value}`)
+  router.push(`/workspace/create/preview/${id.value}`)
 }
 
 // 更新组件到indexDB中
@@ -188,6 +189,7 @@ const handleActiveArea = (id: string) => {
     activeArea.value = id
   }
 }
+
 // 激活子组件
 const handleActiveSub = (id: string, fatherId: string) => {
   if (subId.value.includes(id)) {
@@ -239,7 +241,7 @@ const parmasClone = (
     string
   >,
 ) => {
-  if (element.type === 'array') return
+  if (element.type === 'obj') return
   return element
 }
 const datas = ref<CreateFormItem | undefined>(undefined)
@@ -322,6 +324,7 @@ const onSubmit = handleSubmit((values) => {
       v-auto-animate
       :class="{ 'grid-cols-3': (activeArea || subId.length) && !isMobile }"
     >
+      <!-- 左 -->
       <ScrollArea class="h-[calc(100dvh-120px)] w-full bg-gray-500/5">
         <VueDraggable
           v-model="list1"
@@ -337,6 +340,7 @@ const onSubmit = handleSubmit((values) => {
           </div>
         </VueDraggable>
       </ScrollArea>
+      <!-- 中 -->
       <ScrollArea
         class="relative h-[calc(100dvh-170px)] pb-4 bg-gray-500/5 grid grid-rows-[1fr_20px]"
       >
@@ -357,7 +361,7 @@ const onSubmit = handleSubmit((values) => {
               class="cursor-move h-50px rounded p-3 border relative transition-all duration-300"
               :class="[
                 `${'hover:border-indigo-500'} ${
-                  activeArea === item.id && item.type !== 'array'
+                  activeArea === item.id && item.type !== 'obj'
                     ? 'bg-gray-500/20 border-indigo-500'
                     : ''
                 }`,
@@ -365,10 +369,10 @@ const onSubmit = handleSubmit((values) => {
             >
               <DrawerTrigger as-child>
                 <section>
-                  <span v-if="item.type !== 'array'">
+                  <span v-if="item.type !== 'obj'">
                     {{ item.name }}
                   </span>
-                  <div v-else-if="item.type === 'array'" @click.stop="handleActiveArea(item.id)">
+                  <div v-else-if="item.type === 'obj'" @click.stop="handleActiveArea(item.id)">
                     <p>{{ item.name }}</p>
                     <VueDraggable
                       v-model="item.children"
@@ -394,7 +398,7 @@ const onSubmit = handleSubmit((values) => {
                     v-if="activeArea === item.id"
                     @click.stop=""
                     class="absolute bg-indigo-600 p-[4px] cursor-pointer translate-y-[-50%] transition-all duration-300 translate-x-[-50%] right-[30px] rounded-full hover:bg-indigo-600/70"
-                    :class="[`${item.type !== 'array' ? 'top-[50%]' : 'top-[15%]'}`]"
+                    :class="[`${item.type !== 'obj' ? 'top-[50%]' : 'top-[15%]'}`]"
                   >
                     <Copy @click="handleCopy(item.id)" class="w-4 h-4" />
                   </div>
@@ -403,7 +407,7 @@ const onSubmit = handleSubmit((values) => {
                       <div
                         @click.stop=""
                         class="absolute bg-indigo-600 p-[4px] cursor-pointer translate-y-[-50%] transition-all duration-300 translate-x-[-50%] right-0 rounded-full hover:bg-indigo-600/70"
-                        :class="`${item.type !== 'array' ? 'top-[50%]' : 'top-[15%]'}`"
+                        :class="`${item.type !== 'obj' ? 'top-[50%]' : 'top-[15%]'}`"
                       >
                         <Trash class="w-4 h-4" />
                       </div>
@@ -439,7 +443,7 @@ const onSubmit = handleSubmit((values) => {
             </ScrollArea>
           </DrawerContent>
         </Drawer>
-        <RouterLink :to="`/workspace/preview/${id}`">
+        <RouterLink :to="`/workspace/create/preview/${id}`">
           <Button
             variant="outline"
             class="w-full hover:bg-white dark:hover:bg-gray-500/5 absolute bottom-0"
@@ -454,6 +458,7 @@ const onSubmit = handleSubmit((values) => {
           </Button>
         </RouterLink>
       </ScrollArea>
+      <!-- 右 -->
       <ScrollArea class="h-[calc(100dvh-120px)] pb-10 bg-gray-500/5" v-if="activeArea && !isMobile">
         <FormItemConfig :data="datas" :updateList2="updateList2" :id="activeArea" />
       </ScrollArea>

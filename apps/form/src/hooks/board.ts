@@ -2,6 +2,9 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 import { client } from '@/database'
 import type { InferRequestType, InferResponseType } from 'hono/client'
 import { getNewToken } from '@/lib/sign'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 /**
  * @description 获取表单
  * @returns 表单
@@ -63,6 +66,7 @@ export const useBoard = (id: string) => {
         },
       )
       if (!data.ok) throw new Error(data.statusText)
+      if (data.status === 404) router.back()
       const json = await data.json()
       return json
     },
@@ -107,6 +111,59 @@ export const useDeleteBoard = () => {
           Authorization: `Bearer ${token}`,
         },
       })
+      if (!data.ok) throw new Error(data.statusText)
+      const json = await data.json()
+      return json
+    },
+  })
+}
+
+type UpdateBoardInviteCode = InferRequestType<typeof client.board.update.$patch>
+type UpdateBoardInviteCodeResponse = InferResponseType<typeof client.board.update.$patch, 200>
+/**
+ * @description 更新邀请码
+ * @param id 表单id
+ * @returns 更新结果
+ */
+export const useUpdateBoardInviteCode = () => {
+  return useMutation<UpdateBoardInviteCodeResponse, Error, UpdateBoardInviteCode>({
+    mutationFn: async (datas) => {
+      const token = await getNewToken()
+      const data = await client.board.update.$patch(datas, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (!data.ok) throw new Error(data.statusText)
+      const json = await data.json()
+      return json
+    },
+  })
+}
+
+type GetInviteCodeDataResponse = InferResponseType<
+  (typeof client.board.submit)[':inviteCode']['$get'],
+  200
+>
+
+/**
+ * @description 获取邀请码数据
+ * @param inviteCode 邀请码
+ * @returns 邀请码数据
+ */
+export const useGetInviteCodeData = (inviteCode: string) => {
+  return useQuery<GetInviteCodeDataResponse, Error>({
+    queryKey: ['submit', inviteCode],
+    queryFn: async () => {
+      const token = await getNewToken()
+      const data = await client.board.submit[':inviteCode'].$get(
+        { param: { inviteCode } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
       if (!data.ok) throw new Error(data.statusText)
       const json = await data.json()
       return json

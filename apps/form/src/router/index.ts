@@ -64,7 +64,16 @@ const router = createRouter({
           path: '/workspace/create/:id',
           name: 'createById',
           beforeEnter: routerCheckLogin,
-          component: () => import('../views/workspace/create/[id].vue'),
+          component: () => import('../views/workspace/create/id.vue'),
+          meta: {
+            title: '创建表单',
+          },
+        },
+        {
+          path: '/workspace/create/preview/:id',
+          name: 'createPreviewById',
+          beforeEnter: routerCheckLogin,
+          component: () => import('../views/workspace/create/preview.vue'),
           meta: {
             title: '创建表单',
           },
@@ -79,12 +88,30 @@ const router = createRouter({
           },
         },
         {
-          path: '/workspace/preview/:id',
-          name: 'previewById',
+          path: '/workspace/sum',
+          name: 'sum',
           beforeEnter: routerCheckLogin,
-          component: () => import('../views/workspace/preview/[id].vue'),
+          component: () => import('../views/workspace/sum/index.vue'),
           meta: {
-            title: '预览表单',
+            title: '提交总结',
+          },
+        },
+        {
+          path: '/workspace/submit',
+          name: 'submit',
+          beforeEnter: routerCheckLogin,
+          component: () => import('../views/workspace/sumbit/index.vue'),
+          meta: {
+            title: '表单总结',
+          },
+        },
+        {
+          path: '/workspace/submit/:inviteCode',
+          name: 'submitForm',
+          beforeEnter: routerCheckLogin,
+          component: () => import('../views/workspace/sumbit/form.vue'),
+          meta: {
+            title: '提交表单',
           },
         },
         {

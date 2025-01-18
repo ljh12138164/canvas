@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AutoForm } from '@/components/ui/auto-form'
-import { Button } from '@/components/ui/button'
+import Button from '@/components/ui/button/Button.vue'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useToast } from '@/components/ui/toast/use-toast'
@@ -25,7 +25,6 @@ watch(
     id.value = newId
   },
 )
-console.log(id.value)
 onBeforeMount(async () => {
   const formDatas = JSON.parse((await getFormDataById(id.value as string))?.schema || '{}')
   if (formDatas) formData.value = formDatas
@@ -57,7 +56,17 @@ const handleSubmit = (e: any) => {
         :schema="shemas as z.ZodObject<any, any, any, any>"
         :field-config="fieldConfig"
       >
-        <Button type="submit" class="w-full py-2 transition-all" variant="outline"> 提交 </Button>
+        <div class="flex justify-end gap-2">
+          <Button
+            @click="router.back()"
+            class="w-full py-2 transition-all"
+            type="button"
+            variant="outline"
+          >
+            返回
+          </Button>
+          <Button type="submit" class="w-full py-2 transition-all"> 提交 </Button>
+        </div>
       </AutoForm>
     </section>
     <div v-else class="flex flex-col items-center justify-center h-[calc(100dvh-120px)]">

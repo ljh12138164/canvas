@@ -51,7 +51,7 @@ const updateList2 = (
     <section v-if="data.type === 'radio'">
       <OneClick :updateList2="updateList2" :id="id[1]" :data="data" />
     </section>
-    <section v-if="data.type === 'array'">
+    <section v-if="data.type === 'obj'">
       <ObjectItem :updateList2="updateList2" :id="id[1]" :data="data" />
     </section>
   </div>

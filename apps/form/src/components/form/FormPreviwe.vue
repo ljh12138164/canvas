@@ -14,6 +14,7 @@ const loading = ref(true)
 const fieldConfig = ref<Record<string, any>>({})
 const props = defineProps<{
   schema: string
+  className?: string
 }>()
 const emit = defineEmits(['submit'])
 const formData = ref<CreateFormItem[] | null>(JSON.parse(props.schema))
@@ -32,7 +33,8 @@ onBeforeMount(async () => {
   <ScrollArea class="max-h-[calc(100dvh-600px)] flex px-10 overflow-hidden entry" v-if="!loading">
     <section class="h-full px-2" v-if="formData && Object.keys(formData).length">
       <AutoForm
-        class="w-full space-y-6"
+        class="w-full flex flex-col gap-2"
+        :class="props.className"
         @submit="emit('submit', $event)"
         :schema="CreateShemas as z.ZodObject<any, any, any, any>"
         :field-config="fieldConfig"
