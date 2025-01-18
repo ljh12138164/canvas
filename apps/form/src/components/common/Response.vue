@@ -1,34 +1,36 @@
 <script lang="ts" setup>
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog'
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer';
-import { createReusableTemplate, useMediaQuery } from '@vueuse/core';
-import { ref } from 'vue';
-import DialogFooter from '../ui/dialog/DialogFooter.vue';
+} from '@/components/ui/drawer'
+import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
+import { ref } from 'vue'
+import DialogFooter from '../ui/dialog/DialogFooter.vue'
 
 defineProps<{
-  title: string;
-  description?: string;
-}>();
+  title: string
+  description?: string
+}>()
 // Reuse `form` section
-const [UseTemplate, GridForm] = createReusableTemplate();
-const isDesktop = useMediaQuery('(min-width: 768px)');
+const [UseTemplate, GridForm] = createReusableTemplate()
+const isDesktop = useMediaQuery('(min-width: 768px)')
 
-const isOpen = ref(false);
+const isOpen = ref(false)
 </script>
 
 <template>
@@ -43,13 +45,15 @@ const isOpen = ref(false);
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>{{ title }}</DialogTitle>
-        <DialogDescription v-if="description">{{
-          description
-        }}</DialogDescription>
+        <DialogDescription v-if="description">{{ description }}</DialogDescription>
       </DialogHeader>
       <GridForm />
       <DialogFooter>
         <slot name="footer" />
+        <DialogClose>
+          <slot name="close" />
+        </DialogClose>
+        <slot name="enter" />
       </DialogFooter>
     </DialogContent>
   </Dialog>
@@ -61,13 +65,15 @@ const isOpen = ref(false);
     <DrawerContent>
       <DrawerHeader class="text-left">
         <DrawerTitle>{{ title }}</DrawerTitle>
-        <DrawerDescription v-if="description">{{
-          description
-        }}</DrawerDescription>
+        <DrawerDescription v-if="description">{{ description }}</DrawerDescription>
       </DrawerHeader>
       <GridForm />
       <DrawerFooter class="pt-2">
         <slot name="footer" />
+        <DrawerClose>
+          <slot name="close" />
+        </DrawerClose>
+        <slot name="enter" />
       </DrawerFooter>
     </DrawerContent>
   </Drawer>

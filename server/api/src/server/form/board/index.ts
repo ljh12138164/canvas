@@ -1,6 +1,6 @@
-import { supabaseForm } from '../../supabase/form';
-import { Form } from '../../../types/form';
-import { nanoid } from 'nanoid';
+import { supabaseForm } from "../../supabase/form";
+import { Form } from "../../../types/form";
+import { nanoid } from "nanoid";
 
 /**
  * ## 创建白板
@@ -23,7 +23,7 @@ export const createBoard = async ({
   schema: string;
 }): Promise<Form> => {
   const { data, error } = await supabaseForm(token)
-    .from('form')
+    .from("form")
     .insert([
       {
         name,
@@ -31,10 +31,11 @@ export const createBoard = async ({
         descitption: description,
         schema,
         userId,
+        inviteCode: nanoid(6),
       },
     ])
-    .select('*');
-  if (error) throw new Error('服务器错误');
+    .select("*");
+  if (error) throw new Error("服务器错误");
 
   return data[0];
 };
@@ -52,10 +53,10 @@ export const getBoard = async ({
   userId: string;
 }): Promise<Form[]> => {
   const { data, error } = await supabaseForm(token)
-    .from('form')
-    .select('*')
-    .eq('userId', userId);
-  if (error) throw new Error('服务器错误');
+    .from("form")
+    .select("*")
+    .eq("userId", userId);
+  if (error) throw new Error("服务器错误");
 
   return data;
 };
@@ -75,11 +76,11 @@ export const deleteBoard = async ({
   boardId: string;
 }): Promise<boolean> => {
   const { error } = await supabaseForm(token)
-    .from('form')
+    .from("form")
     .delete()
-    .eq('id', boardId)
-    .eq('userId', userId);
-  if (error) throw new Error('服务器错误');
+    .eq("id", boardId)
+    .eq("userId", userId);
+  if (error) throw new Error("服务器错误");
   return true;
 };
 
@@ -107,13 +108,12 @@ export const updateBoard = async ({
   if (schema) updateData.schema = schema;
   if (Object.keys(updateData).length === 0) return true;
   const { data, error } = await supabaseForm(token)
-    .from('form')
+    .from("form")
     .update([updateData])
-    .eq('id', boardId)
-    .eq('userId', userId)
-    .select('*');
-  console.log(data);
-  if (error) throw new Error('服务器错误');
+    .eq("id", boardId)
+    .eq("userId", userId)
+    .select("*");
+  if (error) throw new Error("服务器错误");
   return true;
 };
 
@@ -132,11 +132,55 @@ export const getBoardDetail = async ({
   boardId: string;
 }): Promise<Form> => {
   const { data, error } = await supabaseForm(token)
-    .from('form')
-    .select('*')
-    .eq('id', boardId)
-    .eq('userId', userId);
-  if (error) throw new Error('服务器错误');
-  if (!data) throw new Error('未找到资源');
+    .from("form")
+    .select("*")
+    .eq("id", boardId)
+    .eq("userId", userId);
+  if (error) throw new Error("服务器错误");
+  if (!data) throw new Error("未找到资源");
+  return data[0];
+};
+
+/**
+ * ## 更新邀请码
+ * @param param0
+ * @returns
+ */
+export const updateBoardInviteCode = async ({
+  token,
+  userId,
+  boardId,
+}: {
+  token: string;
+  userId: string;
+  boardId: string;
+}): Promise<boolean> => {
+  const { error } = await supabaseForm(token)
+    .from("form")
+    .update([{ inviteCode: nanoid(6) }])
+    .eq("id", boardId)
+    .eq("userId", userId);
+  if (error) throw new Error("服务器错误");
+  return true;
+};
+
+/**
+ * ## 获取邀请码数据
+ * @param param0
+ * @returns
+ */
+export const getInviteCodeData = async ({
+  token,
+  inviteCode,
+}: {
+  token: string;
+  inviteCode: string;
+}): Promise<Form> => {
+  const { data, error } = await supabaseForm(token)
+    .from("form")
+    .select("*")
+    .eq("inviteCode", inviteCode);
+  if (error) throw new Error("服务器错误");
+  if (!data) throw new Error("未找到资源");
   return data[0];
 };

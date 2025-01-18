@@ -130,7 +130,7 @@ export const formItemList = [
   {
     name: '子表单',
     id: '8',
-    type: 'array',
+    type: 'obj',
     defaultTypeName: '子表单',
     hiddenLabel: false,
     label: '子表单',
@@ -205,7 +205,7 @@ export interface Slider extends FormItem {
   defaultTypeName: '滑动按钮'
 }
 export interface Array extends FormItem {
-  type: 'array'
+  type: 'obj'
   defaultTypeName: '子表单'
   children: CreateFormItem[]
 }

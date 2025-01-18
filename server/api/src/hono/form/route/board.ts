@@ -1,20 +1,22 @@
-import to from 'await-to-js';
-import { Hono } from 'hono';
-import { checkToken, getSupabaseAuth } from '../../../libs/middle';
+import to from "await-to-js";
+import { Hono } from "hono";
+import { checkToken, getSupabaseAuth } from "../../../libs/middle";
 import {
   createBoard,
   deleteBoard,
   getBoard,
   getBoardDetail,
+  getInviteCodeData,
   updateBoard,
-} from '../../../server/form/board';
-import { zValidator } from '@hono/zod-validator';
-import { z } from 'zod';
-import { errorCheck } from '../../../libs/error';
+  updateBoardInviteCode,
+} from "../../../server/form/board";
+import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
+import { errorCheck } from "../../../libs/error";
 
 export const board = new Hono()
   .use(checkToken(process.env.SUPABASE_FORM_JWT!))
-  .get('/form', async (c) => {
+  .get("/form", async (c) => {
     const { token, auth } = getSupabaseAuth(c);
     const [error, result] = await to(
       getBoard({
@@ -26,9 +28,9 @@ export const board = new Hono()
     return c.json(result);
   })
   .post(
-    '/form',
+    "/form",
     zValidator(
-      'json',
+      "json",
       z.object({
         id: z.string(),
         name: z.string(),
@@ -41,11 +43,11 @@ export const board = new Hono()
       const [error, result] = await to(
         createBoard({
           token,
-          id: c.req.valid('json').id,
+          id: c.req.valid("json").id,
           userId: auth.sub,
-          name: c.req.valid('json').name,
-          description: c.req.valid('json').description ?? '',
-          schema: c.req.valid('json').schema,
+          name: c.req.valid("json").name,
+          description: c.req.valid("json").description ?? "",
+          schema: c.req.valid("json").schema,
         })
       );
       if (error) return c.json(error.message, errorCheck(error));
@@ -53,11 +55,11 @@ export const board = new Hono()
     }
   )
   .delete(
-    '/form',
-    zValidator('json', z.object({ id: z.string() })),
+    "/form",
+    zValidator("json", z.object({ id: z.string() })),
     async (c) => {
       const { token, auth } = getSupabaseAuth(c);
-      const { id } = c.req.valid('json');
+      const { id } = c.req.valid("json");
       const [error, result] = await to(
         deleteBoard({ token, userId: auth.sub, boardId: id })
       );
@@ -66,9 +68,9 @@ export const board = new Hono()
     }
   )
   .patch(
-    '/form',
+    "/form",
     zValidator(
-      'json',
+      "json",
       z.object({
         id: z.string(),
         name: z.string().optional(),
@@ -78,7 +80,7 @@ export const board = new Hono()
     ),
     async (c) => {
       const { token, auth } = getSupabaseAuth(c);
-      const { id, name, description, schema } = c.req.valid('json');
+      const { id, name, description, schema } = c.req.valid("json");
       const [error, result] = await to(
         updateBoard({
           token,
@@ -95,13 +97,41 @@ export const board = new Hono()
   )
   // 获取表单详情·
   .get(
-    '/form/:id',
-    zValidator('param', z.object({ id: z.string() })),
+    "/form/:id",
+    zValidator("param", z.object({ id: z.string() })),
     async (c) => {
       const { token, auth } = getSupabaseAuth(c);
-      const { id } = c.req.valid('param');
+      const { id } = c.req.valid("param");
       const [error, result] = await to(
         getBoardDetail({ token, userId: auth.sub, boardId: id })
+      );
+      if (error) return c.json(error.message, errorCheck(error));
+      return c.json(result);
+    }
+  )
+  // 更新邀请码
+  .patch(
+    "/update",
+    zValidator("json", z.object({ id: z.string() })),
+    async (c) => {
+      const { token, auth } = getSupabaseAuth(c);
+      const { id } = c.req.valid("json");
+      const [error, result] = await to(
+        updateBoardInviteCode({ token, userId: auth.sub, boardId: id })
+      );
+      if (error) return c.json(error.message, errorCheck(error));
+      return c.json(result);
+    }
+  )
+  // 获取提交数据
+  .get(
+    "/submit/:inviteCode",
+    zValidator("param", z.object({ inviteCode: z.string() })),
+    async (c) => {
+      const { token } = getSupabaseAuth(c);
+      const { inviteCode } = c.req.valid("param");
+      const [error, result] = await to(
+        getInviteCodeData({ token, inviteCode })
       );
       if (error) return c.json(error.message, errorCheck(error));
       return c.json(result);
