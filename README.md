@@ -1,70 +1,201 @@
-# 项目结构
+# 项目文档
 
-## 后端服务(hono + supabase) 8000端口
+## 项目概述
 
-- ### apps/api 后端服务
+这是一个基于 monorepo(turbo) 架构的全栈项目,包含多个应用和一个共享的后端服务。项目使用 pnpm workspace 进行包管理。
 
-  - #### api vercel部署入口
-  - #### .env 环境变量
-  - #### src 后端服务代码
-    - ##### hono 后端框架
-    - ##### libs 工具库
-    - ##### server supabase的server代码（控制数据库）
-    - ##### types 类型
-    - ##### email 邮件服务(未使用)
+## 项目结构
 
-## 设计应用(next15 + react19 + zustand + shadcn) 8400端口
+### 后端服务 (8000端口)
 
-- ### apps/ljh-design 设计应用
+基于 Hono + Supabase 构建的后端服务,位于 `server/api` 目录:
 
-  - #### components 组件
-  - #### lib 工具库
-  - #### database supabase数据库
-  - #### server 配置api打包后进行请求接口
-  - #### store 状态管理
-  - #### types 类型
-  - #### hooks 自定义hooks
-  - #### app 设计应用代码
-    - ##### fonts 字体
-    - ##### globals.css 全局样式
-    - ##### pages 页面
-    - ##### \_provider react-query 配置
+- **目录结构**:
 
-## 管理应用(react18 + mobx + shadcn) 8100端口
+  - `api/` - Vercel部署入口
+  - `src/` - 后端服务代码
+    - `hono/` - 路由和控制器
+    - `libs/` - 工具库
+    - `server/` - Supabase数据库操作
+    - `types/` - TypeScript类型定义
+    - `email/` - 邮件服务(未使用)
 
-- ### apps/jebet 管理应用
+- **API 路由**:
 
-  - #### public 静态资源
-  - #### src 管理应用代码
-    - ##### server 配置api打包后进行请求接口
-    - ##### components 组件
-    - ##### lib 工具库
-    - ##### pages 页面
-    - ##### types 类型
-    - ##### utils 工具函数
-    - ##### store 状态管理
-    - ##### hooks 自定义hooks
-    - ##### assets 静态资源
+  - `/api/design` - 设计相关API
+  - `/api/jebt` - 项目管理相关API
+  - `/api/note` - 笔记相关API
+  - `/api/form` - 表单相关API
+  - `/api/ai` - AI相关API
+  - `/api/storage` - 存储相关API
 
-## 笔记应用(vue + rebuild + pinia + shadcn) 8200端口
+- **主要功能**:
+  - 用户认证
+  - 文件存储
+  - 数据库操作
+  - AI 对话
+  - WebSocket 服务
 
-- ### apps/note 笔记应用
-  - #### public 静态资源
-  - #### src 笔记应用代码
-    - ##### components 组件
-    - ##### server 配置api打包后进行请求接口
-    - ##### router 自定义hooks
-    - ##### lib 工具库
-    - ##### pages 页面
-    - ##### types 类型
-    - ##### utils 工具函数
-    - ##### store 状态管理
+### 前端应用
 
-## 协同笔记websocket服务(bun) 8080端口
+#### 1. 设计应用 (8400端口)
 
-- ### apps/ws 协同笔记websocket服务
-  - #### src 协同笔记websocket服务代码
+基于 Next.js 15 + React 19 构建:
 
-## 表单生成器应用(nuxt + zustand + tailwind + shadcn) 8300端口
+- **目录结构**:
 
-- ### apps/form 表单生成器应用
+  - `components/` - 组件
+  - `lib/` - 工具库
+  - `database/` - Supabase数据库配置
+  - `server/` - API请求配置
+  - `store/` - 状态管理
+  - `types/` - 类型定义
+  - `hooks/` - 自定义hooks
+  - `app/` - 应用代码
+    - `fonts/` - 字体文件
+    - `globals.css` - 全局样式
+    - `pages/` - 页面
+    - `_provider/` - React Query配置
+
+- **技术栈**:
+  - 状态管理: Zustand
+  - UI组件: Shadcn
+  - 主要功能:
+    - 设计画布
+    - 图片处理
+    - 协同编辑
+
+#### 2. 管理应用 (8100端口)
+
+基于 React 19 构建:
+
+- **目录结构**:
+
+  - `public/` - 静态资源
+  - `src/` - 源代码
+    - `server/` - API请求配置
+    - `components/` - 组件
+    - `lib/` - 工具库
+    - `pages/` - 页面
+    - `types/` - 类型定义
+    - `utils/` - 工具函数
+    - `store/` - 状态管理
+    - `hooks/` - 自定义hooks
+    - `assets/` - 静态资源
+
+- **技术栈**:
+  - 状态管理: MobX
+  - UI组件: Shadcn
+  - 主要功能:
+    - 项目管理
+    - 任务跟踪
+    - 团队协作
+
+#### 3. 笔记应用 (8200端口)
+
+基于 Vue 3 + Rebuild 构建:
+
+- **目录结构**:
+
+  - `public/` - 静态资源
+  - `src/` - 源代码
+    - `components/` - 组件
+    - `server/` - API请求配置
+    - `router/` - 路由配置
+    - `lib/` - 工具库
+    - `pages/` - 页面
+    - `types/` - 类型定义
+    - `utils/` - 工具函数
+    - `store/` - 状态管理
+
+- **技术栈**:
+  - 状态管理: Pinia
+  - UI组件: Shadcn
+  - 主要功能:
+    - 笔记编辑
+    - 笔记分享
+    - 实时协作
+
+#### 4. 表单生成器 (8300端口)
+
+基于 Vue3 构建:
+
+- **目录结构**:
+
+  - `components/` - 组件
+  - `lib/` - 工具库
+  - `pages/` - 页面
+  - `types/` - 类型定义
+  - `utils/` - 工具函数
+  - `store/` - 状态管理
+  - `assets/` - 静态资源
+
+- **技术栈**:
+  - 状态管理: Pinia
+  - UI框架: Tailwind + Shadcn/vue
+  - 主要功能:
+    - 表单设计
+    - 表单验证
+    - 数据收集
+
+### WebSocket 服务 (8080端口)
+
+基于 Bun 构建的实时协作服务:
+
+- **目录结构**:
+
+  - `src/` - 源代码
+    - `index.ts` - 服务入口
+    - `types/` - 类型定义
+    - `utils/` - 工具函数
+
+- **主要功能**:
+  - 实时数据同步
+  - 协同编辑支持
+  - 在线状态管理
+
+## 技术栈
+
+### 后端
+
+- Hono - 后端框架
+- Supabase - 数据库和认证
+- Bun - WebSocket 服务
+- TypeScript - 开发语言
+
+### 前端
+
+- React/Vue/Nuxt - 前端框架
+- Zustand/MobX/Pinia - 状态管理
+- Tailwind - 样式框架
+- Shadcn - UI组件库
+
+## 开发指南
+
+### 安装依赖
+
+```bash
+pnpm install
+```
+
+### 启动开发服务
+
+```bash
+# 后端服务
+pnpm --filter api dev
+
+# 设计应用
+pnpm --filter design dev
+
+# 管理应用
+pnpm --filter jebet dev
+
+# 笔记应用
+pnpm --filter note dev
+
+# 表单应用
+pnpm --filter form dev
+
+# WebSocket服务
+pnpm --filter ws dev
+```
