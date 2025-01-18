@@ -4,7 +4,7 @@ import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { to } from "await-to-js";
 import { errorCheck } from "../../../libs/error";
-import { createSubmit } from "../../../server/form/sumbit";
+import { createSubmit, getMySubmit } from "../../../server/form/sumbit";
 
 export const submit = new Hono()
   .use(checkToken(process.env.SUPABASE_FORM_JWT!))
@@ -31,4 +31,15 @@ export const submit = new Hono()
       if (error) return c.json(error.message, errorCheck(error));
       return c.json(result);
     }
-  );
+  )
+  .get("/mySubmit", async (c) => {
+    const { token, auth } = getSupabaseAuth(c);
+    const [error, result] = await to(
+      getMySubmit({
+        token,
+        userId: auth.sub,
+      })
+    );
+    if (error) return c.json(error.message, errorCheck(error));
+    return c.json(result);
+  });

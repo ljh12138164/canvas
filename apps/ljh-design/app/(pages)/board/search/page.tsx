@@ -7,6 +7,7 @@ export default async function Home() {
       className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden entry`}
     >
       <Providers>
+        <div>222</div>
       </Providers>
     </div>
   );

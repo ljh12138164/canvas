@@ -1,56 +1,56 @@
 <script lang="ts" setup>
-import type { getWorkspaceByIdResponse } from '@/hooks/workspace';
-import { HIGHLIGHT_COLORS } from '@/lib';
-import { useActiveUserStore } from '@/store/activeUser';
-import useEditor from '@/store/editor';
-import type { Doc } from '@/hooks/doc';
+import type { getWorkspaceByIdResponse } from "@/hooks/workspace";
+import { HIGHLIGHT_COLORS } from "@/lib";
+import { useActiveUserStore } from "@/store/activeUser";
+import useEditor from "@/store/editor";
+import type { Doc } from "@/hooks/doc";
 // 仓库
-import useUser from '@/store/user';
+import useUser from "@/store/user";
 // 协作
 import {
   HocuspocusProvider,
   HocuspocusProviderWebsocket,
-} from '@hocuspocus/provider';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+} from "@hocuspocus/provider";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 // 编辑器扩展
-import Collaboration from '@tiptap/extension-collaboration';
-import CollaborationCursor from '@tiptap/extension-collaboration-cursor';
-import { Color } from '@tiptap/extension-color';
-import Focus from '@tiptap/extension-focus';
-import FontFamily from '@tiptap/extension-font-family';
-import Highlight from '@tiptap/extension-highlight';
-import Link from '@tiptap/extension-link';
-import ListKeymap from '@tiptap/extension-list-keymap';
-import Placeholder from '@tiptap/extension-placeholder';
-import Subscript from '@tiptap/extension-subscript';
-import Superscript from '@tiptap/extension-superscript';
-import Table from '@tiptap/extension-table';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
-import TaskItem from '@tiptap/extension-task-item';
-import TaskList from '@tiptap/extension-task-list';
-import TextAlign from '@tiptap/extension-text-align';
-import TextStyle from '@tiptap/extension-text-style';
-import Typography from '@tiptap/extension-typography';
-import Underline from '@tiptap/extension-underline';
-import StarterKit from '@tiptap/starter-kit';
-import { Editor, EditorContent } from '@tiptap/vue-3';
-import css from 'highlight.js/lib/languages/css';
-import js from 'highlight.js/lib/languages/javascript';
-import ts from 'highlight.js/lib/languages/typescript';
-import html from 'highlight.js/lib/languages/xml';
-import { all, createLowlight } from 'lowlight';
-import ImageResize from 'tiptap-extension-resize-image';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { IndexeddbPersistence } from 'y-indexeddb';
-import * as Y from 'yjs';
-import { LineHeightExtension } from '../editExtenstions/LineHeight';
-import { FontSizeExtension } from '../editExtenstions/fontSize';
-import { BubbleMenu } from '@tiptap/vue-3';
-import StarterKitComponent from './StarterKit.vue';
-import { watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import Collaboration from "@tiptap/extension-collaboration";
+import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
+import { Color } from "@tiptap/extension-color";
+import Focus from "@tiptap/extension-focus";
+import FontFamily from "@tiptap/extension-font-family";
+import Highlight from "@tiptap/extension-highlight";
+import Link from "@tiptap/extension-link";
+import ListKeymap from "@tiptap/extension-list-keymap";
+import Placeholder from "@tiptap/extension-placeholder";
+import Subscript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import TaskItem from "@tiptap/extension-task-item";
+import TaskList from "@tiptap/extension-task-list";
+import TextAlign from "@tiptap/extension-text-align";
+import TextStyle from "@tiptap/extension-text-style";
+import Typography from "@tiptap/extension-typography";
+import Underline from "@tiptap/extension-underline";
+import StarterKit from "@tiptap/starter-kit";
+import { Editor, EditorContent } from "@tiptap/vue-3";
+import css from "highlight.js/lib/languages/css";
+import js from "highlight.js/lib/languages/javascript";
+import ts from "highlight.js/lib/languages/typescript";
+import html from "highlight.js/lib/languages/xml";
+import { all, createLowlight } from "lowlight";
+import ImageResize from "tiptap-extension-resize-image";
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import { IndexeddbPersistence } from "y-indexeddb";
+import * as Y from "yjs";
+import { LineHeightExtension } from "../editExtenstions/LineHeight";
+import { FontSizeExtension } from "../editExtenstions/fontSize";
+import { BubbleMenu } from "@tiptap/vue-3";
+import StarterKitComponent from "./StarterKit.vue";
+import { watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 const folderId = ref(route.params.folderId as string);
@@ -68,14 +68,14 @@ watch(
   }
 );
 if (!folderId.value) {
-  router.push('/');
+  router.push("/");
 }
 const user = useUser();
 const activeUserStore = useActiveUserStore();
 const isLoading = ref(true);
 // 用户hash
 const userHash = user.userData?.session.user.id
-  .split('')
+  .split("")
   .map((item) => item.charCodeAt(0))
   .reduce((a, b) => a + b, 0) as number;
 
@@ -86,22 +86,22 @@ const props = defineProps<{
   doc: Doc | undefined;
 }>();
 // 本地持久化
-const provider = new IndexeddbPersistence(
+new IndexeddbPersistence(
   fileId.value ? `${folderId.value}/${fileId.value}` : `/${folderId.value}`,
   doc
 );
-provider.on('synced', () => {
-  isLoading.value = false;
-});
+// provider.on('synced', () => {
+//   isLoading.value = false;
+// });
 // 文本编辑器
 const lowlight = createLowlight(all);
-lowlight.register('html', html);
-lowlight.register('css', css);
-lowlight.register('js', js);
-lowlight.register('ts', ts);
+lowlight.register("html", html);
+lowlight.register("css", css);
+lowlight.register("js", js);
+lowlight.register("ts", ts);
 // 创建ws
 const websocket = new HocuspocusProviderWebsocket({
-  url: import.meta.env.PUBLIC_WS,
+  url: import.meta.env.PUBLIC_WS_RENDER,
 });
 // 协同
 const hocuspocusConnections = new HocuspocusProvider({
@@ -120,7 +120,9 @@ const hocuspocusConnections = new HocuspocusProvider({
   },
   token: `Bearer ${user.userData?.session.access_token}`,
   // awareness:,
-  onSynced() {},
+  onSynced() {
+    isLoading.value = false;
+  },
   onAwarenessUpdate: ({ states }: { states: any }) => {
     activeUserStore.setActiveUserList(
       states.map(
@@ -131,7 +133,7 @@ const hocuspocusConnections = new HocuspocusProvider({
   },
 });
 
-hocuspocusConnections.setAwarenessField('activeUser', {
+hocuspocusConnections.setAwarenessField("activeUser", {
   // 设置本地用户信息，这样另外的客户端就能拿到这个信息来显示了
   name: user.userData?.session.user.user_metadata.name,
   id: user.userData?.session.user.id,
@@ -163,7 +165,7 @@ const editor = ref<Editor>(
         history: false,
       }),
       LineHeightExtension.configure({
-        types: ['heading', 'paragraph'],
+        types: ["heading", "paragraph"],
       }),
       // 协同
       Collaboration.configure({
@@ -188,7 +190,7 @@ const editor = ref<Editor>(
       Highlight.configure({ multicolor: true }),
       Link.configure({
         openOnClick: true,
-        defaultProtocol: 'https',
+        defaultProtocol: "https",
         autolink: true,
       }),
       Subscript,
@@ -197,14 +199,14 @@ const editor = ref<Editor>(
       Underline,
       Typography,
       TextAlign.configure({
-        types: ['heading', 'paragraph'],
+        types: ["heading", "paragraph"],
       }),
       Placeholder.configure({
-        placeholder: '写点什么吧...',
+        placeholder: "写点什么吧...",
       }),
       ListKeymap,
       Focus.configure({
-        className: 'focus',
+        className: "focus",
       }),
       Color,
       // 自定义命令
@@ -239,6 +241,11 @@ onBeforeUnmount(() => {
     <!-- <StarterKitComponent :editor="editor as Editor" /> -->
     <!-- <Ruler /> -->
     <EditorContent :editor="editor as Editor" />
+  </main>
+  <main v-else>
+    <div class="flex justify-center items-center h-full">
+      <Skeleton class="w-full h-full" />
+    </div>
   </main>
 </template>
 
@@ -319,7 +326,7 @@ onBeforeUnmount(() => {
     }
   }
   // 任务列表
-  ul[data-type='taskList'] {
+  ul[data-type="taskList"] {
     list-style: none;
     margin-left: 0;
     padding: 0;
@@ -339,11 +346,11 @@ onBeforeUnmount(() => {
       }
     }
 
-    input[type='checkbox'] {
+    input[type="checkbox"] {
       cursor: pointer;
     }
 
-    ul[data-type='taskList'] {
+    ul[data-type="taskList"] {
       margin: 0;
     }
   }
@@ -378,7 +385,7 @@ onBeforeUnmount(() => {
 
     .selectedCell:after {
       background: var(--gray-2);
-      content: '';
+      content: "";
       left: 0;
       right: 0;
       top: 0;
@@ -464,7 +471,7 @@ onBeforeUnmount(() => {
     background: var(--black);
     border-radius: 0.5rem;
     color: var(--white);
-    font-family: 'JetBrainsMono', monospace;
+    font-family: "JetBrainsMono", monospace;
     margin: 1.5rem 0;
     padding: 0.75rem 1rem;
 

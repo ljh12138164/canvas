@@ -1,33 +1,34 @@
 <script setup lang="ts">
-import Button from '@/components/ui/button/Button.vue';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { toast } from '@/lib';
-import { login, signup } from '@/server/supabase/user';
-import { Icon } from '@iconify/vue';
-import { toTypedSchema } from '@vee-validate/zod';
-import { ErrorMessage, Field, Form, useForm } from 'vee-validate';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import Button from "@/components/ui/button/Button.vue";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { toast } from "@/lib";
+import { login, signup } from "@/server/supabase/user";
+import { Icon } from "@iconify/vue";
+import { toTypedSchema } from "@vee-validate/zod";
+import logoImage from "@/assets/image/logoImage.jpg";
+import { ErrorMessage, Field, Form, useForm } from "vee-validate";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-import * as zod from 'zod';
+import * as zod from "zod";
 
 // 页面加载
 const router = useRouter();
-const loginType = ref<'login' | 'register'>('login');
+const loginType = ref<"login" | "register">("login");
 const loading = ref(false);
 const showPassword = ref(false);
 
 // 表单验证
 const zodSchema = zod.object({
   email: zod
-    .string({ required_error: '请输入邮箱' })
-    .min(1, { message: '请输入邮箱' })
-    .email({ message: '请输入正确的邮箱' }),
+    .string({ required_error: "请输入邮箱" })
+    .min(1, { message: "请输入邮箱" })
+    .email({ message: "请输入正确的邮箱" }),
   password: zod
-    .string({ required_error: '请输入密码' })
-    .min(6, { message: '请输入密码' })
-    .max(16, { message: '密码长度最多为16位' }),
-  name: zod.string().min(1, { message: '请输入昵称' }).optional(),
+    .string({ required_error: "请输入密码" })
+    .min(6, { message: "请输入密码" })
+    .max(16, { message: "密码长度最多为16位" }),
+  name: zod.string().min(1, { message: "请输入昵称" }).optional(),
 });
 const validationSchema = toTypedSchema(zodSchema);
 const { setFieldError, errors } = useForm({
@@ -36,10 +37,10 @@ const { setFieldError, errors } = useForm({
 
 async function onSubmit(values: any) {
   try {
-    if (loginType.value === 'register') {
+    if (loginType.value === "register") {
       // 注册
       if (!values.name) {
-        return setFieldError('name', '请输入昵称');
+        return setFieldError("name", "请输入昵称");
       }
       loading.value = true;
       // 注册
@@ -48,22 +49,22 @@ async function onSubmit(values: any) {
         email: values.email,
         password: values.password,
       });
-      toast.success('请前往邮箱验证');
+      toast.success("请前往邮箱验证");
     } else {
       // 登录
       loading.value = true;
       console.log(values);
-      toast.loading('登录中...');
+      toast.loading("登录中...");
       // 登录
       await login({
         email: values.email,
         password: values.password,
       });
-      toast.success('登录成功');
-      router.push('/');
+      toast.success("登录成功");
+      router.push("/workspace/home");
     }
   } catch (error) {
-    toast.error('登录失败');
+    toast.error("登录失败");
   } finally {
     setTimeout(() => {
       toast.dismiss();
@@ -85,22 +86,22 @@ async function onSubmit(values: any) {
       </section>
       <CardContent class="loginCardRight">
         <CardHeader class="cardHeader">
-          <div style="width: 100px; height: 100px; background: #eee"></div>
-          <h1 class="cardTitle">欢迎回来</h1>
-          <p class="cardSubtitle">请输入您的账号密码</p>
+          <img :src="logoImage" alt="Logo" class="logo" />
+          <h1 class="cardTitle dark:text-black">欢迎回来</h1>
+          <p class="cardSubtitle dark:text-black">请输入您的账号密码</p>
         </CardHeader>
         <main class="cardMain">
           <p class="cardChange">
             <v-btn
               @click="loginType = 'login'"
-              class="cardChangeButton"
+              class="cardChangeButton dark:text-black dark:bg-white"
               :class="loginType === 'login' ? 'active' : ''"
               variant="text"
               >登录</v-btn
             >
             <v-btn
               @click="loginType = 'register'"
-              class="cardChangeButton"
+              class="cardChangeButton dark:text-black dark:bg-white"
               :class="loginType === 'register' ? 'active' : ''"
               variant="text"
               >注册</v-btn
@@ -128,7 +129,7 @@ async function onSubmit(values: any) {
                 placeholder="请输入邮箱..."
                 name="email"
                 type="email"
-                class="formInput"
+                class="formInput dark:text-black"
               />
               <ErrorMessage class="error" name="email" />
             </div>
@@ -146,7 +147,7 @@ async function onSubmit(values: any) {
                 placeholder="请输入密码..."
                 name="password"
                 :type="showPassword ? 'text' : 'password'"
-                class="formInput"
+                class="formInput dark:text-black"
               />
               <ErrorMessage class="error" name="password" />
             </div>
@@ -154,7 +155,7 @@ async function onSubmit(values: any) {
               type="submit"
               :disabled="loading"
               variant="outline"
-              class="formSubmit"
+              class="formSubmit dark:bg-black dark:text-white"
               >{{
                 loginType === "login"
                   ? loading
@@ -175,12 +176,12 @@ async function onSubmit(values: any) {
 <style scoped lang="scss">
 .mainContainer {
   width: 100%;
-  height: 100%;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-  background-image: linear-gradient(to top, #dcfdf2, #fff);
+  // background-image: linear-gradient(to top, #dcfdf2, #fff);
 }
 .loginCard {
   min-width: 800px;
@@ -220,7 +221,7 @@ async function onSubmit(values: any) {
         font-size: 1rem;
         font-weight: 400;
         text-align: center;
-        color: white;
+        // color: white;
       }
     }
   }
@@ -319,5 +320,9 @@ async function onSubmit(values: any) {
   cursor: pointer;
   height: 1.5rem;
   width: 1.5rem;
+}
+.logo {
+  width: 100px;
+  height: 100px;
 }
 </style>

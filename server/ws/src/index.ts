@@ -1,32 +1,32 @@
-import { Server } from '@hocuspocus/server';
+import { Server } from "@hocuspocus/server";
 // import express from 'express';
 // import expressWebsockets from 'express-ws';
-import { verify } from 'hono/jwt';
-import { TiptapTransformer } from '@hocuspocus/transformer';
-import { Webhook, Events } from '@hocuspocus/extension-webhook';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import { Color } from '@tiptap/extension-color';
-import Focus from '@tiptap/extension-focus';
-import FontFamily from '@tiptap/extension-font-family';
-import Highlight from '@tiptap/extension-highlight';
-import Link from '@tiptap/extension-link';
-import ListKeymap from '@tiptap/extension-list-keymap';
-import Placeholder from '@tiptap/extension-placeholder';
-import Subscript from '@tiptap/extension-subscript';
-import Superscript from '@tiptap/extension-superscript';
-import Table from '@tiptap/extension-table';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
-import TaskItem from '@tiptap/extension-task-item';
-import TaskList from '@tiptap/extension-task-list';
-import TextAlign from '@tiptap/extension-text-align';
-import TextStyle from '@tiptap/extension-text-style';
-import Typography from '@tiptap/extension-typography';
-import Underline from '@tiptap/extension-underline';
-import StarterKit from '@tiptap/starter-kit';
-import { LineHeightExtension } from './extension/LineHeight';
-import { FontSizeExtension } from './extension/fontSize';
+import { verify } from "hono/jwt";
+import { TiptapTransformer } from "@hocuspocus/transformer";
+import { Webhook, Events } from "@hocuspocus/extension-webhook";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import { Color } from "@tiptap/extension-color";
+import Focus from "@tiptap/extension-focus";
+import FontFamily from "@tiptap/extension-font-family";
+import Highlight from "@tiptap/extension-highlight";
+import Link from "@tiptap/extension-link";
+import ListKeymap from "@tiptap/extension-list-keymap";
+import Placeholder from "@tiptap/extension-placeholder";
+import Subscript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import TaskItem from "@tiptap/extension-task-item";
+import TaskList from "@tiptap/extension-task-list";
+import TextAlign from "@tiptap/extension-text-align";
+import TextStyle from "@tiptap/extension-text-style";
+import Typography from "@tiptap/extension-typography";
+import Underline from "@tiptap/extension-underline";
+import StarterKit from "@tiptap/starter-kit";
+import { LineHeightExtension } from "./extension/LineHeight";
+import { FontSizeExtension } from "./extension/fontSize";
 interface Payload {
   // 签发者
   iss: string;
@@ -62,8 +62,8 @@ interface Payload {
 const server = Server.configure({
   extensions: [
     new Webhook({
-      url: 'http://localhost:8000/api/note/webhook/save',
-      secret: '459824aaffa928e05f5b1caec411ae5f111',
+      url: "https://socket.ljhboard.cn/api/note/webhook/save",
+      secret: "459824aaffa928e05f5b1caec411ae5f111",
       events: [Events.onChange, Events.onCreate],
       debounce: 5000,
       transformer: TiptapTransformer.extensions([
@@ -93,7 +93,7 @@ const server = Server.configure({
         Highlight.configure({ multicolor: true }),
         Link.configure({
           openOnClick: true,
-          defaultProtocol: 'https',
+          defaultProtocol: "https",
           autolink: true,
         }),
         LineHeightExtension,
@@ -103,14 +103,14 @@ const server = Server.configure({
         Underline,
         Typography,
         TextAlign.configure({
-          types: ['heading', 'paragraph'],
+          types: ["heading", "paragraph"],
         }),
         Placeholder.configure({
-          placeholder: '写点什么吧...',
+          placeholder: "写点什么吧...",
         }),
         ListKeymap,
         Focus.configure({
-          className: 'focus',
+          className: "focus",
         }),
         Color,
       ]),
