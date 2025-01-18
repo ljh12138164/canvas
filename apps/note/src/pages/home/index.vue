@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import ThemeChange from '@/components/common/ThemeChange.vue';
-import UserButton from '@/components/common/UserButton.vue';
-import { getCurrentUser } from '@/server/supabase/user';
-import type { Sessions } from '@/types/user';
-import { onBeforeMount, ref } from 'vue';
+import ThemeChange from "@/components/common/ThemeChange.vue";
+import UserButton from "@/components/common/UserButton.vue";
+import { getCurrentUser } from "@/server/supabase/user";
+import type { Sessions } from "@/types/user";
+import { onBeforeMount, ref } from "vue";
 const loading = ref(true);
 const user = ref<Sessions | undefined>(undefined);
 
 const features = ref([
   {
-    title: '简单易用',
-    description: '直观的界面设计，快速上手，像写笔记一样自然',
-    icon: '📝',
+    title: "简单易用",
+    description: "直观的界面设计，快速上手，像写笔记一样自然",
+    icon: "📝",
   },
   {
-    title: '实时协作',
-    description: '多人实时编辑，无缝协作，激发团队创造力',
-    icon: '👥',
+    title: "实时协作",
+    description: "多人实时编辑，无缝协作，激发团队创造力",
+    icon: "👥",
   },
   {
-    title: '强大功能',
-    description: '支持 Markdown、富文本编辑、文件管理等多种功能',
-    icon: '⚡',
+    title: "强大功能",
+    description: "支持 Markdown、富文本编辑、文件管理等多种功能",
+    icon: "⚡",
   },
   {
-    title: '数据安全',
-    description: '安全可靠的数据存储和备份机制',
-    icon: '🔒',
+    title: "数据安全",
+    description: "安全可靠的数据存储和备份机制",
+    icon: "🔒",
   },
 ]);
 onBeforeMount(async () => {
@@ -57,7 +57,9 @@ onBeforeMount(async () => {
         <p class="subtitle">
           简单、强大、安全的笔记应用，助你更好地整理思维和知识
         </p>
-        <button class="cta-btn">免费使用</button>
+        <RouterLink to="/workspace">
+          <button class="cta-btn">免费使用</button>
+        </RouterLink>
       </section>
 
       <section class="features">

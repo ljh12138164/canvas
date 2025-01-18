@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import From from '@/components/border/From.vue';
-import Sider from '@/components/border/Sider.vue';
-import ResponsePop from '@/components/common/ResponsePop.vue';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Collapsible } from '@/components/ui/collapsible';
+import From from "@/components/border/From.vue";
+import Sider from "@/components/border/Sider.vue";
+import ResponsePop from "@/components/common/ResponsePop.vue";
+import { Collapsible } from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
@@ -16,17 +15,18 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarRail,
-} from '@/components/ui/sidebar';
-import SidebarGroupLabel from '@/components/ui/sidebar/SidebarGroupLabel.vue';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useGetWorkspaceById } from '@/hooks/workspace';
-import useUser from '@/store/user';
-import { useMediaQuery } from '@vueuse/core';
-import { format } from 'date-fns';
-import { Plus, Trash } from 'lucide-vue-next';
-import { ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import NavHeader from './NavHeader.vue';
+} from "@/components/ui/sidebar";
+import SidebarGroupLabel from "@/components/ui/sidebar/SidebarGroupLabel.vue";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useGetWorkspaceById } from "@/hooks/workspace";
+import useUser from "@/store/user";
+import { useMediaQuery } from "@vueuse/core";
+import { format } from "date-fns";
+import { Plus, Trash } from "lucide-vue-next";
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import NavHeader from "./NavHeader.vue";
+import UserButton from "@/components/common/UserButton.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -37,7 +37,7 @@ const userData = useUser().userData!;
 const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
   routerParams.value as string
 );
-const isMobile = useMediaQuery('(max-width: 768px)');
+const isMobile = useMediaQuery("(max-width: 768px)");
 watch(
   () => route.params.folderId,
   () => {
@@ -45,11 +45,10 @@ watch(
   }
 );
 watch(workspaceError, (newVal) => {
-  if (newVal?.message === '无权限') {
-    router.push('/workspace');
+  if (newVal?.message === "无权限") {
+    router.push("/workspace");
   }
 });
-console.log(userData);
 </script>
 <template>
   <SidebarProvider>
@@ -82,7 +81,7 @@ console.log(userData);
                     {{
                       format(
                         new Date(workspace?.created_at as string),
-                        'yyyy-MM-dd'
+                        "yyyy-MM-dd"
                       )
                     }}
                   </span>
@@ -102,11 +101,15 @@ console.log(userData);
               <SidebarGroupLabel class="font-semibold text-sm"
                 >工作区</SidebarGroupLabel
               >
-              <SidebarMenuButton class="hover:bg-slate-50 transition-all">
+              <SidebarMenuButton
+                class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
+              >
                 <template #default>
                   <ResponsePop title="创建文档">
                     <template #trigger>
-                      <div class="w-full h-full flex items-center gap-2">
+                      <div
+                        class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
+                      >
                         <Plus />
                         <span class="group-data-[collapsible=icon]:hidden"
                           >创建文档</span
@@ -122,9 +125,13 @@ console.log(userData);
                 </template>
               </SidebarMenuButton>
 
-              <SidebarMenuButton class="hover:bg-slate-50 transition-all">
+              <SidebarMenuButton
+                class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
+              >
                 <template #default>
-                  <div class="w-full h-full flex items-center gap-2">
+                  <div
+                    class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 hover:bg-zinc-100"
+                  >
                     <Trash />
                     <span class="group-data-[collapsible=icon]:hidden"
                       >回收站</span
@@ -141,10 +148,9 @@ console.log(userData);
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <!-- footer -->
       <SidebarFooter>
         <section class="footer-container">
-          <Avatar class="h-8 w-8 rounded-lg">
+          <!-- <Avatar class="h-8 w-8 rounded-lg">
             <AvatarImage
               :src="userData.session.user.user_metadata.image"
               :alt="userData.session.user.user_metadata.name"
@@ -152,15 +158,19 @@ console.log(userData);
             <AvatarFallback class="rounded-lg">
               {{ userData.session.user.user_metadata.name }}
             </AvatarFallback>
-          </Avatar>
-          <div class="grid flex-1 text-left text-sm leading-tight">
+          </Avatar> -->
+          <!-- <div class="grid flex-1 text-left text-sm leading-tight">
             <span class="truncate font-semibold">{{
               userData.session.user.user_metadata.name
             }}</span>
             <span class="truncate text-xs">{{
               userData.session.user.user_metadata.email
             }}</span>
-          </div>
+          </div> -->
+          <UserButton
+            :user="userData.session"
+            :isLoading="workspaceIsLoading"
+          />
         </section>
         <SidebarRail />
       </SidebarFooter>

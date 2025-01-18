@@ -75,6 +75,15 @@ watch(
                 <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
               </template>
             </RouteButton>
+            <RouteButton
+              title="我的提交"
+              path="/workspace/my-submit"
+              :active="activePath === '/my-submit'"
+            >
+              <template #icon>
+                <Icon icon="material-symbols-light:commit" class="h-4 w-4" />
+              </template>
+            </RouteButton>
           </nav>
         </div>
         <div class="mt-auto p-4">
@@ -144,6 +153,15 @@ watch(
               >
                 <template #icon>
                   <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
+                </template>
+              </RouteButton>
+              <RouteButton
+                title="我的提交"
+                path="/workspace/my-submit"
+                :active="activePath === '/my-submit'"
+              >
+                <template #icon>
+                  <Icon icon="material-symbols-light:commit" class="h-4 w-4" />
                 </template>
               </RouteButton>
             </nav>

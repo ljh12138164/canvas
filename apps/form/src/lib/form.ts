@@ -306,17 +306,18 @@ export const fileZod = (schema: Files, fieldConfig: Ref<Record<string, any>>) =>
  * @returns zod校验
  */
 export const objectZod = (schema: Array, fieldConfig: Ref<Record<string, any>>): z.ZodType => {
-  let zodObject: Record<string, z.ZodType> = {}
+  let zodObject = z.object({})
   // 遍历子项并合并所有的schema
   schema.children.forEach((item) => {
     const itemSchema = getZodSchema(item, fieldConfig, 'obj')
     if (itemSchema) {
-      console.log(itemSchema)
-      zodObject = { ...zodObject, [item.defaultTypeName]: itemSchema }
+      zodObject = zodObject.merge(
+        z.object({ [item.description || item.defaultTypeName]: itemSchema }),
+      )
     }
   })
-  if (schema.description) return z.object(zodObject).describe(schema.description)
-  return z.object(zodObject)
+  if (schema.description) return zodObject.describe(schema.description)
+  return zodObject
 }
 /**
  * ## 生成zod校验
@@ -374,7 +375,6 @@ export function getZodSchema(
   // 数组
   if (schema.type === 'obj') {
     const zodSchema = objectZod(schema, fieldConfig)
-    console.log(zodSchema)
     if (type === 'obj') return zodSchema
     return z.object({ [schema.defaultTypeName]: zodSchema as z.ZodType })
   }

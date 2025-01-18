@@ -23,8 +23,13 @@
       <Button @click="router.back()">返回</Button>
     </section>
 
-    <section v-else-if="data?.schema">
-      <FormPreviwe :schema="data?.schema" @submit="submit" class-name="min-h-[calc(100vh-100px)]" />
+    <section v-else-if="boardData?.schema">
+      <FormPreviwe
+        :schema="boardData?.schema"
+        @submit="submit"
+        :isPending="isPending"
+        class-name="min-h-[calc(100vh-100px)]"
+      />
     </section>
     <section
       v-else-if="error"
@@ -45,13 +50,25 @@ import { useRouter } from 'vue-router'
 import FormPreviwe from '@/components/form/FormPreviwe.vue'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { toast } from '@/lib'
+import { useSubmitBoard } from '@/hooks/submit'
 
 const router = useRouter()
 const inviteCode = useRoute().params.inviteCode as string
-const { data, isLoading, error } = useGetInviteCodeData(inviteCode)
-const submit = (data: any) => {
-  console.log(data)
-  toast.success('提交成功')
-  router.push(`/workspace/board`)
+const { mutate, isPending } = useSubmitBoard()
+const { data: boardData, isLoading, error } = useGetInviteCodeData(inviteCode)
+const submit = (data: Record<string, any>) => {
+  if (!boardData.value) return
+  mutate(
+    { json: { id: boardData.value.id, submit: JSON.stringify(data) } },
+    {
+      onError: () => {
+        toast.error('提交失败')
+      },
+      onSuccess: () => {
+        toast.success('提交成功')
+        router.push(`/workspace/board`)
+      },
+    },
+  )
 }
 </script>

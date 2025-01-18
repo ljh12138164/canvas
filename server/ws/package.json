@@ -3,8 +3,10 @@
   "module": "index.ts",
   "main": "src/index.ts",
   "type": "module",
+  "bin": "./bin/index.js",
   "scripts": {
-    "dev": "bun run --hot src/index.ts --port 8080"
+    "dev": "bun run --hot src/index.ts --port 8080",
+    "build": "pkg . --targets bun-macos-x64,bun-linux-x64 --output ws"
   },
   "devDependencies": {
     "@hocuspocus/extension-sqlite": "^2.15.0",
@@ -53,6 +55,7 @@
     "lowlight": "^3.3.0",
     "nanoid": "^5.0.9",
     "nest": "^0.1.6",
+    "pkg": "^5.8.1",
     "socket.io": "^4.8.1",
     "y-protocols": "^1.0.6",
     "y-websocket": "^2.1.0",

@@ -1,14 +1,14 @@
-import useUser from '@/store/user';
-import { MoreVerticalIcon, PencilIcon, TrashIcon } from 'lucide-react';
-import { observer } from 'mobx-react-lite';
-import { useDeleteFlow } from '@/server/hooks/flow';
-import { Flow } from '@/types/workspace';
-import { useQueryClient } from '@tanstack/react-query';
-import { Row } from '@tanstack/react-table';
-import { useRef } from 'react';
-import toast from 'react-hot-toast';
-import { useParams } from 'react-router-dom';
-import { Button } from '../ui/button';
+import useUser from "@/store/user";
+import { EyeIcon, MoreVerticalIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { observer } from "mobx-react-lite";
+import { useDeleteFlow } from "@/server/hooks/flow";
+import { Flow } from "@/types/workspace";
+import { useQueryClient } from "@tanstack/react-query";
+import { Row } from "@tanstack/react-table";
+import { useRef } from "react";
+import toast from "react-hot-toast";
+import { Link, useParams } from "react-router-dom";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogClose,
@@ -18,14 +18,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog';
+} from "../ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import Form from './Form';
+} from "../ui/dropdown-menu";
+import Form from "./Form";
 
 const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
   const workspaceId = useParams().workspaceId;
@@ -36,16 +36,24 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost'>
-          <MoreVerticalIcon className='w-4 h-4 cursor-pointer' />
+        <Button variant="ghost">
+          <MoreVerticalIcon className="w-4 h-4 cursor-pointer" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='w-[100px]'>
+      <DropdownMenuContent className="w-[100px]">
+        <DropdownMenuItem asChild>
+          <Link to={`detail/${row.original.id}`}>
+            <Button variant="ghost" className="w-full cursor-pointer">
+              <EyeIcon className="w-4 h-4" />
+              <span>详细</span>
+            </Button>
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant='ghost' className='w-full cursor-pointer'>
-                <PencilIcon className='w-4 h-4' />
+              <Button variant="ghost" className="w-full cursor-pointer">
+                <PencilIcon className="w-4 h-4" />
                 <span>编辑</span>
               </Button>
             </DialogTrigger>
@@ -54,7 +62,7 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
                 <DialogTitle>编辑文件</DialogTitle>
               </DialogHeader>
               <Form
-                type='update'
+                type="update"
                 defaultData={row.original}
                 userId={useUser.userData.id}
                 workspaceId={workspaceId}
@@ -65,8 +73,8 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
         <DropdownMenuItem asChild>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant='ghost' className='w-full cursor-pointer'>
-                <TrashIcon className='w-4 h-4' />
+              <Button variant="ghost" className="w-full cursor-pointer">
+                <TrashIcon className="w-4 h-4" />
                 <span>删除</span>
               </Button>
             </DialogTrigger>
@@ -75,19 +83,19 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
                 <DialogTitle>删除文件</DialogTitle>
                 <DialogDescription>
                   确认删除文件
-                  <span className='text-red-500 font-bold'>
+                  <span className="text-red-500 font-bold">
                     {row.original.name}
                   </span>
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant='outline' ref={deleteRef}>
+                  <Button variant="outline" ref={deleteRef}>
                     取消
                   </Button>
                 </DialogClose>
                 <Button
-                  type='button'
+                  type="button"
                   disabled={deleteFlowPending}
                   onClick={() => {
                     if (!useUser.userData) return;
@@ -101,14 +109,14 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
                       },
                       {
                         onSuccess: () => {
-                          toast.success('删除成功');
+                          toast.success("删除成功");
                           queryClient.invalidateQueries({
-                            queryKey: ['flow', workspaceId],
+                            queryKey: ["flow", workspaceId],
                           });
                           deleteRef.current?.click();
                         },
                         onError: () => {
-                          toast.error('删除失败');
+                          toast.error("删除失败");
                         },
                       }
                     );

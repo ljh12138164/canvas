@@ -14,6 +14,7 @@ const loading = ref(true)
 const fieldConfig = ref<Record<string, any>>({})
 const props = defineProps<{
   schema: string
+  isPending?: boolean
   className?: string
 }>()
 const emit = defineEmits(['submit'])
@@ -39,7 +40,14 @@ onBeforeMount(async () => {
         :schema="CreateShemas as z.ZodObject<any, any, any, any>"
         :field-config="fieldConfig"
       >
-        <Button type="submit" class="w-full py-2 transition-all" variant="outline"> 提交 </Button>
+        <Button
+          type="submit"
+          class="w-full py-2 transition-all"
+          variant="outline"
+          :disabled="isPending"
+        >
+          {{ isPending ? '提交中...' : '提交' }}
+        </Button>
       </AutoForm>
     </section>
     <div v-else class="flex flex-col items-center justify-center max-h-[calc(100dvh-600px)]">

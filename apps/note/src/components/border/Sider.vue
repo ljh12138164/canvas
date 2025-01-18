@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import { useGetWorkspaceById } from '@/hooks/workspace';
-import {
-  ChevronRight,
-  Plus,
-  MoreHorizontal,
-  Pencil,
-  Trash2,
-} from 'lucide-vue-next';
-import ResponsePop from '../common/ResponsePop.vue';
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
+import { useGetWorkspaceById } from "@/hooks/workspace";
+import { useQueryClient } from "@tanstack/vue-query";
+import {
+  ChevronRight,
+  MoreHorizontal,
+  Pencil,
+  Plus,
+  Trash2,
+} from "lucide-vue-next";
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import ResponsePop from "../common/ResponsePop.vue";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '../ui/collapsible';
+} from "../ui/collapsible";
+import { Input } from "../ui/input";
 import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from '../ui/sidebar';
-import { Skeleton } from '../ui/skeleton';
-import FileFrom from './FileFrom.vue';
-import { useRouter, useRoute } from 'vue-router';
-import { ref, watch } from 'vue';
-import { useQueryClient } from '@tanstack/vue-query';
+} from "../ui/sidebar";
+import { Skeleton } from "../ui/skeleton";
+import FileFrom from "./FileFrom.vue";
 const queryClient = useQueryClient();
 const route = useRoute();
 const router = useRouter();
@@ -43,6 +43,7 @@ const props = defineProps<{
 }>();
 const folderId = ref<string>(route.params.folderId as string);
 const fileId = ref<string>(route.params.fileId as string);
+
 watch(
   () => route.params.folderId,
   (newVal) => {
@@ -64,7 +65,7 @@ const handleClick = (id: string) => {
   if (id === folderId.value && !fileId.value) return;
   else {
     queryClient.invalidateQueries({
-      queryKey: ['doc', props.routerParams],
+      queryKey: ["doc", props.routerParams],
     });
     router.push(`/workspace/${props.routerParams}/folders/${id}`);
   }
@@ -73,11 +74,19 @@ const subHandleClick = (id: string, folderId: string) => {
   if (id === fileId.value) return;
   else {
     queryClient.invalidateQueries({
-      queryKey: ['doc', props.routerParams],
+      queryKey: ["doc", props.routerParams],
     });
     router.push(
       `/workspace/${props.routerParams}/folders/${folderId}/files/${id}`
     );
+  }
+};
+
+const responsePopRef = ref<any>(null);
+
+const closeDialog = () => {
+  if (responsePopRef.value) {
+    responsePopRef.value.closeRef?.click();
   }
 };
 </script>
@@ -95,7 +104,7 @@ const subHandleClick = (id: string, folderId: string) => {
             <div class="flex items-center gap-2">
               <SidebarMenuButton
                 :tooltip="item.title"
-                class="hover:bg-slate-100"
+                class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
                 :class="{
                   'bg-slate-100': item.id === folderId && !fileId,
                 }"
@@ -112,7 +121,7 @@ const subHandleClick = (id: string, folderId: string) => {
                     item.title
                   }}</span>
                 </div>
-                <ResponsePop title="新建文件">
+                <ResponsePop title="新建文件" ref="responsePopRef">
                   <template #trigger>
                     <Plus class="ml-auto" />
                   </template>
@@ -127,21 +136,18 @@ const subHandleClick = (id: string, folderId: string) => {
             <SidebarMenuSub v-for="items in item?.files" :key="items.title">
               <SidebarMenuSubItem :key="items.id">
                 <SidebarMenuSubButton
-                  class="w-full cursor-pointer hover:bg-slate-100"
+                  class="w-full cursor-pointer dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
                   :class="{
-                    'bg-slate-100': items.id === fileId,
+                    'bg-slate-100 dark:bg-slate-900': items.id === fileId,
                   }"
                 >
-                  <!-- <ChevronRight
-                    class="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
-                  /> -->
                   <div
                     class="flex items-center gap-2"
                     @click.stop="subHandleClick(items.id!, item.id!)"
                   >
                     <span>{{ items.inconId }}</span>
                     <span class="group-data-[collapsible=icon]:hidden">{{
-                      item.title
+                      items.title
                     }}</span>
                   </div>
                   <DropdownMenu>
@@ -153,34 +159,61 @@ const subHandleClick = (id: string, folderId: string) => {
                     <DropdownMenuContent class="w-56">
                       <DropdownMenuLabel>文件操作</DropdownMenuLabel>
                       <DropdownMenuSeparator />
-                      <DropdownMenuGroup>
-                        <DropdownMenuItem>
-                          <ResponsePop title="重命名">
-                            <template #trigger>
-                              <Button variant="ghost" class="btn-item" as-child>
-                                <span
-                                  ><Pencil class="mr-2 h-4 w-4" />重命名</span
-                                >
-                              </Button>
-                            </template>
-                            <template #content>
-                              <Input />
-                            </template>
-                          </ResponsePop>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <ResponsePop title="删除">
-                            <template #trigger>
-                              <Button variant="ghost" class="btn-item" as-child>
-                                <span><Trash2 class="mr-2 h-4 w-4" />删除</span>
-                              </Button>
-                            </template>
-                            <template #content>
-                              <span>确定删除吗？</span>
-                            </template>
-                          </ResponsePop>
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <ResponsePop title="重命名" ref="responsePopRef">
+                          <template #trigger>
+                            <Button
+                              variant="ghost"
+                              class="btn-item"
+                              @click.stop
+                              as-child
+                            >
+                              <span><Pencil class="mr-2 h-4 w-4" />重命名</span>
+                            </Button>
+                          </template>
+                          <template #content>
+                            <Input :default-value="items.title" />
+                          </template>
+                          <template #close>
+                            <Button variant="outline" @click="closeDialog"
+                              >取消</Button
+                            >
+                          </template>
+                          <template #entry>
+                            <Button variant="outline" @click="closeDialog"
+                              >确定</Button
+                            >
+                          </template>
+                        </ResponsePop>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <ResponsePop title="删除" ref="responsePopRef">
+                          <template #trigger>
+                            <Button
+                              variant="ghost"
+                              class="btn-item"
+                              @click.stop="
+                                () => {
+                                  responsePopRef?.closeRef2?.click();
+                                  responsePopRef?.closeRef?.click();
+                                }
+                              "
+                              as-child
+                            >
+                              <span><Trash2 class="mr-2 h-4 w-4" />删除</span>
+                            </Button>
+                          </template>
+                          <template #content>
+                            <span>确定删除吗？</span>
+                          </template>
+                          <template #close>
+                            <Button variant="outline">取消</Button>
+                          </template>
+                          <template #entry>
+                            <Button variant="outline">确定</Button>
+                          </template>
+                        </ResponsePop>
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </SidebarMenuSubButton>
@@ -211,8 +244,8 @@ const subHandleClick = (id: string, folderId: string) => {
   flex-direction: column;
   // gap: 2px;
 }
-.btn-item {
-  width: 1rem;
-  height: 1rem;
-}
+// .btn-item {
+//   width: 1rem;
+//   height: 1rem;
+// }
 </style>

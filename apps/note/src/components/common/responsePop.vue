@@ -6,27 +6,35 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer';
-import { createReusableTemplate, useMediaQuery } from '@vueuse/core';
-import { ref } from 'vue';
-import DialogFooter from '../ui/dialog/DialogFooter.vue';
+} from "@/components/ui/drawer";
+import { createReusableTemplate, useMediaQuery } from "@vueuse/core";
+import { ref } from "vue";
+import DialogFooter from "../ui/dialog/DialogFooter.vue";
+import DialogClose from "../ui/dialog/DialogClose.vue";
 
+const closeRef = ref();
+const closeRef2 = ref();
 defineProps<{
   title: string;
   description?: string;
 }>();
+defineExpose({
+  closeRef,
+  closeRef2,
+});
 // Reuse `form` section
 const [UseTemplate, GridForm] = createReusableTemplate();
-const isDesktop = useMediaQuery('(min-width: 768px)');
+const isDesktop = useMediaQuery("(min-width: 768px)");
 
 const isOpen = ref(false);
 </script>
@@ -50,6 +58,10 @@ const isOpen = ref(false);
       <GridForm />
       <DialogFooter>
         <slot name="footer" />
+        <DialogClose ref="closeRef">
+          <slot name="close" />
+        </DialogClose>
+        <slot name="entry" ref="entryRef" />
       </DialogFooter>
     </DialogContent>
   </Dialog>
@@ -68,6 +80,10 @@ const isOpen = ref(false);
       <GridForm />
       <DrawerFooter class="pt-2">
         <slot name="footer" />
+        <DrawerClose ref="closeRef2">
+          <slot name="close" />
+        </DrawerClose>
+        <slot name="entry" />
       </DrawerFooter>
     </DrawerContent>
   </Drawer>
