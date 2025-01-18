@@ -62,7 +62,7 @@ interface Payload {
 const server = Server.configure({
   extensions: [
     new Webhook({
-      url: "https://socket.ljhboard.cn/api/note/webhook/save",
+      url: "https://ljhboard.cn/api/note/webhook/save",
       secret: "459824aaffa928e05f5b1caec411ae5f111",
       events: [Events.onChange, Events.onCreate],
       debounce: 5000,
