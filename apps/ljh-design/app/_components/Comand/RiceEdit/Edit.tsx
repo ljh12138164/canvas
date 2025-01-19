@@ -1,7 +1,7 @@
 "use client";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
   FaBold,
@@ -21,6 +21,7 @@ import "./tiptap.css";
 import TiptapToolbar from "./TiptapToolbar";
 import { useTheme } from "next-themes";
 import { UseFormSetError, UseFormSetValue } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 const Tiptap = ({
   content = "",
@@ -44,30 +45,40 @@ const Tiptap = ({
   }>;
 }) => {
   const { theme } = useTheme();
-  const editor = useEditor({
-    editorProps: {
-      attributes: {
-        class: theme === "dark" ? "tiptap dark" : "tiptap light",
+  const [editor, setEditor] = useState<Editor | null>(null);
+  useEffect(() => {
+    let activeTheme = theme;
+    if (theme === "system") {
+      activeTheme = window.matchMedia("(prefers-color-scheme:dark)").matches
+        ? "dark"
+        : "light";
+    }
+    const editor = new Editor({
+      editorProps: {
+        attributes: {
+          class: activeTheme === "dark" ? "tiptap dark" : "tiptap light",
+        },
       },
-    },
-    onUpdate: ({ editor }) => {
-      if (!editor.getText())
-        return setError("explanation", { message: "不能为空" });
-      setValue("explanation", editor.getHTML());
-    },
-    extensions: [
-      StarterKit,
-      Underline,
-      TaskList,
-      TaskItem.configure({
-        nested: true,
-      }),
+      onUpdate: ({ editor }) => {
+        if (!editor.getText())
+          return setError("explanation", { message: "不能为空" });
+        setValue("explanation", editor.getHTML());
+      },
+      extensions: [
+        StarterKit,
+        Underline,
+        TaskList,
+        TaskItem.configure({
+          nested: true,
+        }),
 
-      Placeholder.configure({ placeholder: "请输入内容" }),
-    ],
-    editable: editorab,
-    content: content,
-  });
+        Placeholder.configure({ placeholder: "请输入内容" }),
+      ],
+      editable: editorab,
+      content: content,
+    });
+    setEditor(editor);
+  }, [theme]);
 
   const tiptapToolBar = [
     {
