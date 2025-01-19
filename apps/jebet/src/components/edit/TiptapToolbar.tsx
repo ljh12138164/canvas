@@ -2,19 +2,19 @@ import {
   useCreateMessage,
   useGetMessage,
   useUploadImage,
-} from '@/server/hooks/chat';
-import chatStore from '@/store/chat';
-import { Message } from '@/types/chat';
-import { Workspace } from '@/types/workspace';
-import { useQueryClient } from '@tanstack/react-query';
-import { Editor } from '@tiptap/react';
-import { ImageIcon, Upload, X } from 'lucide-react';
-import { observer } from 'mobx-react-lite';
-import { useRef, useState } from 'react';
-import toast from 'react-hot-toast';
-import styled from 'styled-components';
-import EditorButton from '../command/EditorButton';
-import { Button } from '../ui/button';
+} from "@/server/hooks/chat";
+import chatStore from "@/store/chat";
+import { Message } from "@/types/chat";
+import { Workspace } from "@/types/workspace";
+import { useQueryClient } from "@tanstack/react-query";
+import { Editor } from "@tiptap/react";
+import { ImageIcon, Upload, X } from "lucide-react";
+import { observer } from "mobx-react-lite";
+import { useRef, useState } from "react";
+import toast from "react-hot-toast";
+import styled from "styled-components";
+import EditorButton from "../command/EditorButton";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogClose,
@@ -23,8 +23,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog';
-import TiptapButton from './TiptapButton';
+} from "../ui/dialog";
+import TiptapButton from "./TiptapButton";
 
 interface TiptapToolbar {
   editor: Editor;
@@ -115,11 +115,11 @@ const TiptapToolbar = observer(
       const file = e.target.files?.[0];
       if (!file) return;
       if (file.size > 10 * 1024 * 1024) {
-        toast.error('文件大小不能超过10M');
+        toast.error("文件大小不能超过10M");
         return;
       }
       setFile(file);
-      e.target.value = '';
+      e.target.value = "";
     };
     return (
       <>
@@ -137,26 +137,26 @@ const TiptapToolbar = observer(
         </TiptapToolbarContainer>
         <Dialog>
           <DialogTrigger>
-            <EditorButton title='插入图片'>
-              <ImageButton variant='ghost'>
+            <EditorButton title="插入图片">
+              <ImageButton variant="ghost">
                 <ImageIcon />
               </ImageButton>
             </EditorButton>
           </DialogTrigger>
           {/* 裁剪图片 */}
-          <DialogContent className='w-full px-12 transition-all'>
+          <DialogContent className="w-full px-12 transition-all">
             <DialogHeader>
               <DialogTitle>插入图片</DialogTitle>
             </DialogHeader>
-            <section className='flex items-center justify-center w-full'>
+            <section className="flex items-center justify-center w-full">
               <UploadContainer onClick={() => fileRef.current?.click()}>
                 {!file ? (
-                  <p className='flex items-center gap-2'>
+                  <p className="flex items-center gap-2">
                     <Upload></Upload>
                     上传文件
                   </p>
                 ) : (
-                  <p className='flex items-center gap-2 h-full '>
+                  <p className="flex items-center gap-2 h-full ">
                     {/* {open ? (
                       <CropperContainer onClick={(e) => e.stopPropagation()}>
                         <ReactCrop
@@ -176,32 +176,32 @@ const TiptapToolbar = observer(
                     ) : ( */}
                     <PreviewImage
                       src={URL.createObjectURL(file)}
-                      alt='用户上传的图片'
-                      className='w-full h-full object-contain'
+                      alt="用户上传的图片"
+                      className="w-full h-full object-contain"
                     />
                     {/* )} */}
                   </p>
                 )}
                 {file && (
                   <div
-                    className='absolute top-0 right-0 p-2 '
+                    className="absolute top-0 right-0 p-2 "
                     onClick={(e) => {
                       e.stopPropagation();
                       setFile(null);
                     }}
                   >
                     {/* {!open && ( */}
-                    <X className='border rounded-full hover:bg-zinc-100 transition-all hover:dark:bg-zinc-800'></X>
+                    <X className="border rounded-full hover:bg-zinc-100 transition-all hover:dark:bg-zinc-800"></X>
                     {/* )} */}
                   </div>
                 )}
               </UploadContainer>
               <input
                 hidden
-                type='file'
+                type="file"
                 ref={fileRef}
                 onChange={handleFileChange}
-                accept='image/*,application/pdf'
+                accept="image/*,application/pdf"
               />
             </section>
             {/* {file && (
@@ -261,9 +261,9 @@ const TiptapToolbar = observer(
               </UplaodFooter>
             )} */}
             <DialogFooter>
-              <div className='flex items-center gap-2'>
+              <div className="flex items-center gap-2">
                 <DialogClose asChild>
-                  <Button hidden variant='outline' ref={closeRef}>
+                  <Button hidden variant="outline" ref={closeRef}>
                     取消
                   </Button>
                 </DialogClose>
@@ -275,7 +275,7 @@ const TiptapToolbar = observer(
                     uploadImage(file, {
                       onSuccess: (data) => {
                         if (chatStore.socket) {
-                          chatStore.socket.emit('sendMessage', {
+                          chatStore.socket.emit("sendMessage", {
                             id: data.message.id,
                             workspaceId: data.message.workspaceId,
                             message: data.message.message,
@@ -285,6 +285,7 @@ const TiptapToolbar = observer(
                           });
                           // 设置数据
                           const oldData = queryClient.getQueryData([
+                            "chat",
                             workspace.id,
                           ]) as {
                             pageParams: number[];
@@ -323,7 +324,7 @@ const TiptapToolbar = observer(
                           });
                           closeRef.current?.click();
                           setFile(null);
-                          toast.success('发送成功');
+                          toast.success("发送成功");
                         }
                       },
                       onError: (error) => {
@@ -340,24 +341,24 @@ const TiptapToolbar = observer(
         </Dialog>
 
         <SubmitButton
-          variant='ghost'
+          variant="ghost"
           className={
             messagePending
-              ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 border-l-2 border-zinc-200 dark:border-zinc-700 dark:hover:bg-zinc-700 h-7'
-              : 'hover:bg-zinc-100  border-l-2 border-zinc-200 dark:border-zinc-700 dark:hover:bg-zinc-700 h-7'
+              ? "bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 border-l-2 border-zinc-200 dark:border-zinc-700 dark:hover:bg-zinc-700 h-7"
+              : "hover:bg-zinc-100  border-l-2 border-zinc-200 dark:border-zinc-700 dark:hover:bg-zinc-700 h-7"
           }
           disabled={messagePending || messageLoading}
           onClick={() => {
             if (messagePending || messageLoading) return;
-            if (editor.getText().trim() === '') {
+            if (editor.getText().trim() === "") {
               toast.dismiss();
-              toast.error('请输入内容');
+              toast.error("请输入内容");
               return;
             }
             createMessage(editor.getHTML(), {
               onSuccess: (data) => {
                 if (chatStore.socket) {
-                  chatStore.socket.emit('sendMessage', {
+                  chatStore.socket.emit("sendMessage", {
                     id: data.message.id,
                     workspaceId: data.message.workspaceId,
                     message: data.message.message,
@@ -366,7 +367,10 @@ const TiptapToolbar = observer(
                     created_at: data.message.created_at,
                   });
                   // 设置数据
-                  const oldData = queryClient.getQueryData([workspace.id]) as {
+                  const oldData = queryClient.getQueryData([
+                    "chat",
+                    workspace.id,
+                  ]) as {
                     pageParams: number[];
                     pages: {
                       messages: {
@@ -377,7 +381,7 @@ const TiptapToolbar = observer(
                     }[];
                   };
                   // 更新数据
-                  queryClient.setQueryData([workspace.id], {
+                  queryClient.setQueryData(["chat", workspace.id], {
                     pageParams: oldData.pageParams,
                     pages: [
                       {

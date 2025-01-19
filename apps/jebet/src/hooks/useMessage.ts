@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface UseMessageProps {
   messageLoading: boolean;
@@ -14,7 +14,7 @@ export const useMessage = ({
   fetchNextPage,
 }: UseMessageProps) => {
   // 初始化数据
-  const [initData] = useState<boolean>(false);
+  const [initData, setInitData] = useState<boolean>(false);
   const topRef = useRef<HTMLDivElement>(null);
   const messageRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -34,7 +34,8 @@ export const useMessage = ({
       // 判断不在初始化状态，并且消息的高度大于消息容器的高度
       messageRef.current.scrollHeight > messageRef.current.clientHeight
     ) {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      setInitData(true);
       // timer = setTimeout(() => {
       //   setInitData(true);
       // }, 1000);
