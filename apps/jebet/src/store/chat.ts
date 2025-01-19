@@ -1,5 +1,5 @@
-import { makeAutoObservable } from 'mobx';
-import { Socket } from 'socket.io-client';
+import { makeAutoObservable } from "mobx";
+import { Socket } from "socket.io-client";
 class ChatStore {
   // 连接socket.io
   socket: Socket | null = null;
@@ -9,6 +9,10 @@ class ChatStore {
   isConnected: boolean = false;
   constructor() {
     makeAutoObservable(this);
+  }
+  // 设置socket
+  setSocket(socket: Socket) {
+    this.socket = socket;
   }
 
   setConnectCount(count: number) {

@@ -1,10 +1,10 @@
-import { client } from '@/server/index';
-import { Message, MessageType } from '@/types/chat';
+import { client } from "@/server/index";
+import { Message, MessageType } from "@/types/chat";
 import {
   useInfiniteQuery,
   useMutation,
   useQueryClient,
-} from '@tanstack/react-query';
+} from "@tanstack/react-query";
 // import { InferResponseType } from 'hono';
 
 // type getMessageRequestType = InferRequestType<typeof client.chat.message.$get>;
@@ -29,10 +29,10 @@ export const useGetMessage = (
     fetchNextPage: fetchNextPage,
     fetchPreviousPage: fetchPreviousPage,
   } = useInfiniteQuery({
-    queryKey: [workspaceId],
+    queryKey: ["chat", workspaceId],
     queryFn: async () => {
       // 获取当前的消息数量
-      const pageTo = queryClient.getQueryData([workspaceId]) as {
+      const pageTo = queryClient.getQueryData(["chat", workspaceId]) as {
         pageParams: number[];
         pages: {
           messages: {
@@ -49,7 +49,7 @@ export const useGetMessage = (
           query: {
             workspaceId,
             userId,
-            pageTo: allData.length + '',
+            pageTo: allData.length + "",
           },
         });
         if (!data.ok) throw new Error(data.statusText);
@@ -60,7 +60,7 @@ export const useGetMessage = (
           query: {
             workspaceId,
             userId,
-            pageTo: '0',
+            pageTo: "0",
           },
         });
         if (!data.ok) throw new Error(data.statusText);
@@ -84,7 +84,7 @@ export const useGetMessage = (
     queryClient.prefetchInfiniteQuery({
       queryKey: [workspaceId],
       queryFn: async () => {
-        const pageTo = queryClient.getQueryData([workspaceId]) as {
+        const pageTo = queryClient.getQueryData(["chat", workspaceId]) as {
           pageParams: number[];
           pages: {
             messages: {
@@ -100,7 +100,7 @@ export const useGetMessage = (
           query: {
             workspaceId,
             userId,
-            pageTo: allData.length + '',
+            pageTo: allData.length + "",
           },
         });
         if (!data.ok) throw new Error(data.statusText);
