@@ -1324,6 +1324,9 @@ importers:
       '@hono/node-ws':
         specifier: ^1.0.5
         version: 1.0.5(@hono/node-server@1.13.7(hono@4.6.16))
+      bun:
+        specifier: ^1.1.42
+        version: 1.1.43
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -1341,7 +1344,7 @@ importers:
         version: 13.6.22
     devDependencies:
       '@types/bun':
-        specifier: latest
+        specifier: ^1.1.17
         version: 1.1.17
 
   server/ws:
