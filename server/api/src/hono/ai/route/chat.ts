@@ -1,9 +1,18 @@
+import {
+  ChatSession,
+  GenerateContentStreamResult,
+} from "@google/generative-ai";
+import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { stream } from "hono/streaming";
-import { model } from "../../../server/ai";
-import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-
+import { model } from "../../../server/ai";
+// const training_data = [
+//   {
+//     role: "user",
+//     parts: [{ text: "你好" }],
+//   },
+// ];
 export const chat = new Hono()
   // 非流式上下文
   .post(
@@ -49,8 +58,11 @@ export const chat = new Hono()
     ),
     async (c) => {
       const { prompt, history } = c.req.valid("json");
-      let chats;
-      let streams;
+      // 上下文
+      let chats: ChatSession | undefined;
+      // 流式传输
+      let streams: GenerateContentStreamResult;
+      // 检查上下文
       if (history && history.length > 0) {
         // 上下文设置
         chats = model.startChat({
@@ -59,6 +71,7 @@ export const chat = new Hono()
       }
       // 流式传输
       if (chats) streams = await chats.sendMessageStream(prompt);
+      // 没有上下文
       else streams = await model?.generateContentStream(prompt);
 
       return stream(c, async (stream) => {
