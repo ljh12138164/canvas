@@ -2,17 +2,17 @@ import ChatMeta from "@/components/chat/ChatMeta";
 import UserButtons from "@/components/command/UserButtons";
 import Tiptap from "@/components/edit";
 import ChatMessageList from "@/components/edit/ChatMessageList";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import chatStore from "@/store/chat";
 import useStore from "@/store/user";
 import { ActiveUser, ChatMessage as Message, MessageType } from "@/types/chat";
 import { useQueryClient } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 import styled from "styled-components";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const ChatContainer = styled.div`
   position: relative;
@@ -64,7 +64,6 @@ const Chat = observer(() => {
   const queryClient = useQueryClient();
   const store = useStore;
   const params = useParams();
-  const [socket, setSocket] = useState<Socket | null>(null);
   const { toast } = useToast();
   useEffect(() => {
     if (store.userData === null || store.workspace === null) return;
@@ -73,7 +72,8 @@ const Chat = observer(() => {
     );
     if (!activeWorkSpace) return;
     if (chatStore.socket) return;
-    const socket = io("http://localhost:8088/", {
+    // 生产环境
+    const socket = io(import.meta.env.VITE_CHAT_WS_PROD, {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
