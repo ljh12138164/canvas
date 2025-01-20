@@ -319,6 +319,7 @@ export const objectZod = (schema: Array, fieldConfig: Ref<Record<string, any>>):
   if (schema.description) return zodObject.describe(schema.description)
   return zodObject
 }
+
 /**
  * ## 生成zod校验
  * @param schema 数据

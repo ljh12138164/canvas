@@ -33,7 +33,7 @@ export const UserImageBox = ({
                 sizes='100%'
                 alt='用户图片'
                 className='object-cover'
-              ></Image>
+              />
               <Link
                 href={item.url}
                 target='_blank'

@@ -15,7 +15,6 @@ program
   .description("初始化项目")
   .action(async () => {
     console.log(chalk.blue("🚀 Initializing new Jebet project..."));
-    // TODO: 实现初始化逻辑
     console.log(chalk.green("✅ 初始化完成!"));
   });
 

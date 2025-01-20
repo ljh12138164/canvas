@@ -203,3 +203,7 @@ html {
   height: 100%;
   color: #222;
 }
+
+.rbc-calendar {
+  min-height: calc(100dvh - 325px);
+}

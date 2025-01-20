@@ -97,7 +97,7 @@ const JoinWorkspaceCard = ({
         <Container>
           <Item>
             <Label>工作区图标</Label>
-            <Image src={data.imageUrl}></Image>
+            <Image src={data.imageUrl} />
           </Item>
           <Separator orientation="vertical"></Separator>
           <LeftContainer>

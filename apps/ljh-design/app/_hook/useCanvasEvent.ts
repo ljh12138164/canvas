@@ -1,9 +1,9 @@
-import { DefalutUser, Tool, UserState } from "@/app/_types/Edit";
-import * as fabric from "fabric";
-import { useEffect, RefObject } from "react";
-import { WebsocketProvider } from "y-websocket";
-import * as Y from "yjs";
-import { Sessions } from "../_types/user";
+import { DefalutUser, Tool, UserState } from '@/app/_types/Edit';
+import * as fabric from 'fabric';
+import { useEffect, RefObject } from 'react';
+import { WebsocketProvider } from 'y-websocket';
+import * as Y from 'yjs';
+import { Sessions } from '../_types/user';
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
   tool: Tool;
@@ -36,21 +36,21 @@ const useCanvasEvent = ({
   useEffect(() => {
     if (canvas) {
       // 不能用添加对象，因为初始化添加对象时，
-      canvas.on("object:added", (event) => {
+      canvas.on('object:added', (event) => {
         // 添加到ymap
-        yMaps?.set(
-          event.target.id,
-          JSON.stringify({ ...event.target, changeType: "add" })
-        );
+        // yMaps?.set(
+        //   event.target.id,
+        //   JSON.stringify({ ...event.target, changeType: "add" })
+        // );
         save();
       });
-      canvas.on("object:removed", (element) => {
+      canvas.on('object:removed', (element) => {
         if (!user) return;
 
-        yMaps?.set(
-          element.target.id,
-          JSON.stringify({ ...element.target, changeType: "delete" })
-        );
+        // yMaps?.set(
+        //   element.target.id,
+        //   JSON.stringify({ ...element.target, changeType: "delete" })
+        // );
         // 从ymap中删除
         // yMaps?.delete(item.target.id);
         // websocket?.emit("remove", [item]);
@@ -58,7 +58,7 @@ const useCanvasEvent = ({
         // yMap.set("json", canvas.toJSON());
         // save();
       });
-      canvas.on("object:modified", () => {
+      canvas.on('object:modified', () => {
         if (!user) return;
         // websocket?.emit("update", [item]);
         // 更新ymap
@@ -68,9 +68,9 @@ const useCanvasEvent = ({
         // save();
       });
       // 选择
-      canvas.on("selection:created", (e) => {
+      canvas.on('selection:created', (e) => {
         if (!user) return;
-        websockets?.awareness.setLocalStateField("select", {
+        websockets?.awareness.setLocalStateField('select', {
           ...userData?.current,
           select: canvas.getActiveObjects().map((item) => item.id),
         });
@@ -78,9 +78,9 @@ const useCanvasEvent = ({
       });
 
       // 更新选择
-      canvas.on("selection:updated", (e) => {
+      canvas.on('selection:updated', (e) => {
         if (!user) return;
-        websockets?.awareness.setLocalStateField("select", {
+        websockets?.awareness.setLocalStateField('select', {
           ...userData?.current,
           select: canvas.getActiveObjects().map((item) => item.id),
         });
@@ -88,9 +88,9 @@ const useCanvasEvent = ({
       });
 
       // 清除选择
-      canvas.on("selection:cleared", () => {
+      canvas.on('selection:cleared', () => {
         if (!user) return;
-        websockets?.awareness.setLocalStateField("select", {
+        websockets?.awareness.setLocalStateField('select', {
           ...userData?.current,
           select: canvas.getActiveObjects().map((item) => item.id),
         });

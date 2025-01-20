@@ -104,13 +104,7 @@ const MoreOpate = observer(({ row }: { row: Row<StoageData> }) => {
                 defaultData={row.original}
                 userId={useUser.userData.id}
                 workspaceId={workspaceId}
-              ></Form>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button variant='outline'>取消</Button>
-                </DialogClose>
-                <Button type='button'>保存</Button>
-              </DialogFooter>
+              />
             </DialogContent>
           </Dialog>
         </DropdownMenuItem>

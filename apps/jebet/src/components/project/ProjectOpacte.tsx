@@ -1,19 +1,19 @@
-import { useDeleteTask } from "@/server/hooks/tasks";
-import userStore from "@/store/user";
-import { TaskWithWorkspace } from "@/types/workspace";
-import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteTask } from '@/server/hooks/tasks';
+import userStore from '@/store/user';
+import { TaskWithWorkspace } from '@/types/workspace';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   Link,
   MoreHorizontalIcon,
   MoreVertical,
   PencilIcon,
   Trash,
-} from "lucide-react";
-import { observer } from "mobx-react-lite";
-import { useRef } from "react";
-import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "../ui/button";
+} from 'lucide-react';
+import { observer } from 'mobx-react-lite';
+import { useRef } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button } from '../ui/button';
 import {
   Dialog,
   DialogClose,
@@ -23,16 +23,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from '../ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import TaskFromCard from "./TaskFromCard";
+} from '../ui/dropdown-menu';
+import TaskFromCard from './TaskFromCard';
 const ProjectOpacte = observer(
-  ({ task, type }: { task: TaskWithWorkspace; type: "kanban" | "list" }) => {
+  ({ task, type }: { task: TaskWithWorkspace; type: 'kanban' | 'list' }) => {
     const { userData } = userStore;
     const { workspaceId, projectId } = useParams();
     const { deleteTask, deleteTaskLoading } = useDeleteTask();
@@ -41,9 +41,9 @@ const ProjectOpacte = observer(
     const closeRef = useRef<HTMLButtonElement>(null);
     const handleDeleteTask = () => {
       if (!workspaceId || !projectId || !task.id) return;
-      if (!userData?.id) return toast.error("请先登录");
+      if (!userData?.id) return toast.error('请先登录');
       toast.dismiss();
-      toast.loading("删除中...");
+      toast.loading('删除中...');
       deleteTask(
         {
           json: {
@@ -55,9 +55,9 @@ const ProjectOpacte = observer(
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["taskList"] });
+            queryClient.invalidateQueries({ queryKey: ['taskList'] });
             toast.dismiss();
-            toast.success("删除成功");
+            toast.success('删除成功');
             closeRef.current?.click();
           },
         }
@@ -69,51 +69,54 @@ const ProjectOpacte = observer(
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="ghost"
-            className="w-full cursor-pointer"
-            onClick={() =>
-              navigate(`/dashboard/${workspaceId}/${projectId}/${task.id}`)
-            }
+            variant='ghost'
+            className='w-full cursor-pointer'
+            // onClick={() =>
+            //   navigate(`/dashboard/${workspaceId}/${projectId}/${task.id}`)
+            // }
           >
-            {type === "kanban" ? (
-              <MoreHorizontalIcon></MoreHorizontalIcon>
-            ) : (
-              <MoreVertical />
-            )}
+            {type === 'kanban' ? <MoreHorizontalIcon /> : <MoreVertical />}
           </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
           <DropdownMenuItem asChild>
             <Button
-              variant="ghost"
-              className="w-full cursor-pointer"
+              variant='ghost'
+              className='w-full cursor-pointer'
               onClick={() => navigate(`${task.id}`)}
             >
               <Link />
               <span>细节</span>
             </Button>
           </DropdownMenuItem>
-          <TaskFromCard
-            workspaceId={workspaceId}
-            projectId={projectId}
-            type="edit"
-            userData={task.workspace.member}
-            currentUserId={userData.id}
-          >
-            <DropdownMenuItem asChild>
-              <Button variant="ghost" className="w-full cursor-pointer">
+          <DropdownMenuItem asChild>
+            <TaskFromCard
+              workspaceId={workspaceId}
+              projectId={projectId}
+              defaultData={task}
+              type='edit'
+              userData={task.workspace.member}
+              currentUserId={userData.id}
+            >
+              <Button
+                variant='ghost'
+                className='w-full cursor-pointer'
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
                 <PencilIcon />
                 <span>编辑</span>
               </Button>
-            </DropdownMenuItem>
-          </TaskFromCard>
+            </TaskFromCard>
+          </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="ghost" className="w-full cursor-pointer">
-                  <Trash className="text-red-500 hover:text-red-500" />
-                  <span className="text-red-500 hover:text-red-500">删除</span>
+                <Button variant='ghost' className='w-full cursor-pointer'>
+                  <Trash className='text-red-500 hover:text-red-500' />
+                  <span className='text-red-500 hover:text-red-500'>删除</span>
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -121,17 +124,17 @@ const ProjectOpacte = observer(
                   <DialogTitle>删除任务</DialogTitle>
                   <DialogDescription>
                     你确定要删除这个任务{task.name}吗?
-                    <span className="text-red-500">删除后将无法恢复</span>
+                    <span className='text-red-500'>删除后将无法恢复</span>
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button ref={closeRef} variant="outline">
+                    <Button ref={closeRef} variant='outline'>
                       取消
                     </Button>
                   </DialogClose>
                   <Button
-                    variant="destructive"
+                    variant='destructive'
                     onClick={handleDeleteTask}
                     disabled={deleteTaskLoading}
                   >

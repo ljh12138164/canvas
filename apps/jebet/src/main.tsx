@@ -13,6 +13,8 @@ import Index from "./page/error/Index";
 import { router } from "./router";
 import "@xyflow/react/dist/style.css";
 import { ReactFlowProvider } from "@xyflow/react";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import "react-photo-view/dist/react-photo-view.css";
 import "./index.css";
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 

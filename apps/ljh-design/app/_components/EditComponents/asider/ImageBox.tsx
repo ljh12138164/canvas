@@ -28,7 +28,7 @@ export const ImageBox = ({ editor }: { editor: Edit | undefined }) => {
                 sizes="100%"
                 alt={item?.alt_description || "插入图片"}
                 className="object-cover"
-              ></Image>
+              />
               <Link
                 href={item.links.html}
                 target="_blank"

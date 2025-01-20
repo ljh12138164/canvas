@@ -1,28 +1,29 @@
-import { UniqueIdentifier, useDroppable } from '@dnd-kit/core';
-
-import { TaskStatus, TaskWithWorkspace } from '@/types/workspace';
-import styled from 'styled-components';
-import { ScrollArea } from '../ui/scrollArea';
-import KanbanItem from './KanbanItem';
+import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
+import { TaskStatus, TaskWithWorkspace } from "@/types/workspace";
+import styled from "styled-components";
+import { ScrollArea } from "../ui/scrollArea";
+import KanbanItem from "./KanbanItem";
 
 const DropContainer = styled(ScrollArea)`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: #f0f0f0a7;
   height: 300px;
   position: relative;
-  z-index: 0;
+  z-index: 1;
+  overflow: visible;
 `;
 const DropItem = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
 `;
 
 const KanbanDrop = ({
   taskList,
   color,
-  parent,
+  // parent,
   status,
 }: {
   taskList: TaskWithWorkspace[] | false;
@@ -37,32 +38,19 @@ const KanbanDrop = ({
   const style = {
     color: isOver ? color : undefined,
   };
-
   //可拖拽的元素
   return (
-    <DropContainer ref={setNodeRef} style={style}>
-      {parent === null ? (
-        <>
-          {taskList.map((task) => (
-            <DropItem key={task.id}>
-              {/* 拖拽的元素 */}
-              <KanbanItem task={task} />
-            </DropItem>
-          ))}
-        </>
-      ) : null}
-      {taskList.map((item) =>
-        parent === item.id ? (
-          <>
-            {taskList.map((task) => (
-              <DropItem key={task.id}>
-                {/* 拖拽的元素 */}
-                <KanbanItem task={task} />
-              </DropItem>
-            ))}
-          </>
-        ) : null
-      )}
+    <DropContainer
+      ref={setNodeRef}
+      style={style}
+      className="bg-zinc-100 dark:bg-zinc-900"
+    >
+      {/* 任务列表 */}
+      {taskList.map((task) => (
+        <DropItem key={task.id}>
+          <KanbanItem task={task} />
+        </DropItem>
+      ))}
     </DropContainer>
   );
 };
