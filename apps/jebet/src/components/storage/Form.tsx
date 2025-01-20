@@ -61,9 +61,8 @@ const Form = ({
       toast.error('未选择文件');
       return;
     }
-    if (!file) return;
     if (type === 'create') {
-      if (!workspace) return;
+      if (!workspace || !file) return;
       return create(
         {
           form: {
@@ -95,30 +94,30 @@ const Form = ({
         defaultData?.name === data.name ||
         defaultData?.description === data.description
       ) {
-        return toast.success('保存成功');
+        // TODO:报错
+        return update(
+          {
+            json: {
+              id: defaultData?.id || '',
+              userId,
+              workspaceId,
+              name: data.name,
+              description: data.description || '',
+            },
+          },
+          {
+            onSuccess() {
+              toast.success('保存成功');
+              reset();
+              setFile(null);
+              close.current?.click();
+              queryClient.invalidateQueries({
+                queryKey: ['stoages', workspaceId],
+              });
+            },
+          }
+        );
       }
-      return update(
-        {
-          json: {
-            id: defaultData?.id || '',
-            userId,
-            workspaceId,
-            name: data.name,
-            description: data.description || '',
-          },
-        },
-        {
-          onSuccess() {
-            toast.success('保存成功');
-            reset();
-            setFile(null);
-            close.current?.click();
-            queryClient.invalidateQueries({
-              queryKey: ['stoages', workspaceId],
-            });
-          },
-        }
-      );
     }
   }
   return (
@@ -163,7 +162,7 @@ const Form = ({
           )}
         </div>
         <div className='flex flex-col gap-2'>
-          {!file && (
+          {!file && !defaultData?.file && (
             <UploadButton
               type='button'
               onClick={() => {
@@ -212,7 +211,7 @@ const Form = ({
         <Button
           type='submit'
           disabled={
-            !!(!file && defaultData?.file) || isLoading || updatePending
+            !!(!file && !defaultData?.file) || isLoading || updatePending
           }
           className='w-full mt-auto'
         >

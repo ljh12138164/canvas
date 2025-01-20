@@ -140,6 +140,7 @@ export const updateJebtTask = async ({
   description,
   assigneeId,
   status,
+  name,
   currentUserId,
   lastTime,
   id,
@@ -165,6 +166,7 @@ export const updateJebtTask = async ({
         assigneeId,
         status,
         lastTime,
+        name,
       },
     ])
     .eq("id", id)
@@ -226,4 +228,42 @@ export const addJebtTaskRemark = async ({
   console.log(taskError);
   if (taskError) throw new Error("服务器错误");
   return data[0];
+};
+
+/**
+ * ## 移动任务
+ *
+ */
+export const moveJebtTask = async ({
+  taskId,
+  currentUserId,
+  workspaceId,
+  projectId,
+  position,
+  TaskStatus,
+}: {
+  taskId: string;
+  currentUserId: string;
+  workspaceId: string;
+  projectId: string;
+  position: number;
+  TaskStatus: TaskStatus;
+}) => {
+  const [error] = await to(checkUser(currentUserId, workspaceId));
+  if (error) throw new Error("无权限");
+  const { data, error: taskError } = await supabaseJebt
+    .from("tasks")
+    .update([
+      {
+        position,
+        status: TaskStatus,
+        updated_at: new Date().toISOString(),
+      },
+    ])
+    .eq("id", taskId)
+    .eq("workspaceId", workspaceId)
+    .eq("projectId", projectId)
+    .select("*");
+  if (taskError) throw new Error("服务器错误");
+  return data;
 };

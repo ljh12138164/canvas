@@ -59,7 +59,7 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>编辑文件</DialogTitle>
+                <DialogTitle>编辑工作流</DialogTitle>
               </DialogHeader>
               <Form
                 type="update"
@@ -80,9 +80,9 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>删除文件</DialogTitle>
+                <DialogTitle>删除工作流</DialogTitle>
                 <DialogDescription>
-                  确认删除文件
+                  确认删除工作流
                   <span className="text-red-500 font-bold">
                     {row.original.name}
                   </span>

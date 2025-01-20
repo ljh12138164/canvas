@@ -8,7 +8,14 @@ const Logo = ({ to }: { to: string }) => {
       href={to || '/'}
       className='h-12 w-12 cursor-pointer flex items-center justify-center'
     >
-      <Image width={48} quality={75} height={48} src={logo} alt='logo' />
+      <Image
+        width={48}
+        quality={75}
+        height={48}
+        src={logo}
+        alt='logo'
+        priority={true}
+      />
     </Link>
   );
 };

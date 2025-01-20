@@ -2,6 +2,7 @@ import { StoageData } from '@/types/workspace';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
 import {
   Tooltip,
   TooltipContent,
@@ -11,6 +12,7 @@ import {
 import dayjs from 'dayjs';
 import MoreOpate from './MoreOpate';
 import { bitToMB, checkIsImage } from '@/lib/storage';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 import EditorButton from '../command/EditorButton';
 import { FileIcons } from './FileList';
 
@@ -55,23 +57,35 @@ export const columns: ColumnDef<StoageData>[] = [
             <TooltipTrigger asChild>
               <div className='pl-5 max-w-[200px] w-full truncate text-center grid grid-cols-[30px_1fr] justify-center items-center '>
                 <span>{FileIcons(row.getValue('type'), 5)}</span>
-                <span className='text-xs text-left max-w-[80px] truncate'>
+                <span className='text-xs text-left max-w-[80px] truncate flex gap-1'>
                   {row.getValue('type')}
+                  {checkIsImage(row.getValue('type')) && (
+                    <PhotoProvider>
+                      <PhotoView
+                        src={row.original.file}
+                        key={row.original.file}
+                      >
+                        <Badge> 图片预览</Badge>
+                      </PhotoView>
+                    </PhotoProvider>
+                  )}
                 </span>
               </div>
             </TooltipTrigger>
             <TooltipContent asChild>
-              <div>
-                {checkIsImage(row.getValue('type')) ? (
-                  <img
-                    src={row.original.file}
-                    alt={row.getValue('type')}
-                    className='w-full h-full object-cover'
-                  />
-                ) : (
-                  row.getValue('type')
-                )}
-              </div>
+              {/* <PhotoProvider> */}
+              {/* {checkIsImage(row.getValue('type')) ? (
+                  <PhotoView src={row.original.file} key={row.original.file}>
+                    <img
+                      src={row.original.file}
+                      alt={row.getValue('type')}
+                      className='w-[5rem] h-[5rem] object-cover'
+                    />
+                  </PhotoView>
+                ) : ( */}
+              {row.getValue('type')}
+              {/* )} */}
+              {/* </PhotoProvider> */}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

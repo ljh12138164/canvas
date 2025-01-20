@@ -236,9 +236,22 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
   useEffect(() => {
     if (!canvasEl.current) return;
     const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement, {
+      //保持对象的堆叠顺序
       preserveObjectStacking: true,
+      // 控制点（如旋转、缩放的手柄）会显示在画布覆盖层的上方
       controlsAboveOverlay: true,
+      // 为高分辨率显示器（如 Retina 屏幕）启用缩放支持
+      enableRetinaScaling: true,
+      // 启用右键点击事件,允许你处理画布上的右键菜单事件,用于实现自定义右键菜单功能
+      fireRightClick: true,
+      // 阻止浏览器默认的右键上下文菜单
+      stopContextMenu: true,
     });
+    canvas.wrapperEl.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      return false;
+    }, false);
+
 
     init({
       initCanvas: canvas,

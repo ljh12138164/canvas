@@ -1,18 +1,14 @@
 import { Hono } from 'hono';
-import { design } from './src/hono/design';
-import { jebt } from './src/hono/jebt';
 import { serve } from '@hono/node-server';
-import { note } from './src/hono/note';
 import { cors } from 'hono/cors';
 import { stream } from 'hono/streaming';
 import ZhipuAI from 'zhipuai-sdk-nodejs-v4';
 import { IncomingMessage } from 'http';
-
+// 依赖 pnpm add  hono @hono/node-server zhipuai-sdk-nodejs-v4 @types/node
 const ai = new ZhipuAI({
-  // 智谱AI的API密钥 901990b9c3b253eb71e20617aa2ee4cc.2pChbHlMynsuHd1M
-  apiKey: '901990b9c3b253eb71e20617aa2ee4cc.2pChbHlMynsuHd1M',
+  // 智谱AI的API密钥
+  apiKey: '',
 });
-
 // 跨域
 const app = new Hono()
   .use(
@@ -22,9 +18,6 @@ const app = new Hono()
     })
   )
   .basePath('/api')
-  .route('/design', design)
-  .route('/jebt', jebt)
-  .route('/note', note)
   .get('/', (c) => {
     return c.json({ message: 'Hello World' });
   })
@@ -38,6 +31,7 @@ const app = new Hono()
     });
     return c.json(data);
   })
+  // 非流式
   .post('/answer', async (c) => {
     const { prompt } = (await c.req.json()) as { prompt: string };
     const result = await ai.createCompletions({
@@ -47,6 +41,7 @@ const app = new Hono()
     });
     return c.json(result);
   })
+  // 流式
   .post('/stream', async (c) => {
     const { prompt } = (await c.req.json()) as { prompt: string };
     const result = (await ai.createCompletions({

@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
-import * as farbir from "fabric";
-import { InitFabicObject, JSON_KEY } from "@/app/_types/Edit";
+import { useRef, useState } from 'react';
+import * as farbir from 'fabric';
+import { InitFabicObject, JSON_KEY } from '@/app/_types/Edit';
 interface HistoryProps {
   canvas: farbir.Canvas | null;
   authZoom: () => Promise<void>;
@@ -39,19 +39,20 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
     }
     const workspace = canvas
       .getObjects()
-      .find((item) => (item as InitFabicObject).name === "board");
+      .find((item) => (item as InitFabicObject).name === 'board');
     const width = workspace?.width || 0;
     const height = workspace?.height || 0;
     const left = workspace?.left || 0;
     const top = workspace?.top || 0;
     if (workspace) {
+      // 设置画布缩放
       canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
       const image = canvas.toDataURL({
         width,
         height,
         left,
         top,
-        format: "png",
+        format: 'png',
         quality: 1,
         multiplier: 1,
       });

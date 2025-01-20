@@ -84,7 +84,11 @@ const ProjectList = observer(
                     }
                   }}
                   key={project.id}
-                  className={checkActive(project.id) ? 'active bg-white' : ''}
+                  className={
+                    checkActive(project.id)
+                      ? 'active bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                      : 'hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                  }
                 >
                   <img
                     className='rounded-sm'

@@ -10,6 +10,7 @@ import {
   deleteJebtTask,
   getJebtTask,
   getJebtTaskDetail,
+  moveJebtTask,
   updateJebtTask,
 } from "../../../server/jebt/task";
 
@@ -201,6 +202,43 @@ const task = new Hono()
       const { taskId, content, currentUserId } = c.req.valid("json");
       const [error, data] = await to(
         addJebtTaskRemark({ taskId, content, currentUserId })
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    }
+  )
+  // 移动
+  .post(
+    "/move",
+    zValidator(
+      "json",
+      z.object({
+        taskId: z.string(),
+        currentUserId: z.string(),
+        workspaceId: z.string(),
+        projectId: z.string(),
+        position: z.number(),
+        TaskStatus: z.nativeEnum(TaskStatus),
+      })
+    ),
+    async (c) => {
+      const {
+        taskId,
+        currentUserId,
+        workspaceId,
+        projectId,
+        position,
+        TaskStatus,
+      } = c.req.valid("json");
+      const [error, data] = await to(
+        moveJebtTask({
+          taskId,
+          currentUserId,
+          workspaceId,
+          projectId,
+          position,
+          TaskStatus,
+        })
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);

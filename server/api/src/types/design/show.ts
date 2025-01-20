@@ -29,6 +29,7 @@ export interface Upvote {
 
 // 标签
 export interface Tag {
+  id: string;
   showId: string;
   tag: string;
   userId: string;

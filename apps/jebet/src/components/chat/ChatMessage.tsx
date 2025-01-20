@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import UserMessageButton from '../command/UserMessageButton';
 import MessageItem from './MessageItem';
 import { MessageType } from '@/types/chat';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+
 const UserButtonsContainer = styled.div``;
 interface ChatMessageProps {
   workspace: Workspace & { member: Member[] };
@@ -63,13 +65,17 @@ const ChatMessage = observer(
                     <MessageItem message={messageData} />
                   )}
                   {messageData.type === MessageType.IMAGE && (
-                    <a
-                      href={messageData.message}
-                      target='_blank'
-                      className='flex items-center justify-center'
-                    >
-                      <ImageContainer src={messageData.message} />
-                    </a>
+                    <PhotoProvider>
+                      <PhotoView src={messageData.message} key={messageData.message}>
+                        {/* <a
+                          href={messageData.message}
+                          target='_blank'
+                          className='flex items-center justify-center'
+                        > */}
+                        <ImageContainer src={messageData.message} alt='上传图片'/>
+                        {/* </a> */}
+                      </PhotoView>
+                    </PhotoProvider>
                   )}
                 </MessageDescpt>
               );

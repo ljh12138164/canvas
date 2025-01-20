@@ -169,3 +169,23 @@ export const useCreateTaskRemark = () => {
     });
   return { createTaskRemark, createTaskRemarkLoading };
 };
+
+type MoveTaskInput = InferRequestType<typeof client.task.move.$post>;
+type MoveTaskOutput = InferResponseType<typeof client.task.move.$post, 200>;
+/**
+ * ## 移动任务
+ */
+export const useMoveTask = () => {
+  const { mutate: moveTask, isPending: moveTaskLoading } = useMutation<
+    MoveTaskOutput,
+    Error,
+    MoveTaskInput
+  >({
+    mutationFn: async (data) => {
+      const res = await client.task.move.$post(data);
+      if (!res.ok) throw new Error("移动任务失败");
+      return res.json();
+    },
+  });
+  return { moveTask, moveTaskLoading };
+};
