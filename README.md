@@ -35,7 +35,7 @@
   - 数据库操作
   - AI 对话(完成)
 
-#### Socket.io 聊天服务 (8088端口)----已上线（https://jebetsocket.ljhboard.cn）
+#### Socket.io 聊天服务 (8088端口)----已上线（wss://jebetsocket.ljhboard.cn）
 
 基于 Bun 构建的实聊天服务,位于 `server/jebetChat` 目录:
 
@@ -48,7 +48,7 @@
   - 数据的分发
   - 房间的概念
 
-#### note项目的tiptap协同服务 (8080端口)----已上线（https://socket.ljhboard.cn/）
+#### note项目的tiptap协同服务 (8080端口)----已上线（wss://socket.ljhboard.cn/）
 
 基于 Bun 构建的实时协作服务,位于 `server/ws` 目录:
 
