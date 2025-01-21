@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --port=8100",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": " biome check --fix --unsafe && biome lint . --fix",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -45,7 +45,6 @@
     "@tiptap/pm": "^2.11.0",
     "@tiptap/react": "^2.11.0",
     "@tiptap/starter-kit": "^2.11.0",
-    "@types/node": "^22.10.5",
     "@types/react": "19.0.1",
     "@types/react-big-calendar": "^1.16.1",
     "@xyflow/react": "^12.4.0",
@@ -95,8 +94,11 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@eslint/js": "^9.17.0",
+    "@ljh/lint": "workspace:*",
     "@tanstack/react-query-devtools": "^5.62.16",
+    "@types/node": "^22.10.6",
     "@types/react-dom": "19.0.2",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
@@ -105,6 +107,7 @@
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
     "postcss": "^8.4.49",
+    "stylelint": "^16.13.2",
     "tailwindcss": "^3.4.17",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "~5.6.3",

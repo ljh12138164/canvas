@@ -1,12 +1,9 @@
-import {
-  ChatSession,
-  GenerateContentStreamResult,
-} from "@google/generative-ai";
-import { zValidator } from "@hono/zod-validator";
-import { Hono } from "hono";
-import { stream } from "hono/streaming";
-import { z } from "zod";
-import { model } from "../../../server/ai";
+import type { ChatSession, GenerateContentStreamResult } from '@google/generative-ai';
+import { zValidator } from '@hono/zod-validator';
+import { Hono } from 'hono';
+import { stream } from 'hono/streaming';
+import { z } from 'zod';
+import { model } from '../../../server/ai';
 // const training_data = [
 //   {
 //     role: "user",
@@ -15,49 +12,41 @@ import { model } from "../../../server/ai";
 // ];
 export const chat = new Hono()
   // 非流式上下文
-  .post(
-    "/answer",
-    zValidator("json", z.object({ prompt: z.string() })),
-    async (c) => {
-      const { prompt } = c.req.valid("json");
-      const result = await model.generateContent(prompt);
-      return c.json({ result: result.response.text() });
-    }
-  )
+  .post('/answer', zValidator('json', z.object({ prompt: z.string() })), async (c) => {
+    const { prompt } = c.req.valid('json');
+    const result = await model.generateContent(prompt);
+    return c.json({ result: result.response.text() });
+  })
   // 流式传输
-  .post(
-    "/chat",
-    zValidator("json", z.object({ prompt: z.string() })),
-    async (c) => {
-      const { prompt } = c.req.valid("json");
-      // 设置上下文
-      const result = await model.generateContentStream(prompt);
-      return stream(c, async (stream) => {
-        for await (const chunk of result.stream) {
-          stream.write(chunk.text());
-        }
-      });
-    }
-  )
+  .post('/chat', zValidator('json', z.object({ prompt: z.string() })), async (c) => {
+    const { prompt } = c.req.valid('json');
+    // 设置上下文
+    const result = await model.generateContentStream(prompt);
+    return stream(c, async (stream) => {
+      for await (const chunk of result.stream) {
+        stream.write(chunk.text());
+      }
+    });
+  })
   // 流式上下文
   .post(
-    "/stream",
+    '/stream',
     zValidator(
-      "json",
+      'json',
       z.object({
         prompt: z.string(),
         history: z
           .array(
             z.object({
-              role: z.enum(["user", "model"]),
+              role: z.enum(['user', 'model']),
               parts: z.array(z.object({ text: z.string() })),
-            })
+            }),
           )
           .optional(),
-      })
+      }),
     ),
     async (c) => {
-      const { prompt, history } = c.req.valid("json");
+      const { prompt, history } = c.req.valid('json');
       // 上下文
       let chats: ChatSession | undefined;
       // 流式传输
@@ -79,5 +68,5 @@ export const chat = new Hono()
           stream.write(chunk.text());
         }
       });
-    }
+    },
   );

@@ -3,9 +3,9 @@ import FromCard from '@/components/board/FromCard';
 import { Card } from '@/components/ui/card';
 import { WorkSpaceSettingCard } from '@/page/dashboard/workspace/setting';
 import { useGetJebtUserList } from '@/server/hooks/user';
-import { Project, Workspace } from '@/types/workspace';
+import type { Project, Workspace } from '@/types/workspace';
 import { DEFAULT_ICON } from '@/utils/board';
-import { UserResource } from '@clerk/types';
+import type { UserResource } from '@clerk/types';
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 import { animate } from './ProjectContent';
@@ -36,11 +36,11 @@ const ProjectSetting = observer(
             <>
               <Card>
                 <FromCard
-                  formType='project'
+                  formType="project"
                   canEdit={data?.user.role === 'admin'}
                   Back={true}
                   editId={project.id}
-                  type='edit'
+                  type="edit"
                   userData={userData}
                   defaultFrom={{
                     name: project.name || '',
@@ -48,19 +48,12 @@ const ProjectSetting = observer(
                   }}
                 />
               </Card>
-              <DeleteCard
-                type='project'
-                imageUrl={project.imageUrl}
-                workspaceId={workSpace.id}
-                projectId={project.id}
-                canEdit={data?.user.role === 'admin'}
-                userId={userData.id}
-              />
+              <DeleteCard type="project" imageUrl={project.imageUrl} workspaceId={workSpace.id} projectId={project.id} canEdit={data?.user.role === 'admin'} userId={userData.id} />
             </>
           )}
         </WorkSpaceSettingCard>
       </ProjectSettingContainer>
     );
-  }
+  },
 );
 export default ProjectSetting;

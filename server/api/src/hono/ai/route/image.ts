@@ -1,13 +1,10 @@
-import { Hono } from "hono";
-import { model } from "../../../server/ai";
+import type { ChatSession, GenerateContentStreamResult } from '@google/generative-ai';
 // import { InlineDataPart, TextPart } from "@google/generative-ai";
-import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
-import { stream } from "hono/streaming";
-import {
-  ChatSession,
-  GenerateContentStreamResult,
-} from "@google/generative-ai";
+import { zValidator } from '@hono/zod-validator';
+import { Hono } from 'hono';
+import { stream } from 'hono/streaming';
+import { z } from 'zod';
+import { model } from '../../../server/ai';
 
 /**
  * 使用谷歌ai多模态输入
@@ -16,17 +13,17 @@ import {
 export const image = new Hono()
   // 图片链接
   .post(
-    "/image",
+    '/image',
     zValidator(
-      "json",
+      'json',
       z.object({
         image: z.string(),
         prompt: z.string().optional(),
         filetype: z.string(),
-      })
+      }),
     ),
     async (c) => {
-      const { image, prompt, filetype } = c.req.valid("json");
+      const { image, prompt, filetype } = c.req.valid('json');
       // image为图片连接
       const imageResp = await fetch(image as string).then((response) => {
         return response.arrayBuffer();
@@ -34,27 +31,27 @@ export const image = new Hono()
       const result = await model.generateContent([
         {
           inlineData: {
-            data: Buffer.from(imageResp).toString("base64"),
+            data: Buffer.from(imageResp).toString('base64'),
             mimeType: filetype as string,
           },
         },
-        (prompt as string) || "解释这张图片",
+        (prompt as string) || '解释这张图片',
       ]);
       return c.json({ result: result.response.text() });
-    }
+    },
   )
   .post(
-    "/imageStream",
+    '/imageStream',
     zValidator(
-      "json",
+      'json',
       z.object({
         image: z.string(),
         prompt: z.string().optional(),
         filetype: z.string(),
-      })
+      }),
     ),
     async (c) => {
-      const { image, prompt, filetype } = c.req.valid("json");
+      const { image, prompt, filetype } = c.req.valid('json');
       // image为图片连接
       const imageResp = await fetch(image as string).then((response) => {
         return response.arrayBuffer();
@@ -62,59 +59,59 @@ export const image = new Hono()
       const result = await model.generateContentStream([
         {
           inlineData: {
-            data: Buffer.from(imageResp).toString("base64"),
+            data: Buffer.from(imageResp).toString('base64'),
             mimeType: filetype as string,
           },
         },
-        (prompt as string) || "解释这张图片",
+        (prompt as string) || '解释这张图片',
       ]);
       return stream(c, async (stream) => {
         for await (const chunk of result.stream) {
           stream.write(chunk.text());
         }
       });
-    }
+    },
   )
   // file 为文件流
   .post(
-    "/file",
+    '/file',
     zValidator(
-      "form",
+      'form',
       z.object({
         image: z.instanceof(File),
         prompt: z.string().optional(),
-      })
+      }),
     ),
     async (c) => {
-      const { image, prompt } = c.req.valid("form");
+      const { image, prompt } = c.req.valid('form');
 
       // 将base64字符串转换为ArrayBuffer
       const fileBuffer = Buffer.from(await image.arrayBuffer());
       const result = await model.generateContent([
         {
           inlineData: {
-            data: fileBuffer.toString("base64"),
+            data: fileBuffer.toString('base64'),
             mimeType: image.type,
           },
         },
-        (prompt as string) || "解释这张图片",
+        (prompt as string) || '解释这张图片',
       ]);
       return c.json({ result: result.response.text() });
-    }
+    },
   )
   // 流式传输
   .post(
-    "/fileStream",
+    '/fileStream',
     zValidator(
-      "form",
+      'form',
       z.object({
         image: z.instanceof(File),
         prompt: z.string().optional(),
         history: z.string().optional(),
-      })
+      }),
     ),
     async (c) => {
-      const { image, prompt, history } = c.req.valid("form");
+      const { image, prompt, history } = c.req.valid('form');
 
       let chats: ChatSession | undefined;
       // 流式传输
@@ -132,21 +129,21 @@ export const image = new Hono()
         streams = await chats.sendMessageStream([
           {
             inlineData: {
-              data: fileBuffer.toString("base64"),
+              data: fileBuffer.toString('base64'),
               mimeType: image.type,
             },
           },
-          (prompt as string) || "解释这张图片",
+          (prompt as string) || '解释这张图片',
         ]);
       else
         streams = await model?.generateContentStream([
           {
             inlineData: {
-              data: fileBuffer.toString("base64"),
+              data: fileBuffer.toString('base64'),
               mimeType: image.type,
             },
           },
-          (prompt as string) || "解释这张图片",
+          (prompt as string) || '解释这张图片',
         ]);
       // 返回流式传输
       return stream(c, async (stream) => {
@@ -154,5 +151,5 @@ export const image = new Hono()
           stream.write(chunk.text());
         }
       });
-    }
+    },
   );

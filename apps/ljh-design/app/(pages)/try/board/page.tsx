@@ -1,5 +1,5 @@
-import TryBoard from "@/app/_components/Try/TryBoard";
-import { inter, myFont } from "@/app/_lib/font";
+import TryBoard from '@/app/_components/Try/TryBoard';
+import { inter, myFont } from '@/app/_lib/font';
 
 export default function TryBoardPage() {
   return (

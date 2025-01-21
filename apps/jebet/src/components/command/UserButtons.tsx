@@ -1,4 +1,4 @@
-import { ActiveUser } from '@/types/chat';
+import type { ActiveUser } from '@/types/chat';
 import styled from 'styled-components';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 

@@ -1,23 +1,13 @@
 import { useCreateMessage } from '@/server/hooks/chat.js';
-import { Member, Workspace } from '@/types/workspace.js';
+import type { Member, Workspace } from '@/types/workspace.js';
 import Mention from '@tiptap/extension-mention';
 import Placeholder from '@tiptap/extension-placeholder';
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
 import Underline from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import {
-  BoldIcon,
-  ItalicIcon,
-  ListIcon,
-  ListOrderedIcon,
-  ListTodoIcon,
-  RedoIcon,
-  StrikethroughIcon,
-  UnderlineIcon,
-  UndoIcon,
-} from 'lucide-react';
-import TaskItem from '@tiptap/extension-task-item';
-import TaskList from '@tiptap/extension-task-list';
+import { BoldIcon, ItalicIcon, ListIcon, ListOrderedIcon, ListTodoIcon, RedoIcon, StrikethroughIcon, UnderlineIcon, UndoIcon } from 'lucide-react';
 import styled from 'styled-components';
 import { ScrollArea } from '../ui/scrollArea';
 import { useTheme } from '../ui/theme-provider';
@@ -140,24 +130,11 @@ const Tiptap = ({ workspace, userId }: TiptapProps) => {
     },
   ];
   return (
-    <section className='h-full w-full'>
-      <TiptapToolbarContainer>
-        {editor && (
-          <TiptapToolbar
-            tiptapToolBar={tiptapToolBar}
-            editor={editor}
-            userId={userId}
-            workspace={workspace}
-          />
-        )}
-      </TiptapToolbarContainer>
-      <ScrollArea className='h-full w-full'>
+    <section className="h-full w-full">
+      <TiptapToolbarContainer>{editor && <TiptapToolbar tiptapToolBar={tiptapToolBar} editor={editor} userId={userId} workspace={workspace} />}</TiptapToolbarContainer>
+      <ScrollArea className="h-full w-full">
         {/* tiptap实例 */}
-        <EditorContent
-          className='h-full'
-          placeholder='请输入内容'
-          editor={editor}
-        />
+        <EditorContent className="h-full" placeholder="请输入内容" editor={editor} />
       </ScrollArea>
     </section>
   );

@@ -3,9 +3,7 @@ import { cn } from '@/lib/utils';
 import { SelectLabel, type SelectLabelProps } from 'radix-vue';
 import type { HTMLAttributes } from 'vue';
 
-const props = defineProps<
-  SelectLabelProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<SelectLabelProps & { class?: HTMLAttributes['class'] }>();
 </script>
 
 <template>

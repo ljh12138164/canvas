@@ -16,14 +16,11 @@ function isValidConfig(config: any): config is ConfigItem {
 }
 
 const delegatedProps = computed(() => {
-  if (['ZodObject', 'ZodArray'].includes(props.shape?.type))
-    return { schema: props.shape?.schema };
+  if (['ZodObject', 'ZodArray'].includes(props.shape?.type)) return { schema: props.shape?.schema };
   return undefined;
 });
 
-const { isDisabled, isHidden, isRequired, overrideOptions } = useDependencies(
-  props.fieldName,
-);
+const { isDisabled, isHidden, isRequired, overrideOptions } = useDependencies(props.fieldName);
 </script>
 
 <template>

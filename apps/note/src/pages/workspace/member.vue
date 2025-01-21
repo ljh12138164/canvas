@@ -14,14 +14,12 @@ watch(
   () => route.params.workspaceId,
   (newVal) => {
     workspaceId.value = newVal as string;
-  }
+  },
 );
 onBeforeMount(() => {
   queryClient.invalidateQueries({ queryKey: ['collaborators'] });
 });
-const { collaborators, isLoading: collaboratorsIsLoading } = useCollaborators(
-  workspaceId.value
-);
+const { collaborators, isLoading: collaboratorsIsLoading } = useCollaborators(workspaceId.value);
 // const { inviteCollaborator } = useInviteCollaborator();
 </script>
 <template>

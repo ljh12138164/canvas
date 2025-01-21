@@ -2,8 +2,8 @@
 import Editor from '@/components/Edit/Tiptap.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
-import type { getWorkspaceByIdResponse } from '@/hooks/workspace';
 import type { Doc } from '@/hooks/doc';
+import type { getWorkspaceByIdResponse } from '@/hooks/workspace';
 
 const props = defineProps<{
   workspace: getWorkspaceByIdResponse | undefined;

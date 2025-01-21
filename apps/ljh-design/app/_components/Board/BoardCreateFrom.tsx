@@ -1,14 +1,14 @@
 import { cn, getTryBoardById, indexDBChange } from '@/app/_lib/utils';
-import { BoardResponse } from '@/app/_types/board';
+import type { BoardResponse } from '@/app/_types/board';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UseMutateFunction, useQueryClient } from '@tanstack/react-query';
-import { RefObject } from 'react';
+import { type UseMutateFunction, useQueryClient } from '@tanstack/react-query';
+import { nanoid } from 'nanoid';
+import type { RefObject } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { nanoid } from 'nanoid';
 export interface Board {
   id: string;
   name: string;
@@ -20,23 +20,14 @@ export interface Board {
   width: number;
 }
 const zod = z.object({
-  name: z
-    .string({ message: '请输入画布名称' })
-    .min(2, { message: '画布名称至少为2个字符' })
-    .max(20, { message: '画布名称最多为20个字符' }),
-  width: z
-    .string({ message: '请输入画布宽度' })
-    .min(1, { message: '画布宽度最小为1' })
-    .max(7, { message: '画布宽度最大为999999' }),
-  height: z
-    .string({ message: '请输入画布高度' })
-    .min(1, { message: '画布高度最小为1' })
-    .max(7, { message: '画布高度最大为999999' }),
+  name: z.string({ message: '请输入画布名称' }).min(2, { message: '画布名称至少为2个字符' }).max(20, { message: '画布名称最多为20个字符' }),
+  width: z.string({ message: '请输入画布宽度' }).min(1, { message: '画布宽度最小为1' }).max(7, { message: '画布宽度最大为999999' }),
+  height: z.string({ message: '请输入画布高度' }).min(1, { message: '画布高度最小为1' }).max(7, { message: '画布高度最大为999999' }),
 });
 interface BoardCreateFromProps {
   type: 'create' | 'edit' | 'copy';
   children: React.ReactNode;
-  defaultValues?: any;
+  defaultValues?: Board;
   userId?: string;
   closeref: RefObject<HTMLButtonElement | null>;
   setChange?: (change: boolean) => void;
@@ -53,23 +44,15 @@ interface BoardCreateFromProps {
       >
     | undefined;
 }
-const BoardCreateFrom = ({
-  type,
-  children,
-  closeref,
-  defaultValues,
-  userId,
-  mutate,
-  setChange,
-}: BoardCreateFromProps) => {
+const BoardCreateFrom = ({ type, children, closeref, defaultValues, userId, mutate, setChange }: BoardCreateFromProps) => {
   const query = useQueryClient();
   const { register, handleSubmit, formState } = useForm<z.infer<typeof zod>>({
     resolver: zodResolver(zod),
     defaultValues: defaultValues
       ? {
           name: defaultValues.name,
-          width: defaultValues.width + '',
-          height: defaultValues.height + '',
+          width: `${defaultValues.width}`,
+          height: `${defaultValues.height}`,
         }
       : {
           name: '',
@@ -87,6 +70,7 @@ const BoardCreateFrom = ({
             ...data,
             width: Number(data.width),
             height: Number(data.height),
+            // @ts-ignore
             json: type === 'create' ? '' : defaultValues.json,
           },
           {
@@ -103,7 +87,7 @@ const BoardCreateFrom = ({
               toast.dismiss();
               toast.error(type === 'create' ? '创建失败' : '更新失败');
             },
-          }
+          },
         );
       }
     } else {
@@ -131,6 +115,7 @@ const BoardCreateFrom = ({
         toast.loading('修改中...');
         indexDBChange({
           type: 'edit',
+          // @ts-ignore
           editData: {
             ...defaultValues,
             ...data,
@@ -149,6 +134,7 @@ const BoardCreateFrom = ({
         toast.dismiss();
         (async () => {
           toast.loading('复制中...');
+          // @ts-ignore
           const board = await getTryBoardById(defaultValues.id);
           await indexDBChange({
             type: 'add',
@@ -176,66 +162,28 @@ const BoardCreateFrom = ({
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
-      <div className='flex flex-col gap-2'>
-        <Label htmlFor='name' aria-label='画布名称'>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="name" aria-label="画布名称">
           画布名称
         </Label>
-        <Input
-          id='name'
-          className={cn(formState.errors.name && 'border-red-500')}
-          placeholder='请输入画布名称'
-          {...register('name')}
-        />
-        <span
-          className={cn(
-            'transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]',
-            formState.errors.name && 'h-4'
-          )}
-        >
-          {formState.errors.name?.message}
-        </span>
+        <Input id="name" className={cn(formState.errors.name && 'border-red-500')} placeholder="请输入画布名称" {...register('name')} />
+        <span className={cn('transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]', formState.errors.name && 'h-4')}>{formState.errors.name?.message}</span>
       </div>
-      <section className='flex gap-2 '>
-        <div className='flex flex-col gap-2 flex-1'>
-          <Label htmlFor='width' aria-label='画布宽度'>
+      <section className="flex gap-2 ">
+        <div className="flex flex-col gap-2 flex-1">
+          <Label htmlFor="width" aria-label="画布宽度">
             画布宽度
           </Label>
-          <Input
-            className={cn(formState.errors.width && 'border-red-500')}
-            id='width'
-            placeholder='请输入画布宽度'
-            type='number'
-            {...register('width')}
-          />
-          <span
-            className={cn(
-              'transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]',
-              formState.errors.width && 'h-4'
-            )}
-          >
-            {formState.errors.width?.message}
-          </span>
+          <Input className={cn(formState.errors.width && 'border-red-500')} id="width" placeholder="请输入画布宽度" type="number" {...register('width')} />
+          <span className={cn('transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]', formState.errors.width && 'h-4')}>{formState.errors.width?.message}</span>
         </div>
-        <div className='flex flex-col gap-2  flex-1'>
-          <Label htmlFor='height' aria-label='画布高度'>
+        <div className="flex flex-col gap-2  flex-1">
+          <Label htmlFor="height" aria-label="画布高度">
             画布高度
           </Label>
-          <Input
-            className={cn(formState.errors.height && 'border-red-500')}
-            id='height'
-            placeholder='请输入画布高度'
-            type='number'
-            {...register('height')}
-          />
-          <span
-            className={cn(
-              'transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]',
-              formState.errors.height && 'h-4'
-            )}
-          >
-            {formState.errors.height?.message}
-          </span>
+          <Input className={cn(formState.errors.height && 'border-red-500')} id="height" placeholder="请输入画布高度" type="number" {...register('height')} />
+          <span className={cn('transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]', formState.errors.height && 'h-4')}>{formState.errors.height?.message}</span>
         </div>
       </section>
       <footer>{children}</footer>

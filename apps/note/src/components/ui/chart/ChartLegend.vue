@@ -5,12 +5,9 @@ import { BulletLegend } from '@unovis/ts';
 import { VisBulletLegend } from '@unovis/vue';
 import { nextTick, onMounted, ref } from 'vue';
 
-const props = withDefaults(
-  defineProps<{ items: BulletLegendItemInterface[] }>(),
-  {
-    items: () => [],
-  },
-);
+const props = withDefaults(defineProps<{ items: BulletLegendItemInterface[] }>(), {
+  items: () => [],
+});
 
 const emits = defineEmits<{
   legendItemClick: [d: BulletLegendItemInterface, i: number];
@@ -24,9 +21,7 @@ onMounted(() => {
   nextTick(() => {
     const elements = elRef.value?.querySelectorAll(selector);
     const classes = buttonVariants({ variant: 'ghost', size: 'xs' }).split(' ');
-    elements?.forEach((el) =>
-      el.classList.add(...classes, '!inline-flex', '!mr-2'),
-    );
+    elements?.forEach((el) => el.classList.add(...classes, '!inline-flex', '!mr-2'));
   });
 });
 
@@ -44,11 +39,7 @@ function onLegendItemClick(d: BulletLegendItemInterface, i: number) {
     // apply selection, set other item as inactive
     emits(
       'update:items',
-      props.items.map((item) =>
-        item.name === d.name
-          ? { ...d, inactive: false }
-          : { ...item, inactive: true },
-      ),
+      props.items.map((item) => (item.name === d.name ? { ...d, inactive: false } : { ...item, inactive: true })),
     );
   }
 }

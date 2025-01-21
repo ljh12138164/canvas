@@ -1,21 +1,15 @@
 import DrawerFromCard from '@/components/board/DrawerFromCard';
 import Logo from '@/components/command/Logo';
 import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { useWorkspace } from '@/server/hooks/board';
 import userStore from '@/store/user';
-import { Workspace } from '@/types/workspace';
+import type { Workspace } from '@/types/workspace';
 import { SignedIn, UserButton } from '@clerk/clerk-react';
-import { UserResource } from '@clerk/types';
+import type { UserResource } from '@clerk/types';
 import { useMemoizedFn } from 'ahooks';
+import { File, Flower } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
@@ -24,7 +18,6 @@ import { TfiMenuAlt } from 'react-icons/tfi';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ProjectList from './ProjectList';
-import { File, Flower } from 'lucide-react';
 
 type PathRush = 'home' | 'member' | 'setting' | 'chat' | 'storage' | 'flow';
 const Asider = styled.aside`
@@ -160,7 +153,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
         </div>
         <TitleContain>
           <TitleP>工作区</TitleP>
-          <DrawerFromCard type='workspace' />
+          <DrawerFromCard type="workspace" />
         </TitleContain>
         <SelectContainer>
           {isLoading && !error && <LoadingP>加载中</LoadingP>}
@@ -169,23 +162,17 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
               onValueChange={(value) => {
                 navigate(`/dashboard/${value}`);
               }}
-              value={
-                userStore.workspace
-                  ? userStore.workspace?.find(
-                      (item) => item.id === router.pathname.split('/')[2]
-                    )?.id
-                  : ''
-              }
+              value={userStore.workspace ? userStore.workspace?.find((item) => item.id === router.pathname.split('/')[2])?.id : ''}
             >
-              <SelectTrigger className='w-full h-full  dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200'>
-                <SelectValue placeholder='选择工作区' />
+              <SelectTrigger className="w-full h-full  dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200">
+                <SelectValue placeholder="选择工作区" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   {Array.isArray(data) &&
                     data?.map((item: Workspace) => (
                       <SelectItems key={item.id} value={item.id}>
-                        <div className='flex items-center justify-start gap-2 '>
+                        <div className="flex items-center justify-start gap-2 ">
                           <SelectImage src={item.imageUrl} alt={item.name} />
                           <p>{item.name}</p>
                         </div>
@@ -201,7 +188,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
         </SelectContainer>
         <Title>菜单</Title>
         <RouterDiv
-          variant='ghost'
+          variant="ghost"
           className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('home') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
           asChild
           onClick={() => {
@@ -217,7 +204,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           onClick={() => {
             handleJump('member');
           }}
-          variant='ghost'
+          variant="ghost"
           className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('member') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
           asChild
         >
@@ -231,7 +218,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           onClick={() => {
             handleJump('setting');
           }}
-          variant='ghost'
+          variant="ghost"
           className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('setting') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
           asChild
         >
@@ -241,34 +228,19 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
           </ButtonContainer>
         </RouterDiv>
 
-        <RouterDiv
-          onClick={() => handleJump('chat')}
-          variant='ghost'
-          className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('chat') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
-          asChild
-        >
+        <RouterDiv onClick={() => handleJump('chat')} variant="ghost" className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('chat') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`} asChild>
           <ButtonContainer>
             <LuMessageSquare />
             <span>聊天</span>
           </ButtonContainer>
         </RouterDiv>
-        <RouterDiv
-          onClick={() => handleJump('storage')}
-          variant='ghost'
-          className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('storage') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
-          asChild
-        >
+        <RouterDiv onClick={() => handleJump('storage')} variant="ghost" className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('storage') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`} asChild>
           <ButtonContainer>
             <File />
             <span>团队空间</span>
           </ButtonContainer>
         </RouterDiv>
-        <RouterDiv
-          onClick={() => handleJump('flow')}
-          variant='ghost'
-          className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('flow') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
-          asChild
-        >
+        <RouterDiv onClick={() => handleJump('flow')} variant="ghost" className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('flow') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`} asChild>
           <ButtonContainer>
             <Flower />
             <span>工作流</span>
@@ -277,9 +249,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
 
         <Separator />
 
-        {parmas?.workspaceId && userStore.workspace && (
-          <ProjectList workspaceId={parmas?.workspaceId} userId={user.id} />
-        )}
+        {parmas?.workspaceId && userStore.workspace && <ProjectList workspaceId={parmas?.workspaceId} userId={user.id} />}
       </RouterContainer>
       {/* 用户信息 */}
       <UserButtonContainer>

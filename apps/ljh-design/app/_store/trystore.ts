@@ -1,5 +1,5 @@
-import { Board } from "@/app/_types/board";
-import { create } from "zustand";
+import type { Board } from '@/app/_types/board';
+import { create } from 'zustand';
 
 interface InitData {
   data: Board | undefined;

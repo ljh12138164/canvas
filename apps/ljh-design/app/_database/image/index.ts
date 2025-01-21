@@ -1,5 +1,5 @@
-import supabase from "@/app/_database/supabase";
-import { nanoid } from "nanoid";
+import supabase from '@/app/_database/supabase';
+import { nanoid } from 'nanoid';
 /**
  * @description 上传图片到云端
  * @param file 文件
@@ -9,10 +9,10 @@ interface UploadImageClound {
   file: File;
 }
 export const uploadImageclound = async ({ file }: UploadImageClound) => {
-  const fileName = `${nanoid()}-${file.name}`.replace("/", "");
+  const fileName = `${nanoid()}-${file.name}`.replace('/', '');
   const { data, error } = await supabase.storage
     // 桶名字
-    .from("UPLOAD_IMG")
+    .from('UPLOAD_IMG')
     .upload(fileName, file);
   if (error) {
     // Handle error
@@ -31,7 +31,7 @@ interface DeleteImageClound {
 export const deleteImageClound = async ({ image }: DeleteImageClound) => {
   const { error } = await supabase.storage
     //  桶名字
-    .from("UPLOAD_IMG")
+    .from('UPLOAD_IMG')
     // 删除图片路径
     .remove([image]);
   if (error) {

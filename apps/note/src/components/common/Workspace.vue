@@ -6,7 +6,7 @@ const router = useRouter();
 watch(
   () => router.currentRoute.value.path,
   (path) => {
-    console.log(path);
+    // console.log(path);
   },
 );
 </script>

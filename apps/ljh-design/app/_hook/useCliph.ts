@@ -1,6 +1,6 @@
-import * as fabric from "fabric";
-import { useRef } from "react";
-import toast from "react-hot-toast";
+import type * as fabric from 'fabric';
+import { useRef } from 'react';
+import toast from 'react-hot-toast';
 interface UserClipboard {
   canvas: fabric.Canvas | null;
 }
@@ -18,7 +18,7 @@ export const useClipboard = ({ canvas }: UserClipboard) => {
       value.evented = true;
       clipboard.current.push(value);
     });
-    toast.success("复制成功");
+    toast.success('复制成功');
   };
   const pasty = () => {
     if (clipboard.current.length === 0) return;

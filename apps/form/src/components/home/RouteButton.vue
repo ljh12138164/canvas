@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
 const props = defineProps<{
-  title: string
-  path: string
-  active: boolean
-}>()
-const emit = defineEmits(['click'])
+  title: string;
+  path: string;
+  active: boolean;
+}>();
+const emit = defineEmits(['click']);
 const handleClick = () => {
-  emit('click', props.path)
-}
+  emit('click', props.path);
+};
 </script>
 <template>
   <RouterLink

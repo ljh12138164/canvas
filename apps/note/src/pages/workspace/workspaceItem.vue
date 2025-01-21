@@ -2,14 +2,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Skeleton from '@/components/ui/skeleton/Skeleton.vue';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useGetWorkspaceById } from '@/hooks/workspace';
 import { useQueryClient } from '@tanstack/vue-query';
 import { onBeforeMount } from 'vue';
@@ -19,15 +12,14 @@ const queryClient = useQueryClient();
 
 const route = useRoute();
 const workspaceId = ref(route.params.workspaceId as string);
-const { workspace, workspaceError, workspaceIsLoading, workspaceIsFetching } =
-  useGetWorkspaceById(workspaceId.value);
+const { workspace, workspaceError, workspaceIsLoading, workspaceIsFetching } = useGetWorkspaceById(workspaceId.value);
 watch(
   () => route.params.workspaceId,
   () => {
     workspaceId.value = route.params.workspaceId as string;
     queryClient.invalidateQueries({ queryKey: ['workspaceItem'] });
     queryClient.invalidateQueries({ queryKey: ['collaborators'] });
-  }
+  },
 );
 
 onBeforeMount(() => {

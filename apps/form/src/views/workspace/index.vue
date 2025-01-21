@@ -1,36 +1,29 @@
 <script setup lang="ts">
-import DarkButton from '@/components/common/DarkButton.vue'
-import Logo from '@/components/common/Logo.vue'
-import UserButton from '@/components/common/UserButton.vue'
-import TooltipComponents from '@/components/form/TooltipComponents.vue'
-import RouteButton from '@/components/home/RouteButton.vue'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import useUser from '@/stores/user'
-import { Icon } from '@iconify/vue'
-import {
-  ChartBarIcon,
-  HomeIcon,
-  LucideMousePointerSquareDashed,
-  Menu,
-  Search,
-  ShoppingCartIcon,
-} from 'lucide-vue-next'
-import { ref, watch } from 'vue'
-import { RouterView, useRoute } from 'vue-router'
+import DarkButton from '@/components/common/DarkButton.vue';
+import Logo from '@/components/common/Logo.vue';
+import UserButton from '@/components/common/UserButton.vue';
+import TooltipComponents from '@/components/form/TooltipComponents.vue';
+import RouteButton from '@/components/home/RouteButton.vue';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import useUser from '@/stores/user';
+import { Icon } from '@iconify/vue';
+import { ChartBarIcon, HomeIcon, LucideMousePointerSquareDashed, Menu, Search, ShoppingCartIcon } from 'lucide-vue-next';
+import { ref, watch } from 'vue';
+import { RouterView, useRoute } from 'vue-router';
 
-const { userData } = useUser()
-const route = useRoute()
-const activePath = ref('/' + route.path.split('/')[1])
+const { userData } = useUser();
+const route = useRoute();
+const activePath = ref(`/${route.path.split('/')[1]}`);
 watch(
   () => route.path,
   (newVal) => {
-    activePath.value = '/' + newVal.split('/')[2]
+    activePath.value = `/${newVal.split('/')[2]}`;
   },
   { immediate: true },
-)
+);
 </script>
 
 <template>

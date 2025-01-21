@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { WithClassAsProps } from './interface'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { ArrowLeft } from 'lucide-vue-next'
-import { useCarousel } from './useCarousel'
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { ArrowLeft } from 'lucide-vue-next';
+import type { WithClassAsProps } from './interface';
+import { useCarousel } from './useCarousel';
 
-const props = defineProps<WithClassAsProps>()
+const props = defineProps<WithClassAsProps>();
 
-const { orientation, canScrollPrev, scrollPrev } = useCarousel()
+const { orientation, canScrollPrev, scrollPrev } = useCarousel();
 </script>
 
 <template>

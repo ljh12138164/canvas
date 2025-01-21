@@ -1,8 +1,8 @@
-import { FiEdit3 } from "react-icons/fi";
-import { Project } from "@/types/workspace";
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import type { Project } from '@/types/workspace';
+import { FiEdit3 } from 'react-icons/fi';
+import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 const ProjectNavContainer = styled.nav`
   display: flex;
@@ -43,12 +43,7 @@ export default function ProjectNav({ project }: { project: Project }) {
         <ProjectItemName>{project.name}</ProjectItemName>
       </ProjectItem>
 
-      <EditText
-        variant="outline"
-        onClick={() =>
-          navigate(`/dashboard/${workspaceId}/${project.id}/setting`)
-        }
-      >
+      <EditText variant="outline" onClick={() => navigate(`/dashboard/${workspaceId}/${project.id}/setting`)}>
         <FiEdit3 />
         <span>编辑</span>
       </EditText>

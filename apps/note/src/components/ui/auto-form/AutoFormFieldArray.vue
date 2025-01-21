@@ -1,10 +1,5 @@
 <script setup lang="ts" generic="T extends z.ZodAny">
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { FormItem, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
@@ -25,15 +20,11 @@ const props = defineProps<{
   disabled?: boolean;
 }>();
 
-function isZodArray(
-  item: z.ZodArray<any> | z.ZodDefault<any>,
-): item is z.ZodArray<any> {
+function isZodArray(item: z.ZodArray<any> | z.ZodDefault<any>): item is z.ZodArray<any> {
   return item instanceof z.ZodArray;
 }
 
-function isZodDefault(
-  item: z.ZodArray<any> | z.ZodDefault<any>,
-): item is z.ZodDefault<any> {
+function isZodDefault(item: z.ZodArray<any> | z.ZodDefault<any>): item is z.ZodDefault<any> {
   return item instanceof z.ZodDefault;
 }
 

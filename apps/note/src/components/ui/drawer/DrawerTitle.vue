@@ -4,9 +4,7 @@ import type { DrawerTitleProps } from 'vaul-vue';
 import { DrawerTitle } from 'vaul-vue';
 import { type HtmlHTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  DrawerTitleProps & { class?: HtmlHTMLAttributes['class'] }
->();
+const props = defineProps<DrawerTitleProps & { class?: HtmlHTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

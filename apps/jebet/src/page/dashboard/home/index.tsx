@@ -31,14 +31,14 @@ const Home = observer(() => {
   // 未选择工作区时显示空状态
   return (
     <HomeContainer>
-      <div className='text-muted-foreground text-center'>
-        <FolderPlus className='w-10 h-10 mx-auto mb-4' />
-        <p className='text-lg font-medium'>您还未选择工作区</p>
-        <p className='text-sm'>创建一个新的工作区开始使用</p>
+      <div className="text-muted-foreground text-center">
+        <FolderPlus className="w-10 h-10 mx-auto mb-4" />
+        <p className="text-lg font-medium">您还未选择工作区</p>
+        <p className="text-sm">创建一个新的工作区开始使用</p>
       </div>
       <ButtonContainer>
-        <DrawerFromCard type='workspace'>
-          <Button variant='outline'>创建工作区</Button>
+        <DrawerFromCard type="workspace">
+          <Button variant="outline">创建工作区</Button>
         </DrawerFromCard>
         <JoinCard />
       </ButtonContainer>

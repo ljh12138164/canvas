@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import { AutoForm } from '@/components/ui/auto-form'
-import { Button } from '@/components/ui/button'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Skeleton } from '@/components/ui/skeleton'
-import { getZodSchema } from '@/lib/form'
-import { type CreateFormItem } from '@/types/form'
-import { onBeforeMount, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import * as z from 'zod'
+import { AutoForm } from '@/components/ui/auto-form';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import { getZodSchema } from '@/lib/form';
+import type { CreateFormItem } from '@/types/form';
+import { onBeforeMount, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import * as z from 'zod';
 
-const router = useRouter()
-const loading = ref(true)
-const fieldConfig = ref<Record<string, any>>({})
+const router = useRouter();
+const loading = ref(true);
+const fieldConfig = ref<Record<string, any>>({});
 const props = defineProps<{
-  schema: string
-  isPending?: boolean
-  className?: string
-}>()
-const emit = defineEmits(['submit'])
-const formData = ref<CreateFormItem[] | null>(JSON.parse(props.schema))
-const CreateShemas = ref<z.ZodObject<any, any, any, any>>(z.object({}))
+  schema: string;
+  isPending?: boolean;
+  className?: string;
+}>();
+const emit = defineEmits(['submit']);
+const formData = ref<CreateFormItem[] | null>(JSON.parse(props.schema));
+const CreateShemas = ref<z.ZodObject<any, any, any, any>>(z.object({}));
 
 onBeforeMount(async () => {
   formData?.value?.forEach((item) => {
-    const schema = getZodSchema(item, fieldConfig) as z.ZodObject<any, any, any, any>
-    if (schema) CreateShemas.value = CreateShemas?.value?.merge(schema)
-  })
-  loading.value = false
-})
+    const schema = getZodSchema(item, fieldConfig) as z.ZodObject<any, any, any, any>;
+    if (schema) CreateShemas.value = CreateShemas?.value?.merge(schema);
+  });
+  loading.value = false;
+});
 </script>
 
 <template>

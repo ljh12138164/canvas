@@ -1,4 +1,4 @@
-import CreateShow from "@/app/_components/Formue/CreateShow";
+import CreateShow from '@/app/_components/Formue/CreateShow';
 
 const CreateShowPage = () => {
   return <CreateShow />;

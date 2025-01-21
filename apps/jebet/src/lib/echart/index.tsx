@@ -8,11 +8,7 @@ import { zhCN } from 'date-fns/locale';
 export const getData = <T extends number>(type: T) => {
   const newDate = new Date().getTime();
   const arr = Array.from({ length: type }, (_, index) => {
-    return format(
-      new Date(newDate - index * 60 * 60 * 24 * 1000),
-      'yyyy-MM-dd',
-      { locale: zhCN }
-    );
+    return format(new Date(newDate - index * 60 * 60 * 24 * 1000), 'yyyy-MM-dd', { locale: zhCN });
   });
   return arr;
 };

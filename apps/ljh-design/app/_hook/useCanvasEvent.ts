@@ -1,9 +1,9 @@
-import { DefalutUser, Tool, UserState } from '@/app/_types/Edit';
-import * as fabric from 'fabric';
-import { useEffect, RefObject } from 'react';
-import { WebsocketProvider } from 'y-websocket';
-import * as Y from 'yjs';
-import { Sessions } from '../_types/user';
+import { type DefalutUser, Tool, type UserState } from '@/app/_types/Edit';
+import type * as fabric from 'fabric';
+import { type RefObject, useEffect } from 'react';
+import type { WebsocketProvider } from 'y-websocket';
+import type * as Y from 'yjs';
+import type { Sessions } from '../_types/user';
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
   tool: Tool;
@@ -21,18 +21,7 @@ interface CanvasEventProps {
  * canvas事件，创建图形（create），变更选择图形（updated），取消选择图形（cleared）
  * @param {fabric.Canvas} canvas
  */
-const useCanvasEvent = ({
-  canvas,
-  tool,
-  save,
-  setSelectedObject,
-  setTool,
-  websockets,
-  user,
-  userState,
-  yMaps,
-  userData,
-}: CanvasEventProps) => {
+const useCanvasEvent = ({ canvas, tool, save, setSelectedObject, setTool, websockets, user, userState, yMaps, userData }: CanvasEventProps) => {
   useEffect(() => {
     if (canvas) {
       // 不能用添加对象，因为初始化添加对象时，
@@ -95,17 +84,7 @@ const useCanvasEvent = ({
           select: canvas.getActiveObjects().map((item) => item.id),
         });
 
-        if (
-          tool == Tool.Font ||
-          tool === Tool.Fill ||
-          tool === Tool.Filter ||
-          tool === Tool.FilterSetting ||
-          tool === Tool.StrokeColor ||
-          tool === Tool.StrokeWidth ||
-          tool === Tool.RemoveBg ||
-          tool === Tool.Opacity
-        )
-          setTool(Tool.Select);
+        if (tool === Tool.Font || tool === Tool.Fill || tool === Tool.Filter || tool === Tool.FilterSetting || tool === Tool.StrokeColor || tool === Tool.StrokeWidth || tool === Tool.RemoveBg || tool === Tool.Opacity) setTool(Tool.Select);
         setSelectedObject([]);
       });
     }

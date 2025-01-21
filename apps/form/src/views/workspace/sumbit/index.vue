@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { PinInput, PinInputGroup, PinInputInput } from '@/components/ui/pin-input'
-import { useToast } from '@/components/ui/toast/use-toast'
-import { Loader2 } from 'lucide-vue-next'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { PinInput, PinInputGroup, PinInputInput } from '@/components/ui/pin-input';
+import { useToast } from '@/components/ui/toast/use-toast';
+import { Loader2 } from 'lucide-vue-next';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
-const { toast } = useToast()
-const loading = ref(false)
-const code = ref<string[]>([])
+const router = useRouter();
+const { toast } = useToast();
+const loading = ref(false);
+const code = ref<string[]>([]);
 
 const handleSubmit = () => {
-  if (code.value.length !== 6) return
+  if (code.value.length !== 6) return;
   toast({
     title: '加入成功',
     description: '正在跳转到表单...',
-  })
-  router.push(`/workspace/submit/${code.value.join('')}`)
-}
+  });
+  router.push(`/workspace/submit/${code.value.join('')}`);
+};
 </script>
 <template>
   <div class="flex h-full items-center justify-center bg-background p-4">

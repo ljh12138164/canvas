@@ -1,31 +1,18 @@
 import to from 'await-to-js';
 import { nanoid } from 'nanoid';
-import { Project } from '../../../types/jebt/board';
+import type { Project } from '../../../types/jebt/board';
 import { supabaseJebt } from '../../supabase/jebt';
-import {
-  checkMember,
-  checkUser,
-  DEFAULT_ICON,
-  deleteImageClound,
-  JEBT_URL,
-  uploadImageclound,
-} from '../board';
+import { DEFAULT_ICON, JEBT_URL, checkMember, checkUser, deleteImageClound, uploadImageclound } from '../board';
 
 /**
  * 获取项目数据
  * @param workspaceId
  * @returns
  */
-export const getJebtWorkspaceProject = async (
-  userId: string,
-  workspaceId: string
-): Promise<Project[]> => {
+export const getJebtWorkspaceProject = async (userId: string, workspaceId: string): Promise<Project[]> => {
   const [checkUserError] = await to(checkUser(userId, workspaceId));
   if (checkUserError) throw new Error('无权限');
-  const { data, error } = await supabaseJebt
-    .from('projects')
-    .select('*')
-    .eq('workspaceId', workspaceId);
+  const { data, error } = await supabaseJebt.from('projects').select('*').eq('workspaceId', workspaceId);
   if (error) throw new Error('服务器错误');
   return data;
 };
@@ -57,14 +44,10 @@ export const createJebtProject = async ({
       .select('*');
     if (error) throw new Error('服务器错误');
     return data[0];
-  } else {
-    const { data, error } = await supabaseJebt
-      .from('projects')
-      .insert([{ workspaceId, name, id, imageUrl }])
-      .select('*');
-    if (error) throw new Error('服务器错误');
-    return data[0];
   }
+  const { data, error } = await supabaseJebt.from('projects').insert([{ workspaceId, name, id, imageUrl }]).select('*');
+  if (error) throw new Error('服务器错误');
+  return data[0];
 };
 
 /**
@@ -82,10 +65,7 @@ export const getJebtProjectList = async ({
 }): Promise<Project[]> => {
   const [checkUserError] = await to(checkUser(userId, workspaceId));
   if (checkUserError) throw new Error('无权限');
-  const { data, error } = await supabaseJebt
-    .from('projects')
-    .select('*')
-    .eq('workspaceId', workspaceId);
+  const { data, error } = await supabaseJebt.from('projects').select('*').eq('workspaceId', workspaceId);
   if (error) throw new Error('服务器错误');
   return data;
 };
@@ -114,17 +94,14 @@ export const updateJebtProject = async ({
 
   if (typeof imageUrl !== 'string') {
     //默认图片
-    let remove: Promise<any> | null = Promise.resolve(null);
+    let remove: Promise<boolean | null> = Promise.resolve(null);
     if (oldImageUrl !== DEFAULT_ICON) {
       remove = deleteImageClound({
         image: oldImageUrl.slice(JEBT_URL.length + 11),
       });
     }
     // 上传图片
-    const [_, imageUrls] = await Promise.all([
-      remove,
-      uploadImageclound({ file: imageUrl }),
-    ]);
+    const [_, imageUrls] = await Promise.all([remove, uploadImageclound({ file: imageUrl })]);
     const { data, error } = await supabaseJebt
       .from('projects')
       .update([
@@ -137,20 +114,19 @@ export const updateJebtProject = async ({
       .select('*');
     if (error) throw new Error('服务器错误');
     return data[0];
-  } else {
-    const { data, error } = await supabaseJebt
-      .from('projects')
-      .update([
-        {
-          name,
-          imageUrl: imageUrl,
-        },
-      ])
-      .eq('id', projectId)
-      .select('*');
-    if (error) throw new Error('服务器错误');
-    return data[0];
   }
+  const { data, error: projectError } = await supabaseJebt
+    .from('projects')
+    .update([
+      {
+        name,
+        imageUrl: imageUrl,
+      },
+    ])
+    .eq('id', projectId)
+    .select('*');
+  if (projectError) throw new Error('服务器错误');
+  return data[0];
 };
 
 /**
@@ -170,16 +146,13 @@ export const deleteJebtProject = async ({
 }): Promise<boolean> => {
   const [error, _] = await to(checkMember(userId, workspaceId));
   if (error) throw new Error(error.message);
-  let deleteImage: Promise<any> | null = Promise.resolve(null);
+  let deleteImage: Promise<boolean | null> = Promise.resolve(null);
   if (imageUrl !== DEFAULT_ICON) {
     deleteImage = deleteImageClound({
       image: imageUrl.slice(JEBT_URL.length + 11),
     });
   }
-  const [__, projectError] = await Promise.all([
-    deleteImage,
-    supabaseJebt.from('projects').delete().eq('id', projectId),
-  ]);
+  const [__, projectError] = await Promise.all([deleteImage, supabaseJebt.from('projects').delete().eq('id', projectId)]);
 
   if (projectError.error) throw new Error('服务器错误');
   return true;

@@ -1,18 +1,9 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
-import {
-  ChartCrosshair,
-  ChartLegend,
-  defaultColors,
-} from '@/components/ui/chart';
+import { ChartCrosshair, ChartLegend, defaultColors } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 import type { BulletLegendItemInterface } from '@unovis/ts';
 import { Axis, GroupedBar, StackedBar } from '@unovis/ts';
-import {
-  VisAxis,
-  VisGroupedBar,
-  VisStackedBar,
-  VisXYContainer,
-} from '@unovis/vue';
+import { VisAxis, VisGroupedBar, VisStackedBar, VisXYContainer } from '@unovis/vue';
 import { useMounted } from '@vueuse/core';
 import { type Component, computed, ref } from 'vue';
 import type { BaseChartProps } from '.';
@@ -56,9 +47,7 @@ type KeyOfT = Extract<keyof T, string>;
 type Data = (typeof props.data)[number];
 
 const index = computed(() => props.index as KeyOfT);
-const colors = computed(() =>
-  props.colors?.length ? props.colors : defaultColors(props.categories.length),
-);
+const colors = computed(() => (props.colors?.length ? props.colors : defaultColors(props.categories.length)));
 const legendItems = ref<BulletLegendItemInterface[]>(
   props.categories.map((category, i) => ({
     name: category,
@@ -73,14 +62,8 @@ function handleLegendItemClick(d: BulletLegendItemInterface, i: number) {
   emits('legendItemClick', d, i);
 }
 
-const VisBarComponent = computed(() =>
-  props.type === 'grouped' ? VisGroupedBar : VisStackedBar,
-);
-const selectorsBar = computed(() =>
-  props.type === 'grouped'
-    ? GroupedBar.selectors.bar
-    : StackedBar.selectors.bar,
-);
+const VisBarComponent = computed(() => (props.type === 'grouped' ? VisGroupedBar : VisStackedBar));
+const selectorsBar = computed(() => (props.type === 'grouped' ? GroupedBar.selectors.bar : StackedBar.selectors.bar));
 </script>
 
 <template>

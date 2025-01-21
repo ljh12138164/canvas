@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FormInputIcon } from 'lucide-vue-next'
+import { FormInputIcon } from 'lucide-vue-next';
 </script>
 
 <template>

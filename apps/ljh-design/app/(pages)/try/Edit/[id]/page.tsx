@@ -1,6 +1,6 @@
-import { Providers } from "@/app/_provide/providers";
-import TryCanvas from "@/app/_components/Try/TryCanvas";
-import { inter, myFont } from "@/app/_lib/font";
+import TryCanvas from '@/app/_components/Try/TryCanvas';
+import { inter, myFont } from '@/app/_lib/font';
+import { Providers } from '@/app/_provide/providers';
 
 type Params = Promise<{
   id: string;
@@ -8,11 +8,9 @@ type Params = Promise<{
 export default async function Home({ params }: { params: Params }) {
   const { id } = await params;
   return (
-    <section
-      className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden`}
-    >
+    <section className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden`}>
       <Providers>
-        <TryCanvas id={id}></TryCanvas>
+        <TryCanvas id={id} />
       </Providers>
     </section>
   );

@@ -1,6 +1,6 @@
-import { supabaseForm } from "../../supabase/form";
-import { Form, SumbitForm } from "../../../types/form";
-import { nanoid } from "nanoid";
+import { nanoid } from 'nanoid';
+import type { Form, SumbitForm } from '../../../types/form';
+import { supabaseForm } from '../../supabase/form';
 
 /**
  * ## 创建提交
@@ -19,7 +19,7 @@ export const createSubmit = async ({
   userId: string;
 }): Promise<SumbitForm> => {
   const { data, error } = await supabaseForm(token)
-    .from("submit")
+    .from('submit')
     .insert([
       {
         id: nanoid(),
@@ -28,8 +28,8 @@ export const createSubmit = async ({
         submit,
       },
     ])
-    .select("*");
-  if (error) throw new Error("服务器错误");
+    .select('*');
+  if (error) throw new Error('服务器错误');
   return data[0];
 };
 
@@ -45,10 +45,7 @@ export const getMySubmit = async ({
   token: string;
   userId: string;
 }): Promise<(SumbitForm & { form: Form })[]> => {
-  const { data, error } = await supabaseForm(token)
-    .from("submit")
-    .select("*,form(*)")
-    .eq("userId", userId);
-  if (error) throw new Error("服务器错误");
+  const { data, error } = await supabaseForm(token).from('submit').select('*,form(*)').eq('userId', userId);
+  if (error) throw new Error('服务器错误');
   return data;
 };

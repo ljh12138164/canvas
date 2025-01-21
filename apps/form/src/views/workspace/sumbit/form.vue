@@ -42,33 +42,33 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { useGetInviteCodeData } from '@/hooks/board'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Button } from '@/components/ui/button'
-import { useRouter } from 'vue-router'
-import FormPreviwe from '@/components/form/FormPreviwe.vue'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { toast } from '@/lib'
-import { useSubmitBoard } from '@/hooks/submit'
+import FormPreviwe from '@/components/form/FormPreviwe.vue';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGetInviteCodeData } from '@/hooks/board';
+import { useSubmitBoard } from '@/hooks/submit';
+import { toast } from '@/lib';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
-const inviteCode = useRoute().params.inviteCode as string
-const { mutate, isPending } = useSubmitBoard()
-const { data: boardData, isLoading, error } = useGetInviteCodeData(inviteCode)
+const router = useRouter();
+const inviteCode = useRoute().params.inviteCode as string;
+const { mutate, isPending } = useSubmitBoard();
+const { data: boardData, isLoading, error } = useGetInviteCodeData(inviteCode);
 const submit = (data: Record<string, any>) => {
-  if (!boardData.value) return
+  if (!boardData.value) return;
   mutate(
     { json: { id: boardData.value.id, submit: JSON.stringify(data) } },
     {
       onError: () => {
-        toast.error('提交失败')
+        toast.error('提交失败');
       },
       onSuccess: () => {
-        toast.success('提交成功')
-        router.push(`/workspace/board`)
+        toast.success('提交成功');
+        router.push('/workspace/board');
       },
     },
-  )
-}
+  );
+};
 </script>

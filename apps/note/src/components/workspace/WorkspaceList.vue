@@ -5,12 +5,7 @@ import type { Profiles } from '@/types/user';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Skeleton from '../ui/skeleton/Skeleton.vue';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 const props = defineProps<{
   workspaces: (Workspace & { profiles: Profiles })[] | undefined;
   isLoading: boolean;
@@ -26,11 +21,9 @@ watch(
   () => route.params.workspaceId,
   (newVal) => {
     activeWorkspaceId.value = newVal as string;
-  }
+  },
 );
-const { workspaceIsFetching } = useGetWorkspaceById(
-  route.params.workspaceId as string
-);
+const { workspaceIsFetching } = useGetWorkspaceById(route.params.workspaceId as string);
 const { workspacesIsLoading } = useGetWorkspaces();
 const handleClick = (id: string) => {
   if (workspaceIsFetching.value || workspacesIsLoading.value) return;

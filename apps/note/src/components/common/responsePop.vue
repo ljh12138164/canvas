@@ -1,26 +1,10 @@
 <script lang="ts" setup>
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { createReusableTemplate, useMediaQuery } from "@vueuse/core";
-import { ref } from "vue";
-import DialogFooter from "../ui/dialog/DialogFooter.vue";
-import DialogClose from "../ui/dialog/DialogClose.vue";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import { createReusableTemplate, useMediaQuery } from '@vueuse/core';
+import { ref } from 'vue';
+import DialogClose from '../ui/dialog/DialogClose.vue';
+import DialogFooter from '../ui/dialog/DialogFooter.vue';
 
 const closeRef = ref();
 const closeRef2 = ref();
@@ -34,7 +18,7 @@ defineExpose({
 });
 // Reuse `form` section
 const [UseTemplate, GridForm] = createReusableTemplate();
-const isDesktop = useMediaQuery("(min-width: 768px)");
+const isDesktop = useMediaQuery('(min-width: 768px)');
 
 const isOpen = ref(false);
 </script>

@@ -1,51 +1,45 @@
-import { useMoveTask } from "@/server/hooks/tasks";
-import { TaskStatus, TaskWithWorkspace } from "@/types/workspace";
-import {
-  DndContext,
-  DragEndEvent,
-  DragOverlay,
-  UniqueIdentifier,
-  defaultDropAnimationSideEffects,
-} from "@dnd-kit/core";
-import { restrictToWindowEdges } from "@dnd-kit/modifiers";
-import { useQueryClient } from "@tanstack/react-query";
-import { useMemoizedFn } from "ahooks";
-import { CircleDashedIcon, CircleIcon } from "lucide-react";
-import { useMemo, useState } from "react";
-import styled from "styled-components";
-import { Separator } from "../ui/separator";
-import KanbanDrop from "./KanbanDrop";
-import KanbanItem from "./KanbanItem";
+import { useMoveTask } from '@/server/hooks/tasks';
+import { TaskStatus, type TaskWithWorkspace } from '@/types/workspace';
+import { DndContext, type DragEndEvent, DragOverlay, type UniqueIdentifier, defaultDropAnimationSideEffects } from '@dnd-kit/core';
+import { restrictToWindowEdges } from '@dnd-kit/modifiers';
+import { useQueryClient } from '@tanstack/react-query';
+import { useMemoizedFn } from 'ahooks';
+import { CircleDashedIcon, CircleIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import styled from 'styled-components';
+import { Separator } from '../ui/separator';
+import KanbanDrop from './KanbanDrop';
+import KanbanItem from './KanbanItem';
 
 const taskStateIcon = {
   [TaskStatus.BACKLOG]: {
     icon: CircleDashedIcon,
-    dropColor: "gray",
-    color: "text-gray-500",
+    dropColor: 'gray',
+    color: 'text-gray-500',
     state: TaskStatus.BACKLOG,
   },
   [TaskStatus.IN_REVIEW]: {
     icon: CircleIcon,
-    color: "text-blue-500",
-    dropColor: "#6c7eae",
+    color: 'text-blue-500',
+    dropColor: '#6c7eae',
     state: TaskStatus.IN_REVIEW,
   },
   [TaskStatus.TODO]: {
     icon: CircleIcon,
-    color: "text-green-500",
-    dropColor: "green",
+    color: 'text-green-500',
+    dropColor: 'green',
     state: TaskStatus.TODO,
   },
   [TaskStatus.IN_PROGRESS]: {
     icon: CircleIcon,
-    color: "text-yellow-500",
-    dropColor: "#c6b87d",
+    color: 'text-yellow-500',
+    dropColor: '#c6b87d',
     state: TaskStatus.IN_PROGRESS,
   },
   [TaskStatus.DONE]: {
     icon: CircleIcon,
-    color: "text-red-500",
-    dropColor: "#d38686",
+    color: 'text-red-500',
+    dropColor: '#d38686',
     state: TaskStatus.DONE,
   },
 };
@@ -87,7 +81,7 @@ const dropAnimation = {
   sideEffects: defaultDropAnimationSideEffects({
     styles: {
       active: {
-        opacity: "0.5",
+        opacity: '0.5',
       },
     },
   }),
@@ -102,21 +96,11 @@ const Kanban = ({
 }) => {
   const taskStateList = useMemo(() => {
     return {
-      [TaskStatus.TODO]: taskList.filter(
-        (task) => task.status === TaskStatus.TODO
-      ),
-      [TaskStatus.IN_PROGRESS]: taskList.filter(
-        (task) => task.status === TaskStatus.IN_PROGRESS
-      ),
-      [TaskStatus.DONE]: taskList.filter(
-        (task) => task.status === TaskStatus.DONE
-      ),
-      [TaskStatus.BACKLOG]: taskList.filter(
-        (task) => task.status === TaskStatus.BACKLOG
-      ),
-      [TaskStatus.IN_REVIEW]: taskList.filter(
-        (task) => task.status === TaskStatus.IN_REVIEW
-      ),
+      [TaskStatus.TODO]: taskList.filter((task) => task.status === TaskStatus.TODO),
+      [TaskStatus.IN_PROGRESS]: taskList.filter((task) => task.status === TaskStatus.IN_PROGRESS),
+      [TaskStatus.DONE]: taskList.filter((task) => task.status === TaskStatus.DONE),
+      [TaskStatus.BACKLOG]: taskList.filter((task) => task.status === TaskStatus.BACKLOG),
+      [TaskStatus.IN_REVIEW]: taskList.filter((task) => task.status === TaskStatus.IN_REVIEW),
     };
   }, [taskList]);
   const [parent] = useState<UniqueIdentifier | null>(null);
@@ -141,19 +125,10 @@ const Kanban = ({
         return;
       }
       // 获取旧数据
-      const oldData = queryClient.getQueryData<TaskWithWorkspace[]>([
-        "taskList",
-        activeTask.workspaceId,
-        activeTask.projectId,
-      ]);
-      const newData = oldData?.map((task) =>
-        task.id === activeTask.id ? { ...task, status: overStatus } : task
-      );
+      const oldData = queryClient.getQueryData<TaskWithWorkspace[]>(['taskList', activeTask.workspaceId, activeTask.projectId]);
+      const newData = oldData?.map((task) => (task.id === activeTask.id ? { ...task, status: overStatus } : task));
       // 设置乐观更新
-      queryClient.setQueryData(
-        ["taskList", activeTask.workspaceId, activeTask.projectId],
-        newData
-      );
+      queryClient.setQueryData(['taskList', activeTask.workspaceId, activeTask.projectId], newData);
       // 更新任务状态
       moveTask(
         {
@@ -170,12 +145,9 @@ const Kanban = ({
           // 错误时
           onError: (error) => {
             console.error(error);
-            queryClient.setQueryData(
-              ["taskList", activeTask.workspaceId, activeTask.projectId],
-              oldData
-            );
+            queryClient.setQueryData(['taskList', activeTask.workspaceId, activeTask.projectId], oldData);
           },
-        }
+        },
       );
     }
   });
@@ -183,39 +155,23 @@ const Kanban = ({
   if (!taskList) return null;
   return (
     // DND 上下文
-    <DndContext
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      modifiers={[restrictToWindowEdges]}
-    >
-      <div style={{ position: "relative", zIndex: 0 }}>
+    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} modifiers={[restrictToWindowEdges]}>
+      <div style={{ position: 'relative', zIndex: 0 }}>
         {/* 状态栏 */}
         <KanbanNav>
-          {Object.entries(taskStateIcon).map(
-            ([status, { icon: Icon, color, state, dropColor }]) => (
-              <div
-                key={status}
-                style={{ minWidth: "200px", minHeight: "200px" }}
-              >
-                {/* 头部状态栏 */}
-                <StateItem className="bg-zinc-100 dark:bg-zinc-800">
-                  <Icon className={color} />
-                  <span>{state}</span>
-                  <span>
-                    {state !== TaskStatus.ALL && taskStateList[state].length}
-                  </span>
-                </StateItem>
-                <Separator />
-                {/* 拖拽区域 */}
-                <KanbanDrop
-                  status={state}
-                  parent={parent}
-                  color={dropColor}
-                  taskList={state !== TaskStatus.ALL && taskStateList[state]}
-                />
-              </div>
-            )
-          )}
+          {Object.entries(taskStateIcon).map(([status, { icon: Icon, color, state, dropColor }]) => (
+            <div key={status} style={{ minWidth: '200px', minHeight: '200px' }}>
+              {/* 头部状态栏 */}
+              <StateItem className="bg-zinc-100 dark:bg-zinc-800">
+                <Icon className={color} />
+                <span>{state}</span>
+                <span>{state !== TaskStatus.ALL && taskStateList[state].length}</span>
+              </StateItem>
+              <Separator />
+              {/* 拖拽区域 */}
+              <KanbanDrop status={state} parent={parent} color={dropColor} taskList={state !== TaskStatus.ALL && taskStateList[state]} />
+            </div>
+          ))}
         </KanbanNav>
       </div>
       {/* 拖拽覆盖 */}
@@ -223,10 +179,10 @@ const Kanban = ({
         {activeId ? (
           <div
             style={{
-              position: "relative",
+              position: 'relative',
               zIndex: 999999,
-              transformOrigin: "0 0",
-              touchAction: "none",
+              transformOrigin: '0 0',
+              touchAction: 'none',
             }}
           >
             <KanbanItem task={taskList.find((task) => task.id === activeId)!} />

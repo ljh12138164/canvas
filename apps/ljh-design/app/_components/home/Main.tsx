@@ -1,7 +1,7 @@
-"use client";
-import { Button } from "@/app/_components/ui/button";
-import useUsers from "@/app/_hook/useUser";
-import Link from "next/link";
+'use client';
+import { Button } from '@/app/_components/ui/button';
+import useUsers from '@/app/_hook/useUser';
+import Link from 'next/link';
 
 const Main = () => {
   const { user } = useUsers({ redirects: false });
@@ -12,11 +12,9 @@ const Main = () => {
         <h1 className="text-5xl font-bold mb-6">
           释放创意，<span className="text-primary">设计未来</span>
         </h1>
-        <p className="text-xl text-gray-600 mb-8">
-          简单易用的在线设计工具，让创意更轻松地实现
-        </p>
+        <p className="text-xl text-gray-600 mb-8">简单易用的在线设计工具，让创意更轻松地实现</p>
         <div className="space-x-4">
-          <Link href={user ? "/board" : "/try/Edit"}>
+          <Link href={user ? '/board' : '/try/Edit'}>
             <Button size="lg">前往工作区</Button>
           </Link>
           <Link href="/forum">

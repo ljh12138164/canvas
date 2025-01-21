@@ -1,16 +1,12 @@
-import * as fabric from 'fabric';
-import { RefObject, useEffect, useState } from 'react';
+import type * as fabric from 'fabric';
+import { type RefObject, useEffect, useState } from 'react';
 import { IndexeddbPersistence } from 'y-indexeddb';
 import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
-import {
-  getAddObject,
-  getUserState,
-  typeToActive,
-} from '../_lib/editor/editor';
-import { Board } from '../_types/board';
-import { DefalutUser, UserState } from '../_types/Edit';
-import { Sessions } from '../_types/user';
+import { getAddObject, getUserState, typeToActive } from '../_lib/editor/editor';
+import type { DefalutUser, UserState } from '../_types/Edit';
+import type { Board } from '../_types/board';
+import type { Sessions } from '../_types/user';
 
 //创建文档
 const ydoc = new Y.Doc();
@@ -36,9 +32,7 @@ export const useYjs = ({ data, canvas, user, userData }: YjsProps) => {
     // indexDB
     const yIndexDb = new IndexeddbPersistence(data.id, ydoc);
     yIndexDb.clearData();
-    yIndexDb.on('synced', () => {
-      console.log('同步');
-    });
+    yIndexDb.on('synced', () => {});
     return () => {
       yIndexDb.destroy();
     };
@@ -47,17 +41,12 @@ export const useYjs = ({ data, canvas, user, userData }: YjsProps) => {
 
   // 协同
   useEffect(() => {
-    const websocket = new WebsocketProvider(
-      process.env.NEXT_PUBLIC_WS_URL!,
-      data?.id,
-      ydoc,
-      {
-        connect: true,
-        maxBackoffTime: 5000,
-        // 禁用广播通道,同源策略的
-        disableBc: true,
-      }
-    );
+    const websocket = new WebsocketProvider(process.env.NEXT_PUBLIC_WS_URL!, data?.id, ydoc, {
+      connect: true,
+      maxBackoffTime: 5000,
+      // 禁用广播通道,同源策略的
+      disableBc: true,
+    });
     // 设置本地状态
     websocket.awareness.setLocalStateField('user', userData.current);
 

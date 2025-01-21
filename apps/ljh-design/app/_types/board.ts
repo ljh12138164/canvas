@@ -25,3 +25,10 @@ export interface BoardData {
   url?: string;
   isTemplate?: boolean;
 }
+
+export interface BoardCreateData {
+  id: string;
+  name?: string;
+  created_at?: string;
+  updated_at: string;
+}

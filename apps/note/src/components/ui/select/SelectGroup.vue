@@ -3,9 +3,7 @@ import { cn } from '@/lib/utils';
 import { SelectGroup, type SelectGroupProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  SelectGroupProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<SelectGroupProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

@@ -5,9 +5,7 @@ import { StepperRoot, useForwardPropsEmits } from 'radix-vue';
 
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  StepperRootProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<StepperRootProps & { class?: HTMLAttributes['class'] }>();
 const emits = defineEmits<StepperRootEmits>();
 
 const delegatedProps = computed(() => {

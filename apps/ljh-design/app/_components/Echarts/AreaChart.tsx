@@ -1,11 +1,11 @@
-import { useEchart } from "@/app/_hook/useEcharts";
-import { useEffect, useMemo } from "react";
+import { useEchart } from '@/app/_hook/useEcharts';
+import { useEffect, useMemo } from 'react';
 
 const AreaChart = () => {
   const option = useMemo(() => {
     return {
       title: {
-        text: "ECharts 入门示例",
+        text: 'ECharts 入门示例',
       },
     };
   }, []);
@@ -16,7 +16,7 @@ const AreaChart = () => {
     charts.current?.setOption(option);
   }, [option, charts, echartRef]);
 
-  return <div ref={echartRef}></div>;
+  return <div ref={echartRef} />;
 };
 
 export default AreaChart;

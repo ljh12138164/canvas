@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
@@ -10,6 +10,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: aiResponse });
   } catch (error) {
-    return NextResponse.json({ error: "处理请求时出错" }, { status: 500 });
+    return NextResponse.json({ error: '处理请求时出错' }, { status: 500 });
   }
 }

@@ -1,6 +1,6 @@
+import { type InitFabicObject, JSON_KEY } from '@/app/_types/Edit';
+import type * as farbir from 'fabric';
 import { useRef, useState } from 'react';
-import * as farbir from 'fabric';
-import { InitFabicObject, JSON_KEY } from '@/app/_types/Edit';
 interface HistoryProps {
   canvas: farbir.Canvas | null;
   authZoom: () => Promise<void>;
@@ -37,9 +37,7 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
       canvasHistory.current.push(currentState);
       setHitoryIndex((prev) => prev + 1);
     }
-    const workspace = canvas
-      .getObjects()
-      .find((item) => (item as InitFabicObject).name === 'board');
+    const workspace = canvas.getObjects().find((item) => (item as InitFabicObject).name === 'board');
     const width = workspace?.width || 0;
     const height = workspace?.height || 0;
     const left = workspace?.left || 0;

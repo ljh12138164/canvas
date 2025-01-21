@@ -1,8 +1,7 @@
 import { nanoid } from 'nanoid';
 import { supabaseNote } from '../supabase/index';
 const imageBucket = 'DOCUMENT_IMAGE';
-const imagePath =
-  'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/';
+const imagePath = 'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/';
 interface UploadImageClound {
   file: File;
 }

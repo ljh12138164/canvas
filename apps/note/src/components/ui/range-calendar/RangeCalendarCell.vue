@@ -1,15 +1,9 @@
 <script lang="ts" setup>
 import { cn } from '@/lib/utils';
-import {
-  RangeCalendarCell,
-  type RangeCalendarCellProps,
-  useForwardProps,
-} from 'radix-vue';
+import { RangeCalendarCell, type RangeCalendarCellProps, useForwardProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  RangeCalendarCellProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<RangeCalendarCellProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

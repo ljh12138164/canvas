@@ -1,11 +1,11 @@
 'use client';
 import ColorSoiberbar from '@/app/_components/EditComponents/asider/ColorSiberbar';
-import Footer from '@/app/_components/EditComponents/editor/Footer';
 import ImageSiderbar from '@/app/_components/EditComponents/asider/ImageSiderbar';
-import NavBar from '@/app/_components/EditComponents/editor/NavBar';
 import ShapeSidle from '@/app/_components/EditComponents/asider/ShapeSidle';
-import SiderBar from '@/app/_components/EditComponents/editor/SiderBar';
 import TextSidebar from '@/app/_components/EditComponents/asider/TextSidebar';
+import Footer from '@/app/_components/EditComponents/editor/Footer';
+import NavBar from '@/app/_components/EditComponents/editor/NavBar';
+import SiderBar from '@/app/_components/EditComponents/editor/SiderBar';
 import Tools from '@/app/_components/EditComponents/editor/Tools';
 import { useBoardAutoSaveQuery } from '@/app/_hook/query/useBoardQuery';
 import useCanvas from '@/app/_hook/useCanvas';
@@ -19,30 +19,9 @@ import { useWindowEvent } from '@/app/_hook/useWindowEvent';
 import { useYjs } from '@/app/_hook/useYjs';
 import { getUserColor } from '@/app/_lib/utils';
 import { buildEditor } from '@/app/_store/editor';
-import { Board } from '@/app/_types/board';
-import {
-  CANVAS_COLOR,
-  CANVAS_HEIGHT,
-  CANVAS_WIDTH,
-  DefalutUser,
-  FILL_COLOR,
-  FONT_ALIGN,
-  FONT_FAMILY,
-  FONT_ITALICS,
-  FONT_SIZE,
-  FONT_THOUGHT,
-  FONT_UNDERLINE,
-  FONT_WEIGHT,
-  FontStyle,
-  FontWeightType,
-  JSON_KEY,
-  OPACITY,
-  STROKE_COLOR,
-  STROKE_DASH_ARRAY,
-  STROKE_WIDTH,
-  Tool,
-} from '@/app/_types/Edit';
-import { Sessions } from '@/app/_types/user';
+import { CANVAS_COLOR, CANVAS_HEIGHT, CANVAS_WIDTH, type DefalutUser, FILL_COLOR, FONT_ALIGN, FONT_FAMILY, FONT_ITALICS, FONT_SIZE, FONT_THOUGHT, FONT_UNDERLINE, FONT_WEIGHT, type FontStyle, type FontWeightType, JSON_KEY, OPACITY, STROKE_COLOR, STROKE_DASH_ARRAY, STROKE_WIDTH, Tool } from '@/app/_types/Edit';
+import type { Board } from '@/app/_types/board';
+import type { Sessions } from '@/app/_types/user';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
 import { useEffect, useRef, useState } from 'react';
@@ -81,16 +60,13 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
   //选择的对象
-  const [selectedObject, setSelectedObject] = useState<fabric.Object[] | null>(
-    null
-  );
+  const [selectedObject, setSelectedObject] = useState<fabric.Object[] | null>(null);
   //颜色形状初始化
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);
   const [strokeColor, setStrokeColor] = useState<string>(STROKE_COLOR);
   const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH);
   //边框形状
-  const [strokeDashArray, setStrokeDashArray] =
-    useState<number[]>(STROKE_DASH_ARRAY);
+  const [strokeDashArray, setStrokeDashArray] = useState<number[]>(STROKE_DASH_ARRAY);
   const [opacity, setOpacity] = useState<number>(OPACITY);
 
   //字体
@@ -99,8 +75,7 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
   const [fontThought, setFontThickness] = useState<boolean>(FONT_THOUGHT);
   const [fontUnderline, setFontUnderline] = useState<boolean>(FONT_UNDERLINE);
   const [fontItalics, setFontItalics] = useState<FontStyle>(FONT_ITALICS);
-  const [fontAlign, setFontAlign] =
-    useState<fabric.Textbox['textAlign']>(FONT_ALIGN);
+  const [fontAlign, setFontAlign] = useState<fabric.Textbox['textAlign']>(FONT_ALIGN);
   const [fontSize, setFontSize] = useState<number>(FONT_SIZE);
   //图片
   const [imageLoading, setImageLoading] = useState<boolean>(false);
@@ -116,8 +91,11 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
   const [canvasColor, setCanvasColor] = useState<string>(CANVAS_COLOR);
   const { authZoom } = useResponse({ canvas, contain }) as { authZoom: any };
   //画布历史
-  const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } =
-    useHistoty({ canvas, authZoom, debounceMutate });
+  const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } = useHistoty({
+    canvas,
+    authZoom,
+    debounceMutate,
+  });
   // 初始化
   useLoading({
     canvas,
@@ -247,11 +225,14 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
       // 阻止浏览器默认的右键上下文菜单
       stopContextMenu: true,
     });
-    canvas.wrapperEl.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      return false;
-    }, false);
-
+    canvas.wrapperEl.addEventListener(
+      'contextmenu',
+      (e) => {
+        e.preventDefault();
+        return false;
+      },
+      false,
+    );
 
     init({
       initCanvas: canvas,
@@ -272,53 +253,21 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
 
   return (
     <div
-      className='h-full w-full flex flex-col items-center relative bg-slate-100'
+      className="h-full w-full flex flex-col items-center relative bg-slate-100"
       style={{
         scrollbarWidth: 'none',
       }}
     >
-      <NavBar
-        userId={user.user.id}
-        isPending={isPending}
-        editor={editor()}
-        activeTool={tool}
-        onChangeTool={onChangeActive}
-        userState={userState}
-      />
-      <div className='h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out'>
+      <NavBar userId={user.user.id} isPending={isPending} editor={editor()} activeTool={tool} onChangeTool={onChangeActive} userState={userState} />
+      <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
         <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} />
-        <TextSidebar
-          editor={editor()}
-          activeTool={tool}
-          onChangeActive={onChangeActive}
-        />
-        <ShapeSidle
-          editor={editor()}
-          activeTool={tool}
-          onChangeActive={onChangeActive}
-        />
-        <ImageSiderbar
-          userId={user.user.id}
-          editor={editor()}
-          activeTool={tool}
-          onChangeActive={onChangeActive}
-        />
-        <ColorSoiberbar
-          editor={editor()}
-          activeTool={tool}
-          onChangeActive={onChangeActive}
-        />
-        <main className='flex-1 h-full w-full flex flex-col overflow-hidden'>
-          <Tools
-            editor={editor()}
-            activeTool={tool}
-            onChangeActiveTool={onChangeActive}
-            key={JSON.stringify(editor()?.canvas.getActiveObject())}
-          />
-          <section
-            className='flex flex-col relative flex-1 overflow-hidden'
-            ref={containEl}
-          >
+        <TextSidebar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
+        <ShapeSidle editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
+        <ImageSiderbar userId={user.user.id} editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
+        <ColorSoiberbar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
+        <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
+          <Tools editor={editor()} activeTool={tool} onChangeActiveTool={onChangeActive} key={JSON.stringify(editor()?.canvas.getActiveObject())} />
+          <section className="flex flex-col relative flex-1 overflow-hidden" ref={containEl}>
             <canvas ref={canvasEl} />
           </section>
           <Footer editor={editor()} />

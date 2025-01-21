@@ -1,6 +1,6 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import styled from "styled-components";
-import { Separator } from "../ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import styled from 'styled-components';
+import { Separator } from '../ui/separator';
 const Container = styled(Card)`
   width: 100%;
   height: 100%;
@@ -38,7 +38,7 @@ const SignInContain = () => {
       <SeparatorLine>
         <Separator />
       </SeparatorLine>
-      <Content></Content>
+      <Content />
     </Container>
   );
 };

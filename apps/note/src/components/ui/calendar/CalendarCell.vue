@@ -1,15 +1,9 @@
 <script lang="ts" setup>
 import { cn } from '@/lib/utils';
-import {
-  CalendarCell,
-  type CalendarCellProps,
-  useForwardProps,
-} from 'radix-vue';
+import { CalendarCell, type CalendarCellProps, useForwardProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  CalendarCellProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<CalendarCellProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

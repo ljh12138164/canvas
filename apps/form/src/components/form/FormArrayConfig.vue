@@ -1,32 +1,24 @@
 <script setup lang="ts">
-import type { CreateFormItem, FormType, Array } from '@/types/form'
-import InputItem from './FormItem/InputItem.vue'
-import SelectItem from './FormItem/SelectItem.vue'
-import DateItem from './FormItem/DateItem.vue'
-import BigText from './FormItem/BigText.vue'
-import { type DateValue } from '@internationalized/date'
-import ObjectItem from './FormItem/Object.vue'
-import OneClick from './FormItem/OneClick.vue'
+import type { CreateFormItem, FormType } from '@/types/form';
+import type { DateValue } from '@internationalized/date';
+import BigText from './FormItem/BigText.vue';
+import DateItem from './FormItem/DateItem.vue';
+import FileItem from './FormItem/FileItem.vue';
+import InputItem from './FormItem/InputItem.vue';
+import ObjectItem from './FormItem/Object.vue';
+import OneClick from './FormItem/OneClick.vue';
+import SelectItem from './FormItem/SelectItem.vue';
 // @ts-ignore
-import Switch from './FormItem/switch.vue'
-import FileItem from './FormItem/FileItem.vue'
+import Switch from './FormItem/switch.vue';
 
 const props = defineProps<{
-  id: string[]
-  data: CreateFormItem | undefined
-  updateList: (
-    id: string[],
-    type: FormType,
-    newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
-  ) => void
-}>()
-const updateList2 = (
-  id: string,
-  type: FormType,
-  newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
-) => {
-  props.updateList(props.id, type, newValue)
-}
+  id: string[];
+  data: CreateFormItem | undefined;
+  updateList: (id: string[], type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => void;
+}>();
+const updateList2 = (id: string, type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => {
+  props.updateList(props.id, type, newValue);
+};
 </script>
 <template>
   <div class="flex flex-col pb-20 gap-2" v-if="data">

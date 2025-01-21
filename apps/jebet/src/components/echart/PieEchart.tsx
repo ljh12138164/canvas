@@ -1,8 +1,8 @@
 import { useEchart } from '@/hooks/useEcharts';
-import { WorkspaceResponseType } from '@/server/hooks/board';
+import type { WorkspaceResponseType } from '@/server/hooks/board';
 import { TaskStatus } from '@/types/workspace';
-import { EChartsOption } from 'echarts';
-import { Member, Task } from '@/types/workspace';
+import type { Member, Task } from '@/types/workspace';
+import type { EChartsOption } from 'echarts';
 import { useMemo } from 'react';
 
 export const PieEchart = ({
@@ -26,9 +26,7 @@ export const PieEchart = ({
     const time = new Date().getTime() - new Date(item.created_at).getTime();
     if (time < new Date(date * 24 * 60 * 60 * 1000).getTime()) {
       if (types === 'tasks') {
-        const find = Workspacedata?.find(
-          (items) => items?.name === (item as Task).status
-        );
+        const find = Workspacedata?.find((items) => items?.name === (item as Task).status);
         if (find) {
           find.value++;
         }
@@ -47,13 +45,7 @@ export const PieEchart = ({
       legend: {
         bottom: 10,
         left: 'center',
-        data: [
-          TaskStatus.BACKLOG,
-          TaskStatus.TODO,
-          TaskStatus.IN_PROGRESS,
-          TaskStatus.DONE,
-          TaskStatus.IN_REVIEW,
-        ],
+        data: [TaskStatus.BACKLOG, TaskStatus.TODO, TaskStatus.IN_PROGRESS, TaskStatus.DONE, TaskStatus.IN_REVIEW],
       },
       // 数据
       series: [
@@ -76,5 +68,5 @@ export const PieEchart = ({
     };
   }, [Workspacedata]);
   const { echartRef } = useEchart({ options });
-  return <div ref={echartRef} className='w-full h-full min-h-[300px]' />;
+  return <div ref={echartRef} className="w-full h-full min-h-[300px]" />;
 };

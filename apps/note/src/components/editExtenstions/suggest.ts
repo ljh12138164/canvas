@@ -1,58 +1,46 @@
-import { VueRenderer } from '@tiptap/vue-3';
+import { type Editor, VueRenderer } from '@tiptap/vue-3';
 import tippy from 'tippy.js';
 // import { computePosition } from "@floating-ui/dom";
 // const tooltip = document.querySelector("#body");
 import CommandsList from './comandList.vue';
 export default {
-  items: ({ query }) => {
+  items: ({ query }: { query: string }) => {
     return [
       {
         title: 'Heading 1',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .setNode('heading', { level: 1 })
-            .run();
+        command: ({ editor, range }: { editor: Editor; range: any }) => {
+          editor.chain().focus().deleteRange(range).setNode('heading', { level: 1 }).run();
         },
       },
       {
         title: 'Heading 2',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .setNode('heading', { level: 2 })
-            .run();
+        command: ({ editor, range }: { editor: Editor; range: any }) => {
+          editor.chain().focus().deleteRange(range).setNode('heading', { level: 2 }).run();
         },
       },
       {
         title: 'Bold',
-        command: ({ editor, range }) => {
+        command: ({ editor, range }: { editor: Editor; range: any }) => {
           editor.chain().focus().deleteRange(range).setMark('bold').run();
         },
       },
       {
         title: 'Italic',
-        command: ({ editor, range }) => {
+        command: ({ editor, range }: { editor: Editor; range: any }) => {
           editor.chain().focus().deleteRange(range).setMark('italic').run();
         },
       },
     ]
-      .filter((item) =>
-        item.title.toLowerCase().startsWith(query.toLowerCase()),
-      )
+      .filter((item) => item.title.toLowerCase().startsWith(query.toLowerCase()))
       .slice(0, 10);
   },
 
   render: () => {
-    let component;
-    let popup;
+    let component: VueRenderer;
+    let popup: any;
 
     return {
-      onStart: (props) => {
+      onStart: (props: any) => {
         component = new VueRenderer(CommandsList, {
           // using vue 2:
           // parent: this,
@@ -64,7 +52,7 @@ export default {
         if (!props.clientRect) {
           return;
         }
-
+        // @ts-ignore
         popup = tippy('body', {
           getReferenceClientRect: props.clientRect,
           appendTo: () => document.body,
@@ -76,7 +64,7 @@ export default {
         });
       },
 
-      onUpdate(props) {
+      onUpdate(props: any) {
         component.updateProps(props);
 
         if (!props.clientRect) {
@@ -88,7 +76,7 @@ export default {
         });
       },
 
-      onKeyDown(props) {
+      onKeyDown(props: any) {
         if (props.event.key === 'Escape') {
           popup[0].hide();
 

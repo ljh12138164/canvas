@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils';
 import { ChevronRight } from 'lucide-vue-next';
-import {
-  ContextMenuSubTrigger,
-  type ContextMenuSubTriggerProps,
-  useForwardProps,
-} from 'radix-vue';
+import { ContextMenuSubTrigger, type ContextMenuSubTriggerProps, useForwardProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
 const props = defineProps<

@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { client } from "@/app/_database";
-import { getNewToken } from "@/app/_lib/sign";
-import { InferRequestType, InferResponseType } from "hono";
+import { client } from '@/app/_database';
+import { getNewToken } from '@/app/_lib/sign';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import type { InferRequestType, InferResponseType } from 'hono';
 
 /***
  * ### 获取用户标签
@@ -13,7 +13,7 @@ export const useGetTap = (userId: string) => {
     isLoading: tapLoading,
     error: tapError,
   } = useQuery({
-    queryKey: ["tap", userId],
+    queryKey: ['tap', userId],
     queryFn: async () => {
       const token = await getNewToken();
       const response = await client.tap.userTap.$get(undefined, {
@@ -22,7 +22,7 @@ export const useGetTap = (userId: string) => {
         },
       });
       if (!response.ok) {
-        throw new Error("请求错误");
+        throw new Error('请求错误');
       }
       return response.json();
     },
@@ -30,12 +30,8 @@ export const useGetTap = (userId: string) => {
   return { tapData, tapLoading, tapError };
 };
 
-type CreateResponseType = InferResponseType<
-  (typeof client.tap)["create"]["$post"]
->;
-type CreateRequestType = InferRequestType<
-  (typeof client.tap)["create"]["$post"]
->;
+type CreateResponseType = InferResponseType<(typeof client.tap)['create']['$post']>;
+type CreateRequestType = InferRequestType<(typeof client.tap)['create']['$post']>;
 /**
  * ### 创建标签
  * @param tag 标签
@@ -43,11 +39,7 @@ type CreateRequestType = InferRequestType<
  * @returns
  */
 export const useCreateTap = () => {
-  const { mutate: createTap, isPending: createTapPending } = useMutation<
-    CreateResponseType,
-    Error,
-    CreateRequestType
-  >({
+  const { mutate: createTap, isPending: createTapPending } = useMutation<CreateResponseType, Error, CreateRequestType>({
     mutationFn: async (data) => {
       const token = await getNewToken();
       const response = await client.tap.create.$post(data, {

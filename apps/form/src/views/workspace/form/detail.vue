@@ -1,62 +1,61 @@
 <script setup lang="ts">
-import Response from '@/components/common/Response.vue'
-import FormPreviwe from '@/components/form/FormPreviwe.vue'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { PinInput, PinInputGroup, PinInputInput } from '@/components/ui/pin-input'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Skeleton } from '@/components/ui/skeleton'
-import { useToast } from '@/components/ui/toast'
-import { useBoard, useUpdateBoardInviteCode } from '@/hooks/board'
-import { useQueryClient } from '@tanstack/vue-query'
-import dayjs from 'dayjs'
-import { computed, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import Response from '@/components/common/Response.vue';
+import FormPreviwe from '@/components/form/FormPreviwe.vue';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PinInput, PinInputGroup, PinInputInput } from '@/components/ui/pin-input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/components/ui/toast';
+import { useBoard, useUpdateBoardInviteCode } from '@/hooks/board';
+import { useQueryClient } from '@tanstack/vue-query';
+import dayjs from 'dayjs';
+import { computed, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-const { toast } = useToast()
-const router = useRouter()
-const route = useRoute()
-const paramsId = ref<string>(route.params.id as string)
-const { mutate: updateBoardInviteCode, isPending: isUpdateBoardInviteCodePending } =
-  useUpdateBoardInviteCode()
-const queryClient = useQueryClient()
+const { toast } = useToast();
+const router = useRouter();
+const route = useRoute();
+const paramsId = ref<string>(route.params.id as string);
+const { mutate: updateBoardInviteCode, isPending: isUpdateBoardInviteCodePending } = useUpdateBoardInviteCode();
+const queryClient = useQueryClient();
 
 watch(
   () => route.params.id,
   () => {
-    paramsId.value = route.params.id as string
+    paramsId.value = route.params.id as string;
   },
   { immediate: true },
-)
-const { data, isLoading, error } = useBoard(paramsId.value)
+);
+const { data, isLoading, error } = useBoard(paramsId.value);
 const handleSubmit = (data: any) => {
   toast({
     title: data,
-  })
-}
+  });
+};
 
 const handleBack = () => {
-  router.push('/workspace/form')
-}
+  router.push('/workspace/form');
+};
 
 const handleCopy = () => {
-  if (!data.value) return
-  navigator.clipboard.writeText(data.value.inviteCode)
+  if (!data.value) return;
+  navigator.clipboard.writeText(data.value.inviteCode);
   toast({
     title: '复制成功',
-  })
-}
+  });
+};
 
 const handleRefresh = () => {
-  if (!data.value) return
-  queryClient.invalidateQueries({ queryKey: ['board'] })
+  if (!data.value) return;
+  queryClient.invalidateQueries({ queryKey: ['board'] });
   updateBoardInviteCode({
     json: {
       id: paramsId.value,
     },
-  })
-}
-const inviteCode = computed(() => data.value?.inviteCode.split(''))
+  });
+};
+const inviteCode = computed(() => data.value?.inviteCode.split(''));
 </script>
 
 <template>

@@ -7,13 +7,7 @@ import type { ZodAny, z } from 'zod';
 import AutoFormField from './AutoFormField.vue';
 import { provideDependencies } from './dependencies';
 import type { Config, ConfigItem, Dependency, Shape } from './interface';
-import {
-  type ZodObjectOrWrapped,
-  getBaseSchema,
-  getBaseType,
-  getDefaultValueInZodStack,
-  getObjectFormSchema,
-} from './utils';
+import { type ZodObjectOrWrapped, getBaseSchema, getBaseType, getDefaultValueInZodStack, getObjectFormSchema } from './utils';
 
 const props = defineProps<{
   schema: T;
@@ -37,12 +31,8 @@ const shapes = computed(() => {
   Object.keys(shape).forEach((name) => {
     const item = shape[name] as ZodAny;
     const baseItem = getBaseSchema(item) as ZodAny;
-    let options =
-      baseItem && 'values' in baseItem._def
-        ? (baseItem._def.values as string[])
-        : undefined;
-    if (!Array.isArray(options) && typeof options === 'object')
-      options = Object.values(options);
+    let options = baseItem && 'values' in baseItem._def ? (baseItem._def.values as string[]) : undefined;
+    if (!Array.isArray(options) && typeof options === 'object') options = Object.values(options);
 
     val[name as keyof T] = {
       type: getBaseType(item),
@@ -81,22 +71,18 @@ const formComponentProps = computed(() => {
     return {
       onSubmit: props.form.handleSubmit((val) => emits('submit', val)),
     };
-  } else {
-    const formSchema = toTypedSchema(props.schema);
-    return {
-      keepValues: true,
-      validationSchema: formSchema,
-      onSubmit: (val: GenericObject) => emits('submit', val),
-    };
   }
+  const formSchema = toTypedSchema(props.schema);
+  return {
+    keepValues: true,
+    validationSchema: formSchema,
+    onSubmit: (val: GenericObject) => emits('submit', val),
+  };
 });
 </script>
 
 <template>
-  <component
-    :is="formComponent"
-    v-bind="formComponentProps"
-  >
+  <component :is="formComponent" v-bind="formComponentProps">
     <slot name="customAutoForm" :fields="fields">
       <template v-for="(shape, key) of shapes" :key="key">
         <slot
@@ -106,7 +92,9 @@ const formComponentProps = computed(() => {
           :config="fieldConfig?.[key as keyof typeof fieldConfig] as ConfigItem"
         >
           <AutoFormField
-            :config="fieldConfig?.[key as keyof typeof fieldConfig] as ConfigItem"
+            :config="
+              fieldConfig?.[key as keyof typeof fieldConfig] as ConfigItem
+            "
             :field-name="key.toString()"
             :shape="shape"
           />

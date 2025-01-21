@@ -2,17 +2,10 @@ import { getCurrentUser } from '@/server/supabase/user';
 import useUser from '@/store/user';
 import type { Sessions } from '@/types/user';
 import type { RouteLocationNormalized } from 'vue-router';
-import {
-  type ToastPosition,
-  type ToastTheme,
-  type ToastTransition,
-  toast as toastify,
-} from 'vue3-toastify';
+import { type ToastPosition, type ToastTheme, type ToastTransition, toast as toastify } from 'vue3-toastify';
 
-export const DEFAULT_AVATAR =
-  'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg';
-export const USER_IMAGE_URL =
-  'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/';
+export const DEFAULT_AVATAR = 'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg';
+export const USER_IMAGE_URL = 'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/';
 // toast 实例
 const toastOption = {
   theme: 'auto' as ToastTheme,
@@ -47,11 +40,7 @@ export const toast = new Toast();
  * @param __
  * @param next
  */
-export async function routerCheckLogin(
-  to: RouteLocationNormalized,
-  _: RouteLocationNormalized,
-  next: (go?: string) => void,
-) {
+export async function routerCheckLogin(to: RouteLocationNormalized, _: RouteLocationNormalized, next: (go?: string) => void) {
   try {
     const data = await getCurrentUser();
     const { setUserData } = useUser();
@@ -97,28 +86,7 @@ export function downloadFile(blob: Blob, name: string) {
  * 随机颜色
  */
 export function randomColor() {
-  return '#' + Math.floor(Math.random() * 16777215).toString(16);
+  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 }
 // 高亮色调增强
-export const HIGHLIGHT_COLORS = [
-  '#F59E0B',
-  '#EF4444',
-  '#10B981',
-  '#3B82F6',
-  '#8B5CF6',
-  '#D97706',
-  '#EC4899',
-  '#6366F1',
-  '#22C55E',
-  '#F97316',
-  '#E11D48',
-  '#2563EB',
-  '#14B8A6',
-  '#7C3AED',
-  '#F43F5E',
-  '#0EA5E9',
-  '#6D28D9',
-  '#047857',
-  '#D946EF',
-  '#0891B2',
-];
+export const HIGHLIGHT_COLORS = ['#F59E0B', '#EF4444', '#10B981', '#3B82F6', '#8B5CF6', '#D97706', '#EC4899', '#6366F1', '#22C55E', '#F97316', '#E11D48', '#2563EB', '#14B8A6', '#7C3AED', '#F43F5E', '#0EA5E9', '#6D28D9', '#047857', '#D946EF', '#0891B2'];

@@ -1,8 +1,7 @@
-import supabase from "../supabase";
-import { deleteImageClound, uploadImageclound } from "../image";
-import { Sessions } from "@/app/_types/user";
-const DEFAULT_AVATAR =
-  "https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/avatar.svg";
+import type { Sessions } from '@/app/_types/user';
+import { deleteImageClound, uploadImageclound } from '../image';
+import supabase from '../supabase';
+const DEFAULT_AVATAR = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/avatar.svg';
 
 /**
  * ## 获取用户消息
@@ -11,11 +10,11 @@ export async function getCurrentUser(): Promise<Sessions | null> {
   // 获取用户信息
   try {
     const { data: session } = await supabase.auth.getSession();
-    if (!session?.session) throw new Error("未登录");
+    if (!session?.session) throw new Error('未登录');
     //获取用户权限
     const { data, error } = await supabase.auth.getUser();
 
-    if (error) throw new Error("未登录");
+    if (error) throw new Error('未登录');
     return { user: data?.user, session: session.session } as Sessions;
   } catch {
     return null;
@@ -54,7 +53,7 @@ export async function signup({
       },
     },
   });
-  if (error) throw new Error("服务器错误");
+  if (error) throw new Error('服务器错误');
   return data;
 }
 
@@ -74,7 +73,7 @@ export async function login({
     email: email,
     password: password,
   });
-  if (error) throw new Error("服务器错误");
+  if (error) throw new Error('服务器错误');
   return data;
 }
 
@@ -103,16 +102,12 @@ export async function updateCurrentUser({
   };
   if (imageUrl instanceof File) {
     let deletePromise: Promise<boolean> = Promise.resolve(true);
-    if (oldImageUrl !== DEFAULT_AVATAR)
-      deletePromise = deleteImageClound({ image: oldImageUrl });
-    const [result] = await Promise.all([
-      uploadImageclound({ file: imageUrl }),
-      deletePromise,
-    ]);
+    if (oldImageUrl !== DEFAULT_AVATAR) deletePromise = deleteImageClound({ image: oldImageUrl });
+    const [result] = await Promise.all([uploadImageclound({ file: imageUrl }), deletePromise]);
     if (result) userData.data.image = result as string;
   }
   // 更新用户信息
   const { data, error } = await supabase.auth.updateUser(userData);
-  if (error) throw new Error("服务器错误");
+  if (error) throw new Error('服务器错误');
   return data.user;
 }

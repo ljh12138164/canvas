@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
-import { RouterLink } from "vue-router";
+import { Button } from '@/components/ui/button';
+import { RouterLink } from 'vue-router';
 </script>
 <template>
   <div class="flex items-center">

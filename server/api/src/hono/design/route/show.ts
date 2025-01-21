@@ -1,8 +1,8 @@
-import { Hono } from "hono";
+import { Hono } from 'hono';
 
-const show = new Hono().get("/", async (c) => {
+const show = new Hono().get('/', async (c) => {
   return c.json({
-    message: "Hello World",
+    message: 'Hello World',
   });
 });
 export default show;

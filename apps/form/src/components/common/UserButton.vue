@@ -1,32 +1,25 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Skeleton } from '@/components/ui/skeleton'
-import { DEFAULT_AVATAR } from '@/lib'
-import { logout } from '@/database/supabase/user'
-import type { PropType } from 'vue'
-import useUser from '@/stores/user'
-const userData = useUser().userData
-type Side = 'end' | 'start' | 'center'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
+import { logout } from '@/database/supabase/user';
+import { DEFAULT_AVATAR } from '@/lib';
+import useUser from '@/stores/user';
+import type { PropType } from 'vue';
+const userData = useUser().userData;
+type Side = 'end' | 'start' | 'center';
 // if (!user.value) await navigateTo('/auth');
 const props = defineProps({
   side: {
     type: String as PropType<Side>,
     default: 'end',
   },
-})
+});
 const logoutClick = async () => {
-  await logout()
+  await logout();
   // await navigateTo('/auth');
-}
+};
 </script>
 <template>
   <DropdownMenu>

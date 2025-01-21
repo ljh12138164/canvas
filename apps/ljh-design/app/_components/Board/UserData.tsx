@@ -1,7 +1,7 @@
-"use client";
-import useUser from "@/app/_hook/useUser";
-import { Skeleton } from "../ui/skeleton";
-import ChangeUserData from "./ChangeUserData";
+'use client';
+import useUser from '@/app/_hook/useUser';
+import { Skeleton } from '../ui/skeleton';
+import ChangeUserData from './ChangeUserData';
 // import ChangeUserData from './ChangeUserData';
 const UserData = () => {
   const { user, loading } = useUser({ redirects: true });

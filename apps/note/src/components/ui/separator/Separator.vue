@@ -3,9 +3,7 @@ import { cn } from '@/lib/utils';
 import { Separator, type SeparatorProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  SeparatorProps & { class?: HTMLAttributes['class']; label?: string }
->();
+const props = defineProps<SeparatorProps & { class?: HTMLAttributes['class']; label?: string }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

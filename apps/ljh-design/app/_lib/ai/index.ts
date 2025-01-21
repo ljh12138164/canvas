@@ -1,4 +1,4 @@
-import { Message, MessageArr } from '@/app/_types/ai';
+import type { Message, MessageArr } from '@/app/_types/ai';
 import localforage from 'localforage';
 import { nanoid } from 'nanoid';
 localforage.config({
@@ -22,12 +22,7 @@ interface IndexDBChanagePros {
  * @param editData 编辑的数据
  * @returns
  */
-export async function indexDBChange({
-  type,
-  data,
-  deletItem,
-  id,
-}: IndexDBChanagePros): Promise<boolean> {
+export async function indexDBChange({ type, data, deletItem, id }: IndexDBChanagePros): Promise<boolean> {
   if (type === 'delete' && deletItem) {
     await localforage.removeItem(deletItem);
     return true;
@@ -69,11 +64,7 @@ export async function getAiChatById(id: string): Promise<MessageArr | null> {
  * @param name 对话名称
  * @returns
  */
-export async function createAi(
-  id: string,
-  newMessage: Message[],
-  name: string
-): Promise<boolean> {
+export async function createAi(id: string, newMessage: Message[], name: string): Promise<boolean> {
   indexDBChange({
     type: 'add',
     // 每个对话一个id，用于删除

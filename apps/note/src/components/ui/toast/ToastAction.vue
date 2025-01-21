@@ -3,9 +3,7 @@ import { cn } from '@/lib/utils';
 import { ToastAction, type ToastActionProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  ToastActionProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<ToastActionProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

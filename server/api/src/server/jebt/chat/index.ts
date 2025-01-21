@@ -1,5 +1,5 @@
 import to from 'await-to-js';
-import { ChatMessage, MessageType } from '../../../types/jebt/board';
+import type { ChatMessage, MessageType } from '../../../types/jebt/board';
 import { supabaseJebt } from '../../supabase/jebt';
 import { checkUser, uploadImageclound } from '../board';
 
@@ -10,11 +10,7 @@ const PAGE_SIZE = 10;
  * @param userId
  * @returns
  */
-export const getChatMessage = async (
-  workspaceId: string,
-  userId: string,
-  pageTo: number
-): Promise<{ data: ChatMessage[]; count: number | null; pageTo: number }> => {
+export const getChatMessage = async (workspaceId: string, userId: string, pageTo: number): Promise<{ data: ChatMessage[]; count: number | null; pageTo: number }> => {
   const [error] = await to(checkUser(userId, workspaceId));
   if (error) throw new Error(error.message);
 
@@ -46,18 +42,11 @@ export const getChatMessage = async (
  * @param message
  * @returns
  */
-export const sendChatMessage = async (
-  workspaceId: string,
-  userId: string,
-  message: string
-): Promise<ChatMessage> => {
+export const sendChatMessage = async (workspaceId: string, userId: string, message: string): Promise<ChatMessage> => {
   const [error] = await to(checkUser(userId, workspaceId));
   if (error) throw new Error(error.message);
 
-  const { data, error: supabaseError } = await supabaseJebt
-    .from('chat')
-    .insert({ workspaceId, userId, message, type: MessageType.TEXT })
-    .select('*');
+  const { data, error: supabaseError } = await supabaseJebt.from('chat').insert({ workspaceId, userId, message, type: MessageType.TEXT }).select('*');
   if (supabaseError) throw new Error('服务器错误');
   return data[0];
 };
@@ -69,19 +58,12 @@ export const sendChatMessage = async (
  * @param file
  * @returns
  */
-export const uploadImage = async (
-  workspaceId: string,
-  userId: string,
-  file: File
-): Promise<ChatMessage> => {
+export const uploadImage = async (workspaceId: string, userId: string, file: File): Promise<ChatMessage> => {
   const [error] = await to(checkUser(userId, workspaceId));
   if (error) throw new Error(error.message);
   const [errors, imageUrl] = await to(uploadImageclound({ file }));
   if (errors) throw new Error(errors.message);
-  const { data, error: supabaseError } = await supabaseJebt
-    .from('chat')
-    .insert({ workspaceId, userId, message: imageUrl, type: MessageType.IMAGE })
-    .select('*');
+  const { data, error: supabaseError } = await supabaseJebt.from('chat').insert({ workspaceId, userId, message: imageUrl, type: MessageType.IMAGE }).select('*');
   if (supabaseError) throw new Error('服务器错误');
   return data[0];
 };

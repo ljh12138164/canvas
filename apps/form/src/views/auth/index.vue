@@ -1,71 +1,71 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Toaster } from '@/components/ui/toast'
-import { toast } from '@/lib'
-import { cn } from '@/lib/utils'
-import { to } from 'await-to-js'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { login, signup } from '@/database/supabase/user'
-const isLoading = ref(false)
-const isLogin = ref(true)
-const email = ref('')
-const password = ref('')
-const name = ref('')
-const router = useRouter()
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Toaster } from '@/components/ui/toast';
+import { login, signup } from '@/database/supabase/user';
+import { toast } from '@/lib';
+import { cn } from '@/lib/utils';
+import { to } from 'await-to-js';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const isLoading = ref(false);
+const isLogin = ref(true);
+const email = ref('');
+const password = ref('');
+const name = ref('');
+const router = useRouter();
 // const supabase = useSupabaseClient()
 // const user = useSupabaseUser()
 async function onSubmit() {
-  isLoading.value = true
+  isLoading.value = true;
 
   if (isLogin.value) {
     if (!email.value?.includes('@')) {
-      toast.error('邮箱格式不正确')
-      isLoading.value = false
-      return
+      toast.error('邮箱格式不正确');
+      isLoading.value = false;
+      return;
     }
-    toast.info('登录中...')
+    toast.info('登录中...');
     const [error] = await to(
       login({
         email: email.value,
         password: password.value,
       }),
-    )
+    );
     if (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     } else {
-      toast.success('登录成功')
-      router.push('/workspace/board')
+      toast.success('登录成功');
+      router.push('/workspace/board');
     }
   } else {
     //校验
     if (email.value?.length < 3 || password.value?.length < 3 || password.value?.length > 12) {
-      toast.error('请输入邮箱和密码')
-      isLoading.value = false
-      return
+      toast.error('请输入邮箱和密码');
+      isLoading.value = false;
+      return;
     }
     if (!email.value?.includes('@')) {
-      toast.error('邮箱格式不正确')
-      isLoading.value = false
-      return
+      toast.error('邮箱格式不正确');
+      isLoading.value = false;
+      return;
     }
-    toast.info('注册中...')
+    toast.info('注册中...');
     const [error] = await to(
       signup({
         username: name.value,
         email: email.value,
         password: password.value,
       }),
-    )
+    );
     if (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     } else {
-      toast.success('请前往邮箱接受验证')
+      toast.success('请前往邮箱接受验证');
     }
   }
-  isLoading.value = false
+  isLoading.value = false;
 }
 </script>
 

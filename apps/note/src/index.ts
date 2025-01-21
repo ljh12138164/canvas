@@ -1,21 +1,18 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import "./assets/index.css";
+import { createApp } from 'vue';
+import App from './App.vue';
+import './assets/index.css';
 // toast
-import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
-import {
-  VueQueryPlugin,
-  type VueQueryPluginOptions,
-} from "@tanstack/vue-query";
-import Vue3Toastify, { type ToastContainerOptions } from "vue3-toastify";
-import { routers } from "./router";
-import pinia from "./store";
-import "vue3-toastify/dist/index.css";
+import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
+import { VueQueryPlugin, type VueQueryPluginOptions } from '@tanstack/vue-query';
+import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
+import { routers } from './router';
+import pinia from './store';
+import 'vue3-toastify/dist/index.css';
 // Vuetify
-import "vuetify/styles";
-import { createVuetify } from "vuetify";
-import * as components from "vuetify/components";
-import * as directives from "vuetify/directives";
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
 const vuetify = createVuetify({
   components,
   directives,
@@ -48,4 +45,4 @@ app
   .use(autoAnimatePlugin)
   .use(vuetify);
 // 挂载
-app.mount("#root");
+app.mount('#root');

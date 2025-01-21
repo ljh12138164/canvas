@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 import { Input } from '@/components/ui/input';
 import { toast } from '@/lib';
@@ -36,7 +28,6 @@ const handleImage = (e: Event) => {
   (e.target as HTMLInputElement).value = '';
 };
 const handleImageClick = () => {
-  console.log(inputRef);
   inputRef.value?.click();
 };
 </script>

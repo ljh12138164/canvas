@@ -1,76 +1,69 @@
 <script setup lang="ts">
-import LabelChange from '@/components/common/LabelChange.vue'
-import { AutoForm } from '@/components/ui/auto-form'
-import { type ZodObjectOrWrapped } from '@/components/ui/auto-form/utils'
-import { getZodSchema } from '@/lib/form'
-import { type FormInput, type FormType } from '@/types/form'
-import { type DateValue } from '@internationalized/date'
-import { ref, watch } from 'vue'
-import { type ZodType } from 'zod'
+import LabelChange from '@/components/common/LabelChange.vue';
+import { AutoForm } from '@/components/ui/auto-form';
+import type { ZodObjectOrWrapped } from '@/components/ui/auto-form/utils';
+import { getZodSchema } from '@/lib/form';
+import type { FormInput, FormType } from '@/types/form';
+import type { DateValue } from '@internationalized/date';
+import { ref, watch } from 'vue';
+import type { ZodType } from 'zod';
 
 const props = defineProps<{
-  id: string
-  data: FormInput
-  updateList2: (
-    id: string,
-    type: FormType,
-    newValue: string | boolean | number | undefined | DateValue,
-  ) => void
-}>()
+  id: string;
+  data: FormInput;
+  updateList2: (id: string, type: FormType, newValue: string | boolean | number | undefined | DateValue) => void;
+}>();
 // 默认值
-const defaultValue = ref(props.data?.defaultValue)
+const defaultValue = ref(props.data?.defaultValue);
 // 占位符
-const defaultPlaceholder = ref(props.data?.placeholder)
+const defaultPlaceholder = ref(props.data?.placeholder);
 // 标签
-const defaultLabel = ref(props.data?.label)
+const defaultLabel = ref(props.data?.label);
 // 描述
-const defaultDescription = ref(props.data?.description)
+const defaultDescription = ref(props.data?.description);
 // 必填
-const defaultIsRequired = ref(props.data?.isRequired)
+const defaultIsRequired = ref(props.data?.isRequired);
 // 隐藏标签
-const defaultIsHidden = ref(props.data?.hiddenLabel)
+const defaultIsHidden = ref(props.data?.hiddenLabel);
 // 输入框类型
-const inputType = ref(props.data?.inputType)
+const inputType = ref(props.data?.inputType);
 // 表单数据
-const schema = ref<ZodType<any> | null | undefined>(null)
+const schema = ref<ZodType<any> | null | undefined>(null);
 // 表单配置
-const fieldConfig = ref<Record<string, any>>({})
+const fieldConfig = ref<Record<string, any>>({});
 watch(
   () => props.data,
   (newValue) => {
     // 默认值
-    defaultValue.value = newValue?.defaultValue
+    defaultValue.value = newValue?.defaultValue;
     // 占位符
-    defaultPlaceholder.value = newValue?.placeholder
+    defaultPlaceholder.value = newValue?.placeholder;
     // 标签
-    defaultLabel.value = newValue?.label
+    defaultLabel.value = newValue?.label;
     // 描述
-    defaultDescription.value = newValue?.description
+    defaultDescription.value = newValue?.description;
     // 必填
-    defaultIsRequired.value = newValue?.isRequired
+    defaultIsRequired.value = newValue?.isRequired;
     // 隐藏标签
-    defaultIsHidden.value = newValue?.hiddenLabel
+    defaultIsHidden.value = newValue?.hiddenLabel;
     // 输入框类型
-    inputType.value = newValue?.inputType
+    inputType.value = newValue?.inputType;
   },
-)
-schema.value = getZodSchema(props.data, fieldConfig)
+);
+schema.value = getZodSchema(props.data, fieldConfig);
 const updateSchema = () => {
-  schema.value = getZodSchema(props.data, fieldConfig)
+  schema.value = getZodSchema(props.data, fieldConfig);
   // console.log(schema.value, fieldConfig.value)
-}
-const updateList = (
-  type: FormType,
-  newValue: string | boolean | number | undefined | DateValue,
-) => {
+};
+const updateList = (type: FormType, newValue: string | boolean | number | undefined | DateValue) => {
   //@ts-ignore
-  props.updateList2(props.id, type, newValue)
-  updateSchema()
-}
+  props.updateList2(props.id, type, newValue);
+  updateSchema();
+};
 watch(inputType, (newValue) => {
-  if (newValue === 'number') defaultValue.value = 0
-  else defaultValue.value = ''
-})
+  if (newValue === 'number') defaultValue.value = 0;
+  else defaultValue.value = '';
+});
 </script>
 <template>
   <AutoForm v-if="schema" :schema="schema as ZodObjectOrWrapped" :fieldConfig="fieldConfig" />

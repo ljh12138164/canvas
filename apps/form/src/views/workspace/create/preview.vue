@@ -1,50 +1,50 @@
 <script setup lang="ts">
-import { AutoForm } from '@/components/ui/auto-form'
-import Button from '@/components/ui/button/Button.vue'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Skeleton } from '@/components/ui/skeleton'
-import { useToast } from '@/components/ui/toast/use-toast'
-import { getZodSchema } from '@/lib/form'
-import { getFormDataById } from '@/lib/index'
-import { type CreateFormItem } from '@/types/form'
-import { onBeforeMount, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import * as z from 'zod'
+import { AutoForm } from '@/components/ui/auto-form';
+import Button from '@/components/ui/button/Button.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/components/ui/toast/use-toast';
+import { getZodSchema } from '@/lib/form';
+import { getFormDataById } from '@/lib/index';
+import type { CreateFormItem } from '@/types/form';
+import { onBeforeMount, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import * as z from 'zod';
 
-const { toast } = useToast()
-const route = useRoute()
-const router = useRouter()
-const id = ref(route.params.id)
-const formData = ref<CreateFormItem[] | null>(null)
-const loading = ref(true)
-const fieldConfig = ref<Record<string, any>>({})
-const shemas = ref<z.ZodObject<any, any, any, any>>(z.object({}))
+const { toast } = useToast();
+const route = useRoute();
+const router = useRouter();
+const id = ref(route.params.id);
+const formData = ref<CreateFormItem[] | null>(null);
+const loading = ref(true);
+const fieldConfig = ref<Record<string, any>>({});
+const shemas = ref<z.ZodObject<any, any, any, any>>(z.object({}));
 watch(
   () => route.params.id,
   (newId) => {
-    id.value = newId
+    id.value = newId;
   },
-)
+);
 onBeforeMount(async () => {
-  const formDatas = JSON.parse((await getFormDataById(id.value as string))?.schema || '{}')
-  if (formDatas) formData.value = formDatas
+  const formDatas = JSON.parse((await getFormDataById(id.value as string))?.schema || '{}');
+  if (formDatas) formData.value = formDatas;
   if (formData.value && Object.keys(formData.value).length) {
     formData?.value.forEach((item) => {
-      const schema = getZodSchema(item, fieldConfig) as z.ZodObject<any, any, any, any>
+      const schema = getZodSchema(item, fieldConfig) as z.ZodObject<any, any, any, any>;
       if (schema) {
-        shemas.value = shemas.value.merge(schema)
+        shemas.value = shemas.value.merge(schema);
       }
-    })
+    });
   }
-  loading.value = false
-})
+  loading.value = false;
+});
 
 const handleSubmit = (e: any) => {
   toast({
     title: '提交成功',
     description: JSON.stringify(e),
-  })
-}
+  });
+};
 </script>
 
 <template>

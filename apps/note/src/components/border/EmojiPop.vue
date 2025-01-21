@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ref } from 'vue';
 import EmojiPick from '../common/EmojiPick.vue';
 import Button from '../ui/button/Button.vue';

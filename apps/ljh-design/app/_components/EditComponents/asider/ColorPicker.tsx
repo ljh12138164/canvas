@@ -1,6 +1,6 @@
-"use client";
-import { rgbaObjToString } from "@/app/_lib/utils";
-import { ChromePicker, CirclePicker } from "react-color";
+'use client';
+import { rgbaObjToString } from '@/app/_lib/utils';
+import { ChromePicker, CirclePicker } from 'react-color';
 interface ColorPickerProps {
   value: string;
   onChange: (color: string) => void;

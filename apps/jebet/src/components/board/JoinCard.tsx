@@ -1,31 +1,14 @@
-import { useIsMobile } from "@/hooks/use-mobile";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { z } from "zod";
-import { Button } from "../ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../ui/drawerui";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/InputOtp";
+import { useIsMobile } from '@/hooks/use-mobile';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { z } from 'zod';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/InputOtp';
+import { Button } from '../ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '../ui/drawerui';
 const InputOTPGroups = styled(InputOTP)`
   display: flex;
   width: 100%;
@@ -51,7 +34,7 @@ const ErrorMessage = styled.p`
 `;
 const zodSchema = z.object({
   code: z.string().min(6, {
-    message: "邀请码长度为6位",
+    message: '邀请码长度为6位',
   }),
 });
 
@@ -59,7 +42,7 @@ export default function JoinCard() {
   const { handleSubmit, reset, formState, setValue } = useForm({
     resolver: zodResolver(zodSchema),
     defaultValues: {
-      code: "",
+      code: '',
     },
   });
   const navigate = useNavigate();
@@ -82,7 +65,7 @@ export default function JoinCard() {
             </DrawerHeader>
             <InputOTPGroups
               onChange={(e) => {
-                setValue("code", e);
+                setValue('code', e);
               }}
               placeholder="请输入邀请码"
               maxLength={6}
@@ -96,16 +79,10 @@ export default function JoinCard() {
                 <InputItems index={5} />
               </InputContainer>
             </InputOTPGroups>
-            {formState.errors.code && (
-              <ErrorMessage>{formState.errors.code.message}</ErrorMessage>
-            )}
+            {formState.errors.code && <ErrorMessage>{formState.errors.code.message}</ErrorMessage>}
             <DrawerFooter>
               <DrawerClose asChild>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setOpen(false)}
-                >
+                <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                   取消
                 </Button>
               </DrawerClose>
@@ -129,7 +106,7 @@ export default function JoinCard() {
           </DialogHeader>
           <InputOTPGroups
             onChange={(e) => {
-              setValue("code", e);
+              setValue('code', e);
             }}
             placeholder="请输入邀请码"
             maxLength={6}
@@ -143,9 +120,7 @@ export default function JoinCard() {
               <InputItems index={5} />
             </InputContainer>
           </InputOTPGroups>
-          {formState.errors.code && (
-            <ErrorMessage>{formState.errors.code.message}</ErrorMessage>
-          )}
+          {formState.errors.code && <ErrorMessage>{formState.errors.code.message}</ErrorMessage>}
           <DialogFooter>
             <Button
               type="button"

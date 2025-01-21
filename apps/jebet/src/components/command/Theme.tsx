@@ -1,13 +1,8 @@
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useTheme } from "@/components/ui/theme-provider";
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useTheme } from '@/components/ui/theme-provider';
 
 export function ThemeToggle() {
   const { setTheme } = useTheme();
@@ -21,12 +16,8 @@ export function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          明亮
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          黑暗
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme('light')}>明亮</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme('dark')}>黑暗</DropdownMenuItem>
         {/* <DropdownMenuItem onClick={() => setTheme("system")}>
           跟随系统
         </DropdownMenuItem> */}

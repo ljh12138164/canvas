@@ -1,8 +1,8 @@
 import { useEchart } from '@/hooks/useEcharts';
 import { getData } from '@/lib/echart';
-import { WorkspaceResponseType } from '@/server/hooks/board';
-import { Member, Task } from '@/types/workspace';
-import { EChartsOption } from 'echarts';
+import type { WorkspaceResponseType } from '@/server/hooks/board';
+import type { Member, Task } from '@/types/workspace';
+import type { EChartsOption } from 'echarts';
 import { useMemo } from 'react';
 /**
  *  ### 折线图---时间轴----数量
@@ -28,10 +28,7 @@ export const LineEchart = ({
   }, [arrDate]);
   (workspace[types] as Task[] | Member[]).forEach((item) => {
     const time = new Date().getTime() - new Date(item.created_at).getTime();
-    if (
-      new Date().getTime() - new Date(item.created_at).getTime() <
-      new Date(date * 24 * 60 * 60 * 1000).getTime()
-    ) {
+    if (new Date().getTime() - new Date(item.created_at).getTime() < new Date(date * 24 * 60 * 60 * 1000).getTime()) {
       const dates = Math.floor(time / (24 * 60 * 60 * 1000));
       Workspacedata[dates].value++;
     }
@@ -74,5 +71,5 @@ export const LineEchart = ({
     };
   }, [arrDate, Workspacedata]);
   const { echartRef } = useEchart({ options });
-  return <div ref={echartRef} className='w-full h-full min-h-[300px]' />;
+  return <div ref={echartRef} className="w-full h-full min-h-[300px]" />;
 };

@@ -1,7 +1,7 @@
-import { Providers } from "@/app/_provide/providers";
-import Main from "./_components/home/Main";
-import NavBar from "./_components/home/Navbar";
-import { inter, myFont } from "@/app/_lib/font";
+import { inter, myFont } from '@/app/_lib/font';
+import { Providers } from '@/app/_provide/providers';
+import Main from './_components/home/Main';
+import NavBar from './_components/home/Navbar';
 
 export default async function Home() {
   return (

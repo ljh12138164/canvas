@@ -1,36 +1,19 @@
 <script lang="ts" setup>
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer'
-import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
-import { ref } from 'vue'
-import DialogFooter from '../ui/dialog/DialogFooter.vue'
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import { createReusableTemplate, useMediaQuery } from '@vueuse/core';
+import { ref } from 'vue';
+import DialogFooter from '../ui/dialog/DialogFooter.vue';
 
 defineProps<{
-  title: string
-  description?: string
-}>()
+  title: string;
+  description?: string;
+}>();
 // Reuse `form` section
-const [UseTemplate, GridForm] = createReusableTemplate()
-const isDesktop = useMediaQuery('(min-width: 768px)')
+const [UseTemplate, GridForm] = createReusableTemplate();
+const isDesktop = useMediaQuery('(min-width: 768px)');
 
-const isOpen = ref(false)
+const isOpen = ref(false);
 </script>
 
 <template>
