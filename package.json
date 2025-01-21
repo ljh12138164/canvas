@@ -45,7 +45,7 @@
     "lint-staged": "^15.4.1"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
+    "pre-commit": "pnpm run lint && pnpm lint-staged"
   },
   "lint-staged": {
     "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,vue,scss,css,html,md,mdx}": [
@@ -56,7 +56,8 @@
       "biome check --fix --unsafe --no-errors-on-unmatched",
       "biome lint --write --no-errors-on-unmatched"
     ],
-    "*": ["biome check --no-errors-on-unmatched --files-ignore-unknown=true"]
+    "*": ["biome check --no-errors-on-unmatched --files-ignore-unknown=true"],
+    "*.{scss,css}": ["stylelint --fix"]
   },
   "pnpm": {
     "overrides": {
