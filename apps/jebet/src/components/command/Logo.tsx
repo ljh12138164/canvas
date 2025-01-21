@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import logo from '@/assets/image/logo.jpg';
+import styled from 'styled-components';
 
 interface ContainerProps {
   height?: number;
@@ -17,7 +17,7 @@ const Image = styled.img`
 const Logo = ({ height = 50 }: ContainerProps) => {
   return (
     <Container height={height}>
-      <Image src={logo} alt='logo' />
+      <Image src={logo} alt="logo" />
     </Container>
   );
 };

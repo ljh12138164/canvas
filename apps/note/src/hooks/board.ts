@@ -3,10 +3,7 @@ import { getNewToken } from '@/server/sign';
 import { useQuery } from '@tanstack/vue-query';
 import type { InferResponseType } from 'hono';
 import { useRouter } from 'vue-router';
-type Folders = InferResponseType<
-  (typeof client.folder.folderList)['$get'],
-  200
->;
+type Folders = InferResponseType<(typeof client.folder.folderList)['$get'], 200>;
 const router = useRouter();
 export const useBoard = ({ workspaceId }: { workspaceId: string }) => {
   const {

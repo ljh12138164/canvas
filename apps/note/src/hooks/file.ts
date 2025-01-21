@@ -6,18 +6,11 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-type CreateFilesResponse = InferResponseType<
-  (typeof client.file.createFile)['$post'],
-  200
->;
+type CreateFilesResponse = InferResponseType<(typeof client.file.createFile)['$post'], 200>;
 type CreateFilesRequest = InferRequestType<typeof client.file.createFile.$post>;
 
 export const createFiles = () => {
-  const { mutate: createFile, isPending: createFileIsPending } = useMutation<
-    CreateFilesResponse,
-    Error,
-    CreateFilesRequest
-  >({
+  const { mutate: createFile, isPending: createFileIsPending } = useMutation<CreateFilesResponse, Error, CreateFilesRequest>({
     mutationFn: async (data) => {
       const token = await getNewToken();
       if (!token) router.push('/login');

@@ -1,6 +1,6 @@
-import { InferResponseType, InferRequestType } from 'hono';
-import { client } from '..';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import type { InferRequestType, InferResponseType } from 'hono';
+import { client } from '..';
 
 type ProjectListType = InferResponseType<typeof client.project.list.$get, 200>;
 /**
@@ -33,11 +33,7 @@ type ProjectRequestType = InferRequestType<typeof client.project.create.$post>;
  * 创建项目信息
  */
 export const useProjectCreate = () => {
-  const { mutate: createProject, isPending: isCreatingProject } = useMutation<
-    ProjectType,
-    Error,
-    ProjectRequestType
-  >({
+  const { mutate: createProject, isPending: isCreatingProject } = useMutation<ProjectType, Error, ProjectRequestType>({
     mutationFn: async (data) => {
       const res = await client.project.create.$post({
         form: data.form,
@@ -49,22 +45,13 @@ export const useProjectCreate = () => {
   return { createProject, isCreatingProject };
 };
 
-type ProjectUpdateType = InferResponseType<
-  typeof client.project.update.$patch,
-  200
->;
-type ProjectUpdateRequestType = InferRequestType<
-  typeof client.project.update.$patch
->;
+type ProjectUpdateType = InferResponseType<typeof client.project.update.$patch, 200>;
+type ProjectUpdateRequestType = InferRequestType<typeof client.project.update.$patch>;
 /**
  * 更新项目信息
  */
 export const useProjectUpdate = () => {
-  const { mutate: updateProject, isPending: isUpdatingProject } = useMutation<
-    ProjectUpdateType,
-    Error,
-    ProjectUpdateRequestType
-  >({
+  const { mutate: updateProject, isPending: isUpdatingProject } = useMutation<ProjectUpdateType, Error, ProjectUpdateRequestType>({
     mutationFn: async (data) => {
       const res = await client.project.update.$patch({
         form: data.form,
@@ -76,22 +63,13 @@ export const useProjectUpdate = () => {
   return { updateProject, isUpdatingProject };
 };
 
-type ProjectDeleteType = InferResponseType<
-  typeof client.project.delete.$delete,
-  200
->;
-type ProjectDeleteRequestType = InferRequestType<
-  typeof client.project.delete.$delete
->;
+type ProjectDeleteType = InferResponseType<typeof client.project.delete.$delete, 200>;
+type ProjectDeleteRequestType = InferRequestType<typeof client.project.delete.$delete>;
 /**
  * 删除项目
  */
 export const useProjectDelete = () => {
-  const { mutate: deleteProject, isPending: isDeletingProject } = useMutation<
-    ProjectDeleteType,
-    Error,
-    ProjectDeleteRequestType
-  >({
+  const { mutate: deleteProject, isPending: isDeletingProject } = useMutation<ProjectDeleteType, Error, ProjectDeleteRequestType>({
     mutationFn: async (data) => {
       const res = await client.project.delete.$delete({
         json: data.json,

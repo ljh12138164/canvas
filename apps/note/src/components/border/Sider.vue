@@ -1,40 +1,17 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useGetWorkspaceById } from "@/hooks/workspace";
-import { useQueryClient } from "@tanstack/vue-query";
-import {
-  ChevronRight,
-  MoreHorizontal,
-  Pencil,
-  Plus,
-  Trash2,
-} from "lucide-vue-next";
-import { ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import ResponsePop from "../common/ResponsePop.vue";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "../ui/collapsible";
-import { Input } from "../ui/input";
-import {
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-} from "../ui/sidebar";
-import { Skeleton } from "../ui/skeleton";
-import FileFrom from "./FileFrom.vue";
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useGetWorkspaceById } from '@/hooks/workspace';
+import { useQueryClient } from '@tanstack/vue-query';
+import { ChevronRight, MoreHorizontal, Pencil, Plus, Trash2 } from 'lucide-vue-next';
+import { ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import ResponsePop from '../common/ResponsePop.vue';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
+import { Input } from '../ui/input';
+import { SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '../ui/sidebar';
+import { Skeleton } from '../ui/skeleton';
+import FileFrom from './FileFrom.vue';
 const queryClient = useQueryClient();
 const route = useRoute();
 const router = useRouter();
@@ -47,39 +24,31 @@ const fileId = ref<string>(route.params.fileId as string);
 watch(
   () => route.params.folderId,
   (newVal) => {
-    console.log(route.params);
+    // console.log(route.params);
     folderId.value = newVal as string;
-  }
+  },
 );
 watch(
   () => route.params.fileId,
   (newVal) => {
     fileId.value = newVal as string;
-  }
+  },
 );
-const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
-  props.routerParams
-);
+const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(props.routerParams);
 
 const handleClick = (id: string) => {
   if (id === folderId.value && !fileId.value) return;
-  else {
-    queryClient.invalidateQueries({
-      queryKey: ["doc", props.routerParams],
-    });
-    router.push(`/workspace/${props.routerParams}/folders/${id}`);
-  }
+  queryClient.invalidateQueries({
+    queryKey: ['doc', props.routerParams],
+  });
+  router.push(`/workspace/${props.routerParams}/folders/${id}`);
 };
 const subHandleClick = (id: string, folderId: string) => {
   if (id === fileId.value) return;
-  else {
-    queryClient.invalidateQueries({
-      queryKey: ["doc", props.routerParams],
-    });
-    router.push(
-      `/workspace/${props.routerParams}/folders/${folderId}/files/${id}`
-    );
-  }
+  queryClient.invalidateQueries({
+    queryKey: ['doc', props.routerParams],
+  });
+  router.push(`/workspace/${props.routerParams}/folders/${folderId}/files/${id}`);
 };
 
 const responsePopRef = ref<any>(null);

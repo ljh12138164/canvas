@@ -1,5 +1,5 @@
 import { useCreateTask, useUpdateTask } from '@/server/hooks/tasks';
-import { Member, Task, TaskStatus } from '@/types/workspace';
+import { type Member, type Task, TaskStatus } from '@/types/workspace';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
 import { z } from 'zod';
+import { TasksPriority } from '../../types/workspace';
 import { Button } from '../ui/button';
 import { Calendar } from '../ui/calendar';
 import { CardContent, CardFooter } from '../ui/card';
@@ -16,16 +17,8 @@ import { DialogClose } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { ScrollArea } from '../ui/scrollArea';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Textarea } from '../ui/textarea';
-import { TasksPriority } from '../../types/workspace';
 
 const zShema = z.object({
   name: z
@@ -78,9 +71,7 @@ const TaskFrom = ({
   defaultData?: Task;
 }) => {
   const queryClient = useQueryClient();
-  const { register, handleSubmit, setValue, formState } = useForm<
-    z.infer<typeof zShema>
-  >({
+  const { register, handleSubmit, setValue, formState } = useForm<z.infer<typeof zShema>>({
     resolver: zodResolver(zShema),
     defaultValues: {
       name: defaultData?.name || '',
@@ -120,7 +111,7 @@ const TaskFrom = ({
             toast.dismiss();
             toast.success('创建成功');
           },
-        }
+        },
       );
     }
     if (type === 'edit') {
@@ -145,30 +136,21 @@ const TaskFrom = ({
             if (closeRef.current) closeRef.current.click();
             if (closeRef2.current) closeRef2.current.click();
           },
-        }
+        },
       );
     }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <CardContent className='my-2 flex w-full flex-col gap-2 mx-0'>
-        <ScrollArea
-          className='h-[calc(100vh-250px)]'
-          style={{ scrollbarWidth: 'none' }}
-        >
+      <CardContent className="my-2 flex w-full flex-col gap-2 mx-0">
+        <ScrollArea className="h-[calc(100vh-250px)]" style={{ scrollbarWidth: 'none' }}>
           <FromItem>
-            <Label htmlFor='name'>任务名称</Label>
-            <Input
-              id='name'
-              {...register('name')}
-              placeholder='请输入任务名称'
-            />
-            <p className='text-red-500 text-sm'>
-              {formState.errors.name?.message}
-            </p>
+            <Label htmlFor="name">任务名称</Label>
+            <Input id="name" {...register('name')} placeholder="请输入任务名称" />
+            <p className="text-red-500 text-sm">{formState.errors.name?.message}</p>
           </FromItem>
           <FromItem>
-            <Label htmlFor='status'>任务状态</Label>
+            <Label htmlFor="status">任务状态</Label>
             <Select
               {...register('status')}
               defaultValue={defaultData?.status}
@@ -177,7 +159,7 @@ const TaskFrom = ({
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder='请选择任务状态' />
+                <SelectValue placeholder="请选择任务状态" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={TaskStatus.BACKLOG}>阻塞</SelectItem>
@@ -187,23 +169,21 @@ const TaskFrom = ({
                 <SelectItem value={TaskStatus.DONE}>已完成</SelectItem>
               </SelectContent>
             </Select>
-            <p className='text-red-500 text-sm'>
-              {formState.errors.status?.message}
-            </p>
+            <p className="text-red-500 text-sm">{formState.errors.status?.message}</p>
           </FromItem>
           <FromItem>
-            <Label htmlFor='lastTime'>最后时间</Label>
+            <Label htmlFor="lastTime">最后时间</Label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant='outline' className='w-full'>
+                <Button variant="outline" className="w-full">
                   {lastTime ? format(lastTime, 'yyyy-MM-dd') : '请选择最后时间'}
-                  <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className='w-auto p-0' align='start'>
+              <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
-                  mode='single'
-                  className='w-full'
+                  mode="single"
+                  className="w-full"
                   selected={lastTime || undefined}
                   onSelect={(date) => {
                     if (date) {
@@ -216,13 +196,13 @@ const TaskFrom = ({
                 />
               </PopoverContent>
             </Popover>
-            <p className='text-red-500 text-sm'>
+            <p className="text-red-500 text-sm">
               {/* @ts-ignore */}
               {formState.errors.lastTime?.message}
             </p>
           </FromItem>
           <FromItem>
-            <Label htmlFor='assigneeId'>指派人</Label>
+            <Label htmlFor="assigneeId">指派人</Label>
             <Select
               defaultValue={defaultData?.assigneeId}
               {...register('assigneeId')}
@@ -230,23 +210,15 @@ const TaskFrom = ({
                 setValue('assigneeId', value);
               }}
             >
-              <SelectTrigger className='h-16 dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200'>
-                <SelectValue placeholder='选择指派人' />
+              <SelectTrigger className="h-16 dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200">
+                <SelectValue placeholder="选择指派人" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   {userData?.map((item) => (
-                    <SelectItem
-                      className='cursor-pointer flex items-center gap-2'
-                      key={item.id}
-                      value={item.userId}
-                    >
+                    <SelectItem className="cursor-pointer flex items-center gap-2" key={item.id} value={item.userId}>
                       <SelectContents>
-                        <img
-                          className='w-8 h-8 rounded-full'
-                          src={item.userImage}
-                          alt={item.username}
-                        />
+                        <img className="w-8 h-8 rounded-full" src={item.userImage} alt={item.username} />
                         <p>{item.username}</p>
                       </SelectContents>
                     </SelectItem>
@@ -254,12 +226,10 @@ const TaskFrom = ({
                 </SelectGroup>
               </SelectContent>
             </Select>
-            <p className='text-red-500 text-sm'>
-              {formState.errors.assigneeId?.message}
-            </p>
+            <p className="text-red-500 text-sm">{formState.errors.assigneeId?.message}</p>
           </FromItem>
           <FromItem>
-            <Label htmlFor='priority'>优先级</Label>
+            <Label htmlFor="priority">优先级</Label>
             <Select
               {...register('priority')}
               defaultValue={defaultData?.priority}
@@ -268,7 +238,7 @@ const TaskFrom = ({
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder='请选择优先级' />
+                <SelectValue placeholder="请选择优先级" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={TasksPriority.SUGGESTION}>建议</SelectItem>
@@ -277,55 +247,34 @@ const TaskFrom = ({
                 <SelectItem value={TasksPriority.URGENT}>紧急</SelectItem>
               </SelectContent>
             </Select>
-            <p className='text-red-500 text-sm'>
-              {formState.errors.priority?.message}
-            </p>
+            <p className="text-red-500 text-sm">{formState.errors.priority?.message}</p>
           </FromItem>
           <FromItem>
-            <Label htmlFor='description'>描述</Label>
-            <Textarea
-              id='description'
-              {...register('description')}
-              defaultValue={defaultData?.description}
-            />
-            <p className='text-red-500 text-sm'>
-              {formState.errors.description?.message}
-            </p>
+            <Label htmlFor="description">描述</Label>
+            <Textarea id="description" {...register('description')} defaultValue={defaultData?.description} />
+            <p className="text-red-500 text-sm">{formState.errors.description?.message}</p>
           </FromItem>
         </ScrollArea>
-        <CardFooter className='flex w-full flex-col gap-2'>
+        <CardFooter className="flex w-full flex-col gap-2">
           {!isMobile ? (
             <>
               <DialogClose asChild>
-                <Button
-                  type='button'
-                  variant='outline'
-                  className='w-full'
-                  ref={closeRef2}
-                >
+                <Button type="button" variant="outline" className="w-full" ref={closeRef2}>
                   取消
                 </Button>
               </DialogClose>
-              <Button
-                className='w-full'
-                type='submit'
-                disabled={createTaskLoading || updateTaskLoading}
-              >
+              <Button className="w-full" type="submit" disabled={createTaskLoading || updateTaskLoading}>
                 {type === 'create' ? '添加' : '保存'}
               </Button>
             </>
           ) : (
             <>
               <DialogClose asChild>
-                <Button variant='outline' className='w-full' ref={closeRef}>
+                <Button variant="outline" className="w-full" ref={closeRef}>
                   取消
                 </Button>
               </DialogClose>
-              <Button
-                className='w-full'
-                type='submit'
-                disabled={createTaskLoading}
-              >
+              <Button className="w-full" type="submit" disabled={createTaskLoading}>
                 {type === 'create' ? '添加' : '保存'}
               </Button>
             </>

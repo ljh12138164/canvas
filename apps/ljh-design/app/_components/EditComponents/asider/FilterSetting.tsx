@@ -1,27 +1,13 @@
-import { Label } from "@/app/_components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/_components/ui/select";
-import { Separator } from "@/app/_components/ui/separator";
-import { Slider } from "@/app/_components/ui/slider";
-import {
-  CanfilterSetting,
-  CheckboxProps,
-  ColorFilterProps,
-  Edit,
-  OptionFilterProps,
-  SiderProps,
-} from "@/app/_types/Edit";
-import { useEffect, useState } from "react";
-import { ChromePicker } from "react-color";
+import { Label } from '@/app/_components/ui/label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/app/_components/ui/select';
+import { Separator } from '@/app/_components/ui/separator';
+import { Slider } from '@/app/_components/ui/slider';
+import { CanfilterSetting, type CheckboxProps, type ColorFilterProps, type Edit, type OptionFilterProps, type SiderProps } from '@/app/_types/Edit';
+import { nanoid } from 'nanoid';
+import { useState } from 'react';
+import { ChromePicker } from 'react-color';
 
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 interface FilterSettingProps {
   editor: Edit | undefined;
   filterSetting: string;
@@ -30,33 +16,27 @@ interface FilterSettingProps {
 const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
   const filter = CanfilterSetting.find((items) => items.name === filterSetting);
   const effect = editor?.getActiveFilterEffect(filterSetting);
-  const { register, getValues, setValue } = useForm<
-    Record<string, number | boolean | string>
-  >({
+  const { register, getValues, setValue } = useForm<Record<string, number | boolean | string>>({
     defaultValues: {
       ...effect,
     },
   });
   // 初始化颜色
   // @ts-ignore
-  const [color, setColor] = useState<string>(effect?.color || "#000");
-  const defalutValue = (
-    item: SiderProps | CheckboxProps | ColorFilterProps | OptionFilterProps,
-    index: number | undefined
-  ) => {
+  const [color, setColor] = useState<string>(effect?.color || '#000');
+  const defalutValue = (item: SiderProps | CheckboxProps | ColorFilterProps | OptionFilterProps, index: number | undefined) => {
     if (index === undefined)
       // @ts-ignore
       return [effect[item?.id]];
     // @ts-ignore
     return [effect[item.id][index]];
   };
-  useEffect(() => {}, [getValues]);
   const getFilterValue = () => {
     // @ts-ignore
     const arr = filter.change.map((item) => {
       return { [item.name]: getValues(item.name) };
     });
-    return arr.reduce((a, b) => ({ ...a, ...b }), {});
+    return arr.reduce((a, b) => Object.assign(a, b), {});
   };
   const handleChange = () => {
     if (!filter) return null;
@@ -69,7 +49,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
         // @ts-ignore
         filter?.multiply({
           [start]: Object.values(value).map((item) => +item),
-        })
+        }),
       );
     } else {
       // @ts-ignore
@@ -79,7 +59,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
   return (
     <form>
       <p className="text-xl font-[600] mb-3">{filter?.title}</p>
-      {filter?.change.length === 1 && filter?.change[0].type === "slider" && (
+      {filter?.change.length === 1 && filter?.change[0].type === 'slider' && (
         <Slider
           key={filter?.change[0].id}
           step={filter.change[0].step}
@@ -90,18 +70,18 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
             editor?.changeImageFilterSetting(
               filter.name,
               // @ts-ignore
-              filter?.change?.[0]?.value(value[0])
+              filter?.change?.[0]?.value(value[0]),
             );
           }}
-        ></Slider>
+        />
       )}
-      {filter?.change.length === 1 && filter?.change[0].type === "option" && (
+      {filter?.change.length === 1 && filter?.change[0].type === 'option' && (
         <Select
           onValueChange={(value: string) => {
             editor?.changeImageFilterSetting(
               filter.name,
               // @ts-ignore
-              filter?.change?.[0]?.value(value)
+              filter?.change?.[0]?.value(value),
             );
           }}
         >
@@ -123,15 +103,15 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
       <div className="flex flex-col gap-2">
         {/* @ts-ignore */}
         {filter?.change?.length > 1 &&
-          filter?.change.map((item, index) => {
+          filter?.change.map((item) => {
             return (
-              <div key={index} className="flex flex-col gap-2">
+              <div key={nanoid()} className="flex flex-col gap-2">
                 <Label className="text-sm" id={item.id}>
                   {item.title}
                 </Label>
-                {item.type === "slider" && (
+                {item.type === 'slider' && (
                   <Slider
-                    key={index}
+                    key={nanoid()}
                     step={item.step}
                     // @ts-ignore
                     min={item.min as number}
@@ -143,13 +123,13 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
                       setValue(item.id, value[0]);
                       handleChange();
                     }}
-                  ></Slider>
+                  />
                 )}
-                {item.type === "checkbox" && (
+                {item.type === 'checkbox' && (
                   <input
                     type="checkbox"
                     className="w-4 h-4"
-                    key={index}
+                    key={nanoid()}
                     {...register(item.name)}
                     //@ts-ignore
                     defaultValue={effect?.[item.id]}
@@ -157,9 +137,9 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
                       setValue(item.name, e.target.checked);
                       handleChange();
                     }}
-                  ></input>
+                  />
                 )}
-                {item.type === "color" && (
+                {item.type === 'color' && (
                   <ChromePicker
                     color={color}
                     className="border rounded-lg"
@@ -170,7 +150,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
                     }}
                   />
                 )}
-                {item.type === "option" && (
+                {item.type === 'option' && (
                   <Select
                     {...register(item.name)}
                     onValueChange={(value: string) => {
@@ -193,7 +173,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
                     </SelectContent>
                   </Select>
                 )}
-                <Separator className="my-2"></Separator>
+                <Separator className="my-2" />
               </div>
             );
           })}

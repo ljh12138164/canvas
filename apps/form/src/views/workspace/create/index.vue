@@ -1,26 +1,17 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { nanoid } from 'nanoid'
-import { getIndexDB, indexDBChange } from '@/lib'
-import { onBeforeMount, ref } from 'vue'
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from '@/components/ui/dialog'
-const previewList = ref<{ id: string; schema: string }[]>([])
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { getIndexDB, indexDBChange } from '@/lib';
+import { nanoid } from 'nanoid';
+import { onBeforeMount, ref } from 'vue';
+const previewList = ref<{ id: string; schema: string }[]>([]);
 onBeforeMount(async () => {
-  previewList.value = await getIndexDB()
-})
+  previewList.value = await getIndexDB();
+});
 const handleDelete = async (id: string) => {
-  await indexDBChange({ type: 'delete', deletItem: id })
-  previewList.value = await getIndexDB()
-}
+  await indexDBChange({ type: 'delete', deletItem: id });
+  previewList.value = await getIndexDB();
+};
 </script>
 
 <template>

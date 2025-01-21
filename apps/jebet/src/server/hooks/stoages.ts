@@ -1,7 +1,7 @@
+import type { StoageData } from '@/types/workspace';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { InferRequestType, InferResponseType } from 'hono/client';
+import type { InferRequestType, InferResponseType } from 'hono/client';
 import { client } from '..';
-import { StoageData } from '@/types/workspace';
 
 /**
  * ## 获取文件夹信息
@@ -25,9 +25,7 @@ export const useStoages = (workspaceId: string, userId: string) => {
 };
 
 type CreateData = InferRequestType<(typeof client.storage.create)['$post']>;
-type CreateResponse = InferResponseType<
-  (typeof client.storage.create)['$post']
->;
+type CreateResponse = InferResponseType<(typeof client.storage.create)['$post']>;
 /**
  * ## 创建文件
  * @param data
@@ -49,9 +47,7 @@ export const useCreateStoage = () => {
 };
 
 type DeleteData = InferRequestType<(typeof client.storage.delete)['$delete']>;
-type DeleteResponse = InferResponseType<
-  (typeof client.storage.delete)['$delete']
->;
+type DeleteResponse = InferResponseType<(typeof client.storage.delete)['$delete']>;
 /**
  * ## 删除文件
  */
@@ -71,9 +67,7 @@ export const useDeleteStoage = () => {
 };
 
 type UpdateData = InferRequestType<(typeof client.storage.update)['$patch']>;
-type UpdateResponse = InferResponseType<
-  (typeof client.storage.update)['$patch']
->;
+type UpdateResponse = InferResponseType<(typeof client.storage.update)['$patch']>;
 /**
  * ## 更新文件
  */

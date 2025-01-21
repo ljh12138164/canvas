@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: "编辑器",
-  description: "编辑器",
+  title: '编辑器',
+  description: '编辑器',
 };
 
 export default function RootLayout({
@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="cn" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

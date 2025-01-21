@@ -5,9 +5,7 @@ import type { NumberFieldDecrementProps } from 'radix-vue';
 import { NumberFieldDecrement, useForwardProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  NumberFieldDecrementProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<NumberFieldDecrementProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

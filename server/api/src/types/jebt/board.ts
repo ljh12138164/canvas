@@ -81,7 +81,7 @@ export interface Task {
 // 任务包含工作区信息
 export interface TaskWithWorkspace extends Task {
   workspace: Workspace & { member: Member[] };
-  project: Project;
+  projects: Project;
 }
 
 export interface ChatMessage {

@@ -5,12 +5,7 @@ import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import ResponsePop from '../common/ResponsePop.vue';
 import CardContent from '../ui/card/CardContent.vue';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 import FileFrom from './FileFrom.vue';
 import FileItem from './FileItem.vue';
 

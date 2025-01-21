@@ -1,8 +1,8 @@
-import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
-import { TaskStatus, TaskWithWorkspace } from "@/types/workspace";
-import styled from "styled-components";
-import { ScrollArea } from "../ui/scrollArea";
-import KanbanItem from "./KanbanItem";
+import type { TaskStatus, TaskWithWorkspace } from '@/types/workspace';
+import { type UniqueIdentifier, useDroppable } from '@dnd-kit/core';
+import styled from 'styled-components';
+import { ScrollArea } from '../ui/scrollArea';
+import KanbanItem from './KanbanItem';
 
 const DropContainer = styled(ScrollArea)`
   display: flex;
@@ -40,11 +40,7 @@ const KanbanDrop = ({
   };
   //可拖拽的元素
   return (
-    <DropContainer
-      ref={setNodeRef}
-      style={style}
-      className="bg-zinc-100 dark:bg-zinc-900"
-    >
+    <DropContainer ref={setNodeRef} style={style} className="bg-zinc-100 dark:bg-zinc-900">
       {/* 任务列表 */}
       {taskList.map((task) => (
         <DropItem key={task.id}>

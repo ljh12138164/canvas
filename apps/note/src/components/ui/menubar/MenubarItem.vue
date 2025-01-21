@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils';
-import {
-  MenubarItem,
-  type MenubarItemEmits,
-  type MenubarItemProps,
-  useForwardPropsEmits,
-} from 'radix-vue';
+import { MenubarItem, type MenubarItemEmits, type MenubarItemProps, useForwardPropsEmits } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  MenubarItemProps & { class?: HTMLAttributes['class']; inset?: boolean }
->();
+const props = defineProps<MenubarItemProps & { class?: HTMLAttributes['class']; inset?: boolean }>();
 
 const emits = defineEmits<MenubarItemEmits>();
 

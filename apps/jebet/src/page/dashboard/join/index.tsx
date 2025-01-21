@@ -10,6 +10,6 @@ const Join = observer(() => {
   if (userData == null) return null;
   if (id?.length !== 6) return navigate('/');
 
-  return <JoinWorkspaceCard id={id} user={userData}></JoinWorkspaceCard>;
+  return <JoinWorkspaceCard id={id} user={userData} />;
 });
 export default Join;

@@ -1,79 +1,65 @@
 <script setup lang="ts">
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
-import { MoreVertical, Pencil, Presentation, Trash2 } from 'lucide-vue-next'
-import { useDeleteBoard, useUpdateBoard } from '@/hooks/board'
-import type { Form } from '@/types'
-import useUser from '@/stores/user'
-import { Input } from '@/components/ui/input'
-import { FormInputIcon } from 'lucide-vue-next'
-import { useRouter } from 'vue-router'
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from '@/components/ui/dialog'
-import { useToast } from '@/components/ui/toast'
-import { ref } from 'vue'
-import { useQueryClient } from '@tanstack/vue-query'
-const { toast } = useToast()
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/toast';
+import { useDeleteBoard, useUpdateBoard } from '@/hooks/board';
+import useUser from '@/stores/user';
+import type { Form } from '@/types';
+import { useQueryClient } from '@tanstack/vue-query';
+import { MoreVertical, Pencil, Presentation, Trash2 } from 'lucide-vue-next';
+import { FormInputIcon } from 'lucide-vue-next';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const { toast } = useToast();
 
-const { userData } = useUser()
-const queryClient = useQueryClient()
-const closeRef = ref<HTMLButtonElement>()
-const closeRef2 = ref<HTMLButtonElement>()
-const router = useRouter()
+const { userData } = useUser();
+const queryClient = useQueryClient();
+const closeRef = ref<HTMLButtonElement>();
+const closeRef2 = ref<HTMLButtonElement>();
+const router = useRouter();
 const props = defineProps<{
-  payment: Form
-}>()
-const { mutate: deleteBoard } = useDeleteBoard()
-const { mutate: updateBoard } = useUpdateBoard()
+  payment: Form;
+}>();
+const { mutate: deleteBoard } = useDeleteBoard();
+const { mutate: updateBoard } = useUpdateBoard();
 const handleUpdateFomr = async () => {
-  router.push(`/workspace/form/edit/${props.payment.id}`)
-}
+  router.push(`/workspace/form/edit/${props.payment.id}`);
+};
 const handlePreview = async () => {
-  router.push(`/workspace/form/detail/${props.payment.id}`)
-}
-const input = ref(props.payment.name)
-const description = ref(props.payment.description)
+  router.push(`/workspace/form/detail/${props.payment.id}`);
+};
+const input = ref(props.payment.name);
+const description = ref(props.payment.description);
 const handleDelete = async () => {
   deleteBoard(
     { json: { id: props.payment.id } },
     {
       onSuccess: () => {
-        closeRef.value?.click()
-        queryClient.invalidateQueries({ queryKey: ['board'] })
-        toast({ title: '删除成功' })
+        closeRef.value?.click();
+        queryClient.invalidateQueries({ queryKey: ['board'] });
+        toast({ title: '删除成功' });
       },
     },
-  )
-}
+  );
+};
 const handleEdit = async () => {
   if (!input.value) {
-    toast({ title: '请输入表单名称', variant: 'destructive' })
-    return
+    toast({ title: '请输入表单名称', variant: 'destructive' });
+    return;
   }
   updateBoard(
     { json: { id: props.payment.id, name: input.value, description: description.value } },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['board'] })
-        closeRef2.value?.click()
-        toast({ title: '编辑成功' })
+        queryClient.invalidateQueries({ queryKey: ['board'] });
+        closeRef2.value?.click();
+        toast({ title: '编辑成功' });
       },
     },
-  )
-}
+  );
+};
 </script>
 <template>
   <DropdownMenu>

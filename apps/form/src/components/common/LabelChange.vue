@@ -1,26 +1,23 @@
 <script setup lang="ts">
-import type { FormType } from "@/types/form";
-import { watch } from "vue";
 import {
   Select,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectItem,
   // @ts-ignore
-} from "@/components/ui/select";
+} from '@/components/ui/select';
+import type { FormType } from '@/types/form';
+import { watch } from 'vue';
 
 const props = defineProps<{
   label: string;
-  type: "text" | "number" | "checkbox" | "select";
+  type: 'text' | 'number' | 'checkbox' | 'select';
   placeholder: string;
   options?: { label: string; value: string }[];
   changeType: FormType;
   default?: string | boolean | number | undefined;
-  updateList: (
-    type: FormType,
-    newValue: string | boolean | number | undefined
-  ) => void;
+  updateList: (type: FormType, newValue: string | boolean | number | undefined) => void;
 }>();
 const model = defineModel<string | boolean | number | undefined>();
 watch(model, (newVal) => {

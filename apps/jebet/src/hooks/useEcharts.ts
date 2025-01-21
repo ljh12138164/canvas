@@ -1,5 +1,5 @@
 import { useMemoizedFn } from 'ahooks';
-import { ECharts } from 'echarts';
+import type { ECharts } from 'echarts';
 import * as echarts from 'echarts';
 import { useEffect, useRef } from 'react';
 
@@ -19,9 +19,7 @@ window.addEventListener('resize', () => {
  * @returns
  */
 export const useEchart = ({ options }: { options: echarts.EChartsOption }) => {
-  const echartspush = useMemoizedFn((echarts: ECharts) =>
-    echartsArr.add(echarts)
-  );
+  const echartspush = useMemoizedFn((echarts: ECharts) => echartsArr.add(echarts));
   const echartRef = useRef<HTMLDivElement | null>(null);
   const charts = useRef<ECharts | null>(null);
   useEffect(() => {

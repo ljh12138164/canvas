@@ -11,7 +11,7 @@ const props = defineProps<{
 }>();
 const headingLevel = computed(() => {
   for (let i = 0; i < fontTitle.length; i++) {
-    if (props.editor?.isActive('heading', { level: i })) return 'h' + i;
+    if (props.editor?.isActive('heading', { level: i })) return `h${i}`;
   }
   return '段落';
 });

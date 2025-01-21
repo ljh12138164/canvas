@@ -1,14 +1,14 @@
-import { useMemoizedFn } from "ahooks";
-import { ECharts } from "echarts";
-import * as echarts from "echarts";
-import { useEffect, useRef } from "react";
+import { useMemoizedFn } from 'ahooks';
+import type { ECharts } from 'echarts';
+import * as echarts from 'echarts';
+import { useEffect, useRef } from 'react';
 //  @ts-ignore
 const echartsArr = new Set<ECharts>();
 /**
  *
  * @param 自动调整echarts大小
  */
-window.addEventListener("reset", () => {
+window.addEventListener('reset', () => {
   [...echartsArr].forEach((item) => {
     item.resize();
   });
@@ -19,9 +19,7 @@ window.addEventListener("reset", () => {
  * @returns
  */
 export const useEchart = () => {
-  const echartspush = useMemoizedFn((echarts: ECharts) =>
-    echartsArr.add(echarts)
-  );
+  const echartspush = useMemoizedFn((echarts: ECharts) => echartsArr.add(echarts));
   const echartRef = useRef<HTMLDivElement | null>(null);
   const charts = useRef<ECharts | null>(null);
   useEffect(() => {

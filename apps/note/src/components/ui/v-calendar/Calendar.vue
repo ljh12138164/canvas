@@ -41,10 +41,7 @@ const props = withDefaults(
     columns: 1,
   },
 );
-const emits =
-  defineEmits<
-    (e: 'update:modelValue', payload: typeof props.modelValue) => void
-  >();
+const emits = defineEmits<(e: 'update:modelValue', payload: typeof props.modelValue) => void>();
 
 const modelValue = useVModel(props, 'modelValue', emits, {
   passive: true,
@@ -52,9 +49,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 
 const datePicker = ref<InstanceType<typeof DatePicker>>();
 // @ts-expect-error in this current version of v-calendar has the calendaRef instance, which is required to handle arrow nav.
-const calendarRef = computed<InstanceType<typeof Calendar>>(
-  () => datePicker.value.calendarRef,
-);
+const calendarRef = computed<InstanceType<typeof Calendar>>(() => datePicker.value.calendarRef);
 
 function handleNav(direction: 'prev' | 'next') {
   if (!calendarRef.value) return;
@@ -65,8 +60,7 @@ function handleNav(direction: 'prev' | 'next') {
 
 onMounted(async () => {
   await nextTick();
-  if (modelValue.value instanceof Date && calendarRef.value)
-    calendarRef.value.focusDate(modelValue.value);
+  if (modelValue.value instanceof Date && calendarRef.value) calendarRef.value.focusDate(modelValue.value);
 });
 
 const $slots = useSlots();

@@ -6,26 +6,13 @@ import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 import { CardContent, CardHeader, CardTitle } from '../ui/card';
 import Card from '../ui/card/Card.vue';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../ui/table';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
 import { useRemoveCollaborator } from '@/hooks/collaborators';
 import { Icon } from '@iconify/vue';
 import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 const router = useRouter();
 const props = defineProps<{
@@ -40,7 +27,7 @@ watch(
       toast.error('未找到工作区');
       router.push('/workspace');
     }
-  }
+  },
 );
 </script>
 <template>

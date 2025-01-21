@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -65,14 +65,8 @@ export default function Home() {
     <Container>
       <HeroSection>
         <Title>欢迎使用 ljh-jebet</Title>
-        <Subtitle>
-          一个现代化的项目管理平台，帮助团队更高效地协作与创新
-        </Subtitle>
-        <Button
-          size="lg"
-          variant="outline"
-          onClick={() => navigate("/dashboard")}
-        >
+        <Subtitle>一个现代化的项目管理平台，帮助团队更高效地协作与创新</Subtitle>
+        <Button size="lg" variant="outline" onClick={() => navigate('/dashboard')}>
           立即开始
         </Button>
       </HeroSection>
@@ -81,27 +75,21 @@ export default function Home() {
         <FeatureCard>
           <CardContent>
             <FeatureTitle>团队协作</FeatureTitle>
-            <FeatureDescription>
-              实时协作工具，让团队成员随时保持联系，提高工作效率
-            </FeatureDescription>
+            <FeatureDescription>实时协作工具，让团队成员随时保持联系，提高工作效率</FeatureDescription>
           </CardContent>
         </FeatureCard>
 
         <FeatureCard>
           <CardContent>
             <FeatureTitle>项目管理</FeatureTitle>
-            <FeatureDescription>
-              直观的项目跟踪和任务管理，让项目进度一目了然
-            </FeatureDescription>
+            <FeatureDescription>直观的项目跟踪和任务管理，让项目进度一目了然</FeatureDescription>
           </CardContent>
         </FeatureCard>
 
         <FeatureCard>
           <CardContent>
             <FeatureTitle>数据分析</FeatureTitle>
-            <FeatureDescription>
-              强大的数据分析工具，助你做出更明智的决策
-            </FeatureDescription>
+            <FeatureDescription>强大的数据分析工具，助你做出更明智的决策</FeatureDescription>
           </CardContent>
         </FeatureCard>
       </FeatureGrid>

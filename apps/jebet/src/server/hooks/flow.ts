@@ -1,7 +1,7 @@
+import type { Flow } from '@/types/workspace';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { InferRequestType, InferResponseType } from 'hono/client';
+import type { InferRequestType, InferResponseType } from 'hono/client';
 import { client } from '..';
-import { Flow } from '@/types/workspace';
 
 /**
  * ## 获取文件夹信息

@@ -9,12 +9,7 @@ const props = defineProps<{
   editor: Editor | null;
 }>();
 const handleLink = () => {
-  props.editor
-    ?.chain()
-    .focus()
-    .extendMarkRange('link')
-    .setLink({ href: link.value })
-    .run();
+  props.editor?.chain().focus().extendMarkRange('link').setLink({ href: link.value }).run();
   link.value = '';
 };
 const handleDefaultLink = () => {

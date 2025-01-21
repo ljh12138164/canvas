@@ -23,12 +23,7 @@ interface IndexDBChanagePros {
  * @param editData 编辑的数据
  * @returns
  */
-export function indexDBChange({
-  type,
-  data,
-  deletItem,
-  editData,
-}: IndexDBChanagePros) {
+export function indexDBChange({ type, data, deletItem, editData }: IndexDBChanagePros) {
   if (type === 'delete' && deletItem) {
     return localforage.removeItem(deletItem);
   }
@@ -67,12 +62,12 @@ export async function getChatDataById(id: string): Promise<ChatData | null> {
  */
 export function bitToMB(size: number): string {
   if (size > 1024 * 1024) {
-    return (size / 1024 / 1024).toFixed(2) + 'MB';
+    return `${(size / 1024 / 1024).toFixed(2)}MB`;
   }
   if (size > 1024) {
-    return (size / 1024).toFixed(2) + 'KB';
+    return `${(size / 1024).toFixed(2)}KB`;
   }
-  return size + 'B';
+  return `${size}B`;
 }
 
 /**
@@ -83,7 +78,7 @@ export function bitToMB(size: number): string {
 export function downloadFile(file: string, name: string, type: string) {
   const a = document.createElement('a');
   a.href = file;
-  a.download = name + '.' + type;
+  a.download = `${name}.${type}`;
   a.click();
   a.remove();
 }

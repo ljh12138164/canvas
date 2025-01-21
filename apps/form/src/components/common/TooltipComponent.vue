@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 defineProps<{
-  content: string
-  class?: string
-  asChild?: boolean
-}>()
+  content: string;
+  class?: string;
+  asChild?: boolean;
+}>();
 </script>
 <template>
   <TooltipProvider>

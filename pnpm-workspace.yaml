@@ -1,4 +1,9 @@
 packages:
+  # 前端项目
   - "apps/*"
+  # 后端服务
   - "server/*"
+  # 共用的cli
   - "cli/*"
+  # 共用的lint和tsconfig
+  - "package/*"

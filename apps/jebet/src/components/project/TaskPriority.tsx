@@ -12,11 +12,7 @@ const taskTitle: Record<TasksPriority, { title: string; color: string }> = {
 };
 
 const TaskPriority = ({ priority }: TaskPriorityProps) => {
-  return (
-    <p style={{ color: taskTitle[priority].color }}>
-      {taskTitle[priority].title}
-    </p>
-  );
+  return <p style={{ color: taskTitle[priority].color }}>{taskTitle[priority].title}</p>;
 };
 
 export default TaskPriority;

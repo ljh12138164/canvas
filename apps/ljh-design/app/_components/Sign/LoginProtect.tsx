@@ -1,6 +1,6 @@
-"use client";
-import { useUser } from "@/app/_store/auth";
-import { redirect } from "next/navigation";
+'use client';
+import { useUser } from '@/app/_store/auth';
+import { redirect } from 'next/navigation';
 
 export default function LoginProtect({
   children,
@@ -9,6 +9,6 @@ export default function LoginProtect({
 }) {
   const { user, loading } = useUser();
   if (loading) return;
-  if (!user) redirect("/sign-in");
+  if (!user) redirect('/sign-in');
   return children;
 }

@@ -1,12 +1,12 @@
-import { makeAutoObservable } from "mobx";
-import { Socket } from "socket.io-client";
+import { makeAutoObservable } from 'mobx';
+import type { Socket } from 'socket.io-client';
 class ChatStore {
   // 连接socket.io
   socket: Socket | null = null;
   //   messages: Message[] = [];
   // 连接人数自己
-  connectCount: number = 1;
-  isConnected: boolean = false;
+  connectCount = 1;
+  isConnected = false;
   constructor() {
     makeAutoObservable(this);
   }

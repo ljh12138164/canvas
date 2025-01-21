@@ -7,10 +7,11 @@ import type * as z from 'zod';
 import { type Dependency, DependencyType, type EnumValues } from './interface';
 import { getFromPath, getIndexIfArray } from './utils';
 
-export const [injectDependencies, provideDependencies] = createContext<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Ref<Dependency<z.infer<z.ZodObject<any>>>[] | undefined>
->('AutoFormDependencies');
+export const [injectDependencies, provideDependencies] =
+  createContext<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Ref<Dependency<z.infer<z.ZodObject<any>>>[] | undefined>
+  >('AutoFormDependencies');
 
 export default function useDependencies(fieldName: string) {
   const form = useFormValues();
@@ -18,8 +19,7 @@ export default function useDependencies(fieldName: string) {
   const currentFieldName = fieldName.replace(/\[\d+\]/g, '');
   const currentFieldValue = useFieldValue<any>(fieldName);
 
-  if (!form)
-    throw new Error('useDependencies should be used within <AutoForm>');
+  if (!form) throw new Error('useDependencies should be used within <AutoForm>');
 
   const dependencies = injectDependencies();
   const isDisabled = ref(false);
@@ -27,19 +27,13 @@ export default function useDependencies(fieldName: string) {
   const isRequired = ref(false);
   const overrideOptions = ref<EnumValues | undefined>();
 
-  const currentFieldDependencies = computed(() =>
-    dependencies.value?.filter(
-      (dependency) => dependency.targetField === currentFieldName,
-    ),
-  );
+  const currentFieldDependencies = computed(() => dependencies.value?.filter((dependency) => dependency.targetField === currentFieldName));
 
   function getSourceValue(dep: Dependency<any>) {
     const source = dep.sourceField as string;
     const index = getIndexIfArray(fieldName) ?? -1;
     const [sourceLast, ...sourceInitial] = source.split('.').toReversed();
-    const [, ...targetInitial] = (dep.targetField as string)
-      .split('.')
-      .toReversed();
+    const [, ...targetInitial] = (dep.targetField as string).split('.').toReversed();
 
     if (index >= 0 && sourceInitial.join(',') === targetInitial.join(',')) {
       const [, ...currentInitial] = fieldName.split('.').toReversed();
@@ -49,9 +43,7 @@ export default function useDependencies(fieldName: string) {
     return getFromPath(form.value, source);
   }
 
-  const sourceFieldValues = computed(() =>
-    currentFieldDependencies.value?.map((dep) => getSourceValue(dep)),
-  );
+  const sourceFieldValues = computed(() => currentFieldDependencies.value?.map((dep) => getSourceValue(dep)));
 
   const resetConditionState = () => {
     isDisabled.value = false;

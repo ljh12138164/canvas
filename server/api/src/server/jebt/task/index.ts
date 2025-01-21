@@ -1,14 +1,10 @@
-import { PostgrestError } from "@supabase/supabase-js";
-import to from "await-to-js";
-import { nanoid } from "nanoid";
-import {
-  Remark,
-  Task,
-  TaskStatus,
-  TaskWithWorkspace,
-} from "../../../types/jebt/board";
-import { supabaseJebt } from "../../supabase/jebt";
-import { checkMember, checkUser } from "../board";
+import type { PostgrestError } from '@supabase/supabase-js';
+import to from 'await-to-js';
+import { nanoid } from 'nanoid';
+import type { Remark, Task, TaskWithWorkspace } from '../../../types/jebt/board';
+import { TaskStatus } from '../../../types/jebt/board';
+import { supabaseJebt } from '../../supabase/jebt';
+import { checkMember, checkUser } from '../board';
 
 /**
  * 创建任务
@@ -36,9 +32,9 @@ export const createJebtTask = async ({
 }) => {
   const id = nanoid();
   const [error] = await to(checkMember(currentUserId, workspaceId));
-  if (error) throw new Error("无权限");
+  if (error) throw new Error('无权限');
   const { data, error: taskError } = await supabaseJebt
-    .from("tasks")
+    .from('tasks')
     .insert([
       {
         id,
@@ -52,8 +48,8 @@ export const createJebtTask = async ({
         lastTime,
       },
     ])
-    .select("*");
-  if (taskError) throw new Error("服务器错误");
+    .select('*');
+  if (taskError) throw new Error('服务器错误');
   return data;
 };
 
@@ -80,24 +76,20 @@ export const getJebtTask = async ({
   lastTime: string | null | undefined;
 }) => {
   const [error] = await to(checkMember(currentUserId, workspaceId));
-  if (error) throw new Error("无权限");
-  const query = supabaseJebt
-    .from("tasks")
-    .select("*,workspace(*,member(*)),projects(*)")
-    .eq("workspaceId", workspaceId)
-    .order("created_at", { ascending: false });
+  if (error) throw new Error('无权限');
+  const query = supabaseJebt.from('tasks').select('*,workspace(*,member(*)),projects(*)').eq('workspaceId', workspaceId).order('created_at', { ascending: false });
 
-  if (projectId) query.eq("projectId", projectId);
-  if (status && status !== TaskStatus.ALL) query.eq("status", status);
-  if (assigneeId) query.eq("assigneeId", assigneeId);
-  if (lastTime) query.gte("lastTime", lastTime);
-  if (search) query.textSearch("name", search);
+  if (projectId) query.eq('projectId', projectId);
+  if (status && status !== TaskStatus.ALL) query.eq('status', status);
+  if (assigneeId) query.eq('assigneeId', assigneeId);
+  if (lastTime) query.gte('lastTime', lastTime);
+  if (search) query.textSearch('name', search);
 
   const { data, error: taskError } = (await query) as {
     data: TaskWithWorkspace[];
     error: PostgrestError | null;
   };
-  if (taskError) throw new Error("服务器错误");
+  if (taskError) throw new Error('服务器错误');
   return data;
 };
 
@@ -118,14 +110,9 @@ export const deleteJebtTask = async ({
   projectId: string;
 }) => {
   const [error] = await to(checkMember(currentUserId, workspaceId));
-  if (error) throw new Error("无权限");
-  const { error: taskError } = await supabaseJebt
-    .from("tasks")
-    .delete()
-    .eq("id", id)
-    .eq("workspaceId", workspaceId)
-    .eq("projectId", projectId);
-  if (taskError) throw new Error("服务器错误");
+  if (error) throw new Error('无权限');
+  const { error: taskError } = await supabaseJebt.from('tasks').delete().eq('id', id).eq('workspaceId', workspaceId).eq('projectId', projectId);
+  if (taskError) throw new Error('服务器错误');
   return true;
 };
 
@@ -156,9 +143,9 @@ export const updateJebtTask = async ({
   id: string;
 }) => {
   const [error] = await to(checkUser(currentUserId, workspaceId));
-  if (error) throw new Error("无权限");
+  if (error) throw new Error('无权限');
   const { data, error: taskError } = await supabaseJebt
-    .from("tasks")
+    .from('tasks')
     .update([
       {
         position: 1000,
@@ -169,11 +156,11 @@ export const updateJebtTask = async ({
         name,
       },
     ])
-    .eq("id", id)
-    .eq("workspaceId", workspaceId)
-    .eq("projectId", projectId)
-    .select("*");
-  if (taskError) throw new Error("服务器错误");
+    .eq('id', id)
+    .eq('workspaceId', workspaceId)
+    .eq('projectId', projectId)
+    .select('*');
+  if (taskError) throw new Error('服务器错误');
   return data;
 };
 
@@ -194,15 +181,10 @@ export const getJebtTaskDetail = async ({
   currentUserId: string;
 }): Promise<Task & { remark: Remark[] }> => {
   const [error] = await to(checkUser(currentUserId, workspaceId));
-  if (error) throw new Error("无权限");
-  const { data, error: taskError } = await supabaseJebt
-    .from("tasks")
-    .select("*,remark(*)")
-    .eq("id", id)
-    .eq("workspaceId", workspaceId)
-    .eq("projectId", projectId);
+  if (error) throw new Error('无权限');
+  const { data, error: taskError } = await supabaseJebt.from('tasks').select('*,remark(*)').eq('id', id).eq('workspaceId', workspaceId).eq('projectId', projectId);
 
-  if (taskError) throw new Error("服务器错误");
+  if (taskError) throw new Error('服务器错误');
   return data[0];
 };
 
@@ -222,11 +204,11 @@ export const addJebtTaskRemark = async ({
 }) => {
   const id = nanoid();
   const { data, error: taskError } = await supabaseJebt
-    .from("remark")
+    .from('remark')
     .insert([{ id, taskId, content, userId: currentUserId }])
-    .select("*");
-  console.log(taskError);
-  if (taskError) throw new Error("服务器错误");
+    .select('*');
+  // console.log(taskError);
+  if (taskError) throw new Error('服务器错误');
   return data[0];
 };
 
@@ -250,9 +232,9 @@ export const moveJebtTask = async ({
   TaskStatus: TaskStatus;
 }) => {
   const [error] = await to(checkUser(currentUserId, workspaceId));
-  if (error) throw new Error("无权限");
+  if (error) throw new Error('无权限');
   const { data, error: taskError } = await supabaseJebt
-    .from("tasks")
+    .from('tasks')
     .update([
       {
         position,
@@ -260,10 +242,10 @@ export const moveJebtTask = async ({
         updated_at: new Date().toISOString(),
       },
     ])
-    .eq("id", taskId)
-    .eq("workspaceId", workspaceId)
-    .eq("projectId", projectId)
-    .select("*");
-  if (taskError) throw new Error("服务器错误");
+    .eq('id', taskId)
+    .eq('workspaceId', workspaceId)
+    .eq('projectId', projectId)
+    .select('*');
+  if (taskError) throw new Error('服务器错误');
   return data;
 };

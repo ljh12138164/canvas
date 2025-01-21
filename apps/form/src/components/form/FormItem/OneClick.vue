@@ -1,89 +1,85 @@
 <script setup lang="ts">
-import LabelChange from '@/components/common/LabelChange.vue'
-import { AutoForm } from '@/components/ui/auto-form'
-import { type ZodObjectOrWrapped } from '@/components/ui/auto-form/utils'
-import { Button } from '@/components/ui/button'
-import { useToast } from '@/components/ui/toast'
-import { getZodSchema } from '@/lib/form'
-import { type FormType, type Radio } from '@/types/form'
-import { Icon } from '@iconify/vue'
-import { type DateValue } from '@internationalized/date'
-import { Trash2Icon } from 'lucide-vue-next'
-import { nanoid } from 'nanoid'
-import { ref, watch } from 'vue'
-import { VueDraggable } from 'vue-draggable-plus'
+import LabelChange from '@/components/common/LabelChange.vue';
+import { AutoForm } from '@/components/ui/auto-form';
+import type { ZodObjectOrWrapped } from '@/components/ui/auto-form/utils';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/toast';
+import { getZodSchema } from '@/lib/form';
+import type { FormType, Radio } from '@/types/form';
+import { Icon } from '@iconify/vue';
+import type { DateValue } from '@internationalized/date';
+import { Trash2Icon } from 'lucide-vue-next';
+import { nanoid } from 'nanoid';
+import { ref, watch } from 'vue';
+import { VueDraggable } from 'vue-draggable-plus';
 
-const { toast } = useToast()
-const newItem = ref('')
-const activeItem = ref<string | null>(null)
+const { toast } = useToast();
+const newItem = ref('');
+const activeItem = ref<string | null>(null);
 const props = defineProps<{
-  id: string
-  data: Radio
-  updateList2: (
-    id: string,
-    type: FormType,
-    newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
-  ) => void
-}>()
-const list = ref(props.data?.options)
+  id: string;
+  data: Radio;
+  updateList2: (id: string, type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => void;
+}>();
+const list = ref(props.data?.options);
 // 默认值
 // const defaultValue = ref(props.data?.defaultValue)
 // 占位符
-const defaultPlaceholder = ref(props.data?.placeholder)
+const defaultPlaceholder = ref(props.data?.placeholder);
 // 标签
-const defaultLabel = ref(props.data?.label)
+const defaultLabel = ref(props.data?.label);
 // 描述
-const defaultDescription = ref(props.data?.description)
+const defaultDescription = ref(props.data?.description);
 // 必填
-const defaultIsRequired = ref(!props.data?.isRequired)
+const defaultIsRequired = ref(!props.data?.isRequired);
 // 隐藏标签
-const defaultIsHidden = ref(props.data?.hiddenLabel)
+const defaultIsHidden = ref(props.data?.hiddenLabel);
 
 // 表单数据
-const schema = ref<ZodObjectOrWrapped | null>(null)
+const schema = ref<ZodObjectOrWrapped | null>(null);
 // 表单配置
-const fieldConfig = ref<Record<string, any>>({})
+const fieldConfig = ref<Record<string, any>>({});
 watch(
   () => props.data,
   (newValue) => {
     // defaultValue.value = newValue?.defaultValue
-    defaultPlaceholder.value = newValue?.placeholder
-    defaultLabel.value = newValue?.label
-    defaultDescription.value = newValue?.description
-    defaultIsRequired.value = newValue?.isRequired
-    defaultIsHidden.value = newValue?.hiddenLabel
-    list.value = newValue?.options
+    defaultPlaceholder.value = newValue?.placeholder;
+    defaultLabel.value = newValue?.label;
+    defaultDescription.value = newValue?.description;
+    defaultIsRequired.value = newValue?.isRequired;
+    defaultIsHidden.value = newValue?.hiddenLabel;
+    list.value = newValue?.options;
   },
-)
-schema.value = getZodSchema(props.data, fieldConfig) as ZodObjectOrWrapped
+);
+schema.value = getZodSchema(props.data, fieldConfig) as ZodObjectOrWrapped;
 const updateSchema = () => {
-  props.updateList2(props.id, 'options', list.value)
-  schema.value = getZodSchema(props.data, fieldConfig) as ZodObjectOrWrapped
+  props.updateList2(props.id, 'options', list.value);
+  schema.value = getZodSchema(props.data, fieldConfig) as ZodObjectOrWrapped;
   // console.log(schema.value, fieldConfig.value)
-}
+};
 // 监听默认值
 watch(list, (newValue) => {
-  props.updateList2(props.id, 'options', newValue)
-  updateSchema()
-})
+  props.updateList2(props.id, 'options', newValue);
+  updateSchema();
+});
 // watch(defaultValue, (newValue) => {
 //   props.updateList2(props.id, 'options', newValue)
 //   updateSchema()
 // })
 watch(defaultIsHidden, (newValue) => {
-  props.updateList2(props.id, 'hiddenLabel', newValue)
-  updateSchema()
-})
+  props.updateList2(props.id, 'hiddenLabel', newValue);
+  updateSchema();
+});
 // 删除选项
 const delectItem = (id: string) => {
-  list.value = list.value.filter((item) => item.id !== id)
-  updateSchema()
-}
+  list.value = list.value.filter((item) => item.id !== id);
+  updateSchema();
+};
 // 更新选项
 const updateItem = (id: string, value: string) => {
-  list.value = list.value.map((item) => (item.id === id ? { ...item, name: value } : item))
-  updateSchema()
-}
+  list.value = list.value.map((item) => (item.id === id ? { ...item, name: value } : item));
+  updateSchema();
+};
 // 添加选项
 const addItem = () => {
   if (newItem.value) {
@@ -91,30 +87,27 @@ const addItem = () => {
       toast({
         title: '选项值已存在',
         variant: 'destructive',
-      })
-      return
+      });
+      return;
     }
     list.value.push({
       name: newItem.value,
       id: nanoid(),
-    })
-    updateSchema()
-    newItem.value = ''
+    });
+    updateSchema();
+    newItem.value = '';
   } else {
     toast({
       title: '请输入选项值',
       variant: 'destructive',
-    })
+    });
   }
-}
-const updateList = (
-  type: FormType,
-  newValue: string | boolean | number | undefined | DateValue,
-) => {
-  console.log(newValue, type)
-  props.updateList2(props.id, type, newValue)
-  updateSchema()
-}
+};
+const updateList = (type: FormType, newValue: string | boolean | number | undefined | DateValue) => {
+  // console.log(newValue, type);
+  props.updateList2(props.id, type, newValue);
+  updateSchema();
+};
 </script>
 <template>
   <AutoForm v-if="schema" :schema="schema as ZodObjectOrWrapped" :fieldConfig="fieldConfig" />

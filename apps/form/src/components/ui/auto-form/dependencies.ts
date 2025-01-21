@@ -1,95 +1,90 @@
-import type { Ref } from 'vue'
-import type * as z from 'zod'
-import { createContext } from 'radix-vue'
-import { useFieldValue, useFormValues } from 'vee-validate'
-import { computed, ref, watch } from 'vue'
-import { type Dependency, DependencyType, type EnumValues } from './interface'
-import { getFromPath, getIndexIfArray } from './utils'
+import { createContext } from 'radix-vue';
+import { useFieldValue, useFormValues } from 'vee-validate';
+import type { Ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+import type * as z from 'zod';
+import { type Dependency, DependencyType, type EnumValues } from './interface';
+import { getFromPath, getIndexIfArray } from './utils';
 
-export const [injectDependencies, provideDependencies] =
-  createContext<Ref<Dependency<z.infer<z.ZodObject<any>>>[] | undefined>>('AutoFormDependencies')
+export const [injectDependencies, provideDependencies] = createContext<Ref<Dependency<z.infer<z.ZodObject<any>>>[] | undefined>>('AutoFormDependencies');
 
 export default function useDependencies(fieldName: string) {
-  const form = useFormValues()
+  const form = useFormValues();
   // parsed test[0].age => test.age
-  const currentFieldName = fieldName.replace(/\[\d+\]/g, '')
-  const currentFieldValue = useFieldValue<any>(fieldName)
+  const currentFieldName = fieldName.replace(/\[\d+\]/g, '');
+  const currentFieldValue = useFieldValue<any>(fieldName);
 
-  if (!form) throw new Error('useDependencies should be used within <AutoForm>')
+  if (!form) throw new Error('useDependencies should be used within <AutoForm>');
 
-  const dependencies = injectDependencies()
-  const isDisabled = ref(false)
-  const isHidden = ref(false)
-  const isRequired = ref(false)
-  const overrideOptions = ref<EnumValues | undefined>()
+  const dependencies = injectDependencies();
+  const isDisabled = ref(false);
+  const isHidden = ref(false);
+  const isRequired = ref(false);
+  const overrideOptions = ref<EnumValues | undefined>();
 
-  const currentFieldDependencies = computed(() =>
-    dependencies.value?.filter((dependency) => dependency.targetField === currentFieldName),
-  )
+  const currentFieldDependencies = computed(() => dependencies.value?.filter((dependency) => dependency.targetField === currentFieldName));
 
   function getSourceValue(dep: Dependency<any>) {
-    const source = dep.sourceField as string
-    const index = getIndexIfArray(fieldName) ?? -1
+    const source = dep.sourceField as string;
+    const index = getIndexIfArray(fieldName) ?? -1;
     // @ts-ignore
-    const [sourceLast, ...sourceInitial] = source.split('.').toReversed()
+    const [sourceLast, ...sourceInitial] = source.split('.').toReversed();
     // @ts-ignore
-    const [_targetLast, ...targetInitial] = (dep.targetField as string).split('.').toReversed()
+    const [_targetLast, ...targetInitial] = (dep.targetField as string).split('.').toReversed();
 
     if (index >= 0 && sourceInitial.join(',') === targetInitial.join(',')) {
       // @ts-ignore
-      const [_currentLast, ...currentInitial] = fieldName.split('.').toReversed()
-      return getFromPath(form.value, currentInitial.join('.') + sourceLast)
+      const [_currentLast, ...currentInitial] = fieldName.split('.').toReversed();
+      return getFromPath(form.value, currentInitial.join('.') + sourceLast);
     }
 
-    return getFromPath(form.value, source)
+    return getFromPath(form.value, source);
   }
 
-  const sourceFieldValues = computed(() =>
-    currentFieldDependencies.value?.map((dep) => getSourceValue(dep)),
-  )
+  const sourceFieldValues = computed(() => currentFieldDependencies.value?.map((dep) => getSourceValue(dep)));
 
   const resetConditionState = () => {
-    isDisabled.value = false
-    isHidden.value = false
-    isRequired.value = false
-    overrideOptions.value = undefined
-  }
+    isDisabled.value = false;
+    isHidden.value = false;
+    isRequired.value = false;
+    overrideOptions.value = undefined;
+  };
 
   watch(
     [sourceFieldValues, dependencies],
     () => {
-      resetConditionState()
+      resetConditionState();
       currentFieldDependencies.value?.forEach((dep) => {
-        const sourceValue = getSourceValue(dep)
-        const conditionMet = dep.when(sourceValue, currentFieldValue.value)
+        const sourceValue = getSourceValue(dep);
+        const conditionMet = dep.when(sourceValue, currentFieldValue.value);
 
         switch (dep.type) {
           case DependencyType.DISABLES:
-            if (conditionMet) isDisabled.value = true
+            if (conditionMet) isDisabled.value = true;
 
-            break
+            break;
           case DependencyType.REQUIRES:
-            if (conditionMet) isRequired.value = true
+            if (conditionMet) isRequired.value = true;
 
-            break
+            break;
           case DependencyType.HIDES:
-            if (conditionMet) isHidden.value = true
+            if (conditionMet) isHidden.value = true;
 
-            break
+            break;
           case DependencyType.SETS_OPTIONS:
-            if (conditionMet) overrideOptions.value = dep.options
+            if (conditionMet) overrideOptions.value = dep.options;
 
-            break
+            break;
         }
-      })
+      });
     },
     { immediate: true, deep: true },
-  )
+  );
 
   return {
     isDisabled,
     isHidden,
     isRequired,
     overrideOptions,
-  }
+  };
 }

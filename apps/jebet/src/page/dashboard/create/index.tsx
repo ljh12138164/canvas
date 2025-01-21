@@ -9,7 +9,7 @@ const Creat = observer(() => {
 
   return (
     <Card>
-      <FromCard formType='workspace' type='create' userData={userData} />
+      <FromCard formType="workspace" type="create" userData={userData} />
     </Card>
   );
 });

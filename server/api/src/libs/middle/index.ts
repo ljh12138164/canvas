@@ -1,4 +1,4 @@
-import { Context, MiddlewareHandler } from 'hono';
+import type { Context, MiddlewareHandler } from 'hono';
 import { verify } from 'hono/jwt';
 
 interface Payload {

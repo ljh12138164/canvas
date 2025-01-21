@@ -1,6 +1,6 @@
-import { Member } from '@/types/workspace';
-import { Avatar, AvatarFallback } from '../ui/avatar';
+import type { Member } from '@/types/workspace';
 import { AvatarImage } from '@radix-ui/react-avatar';
+import { Avatar, AvatarFallback } from '../ui/avatar';
 
 interface UserMessageButtonProps {
   user: Member;

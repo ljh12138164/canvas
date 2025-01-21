@@ -1,27 +1,12 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { useRefreshWorkspace } from "@/server/hooks/board";
-import { useRef, useState } from "react";
-import toast from "react-hot-toast";
-import { IoCopyOutline } from "react-icons/io5";
-import styled from "styled-components";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/InputOtp";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useRefreshWorkspace } from '@/server/hooks/board';
+import { useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import { IoCopyOutline } from 'react-icons/io5';
+import styled from 'styled-components';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/InputOtp';
 
 const CopyButton = styled.div`
   position: relative;
@@ -67,17 +52,17 @@ export default function RefreshInviteCode({
       { json: { id: workspaceId, userId } },
       {
         onSuccess: (data) => {
-          toast.success("刷新成功");
+          toast.success('刷新成功');
           closeRef.current?.click();
           setNewInviteCode(data.inviteCode);
         },
-      }
+      },
     );
   }
   function handleCopy() {
     navigator.clipboard.writeText(newInviteCode);
     toast.dismiss();
-    toast.success("复制成功");
+    toast.success('复制成功');
   }
   return (
     <Card>
@@ -116,12 +101,8 @@ export default function RefreshInviteCode({
                     取消
                   </Button>
                 </DialogClose>
-                <Button
-                  variant="destructive"
-                  onClick={handleRefresh}
-                  disabled={!canEdit || isRefreshing}
-                >
-                  {isRefreshing ? "刷新中..." : "刷新邀请码"}
+                <Button variant="destructive" onClick={handleRefresh} disabled={!canEdit || isRefreshing}>
+                  {isRefreshing ? '刷新中...' : '刷新邀请码'}
                 </Button>
               </DialogFooter>
             </DialogHeader>

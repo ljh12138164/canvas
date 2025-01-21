@@ -10,10 +10,10 @@
 </template>
 
 <script setup lang="ts">
-import { useGetMySubmit } from '@/hooks/submit'
-import { Skeleton } from '@/components/ui/skeleton'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import Table from '@/components/sumbit/Table.vue'
+import Table from '@/components/sumbit/Table.vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGetMySubmit } from '@/hooks/submit';
 
-const { data: mySubmit, isLoading } = useGetMySubmit()
+const { data: mySubmit, isLoading } = useGetMySubmit();
 </script>

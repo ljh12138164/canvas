@@ -13,19 +13,18 @@ type FolderRequest = InferRequestType<typeof client.folder.create.$post>;
  * @param tokenb
  */
 export const useCreateFolder = () => {
-  const { mutate: createFolder, isPending: createFolderIsLoading } =
-    useMutation<Folder, Error, FolderRequest>({
-      mutationFn: async (data) => {
-        const token = await getNewToken();
-        if (!token) router.push('/login');
-        const res = await client.folder.create.$post(data, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) {
-          throw new Error('创建失败');
-        }
-        return res.json();
-      },
-    });
+  const { mutate: createFolder, isPending: createFolderIsLoading } = useMutation<Folder, Error, FolderRequest>({
+    mutationFn: async (data) => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
+      const res = await client.folder.create.$post(data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) {
+        throw new Error('创建失败');
+      }
+      return res.json();
+    },
+  });
   return { createFolder, createFolderIsLoading };
 };

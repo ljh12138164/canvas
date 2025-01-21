@@ -1,5 +1,5 @@
-import { supabaseNote } from "../../supabase/note";
-import { Folders, Workspace } from "../../../types/note/workspace";
+import type { Folders, Workspace } from '../../../types/note/workspace';
+import { supabaseNote } from '../../supabase/note';
 
 /**
  * 创建白板
@@ -22,7 +22,7 @@ export const createFolder = async ({
   workspaceId: string;
 }): Promise<Folders> => {
   const { data, error } = await supabaseNote(token)
-    .from("folders")
+    .from('folders')
     .insert({
       title,
       data: content,
@@ -30,7 +30,7 @@ export const createFolder = async ({
       workspaceId,
       inconId,
     })
-    .select("*");
+    .select('*');
   if (error) throw new Error(error.message);
 
   return data[0];
@@ -48,10 +48,7 @@ export const getfolder = async ({
   id: string;
   token: string;
 }): Promise<Folders[]> => {
-  const { data, error } = await supabaseNote(token)
-    .from("folders")
-    .select("*")
-    .eq("workspaceId", id);
+  const { data, error } = await supabaseNote(token).from('folders').select('*').eq('workspaceId', id);
   if (error) throw new Error(error.message);
   return data;
 };

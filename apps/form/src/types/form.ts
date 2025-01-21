@@ -1,26 +1,6 @@
-import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid';
 
-export type Type =
-  | 'input'
-  | 'checkbox'
-  | 'radio'
-  | 'switch'
-  | 'textarea'
-  | 'select'
-  | 'date'
-  | 'time'
-  | 'datetime'
-  | 'datetime-local'
-  | 'number'
-  | 'email'
-  | 'url'
-  | 'password'
-  | 'file'
-  | 'array'
-  | 'object'
-  | 'enum'
-  | 'regex'
-  | 'custom'
+export type Type = 'input' | 'checkbox' | 'radio' | 'switch' | 'textarea' | 'select' | 'date' | 'time' | 'datetime' | 'datetime-local' | 'number' | 'email' | 'url' | 'password' | 'file' | 'array' | 'object' | 'enum' | 'regex' | 'custom';
 //下拉的默认值
 export const selectDefaultValue = [
   {
@@ -35,7 +15,7 @@ export const selectDefaultValue = [
     name: '选项三',
     id: nanoid(),
   },
-]
+];
 // 可clone的表单项
 export const formItemList = [
   {
@@ -140,83 +120,64 @@ export const formItemList = [
     defaultValue: '',
     children: [],
   },
-]
+];
 
 // 可更改表单项
-export type FormType =
-  | 'name'
-  | 'type'
-  | 'label'
-  | 'isRequired'
-  | 'placeholder'
-  | 'defaultValue'
-  | 'description'
-  | 'hiddenLabel'
-  | 'inputType'
-  | 'options'
-  | 'defaultTypeName'
+export type FormType = 'name' | 'type' | 'label' | 'isRequired' | 'placeholder' | 'defaultValue' | 'description' | 'hiddenLabel' | 'inputType' | 'options' | 'defaultTypeName';
 
 // 基础表单项
 export interface FormItem {
-  id: string
-  name: string
-  label: string
-  description: string
+  id: string;
+  name: string;
+  label: string;
+  description: string;
   // default: z.ZodType<any>
-  isRequired: boolean
-  hiddenLabel: boolean
-  placeholder: string
-  defaultValue: string | number | boolean
+  isRequired: boolean;
+  hiddenLabel: boolean;
+  placeholder: string;
+  defaultValue: string | number | boolean;
 }
 
 // 表单输入项
 export interface FormInput extends FormItem {
-  inputType: 'text' | 'number'
-  defaultTypeName: '输入框'
-  type: 'input'
+  inputType: 'text' | 'number';
+  defaultTypeName: '输入框';
+  type: 'input';
 }
 
 // 表单项
 export interface Files extends FormItem {
-  type: 'file'
-  defaultTypeName: '文件'
+  type: 'file';
+  defaultTypeName: '文件';
 }
 //
 export interface Radio extends FormItem {
-  type: 'radio'
-  defaultTypeName: '单选框'
-  options: { name: string; id: string }[]
+  type: 'radio';
+  defaultTypeName: '单选框';
+  options: { name: string; id: string }[];
 }
 export interface Select extends FormItem {
-  type: 'select'
-  defaultTypeName: '下拉框'
-  options: { name: string; id: string }[]
+  type: 'select';
+  defaultTypeName: '下拉框';
+  options: { name: string; id: string }[];
 }
 export interface DatePicker extends FormItem {
-  type: 'date'
-  defaultTypeName: '日期选择器'
+  type: 'date';
+  defaultTypeName: '日期选择器';
 }
 export interface BigText extends FormItem {
-  type: 'bigText'
-  defaultTypeName: '大文本'
+  type: 'bigText';
+  defaultTypeName: '大文本';
 }
 export interface Slider extends FormItem {
-  type: 'slider'
-  defaultTypeName: '滑动按钮'
+  type: 'slider';
+  defaultTypeName: '滑动按钮';
 }
-export interface Array extends FormItem {
-  type: 'obj'
-  defaultTypeName: '子表单'
-  children: CreateFormItem[]
+export interface ObjectItem extends FormItem {
+  type: 'obj';
+  defaultTypeName: '子表单';
+  children: CreateFormItem[];
 }
 // 表单项
-export type CreateFormItem =
-  | FormInput
-  | Files
-  | Radio
-  | Select
-  | DatePicker
-  | BigText
-  | Slider
-  | Array
+export type CreateFormItem = FormInput | Files | Radio | Select | DatePicker | BigText | Slider | ObjectItem;
 // 可更改表单项

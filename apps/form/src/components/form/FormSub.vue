@@ -7,30 +7,28 @@
   </VueDraggable>
 </template>
 <script setup lang="ts">
-import { VueDraggable } from 'vue-draggable-plus'
-import { computed } from 'vue'
+import { computed } from 'vue';
+import { VueDraggable } from 'vue-draggable-plus';
 
 export interface IList {
-  name: string
-  children: IList[]
+  name: string;
+  children: IList[];
 }
 
 interface Props {
-  modelValue: IList[]
+  modelValue: IList[];
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-interface Emits {
-  (e: 'update:modelValue', value: IList[]): void
-}
-console.log(props.modelValue)
+type Emits = (e: 'update:modelValue', value: IList[]) => void;
+// console.log(props.modelValue);
 
-const emits = defineEmits<Emits>()
+const emits = defineEmits<Emits>();
 const list = computed({
   get: () => props.modelValue,
   set: (value) => emits('update:modelValue', value),
-})
+});
 </script>
 <style scoped>
 .drag-area {

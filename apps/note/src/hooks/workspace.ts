@@ -5,13 +5,8 @@ import type { InferRequestType, InferResponseType } from 'hono';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-type createWorkspaceRequest = InferRequestType<
-  typeof client.workspace.create.$post
->;
-type createWorkspaceResponse = InferResponseType<
-  typeof client.workspace.create.$post,
-  200
->;
+type createWorkspaceRequest = InferRequestType<typeof client.workspace.create.$post>;
+type createWorkspaceResponse = InferResponseType<typeof client.workspace.create.$post, 200>;
 
 /**
  *  创建工作区
@@ -40,10 +35,7 @@ export const useCreateWorkspace = () => {
   return { createWorkspaceLoading, createWorkspaceError, createWorkspace };
 };
 
-type getWorkspacesResponse = InferResponseType<
-  typeof client.workspace.workspaces.$get,
-  200
->;
+type getWorkspacesResponse = InferResponseType<typeof client.workspace.workspaces.$get, 200>;
 /**
  * 获取工作区
  * @param token
@@ -77,10 +69,7 @@ export const useGetWorkspaces = () => {
   };
 };
 
-export type getWorkspaceByIdResponse = InferResponseType<
-  (typeof client.workspace.workspaces)[':workspaceId']['$get'],
-  200
->;
+export type getWorkspaceByIdResponse = InferResponseType<(typeof client.workspace.workspaces)[':workspaceId']['$get'], 200>;
 // type getWorkspaceByIdRequest = InferRequestType<
 //   (typeof client.workspace.workspaces)[':workspaceId']['$get']
 // >;

@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { logout } from "@/server/supabase/user";
-import type { Sessions } from "@/types/user";
-import { useRouter } from "vue-router";
-import DropdownMenuContent from "../ui/dropdown-menu/DropdownMenuContent.vue";
-import { Skeleton } from "../ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { logout } from '@/server/supabase/user';
+import type { Sessions } from '@/types/user';
+import { useRouter } from 'vue-router';
+import DropdownMenuContent from '../ui/dropdown-menu/DropdownMenuContent.vue';
+import { Skeleton } from '../ui/skeleton';
 const router = useRouter();
 const props = defineProps<{
   user: Sessions | undefined;
@@ -18,10 +14,10 @@ const props = defineProps<{
 }>();
 const handleLogout = async () => {
   await logout();
-  router.push("/login");
+  router.push('/login');
 };
 const handleLogin = () => {
-  router.push("/login");
+  router.push('/login');
 };
 </script>
 <template>

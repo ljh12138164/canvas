@@ -1,56 +1,30 @@
 <script setup lang="ts">
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { valueUpdater } from '@/lib/index';
+import { cn } from '@/lib/utils';
+import type { Form } from '@/types';
 import type {
   ColumnFiltersState,
   ExpandedState,
   // RowSelectionState,
   SortingState,
   VisibilityState,
-} from "@tanstack/vue-table";
-import { Button } from "@/components/ui/button";
-import dayjs from "dayjs";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-import { valueUpdater } from "@/lib/index";
-import {
-  createColumnHelper,
-  FlexRender,
-  getCoreRowModel,
-  getExpandedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useVueTable,
-} from "@tanstack/vue-table";
-import {
-  ArrowUpDown,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-vue-next";
-import { h, ref } from "vue";
-import type { Form } from "@/types";
-import TooltipComponent from "../common/TooltipComponent.vue";
-import DropdownAction from "./DropdownAction.vue";
+} from '@tanstack/vue-table';
+import { FlexRender, createColumnHelper, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useVueTable } from '@tanstack/vue-table';
+import dayjs from 'dayjs';
+import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-vue-next';
+import { h, ref } from 'vue';
+import TooltipComponent from '../common/TooltipComponent.vue';
+import DropdownAction from './DropdownAction.vue';
 // import DropdownAction from './DropdownAction.vue'
 
 export interface Payment {
   id: string;
   amount: number;
-  status: "pending" | "processing" | "success" | "failed";
+  status: 'pending' | 'processing' | 'success' | 'failed';
   email: string;
 }
 
@@ -62,107 +36,94 @@ const columnHelper = createColumnHelper<Form>();
 
 // 表单的显示
 const columns = [
-  columnHelper.accessor("name", {
+  columnHelper.accessor('name', {
     enablePinning: true,
     header: ({ column }) => {
       return h(
         Button,
         {
-          variant: "ghost",
-          class: "flex items-center max-w-40",
-          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          variant: 'ghost',
+          class: 'flex items-center max-w-40',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
         },
-        () => ["名称", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
+        () => ['名称', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })],
       );
     },
     cell: ({ row }) =>
       h(TooltipComponent, {
-        content: row.getValue("name") as string,
-        class: "capitalize",
+        content: row.getValue('name') as string,
+        class: 'capitalize',
       }),
   }),
-  columnHelper.accessor("description", {
+  columnHelper.accessor('description', {
     header: ({ column }) => {
       return h(
         Button,
         {
-          variant: "ghost",
-          class: "flex items-center max-w-40",
-          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          variant: 'ghost',
+          class: 'flex items-center max-w-40',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
         },
-        () => ["描述", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
+        () => ['描述', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })],
       );
     },
     cell: ({ row }) => {
-      const description = (row.getValue("description") || "---") as string;
+      const description = (row.getValue('description') || '---') as string;
       return h(
-        "div",
+        'div',
         {
-          class:
-            " max-w-40 truncate whitespace-nowrap overflow-hidden text-ellipsis",
+          class: ' max-w-40 truncate whitespace-nowrap overflow-hidden text-ellipsis',
         },
-        h(TooltipComponent, { content: description })
+        h(TooltipComponent, { content: description }),
       );
     },
   }),
-  columnHelper.accessor("update_at", {
+  columnHelper.accessor('update_at', {
     header: ({ column }) => {
       return h(
         Button,
         {
-          variant: "ghost",
-          class: "flex items-center ml-auto max-w-40",
-          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          variant: 'ghost',
+          class: 'flex items-center ml-auto max-w-40',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
         },
-        () => ["更新时间", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
+        () => ['更新时间', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })],
       );
     },
     cell: ({ row }) => {
-      const formatted = dayjs(row.getValue("update_at")).format(
-        "YYYY-MM-DD HH:mm:ss"
-      );
-      return h(
-        "div",
-        { class: "text-right" },
-        h(TooltipComponent, { content: formatted })
-      );
+      const formatted = dayjs(row.getValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
+      return h('div', { class: 'text-right' }, h(TooltipComponent, { content: formatted }));
     },
   }),
-  columnHelper.accessor("created_at", {
+  columnHelper.accessor('created_at', {
     header: ({ column }) => {
       return h(
         Button,
         {
-          variant: "ghost",
-          class: "flex items-center ml-auto max-w-40",
-          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          variant: 'ghost',
+          class: 'flex items-center ml-auto max-w-40',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
         },
-        () => ["创建时间", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
+        () => ['创建时间', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })],
       );
     },
     cell: ({ row }) => {
-      const formatted = dayjs(row.getValue("created_at")).format(
-        "YYYY-MM-DD HH:mm:ss"
-      );
-      return h(
-        "div",
-        { class: "text-right" },
-        h(TooltipComponent, { content: formatted })
-      );
+      const formatted = dayjs(row.getValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+      return h('div', { class: 'text-right' }, h(TooltipComponent, { content: formatted }));
     },
   }),
   columnHelper.display({
-    id: "actions",
+    id: 'actions',
     enableHiding: false,
-    header: () => h("div", { class: "text-right" }, "操作"),
+    header: () => h('div', { class: 'text-right' }, '操作'),
     cell: ({ row }) => {
       const payment = row.original;
       return h(
-        "div",
-        { class: "relative", variant: "ghost" },
+        'div',
+        { class: 'relative', variant: 'ghost' },
         h(DropdownAction, {
           payment,
-        })
+        }),
       );
     },
   }),
@@ -183,12 +144,9 @@ const table = useVueTable({
   getFilteredRowModel: getFilteredRowModel(),
   getExpandedRowModel: getExpandedRowModel(),
   onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
-  onColumnFiltersChange: (updaterOrValue) =>
-    valueUpdater(updaterOrValue, columnFilters),
-  onColumnVisibilityChange: (updaterOrValue) =>
-    valueUpdater(updaterOrValue, columnVisibility),
-  onRowSelectionChange: (updaterOrValue) =>
-    valueUpdater(updaterOrValue, rowSelection),
+  onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
+  onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
+  onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),
   onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
   state: {
     get sorting() {
@@ -207,15 +165,15 @@ const table = useVueTable({
       return expanded.value;
     },
     columnPinning: {
-      left: ["status"],
+      left: ['status'],
     },
   },
 });
 const keyof = {
-  name: "名称",
-  description: "描述",
-  update_at: "更新时间",
-  created_at: "创建时间",
+  name: '名称',
+  description: '描述',
+  update_at: '更新时间',
+  created_at: '创建时间',
 };
 </script>
 

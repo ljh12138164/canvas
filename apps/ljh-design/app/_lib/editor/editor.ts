@@ -1,16 +1,10 @@
-import { AddFabicObject, InitFabicObject, UserState } from "@/app/_types/Edit";
-import { Sessions } from "@/app/_types/user";
-import * as fabric from "fabric";
-import { WebsocketProvider } from "y-websocket";
-import * as Y from "yjs";
+import type { AddFabicObject, InitFabicObject, UserState } from '@/app/_types/Edit';
+import type { Sessions } from '@/app/_types/user';
+import * as fabric from 'fabric';
+import type { WebsocketProvider } from 'y-websocket';
+import type * as Y from 'yjs';
 //获取画布工作区
-export const getWorkspace = (canvas: fabric.Canvas) =>
-  canvas
-    .getObjects()
-    .find(
-      (item: InitFabicObject | fabric.FabricObject) =>
-        (item as InitFabicObject).name === "board"
-    );
+export const getWorkspace = (canvas: fabric.Canvas) => canvas.getObjects().find((item: InitFabicObject | fabric.FabricObject) => (item as InitFabicObject).name === 'board');
 /**
  * ### 居中对象
  */
@@ -24,12 +18,10 @@ export const center = (object: fabric.Object, canvas: fabric.Canvas) => {
 /**
  * ### 获取添加的对象
  */
-export const getAddObject = (
-  event: Y.YMapEvent<string>
-): AddFabicObject | null => {
+export const getAddObject = (event: Y.YMapEvent<string>): AddFabicObject | null => {
   const key = [...event.keysChanged][0];
   // @ts-ignore
-  const value = (event.target._map.get(key)?.content).arr?.[0];
+  const value = event.target._map.get(key).content.arr?.[0];
   if (!value) return null;
   return JSON.parse(value);
 };
@@ -38,11 +30,8 @@ export const getAddObject = (
  * @param websockets
  * @returns  [number, UserState][]
  */
-export const getUserState = (
-  websockets: WebsocketProvider,
-  user: Sessions
-): [number, UserState][] => {
-  return [...websockets.awareness.getStates()?.entries()].map((item) => [
+export const getUserState = (websockets: WebsocketProvider, user: Sessions): [number, UserState][] => {
+  return [...websockets.awareness.getStates().entries()].map((item) => [
     item[0],
     {
       user: { ...item[1].user, isSelf: item[1].user.id === user.user.id },
@@ -66,41 +55,38 @@ export const findFabicObject = (canvas: fabric.Canvas, obj: AddFabicObject) => {
  */
 export const genType = (obj: AddFabicObject) => {
   switch (obj.type) {
-    case "Rect":
+    case 'Rect':
       return new fabric.Rect({
         ...obj,
       });
-    case "Circle":
+    case 'Circle':
       return new fabric.Circle({
         ...obj,
       });
-    case "Triangle":
+    case 'Triangle':
       return new fabric.Triangle({
         ...obj,
       });
-    case "Polygon":
-      const points = obj.points;
-      return new fabric.Polygon(points, {
+    case 'Polygon':
+      return new fabric.Polygon(obj.points, {
         ...obj,
       });
-    case "Path":
-      const path = obj.path as fabric.TSimplePathData;
-      return new fabric.Path(path, {
+    case 'Path':
+      return new fabric.Path(obj.path as fabric.TSimplePathData, {
         ...obj,
-        path,
+        path: obj.path as fabric.TSimplePathData,
       });
-    case "Textbox":
-      const options = {
+    case 'Textbox':
+      return new fabric.Textbox(obj.text as string, {
         id: obj.id,
         left: obj.left,
         top: obj.top,
         fill: obj.fill,
         fontSize: obj.fontSize,
         fontFamily: obj.fontFamily,
-      };
-      console.log(obj);
-      const text = new fabric.Textbox(obj.text as string, options);
-      return text;
+      });
+    default:
+      return null;
   }
 };
 
@@ -110,16 +96,11 @@ export const genType = (obj: AddFabicObject) => {
  * @param obj 操作的对象
  * @returns
  */
-export const typeToActive = (
-  type: string,
-  obj: AddFabicObject,
-  canvas: fabric.Canvas | null,
-  yMaps: Y.Map<string>
-) => {
+export const typeToActive = (type: string, obj: AddFabicObject, canvas: fabric.Canvas | null, yMaps: Y.Map<string>) => {
   if (!canvas) return;
   switch (type) {
     //添加图像
-    case "add":
+    case 'add':
       // 生成fabric对象
       const newObj = genType(obj);
       if (!newObj) return;
@@ -131,10 +112,10 @@ export const typeToActive = (
       center(newObj, canvas);
       return;
     // 修改图像
-    case "change":
-      return "change";
+    case 'change':
+      return 'change';
     // 删除图像
-    case "delete":
+    case 'delete':
       // 找到fabric对象
       const fabricObj = findFabicObject(canvas, obj);
       if (!fabricObj) return;
@@ -144,6 +125,6 @@ export const typeToActive = (
       canvas?.renderAll();
       // 删除ymap
       yMaps?.delete(fabricObj.id);
-      return "delete";
+      return 'delete';
   }
 };

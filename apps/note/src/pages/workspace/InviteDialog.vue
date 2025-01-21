@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import ResponsePop from '@/components/common/ResponsePop.vue';
 import { Button } from '@/components/ui/button';
-import {
-  PinInput,
-  PinInputGroup,
-  PinInputInput,
-} from '@/components/ui/pin-input';
+import { PinInput, PinInputGroup, PinInputInput } from '@/components/ui/pin-input';
 import { useInviteCollaborator } from '@/hooks/collaborators';
 import { toast } from '@/lib';
 import { useQueryClient } from '@tanstack/vue-query';
@@ -16,7 +12,7 @@ const queryClient = useQueryClient();
 const { inviteCollaborator, isInviting } = useInviteCollaborator();
 const value = ref<string[]>([]);
 const handleComplete = (value: string) => {
-  console.log(value);
+  // console.log(value);
 };
 
 watch(value, (value) => {
@@ -30,7 +26,7 @@ watch(value, (value) => {
           toast.success('加入成功');
           queryClient.invalidateQueries({ queryKey: ['collaborators'] });
         },
-      }
+      },
     );
   }
 });

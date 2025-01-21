@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: "画布试用",
-  description: "LJH Design 画布试用",
+  title: '画布试用',
+  description: 'LJH Design 画布试用',
 };
 
 export default function RootLayout({
@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="cn">
+    <html lang="zh-CN">
       <body>{children}</body>
     </html>
   );

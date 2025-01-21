@@ -10,12 +10,12 @@ export const saveDocument = async ({
   folderId,
   fileId,
 }: {
-  document: any;
+  document: string;
   workspaceId: string;
   folderId: string;
   fileId: string | undefined;
 }) => {
-  let supabase;
+  let supabase: any;
   if (fileId) {
     supabase = supabaseNoteWebhook
       .from('files')
@@ -39,7 +39,7 @@ export const saveDocument = async ({
       .eq('workspaceId', workspaceId);
   }
   const { data, error } = await supabase;
-  console.log(error);
+  // console.log(error);
   if (error) throw new Error('服务器错误');
   return data;
 };
@@ -59,7 +59,8 @@ export const getDocs = async ({
   const { data, error } = await supabaseNoteWebhook
     .from(type === 'file' ? 'files' : 'folders')
     .select('*')
-    .eq('id', id);
+    .eq('id', id)
+    .eq('workspaceId', workspaceId);
   if (error) throw new Error('服务器错误');
   return data[0].data;
 };

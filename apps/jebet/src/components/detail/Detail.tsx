@@ -1,27 +1,21 @@
-import { useCreateTaskRemark, useGetTaskDetail } from "@/server/hooks/tasks";
-import { UserResource } from "@clerk/types";
-import { useQueryClient } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { toast } from "react-hot-toast";
-import {
-  LuArrowLeft,
-  LuCalendar,
-  LuFlag,
-  LuLayoutList,
-  LuMessageSquare,
-  LuSend,
-} from "react-icons/lu";
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { ScrollArea } from "../ui/scrollArea";
-import { Separator } from "../ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { Textarea } from "../ui/textarea";
+import { useCreateTaskRemark, useGetTaskDetail } from '@/server/hooks/tasks';
+import type { UserResource } from '@clerk/types';
+import { useQueryClient } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { LuArrowLeft, LuCalendar, LuFlag, LuLayoutList, LuMessageSquare, LuSend } from 'react-icons/lu';
+import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { ScrollArea } from '../ui/scrollArea';
+import { Separator } from '../ui/separator';
+import { Skeleton } from '../ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Textarea } from '../ui/textarea';
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -30,7 +24,7 @@ const containerVariants = {
     y: 0,
     transition: {
       duration: 0.3,
-      when: "beforeChildren",
+      when: 'beforeChildren',
       staggerChildren: 0.1,
     },
   },
@@ -130,13 +124,13 @@ const StyledTabsTrigger = styled(TabsTrigger)`
   padding: 0.5rem 1rem;
   transition: all 0.3s ease;
 
-  &[data-state="active"] {
+  &[data-state='active'] {
     background: hsl(var(--background));
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  &:hover:not([data-state="active"]) {
+  &:hover:not([data-state='active']) {
     background: hsl(var(--accent));
     transform: translateY(-1px);
   }
@@ -204,6 +198,34 @@ const CommentText = styled.p`
   margin: 0;
 `;
 
+const SkeletonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const SkeletonHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const SkeletonMetaInfo = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: hsl(var(--secondary));
+  border-radius: 8px;
+`;
+
+const SkeletonMetaItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
 const Detail = ({
   workspaceId,
   projectId,
@@ -213,17 +235,12 @@ const Detail = ({
   projectId: string;
   userData: UserResource;
 }) => {
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const queryClient = useQueryClient();
   const { createTaskRemark, createTaskRemarkLoading } = useCreateTaskRemark();
   const navigate = useNavigate();
   const params = useParams();
-  const { data: taskDetail, isLoading } = useGetTaskDetail(
-    workspaceId,
-    projectId,
-    userData.id,
-    params.taskId!
-  );
+  const { data: taskDetail, isLoading } = useGetTaskDetail(workspaceId, projectId, userData.id, params.taskId!);
 
   // 模拟数据
 
@@ -240,31 +257,55 @@ const Detail = ({
       },
       {
         onSuccess: () => {
-          toast.success("评论成功");
+          toast.success('评论成功');
           queryClient.invalidateQueries({
-            queryKey: ["taskDetail", workspaceId, projectId, params.taskId!],
+            queryKey: ['taskDetail', workspaceId, projectId, params.taskId!],
           });
-          setComment("");
+          setComment('');
         },
-      }
+      },
     );
   };
 
   if (isLoading) {
     return (
       <DetailContainer>
-        <div>加载中...</div>
+        <SkeletonContainer>
+          <SkeletonHeader>
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <Skeleton className="h-8 w-[200px]" />
+          </SkeletonHeader>
+
+          <Separator />
+
+          <SkeletonMetaInfo>
+            <SkeletonMetaItem>
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-6 w-32" />
+            </SkeletonMetaItem>
+            <SkeletonMetaItem>
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-6 w-32" />
+            </SkeletonMetaItem>
+            <SkeletonMetaItem>
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-6 w-32" />
+            </SkeletonMetaItem>
+          </SkeletonMetaInfo>
+
+          <Skeleton className="h-32 w-full" />
+
+          <div className="space-y-3">
+            <Skeleton className="h-10 w-[120px]" />
+            <Skeleton className="h-[200px] w-full" />
+          </div>
+        </SkeletonContainer>
       </DetailContainer>
     );
   }
 
   return (
-    <DetailContainer
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-    >
+    <DetailContainer variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <Header>
         <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
           <LuArrowLeft size={20} />
@@ -280,25 +321,21 @@ const Detail = ({
             <LuCalendar size={20} />
             <MetaContent>
               <MetaLabel>创建时间</MetaLabel>
-              <MetaValue>
-                {taskDetail?.created_at
-                  ? dayjs(taskDetail.created_at).format("YYYY-MM-DD HH:mm")
-                  : "未知"}
-              </MetaValue>
+              <MetaValue>{taskDetail?.created_at ? dayjs(taskDetail.created_at).format('YYYY-MM-DD HH:mm') : '未知'}</MetaValue>
             </MetaContent>
           </MetaItem>
           <MetaItem>
             <LuLayoutList size={20} />
             <MetaContent>
               <MetaLabel>状态</MetaLabel>
-              <Badge>{taskDetail?.status || "未设置"}</Badge>
+              <Badge>{taskDetail?.status || '未设置'}</Badge>
             </MetaContent>
           </MetaItem>
           <MetaItem>
             <LuFlag size={20} />
             <MetaContent>
               <MetaLabel>优先级</MetaLabel>
-              <Badge>{taskDetail?.priority || "未设置"}</Badge>
+              <Badge>{taskDetail?.priority || '未设置'}</Badge>
             </MetaContent>
           </MetaItem>
         </MetaInfo>
@@ -318,22 +355,11 @@ const Detail = ({
               <CommentInput>
                 <Avatar>
                   <AvatarImage src={userData.imageUrl} />
-                  <AvatarFallback>
-                    {userData.username?.[0] || "U"}
-                  </AvatarFallback>
+                  <AvatarFallback>{userData.username?.[0] || 'U'}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 flex gap-2">
-                  <Textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="写下你的评论..."
-                    className="flex-1"
-                  />
-                  <Button
-                    size="icon"
-                    onClick={handleComment}
-                    disabled={!comment.trim() || createTaskRemarkLoading}
-                  >
+                  <Textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="写下你的评论..." className="flex-1" />
+                  <Button size="icon" onClick={handleComment} disabled={!comment.trim() || createTaskRemarkLoading}>
                     <LuSend size={16} />
                   </Button>
                 </div>
@@ -342,20 +368,11 @@ const Detail = ({
               <AnimatePresence>
                 <CommentList>
                   {taskDetail?.remark.map((remark) => (
-                    <CommentItem
-                      key={remark.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                    >
+                    <CommentItem key={remark.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                       <CommentContent>
                         <CommentHeader>
-                          <CommentAuthor></CommentAuthor>
-                          <CommentTime>
-                            {dayjs(remark.created_at).format(
-                              "YYYY-MM-DD HH:mm"
-                            )}
-                          </CommentTime>
+                          <CommentAuthor />
+                          <CommentTime>{dayjs(remark.created_at).format('YYYY-MM-DD HH:mm')}</CommentTime>
                         </CommentHeader>
                         <CommentText>{remark.content}</CommentText>
                       </CommentContent>

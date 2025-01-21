@@ -1,11 +1,6 @@
-import type { IconType } from "react-icons";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/app/_components/ui/tooltip";
-import { cn } from "@/app/_lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/app/_components/ui/tooltip';
+import { cn } from '@/app/_lib/utils';
+import type { IconType } from 'react-icons';
 interface ShapeToolProps {
   Icon: IconType;
   onClick: () => void;
@@ -17,12 +12,8 @@ const ShapeTool = ({ Icon, onClick, iconClassName, title }: ShapeToolProps) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button
-            key={title}
-            onClick={onClick}
-            className="aspect-square border rounded-md p-5 "
-          >
-            <Icon className={cn("h-full w-full", iconClassName)}></Icon>
+          <button key={title} onClick={onClick} type="button" className="aspect-square border rounded-md p-5 ">
+            <Icon className={cn('h-full w-full', iconClassName)} />
           </button>
         </TooltipTrigger>
         <TooltipContent>

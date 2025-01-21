@@ -24,8 +24,7 @@ html {
     --yellow-light: #fffae5;
     --red: #ff5c33;
     --red-light: #ffebe5;
-    --shadow: 0px 12px 33px 0px rgba(0, 0, 0, 0.06),
-      0px 3.618px 9.949px 0px rgba(0, 0, 0, 0.04);
+    --shadow: 0px 12px 33px 0px rgba(0, 0, 0, 0.06), 0px 3.618px 9.949px 0px rgba(0, 0, 0, 0.04);
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -71,8 +70,7 @@ html {
     --yellow-light: #fffae5;
     --red: #ff5c33;
     --red-light: #ffebe5;
-    --shadow: 0px 12px 33px 0px rgba(0, 0, 0, 0.06),
-      0px 3.618px 9.949px 0px rgba(0, 0, 0, 0.04);
+    --shadow: 0px 12px 33px 0px rgba(0, 0, 0, 0.06), 0px 3.618px 9.949px 0px rgba(0, 0, 0, 0.04);
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -162,48 +160,50 @@ html {
   width: 0;
 }
 
-.react-flow__handle.target {
-  top: 50%;
-  pointer-events: none;
-  opacity: 0;
-}
-
-.react-flow__handle.source {
-  top: 0;
-  left: 0;
-  transform: none;
-  background-color: #eee;
-  height: 100%;
-  width: 100%;
-  border-radius: 2px;
-  border: none;
-}
-.inputWrapper {
-  display: flex;
-  height: 20px;
-  z-index: 1;
-  position: relative;
-}
-
-.dragHandle {
-  background: transparent;
-  width: 14px;
-  height: 100%;
-  margin-right: 4px;
-  display: flex;
-  align-items: center;
-}
-
-.input {
-  border: none;
-  padding: 0 2px;
-  border-radius: 1px;
-  font-weight: 700;
-  background: transparent;
-  height: 100%;
-  color: #222;
-}
-
 .rbc-calendar {
   min-height: calc(100dvh - 325px);
+}
+
+.rbc-header {
+  @apply text-sm font-normal pb-4 text-muted-foreground border-b-0;
+}
+
+.rbc-header + .rbc-header {
+  @apply border-l-0;
+}
+
+.rbc-button-link {
+  @apply text-xs font-normal text-muted-foreground;
+}
+
+.rbc-mouth-row {
+  @apply border-t border-x;
+}
+:not(.rbc-mouth-row ~ .rbc-mouth-row) .rbc-mouth-row {
+  @apply rounded-t-md;
+}
+
+.rbc-mouth-row:last-of-type {
+  @apply border-b rounded-b-md;
+}
+
+.rbc-mouth-view {
+  @apply border-none;
+}
+
+.rbc-date-cell {
+  @apply p-2;
+}
+
+.rbc-today {
+  background-color: inherit;
+}
+
+.rbc-off-range-bg {
+  background: inherit;
+}
+
+.rbc-month-row {
+  min-height: 180px;
+  overflow: scroll;
 }

@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils';
-import type {
-  CarouselEmits,
-  CarouselProps,
-  WithClassAsProps,
-} from './interface';
+import type { CarouselEmits, CarouselProps, WithClassAsProps } from './interface';
 import { useProvideCarousel } from './useCarousel';
 
 const props = withDefaults(defineProps<CarouselProps & WithClassAsProps>(), {
@@ -13,15 +9,7 @@ const props = withDefaults(defineProps<CarouselProps & WithClassAsProps>(), {
 
 const emits = defineEmits<CarouselEmits>();
 
-const {
-  canScrollNext,
-  canScrollPrev,
-  carouselApi,
-  carouselRef,
-  orientation,
-  scrollNext,
-  scrollPrev,
-} = useProvideCarousel(props, emits);
+const { canScrollNext, canScrollPrev, carouselApi, carouselRef, orientation, scrollNext, scrollPrev } = useProvideCarousel(props, emits);
 
 defineExpose({
   canScrollNext,

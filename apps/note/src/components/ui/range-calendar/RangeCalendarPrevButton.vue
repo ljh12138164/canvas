@@ -2,16 +2,10 @@
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ChevronLeft } from 'lucide-vue-next';
-import {
-  RangeCalendarPrev,
-  type RangeCalendarPrevProps,
-  useForwardProps,
-} from 'radix-vue';
+import { RangeCalendarPrev, type RangeCalendarPrevProps, useForwardProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  RangeCalendarPrevProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<RangeCalendarPrevProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

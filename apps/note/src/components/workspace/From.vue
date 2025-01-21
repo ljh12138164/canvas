@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useCreateWorkspace } from '@/hooks/workspace';
 import { toast } from '@/lib';
 import useUser from '@/store/user';
@@ -35,8 +29,7 @@ const form = useForm({
 const onSubmit = form.handleSubmit((values) => {
   //校验
   if (!values.title) return form.setErrors({ title: '请输入工作间名称' });
-  if (values.title.length < 2)
-    return form.setErrors({ title: '工作间名称至少2个字符' });
+  if (values.title.length < 2) return form.setErrors({ title: '工作间名称至少2个字符' });
   if (!values.inconId) return form.setErrors({ inconId: '请选择图标' });
   createWorkspace(
     {

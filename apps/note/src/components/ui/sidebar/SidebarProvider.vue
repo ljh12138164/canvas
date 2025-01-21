@@ -3,14 +3,7 @@ import { cn } from '@/lib/utils';
 import { useEventListener, useMediaQuery, useVModel } from '@vueuse/core';
 import { TooltipProvider } from 'radix-vue';
 import { type HTMLAttributes, type Ref, computed, ref } from 'vue';
-import {
-  SIDEBAR_COOKIE_MAX_AGE,
-  SIDEBAR_COOKIE_NAME,
-  SIDEBAR_KEYBOARD_SHORTCUT,
-  SIDEBAR_WIDTH,
-  SIDEBAR_WIDTH_ICON,
-  provideSidebarContext,
-} from './utils';
+import { SIDEBAR_COOKIE_MAX_AGE, SIDEBAR_COOKIE_NAME, SIDEBAR_KEYBOARD_SHORTCUT, SIDEBAR_WIDTH, SIDEBAR_WIDTH_ICON, provideSidebarContext } from './utils';
 
 const props = withDefaults(
   defineProps<{
@@ -49,16 +42,11 @@ function setOpenMobile(value: boolean) {
 
 // Helper to toggle the sidebar.
 function toggleSidebar() {
-  return isMobile.value
-    ? setOpenMobile(!openMobile.value)
-    : setOpen(!open.value);
+  return isMobile.value ? setOpenMobile(!openMobile.value) : setOpen(!open.value);
 }
 
 useEventListener('keydown', (event: KeyboardEvent) => {
-  if (
-    event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
-    (event.metaKey || event.ctrlKey)
-  ) {
+  if (event.key === SIDEBAR_KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
     event.preventDefault();
     toggleSidebar();
   }

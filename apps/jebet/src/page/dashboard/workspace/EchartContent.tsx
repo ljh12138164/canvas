@@ -1,21 +1,22 @@
 import { LineEchart } from '@/components/echart/LineEchart';
 import { PieEchart } from '@/components/echart/PieEchart';
+import TaskDate from '@/components/project/TaskDate';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scrollArea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useWorkspace } from '@/server/hooks/board';
 import { TaskStatus } from '@/types/workspace';
 import { Activity, Calendar, FileText, Users } from 'lucide-react';
+import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
 const Container = styled.div`
   width: 100%;
@@ -28,10 +29,17 @@ const Container = styled.div`
 
 const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 1rem;
 `;
-
+const CardContainer = styled.section`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  @media (width < 1100px) {
+    grid-template-columns: 1fr;
+  }
+`;
 const StatsCard = styled(Card)`
   padding: 1.5rem;
   display: flex;
@@ -119,6 +127,31 @@ const SkeletonValue = styled(SkeletonText)`
   height: 24px;
   margin-bottom: 8px;
 `;
+const InfoContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+`;
+
+const TaskCount = styled(Card)`
+  padding: 1rem;
+  justify-content: center;
+`;
+const TaskItem = styled.section`
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+`;
+const ProjectContainer = styled.section`
+  width: 100%;
+  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+`;
 
 const EchartContent = ({
   id,
@@ -128,7 +161,7 @@ const EchartContent = ({
   workspaceId: string;
 }) => {
   const { data: workspace, isLoading } = useWorkspace(id);
-
+  const [showMore, setShowMore] = useState(false);
   const [date, setDate] = useState(7);
 
   const navigator = useNavigate();
@@ -136,8 +169,8 @@ const EchartContent = ({
     return (
       <Container>
         <StatsGrid>
-          {Array.from({ length: 4 }).map((_, index) => (
-            <SkeletonCard key={index}>
+          {Array.from({ length: 4 }).map((_) => (
+            <SkeletonCard key={nanoid()}>
               <SkeletonIcon />
               <StatsInfo>
                 <SkeletonValue />
@@ -147,7 +180,7 @@ const EchartContent = ({
           ))}
         </StatsGrid>
         <ChartsGrid>
-          <Skeleton className='h-full w-full' />
+          <Skeleton className="h-full w-full" />
         </ChartsGrid>
       </Container>
     );
@@ -158,14 +191,12 @@ const EchartContent = ({
     navigator('/dashboard/home');
     return null;
   }
-  const finshTask = workspaces.tasks.filter(
-    (item) => item.status === TaskStatus.DONE
-  );
+  const finshTask = workspaces.tasks.filter((item) => item.status === TaskStatus.DONE);
   return (
     <Container>
       <StatsGrid>
         <StatsCard>
-          <IconWrapper color='#3B82F6'>
+          <IconWrapper color="#3B82F6">
             <Users size={24} />
           </IconWrapper>
           <StatsInfo>
@@ -175,7 +206,7 @@ const EchartContent = ({
         </StatsCard>
 
         <StatsCard>
-          <IconWrapper color='#6366F1'>
+          <IconWrapper color="#6366F1">
             <FileText size={24} />
           </IconWrapper>
           <StatsInfo>
@@ -185,7 +216,7 @@ const EchartContent = ({
         </StatsCard>
 
         <StatsCard>
-          <IconWrapper color='#10B981'>
+          <IconWrapper color="#10B981">
             <Activity size={24} />
           </IconWrapper>
           <StatsInfo>
@@ -195,37 +226,134 @@ const EchartContent = ({
         </StatsCard>
 
         <StatsCard>
-          <IconWrapper color='#F59E0B'>
+          <IconWrapper color="#F59E0B">
             <Calendar size={24} />
           </IconWrapper>
           <StatsInfo>
-            <StatsValue>
-              {((finshTask.length / workspaces.tasks.length) * 100).toFixed(2)}%
-            </StatsValue>
+            <StatsValue>{((finshTask.length / workspaces.tasks.length) * 100).toFixed(2)}%</StatsValue>
             <StatsLabel>完成率</StatsLabel>
           </StatsInfo>
         </StatsCard>
       </StatsGrid>
+      {/* 任务数 */}
+      <CardContainer>
+        <TaskCount className="bg-muted dark:bg-muted-foreground">
+          <p className="text-xl text-muted-foreground font-bold">任务数({workspaces.tasks.length})</p>
+          <Separator className="h-[1px] mb-2" />
+          <ScrollArea className="max-h-[300px]">
+            {showMore
+              ? workspaces.tasks.map((item) => (
+                  <TaskItem key={item.id} className="bg-[#fff]  dark:bg-black cursor-pointer" onClick={() => navigator(`/dashboard/${workspaceId}/${item.projectId}/home/${item.id}`)}>
+                    <p className="flex flex-col">
+                      <span>{item.name}</span>
+                      <span className="text-sm text-muted-foreground flex items-center gap-1">
+                        <Badge variant={item.status}>{item.status}</Badge> -
+                        <span className="flex items-center gap-1">
+                          <Calendar />
+                          <TaskDate lastTime={item.lastTime} />
+                        </span>
+                      </span>
+                    </p>
+                  </TaskItem>
+                ))
+              : workspaces.tasks.slice(0, 2).map((item) => (
+                  <TaskItem key={item.id} className="bg-[#fff]  dark:bg-black cursor-pointer" onClick={() => navigator(`/dashboard/${workspaceId}/${item.projectId}/home/${item.id}`)}>
+                    <p className="flex flex-col">
+                      <span>{item.name}</span>
+                      <span className="text-sm text-muted-foreground flex items-center gap-1">
+                        <Badge variant={item.status}>{item.status}</Badge> -
+                        <span className="flex items-center gap-1">
+                          <Calendar />
+                          <TaskDate lastTime={item.lastTime} />
+                        </span>
+                      </span>
+                    </p>
+                  </TaskItem>
+                ))}
+          </ScrollArea>
+          <Button onClick={() => setShowMore(!showMore)} variant="outline" className="w-full">
+            {showMore ? '收起' : '查看更多'}
+          </Button>
+        </TaskCount>
+        {/* 项目 */}
+        <TaskCount className="bg-[#fff] dark:bg-black">
+          <p className="text-xl text-muted-foreground font-bold">项目({workspaces.projects.length})</p>
+          <Separator className="h-[1px] mb-2" />
+          <ScrollArea className="max-h-[300px]">
+            <ProjectContainer>
+              {workspaces.projects.map((item) => (
+                <TaskItem key={item.id} className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center" onClick={() => navigator(`/dashboard/${workspaceId}/${item.id}`)}>
+                  <Avatar>
+                    <AvatarImage src={item.imageUrl} />
+                    <AvatarFallback>{item.name.slice(0, 2)}</AvatarFallback>
+                  </Avatar>
+                  <p>{item.name}</p>
+                </TaskItem>
+              ))}
+            </ProjectContainer>
+          </ScrollArea>
+        </TaskCount>
+        {/* 成员 */}
+        <TaskCount className="bg-[#fff] dark:bg-black">
+          <p className="text-xl text-muted-foreground font-bold">成员({workspaces.member.length})</p>
+          <Separator className="h-[1px] mb-2" />
+          <ScrollArea className="max-h-[300px]">
+            <ProjectContainer>
+              {workspaces.member.map((item) => (
+                <TaskItem key={item.id} className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col" onClick={() => navigator(`/dashboard/${workspaceId}/${item.id}`)}>
+                  <Avatar>
+                    <AvatarImage src={item.userImage} />
+                    <AvatarFallback>{item.username}</AvatarFallback>
+                  </Avatar>
+                  <InfoContainer>
+                    <p>{item.username}</p>
+                    <p>{item.email}</p>
+                  </InfoContainer>
+                </TaskItem>
+              ))}
+            </ProjectContainer>
+          </ScrollArea>
+        </TaskCount>
+        {/* 工作流 */}
+        <TaskCount className="bg-[#fff] dark:bg-black">
+          <p className="text-xl text-muted-foreground font-bold">工作流({workspaces.flow.length})</p>
+          <Separator className="h-[1px] mb-2" />
+          <ScrollArea className="max-h-[300px]">
+            <ProjectContainer>
+              {workspaces.flow.map((item) => (
+                <TaskItem key={item.id} className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col" onClick={() => navigator(`/dashboard/${workspaceId}/flow/detail/${item.id}`)}>
+                  <p>{item.name}</p>
+                  <p>{item.description}</p>
+                  <p className="flex items-center gap-2">
+                    创建人：
+                    {workspaces.member.map((members) => {
+                      if (item.userId === members.userId) return <>{members.username}</>;
+                    })}
+                  </p>
+                </TaskItem>
+              ))}
+            </ProjectContainer>
+          </ScrollArea>
+        </TaskCount>
+      </CardContainer>
+
       {/* Echart */}
-      <div className='flex gap-4'>
-        <div className='flex items-center gap-2'>任务数</div>
-        <Select
-          value={date.toString()}
-          onValueChange={(value) => setDate(Number(value))}
-        >
-          <SelectTrigger className='ml-auto w-[30%]'>
-            <SelectValue placeholder='请选择' />
+      <div className="flex gap-4">
+        <div className="flex items-center gap-2">任务数</div>
+        <Select value={date.toString()} onValueChange={(value) => setDate(Number(value))}>
+          <SelectTrigger className="ml-auto w-[30%]">
+            <SelectValue placeholder="请选择" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='7'>7天</SelectItem>
-            <SelectItem value='14'>14天</SelectItem>
-            <SelectItem value='30'>30天</SelectItem>
+            <SelectItem value="7">7天</SelectItem>
+            <SelectItem value="14">14天</SelectItem>
+            <SelectItem value="30">30天</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <ChartsGrid>
-        <LineEchart date={date} workspace={workspaces} types='tasks' />
-        <PieEchart date={date} workspace={workspaces} types='tasks' />
+        <LineEchart date={date} workspace={workspaces} types="tasks" />
+        <PieEchart date={date} workspace={workspaces} types="tasks" />
       </ChartsGrid>
     </Container>
   );

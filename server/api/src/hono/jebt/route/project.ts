@@ -3,12 +3,7 @@ import to from 'await-to-js';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
-import {
-  createJebtProject,
-  deleteJebtProject,
-  getJebtProjectList,
-  updateJebtProject,
-} from '../../../server/jebt/project';
+import { createJebtProject, deleteJebtProject, getJebtProjectList, updateJebtProject } from '../../../server/jebt/project';
 
 const project = new Hono()
   // 获取项目列表
@@ -19,7 +14,7 @@ const project = new Hono()
       z.object({
         workspaceId: z.string(),
         userId: z.string(),
-      })
+      }),
     ),
     async (c) => {
       const { workspaceId, userId } = c.req.valid('query');
@@ -27,11 +22,11 @@ const project = new Hono()
         getJebtProjectList({
           workspaceId: workspaceId,
           userId,
-        })
+        }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
-    }
+    },
   )
   // 创建项目
   .post(
@@ -43,7 +38,7 @@ const project = new Hono()
         file: z.any(),
         userId: z.string(),
         workspaceId: z.string(),
-      })
+      }),
     ),
     async (c) => {
       const body = await c.req.parseBody();
@@ -54,11 +49,11 @@ const project = new Hono()
           imageUrl: file as File | string,
           userId: userId as string,
           workspaceId: workspaceId as string,
-        })
+        }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
-    }
+    },
   )
   // 更新项目
   .patch(
@@ -72,7 +67,7 @@ const project = new Hono()
         workspaceId: z.string(),
         projectId: z.string(),
         oldImageUrl: z.string(),
-      })
+      }),
     ),
     async (c) => {
       const body = await c.req.parseBody();
@@ -85,11 +80,11 @@ const project = new Hono()
           userId: userId as string,
           workspaceId: workspaceId as string,
           oldImageUrl: oldImageUrl as string,
-        })
+        }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
-    }
+    },
   )
   // 删除项目
   .delete(
@@ -101,7 +96,7 @@ const project = new Hono()
         workspaceId: z.string(),
         projectId: z.string(),
         imageUrl: z.string(),
-      })
+      }),
     ),
     async (c) => {
       const { userId, workspaceId, projectId, imageUrl } = c.req.valid('json');
@@ -111,11 +106,11 @@ const project = new Hono()
           workspaceId,
           projectId,
           imageUrl,
-        })
+        }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
-    }
+    },
   );
 
 export default project;

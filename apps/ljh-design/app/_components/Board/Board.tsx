@@ -6,7 +6,7 @@ const Board = () => {
   const { user, loading } = useUser({ redirects: true });
   if (loading) return;
   if (!user) redirect('/sign-in');
-  return <BoardMain userId={user.user.id}></BoardMain>;
+  return <BoardMain userId={user.user.id} />;
 };
 
 export default Board;

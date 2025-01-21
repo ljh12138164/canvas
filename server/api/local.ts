@@ -1,9 +1,9 @@
-import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
+import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { stream } from 'hono/streaming';
 import ZhipuAI from 'zhipuai-sdk-nodejs-v4';
-import { IncomingMessage } from 'http';
+// import type { IncomingMessage } from 'http';
 // 依赖 pnpm add  hono @hono/node-server zhipuai-sdk-nodejs-v4 @types/node
 const ai = new ZhipuAI({
   // 智谱AI的API密钥
@@ -15,7 +15,7 @@ const app = new Hono()
     cors({
       origin: '*',
       credentials: true,
-    })
+    }),
   )
   .basePath('/api')
   .get('/', (c) => {
@@ -48,7 +48,7 @@ const app = new Hono()
       model: 'glm-4V-flash',
       messages: [{ role: 'user', content: prompt }],
       stream: true,
-    })) as IncomingMessage;
+    })) as any;
 
     return stream(c, async (stream) => {
       for await (const chunk of result) {

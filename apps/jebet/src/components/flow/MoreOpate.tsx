@@ -1,31 +1,17 @@
-import useUser from "@/store/user";
-import { EyeIcon, MoreVerticalIcon, PencilIcon, TrashIcon } from "lucide-react";
-import { observer } from "mobx-react-lite";
-import { useDeleteFlow } from "@/server/hooks/flow";
-import { Flow } from "@/types/workspace";
-import { useQueryClient } from "@tanstack/react-query";
-import { Row } from "@tanstack/react-table";
-import { useRef } from "react";
-import toast from "react-hot-toast";
-import { Link, useParams } from "react-router-dom";
-import { Button } from "../ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import Form from "./Form";
+import { useDeleteFlow } from '@/server/hooks/flow';
+import useUser from '@/store/user';
+import type { Flow } from '@/types/workspace';
+import { useQueryClient } from '@tanstack/react-query';
+import type { Row } from '@tanstack/react-table';
+import { EyeIcon, MoreVerticalIcon, PencilIcon, TrashIcon } from 'lucide-react';
+import { observer } from 'mobx-react-lite';
+import { useRef } from 'react';
+import toast from 'react-hot-toast';
+import { Link, useParams } from 'react-router-dom';
+import { Button } from '../ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import Form from './Form';
 
 const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
   const workspaceId = useParams().workspaceId;
@@ -61,12 +47,7 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
               <DialogHeader>
                 <DialogTitle>编辑工作流</DialogTitle>
               </DialogHeader>
-              <Form
-                type="update"
-                defaultData={row.original}
-                userId={useUser.userData.id}
-                workspaceId={workspaceId}
-              />
+              <Form type="update" defaultData={row.original} userId={useUser.userData.id} workspaceId={workspaceId} />
             </DialogContent>
           </Dialog>
         </DropdownMenuItem>
@@ -83,9 +64,7 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
                 <DialogTitle>删除工作流</DialogTitle>
                 <DialogDescription>
                   确认删除工作流
-                  <span className="text-red-500 font-bold">
-                    {row.original.name}
-                  </span>
+                  <span className="text-red-500 font-bold">{row.original.name}</span>
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
@@ -109,16 +88,16 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
                       },
                       {
                         onSuccess: () => {
-                          toast.success("删除成功");
+                          toast.success('删除成功');
                           queryClient.invalidateQueries({
-                            queryKey: ["flow", workspaceId],
+                            queryKey: ['flow', workspaceId],
                           });
                           deleteRef.current?.click();
                         },
                         onError: () => {
-                          toast.error("删除失败");
+                          toast.error('删除失败');
                         },
-                      }
+                      },
                     );
                   }}
                 >

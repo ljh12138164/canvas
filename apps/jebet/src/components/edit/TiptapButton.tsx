@@ -1,12 +1,7 @@
+import { memo } from 'react';
 import styled from 'styled-components';
 import { Button } from '../ui/button';
-import { memo } from 'react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 interface TiptapButton {
   icon: React.ReactNode;
@@ -21,29 +16,12 @@ const TiptopButtons = styled(Button)`
   width: 32px;
   height: 100%;
 `;
-const TiptapButton = ({
-  icon,
-  onClick,
-  active,
-  key,
-  disabled,
-  title,
-}: TiptapButton) => {
+const TiptapButton = ({ icon, onClick, active, key, disabled, title }: TiptapButton) => {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <TiptopButtons
-            key={key + title}
-            variant='ghost'
-            onClick={onClick}
-            disabled={!disabled}
-            className={
-              active
-                ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-                : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'
-            }
-          >
+          <TiptopButtons key={key + title} variant="ghost" onClick={onClick} disabled={!disabled} className={active ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700' : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'}>
             {icon}
           </TiptopButtons>
         </TooltipTrigger>

@@ -1,10 +1,10 @@
-import { useMutation, useQuery } from '@tanstack/vue-query'
-import { client } from '@/database'
-import type { InferRequestType, InferResponseType } from 'hono/client'
-import { getNewToken } from '@/lib/sign'
-import { useRouter } from 'vue-router'
+import { client } from '@/database';
+import { getNewToken } from '@/lib/sign';
+import { useMutation, useQuery } from '@tanstack/vue-query';
+import type { InferRequestType, InferResponseType } from 'hono/client';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 /**
  * @description 获取表单
  * @returns 表单
@@ -13,40 +13,40 @@ export const useGetrBoard = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['board'],
     queryFn: async () => {
-      const token = await getNewToken()
+      const token = await getNewToken();
       const data = await client.board.form.$get(undefined, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      if (!data.ok) throw new Error(data.statusText)
-      return data.json()
+      });
+      if (!data.ok) throw new Error(data.statusText);
+      return data.json();
     },
-  })
-  return { data, isLoading, error }
-}
+  });
+  return { data, isLoading, error };
+};
 
-type CreateBoard = InferRequestType<typeof client.board.form.$post>
-type CreateBoardResponse = InferResponseType<typeof client.board.form.$post, 200>
+type CreateBoard = InferRequestType<typeof client.board.form.$post>;
+type CreateBoardResponse = InferResponseType<typeof client.board.form.$post, 200>;
 /**
  * ## 创建表单
  */
 export const useCreateBoard = () => {
   return useMutation<CreateBoardResponse, Error, CreateBoard>({
     mutationFn: async (datas) => {
-      const token = await getNewToken()
+      const token = await getNewToken();
       const data = await client.board.form.$post(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      if (!data.ok) throw new Error(data.statusText)
-      const json = await data.json()
-      return json
+      });
+      if (!data.ok) throw new Error(data.statusText);
+      const json = await data.json();
+      return json;
     },
-  })
-}
-type GetBoardResponse = InferResponseType<(typeof client.board.form)[':id']['$get'], 200>
+  });
+};
+type GetBoardResponse = InferResponseType<(typeof client.board.form)[':id']['$get'], 200>;
 /**
  * @description 获取表单详情
  * @param id 表单id
@@ -56,7 +56,7 @@ export const useBoard = (id: string) => {
   return useQuery<GetBoardResponse, Error>({
     queryKey: ['board', id],
     queryFn: async () => {
-      const token = await getNewToken()
+      const token = await getNewToken();
       const data = await client.board.form[':id'].$get(
         { param: { id } },
         {
@@ -64,17 +64,17 @@ export const useBoard = (id: string) => {
             Authorization: `Bearer ${token}`,
           },
         },
-      )
-      if (!data.ok) throw new Error(data.statusText)
-      if (data.status === 404) router.back()
-      const json = await data.json()
-      return json
+      );
+      if (!data.ok) throw new Error(data.statusText);
+      if (data.status === 404) router.back();
+      const json = await data.json();
+      return json;
     },
-  })
-}
+  });
+};
 
-type UpdateBoard = InferRequestType<(typeof client.board.form)['$patch']>
-type UpdateBoardResponse = InferResponseType<(typeof client.board.form)['$patch'], 200>
+type UpdateBoard = InferRequestType<(typeof client.board.form)['$patch']>;
+type UpdateBoardResponse = InferResponseType<(typeof client.board.form)['$patch'], 200>;
 /**
  * @description 更新表单
  * @returns 更新结果
@@ -82,21 +82,21 @@ type UpdateBoardResponse = InferResponseType<(typeof client.board.form)['$patch'
 export const useUpdateBoard = () => {
   return useMutation<UpdateBoardResponse, Error, UpdateBoard>({
     mutationFn: async (datas) => {
-      const token = await getNewToken()
+      const token = await getNewToken();
       const data = await client.board.form.$patch(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      if (!data.ok) throw new Error(data.statusText)
-      const json = await data.json()
-      return json
+      });
+      if (!data.ok) throw new Error(data.statusText);
+      const json = await data.json();
+      return json;
     },
-  })
-}
+  });
+};
 
-type DeleteBoard = InferRequestType<typeof client.board.form.$delete>
-type DeleteBoardResponse = InferResponseType<typeof client.board.form.$delete, 200>
+type DeleteBoard = InferRequestType<typeof client.board.form.$delete>;
+type DeleteBoardResponse = InferResponseType<typeof client.board.form.$delete, 200>;
 /**
  * ### 删除表单
  * @param id 表单id
@@ -105,21 +105,21 @@ type DeleteBoardResponse = InferResponseType<typeof client.board.form.$delete, 2
 export const useDeleteBoard = () => {
   return useMutation<DeleteBoardResponse, Error, DeleteBoard>({
     mutationFn: async (datas) => {
-      const token = await getNewToken()
+      const token = await getNewToken();
       const data = await client.board.form.$delete(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      if (!data.ok) throw new Error(data.statusText)
-      const json = await data.json()
-      return json
+      });
+      if (!data.ok) throw new Error(data.statusText);
+      const json = await data.json();
+      return json;
     },
-  })
-}
+  });
+};
 
-type UpdateBoardInviteCode = InferRequestType<typeof client.board.update.$patch>
-type UpdateBoardInviteCodeResponse = InferResponseType<typeof client.board.update.$patch, 200>
+type UpdateBoardInviteCode = InferRequestType<typeof client.board.update.$patch>;
+type UpdateBoardInviteCodeResponse = InferResponseType<typeof client.board.update.$patch, 200>;
 /**
  * @description 更新邀请码
  * @param id 表单id
@@ -128,23 +128,20 @@ type UpdateBoardInviteCodeResponse = InferResponseType<typeof client.board.updat
 export const useUpdateBoardInviteCode = () => {
   return useMutation<UpdateBoardInviteCodeResponse, Error, UpdateBoardInviteCode>({
     mutationFn: async (datas) => {
-      const token = await getNewToken()
+      const token = await getNewToken();
       const data = await client.board.update.$patch(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      if (!data.ok) throw new Error(data.statusText)
-      const json = await data.json()
-      return json
+      });
+      if (!data.ok) throw new Error(data.statusText);
+      const json = await data.json();
+      return json;
     },
-  })
-}
+  });
+};
 
-type GetInviteCodeDataResponse = InferResponseType<
-  (typeof client.board.submit)[':inviteCode']['$get'],
-  200
->
+type GetInviteCodeDataResponse = InferResponseType<(typeof client.board.submit)[':inviteCode']['$get'], 200>;
 
 /**
  * @description 获取邀请码数据
@@ -155,7 +152,7 @@ export const useGetInviteCodeData = (inviteCode: string) => {
   return useQuery<GetInviteCodeDataResponse, Error>({
     queryKey: ['submit', inviteCode],
     queryFn: async () => {
-      const token = await getNewToken()
+      const token = await getNewToken();
       const data = await client.board.submit[':inviteCode'].$get(
         { param: { inviteCode } },
         {
@@ -163,10 +160,10 @@ export const useGetInviteCodeData = (inviteCode: string) => {
             Authorization: `Bearer ${token}`,
           },
         },
-      )
-      if (!data.ok) throw new Error(data.statusText)
-      const json = await data.json()
-      return json
+      );
+      if (!data.ok) throw new Error(data.statusText);
+      const json = await data.json();
+      return json;
     },
-  })
-}
+  });
+};

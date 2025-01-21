@@ -1,6 +1,6 @@
-import { Board, BoardResponse } from "../../../types/design/board";
-import { UserImage } from "../../../types/design/user";
-import { supabaseDesign } from "../../supabase/design";
+import type { Board, BoardResponse } from '../../../types/design/board';
+import type { UserImage } from '../../../types/design/user';
+import { supabaseDesign } from '../../supabase/design';
 interface GetUserImage {
   userId: string;
   token: string;
@@ -10,7 +10,7 @@ interface GetUserImage {
  * @returns
  */
 export const getBoardData = async (token: string) => {
-  const { data, error } = await supabaseDesign(token).from("board").select("*");
+  const { data, error } = await supabaseDesign(token).from('board').select('*');
   return { data, error };
 };
 
@@ -18,15 +18,9 @@ export const getBoardData = async (token: string) => {
  * 获取用户图片
  * @returns
  */
-export const getUserImage = async ({
-  userId,
-  token,
-}: GetUserImage): Promise<UserImage[]> => {
-  const { data, error } = await supabaseDesign(token)
-    .from("userImage")
-    .select("*")
-    .eq("id", userId);
-  if (error) throw new Error("服务器错误");
+export const getUserImage = async ({ userId, token }: GetUserImage): Promise<UserImage[]> => {
+  const { data, error } = await supabaseDesign(token).from('userImage').select('*').eq('id', userId);
+  if (error) throw new Error('服务器错误');
   return data;
 };
 
@@ -41,16 +35,9 @@ interface CreateBoard {
  * 创建看板
  * @returns
  */
-export const createBoard = async (
-  board: CreateBoard,
-  token: string
-): Promise<Board> => {
-  const { data, error } = await supabaseDesign(token)
-    .from("board")
-    .insert([board])
-    .select("*")
-    .single();
-  if (error) throw new Error("服务器错误");
+export const createBoard = async (board: CreateBoard, token: string): Promise<Board> => {
+  const { data, error } = await supabaseDesign(token).from('board').insert([board]).select('*').single();
+  if (error) throw new Error('服务器错误');
 
   return data;
 };
@@ -63,18 +50,11 @@ interface GetBoard {
  * 获取看板数据
  * @returns
  */
-export const getBoard = async ({
-  id,
-  userid,
-  token,
-}: GetBoard): Promise<Board[]> => {
-  const { data, error } = await supabaseDesign(token)
-    .from("board")
-    .select("*")
-    .eq("id", id);
+export const getBoard = async ({ id, userid, token }: GetBoard): Promise<Board[]> => {
+  const { data, error } = await supabaseDesign(token).from('board').select('*').eq('id', id);
   // TODO: 需要修改
   // .eq("userId", userid);
-  if (error) throw new Error("服务器错误");
+  if (error) throw new Error('服务器错误');
   return data;
 };
 interface GetUserBoard {
@@ -87,22 +67,18 @@ interface GetUserBoard {
  * @returns
  *
  */
-export const getUserBoard = async ({
-  userid,
-  pageParam,
-  token,
-}: GetUserBoard): Promise<BoardResponse[]> => {
+export const getUserBoard = async ({ userid, pageParam, token }: GetUserBoard): Promise<BoardResponse[]> => {
   const start = pageParam * 7;
   const end = start + 7;
   const { data, error, count } = await supabaseDesign(token)
-    .from("board")
-    .select("*", {
-      count: "exact",
+    .from('board')
+    .select('*', {
+      count: 'exact',
     })
-    .eq("userId", userid)
-    .order("created_at", { ascending: false })
+    .eq('userId', userid)
+    .order('created_at', { ascending: false })
     .range(start, end);
-  if (error) throw new Error("服务器错误");
+  if (error) throw new Error('服务器错误');
   if (!count) return [];
   return data.map((item) => ({ ...item, count }));
 };
@@ -114,19 +90,9 @@ interface UpdateBoard extends CreateBoard {
   id: string;
   token: string;
 }
-export const updateBoard = async ({
-  id,
-  userId,
-  token,
-  ...board
-}: UpdateBoard): Promise<Board> => {
-  const { data, error } = await supabaseDesign(token)
-    .from("board")
-    .update([board])
-    .eq("id", id)
-    .eq("userId", userId)
-    .select("*");
-  if (error || !data) throw new Error(error?.message || "更新失败");
+export const updateBoard = async ({ id, userId, token, ...board }: UpdateBoard): Promise<Board> => {
+  const { data, error } = await supabaseDesign(token).from('board').update([board]).eq('id', id).eq('userId', userId).select('*');
+  if (error || !data) throw new Error(error?.message || '更新失败');
 
   return data[0];
 };
@@ -143,12 +109,8 @@ export const deleteBoard = async ({
   userid: string;
   token: string;
 }) => {
-  const { error } = await supabaseDesign(token)
-    .from("board")
-    .delete()
-    .eq("id", id)
-    .eq("userId", userid);
-  if (error) throw new Error("服务器错误");
+  const { error } = await supabaseDesign(token).from('board').delete().eq('id', id).eq('userId', userid);
+  if (error) throw new Error('服务器错误');
   return true;
 };
 
@@ -168,19 +130,9 @@ interface AuthSaveBoard {
   url?: string;
   isTemplate?: boolean;
 }
-export const authSaveBoard = async ({
-  id,
-  userId,
-  token,
-  ...board
-}: AuthSaveBoard): Promise<Board> => {
-  const { data, error } = await supabaseDesign(token)
-    .from("board")
-    .update([board])
-    .eq("id", id)
-    .eq("userId", userId)
-    .select("*");
-  if (error || data.length === 0) throw new Error(error?.message || "更新失败");
+export const authSaveBoard = async ({ id, userId, token, ...board }: AuthSaveBoard): Promise<Board> => {
+  const { data, error } = await supabaseDesign(token).from('board').update([board]).eq('id', id).eq('userId', userId).select('*');
+  if (error || data.length === 0) throw new Error(error?.message || '更新失败');
   return data[0];
 };
 /**
@@ -197,10 +149,10 @@ export const copyBoard = async ({
   token: string;
 }): Promise<Board> => {
   const { data, error } = await supabaseDesign(token)
-    .from("board")
+    .from('board')
     .insert([{ ...board, userId }])
-    .select("*");
-  if (error) throw new Error("服务器错误");
+    .select('*');
+  if (error) throw new Error('服务器错误');
   return data[0];
 };
 
@@ -215,10 +167,7 @@ export const getUserBoardList = async ({
   userid: string;
   token: string;
 }): Promise<Board[]> => {
-  const { data, error } = await supabaseDesign(token)
-    .from("board")
-    .select("*")
-    .eq("userId", userid);
-  if (error) throw new Error("服务器错误");
+  const { data, error } = await supabaseDesign(token).from('board').select('*').eq('userId', userid);
+  if (error) throw new Error('服务器错误');
   return data;
 };

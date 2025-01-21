@@ -1,59 +1,38 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { valueUpdater } from '@/lib/index'
-import { cn } from '@/lib/utils'
-import type { Form, SumbitForm } from '@/types'
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { valueUpdater } from '@/lib/index';
+import { cn } from '@/lib/utils';
+import type { Form, SumbitForm } from '@/types';
 import type {
   ColumnFiltersState,
   ExpandedState,
   // RowSelectionState,
   SortingState,
   VisibilityState,
-} from '@tanstack/vue-table'
-import {
-  createColumnHelper,
-  FlexRender,
-  getCoreRowModel,
-  getExpandedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useVueTable,
-} from '@tanstack/vue-table'
-import dayjs from 'dayjs'
-import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-vue-next'
-import { h, ref } from 'vue'
-import TooltipComponent from '../common/TooltipComponent.vue'
-import DropdownAction from './DropdownAction.vue'
+} from '@tanstack/vue-table';
+import { FlexRender, createColumnHelper, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useVueTable } from '@tanstack/vue-table';
+import dayjs from 'dayjs';
+import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-vue-next';
+import { h, ref } from 'vue';
+import TooltipComponent from '../common/TooltipComponent.vue';
+import DropdownAction from './DropdownAction.vue';
 // import DropdownAction from './DropdownAction.vue'
 
 export interface Payment {
-  id: string
-  amount: number
-  status: 'pending' | 'processing' | 'success' | 'failed'
-  email: string
+  id: string;
+  amount: number;
+  status: 'pending' | 'processing' | 'success' | 'failed';
+  email: string;
 }
 
 const props = defineProps<{
-  data: (SumbitForm & { form: Form })[]
-}>()
+  data: (SumbitForm & { form: Form })[];
+}>();
 
-const columnHelper = createColumnHelper<Form>()
+const columnHelper = createColumnHelper<Form>();
 
 // 表单的显示
 const columns = [
@@ -67,11 +46,11 @@ const columns = [
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
         },
         () => ['提交时间', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })],
-      )
+      );
     },
     cell: ({ row }) => {
-      const formatted = dayjs(row.getValue('update_at')).format('YYYY-MM-DD HH:mm:ss')
-      return h('div', { class: 'text-right' }, h(TooltipComponent, { content: formatted }))
+      const formatted = dayjs(row.getValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
+      return h('div', { class: 'text-right' }, h(TooltipComponent, { content: formatted }));
     },
   }),
   columnHelper.display({
@@ -79,23 +58,23 @@ const columns = [
     enableHiding: false,
     header: () => h('div', { class: 'text-right' }, '操作'),
     cell: ({ row }) => {
-      const payment = row.original
+      const payment = row.original;
       return h(
         'div',
         { class: 'relative', variant: 'ghost' },
         h(DropdownAction, {
           payment,
         }),
-      )
+      );
     },
   }),
-]
+];
 
-const sorting = ref<SortingState>([])
-const columnFilters = ref<ColumnFiltersState>([])
-const columnVisibility = ref<VisibilityState>({})
-const rowSelection = ref({})
-const expanded = ref<ExpandedState>({})
+const sorting = ref<SortingState>([]);
+const columnFilters = ref<ColumnFiltersState>([]);
+const columnVisibility = ref<VisibilityState>({});
+const rowSelection = ref({});
+const expanded = ref<ExpandedState>({});
 
 const table = useVueTable({
   // @ts-ignore
@@ -113,31 +92,31 @@ const table = useVueTable({
   onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
   state: {
     get sorting() {
-      return sorting.value
+      return sorting.value;
     },
     get columnFilters() {
-      return columnFilters.value
+      return columnFilters.value;
     },
     get columnVisibility() {
-      return columnVisibility.value
+      return columnVisibility.value;
     },
     get rowSelection() {
-      return rowSelection.value
+      return rowSelection.value;
     },
     get expanded() {
-      return expanded.value
+      return expanded.value;
     },
     columnPinning: {
       left: ['status'],
     },
   },
-})
+});
 const keyof = {
   name: '名称',
   description: '描述',
   update_at: '更新时间',
   created_at: '创建时间',
-}
+};
 </script>
 
 <template>

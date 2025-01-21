@@ -1,153 +1,122 @@
 <script lang="ts" setup>
-import { useMediaQuery } from '@vueuse/core'
-import { Copy, Link, Trash } from 'lucide-vue-next'
-import { nanoid } from 'nanoid'
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogDescription,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { toTypedSchema } from '@vee-validate/zod'
-import { Save } from 'lucide-vue-next'
-import { useField, useForm } from 'vee-validate'
-import { onBeforeMount, ref, watch } from 'vue'
-import FormArrayConfig from './FormArrayConfig.vue'
-import { VueDraggable } from 'vue-draggable-plus'
-import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer'
-import { ScrollArea } from '../ui/scroll-area'
-import { useAutoAnimate } from '@formkit/auto-animate/vue'
-import { useRoute, useRouter } from 'vue-router'
-import FormItemConfig from './FormItemConfig.vue'
-import { type Array, formItemList, type FormType, type CreateFormItem } from '@/types/form'
-import { getFormDataById, indexDBChange } from '@/lib/index'
-import { type DateValue } from '@internationalized/date'
-import { useToast } from '@/components/ui/toast'
-import { useCreateBoard } from '@/hooks/board'
-import * as z from 'zod'
-const { toast } = useToast()
-const route = useRoute()
-const id = ref(route.params.id)
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/toast';
+import { useCreateBoard } from '@/hooks/board';
+import { getFormDataById, indexDBChange } from '@/lib/index';
+import { type CreateFormItem, type FormType, type ObjectItem, formItemList } from '@/types/form';
+import { useAutoAnimate } from '@formkit/auto-animate/vue';
+import type { DateValue } from '@internationalized/date';
+import { toTypedSchema } from '@vee-validate/zod';
+import { useMediaQuery } from '@vueuse/core';
+import { Copy, Link, Trash } from 'lucide-vue-next';
+import { Save } from 'lucide-vue-next';
+import { nanoid } from 'nanoid';
+import { useField, useForm } from 'vee-validate';
+import { onBeforeMount, ref, watch } from 'vue';
+import { VueDraggable } from 'vue-draggable-plus';
+import { useRoute, useRouter } from 'vue-router';
+import * as z from 'zod';
+import { Drawer, DrawerContent, DrawerTrigger } from '../ui/drawer';
+import { ScrollArea } from '../ui/scroll-area';
+import FormArrayConfig from './FormArrayConfig.vue';
+import FormItemConfig from './FormItemConfig.vue';
+const { toast } = useToast();
+const route = useRoute();
+const id = ref(route.params.id);
 const props = defineProps<{
-  schema?: string
-  id?: string
-  title?: string
-  description?: string
-}>()
-const { mutate: createBoard } = useCreateBoard()
+  schema?: string;
+  id?: string;
+  title?: string;
+  description?: string;
+}>();
+const { mutate: createBoard } = useCreateBoard();
 // 提交的表单数据
 // const schema = ref<z.ZodObject<any, any, any, any>[]>([])
 
-const closeRef = ref<HTMLButtonElement | null>(null)
-const router = useRouter()
+const closeRef = ref<HTMLButtonElement | null>(null);
+const router = useRouter();
 
 watch(
   () => route.params.id,
   (newId) => {
-    id.value = newId
+    id.value = newId;
   },
-)
+);
 
 // 组件列表
-const list1 = ref<CreateFormItem[]>(formItemList as CreateFormItem[])
-const list2 = ref<CreateFormItem[]>([])
-const subId = ref<string[]>([])
+const list1 = ref<CreateFormItem[]>(formItemList as CreateFormItem[]);
+const list2 = ref<CreateFormItem[]>([]);
+const subId = ref<string[]>([]);
 
 //   初始化赋值
-const setList2 = (list: CreateFormItem[]) => (list2.value = list)
+const setList2 = (list: CreateFormItem[]) => {
+  list2.value = list;
+};
 // 添加
-const pushList2 = (item: CreateFormItem) => (list2.value = [...list2.value, item])
+const pushList2 = (item: CreateFormItem) => {
+  list2.value = [...list2.value, item];
+};
 // 删除
-const deleteList2 = (id: string) => (list2.value = list2.value.filter((item) => item.id !== id))
+const deleteList2 = (id: string) => {
+  list2.value = list2.value.filter((item) => item.id !== id);
+};
 // 更新
-const updateList2 = async (
-  id: string,
-  type: FormType,
-  newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
-) => {
+const updateList2 = async (id: string, type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => {
   list2.value = list2.value.map((item) => {
     if (item.id === id) {
-      ;(item as any)[type] = newValue
+      (item as any)[type] = newValue;
     }
-    return item
-  })
-  await handleUpdate()
-}
-const updateArray = async (
-  id: string[],
-  type: FormType,
-  newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
-) => {
+    return item;
+  });
+  await handleUpdate();
+};
+const updateArray = async (id: string[], type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => {
   // 更新数组
   list2.value = list2.value.map((item) => {
     if (item.id === id[0]) {
-      ;(item as Array)?.children.map((items: CreateFormItem) => {
+      (item as ObjectItem)?.children.map((items: CreateFormItem) => {
         if (items.id === id[1]) {
-          ;(items as any)[type] = newValue
+          (items as any)[type] = newValue;
         }
-        return items
-      })
+        return items;
+      });
     }
-    return item
-  })
-  await handleUpdate()
-}
+    return item;
+  });
+  await handleUpdate();
+};
 
 onBeforeMount(async () => {
   if (!props.schema) {
-    const data = await getFormDataById(id.value + '')
-    if (data) setList2(JSON.parse(data.schema))
+    const data = await getFormDataById(id.value as string);
+    if (data) setList2(JSON.parse(data.schema));
   } else {
-    setList2(JSON.parse(props.schema))
+    setList2(JSON.parse(props.schema));
   }
-})
-const onOpen = ref(false)
-const activeArea = ref<string>('')
-const isMobile = useMediaQuery('(max-width: 768px)')
+});
+const onOpen = ref(false);
+const activeArea = ref<string>('');
+const isMobile = useMediaQuery('(max-width: 768px)');
 
-const [parent] = useAutoAnimate()
-const onClone = (
-  element: Record<
-    | 'name'
-    | 'id'
-    | 'type'
-    | 'isRequired'
-    | 'placeholder'
-    | 'defaultValue'
-    | 'label'
-    | 'options'
-    | 'hiddenLabel'
-    | 'description'
-    | 'defaultValue'
-    | 'defaultTypeName',
-    string
-  >,
-) => {
-  let existingNames = new Set(
-    list2.value
-      .filter((item: CreateFormItem) => item.type === element.type)
-      .map((item) => item.name),
-  )
-  list2.value.forEach((item: CreateFormItem) => {
+const [parent] = useAutoAnimate();
+const onClone = (element: Record<'name' | 'id' | 'type' | 'isRequired' | 'placeholder' | 'defaultValue' | 'label' | 'options' | 'hiddenLabel' | 'description' | 'defaultValue' | 'defaultTypeName', string>) => {
+  const existingNames = new Set(list2.value.filter((item: CreateFormItem) => item.type === element.type).map((item) => item.name));
+  for (const item of list2.value) {
     if (item.type === 'obj') {
-      item.children.forEach((child: CreateFormItem) => {
-        existingNames.add(child.name)
-      })
+      for (const child of item.children) {
+        existingNames.add(child.name);
+      }
     }
-  })
-  let baseName = element.name
-  let newName = baseName
-  let counter = 1
+  }
+  const baseName = element.name;
+  let newName = baseName;
+  let counter = 1;
   while (existingNames.has(newName)) {
-    newName = `${baseName}(${counter})`
-    counter++
+    newName = `${baseName}(${counter})`;
+    counter++;
   }
 
   return {
@@ -155,111 +124,93 @@ const onClone = (
     name: newName,
     defaultTypeName: newName,
     id: nanoid(),
-  }
-}
+  };
+};
 // 预览
 const handlePreview = async () => {
   await indexDBChange({
     type: 'edit',
     editData: {
-      id: id.value + '',
+      id: `${id.value}`,
       schema: JSON.stringify(list2.value),
     },
-  })
-  router.push(`/workspace/create/preview/${id.value}`)
-}
+  });
+  router.push(`/workspace/create/preview/${id.value}`);
+};
 
 // 更新组件到indexDB中
 const handleUpdate = async () => {
   await indexDBChange({
     type: 'edit',
     editData: {
-      id: id.value + '',
+      id: `${id.value}`,
       schema: JSON.stringify(list2.value),
     },
-  })
-}
+  });
+};
 
-const parentHandleUpdate = () => {}
+const parentHandleUpdate = () => {};
 // 激活组件
 const handleActiveArea = (id: string) => {
   if (activeArea.value === id) {
-    activeArea.value = ''
+    activeArea.value = '';
   } else {
-    activeArea.value = id
+    activeArea.value = id;
   }
-}
+};
 
 // 激活子组件
 const handleActiveSub = (id: string, fatherId: string) => {
   if (subId.value.includes(id)) {
-    subId.value = []
+    subId.value = [];
   } else {
-    subId.value = [fatherId, id]
+    subId.value = [fatherId, id];
   }
-}
+};
 
 // 删除组件
 const handleDelete = async (id: string) => {
-  deleteList2(id)
-  activeArea.value = ''
-  subId.value = []
-  await handleUpdate()
-}
+  deleteList2(id);
+  activeArea.value = '';
+  subId.value = [];
+  await handleUpdate();
+};
 watch(activeArea, () => {
-  if (subId.value.length) return
-  if (!activeArea.value) onOpen.value = false
-  if (activeArea.value) onOpen.value = true
-})
+  if (subId.value.length) return;
+  if (!activeArea.value) onOpen.value = false;
+  if (activeArea.value) onOpen.value = true;
+});
 watch(subId, () => {
-  if (activeArea.value) return
-  if (!subId.value.length) onOpen.value = false
-  if (subId.value.length) onOpen.value = true
-})
+  if (activeArea.value) return;
+  if (!subId.value.length) onOpen.value = false;
+  if (subId.value.length) onOpen.value = true;
+});
 // 复制组件
 const handleCopy = async (id: string) => {
-  const data = list2.value.find((item) => item.id === id)
-  const nanoidId = nanoid()
-  if (data) pushList2({ ...data, id: nanoidId })
-  await handleUpdate()
-}
+  const data = list2.value.find((item) => item.id === id);
+  const nanoidId = nanoid();
+  if (data) pushList2({ ...data, id: nanoidId });
+  await handleUpdate();
+};
 // const fieldConfig = ref<Record<string, any>>({})
-const parmasClone = (
-  element: Record<
-    | 'name'
-    | 'id'
-    | 'type'
-    | 'isRequired'
-    | 'placeholder'
-    | 'defaultValue'
-    | 'label'
-    | 'options'
-    | 'hiddenLabel'
-    | 'description'
-    | 'defaultValue'
-    | 'defaultTypeName',
-    string
-  >,
-) => {
-  if (element.type === 'obj') return
-  return element
-}
-const datas = ref<CreateFormItem | undefined>(undefined)
+const parmasClone = (element: Record<'name' | 'id' | 'type' | 'isRequired' | 'placeholder' | 'defaultValue' | 'label' | 'options' | 'hiddenLabel' | 'description' | 'defaultValue' | 'defaultTypeName', string>) => {
+  if (element.type === 'obj') return;
+  return element;
+};
+const datas = ref<CreateFormItem | undefined>(undefined);
 
 watch(activeArea, () => {
   if (activeArea.value) {
-    subId.value = []
-    datas.value = list2.value.find((item) => item.id === activeArea.value)
+    subId.value = [];
+    datas.value = list2.value.find((item) => item.id === activeArea.value);
   }
-})
+});
 watch(subId, () => {
   if (subId.value.length) {
-    activeArea.value = ''
-    datas.value = (list2.value.find((item) => item.id === subId.value[0]) as Array)?.children.find(
-      (item: CreateFormItem) => item.id === subId.value[1],
-    )
+    activeArea.value = '';
+    datas.value = (list2.value.find((item) => item.id === subId.value[0]) as ObjectItem)?.children.find((item: CreateFormItem) => item.id === subId.value[1]);
   }
-})
+});
 
 ///////////////表单提交
 // 定义表单验证架构
@@ -268,7 +219,7 @@ const validationSchema = toTypedSchema(
     title: z.coerce.string().min(2, '标题至少需要2个字符').max(50, '标题不能超过50个字符'),
     description: z.string().max(200, '描述不能超过200个字符').optional(),
   }),
-)
+);
 
 // 使用vee-validate的useForm和useField
 const { handleSubmit, resetForm, errors } = useForm({
@@ -277,11 +228,11 @@ const { handleSubmit, resetForm, errors } = useForm({
     title: props.title || '',
     description: props.description || '',
   },
-})
+});
 
 // 获取字段
-const { value: title } = useField<string>('title')
-const { value: description } = useField<string>('description')
+const { value: title } = useField<string>('title');
+const { value: description } = useField<string>('description');
 
 // 提交处理函数
 const onSubmit = handleSubmit((values) => {
@@ -289,8 +240,8 @@ const onSubmit = handleSubmit((values) => {
     toast({
       title: '请先填写表单',
       variant: 'destructive',
-    })
-    return
+    });
+    return;
   }
   if (!props.schema) {
     createBoard(
@@ -304,17 +255,17 @@ const onSubmit = handleSubmit((values) => {
       },
       {
         onSuccess: async () => {
-          toast({ title: '创建成功' })
-          await indexDBChange({ type: 'delete', deletItem: id.value as string })
+          toast({ title: '创建成功' });
+          await indexDBChange({ type: 'delete', deletItem: id.value as string });
           // 细节
-          router.push(`/workspace/form/detail/${id.value}`)
+          router.push(`/workspace/form/detail/${id.value}`);
         },
       },
-    )
+    );
   } else {
     // 更新
   }
-})
+});
 </script>
 <template>
   <section class="flex flex-col px-1 gap-2 w-full rounded h-[calc(100dvh-170px)] overflow-hidden">

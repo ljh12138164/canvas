@@ -1,4 +1,4 @@
-import Quill, { QuillOptions } from 'quill';
+import Quill, { type QuillOptions } from 'quill';
 import { useEffect, useRef } from 'react';
 import { PiTextAa } from 'react-icons/pi';
 import styled from 'styled-components';
@@ -17,9 +17,7 @@ const QuillEdit = () => {
   useEffect(() => {
     if (!containersRef.current) return;
     const container = containersRef.current;
-    const editorContainers = container.appendChild(
-      container.ownerDocument.createElement('div')
-    );
+    const editorContainers = container.appendChild(container.ownerDocument.createElement('div'));
     const options: QuillOptions = {
       theme: 'snow',
     };
@@ -31,8 +29,8 @@ const QuillEdit = () => {
   }, []);
   return (
     <EditContainer>
-      <div ref={containersRef} className='ql-custom h-full' />
-      <Button disabled={false} size='icon' variant='ghost' onClick={() => {}}>
+      <div ref={containersRef} className="ql-custom h-full" />
+      <Button disabled={false} size="icon" variant="ghost" onClick={() => {}}>
         <PiTextAa size={24} />
       </Button>
     </EditContainer>

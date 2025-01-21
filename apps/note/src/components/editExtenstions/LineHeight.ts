@@ -26,8 +26,7 @@ export const LineHeightExtension = Extension.create({
         attributes: {
           lineHeight: {
             default: this.options.defaultLineHeight,
-            parseHTML: (element) =>
-              element.style.lineHeight || this.options.defaultLineHeight,
+            parseHTML: (element) => element.style.lineHeight || this.options.defaultLineHeight,
             renderHTML: (attrs) => {
               if (!attrs.lineHeight) return {};
               return { style: `line-height: ${attrs.lineHeight}` };

@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useCreateFolder } from '@/hooks/floders';
 import useUser from '@/store/user';
 import { useQueryClient } from '@tanstack/vue-query';
@@ -21,7 +15,7 @@ const formSchema = toTypedSchema(
   z.object({
     title: z.string().optional(),
     inconId: z.string().optional(),
-  })
+  }),
 );
 const clinetQuery = useQueryClient();
 const route = useRoute();
@@ -31,7 +25,7 @@ watch(
   () => {
     workspaceId.value = route.params.workspaceId as string;
   },
-  { immediate: true }
+  { immediate: true },
 );
 // const userId = useUser().userData?.session.user.id as string;
 const { createFolderIsLoading, createFolder } = useCreateFolder();
@@ -43,8 +37,7 @@ const form = useForm({
 const onSubmit = form.handleSubmit((values) => {
   //校验
   if (!values.title) return form.setErrors({ title: '请输入文档名称' });
-  if (values.title.length < 2)
-    return form.setErrors({ title: '文档名称至少2个字符' });
+  if (values.title.length < 2) return form.setErrors({ title: '文档名称至少2个字符' });
   if (!values.inconId) return form.setErrors({ inconId: '请选择图标' });
   createFolder(
     {
@@ -63,7 +56,7 @@ const onSubmit = form.handleSubmit((values) => {
         });
         showEmoji.value = '';
       },
-    }
+    },
   );
 });
 const onChangeEmoji = (emoji: string) => {

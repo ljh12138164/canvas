@@ -1,14 +1,9 @@
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
-import { Board } from '@/app/_types/board';
 import { PAGE_SIZE } from '@/app/_types/Edit';
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { InferRequestType, InferResponseType } from 'hono';
+import type { Board } from '@/app/_types/board';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { InferRequestType, InferResponseType } from 'hono';
 import { isArray } from 'lodash';
 import { redirect } from 'next/navigation';
 import toast from 'react-hot-toast';
@@ -16,38 +11,21 @@ import toast from 'react-hot-toast';
 export type ResponseType = InferResponseType<typeof client.board.$post>;
 type RequestType = InferRequestType<typeof client.board.$post>['json'];
 
-type UpdateResponseType = InferResponseType<
-  (typeof client.board)['editBoard']['$post']
->;
+type UpdateResponseType = InferResponseType<(typeof client.board)['editBoard']['$post']>;
 
-type DeleteResponseType = InferResponseType<
-  (typeof client.board)['deleteBoard']['$post']
->;
+type DeleteResponseType = InferResponseType<(typeof client.board)['deleteBoard']['$post']>;
 
-type AutoSaveResponseType = InferResponseType<
-  (typeof client.board)[':id']['$post'],
-  200
->;
-type AutoSaveRequestType = InferRequestType<
-  (typeof client.board)[':id']['$post']
->['json'];
+type AutoSaveResponseType = InferResponseType<(typeof client.board)[':id']['$post'], 200>;
+type AutoSaveRequestType = InferRequestType<(typeof client.board)[':id']['$post']>['json'];
 
-type CopyResponseType = InferResponseType<
-  (typeof client.board)['clone']['$post']
->;
-type CopyRequestType = InferRequestType<
-  (typeof client.board)['clone']['$post']
->;
+type CopyResponseType = InferResponseType<(typeof client.board)['clone']['$post']>;
+type CopyRequestType = InferRequestType<(typeof client.board)['clone']['$post']>;
 /**
  * 创建看板
  * @returns
  */
 export const useBoardQuery = () => {
-  const { mutate, isPending, error } = useMutation<
-    ResponseType,
-    Error,
-    RequestType
-  >({
+  const { mutate, isPending, error } = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (board) => {
       const token = await getNewToken();
       if (!token) redirect('/sign-in');
@@ -59,7 +37,7 @@ export const useBoardQuery = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (!response.ok) throw new Error('创建失败');
       return response.json();
@@ -86,14 +64,10 @@ export const useBoardEditQuery = ({ id }: { id: string }) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       const data = await response.json();
-      if (
-        !response.ok ||
-        (isArray(data) && data.length === 0) ||
-        !isArray(data)
-      ) {
+      if (!response.ok || (isArray(data) && data.length === 0) || !isArray(data)) {
         toast.dismiss();
         toast.error('看板不存在');
         redirect('/board');
@@ -109,15 +83,7 @@ export const useBoardEditQuery = ({ id }: { id: string }) => {
  * @returns
  */
 export const useBoardUserQuery = ({ userId }: { userId: string }) => {
-  const {
-    data,
-    isLoading,
-    error,
-    hasNextPage,
-    isFetching,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
+  const { data, isLoading, error, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['board', userId],
     queryFn: async ({ pageParam }) => {
       const token = await getNewToken();
@@ -130,7 +96,7 @@ export const useBoardUserQuery = ({ userId }: { userId: string }) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (!response.ok) throw new Error('获取失败');
       return response.json();
@@ -179,7 +145,7 @@ export const useBoardUpdateQuery = ({ id }: { id: string }) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (!response.ok) throw new Error('更新失败');
       return response.json();
@@ -193,11 +159,7 @@ export const useBoardUpdateQuery = ({ id }: { id: string }) => {
  * @returns
  */
 export const useBoardDeleteQuery = () => {
-  const { mutate, isPending, error } = useMutation<
-    DeleteResponseType,
-    Error,
-    { id: string }
-  >({
+  const { mutate, isPending, error } = useMutation<DeleteResponseType, Error, { id: string }>({
     mutationFn: async ({ id }) => {
       const token = await getNewToken();
       if (!token) redirect('/sign-in');
@@ -209,7 +171,7 @@ export const useBoardDeleteQuery = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (!response.ok) throw new Error('删除失败');
       return response.json();
@@ -233,11 +195,7 @@ export const useBoardDeleteQuery = () => {
  */
 export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
   const queryClient = useQueryClient();
-  const { mutate, isPending, error } = useMutation<
-    AutoSaveResponseType,
-    Error,
-    AutoSaveRequestType
-  >({
+  const { mutate, isPending, error } = useMutation<AutoSaveResponseType, Error, AutoSaveRequestType>({
     mutationFn: async (board) => {
       const token = await getNewToken();
       if (!token) redirect('/sign-in');
@@ -250,7 +208,7 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (!response.ok) throw new Error('更新失败');
       return response.json();
@@ -268,11 +226,7 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
  * @returns
  */
 export const useBoardCopyQuery = () => {
-  const { mutate, isPending, error } = useMutation<
-    CopyResponseType,
-    Error,
-    CopyRequestType
-  >({
+  const { mutate, isPending, error } = useMutation<CopyResponseType, Error, CopyRequestType>({
     mutationFn: async (board) => {
       const token = await getNewToken();
       if (!token) redirect('/sign-in');
@@ -284,7 +238,7 @@ export const useBoardCopyQuery = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (!response.ok) throw new Error('复制失败');
       return response.json();

@@ -6,13 +6,15 @@
   "bin": "./bin/index.js",
   "scripts": {
     "dev": "bun run --hot src/index.ts --port 8080",
-    "build": "pkg . --targets bun-macos-x64,bun-linux-x64 --output ws"
+    "lint": "biome check --fix --unsafe&& biome lint ."
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@hocuspocus/extension-sqlite": "^2.15.0",
     "@hocuspocus/provider": "^2.15.0",
     "@hocuspocus/server": "^2.15.0",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@ljh/lint": "workspace:*"
   },
   "dependencies": {
     "@hocuspocus/extension-database": "^2.15.0",

@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 export default forwardRef(function MetionList(props, ref) {
@@ -16,7 +17,7 @@ export default forwardRef(function MetionList(props, ref) {
   const upHandler = () => {
     setSelectedIndex(
       // @ts-ignore
-      (selectedIndex + props.items.length - 1) % props.items.length
+      (selectedIndex + props.items.length - 1) % props.items.length,
     );
   };
 
@@ -54,21 +55,17 @@ export default forwardRef(function MetionList(props, ref) {
   }));
 
   return (
-    <div className='dropdown-menu'>
+    <div className="dropdown-menu">
       {/* @ts-ignore */}
       {props.items.length ? (
         // @ts-ignore
         props.items.map((item, index) => (
-          <button
-            className={index === selectedIndex ? 'is-selected' : ''}
-            key={index}
-            onClick={() => selectItem(index)}
-          >
+          <button type="button" className={index === selectedIndex ? 'is-selected' : ''} key={nanoid()} onClick={() => selectItem(index)}>
             {item}
           </button>
         ))
       ) : (
-        <div className='item'>无结果</div>
+        <div className="item">无结果</div>
       )}
     </div>
   );

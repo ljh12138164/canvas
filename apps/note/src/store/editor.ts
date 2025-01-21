@@ -6,15 +6,20 @@ import { computed, ref } from 'vue';
 const useEditor = defineStore('editor', () => {
   // 初始化
   const loadEditor = ref<boolean>(true);
-  const setLoadEditor = (data: boolean) => (loadEditor.value = data);
+  const setLoadEditor = (data: boolean) => {
+    loadEditor.value = data;
+  };
   // 为了完整类型推理，推荐使用箭头函数
   const editorData = ref<Editor | null>(null);
   const editorDatas = computed(() => editorData.value);
-  const setEditorData = (data: Editor | null) => (editorData.value = data);
+  const setEditorData = (data: Editor | null) => {
+    editorData.value = data;
+  };
   // 协同
   const hocuspocusConnection = ref<HocuspocusProvider | null>(null);
-  const setHocuspocusConnection = (data: HocuspocusProvider | null) =>
-    (hocuspocusConnection.value = data);
+  const setHocuspocusConnection = (data: HocuspocusProvider | null) => {
+    hocuspocusConnection.value = data;
+  };
   // 编辑器方法
   const tiptapKit = ref([
     {
@@ -45,37 +50,32 @@ const useEditor = defineStore('editor', () => {
       label: '下划线',
       icon: 'tabler:underline',
       isActive: (editor: Editor) => !!editor?.isActive('underline'),
-      onClick: (editor: Editor) =>
-        editor?.chain().focus().toggleUnderline().run(),
+      onClick: (editor: Editor) => editor?.chain().focus().toggleUnderline().run(),
     },
     //
     {
       label: '列表',
       icon: 'mdi:format-list-bulleted',
       isActive: (editor: Editor) => !!editor?.isActive('bulletList'),
-      onClick: (editor: Editor) =>
-        editor?.chain().focus().toggleBulletList().run(),
+      onClick: (editor: Editor) => editor?.chain().focus().toggleBulletList().run(),
     },
     //
     {
       label: '代办',
       icon: 'tabler:checkbox',
       isActive: (editor: Editor) => !!editor?.isActive('taskList'),
-      onClick: (editor: Editor) =>
-        editor?.chain().focus().toggleTaskList().run(),
+      onClick: (editor: Editor) => editor?.chain().focus().toggleTaskList().run(),
     },
     {
       label: '代码块',
       icon: 'tabler:code',
       isActive: (editor: Editor) => !!editor?.isActive('codeBlock'),
-      onClick: (editor: Editor) =>
-        editor?.chain().focus().toggleCodeBlock().run(),
+      onClick: (editor: Editor) => editor?.chain().focus().toggleCodeBlock().run(),
     },
     {
       label: '移除标记',
       icon: 'tabler:trash',
-      onClick: (editor: Editor) =>
-        editor?.chain().focus().unsetAllMarks().run(),
+      onClick: (editor: Editor) => editor?.chain().focus().unsetAllMarks().run(),
       disabled: (editor: Editor) => !editor?.can().unsetAllMarks(),
     },
   ]);

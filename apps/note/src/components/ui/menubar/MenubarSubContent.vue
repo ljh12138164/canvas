@@ -1,17 +1,9 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils';
-import {
-  MenubarPortal,
-  MenubarSubContent,
-  type MenubarSubContentEmits,
-  type MenubarSubContentProps,
-  useForwardPropsEmits,
-} from 'radix-vue';
+import { MenubarPortal, MenubarSubContent, type MenubarSubContentEmits, type MenubarSubContentProps, useForwardPropsEmits } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  MenubarSubContentProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<MenubarSubContentProps & { class?: HTMLAttributes['class'] }>();
 
 const emits = defineEmits<MenubarSubContentEmits>();
 

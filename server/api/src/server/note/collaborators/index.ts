@@ -1,12 +1,8 @@
-import { supabaseNote } from "../../supabase/note";
-import {
-  Collaborators,
-  Profiles,
-  Workspace,
-} from "../../../types/note/workspace";
-import { PostgrestError } from "@supabase/supabase-js";
-import to from "await-to-js";
-import { checkPermission } from "../workspace";
+import type { PostgrestError } from '@supabase/supabase-js';
+import to from 'await-to-js';
+import type { Collaborators, Profiles, Workspace } from '../../../types/note/workspace';
+import { supabaseNote } from '../../supabase/note';
+import { checkPermission } from '../workspace';
 
 // 邀请协作者
 export const inviteCollaborator = async ({
@@ -18,29 +14,26 @@ export const inviteCollaborator = async ({
   token: string;
   userId: string;
 }): Promise<Collaborators> => {
-  const { data: workspace, error: workspaceError } = (await supabaseNote(token)
-    .from("workspace")
-    .select("*,collaborators(*)")
-    .eq("inviteCode", inviteCode)) as {
+  const { data: workspace, error: workspaceError } = (await supabaseNote(token).from('workspace').select('*,collaborators(*)').eq('inviteCode', inviteCode)) as {
     data: (Workspace & { collaborators: Collaborators[] })[];
     error: PostgrestError | null;
   };
   if (workspaceError) {
-    throw new Error("服务器错误");
+    throw new Error('服务器错误');
   }
   if (workspace.length === 0) {
-    throw new Error("工作区不存在");
+    throw new Error('工作区不存在');
   }
   if (workspace[0].collaborators.find((c) => c.userId === userId)) {
-    throw new Error("已加入工作区");
+    throw new Error('已加入工作区');
   }
   const { data, error } = await supabaseNote(token)
-    .from("collaborators")
+    .from('collaborators')
     .insert([{ workspaceId: workspace[0].id, userId }])
-    .select("*");
+    .select('*');
 
   if (error) {
-    throw new Error("服务器错误");
+    throw new Error('服务器错误');
   }
   return data[0];
 };
@@ -57,12 +50,9 @@ export const getCollaborators = async ({
     collaborators: (Collaborators & { profiles: Profiles })[];
   })[]
 > => {
-  const { data, error } = await supabaseNote(token)
-    .from("workspace")
-    .select("*,collaborators(*,profiles(*))")
-    .eq("id", workspaceId);
+  const { data, error } = await supabaseNote(token).from('workspace').select('*,collaborators(*,profiles(*))').eq('id', workspaceId);
   if (error) {
-    throw new Error("服务器错误");
+    throw new Error('服务器错误');
   }
 
   return data;
@@ -80,15 +70,9 @@ export const removeCollaborator = async ({
   userId: string;
   doUser: string;
 }): Promise<boolean> => {
-  const [errors, permission] = await to(
-    checkPermission({ token, workspaceId, userId: doUser })
-  );
-  if (errors || !permission) throw new Error("没有权限");
-  const { error } = await supabaseNote(token)
-    .from("collaborators")
-    .delete()
-    .eq("workspaceId", workspaceId)
-    .eq("userId", userId);
-  if (error) throw new Error("服务器错误");
+  const [errors, permission] = await to(checkPermission({ token, workspaceId, userId: doUser }));
+  if (errors || !permission) throw new Error('没有权限');
+  const { error } = await supabaseNote(token).from('collaborators').delete().eq('workspaceId', workspaceId).eq('userId', userId);
+  if (error) throw new Error('服务器错误');
   return true;
 };

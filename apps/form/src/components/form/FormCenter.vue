@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 const props = defineProps<{
-  list: { id: string; name: string }[]
-}>()
-const activeArea = ref('')
-const emit = defineEmits(['handleActiveArea'])
+  list: { id: string; name: string }[];
+}>();
+const activeArea = ref('');
+const emit = defineEmits(['handleActiveArea']);
 const handleActiveArea = (id: string) => {
-  emit('handleActiveArea', id)
-}
+  emit('handleActiveArea', id);
+};
 </script>
 <template>
   <div

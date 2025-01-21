@@ -1,41 +1,32 @@
-"use client";
-import { Button } from "@/app/_components/ui/button";
-import { Input } from "@/app/_components/ui/input";
-import { ScrollArea } from "@/app/_components/ui/scroll-area";
-import { useAi } from "@/app/_hook/query/useAi";
-import MarkDown from "react-markdown";
+'use client';
+import { Button } from '@/app/_components/ui/button';
+import { Input } from '@/app/_components/ui/input';
+import { Label } from '@/app/_components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/app/_components/ui/radio-group';
+import { ScrollArea } from '@/app/_components/ui/scroll-area';
+import { useAi } from '@/app/_hook/query/useAi';
 import {
-  createAi,
+  // createAi,
   getAiChatById,
   getIndexDB,
   indexDBChange,
-} from "@/app/_lib/ai";
-import { RadioGroup, RadioGroupItem } from "@/app/_components/ui/radio-group";
-import { Label } from "@/app/_components/ui/label";
-import { Message, MessageArr } from "@/app/_types/ai";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { nanoid } from "nanoid";
-import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import { z } from "zod";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../../ui/dialog";
-import { Separator } from "../../ui/separator";
-import { Skeleton } from "../../ui/skeleton";
-import { flushSync } from "react-dom";
-import { Loader2 } from "lucide-react";
+} from '@/app/_lib/ai';
+import { Message, type MessageArr } from '@/app/_types/ai';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
+import { nanoid } from 'nanoid';
+import { useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import MarkDown from 'react-markdown';
+import { z } from 'zod';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
+import { Separator } from '../../ui/separator';
+import { Skeleton } from '../../ui/skeleton';
 // 聊天的表单
 const zod = z.object({
-  input: z.string().min(1, { message: "请输入消息" }),
+  input: z.string().min(1, { message: '请输入消息' }),
 });
 // 创建新会话
 const newsZod = z.object({
@@ -48,15 +39,11 @@ export const AiChatSider = () => {
   // 全部会话列表
   const [ai, setAi] = useState<MessageArr[]>([]);
   // 当前会话id
-  const [currentId, setCurrentId] = useState<string>(
-    localStorage.getItem("current_ai_id") || ""
-  );
+  const [currentId, setCurrentId] = useState<string>(localStorage.getItem('current_ai_id') || '');
 
   const [selectId, setSelectId] = useState<string>(currentId);
   // 聊天的表单
-  const { register, handleSubmit, reset, formState } = useForm<
-    z.infer<typeof zod>
-  >({
+  const { register, handleSubmit, reset, formState } = useForm<z.infer<typeof zod>>({
     resolver: zodResolver(zod),
   });
   // 新建会话的表单
@@ -73,7 +60,7 @@ export const AiChatSider = () => {
   useEffect(() => {
     (async () => {
       const res = await getIndexDB();
-      console.log(res);
+      // console.log(res);
       // 初始化全部上下文
       // if (!res.length) {
       //   // 创建新对话
@@ -140,27 +127,27 @@ export const AiChatSider = () => {
   }, []);
   const handleSend = async (data: z.infer<typeof zod>) => {
     if (!data.input.trim()) {
-      toast.error("请输入消息");
+      toast.error('请输入消息');
       return;
     }
     // 更新状态
     if (!currentId) {
-      toast.error("请先选择一个会话");
+      toast.error('请先选择一个会话');
       return;
     }
 
     const res = await getAiChatById(currentId);
     if (!res) {
-      toast.error("未找到会话");
+      toast.error('未找到会话');
       return;
     }
     res.history.push({
-      role: "user",
+      role: 'user',
       parts: [{ text: data.input }],
     });
     // 更新indexDB
     await indexDBChange({
-      type: "add",
+      type: 'add',
       data: res,
       id: currentId,
     });
@@ -175,22 +162,22 @@ export const AiChatSider = () => {
       {
         onSuccess: (data) => {
           const reader = data.getReader();
-          let chunks = "";
+          let chunks = '';
           const id = nanoid();
           reader.read().then(async function processText({ done, value }) {
             if (done) {
               const res = await getAiChatById(currentId);
               if (!res) {
-                toast.error("未找到会话");
+                toast.error('未找到会话');
                 return;
               }
               res.history.push({
-                role: "model",
+                role: 'model',
                 parts: [{ text: chunks }],
               });
               // 创建新对话到indexDB
               await indexDBChange({
-                type: "add",
+                type: 'add',
                 data: res,
                 id: currentId,
               });
@@ -199,7 +186,7 @@ export const AiChatSider = () => {
               return;
             }
             const uint8Array = new Uint8Array(value);
-            chunks += new TextDecoder("utf-8").decode(uint8Array);
+            chunks += new TextDecoder('utf-8').decode(uint8Array);
             flushSync(() => {
               setAi((prev) => {
                 const newArr = [...prev].filter((item) => item.id !== id);
@@ -217,7 +204,7 @@ export const AiChatSider = () => {
         onSettled: () => {
           setLoading(false);
         },
-      }
+      },
     );
   };
   const handleCreate = async (data: z.infer<typeof newsZod>) => {};
@@ -259,10 +246,7 @@ export const AiChatSider = () => {
                     }}
                   >
                     {ai.map((chat) => (
-                      <div
-                        key={chat.id}
-                        className="flex items-center space-x-2"
-                      >
+                      <div key={chat.id} className="flex items-center space-x-2">
                         <RadioGroupItem value={chat.id} id={chat.id} />
                         <Label htmlFor={chat.id}>{chat.name}</Label>
                       </div>
@@ -280,7 +264,7 @@ export const AiChatSider = () => {
                   className="w-full"
                   onClick={() => {
                     setCurrentId(selectId);
-                    localStorage.setItem("current_ai_id", selectId);
+                    localStorage.setItem('current_ai_id', selectId);
                     dialogCloseRef.current?.click();
                   }}
                 >
@@ -302,12 +286,8 @@ export const AiChatSider = () => {
               <DialogDescription>创建一个新的会话，开始聊天</DialogDescription>
             </DialogHeader>
             <div className="flex items-center justify-center">
-              <Input placeholder="请输入会话名称" {...newsRegister("title")} />
-              {newsFormState?.errors?.title && (
-                <p className="text-red-500">
-                  {newsFormState?.errors?.title?.message}
-                </p>
-              )}
+              <Input placeholder="请输入会话名称" {...newsRegister('title')} />
+              {newsFormState?.errors?.title && <p className="text-red-500">{newsFormState?.errors?.title?.message}</p>}
             </div>
             <DialogFooter>
               <section className="flex items-center justify-end gap-2">
@@ -330,21 +310,12 @@ export const AiChatSider = () => {
         <section>
           {ai
             .find((chat) => chat.id === currentId)
-            ?.history.map((message, index) => (
-              <div
-                key={index}
-                className={`mb-4 p-2 rounded-lg ${
-                  message.role === "user"
-                    ? "bg-blue-100 ml-auto"
-                    : "bg-gray-100"
-                } max-w-[80%]`}
-              >
-                {message.role === "user" ? (
+            ?.history.map((message) => (
+              <div key={nanoid()} className={`mb-4 p-2 rounded-lg ${message.role === 'user' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'} max-w-[80%]`}>
+                {message.role === 'user' ? (
                   <span>
                     {message.parts[0].text}
-                    <span className="text-gray-500">
-                      {message.parts[0].text}
-                    </span>
+                    <span className="text-gray-500">{message.parts[0].text}</span>
                   </span>
                 ) : (
                   <MarkDown>{message.parts[0].text}</MarkDown>
@@ -355,13 +326,9 @@ export const AiChatSider = () => {
       </ScrollArea>
       <Separator className="mt-4 " />
       <form className="flex gap-2 pt-2" onSubmit={handleSubmit(handleSend)}>
-        <Input placeholder="输入消息..." {...register("input")} />
+        <Input placeholder="输入消息..." {...register('input')} />
         <Button type="submit" disabled={formState.isSubmitting}>
-          {formState.isSubmitting ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            "发送"
-          )}
+          {formState.isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : '发送'}
         </Button>
       </form>
     </div>

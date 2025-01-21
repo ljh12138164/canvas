@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import type { Sessions } from "@/app/_types/user";
+import type { Sessions } from '@/app/_types/user';
+import { create } from 'zustand';
 
 interface UserState {
   loading: boolean;

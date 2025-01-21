@@ -1,7 +1,7 @@
-import { STROKE_COLOR, STROKE_WIDTH } from "@/app/_types/Edit";
-import * as fabric from "fabric";
-import { useMemoizedFn } from "ahooks";
-import { RefObject } from "react";
+import { STROKE_COLOR, STROKE_WIDTH } from '@/app/_types/Edit';
+import { useMemoizedFn } from 'ahooks';
+import * as fabric from 'fabric';
+import type { RefObject } from 'react';
 
 interface CanvasProps {
   initWidth?: RefObject<number> | number;
@@ -17,13 +17,13 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       initContainer: HTMLDivElement;
     }) => {
       fabric.FabricObject.prototype.set({
-        cornerColor: "#FFF",
-        cornerStyle: "circle",
-        borderColor: "#3b82f6",
+        cornerColor: '#FFF',
+        cornerStyle: 'circle',
+        borderColor: '#3b82f6',
         borderScaleFactor: 1.5,
         transparentCorners: false,
         borderOpacityWhenMoving: 1,
-        cornerStrokeColor: "#3b82f6",
+        cornerStrokeColor: '#3b82f6',
       });
       //初始化画布笔画
       initCanvas.freeDrawingBrush = new fabric.PencilBrush(initCanvas);
@@ -31,18 +31,14 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       initCanvas.freeDrawingBrush.color = STROKE_COLOR;
       //画布
       const initRect = new fabric.Rect({
-        width:
-          typeof initWidth === "number" ? initWidth : initWidth?.current || 800,
-        height:
-          typeof initHeight === "number"
-            ? initHeight
-            : initHeight?.current || 1100,
-        name: "board",
-        fill: "white",
+        width: typeof initWidth === 'number' ? initWidth : initWidth?.current || 800,
+        height: typeof initHeight === 'number' ? initHeight : initHeight?.current || 1100,
+        name: 'board',
+        fill: 'white',
         selectable: false,
         hasControls: false,
         shadow: new fabric.Shadow({
-          color: "rgba(0,0,0,0.8)",
+          color: 'rgba(0,0,0,0.8)',
           blur: 5,
         }),
       });
@@ -55,7 +51,7 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       initCanvas.setHeight(initContainer.offsetHeight);
       //溢出不显示
       initCanvas.clipPath = initRect;
-    }
+    },
   );
 
   return { init };

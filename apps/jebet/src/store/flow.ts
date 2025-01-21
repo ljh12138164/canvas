@@ -1,28 +1,42 @@
-import { makeObservable, observable, action, runInAction } from "mobx";
-import {
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
-  Connection,
-  Edge,
-  EdgeChange,
-  Node,
-  NodeChange,
-  XYPosition,
-} from "@xyflow/react";
-import { nanoid } from "nanoid";
+import { type Connection, type Edge, type EdgeChange, MarkerType, type Node, type NodeChange, type XYPosition, addEdge, applyEdgeChanges, applyNodeChanges } from '@xyflow/react';
+import { action, makeObservable, observable, runInAction } from 'mobx';
+import { nanoid } from 'nanoid';
 
+/**
+ * ### 流程图
+ *
+ */
 class FlowStore {
+  /**
+   * 节点
+   */
   node: Node[] = [
     {
-      id: "root",
-      type: "mindmap",
-      data: { label: "思维导图" },
-      position: { x: 250, y: 25 },
-      dragHandle: ".dragHandle",
+      id: '1',
+      data: { label: '开始' },
+      position: { x: 0, y: 0 },
+    },
+    {
+      id: '2',
+      data: { label: '结束' },
+      position: { x: 100, y: 200 },
     },
   ];
-  edges: Edge[] = [];
+  /**
+   * 边
+   */
+  edges: Edge[] = [
+    {
+      id: '1-2',
+      source: '1',
+      target: '2',
+      type: 'custom',
+      // 添加箭头
+      markerEnd: {
+        type: MarkerType.Arrow,
+      },
+    },
+  ];
 
   constructor() {
     makeObservable(this, {
@@ -71,20 +85,20 @@ class FlowStore {
   addChildNode = (parentNode: Node, position: XYPosition) => {
     const newNode = {
       id: nanoid(),
-      type: "mindmap",
-      data: { label: "新节点" },
+      type: 'mindmap',
+      data: { label: '新节点' },
       position: {
         x: position.x,
         y: position.y + 50,
       },
-      dragHandle: ".dragHandle",
+      dragHandle: '.dragHandle',
     };
 
     const newEdge = {
       id: nanoid(),
       source: parentNode.id,
       target: newNode.id,
-      type: "mindmap",
+      type: 'mindmap',
       animated: true,
     };
 

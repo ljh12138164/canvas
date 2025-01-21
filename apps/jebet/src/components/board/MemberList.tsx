@@ -1,11 +1,11 @@
 import { useGetJebtUserList } from '@/server/hooks/user';
-import { Workspace } from '@/types/workspace';
-import { UserResource } from '@clerk/types';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import MemberItem from './MemberItem';
+import type { Workspace } from '@/types/workspace';
+import type { UserResource } from '@clerk/types';
 import styled from 'styled-components';
-import { Separator } from '../ui/separator';
 import { animate } from '../project/ProjectContent';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Separator } from '../ui/separator';
+import MemberItem from './MemberItem';
 const ListContain = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,13 +39,8 @@ const MemberList = ({
         <CardContent>
           {data?.data.map((item) => (
             <ListContain key={item.id}>
-              <MemberItem
-                currentUserId={user.id}
-                canOperation={currentUserIsAdmin}
-                user={item}
-                isAdmin={item.role === 'admin'}
-              />
-              <Separator className='my-4' />
+              <MemberItem currentUserId={user.id} canOperation={currentUserIsAdmin} user={item} isAdmin={item.role === 'admin'} />
+              <Separator className="my-4" />
             </ListContain>
           ))}
         </CardContent>

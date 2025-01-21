@@ -2,12 +2,7 @@
 import WorkspaceList from '@/components/workspace/WorkspaceList.vue';
 import { useGetWorkspaces } from '@/hooks/workspace';
 import { RouterView } from 'vue-router';
-const {
-  workspaces,
-  workspacesError,
-  workspacesIsLoading,
-  workspacesIsFetching,
-} = useGetWorkspaces();
+const { workspaces, workspacesError, workspacesIsLoading, workspacesIsFetching } = useGetWorkspaces();
 </script>
 <template>
   <!-- <FromCard /> -->

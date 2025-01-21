@@ -1,15 +1,10 @@
 <script setup lang="ts">
-import {
-  ContextMenuSub,
-  type ContextMenuSubEmits,
-  type ContextMenuSubProps,
-  useForwardPropsEmits,
-} from 'radix-vue'
+import { ContextMenuSub, type ContextMenuSubEmits, type ContextMenuSubProps, useForwardPropsEmits } from 'radix-vue';
 
-const props = defineProps<ContextMenuSubProps>()
-const emits = defineEmits<ContextMenuSubEmits>()
+const props = defineProps<ContextMenuSubProps>();
+const emits = defineEmits<ContextMenuSubEmits>();
 
-const forwarded = useForwardPropsEmits(props, emits)
+const forwarded = useForwardPropsEmits(props, emits);
 </script>
 
 <template>

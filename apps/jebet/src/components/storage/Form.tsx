@@ -1,17 +1,17 @@
 import { useCreateStoage, useUpdateStoage } from '@/server/hooks/stoages';
-import { Member, StoageData, Workspace } from '@/types/workspace';
+import type { Member, StoageData, Workspace } from '@/types/workspace';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
 import { z } from 'zod';
 import { Button } from '../ui/button';
+import { DialogClose, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import Filelist from './FileList';
-import { DialogClose, DialogHeader, DialogTitle } from '../ui/dialog';
-import { useQueryClient } from '@tanstack/react-query';
 
 interface FormProps {
   userId: string;
@@ -36,13 +36,7 @@ const UploadButton = styled(Button)`
   height: 3rem;
   width: 100%;
 `;
-const Form = ({
-  userId,
-  workspace,
-  workspaceId,
-  type,
-  defaultData,
-}: FormProps) => {
+const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) => {
   const { register, handleSubmit, formState, reset } = useForm({
     resolver: zodResolver(zodSchema),
     defaultValues: {
@@ -85,15 +79,12 @@ const Form = ({
               queryKey: ['stoages', workspace.id],
             });
           },
-        }
+        },
       );
     }
     if (type === 'update') {
       if (!workspaceId) return;
-      if (
-        defaultData?.name === data.name ||
-        defaultData?.description === data.description
-      ) {
+      if (defaultData?.name === data.name || defaultData?.description === data.description) {
         // TODO:报错
         return update(
           {
@@ -115,62 +106,42 @@ const Form = ({
                 queryKey: ['stoages', workspaceId],
               });
             },
-          }
+          },
         );
       }
     }
   }
   return (
-    <section className='flex flex-col gap-4'>
+    <section className="flex flex-col gap-4">
       <DialogHeader>
-        <DialogTitle className='text-2xl font-bold'>
-          {type === 'create' ? '创建文件' : '更新文件'}
-        </DialogTitle>
+        <DialogTitle className="text-2xl font-bold">{type === 'create' ? '创建文件' : '更新文件'}</DialogTitle>
       </DialogHeader>
       <FormContainer onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <Label htmlFor='name' id='name'>
+          <Label htmlFor="name" id="name">
             文件名
           </Label>
-          <Input
-            {...register('name')}
-            id='name'
-            placeholder='请输入文件名'
-            className='mt-2'
-          />
-          {formState.errors.name && (
-            <p className='text-red-500 text-sm'>
-              {formState.errors.name.message}
-            </p>
-          )}
+          <Input {...register('name')} id="name" placeholder="请输入文件名" className="mt-2" />
+          {formState.errors.name && <p className="text-red-500 text-sm">{formState.errors.name.message}</p>}
         </div>
 
         <div>
-          <Label htmlFor='description' id='description'>
+          <Label htmlFor="description" id="description">
             文件描述
           </Label>
-          <Input
-            {...register('description')}
-            id='description'
-            placeholder='请输入文件描述(选填)'
-            className='mt-2'
-          />
-          {formState.errors.description && (
-            <p className='text-red-500 text-sm'>
-              {formState.errors.description.message}
-            </p>
-          )}
+          <Input {...register('description')} id="description" placeholder="请输入文件描述(选填)" className="mt-2" />
+          {formState.errors.description && <p className="text-red-500 text-sm">{formState.errors.description.message}</p>}
         </div>
-        <div className='flex flex-col gap-2'>
+        <div className="flex flex-col gap-2">
           {!file && !defaultData?.file && (
             <UploadButton
-              type='button'
+              type="button"
               onClick={() => {
                 fileRef.current?.click();
               }}
               variant={'outline'}
-              className='mt-4'
-              id='file'
+              className="mt-4"
+              id="file"
             >
               选择文件
             </UploadButton>
@@ -193,28 +164,18 @@ const Form = ({
                 }
                 e.target.value = '';
               }}
-              type='file'
-              className='hidden'
+              type="file"
+              className="hidden"
             />
           )}
           <Filelist setFile={setFile} file={file} />
         </div>
         <DialogClose asChild>
-          <Button
-            variant={'outline'}
-            ref={close}
-            className='w-full mt-auto hidden'
-          >
+          <Button variant={'outline'} ref={close} className="w-full mt-auto hidden">
             取消
           </Button>
         </DialogClose>
-        <Button
-          type='submit'
-          disabled={
-            !!(!file && !defaultData?.file) || isLoading || updatePending
-          }
-          className='w-full mt-auto'
-        >
+        <Button type="submit" disabled={!!(!file && !defaultData?.file) || isLoading || updatePending} className="w-full mt-auto">
           提交
         </Button>
       </FormContainer>

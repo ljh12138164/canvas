@@ -2,12 +2,7 @@
 import type { toggleVariants } from '@/components/ui/toggle';
 import { cn } from '@/lib/utils';
 import type { VariantProps } from 'class-variance-authority';
-import {
-  ToggleGroupRoot,
-  type ToggleGroupRootEmits,
-  type ToggleGroupRootProps,
-  useForwardPropsEmits,
-} from 'radix-vue';
+import { ToggleGroupRoot, type ToggleGroupRootEmits, type ToggleGroupRootProps, useForwardPropsEmits } from 'radix-vue';
 import { type HTMLAttributes, computed, provide } from 'vue';
 
 type ToggleGroupVariants = VariantProps<typeof toggleVariants>;
@@ -35,7 +30,10 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
 
 <template>
-  <ToggleGroupRoot v-bind="forwarded" :class="cn('flex items-center justify-center gap-1', props.class)">
+  <ToggleGroupRoot
+    v-bind="forwarded"
+    :class="cn('flex items-center justify-center gap-1', props.class)"
+  >
     <slot />
   </ToggleGroupRoot>
 </template>

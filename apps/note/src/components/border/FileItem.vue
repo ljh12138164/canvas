@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import type { Files } from '@/types/board';
-
 
 defineProps<{
   isLoading: boolean;

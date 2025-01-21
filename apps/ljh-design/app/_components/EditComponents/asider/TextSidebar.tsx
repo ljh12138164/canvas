@@ -1,40 +1,31 @@
-import { cn } from "@/app/_lib/utils";
-import { Tool, Edit, Font } from "@/app/_types/Edit";
-import { ScrollArea } from "@/app/_components/ui/scroll-area";
-import ToolSiderbarClose from "./ToolSiberbarClose";
-import ToolSiderbar from "./ToolSiderbar";
-import { Button } from "@/app/_components/ui/button";
+import { Button } from '@/app/_components/ui/button';
+import { ScrollArea } from '@/app/_components/ui/scroll-area';
+import { cn } from '@/app/_lib/utils';
+import { type Edit, Font, Tool } from '@/app/_types/Edit';
+import ToolSiderbarClose from './ToolSiberbarClose';
+import ToolSiderbar from './ToolSiderbar';
 
 interface TextSidebarProps {
   editor: Edit | undefined;
   activeTool: Tool;
   onChangeActive: (tool: Tool) => void;
 }
-const TextSidebar = ({
-  activeTool,
-  onChangeActive,
-  editor,
-}: TextSidebarProps) => {
+const TextSidebar = ({ activeTool, onChangeActive, editor }: TextSidebarProps) => {
   return (
-    <aside
-      className={cn(
-        "z-[100] bg-white  relative transition  h-full flex flex-col",
-        activeTool === Tool.Font ? "visible" : "hidden"
-      )}
-      style={{ flexBasis: "300px" }}
-    >
-      <ToolSiderbar title="字体" description="插入字体"></ToolSiderbar>
+    <aside className={cn('z-[100] bg-white  relative transition  h-full flex flex-col', activeTool === Tool.Font ? 'visible' : 'hidden')} style={{ flexBasis: '300px' }}>
+      <ToolSiderbar title="字体" description="插入字体" />
       <ScrollArea>
         <section className=" p-4 border-b space-y-4">
           {Font.map((item) => (
             <Button
               key={item.name}
-              className={`w-full py-6`}
+              className="w-full py-6"
               style={{
-                height: `${+item.fontSize.slice(0, 2) + 30 + "px"}`,
-                fontSize: `${item.fontSize}`,
-                fontWeight: `${item.fontWeight}`,
+                height: `${+item.fontSize.slice(0, 2) + 30}px`,
+                fontSize: item.fontSize,
+                fontWeight: item.fontWeight,
               }}
+              type="button"
               variant="outline"
               onClick={() => {
                 editor?.addText(item.name, {

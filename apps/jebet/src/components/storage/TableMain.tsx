@@ -1,7 +1,7 @@
 import { useStoages } from '@/server/hooks/stoages';
-import { Member, Workspace } from '@/types/workspace';
-import { columns } from './data';
+import type { Member, Workspace } from '@/types/workspace';
 import { DataTable } from './Table';
+import { columns } from './data';
 
 interface TableMainProps {
   workspace: Workspace & { member: Member[] };

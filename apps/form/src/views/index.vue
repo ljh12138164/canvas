@@ -74,9 +74,9 @@
 </template>
 
 <script setup lang="ts">
-import UserButton from '@/components/common/UserButton.vue'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Database, MousePointerClick, Palette } from 'lucide-vue-next'
-import { RouterLink } from 'vue-router'
+import UserButton from '@/components/common/UserButton.vue';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Database, MousePointerClick, Palette } from 'lucide-vue-next';
+import { RouterLink } from 'vue-router';
 </script>

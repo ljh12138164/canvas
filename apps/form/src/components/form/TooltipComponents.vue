@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import TooltipProvider from '../ui/tooltip/TooltipProvider.vue'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import TooltipProvider from '../ui/tooltip/TooltipProvider.vue';
 defineProps<{
-  title: string
-}>()
+  title: string;
+}>();
 </script>
 
 <template>

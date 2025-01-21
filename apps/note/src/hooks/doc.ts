@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/vue-query';
 import { client } from '@/server';
-import type { InferResponseType } from 'hono';
 import { getNewToken } from '@/server/sign';
-import { useRouter, useRoute } from 'vue-router';
+import { useQuery } from '@tanstack/vue-query';
+import type { InferResponseType } from 'hono';
 import { ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
 export type Doc = InferResponseType<(typeof client.workspace.doc)['$get'], 200>;
 /**
@@ -21,7 +21,7 @@ export const useGetDoc = () => {
       workspaceId.value = newVal.workspaceId as string;
       fileId.value = newVal.fileId as string;
       folderId.value = newVal.folderId as string;
-    }
+    },
   );
   const { data, isLoading, isFetching } = useQuery<Doc, Error>({
     queryKey: ['doc', workspaceId.value],
@@ -40,7 +40,7 @@ export const useGetDoc = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (!res.ok) throw new Error(res.statusText);
       return res.json();

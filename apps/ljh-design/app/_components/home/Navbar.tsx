@@ -1,10 +1,10 @@
-"use client";
-import useUsers from "@/app/_hook/useUser";
-import { Button } from "@/app/_components/ui/button";
-import Link from "next/link";
-import UserButton from "@/app/_components/Comand/UserButton";
-import { Skeleton } from "../ui/skeleton";
-import { ThemeToggle } from "@/app/_components/Comand/ThemeToggle";
+'use client';
+import { ThemeToggle } from '@/app/_components/Comand/ThemeToggle';
+import UserButton from '@/app/_components/Comand/UserButton';
+import { Button } from '@/app/_components/ui/button';
+import useUsers from '@/app/_hook/useUser';
+import Link from 'next/link';
+import { Skeleton } from '../ui/skeleton';
 const NavBar = () => {
   const { loading, user } = useUsers({ redirects: false });
   return (

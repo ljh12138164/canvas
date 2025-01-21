@@ -1,7 +1,7 @@
+import { Events, Webhook } from '@hocuspocus/extension-webhook';
 import { Server } from '@hocuspocus/server';
 // import { verify } from "hono/jwt";
 import { TiptapTransformer } from '@hocuspocus/transformer';
-import { Webhook, Events } from '@hocuspocus/extension-webhook';
 import { Color } from '@tiptap/extension-color';
 import Focus from '@tiptap/extension-focus';
 import FontFamily from '@tiptap/extension-font-family';

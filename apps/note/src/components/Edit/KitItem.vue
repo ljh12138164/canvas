@@ -2,12 +2,7 @@
 import { Icon } from '@iconify/vue';
 import type { Editor } from '@tiptap/vue-3';
 import { Button } from '../ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 const { iconName, isActive, onClick, label, editor, disabled } = defineProps<{
   iconName: string;

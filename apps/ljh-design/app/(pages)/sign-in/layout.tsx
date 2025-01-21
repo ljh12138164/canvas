@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import { Providers } from "@/app/_provide/providers";
+import { Providers } from '@/app/_provide/providers';
+import type { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: "登录",
-  description: "登录",
+  title: '登录',
+  description: '登录',
 };
 
 export default function RootLayout({
@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="cn" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning>
       <body>
         <Providers>{children}</Providers>
       </body>

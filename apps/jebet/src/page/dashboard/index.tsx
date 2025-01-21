@@ -1,15 +1,15 @@
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { UserButton, useUser } from '@clerk/clerk-react';
-import { useEffect } from 'react';
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-// import { ThemeToggle } from "../../components/command/Theme";
-import userStore from '@/store/user';
 import { ThemeToggle } from '@/components/command/Theme';
 import { Separator } from '@/components/ui/separator';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useTheme } from '@/components/ui/theme-provider';
+// import { ThemeToggle } from "../../components/command/Theme";
+import userStore from '@/store/user';
+import { UserButton, useUser } from '@clerk/clerk-react';
 import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import { TfiMenuAlt } from 'react-icons/tfi';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import SiderBar from '../../components/board/SiderBar';
 
 const Container = styled.div`
@@ -46,8 +46,7 @@ const MainContainer = styled.div<{ theme: string }>`
   height: 100%;
   overflow: hidden;
   width: 100%;
-  background-color: ${(props) =>
-    props.theme === 'light' ? 'white' : '#191924'};
+  background-color: ${(props) => (props.theme === 'light' ? 'white' : '#191924')};
 `;
 const MainHeader = styled.div`
   display: flex;
@@ -73,9 +72,9 @@ const App = observer(() => {
 
   if (!isLoaded) return null;
 
-  if (!isSignedIn) return <Navigate to='/sign-in' />;
+  if (!isSignedIn) return <Navigate to="/sign-in" />;
   return (
-    <Container className='bg-[#e5e7eba0] dark:bg-[#1c1c22]'>
+    <Container className="bg-[#e5e7eba0] dark:bg-[#1c1c22]">
       <Media>
         <SiderBar user={user} />
       </Media>
@@ -87,17 +86,17 @@ const App = observer(() => {
                 <SheetTrigger>
                   <TfiMenuAlt />
                 </SheetTrigger>
-                <SheetContent side='left'>
+                <SheetContent side="left">
                   <SiderBar user={user} />
                 </SheetContent>
               </Sheet>
             </Mobile>
-            <div className='flex flex-row w-full items-center justify-end md:justify-between'>
+            <div className="flex flex-row w-full items-center justify-end md:justify-between">
               <ThemeToggle />
               <UserButton />
             </div>
           </MainHeader>
-          <Separator className='my-2' />
+          <Separator className="my-2" />
           <Outlet />
         </MainContainer>
       </Main>

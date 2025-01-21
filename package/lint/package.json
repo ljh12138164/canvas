@@ -1,0 +1,22 @@
+{
+  "name": "@ljh/lint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint": "biome check --fix && biome lint ."
+  },
+  "dependencies": {
+    "stylelint": "^15.11.0",
+    "stylelint-config-prettier": "^9.0.5",
+    "stylelint-config-recommended-vue": "^1.5.0",
+    "stylelint-config-standard": "^34.0.0",
+    "stylelint-order": "^6.0.3",
+    "postcss-html": "^1.5.0",
+    "postcss-scss": "^4.0.9"
+  }
+}

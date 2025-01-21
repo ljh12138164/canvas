@@ -13,11 +13,7 @@
         class="flex flex-col gap-2 p-4 w-300px h-300px m-auto bg-gray-500/5 rounded"
         @update="onUpdate"
       >
-        <div
-          v-for="item in list"
-          :key="item.id"
-          class="cursor-move h-30 bg-gray-500/5 rounded p-3"
-        >
+        <div v-for="item in list" :key="item.id" class="cursor-move h-30 bg-gray-500/5 rounded p-3">
           {{ item.name }}
         </div>
       </VueDraggable>
@@ -27,27 +23,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import {
-  type DraggableEvent,
-  type UseDraggableReturn,
-  VueDraggable,
-} from "vue-draggable-plus";
+import { ref } from 'vue';
+import { type DraggableEvent, type UseDraggableReturn, VueDraggable } from 'vue-draggable-plus';
 const list = ref([
   {
-    name: "Joao",
+    name: 'Joao',
     id: 1,
   },
   {
-    name: "Jean",
+    name: 'Jean',
     id: 2,
   },
   {
-    name: "Johanna",
+    name: 'Johanna',
     id: 3,
   },
   {
-    name: "Juan",
+    name: 'Juan',
     id: 4,
   },
 ]);
@@ -63,7 +55,7 @@ function start() {
 }
 
 const onUpdate = () => {
-  console.log("update");
+  // console.log('update');
 };
 </script>
 

@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack  --port=8400 ",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "biome check --fix --unsafe  && biome lint . --fix"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.4.2",
@@ -113,12 +113,15 @@
     "zustand": "5.0.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.10.5",
     "@types/react": "19.0.4",
     "@types/react-dom": "19.0.2",
     "eslint": "^9.17.0",
     "eslint-config-next": "15.1.4",
     "postcss": "^8.4.49",
+    "@ljh/lint": "workspace:*",
+    "stylelint": "^16.13.2",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2"
   }

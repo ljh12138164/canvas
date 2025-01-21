@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { useBoard } from '@/hooks/board'
-import { useRoute, useRouter } from 'vue-router'
-import { ref, watch } from 'vue'
-import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
-import FormCreate from '@/components/form/FormCreate.vue'
-import { useToast } from '@/components/ui/toast'
+import FormCreate from '@/components/form/FormCreate.vue';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/components/ui/toast';
+import { useBoard } from '@/hooks/board';
+import { ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-const { toast } = useToast()
-const router = useRouter()
-const route = useRoute()
-const paramsId = ref<string>(route.params.id as string)
+const { toast } = useToast();
+const router = useRouter();
+const route = useRoute();
+const paramsId = ref<string>(route.params.id as string);
 
 watch(
   () => route.params.id,
   () => {
-    paramsId.value = route.params.id as string
+    paramsId.value = route.params.id as string;
   },
   { immediate: true },
-)
-const { data, isLoading, error } = useBoard(paramsId.value)
+);
+const { data, isLoading, error } = useBoard(paramsId.value);
 const handleSubmit = (data: any) => {
   toast({
     title: data,
-  })
-}
+  });
+};
 
 const handleBack = () => {
-  router.push('/workspace/form')
-}
+  router.push('/workspace/form');
+};
 </script>
 
 <template>

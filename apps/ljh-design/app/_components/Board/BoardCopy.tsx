@@ -1,18 +1,10 @@
+import { useBoardCopyQuery } from '@/app/_hook/query/useBoardQuery';
+import type { Board } from '@/app/_types/board';
+import { Loader2 } from 'lucide-react';
 import { useRef } from 'react';
 import { Button } from '../ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import BoardCreateFrom from './BoardCreateFrom';
-import { Board } from '@/app/_types/board';
-import { useBoardCopyQuery } from '@/app/_hook/query/useBoardQuery';
-import { Loader2 } from 'lucide-react';
 
 export const BoardCopy = ({
   children,
@@ -35,20 +27,13 @@ export const BoardCopy = ({
           <DialogHeader>
             <DialogTitle>复制看板</DialogTitle>
           </DialogHeader>
-          <BoardCreateFrom
-            setChange={setChange}
-            type='copy'
-            defaultValues={board}
-            closeref={closeRef}
-            userId={userId}
-            mutate={mutate as any}
-          >
-            <DialogFooter className='mt-6 flex gap-1'>
+          <BoardCreateFrom setChange={setChange} type="copy" defaultValues={board} closeref={closeRef} userId={userId} mutate={mutate as any}>
+            <DialogFooter className="mt-6 flex gap-1">
               <DialogClose asChild>
                 <Button
-                  variant='outline'
+                  variant="outline"
                   ref={closeRef}
-                  type='button'
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
@@ -57,13 +42,13 @@ export const BoardCopy = ({
                 </Button>
               </DialogClose>
               <Button
-                type='submit'
+                type="submit"
                 disabled={isPending}
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
               >
-                {isPending ? <Loader2 className='animate-spin' /> : '复制'}
+                {isPending ? <Loader2 className="animate-spin" /> : '复制'}
               </Button>
             </DialogFooter>
           </BoardCreateFrom>

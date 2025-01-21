@@ -4,9 +4,11 @@
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun run --hot ./src/index.ts"
+    "dev": "bun run --hot ./src/index.ts",
+    "lint": "biome check --fix --unsafe&& biome lint ."
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@types/bun": "latest"
   },
   "dependencies": {
@@ -24,6 +26,7 @@
     "hono": "^4.6.16",
     "nanoid": "^5.0.9",
     "nest": "^0.1.6",
+    "@ljh/lint": "workspace:*",
     "socket.io": "^4.8.1",
     "y-protocols": "^1.0.6",
     "y-websocket": "^2.1.0",

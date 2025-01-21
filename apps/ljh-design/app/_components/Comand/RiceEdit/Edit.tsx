@@ -1,27 +1,17 @@
 'use client';
+import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import Placeholder from '@tiptap/extension-placeholder';
-import Underline from '@tiptap/extension-underline';
-import { EditorContent, Editor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import {
-  FaBold,
-  FaItalic,
-  FaList,
-  FaListOl,
-  FaListUl,
-  FaRedo,
-  FaStrikethrough,
-  FaUnderline,
-  FaUndo,
-} from 'react-icons/fa';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
-import { ScrollArea } from '@/app/_components/ui/scroll-area';
+import Underline from '@tiptap/extension-underline';
+import { Editor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { FaBold, FaItalic, FaList, FaListOl, FaListUl, FaRedo, FaStrikethrough, FaUnderline, FaUndo } from 'react-icons/fa';
 import './tiptap.css';
-import TiptapToolbar from './TiptapToolbar';
 import { useTheme } from 'next-themes';
-import { UseFormSetError, UseFormSetValue } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import type { UseFormSetError, UseFormSetValue } from 'react-hook-form';
+import TiptapToolbar from './TiptapToolbar';
 
 const Tiptap = ({
   content = '',
@@ -46,12 +36,11 @@ const Tiptap = ({
 }) => {
   const { theme } = useTheme();
   const [editor, setEditor] = useState<Editor | null>(null);
+  // @ts-ignore
   useEffect(() => {
     let activeTheme = theme;
     if (theme === 'system') {
-      activeTheme = window.matchMedia('(prefers-color-scheme:dark)').matches
-        ? 'dark'
-        : 'light';
+      activeTheme = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
     }
     const editor = new Editor({
       editorProps: {
@@ -60,8 +49,7 @@ const Tiptap = ({
         },
       },
       onUpdate: ({ editor }) => {
-        if (!editor.getText())
-          return setError('explanation', { message: '不能为空' });
+        if (!editor.getText()) return setError('explanation', { message: '不能为空' });
         setValue('explanation', editor.getHTML());
       },
       extensions: [
@@ -155,17 +143,11 @@ const Tiptap = ({
     },
   ];
   return (
-    <section className='h-full w-full'>
-      <main className='h-8'>
-        {editor && <TiptapToolbar tiptapToolBar={tiptapToolBar} />}
-      </main>
-      <ScrollArea className='h-full w-full'>
+    <section className="h-full w-full">
+      <main className="h-8">{editor && <TiptapToolbar tiptapToolBar={tiptapToolBar} />}</main>
+      <ScrollArea className="h-full w-full">
         {/* tiptap实例 */}
-        <EditorContent
-          className='h-full'
-          placeholder='请输入内容'
-          editor={editor}
-        />
+        <EditorContent className="h-full" placeholder="请输入内容" editor={editor} />
       </ScrollArea>
     </section>
   );

@@ -1,14 +1,14 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
   // 修改入口文件为根目录的 index.ts
-  entry: ["index.ts"],
+  entry: ['index.ts'],
 
   // 只输出 ESM 格式
-  format: ["esm"],
+  format: ['esm'],
 
   // 生成 .mjs 文件
-  target: "esnext",
+  target: 'esnext',
 
   // 清理输出目录
   clean: true,

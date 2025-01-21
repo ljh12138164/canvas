@@ -24,9 +24,7 @@ watch(
     }
   },
 );
-const value = ref<string[]>(
-  props.collaborators?.[0].inviteCode?.split('') || [],
-);
+const value = ref<string[]>(props.collaborators?.[0].inviteCode?.split('') || []);
 const handleCopy = () => {
   toast.dismiss();
   toast.success('复制成功');

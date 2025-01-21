@@ -4,9 +4,7 @@ import type { NumberFieldRootEmits, NumberFieldRootProps } from 'radix-vue';
 import { NumberFieldRoot, useForwardPropsEmits } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<
-  NumberFieldRootProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<NumberFieldRootProps & { class?: HTMLAttributes['class'] }>();
 const emits = defineEmits<NumberFieldRootEmits>();
 
 const delegatedProps = computed(() => {
