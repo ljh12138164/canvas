@@ -1,6 +1,8 @@
 import { getCurrentUser } from '@/server/supabase/user';
 import useUser from '@/store/user';
 import type { Sessions } from '@/types/user';
+import type { Updater } from '@tanstack/vue-table';
+import type { Ref } from 'vue';
 import type { RouteLocationNormalized } from 'vue-router';
 import { type ToastPosition, type ToastTheme, type ToastTransition, toast as toastify } from 'vue3-toastify';
 
@@ -90,3 +92,7 @@ export function randomColor() {
 }
 // 高亮色调增强
 export const HIGHLIGHT_COLORS = ['#F59E0B', '#EF4444', '#10B981', '#3B82F6', '#8B5CF6', '#D97706', '#EC4899', '#6366F1', '#22C55E', '#F97316', '#E11D48', '#2563EB', '#14B8A6', '#7C3AED', '#F43F5E', '#0EA5E9', '#6D28D9', '#047857', '#D946EF', '#0891B2'];
+
+export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref) {
+  ref.value = typeof updaterOrValue === 'function' ? updaterOrValue(ref.value) : updaterOrValue;
+}

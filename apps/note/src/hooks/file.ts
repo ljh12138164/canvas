@@ -20,7 +20,8 @@ export const createFiles = () => {
         },
       });
       if (!res.ok) {
-        throw new Error(res.statusText);
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
       }
       return res.json();
     },

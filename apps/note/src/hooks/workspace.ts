@@ -1,10 +1,10 @@
+import { toast } from '@/lib/index';
 import { client } from '@/server';
 import { getNewToken } from '@/server/sign';
 import { useMutation, useQuery } from '@tanstack/vue-query';
 import type { InferRequestType, InferResponseType } from 'hono';
 import { useRouter } from 'vue-router';
 
-const router = useRouter();
 type createWorkspaceRequest = InferRequestType<typeof client.workspace.create.$post>;
 type createWorkspaceResponse = InferResponseType<typeof client.workspace.create.$post, 200>;
 
@@ -14,6 +14,8 @@ type createWorkspaceResponse = InferResponseType<typeof client.workspace.create.
  * @returns
  */
 export const useCreateWorkspace = () => {
+  const router = useRouter();
+
   const {
     isPending: createWorkspaceLoading,
     error: createWorkspaceError,
@@ -27,7 +29,10 @@ export const useCreateWorkspace = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!res.ok) throw new Error(res.statusText);
+      if (!res.ok) {
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return res.json();
     },
   });
@@ -42,6 +47,8 @@ type getWorkspacesResponse = InferResponseType<typeof client.workspace.workspace
  * @returns
  */
 export const useGetWorkspaces = () => {
+  const router = useRouter();
+
   const {
     data: workspaces,
     error: workspacesError,
@@ -57,7 +64,10 @@ export const useGetWorkspaces = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!res.ok) throw new Error(res.statusText);
+      if (!res.ok) {
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return res.json();
     },
   });
@@ -79,6 +89,8 @@ export type getWorkspaceByIdResponse = InferResponseType<(typeof client.workspac
  * @returns
  */
 export const useGetWorkspaceById = (id: string) => {
+  const router = useRouter();
+
   const {
     data: workspace,
     error: workspaceError,
@@ -97,9 +109,44 @@ export const useGetWorkspaceById = (id: string) => {
           },
         },
       );
-      if (!res.ok) throw new Error(res.statusText);
+      if (!res.ok) {
+        const error = (await res.json()) as { message: string };
+        if (error.message === '无权限') {
+          toast.error('无权限');
+          router.push('/workspace');
+        }
+        throw new Error(error.message);
+      }
       return res.json();
     },
   });
   return { workspace, workspaceError, workspaceIsLoading, workspaceIsFetching };
+};
+
+type refreshInviteCodeRequest = InferRequestType<(typeof client.collaborators.refresh)['$post']>;
+type refreshInviteCodeResponse = InferResponseType<(typeof client.collaborators.refresh)['$post'], 200>;
+/**
+ * 刷新邀请码
+ * @param workspaceId
+ * @returns
+ */
+export const useRefreshInviteCode = () => {
+  const router = useRouter();
+  const { mutate: refreshInviteCode, isPending: isRefreshing } = useMutation<refreshInviteCodeResponse, Error, refreshInviteCodeRequest>({
+    mutationFn: async (workspaceId) => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
+      const res = await client.collaborators.refresh.$post(workspaceId, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return res.json();
+    },
+  });
+  return { refreshInviteCode, isRefreshing };
 };

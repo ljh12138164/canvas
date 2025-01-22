@@ -1,24 +1,28 @@
 <script setup lang="ts">
+import { useRemoveCollaborator } from '@/hooks/collaborators';
 import type { CollaboratorsData } from '@/types/collaborators';
+import { Icon } from '@iconify/vue';
+import { useQueryClient } from '@tanstack/vue-query';
 import { format } from 'date-fns';
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
+import ResponsePop from '../common/ResponsePop.vue';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Button } from '../ui/button';
 import { CardContent, CardHeader, CardTitle } from '../ui/card';
 import Card from '../ui/card/Card.vue';
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-
-import { useRemoveCollaborator } from '@/hooks/collaborators';
-import { Icon } from '@iconify/vue';
-import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
+const queryClient = useQueryClient();
 const router = useRouter();
 const props = defineProps<{
   collaborators: CollaboratorsData[] | undefined;
   isLoading: boolean;
 }>();
+const responsePopRef = ref();
 const { removeCollaborator, isRemoving } = useRemoveCollaborator();
 watch(
   () => props.collaborators,
@@ -42,8 +46,9 @@ watch(
           <TableHeader>
             <TableRow>
               <TableHead class="table-cell-ellipsis"> 加入时间 </TableHead>
-              <TableHead class="table-cell-ellipsis">邮箱</TableHead>
+              <TableHead class="table-cell-ellipsis">头像</TableHead>
               <TableHead class="table-cell-ellipsis">姓名</TableHead>
+              <TableHead class="table-cell-ellipsis">邮箱</TableHead>
               <TableHead class="table-cell-ellipsis"> 操作 </TableHead>
             </TableRow>
           </TableHeader>
@@ -74,6 +79,17 @@ watch(
                 </TooltipProvider>
               </TableCell>
               <TableCell class="table-cell-ellipsis">
+                <Avatar>
+                  <AvatarImage
+                    :src="collaborators.profiles.image"
+                    alt="用户头像"
+                  />
+                  <AvatarFallback>
+                    {{ collaborators.profiles.name }}
+                  </AvatarFallback>
+                </Avatar>
+              </TableCell>
+              <TableCell class="table-cell-ellipsis">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger as-child>
@@ -101,22 +117,54 @@ watch(
                   </Tooltip>
                 </TooltipProvider>
               </TableCell>
+
               <TableCell class="table-cell-ellipsis">
-                <Button
-                  :disabled="isRemoving"
-                  variant="outline"
-                  size="icon"
-                  @click="
-                    removeCollaborator({
-                      json: {
-                        userId: collaborators.userId,
-                        workspaceId: props.collaborators?.[0].id as string,
-                      },
-                    })
-                  "
-                >
-                  <Icon icon="heroicons:trash" />
-                </Button>
+                <ResponsePop title="移除成员" ref="responsePopRef">
+                  <template #trigger>
+                    <Button
+                      :disabled="isRemoving"
+                      variant="outline"
+                      size="icon"
+                    >
+                      <Icon icon="heroicons:trash" />
+                    </Button>
+                  </template>
+                  <template #content>
+                    <div>确定要移除该成员吗？</div>
+                  </template>
+                  <template #close>
+                    <Button variant="outline">取消</Button>
+                  </template>
+                  <template #entry>
+                    <Button
+                      @click="
+                        removeCollaborator(
+                          {
+                            json: {
+                              userId: collaborators.userId,
+                              workspaceId: props.collaborators?.[0]
+                                .id as string,
+                            },
+                          },
+                          {
+                            onSuccess: () => {
+                              responsePopRef.value?.closeRef.value.click();
+                              responsePopRef.value?.closeRef2.value.click();
+                              queryClient.invalidateQueries({
+                                queryKey: ['collaborators'],
+                              });
+                              toast.success('移除成员成功');
+                            },
+                            onError: () => {
+                              toast.error('移除成员失败');
+                            },
+                          }
+                        )
+                      "
+                      >确定</Button
+                    >
+                  </template>
+                </ResponsePop>
               </TableCell>
             </TableRow>
           </TableBody>

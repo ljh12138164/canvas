@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Skeleton from '@/components/ui/skeleton/Skeleton.vue';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import WorkspaceTable from '@/components/workspace/WorkspaceTable.vue';
 import { useGetWorkspaceById } from '@/hooks/workspace';
 import { useQueryClient } from '@tanstack/vue-query';
 import { onBeforeMount } from 'vue';
@@ -30,57 +29,28 @@ const router = useRouter();
 const handleManageCollaborators = () => {
   router.push(`/workspace/${route.params.workspaceId}/member`);
 };
-const handleGoFolder = (folderId: string) => {
-  router.push(`/workspace/${route.params.workspaceId}/folders/${folderId}`);
-};
 </script>
 <template>
   <div class="workspace-item-container">
     <div v-if="workspaceIsLoading || workspaceIsFetching">
-      <Skeleton class="w-full h-[300px] bg-[#d8d8d8] dark:bg-[#3a3a3a]" />
+      <div class="space-y-4">
+        <!-- 标题骨架 -->
+        <Skeleton class="w-1/3 h-8" />
+        <!-- 表格骨架 -->
+        <div class="space-y-2">
+          <Skeleton class="w-full h-12" />
+          <Skeleton class="w-full h-12" />
+          <Skeleton class="w-full h-12" />
+        </div>
+        <!-- 按钮骨架 -->
+        <Skeleton class="w-24 h-10" />
+      </div>
     </div>
     <div v-else-if="workspace">
-      <Table v-if="workspace.folders">
-        <TableHeader>
-          <TableRow class="text-center">
-            <TableHead class="table-cell-ellipsis" align="center">
-              <span>文档图标</span>
-            </TableHead>
-            <TableHead class="table-cell-ellipsis" align="center">
-              <span>文件夹名字</span>
-            </TableHead>
-            <TableHead class="table-cell-ellipsis" align="center">
-              <span>状态</span>
-            </TableHead>
-            <TableHead class="table-cell-ellipsis" align="center">
-              <span>文件数量</span>
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow
-            v-for="folder in workspace.folders"
-            :key="folder.id"
-            class="cursor-pointer"
-            @click="handleGoFolder(folder.id as string)"
-          >
-            <TableCell class="table-cell-ellipsis icons-container">
-              <span class="icons"> {{ folder.inconId }} </span>
-            </TableCell>
-            <TableCell class="table-cell-ellipsis">
-              <span>{{ folder.title }}</span>
-            </TableCell>
-            <TableCell class="table-cell-ellipsis">
-              <Badge :variant="folder.inTrash ? 'destructive' : 'default'">
-                <span>{{ folder.inTrash ? '已删除' : '正常' }}</span>
-              </Badge>
-            </TableCell>
-            <TableCell class="table-cell-ellipsis">
-              <span>{{ folder.files.length }}</span>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <WorkspaceTable
+        :data="Array.isArray(workspace.folders) ? workspace.folders : []"
+        v-if="workspace.folders"
+      />
       <div v-else>没有文件夹</div>
       <div>
         <Button @click="handleManageCollaborators">管理协作</Button>

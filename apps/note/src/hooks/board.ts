@@ -21,7 +21,8 @@ export const useBoard = ({ workspaceId }: { workspaceId: string }) => {
         },
       });
       if (!res.ok) {
-        throw new Error('获取数据失败');
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
       }
       return res.json();
     },

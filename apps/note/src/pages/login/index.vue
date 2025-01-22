@@ -72,6 +72,9 @@ async function onSubmit(values: any) {
     <Card variant="outlined" class="loginCard">
       <section class="loginCardLeft">
         <div class="loginCardLeftTitle">
+          <CardHeader class="cardHeader">
+            <img :src="logoImage" alt="Logo" class="logo" />
+          </CardHeader>
           <div class="loginCardLeftTitleContent">
             <h1 class="loginCardLeftTitleText">欢迎使用</h1>
             <p class="loginCardLeftTitleSubtitle">登录或注册来开始使用</p>
@@ -79,11 +82,8 @@ async function onSubmit(values: any) {
         </div>
       </section>
       <CardContent class="loginCardRight">
-        <CardHeader class="cardHeader">
-          <img :src="logoImage" alt="Logo" class="logo" />
-          <h1 class="cardTitle dark:text-black">欢迎回来</h1>
-          <p class="cardSubtitle dark:text-black">请输入您的账号密码</p>
-        </CardHeader>
+        <h1 class="cardTitle dark:text-black">欢迎回来</h1>
+        <p class="cardSubtitle dark:text-black">请输入您的账号密码</p>
         <main class="cardMain">
           <p class="cardChange">
             <v-btn
@@ -318,5 +318,9 @@ async function onSubmit(values: any) {
 .logo {
   width: 100px;
   height: 100px;
+}
+
+.loginCardRight {
+  margin-top: 100px;
 }
 </style>

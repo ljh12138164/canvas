@@ -22,7 +22,8 @@ export const useGetTap = (userId: string) => {
         },
       });
       if (!response.ok) {
-        throw new Error('请求错误');
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
       }
       return response.json();
     },
@@ -47,7 +48,10 @@ export const useCreateTap = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!response.ok) throw new Error(response.statusText);
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return response.json();
     },
   });

@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "npm-run-all --parallel api builds",
-    "lint": "biome check --fix --unsafe&& biome lint .",
+    "lint": "biome check --files-ignore-unknown=true && biome check --write --no-errors-on-unmatched && biome check --write --organize-imports-enabled=false --no-errors-on-unmatched && biome check --write --unsafe --no-errors-on-unmatched && biome check --fix --unsafe --no-errors-on-unmatched && biome lint --write --no-errors-on-unmatched",
     "builds": "tsup --watch",
     "tsup": "tsup",
     "api": "vercel dev --listen=8000",
@@ -52,7 +52,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@ljh/lint": "workspace:*",
     "@types/node": "^22.10.7",
     "vercel": "^39.3.0"
   }

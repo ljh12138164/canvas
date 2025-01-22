@@ -75,7 +75,8 @@ const closeDialog = () => {
                 :tooltip="item.title"
                 class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
                 :class="{
-                  'bg-slate-100': item.id === folderId && !fileId,
+                  'bg-slate-100 dark:bg-slate-900':
+                    item.id === folderId && !fileId,
                 }"
               >
                 <ChevronRight

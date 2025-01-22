@@ -19,7 +19,10 @@ export const useGetrBoard = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!data.ok) throw new Error(data.statusText);
+      if (!data.ok) {
+        const error = (await data.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return data.json();
     },
   });
@@ -40,7 +43,10 @@ export const useCreateBoard = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!data.ok) throw new Error(data.statusText);
+      if (!data.ok) {
+        const error = (await data.json()) as { message: string };
+        throw new Error(error.message);
+      }
       const json = await data.json();
       return json;
     },
@@ -65,7 +71,10 @@ export const useBoard = (id: string) => {
           },
         },
       );
-      if (!data.ok) throw new Error(data.statusText);
+      if (!data.ok) {
+        const error = (await data.json()) as { message: string };
+        throw new Error(error.message);
+      }
       if (data.status === 404) router.back();
       const json = await data.json();
       return json;
@@ -88,7 +97,10 @@ export const useUpdateBoard = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!data.ok) throw new Error(data.statusText);
+      if (!data.ok) {
+        const error = (await data.json()) as { message: string };
+        throw new Error(error.message);
+      }
       const json = await data.json();
       return json;
     },
@@ -111,7 +123,10 @@ export const useDeleteBoard = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!data.ok) throw new Error(data.statusText);
+      if (!data.ok) {
+        const error = (await data.json()) as { message: string };
+        throw new Error(error.message);
+      }
       const json = await data.json();
       return json;
     },
@@ -134,7 +149,10 @@ export const useUpdateBoardInviteCode = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!data.ok) throw new Error(data.statusText);
+      if (!data.ok) {
+        const error = (await data.json()) as { message: string };
+        throw new Error(error.message);
+      }
       const json = await data.json();
       return json;
     },
@@ -161,7 +179,10 @@ export const useGetInviteCodeData = (inviteCode: string) => {
           },
         },
       );
-      if (!data.ok) throw new Error(data.statusText);
+      if (!data.ok) {
+        const error = (await data.json()) as { message: string };
+        throw new Error(error.message);
+      }
       const json = await data.json();
       return json;
     },

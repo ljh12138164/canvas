@@ -57,8 +57,10 @@ export const useInviteCollaborator = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      // 如果邀请失败，则抛出错误
       if (!res.ok) {
-        throw new Error(res.statusText);
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
       }
       return res.json();
     },
@@ -84,7 +86,8 @@ export const useRemoveCollaborator = () => {
         },
       });
       if (!res.ok) {
-        throw new Error(res.statusText);
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
       }
       return res.json();
     },

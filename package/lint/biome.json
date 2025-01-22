@@ -7,7 +7,8 @@
     "enabled": true,
     "rules": {
       "complexity": {
-        "noForEach": "off"
+        "noForEach": "off",
+        "noBannedTypes": "off"
       },
       "recommended": true,
       "correctness": {

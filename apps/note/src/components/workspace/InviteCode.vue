@@ -1,16 +1,19 @@
 <script setup lang="ts">
+import { useRefreshInviteCode } from '@/hooks/workspace';
 import { toast } from '@/lib';
 import type { CollaboratorsData } from '@/types/collaborators';
 import { Icon } from '@iconify/vue';
+import { useQueryClient } from '@tanstack/vue-query';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import ResponsePop from '../common/ResponsePop.vue';
 import { Button } from '../ui/button';
 import { CardContent, CardHeader, CardTitle } from '../ui/card';
 import Card from '../ui/card/Card.vue';
 import { PinInput, PinInputGroup, PinInputInput } from '../ui/pin-input';
 import { Skeleton } from '../ui/skeleton';
 const router = useRouter();
-
+const queryClient = useQueryClient();
 const props = defineProps<{
   collaborators: CollaboratorsData[] | undefined;
   isLoading: boolean;
@@ -27,15 +30,35 @@ watch(
 const value = ref<string[]>(props.collaborators?.[0].inviteCode?.split('') || []);
 const handleCopy = () => {
   toast.dismiss();
-  toast.success('复制成功');
+  setTimeout(() => {
+    toast.success('复制成功');
+  }, 1000);
   navigator.clipboard.writeText(props.collaborators?.[0].inviteCode || '');
 };
+const handleRefresh = () => {
+  refreshInviteCode(
+    { json: { workspaceId: props.collaborators?.[0].id! } },
+    {
+      onSuccess: () => {
+        toast.dismiss();
+        setTimeout(() => {
+          toast.success('刷新成功');
+        }, 1000);
+        queryClient.invalidateQueries({
+          queryKey: ['collaborators'],
+        });
+      },
+    },
+  );
+};
+const { refreshInviteCode, isRefreshing } = useRefreshInviteCode();
 watch(
   () => props.collaborators?.[0].inviteCode,
   (newVal) => {
     value.value = newVal?.split('') || [];
   },
 );
+const responsePopRef = ref();
 </script>
 <template>
   <Card v-if="!props.isLoading">
@@ -67,6 +90,24 @@ watch(
         >
           <Icon icon="heroicons:clipboard-document-list" />
         </Button>
+        <ResponsePop title="刷新邀请码" ref="responsePopRef">
+          <template #trigger>
+            <Button variant="outline" class="pin-input-input ml-2">
+              刷新
+            </Button>
+          </template>
+          <template #content>
+            <div>是否刷新邀请码</div>
+          </template>
+          <template #close>
+            <Button variant="outline">关闭</Button>
+          </template>
+          <template #entry>
+            <Button @click="handleRefresh" :disabled="isRefreshing">
+              刷新
+            </Button>
+          </template>
+        </ResponsePop>
       </section>
       <section v-else>
         <div>未找到工作区</div>

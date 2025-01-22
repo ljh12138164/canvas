@@ -39,7 +39,10 @@ export const useBoardQuery = () => {
           },
         },
       );
-      if (!response.ok) throw new Error('创建失败');
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return response.json();
     },
   });
@@ -67,7 +70,11 @@ export const useBoardEditQuery = ({ id }: { id: string }) => {
         },
       );
       const data = await response.json();
-      if (!response.ok || (isArray(data) && data.length === 0) || !isArray(data)) {
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      if ((isArray(data) && data.length === 0) || !isArray(data)) {
         toast.dismiss();
         toast.error('看板不存在');
         redirect('/board');
@@ -98,7 +105,10 @@ export const useBoardUserQuery = ({ userId }: { userId: string }) => {
           },
         },
       );
-      if (!response.ok) throw new Error('获取失败');
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return response.json();
     },
     initialPageParam: 0,
@@ -147,7 +157,10 @@ export const useBoardUpdateQuery = ({ id }: { id: string }) => {
           },
         },
       );
-      if (!response.ok) throw new Error('更新失败');
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return response.json();
     },
   });
@@ -173,7 +186,10 @@ export const useBoardDeleteQuery = () => {
           },
         },
       );
-      if (!response.ok) throw new Error('删除失败');
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return response.json();
     },
     onSuccess: () => {
@@ -210,7 +226,10 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
           },
         },
       );
-      if (!response.ok) throw new Error('更新失败');
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return response.json();
     },
     onSuccess: () => {
@@ -240,7 +259,10 @@ export const useBoardCopyQuery = () => {
           },
         },
       );
-      if (!response.ok) throw new Error('复制失败');
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return response.json();
     },
   });
@@ -264,7 +286,10 @@ export const useBoardImageQuery = ({ userId }: { userId: string }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!response.ok) throw new Error('获取失败');
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return response.json();
     },
   });
@@ -285,7 +310,10 @@ export const useBoardListQuery = () => {
       const response = await client.board.getBoardList.$get(undefined, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!response.ok) throw new Error('获取失败');
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return response.json();
     },
   });
