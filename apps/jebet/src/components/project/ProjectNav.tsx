@@ -43,7 +43,10 @@ export default function ProjectNav({ project }: { project: Project }) {
         <ProjectItemName>{project.name}</ProjectItemName>
       </ProjectItem>
 
-      <EditText variant="outline" onClick={() => navigate(`/dashboard/${workspaceId}/${project.id}/setting`)}>
+      <EditText
+        variant="outline"
+        onClick={() => navigate(`/dashboard/${workspaceId}/${project.id}/setting`)}
+      >
         <FiEdit3 />
         <span>编辑</span>
       </EditText>

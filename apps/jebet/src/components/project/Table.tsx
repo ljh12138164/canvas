@@ -21,7 +21,10 @@ export const columns: ColumnDef<TaskWithWorkspace>[] = [
     accessorKey: 'name',
     header: ({ column }) => {
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
           名称
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -35,14 +38,19 @@ export const columns: ColumnDef<TaskWithWorkspace>[] = [
     accessorKey: 'assignee',
     header: ({ column }) => {
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
           指派人
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const member = row.original.workspace.member.find((item) => item.userId === row.original.assigneeId);
+      const member = row.original.workspace.member.find(
+        (item) => item.userId === row.original.assigneeId,
+      );
       return (
         <MemberContainer className="line-clamp-1">
           <MemberAvatar src={member?.userImage} alt={member?.username} />
@@ -55,7 +63,10 @@ export const columns: ColumnDef<TaskWithWorkspace>[] = [
     accessorKey: 'lastTime',
     header: ({ column }) => {
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
           结束时间
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -73,7 +84,10 @@ export const columns: ColumnDef<TaskWithWorkspace>[] = [
     accessorKey: 'status',
     header: ({ column }) => {
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
           状态
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -91,7 +105,10 @@ export const columns: ColumnDef<TaskWithWorkspace>[] = [
     accessorKey: 'priority',
     header: ({ column }) => {
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
           状态
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>

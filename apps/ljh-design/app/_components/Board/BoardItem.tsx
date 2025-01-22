@@ -39,8 +39,13 @@ const BoardItem = ({
         </TooltipComponents>
       </TableCell>
       <TableCell className="max-w-[100px] text-ellipsis">
-        <TooltipComponents align="start" label={board.created_at ? new Date(board.created_at).toLocaleString() : ''}>
-          <span className="text-ellipsis block overflow-hidden">{dayjs(board.created_at).format('MM-DD HH:mm')}</span>
+        <TooltipComponents
+          align="start"
+          label={board.created_at ? new Date(board.created_at).toLocaleString() : ''}
+        >
+          <span className="text-ellipsis block overflow-hidden">
+            {dayjs(board.created_at).format('MM-DD HH:mm')}
+          </span>
         </TooltipComponents>
       </TableCell>
       <TableCell className="text-ellipsis">

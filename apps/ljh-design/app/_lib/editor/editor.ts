@@ -4,7 +4,12 @@ import * as fabric from 'fabric';
 import type { WebsocketProvider } from 'y-websocket';
 import type * as Y from 'yjs';
 //获取画布工作区
-export const getWorkspace = (canvas: fabric.Canvas) => canvas.getObjects().find((item: InitFabicObject | fabric.FabricObject) => (item as InitFabicObject).name === 'board');
+export const getWorkspace = (canvas: fabric.Canvas) =>
+  canvas
+    .getObjects()
+    .find(
+      (item: InitFabicObject | fabric.FabricObject) => (item as InitFabicObject).name === 'board',
+    );
 /**
  * ### 居中对象
  */
@@ -30,7 +35,10 @@ export const getAddObject = (event: Y.YMapEvent<string>): AddFabicObject | null 
  * @param websockets
  * @returns  [number, UserState][]
  */
-export const getUserState = (websockets: WebsocketProvider, user: Sessions): [number, UserState][] => {
+export const getUserState = (
+  websockets: WebsocketProvider,
+  user: Sessions,
+): [number, UserState][] => {
   return [...websockets.awareness.getStates().entries()].map((item) => [
     item[0],
     {
@@ -96,7 +104,12 @@ export const genType = (obj: AddFabicObject) => {
  * @param obj 操作的对象
  * @returns
  */
-export const typeToActive = (type: string, obj: AddFabicObject, canvas: fabric.Canvas | null, yMaps: Y.Map<string>) => {
+export const typeToActive = (
+  type: string,
+  obj: AddFabicObject,
+  canvas: fabric.Canvas | null,
+  yMaps: Y.Map<string>,
+) => {
   if (!canvas) return;
   switch (type) {
     //添加图像

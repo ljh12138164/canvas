@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { createFiles } from '@/hooks/file';
+import { createFiles, updateFiles } from '@/hooks/file';
+import { toast } from '@/lib';
 import { useQueryClient } from '@tanstack/vue-query';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
@@ -36,36 +37,72 @@ watch(
 );
 // const userId = useUser().userData?.session.user.id as string;
 const { createFileIsPending, createFile } = createFiles();
+const { updateFileIsPending, updateFile } = updateFiles();
 
+const props = defineProps<{
+  title?: string;
+  id?: string;
+  inconId?: string;
+  edit?: boolean;
+}>();
 const showEmoji = ref('');
 const form = useForm({
   validationSchema: formSchema,
+});
+form.setValues({
+  title: props.title,
+  inconId: props.inconId,
 });
 const onSubmit = form.handleSubmit((values) => {
   //校验
   if (!values.title) return form.setErrors({ title: '请输入文档名称' });
   if (values.title.length < 2) return form.setErrors({ title: '文档名称至少2个字符' });
   if (!values.inconId) return form.setErrors({ inconId: '请选择图标' });
-  createFile(
-    {
-      json: {
-        title: values.title,
-        inconId: values.inconId,
-        workspaceId: workspaceId.value,
-        folderId: folderId.value,
-        content: '',
+  if (!props.edit) {
+    return createFile(
+      {
+        json: {
+          title: values.title,
+          inconId: values.inconId,
+          workspaceId: workspaceId.value,
+          folderId: folderId.value,
+          content: '',
+        },
       },
-    },
-    {
-      onSuccess: () => {
-        form.resetForm();
-        clinetQuery.invalidateQueries({
-          queryKey: ['workspaceItem'],
-        });
-        showEmoji.value = '';
+      {
+        onSuccess: () => {
+          form.resetForm();
+          clinetQuery.invalidateQueries({
+            queryKey: ['workspaceItem'],
+          });
+          toast.success('创建成功');
+          form.resetForm();
+          showEmoji.value = '';
+        },
       },
-    },
-  );
+    );
+  }
+  if (props.edit) {
+    return updateFile(
+      {
+        json: {
+          title: values.title,
+          inconId: values.inconId,
+          id: props.id as string,
+          workspaceId: workspaceId.value,
+        },
+      },
+      {
+        onSuccess: () => {
+          form.resetForm();
+          clinetQuery.invalidateQueries({
+            queryKey: ['workspaceItem', workspaceId.value],
+          });
+          toast.success('编辑成功');
+        },
+      },
+    );
+  }
 });
 const onChangeEmoji = (emoji: string) => {
   form.setValues({ inconId: emoji });
@@ -87,11 +124,11 @@ const onChangeEmoji = (emoji: string) => {
       <FormItem class="form-item">
         <FormLabel class="form-label">文件图标</FormLabel>
         <FormControl>
-          <EmojiPopup @onChangeEmoji="onChangeEmoji">
+          <EmojiPopup @onChangeEmoji="onChangeEmoji" :defaultEmoji="props.inconId">
             <template #trigger>
               <Button type="button" class="emoji-button" variant="outline">
                 <input class="emojiInput" type="text" v-bind="componentField" />
-                <span v-if="showEmoji" class="emoji">{{ showEmoji }}</span>
+                <span v-if="showEmoji  ||  inconId" class="emoji">{{ showEmoji  ||  inconId  }}</span>
                 <span v-else>选择图标</span>
               </Button>
             </template>
@@ -100,8 +137,10 @@ const onChangeEmoji = (emoji: string) => {
         <FormMessage />
       </FormItem>
     </FormField>
-    <Button :disabled="createFileIsPending" type="submit">
-      {{ createFileIsPending ? '创建中...' : '创建' }}
+    <Button :disabled="createFileIsPending || updateFileIsPending" type="submit">
+      <span v-if="createFileIsPending && !edit">创建中...</span>
+      <span v-else-if="updateFileIsPending && edit">编辑中...</span>
+      <span v-else-if="!createFileIsPending && !updateFileIsPending">{{ edit ? '编辑' : '创建' }}</span>
     </Button>
   </form>
 </template>

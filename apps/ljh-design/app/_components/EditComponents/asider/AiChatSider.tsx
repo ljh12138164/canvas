@@ -21,7 +21,16 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import MarkDown from 'react-markdown';
 import { z } from 'zod';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../../ui/dialog';
 import { Separator } from '../../ui/separator';
 import { Skeleton } from '../../ui/skeleton';
 // 聊天的表单
@@ -287,7 +296,9 @@ export const AiChatSider = () => {
             </DialogHeader>
             <div className="flex items-center justify-center">
               <Input placeholder="请输入会话名称" {...newsRegister('title')} />
-              {newsFormState?.errors?.title && <p className="text-red-500">{newsFormState?.errors?.title?.message}</p>}
+              {newsFormState?.errors?.title && (
+                <p className="text-red-500">{newsFormState?.errors?.title?.message}</p>
+              )}
             </div>
             <DialogFooter>
               <section className="flex items-center justify-end gap-2">
@@ -311,7 +322,10 @@ export const AiChatSider = () => {
           {ai
             .find((chat) => chat.id === currentId)
             ?.history.map((message) => (
-              <div key={nanoid()} className={`mb-4 p-2 rounded-lg ${message.role === 'user' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'} max-w-[80%]`}>
+              <div
+                key={nanoid()}
+                className={`mb-4 p-2 rounded-lg ${message.role === 'user' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'} max-w-[80%]`}
+              >
                 {message.role === 'user' ? (
                   <span>
                     {message.parts[0].text}

@@ -48,7 +48,10 @@ export const getfolder = async ({
   id: string;
   token: string;
 }): Promise<Folders[]> => {
-  const { data, error } = await supabaseNote(token).from('folders').select('*').eq('workspaceId', id);
+  const { data, error } = await supabaseNote(token)
+    .from('folders')
+    .select('*')
+    .eq('workspaceId', id);
   if (error) throw new Error(error.message);
   return data;
 };

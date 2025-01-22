@@ -61,7 +61,10 @@ const ProjectList = observer(({ workspaceId, userId }: { workspaceId: string; us
   const { projectId } = useParams();
   const store = useStore;
   const navigate = useNavigate();
-  const { projectList, isLoadingProjectList, projectListError } = useProjectList(workspaceId, userId);
+  const { projectList, isLoadingProjectList, projectListError } = useProjectList(
+    workspaceId,
+    userId,
+  );
   const checkActive = useMemoizedFn((id: string) => {
     return projectId === id;
   });
@@ -106,9 +109,19 @@ const ProjectList = observer(({ workspaceId, userId }: { workspaceId: string; us
                   }
                 }}
                 key={project.id}
-                className={checkActive(project.id) ? 'active bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700' : 'hover:bg-zinc-200 dark:hover:bg-zinc-700'}
+                className={
+                  checkActive(project.id)
+                    ? 'active bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                    : 'hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                }
               >
-                <img className="rounded-sm" src={project.imageUrl} alt="项目图片" width={20} height={20} />
+                <img
+                  className="rounded-sm"
+                  src={project.imageUrl}
+                  alt="项目图片"
+                  width={20}
+                  height={20}
+                />
                 <div>{project.name}</div>
               </ProjectItem>
             ))}

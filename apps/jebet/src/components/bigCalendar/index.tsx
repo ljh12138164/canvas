@@ -17,7 +17,9 @@ const localizer = dateFnsLocalizer({
 });
 export const BigCalendar = ({ data }: { data: TaskWithWorkspace[] }) => {
   // 选择日期
-  const [value, setValue] = useState<Date>(data.length > 0 ? new Date(data[0].lastTime) : new Date());
+  const [value, setValue] = useState<Date>(
+    data.length > 0 ? new Date(data[0].lastTime) : new Date(),
+  );
   // 事件
   const event = data.map((task) => ({
     id: task.id,

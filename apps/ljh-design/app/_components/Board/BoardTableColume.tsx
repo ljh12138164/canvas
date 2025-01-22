@@ -1,6 +1,13 @@
 'use client';
 import { Button } from '@/app/_components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/app/_components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/app/_components/ui/dropdown-menu';
 import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import type { BoardData } from '../../_types/board';
@@ -41,7 +48,9 @@ export const columns: ColumnDef<BoardData>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>操作</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>复制ID</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
+              复制ID
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>编辑</DropdownMenuItem>
             <DropdownMenuItem>删除</DropdownMenuItem>

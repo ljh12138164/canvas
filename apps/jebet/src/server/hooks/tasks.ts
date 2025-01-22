@@ -9,7 +9,11 @@ type CreateTaskOutput = InferResponseType<typeof client.task.create.$post, 200>;
  *
  */
 export const useCreateTask = () => {
-  const { mutate: createTask, isPending: createTaskLoading } = useMutation<CreateTaskOutput, Error, CreateTaskInput>({
+  const { mutate: createTask, isPending: createTaskLoading } = useMutation<
+    CreateTaskOutput,
+    Error,
+    CreateTaskInput
+  >({
     mutationFn: async (data) => {
       const res = await client.task.create.$post(data);
       if (!res.ok) {
@@ -27,7 +31,15 @@ type GetTaskListOutput = InferResponseType<typeof client.task.get.$get, 200>;
  * ## 获取任务列表
  *
  */
-export const useGetTaskList = ({ workspaceId, projectId, currentUserId, status, search, lastTime, assigneeId }: GetTaskListInput) => {
+export const useGetTaskList = ({
+  workspaceId,
+  projectId,
+  currentUserId,
+  status,
+  search,
+  lastTime,
+  assigneeId,
+}: GetTaskListInput) => {
   const { data, isLoading, isFetching } = useQuery<GetTaskListOutput, Error, GetTaskListOutput>({
     queryKey: ['taskList', workspaceId, projectId],
     queryFn: async () => {
@@ -57,7 +69,11 @@ type DeleteTaskOutput = InferResponseType<typeof client.task.delete.$delete, 200
  * ## 删除任务
  */
 export const useDeleteTask = () => {
-  const { mutate: deleteTask, isPending: deleteTaskLoading } = useMutation<DeleteTaskOutput, Error, DeleteTaskInput>({
+  const { mutate: deleteTask, isPending: deleteTaskLoading } = useMutation<
+    DeleteTaskOutput,
+    Error,
+    DeleteTaskInput
+  >({
     mutationFn: async (data) => {
       const res = await client.task.delete.$delete(data);
       if (!res.ok) {
@@ -75,7 +91,11 @@ type UpdateTaskOutput = InferResponseType<typeof client.task.update.$patch, 200>
  * ## 更新任务
  */
 export const useUpdateTask = () => {
-  const { mutate: updateTask, isPending: updateTaskLoading } = useMutation<UpdateTaskOutput, Error, UpdateTaskInput>({
+  const { mutate: updateTask, isPending: updateTaskLoading } = useMutation<
+    UpdateTaskOutput,
+    Error,
+    UpdateTaskInput
+  >({
     mutationFn: async (data) => {
       const res = await client.task.update.$patch(data);
       if (!res.ok) {
@@ -91,7 +111,12 @@ type GetTaskDetailOutput = InferResponseType<typeof client.task.detail.$get, 200
 /**
  * ## 获取任务详情
  */
-export const useGetTaskDetail = (workspaceId: string, projectId: string, currentUserId: string, id: string) => {
+export const useGetTaskDetail = (
+  workspaceId: string,
+  projectId: string,
+  currentUserId: string,
+  id: string,
+) => {
   const { data, isLoading, isFetching } = useQuery<GetTaskDetailOutput, Error>({
     queryKey: ['taskDetail', workspaceId, projectId, id],
     queryFn: async () => {
@@ -116,7 +141,11 @@ type CreateTaskRemarkOutput = InferResponseType<typeof client.task.addRemark.$po
  * ### 创建任务评论
  */
 export const useCreateTaskRemark = () => {
-  const { mutate: createTaskRemark, isPending: createTaskRemarkLoading } = useMutation<CreateTaskRemarkOutput, Error, CreateTaskRemarkInput>({
+  const { mutate: createTaskRemark, isPending: createTaskRemarkLoading } = useMutation<
+    CreateTaskRemarkOutput,
+    Error,
+    CreateTaskRemarkInput
+  >({
     mutationFn: async (data) => {
       const res = await client.task.addRemark.$post(data);
       if (!res.ok) throw new Error('创建任务评论失败');
@@ -132,7 +161,11 @@ type MoveTaskOutput = InferResponseType<typeof client.task.move.$post, 200>;
  * ## 移动任务
  */
 export const useMoveTask = () => {
-  const { mutate: moveTask, isPending: moveTaskLoading } = useMutation<MoveTaskOutput, Error, MoveTaskInput>({
+  const { mutate: moveTask, isPending: moveTaskLoading } = useMutation<
+    MoveTaskOutput,
+    Error,
+    MoveTaskInput
+  >({
     mutationFn: async (data) => {
       const res = await client.task.move.$post(data);
       if (!res.ok) throw new Error('移动任务失败');

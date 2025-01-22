@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
 import { createFolder, getfolder } from '../../../server/note/board';
-import { deleteFolder } from '../../../server/note/folders';
+import { deleteFolder, updateFolder } from '../../../server/note/folders';
 
 export const folder = new Hono()
   .use(checkToken(process.env.SUPABASE_NOTE_JWT!))
@@ -43,10 +43,44 @@ export const folder = new Hono()
       return c.json({ folder });
     },
   )
-  .delete('/delete', zValidator('query', z.object({ id: z.string(), workspaceId: z.string() })), async (c) => {
-    const { token, auth } = getSupabaseAuth(c);
-    const { id, workspaceId } = c.req.valid('query');
-    const [error] = await to(deleteFolder({ token, id, workspaceId, userId: auth.sub as string }));
-    if (error) return c.json({ message: error.message }, errorCheck(error));
-    return c.json({ message: '删除成功' });
-  });
+  .delete(
+    '/delete',
+    zValidator('query', z.object({ id: z.string(), workspaceId: z.string() })),
+    async (c) => {
+      const { token, auth } = getSupabaseAuth(c);
+      const { id, workspaceId } = c.req.valid('query');
+      const [error] = await to(
+        deleteFolder({ token, id, workspaceId, userId: auth.sub as string }),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json({ message: '删除成功' });
+    },
+  )
+  .patch(
+    '/update',
+    zValidator(
+      'json',
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        inconId: z.string(),
+        workspaceId: z.string(),
+      }),
+    ),
+    async (c) => {
+      const { token, auth } = getSupabaseAuth(c);
+      const { id, title, inconId, workspaceId } = c.req.valid('json');
+      const [error] = await to(
+        updateFolder({
+          token,
+          id,
+          title,
+          inconId,
+          workspaceId,
+          userId: auth.sub as string,
+        }),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json({ message: '更新成功' });
+    },
+  );

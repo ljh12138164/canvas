@@ -8,7 +8,12 @@ interface FontSizeInputProps {
 const FontSizeInput = ({ editor }: FontSizeInputProps) => {
   return (
     <div className="flex items-center">
-      <Button variant="outline" className="p-2 rounded-r-none broder-r-0 w-8 h-8" size="icon" onClick={() => editor?.changeFontSize(editor?.getActiveFontSize() - 2)}>
+      <Button
+        variant="outline"
+        className="p-2 rounded-r-none broder-r-0 w-8 h-8"
+        size="icon"
+        onClick={() => editor?.changeFontSize(editor?.getActiveFontSize() - 2)}
+      >
         <FaMinus className="size-4" />
       </Button>
       <Input
@@ -18,7 +23,12 @@ const FontSizeInput = ({ editor }: FontSizeInputProps) => {
         }}
         className="w-[50px] h-8 focus-visible:ring-offset-0 focus-visible:ring-0 rounded-none"
       />
-      <Button variant="outline" className="p-2 rounded-l-none broder-l-0  w-8 h-8" size="icon" onClick={() => editor?.changeFontSize(editor?.getActiveFontSize() + 2)}>
+      <Button
+        variant="outline"
+        className="p-2 rounded-l-none broder-l-0  w-8 h-8"
+        size="icon"
+        onClick={() => editor?.changeFontSize(editor?.getActiveFontSize() + 2)}
+      >
         <FaPlus className="size-4" />
       </Button>
     </div>

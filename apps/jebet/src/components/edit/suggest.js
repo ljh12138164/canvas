@@ -6,7 +6,9 @@ import MentionList from './MetionList';
 export default (initData) => {
   return {
     items: ({ query }) => {
-      return initData.filter((item) => item.toLowerCase().startsWith(query.toLowerCase())).slice(0, 5);
+      return initData
+        .filter((item) => item.toLowerCase().startsWith(query.toLowerCase()))
+        .slice(0, 5);
     },
 
     render: () => {

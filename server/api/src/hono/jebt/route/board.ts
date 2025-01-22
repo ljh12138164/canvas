@@ -3,7 +3,15 @@ import to from 'await-to-js';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
-import { createJebtWorkspace, deleteJebtWorkspace, getJebtWorkspace, getJebtWorkspaceByInviteCode, joinJebtWorkspace, refreshJebtWorkspace, updateJebtWorkspace } from '../../../server/jebt/board';
+import {
+  createJebtWorkspace,
+  deleteJebtWorkspace,
+  getJebtWorkspace,
+  getJebtWorkspaceByInviteCode,
+  joinJebtWorkspace,
+  refreshJebtWorkspace,
+  updateJebtWorkspace,
+} from '../../../server/jebt/board';
 const board = new Hono()
   // 创建工作区
   .post(
@@ -66,12 +74,16 @@ const board = new Hono()
     },
   )
   // 获取工作区
-  .get('/:id', zValidator('param', z.object({ id: z.string().min(1, { message: 'userID不能为空' }) })), async (c) => {
-    const { id } = c.req.valid('param');
-    const [error, workspace] = await to(getJebtWorkspace(id));
-    if (error) return c.json({ message: error.message }, errorCheck(error));
-    return c.json(workspace);
-  })
+  .get(
+    '/:id',
+    zValidator('param', z.object({ id: z.string().min(1, { message: 'userID不能为空' }) })),
+    async (c) => {
+      const { id } = c.req.valid('param');
+      const [error, workspace] = await to(getJebtWorkspace(id));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(workspace);
+    },
+  )
   // 删除工作区
   .delete(
     '/:id',
@@ -145,7 +157,9 @@ const board = new Hono()
     ),
     async (c) => {
       const { userId, id, email, userImage, username } = c.req.valid('json');
-      const [error, workspace] = await to(joinJebtWorkspace(userId, id, email, userImage, username));
+      const [error, workspace] = await to(
+        joinJebtWorkspace(userId, id, email, userImage, username),
+      );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(workspace);
     },

@@ -39,7 +39,12 @@ const MemberList = ({
         <CardContent>
           {data?.data.map((item) => (
             <ListContain key={item.id}>
-              <MemberItem currentUserId={user.id} canOperation={currentUserIsAdmin} user={item} isAdmin={item.role === 'admin'} />
+              <MemberItem
+                currentUserId={user.id}
+                canOperation={currentUserIsAdmin}
+                user={item}
+                isAdmin={item.role === 'admin'}
+              />
               <Separator className="my-4" />
             </ListContain>
           ))}

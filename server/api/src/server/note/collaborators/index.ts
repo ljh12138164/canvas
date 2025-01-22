@@ -15,7 +15,10 @@ export const inviteCollaborator = async ({
   token: string;
   userId: string;
 }): Promise<Collaborators> => {
-  const { data: workspace, error: workspaceError } = (await supabaseNote(token).from('workspace').select('*,collaborators(*)').eq('inviteCode', inviteCode)) as {
+  const { data: workspace, error: workspaceError } = (await supabaseNote(token)
+    .from('workspace')
+    .select('*,collaborators(*)')
+    .eq('inviteCode', inviteCode)) as {
     data: (Workspace & { collaborators: Collaborators[] })[];
     error: PostgrestError | null;
   };
@@ -51,7 +54,10 @@ export const getCollaborators = async ({
     collaborators: (Collaborators & { profiles: Profiles })[];
   })[]
 > => {
-  const { data, error } = await supabaseNote(token).from('workspace').select('*,collaborators(*,profiles(*))').eq('id', workspaceId);
+  const { data, error } = await supabaseNote(token)
+    .from('workspace')
+    .select('*,collaborators(*,profiles(*))')
+    .eq('id', workspaceId);
   if (error) {
     throw new Error('服务器错误');
   }
@@ -73,7 +79,11 @@ export const removeCollaborator = async ({
 }): Promise<boolean> => {
   const [errors, permission] = await to(checkPermission({ token, workspaceId, userId: doUser }));
   if (errors || !permission) throw new Error('没有权限');
-  const { error } = await supabaseNote(token).from('collaborators').delete().eq('workspaceId', workspaceId).eq('userId', userId);
+  const { error } = await supabaseNote(token)
+    .from('collaborators')
+    .delete()
+    .eq('workspaceId', workspaceId)
+    .eq('userId', userId);
   if (error) throw new Error('服务器错误');
   return true;
 };

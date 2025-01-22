@@ -247,8 +247,18 @@ const FromCard = ({
           </Button>
         )}
         <div>
-          <CardTitle>{type === 'create' ? (formType === 'workspace' ? '创建工作区' : '创建项目') : '更新仪表盘'}</CardTitle>
-          <CardDescription>{type === 'create' ? `创建${formType === 'workspace' ? '工作区' : '项目'}，开始管理你的${formType === 'workspace' ? '项目' : ''}` : `更新${formType === 'workspace' ? '工作区' : '项目'}，管理你的${formType === 'workspace' ? '项目' : ''}`}</CardDescription>
+          <CardTitle>
+            {type === 'create'
+              ? formType === 'workspace'
+                ? '创建工作区'
+                : '创建项目'
+              : '更新仪表盘'}
+          </CardTitle>
+          <CardDescription>
+            {type === 'create'
+              ? `创建${formType === 'workspace' ? '工作区' : '项目'}，开始管理你的${formType === 'workspace' ? '项目' : ''}`
+              : `更新${formType === 'workspace' ? '工作区' : '项目'}，管理你的${formType === 'workspace' ? '项目' : ''}`}
+          </CardDescription>
         </div>
       </CardHeader>
       <CardContent>
@@ -256,13 +266,19 @@ const FromCard = ({
           <label className="text-xl mb-4" htmlFor="name">
             {formType === 'workspace' ? '工作区名称' : '项目名称'}
           </label>
-          <Input className={`${formState.errors.name ? 'border-red-500' : ''}`} id="name" {...register('name')} />
+          <Input
+            className={`${formState.errors.name ? 'border-red-500' : ''}`}
+            id="name"
+            {...register('name')}
+          />
           <p className="text-red-500">{formState.errors.name?.message}</p>
 
           <ImageContent>
             <Image src={file || getValues('file')} alt="icon" />
             <UploadP>
-              <span className="text-xl">{formType === 'workspace' ? '工作区图标' : '项目图标'}</span>
+              <span className="text-xl">
+                {formType === 'workspace' ? '工作区图标' : '项目图标'}
+              </span>
               <span className="text-slate-500/50 dark:text-slate-400/50">
                 支持jpg、png、jpeg、svg格式，大小不超过5M
                 <span className="text-red-500">{}</span>
@@ -296,7 +312,14 @@ const FromCard = ({
             </UploadP>
           </ImageContent>
           <Separator className="mt-6" />
-          <Input {...register('file', { onChange: handleFileChange })} accept=".jpg,.png,.jpeg,.svg" id="file" ref={fileRef} type="file" className="hidden" />
+          <Input
+            {...register('file', { onChange: handleFileChange })}
+            accept=".jpg,.png,.jpeg,.svg"
+            id="file"
+            ref={fileRef}
+            type="file"
+            className="hidden"
+          />
           {showFooter && (
             <Footer type={type}>
               {type === 'create' && (
@@ -310,8 +333,21 @@ const FromCard = ({
                   取消
                 </Button>
               )}
-              <Button variant="primary" type="submit" className="dark:text-white" disabled={!canEdit || isCreating || isUpdating || isCreatingProject || isUpdatingProject}>
-                {isCreating ? '创建中...' : isUpdating ? '更新中...' : type === 'create' ? `创建${formType === 'workspace' ? '工作区' : '项目'}` : `更新${formType === 'workspace' ? '工作区' : '项目'}`}
+              <Button
+                variant="primary"
+                type="submit"
+                className="dark:text-white"
+                disabled={
+                  !canEdit || isCreating || isUpdating || isCreatingProject || isUpdatingProject
+                }
+              >
+                {isCreating
+                  ? '创建中...'
+                  : isUpdating
+                    ? '更新中...'
+                    : type === 'create'
+                      ? `创建${formType === 'workspace' ? '工作区' : '项目'}`
+                      : `更新${formType === 'workspace' ? '工作区' : '项目'}`}
               </Button>
             </Footer>
           )}

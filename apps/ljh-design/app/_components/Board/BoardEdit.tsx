@@ -4,7 +4,16 @@ import type { Board, BoardResponse } from '@/app/_types/board';
 import type { UseMutateFunction } from '@tanstack/react-query';
 import { useRef } from 'react';
 import { Button } from '../ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import BoardCreateFrom from './BoardCreateFrom';
 
 const BoardEdit = ({

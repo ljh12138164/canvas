@@ -1,5 +1,10 @@
 <script setup lang="ts" generic="T extends z.ZodAny">
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { FormItem, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';

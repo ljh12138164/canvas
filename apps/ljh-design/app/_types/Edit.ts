@@ -2,10 +2,28 @@ import type { Effect } from '@/app/_lib/utils';
 import * as fabric from 'fabric';
 import material from 'material-colors';
 import type { IconType } from 'react-icons';
-import { FaArrowRight, FaCircle, FaCloud, FaHeart, FaSquare, FaStar, FaWaveSquare } from 'react-icons/fa';
+import {
+  FaArrowRight,
+  FaCircle,
+  FaCloud,
+  FaHeart,
+  FaSquare,
+  FaStar,
+  FaWaveSquare,
+} from 'react-icons/fa';
 import { FaDiamond, FaGear, FaSquareFull } from 'react-icons/fa6';
 import { IoTriangle } from 'react-icons/io5';
-export type TBlendMode = 'multiply' | 'add' | 'difference' | 'screen' | 'subtract' | 'darken' | 'lighten' | 'overlay' | 'exclusion' | 'tint';
+export type TBlendMode =
+  | 'multiply'
+  | 'add'
+  | 'difference'
+  | 'screen'
+  | 'subtract'
+  | 'darken'
+  | 'lighten'
+  | 'overlay'
+  | 'exclusion'
+  | 'tint';
 export type TResizeType = 'bilinear' | 'hermite' | 'sliceHack' | 'lanczos';
 export type TGrayscaleMode = 'average' | 'lightness' | 'luminosity';
 export type ResizeOwnProps = {
@@ -33,7 +51,9 @@ export interface OptionFilterProps {
     title: string;
     value: TBlendMode | TResizeType | TGrayscaleMode;
   }[];
-  value?: (value: TBlendMode | TResizeType | TGrayscaleMode) => fabric.filters.BaseFilter<string, any>;
+  value?: (
+    value: TBlendMode | TResizeType | TGrayscaleMode,
+  ) => fabric.filters.BaseFilter<string, any>;
 }
 export interface SiderProps {
   id: string;
@@ -59,7 +79,21 @@ interface CanFilterChangeType {
   multiply?: (value: any) => fabric.filters.BaseFilter<string, any>;
   change: (SiderProps | CheckboxProps | ColorFilterProps | OptionFilterProps)[];
 }
-export const canfilterArr = ['contrast', 'brightness', 'blur', 'removecolor', 'blendcolor', 'pixelate', 'saturation', 'resize', 'huerotation', 'invert', 'gamma', 'vibrance', 'grayscale'];
+export const canfilterArr = [
+  'contrast',
+  'brightness',
+  'blur',
+  'removecolor',
+  'blendcolor',
+  'pixelate',
+  'saturation',
+  'resize',
+  'huerotation',
+  'invert',
+  'gamma',
+  'vibrance',
+  'grayscale',
+];
 // 可以改变的滤镜
 export const CanfilterSetting: CanFilterChangeType[] = [
   // ok
@@ -132,7 +166,8 @@ export const CanfilterSetting: CanFilterChangeType[] = [
   {
     name: 'removecolor',
     title: '去色',
-    multiply: (obj: { useAlpha: boolean; distance: number; color: string }) => new fabric.filters.RemoveColor(obj),
+    multiply: (obj: { useAlpha: boolean; distance: number; color: string }) =>
+      new fabric.filters.RemoveColor(obj),
     change: [
       {
         id: 'useAlpha',
@@ -245,7 +280,8 @@ export const CanfilterSetting: CanFilterChangeType[] = [
           { title: '亮度', value: 'lightness' },
           { title: '光度', value: 'luminosity' },
         ],
-        value: (value: TBlendMode | TResizeType | TGrayscaleMode) => new fabric.filters.Grayscale({ mode: value as TGrayscaleMode }),
+        value: (value: TBlendMode | TResizeType | TGrayscaleMode) =>
+          new fabric.filters.Grayscale({ mode: value as TGrayscaleMode }),
       },
     ],
   },
@@ -416,7 +452,17 @@ export const Font: {
 ];
 
 //颜色预设
-export const JSON_KEY = ['name', 'gradientAngle', 'selectable', 'hasControls', 'linkData', 'editable', 'extensionType', 'extension', 'filtersArray'];
+export const JSON_KEY = [
+  'name',
+  'gradientAngle',
+  'selectable',
+  'hasControls',
+  'linkData',
+  'editable',
+  'extensionType',
+  'extension',
+  'filtersArray',
+];
 export const colors = [
   material.red[500],
   material.pink[500],
@@ -524,7 +570,10 @@ export interface DefalutFabicObject {
 export interface NewFabicObject extends DefalutFabicObject {
   type: FarbicType;
   id: string;
-  path?: fabric.TSimplePathData | fabric.Path<Partial<fabric.PathProps>, fabric.SerializedPathProps, fabric.ObjectEvents> | null;
+  path?:
+    | fabric.TSimplePathData
+    | fabric.Path<Partial<fabric.PathProps>, fabric.SerializedPathProps, fabric.ObjectEvents>
+    | null;
 }
 export interface AddFabicObject extends NewFabicObject {
   changeType: string;
@@ -644,7 +693,12 @@ export const GEAR_PATH = {
 };
 
 // 创建波浪线
-const wavePath = new Array(4).fill(0).reduce((path, _, i) => `${path} Q ${50 + i * 100},${i % 2 ? 0 : 100} ${100 + i * 100},50`, 'M 0,50');
+const wavePath = new Array(4)
+  .fill(0)
+  .reduce(
+    (path, _, i) => `${path} Q ${50 + i * 100},${i % 2 ? 0 : 100} ${100 + i * 100},50`,
+    'M 0,50',
+  );
 export const WAVE_PATH = {
   left: 100,
   top: 100,
@@ -671,7 +725,9 @@ export interface AddObject {
   option: DefalutFabicObject;
   icon: IconType;
   points?: { x: number; y: number }[];
-  path?: fabric.TSimplePathData | fabric.Path<Partial<fabric.PathProps>, fabric.SerializedPathProps, fabric.ObjectEvents>;
+  path?:
+    | fabric.TSimplePathData
+    | fabric.Path<Partial<fabric.PathProps>, fabric.SerializedPathProps, fabric.ObjectEvents>;
   otherOption?: DefalutFabicObject;
 }
 export const addObject: AddObject[] = [
@@ -809,10 +865,76 @@ export const addObject: AddObject[] = [
 ];
 
 export type FontStyle = 'normal' | 'italic';
-export const fonts = ['Arial', 'Arial Black', 'Verdana', 'Hevetica', 'Tahoma', 'Trebuchet MS', 'Times New Roman', 'Georgia', 'Garamond', 'Courier New', 'Brush Script MT', 'Palatino', 'Bookman', 'Comic Sans MS', 'Impact', 'Lucida Sans Unicode', 'Geneva', 'Lucida Grande'];
+export const fonts = [
+  'Arial',
+  'Arial Black',
+  'Verdana',
+  'Hevetica',
+  'Tahoma',
+  'Trebuchet MS',
+  'Times New Roman',
+  'Georgia',
+  'Garamond',
+  'Courier New',
+  'Brush Script MT',
+  'Palatino',
+  'Bookman',
+  'Comic Sans MS',
+  'Impact',
+  'Lucida Sans Unicode',
+  'Geneva',
+  'Lucida Grande',
+];
 // 滤镜
-export type Filter = 'none' | 'polaroid' | 'sepia' | 'kodachrome' | 'contrast' | 'brightness' | 'brownie' | 'vintage' | 'grayscale' | 'invert' | 'technicolor' | 'pixelate' | 'blur' | 'sharpen' | 'emboss' | 'removecolor' | 'blackwhite' | 'vibrance' | 'blendcolor' | 'huerotation' | 'resize' | 'saturation' | 'gamma';
-export const filters: Filter[] = ['none', 'polaroid', 'sepia', 'kodachrome', 'contrast', 'brightness', 'brownie', 'vintage', 'grayscale', 'invert', 'technicolor', 'pixelate', 'blur', 'sharpen', 'emboss', 'removecolor', 'blackwhite', 'vibrance', 'blendcolor', 'huerotation', 'resize', 'saturation', 'gamma'];
+export type Filter =
+  | 'none'
+  | 'polaroid'
+  | 'sepia'
+  | 'kodachrome'
+  | 'contrast'
+  | 'brightness'
+  | 'brownie'
+  | 'vintage'
+  | 'grayscale'
+  | 'invert'
+  | 'technicolor'
+  | 'pixelate'
+  | 'blur'
+  | 'sharpen'
+  | 'emboss'
+  | 'removecolor'
+  | 'blackwhite'
+  | 'vibrance'
+  | 'blendcolor'
+  | 'huerotation'
+  | 'resize'
+  | 'saturation'
+  | 'gamma';
+export const filters: Filter[] = [
+  'none',
+  'polaroid',
+  'sepia',
+  'kodachrome',
+  'contrast',
+  'brightness',
+  'brownie',
+  'vintage',
+  'grayscale',
+  'invert',
+  'technicolor',
+  'pixelate',
+  'blur',
+  'sharpen',
+  'emboss',
+  'removecolor',
+  'blackwhite',
+  'vibrance',
+  'blendcolor',
+  'huerotation',
+  'resize',
+  'saturation',
+  'gamma',
+];
 
 export interface buildEditorProps {
   canvas: fabric.Canvas;

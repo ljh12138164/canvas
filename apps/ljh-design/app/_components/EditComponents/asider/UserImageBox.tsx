@@ -26,8 +26,20 @@ export const UserImageBox = ({
               type="button"
               className="relative w-full  h-[100px]  hover:opacity-75 transition bg-muted rounded-sm overflow-hidden group border"
             >
-              <Image src={item.url} fill quality="75" priority={true} sizes="100%" alt="用户图片" className="object-cover" />
-              <Link href={item.url} target="_blank" className="opacity-0 group-hover:opacity-100 absolute w-full left-0 bottom-0 text-[10px] bg-black/50 text-white p-1 text-left">
+              <Image
+                src={item.url}
+                fill
+                quality="75"
+                priority={true}
+                sizes="100%"
+                alt="用户图片"
+                className="object-cover"
+              />
+              <Link
+                href={item.url}
+                target="_blank"
+                className="opacity-0 group-hover:opacity-100 absolute w-full left-0 bottom-0 text-[10px] bg-black/50 text-white p-1 text-left"
+              >
                 {index + 1}
               </Link>
             </button>
@@ -47,7 +59,11 @@ export const UserImageBox = ({
           <p className=" text-muted-foreground text-xs">获取图片失败</p>
         </div>
       )}
-      {Array.isArray(data) && data.length === 0 && <div className="flex justify-center items-center text-sm text-muted-foreground w-full h-full">用户无上传图片</div>}
+      {Array.isArray(data) && data.length === 0 && (
+        <div className="flex justify-center items-center text-sm text-muted-foreground w-full h-full">
+          用户无上传图片
+        </div>
+      )}
     </div>
   );
 };

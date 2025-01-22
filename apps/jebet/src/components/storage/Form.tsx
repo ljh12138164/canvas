@@ -114,7 +114,9 @@ const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) 
   return (
     <section className="flex flex-col gap-4">
       <DialogHeader>
-        <DialogTitle className="text-2xl font-bold">{type === 'create' ? '创建文件' : '更新文件'}</DialogTitle>
+        <DialogTitle className="text-2xl font-bold">
+          {type === 'create' ? '创建文件' : '更新文件'}
+        </DialogTitle>
       </DialogHeader>
       <FormContainer onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -122,15 +124,24 @@ const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) 
             文件名
           </Label>
           <Input {...register('name')} id="name" placeholder="请输入文件名" className="mt-2" />
-          {formState.errors.name && <p className="text-red-500 text-sm">{formState.errors.name.message}</p>}
+          {formState.errors.name && (
+            <p className="text-red-500 text-sm">{formState.errors.name.message}</p>
+          )}
         </div>
 
         <div>
           <Label htmlFor="description" id="description">
             文件描述
           </Label>
-          <Input {...register('description')} id="description" placeholder="请输入文件描述(选填)" className="mt-2" />
-          {formState.errors.description && <p className="text-red-500 text-sm">{formState.errors.description.message}</p>}
+          <Input
+            {...register('description')}
+            id="description"
+            placeholder="请输入文件描述(选填)"
+            className="mt-2"
+          />
+          {formState.errors.description && (
+            <p className="text-red-500 text-sm">{formState.errors.description.message}</p>
+          )}
         </div>
         <div className="flex flex-col gap-2">
           {!file && !defaultData?.file && (
@@ -175,7 +186,11 @@ const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) 
             取消
           </Button>
         </DialogClose>
-        <Button type="submit" disabled={!!(!file && !defaultData?.file) || isLoading || updatePending} className="w-full mt-auto">
+        <Button
+          type="submit"
+          disabled={!!(!file && !defaultData?.file) || isLoading || updatePending}
+          className="w-full mt-auto"
+        >
           提交
         </Button>
       </FormContainer>

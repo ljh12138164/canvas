@@ -1,6 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { useDeleteWorkspace } from '@/server/hooks/board';
 import { useProjectDelete } from '@/server/hooks/project';
 import { useQueryClient } from '@tanstack/react-query';
@@ -94,7 +103,11 @@ export default function DeleteCard({
                     取消
                   </Button>
                 </DialogClose>
-                <Button variant="destructive" onClick={handleDelete} disabled={isDeleting || isDeletingProject}>
+                <Button
+                  variant="destructive"
+                  onClick={handleDelete}
+                  disabled={isDeleting || isDeletingProject}
+                >
                   {isDeleting ? '删除中...' : `删除${type === 'workspace' ? '工作区' : '项目'}`}
                 </Button>
               </DialogFooter>

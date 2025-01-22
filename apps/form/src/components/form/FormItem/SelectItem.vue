@@ -19,7 +19,11 @@ const activeItem = ref<string | null>(null);
 const props = defineProps<{
   id: string;
   data: Select;
-  updateList2: (id: string, type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[]) => void;
+  updateList2: (
+    id: string,
+    type: FormType,
+    newValue: string | boolean | number | undefined | { name: string; id: string }[],
+  ) => void;
 }>();
 const list = ref(props.data?.options);
 // 默认值

@@ -77,7 +77,11 @@ export const getJebtTask = async ({
 }) => {
   const [error] = await to(checkMember(currentUserId, workspaceId));
   if (error) throw new Error('无权限');
-  const query = supabaseJebt.from('tasks').select('*,workspace(*,member(*)),projects(*)').eq('workspaceId', workspaceId).order('created_at', { ascending: false });
+  const query = supabaseJebt
+    .from('tasks')
+    .select('*,workspace(*,member(*)),projects(*)')
+    .eq('workspaceId', workspaceId)
+    .order('created_at', { ascending: false });
 
   if (projectId) query.eq('projectId', projectId);
   if (status && status !== TaskStatus.ALL) query.eq('status', status);
@@ -111,7 +115,12 @@ export const deleteJebtTask = async ({
 }) => {
   const [error] = await to(checkMember(currentUserId, workspaceId));
   if (error) throw new Error('无权限');
-  const { error: taskError } = await supabaseJebt.from('tasks').delete().eq('id', id).eq('workspaceId', workspaceId).eq('projectId', projectId);
+  const { error: taskError } = await supabaseJebt
+    .from('tasks')
+    .delete()
+    .eq('id', id)
+    .eq('workspaceId', workspaceId)
+    .eq('projectId', projectId);
   if (taskError) throw new Error('服务器错误');
   return true;
 };
@@ -182,7 +191,12 @@ export const getJebtTaskDetail = async ({
 }): Promise<Task & { remark: Remark[] }> => {
   const [error] = await to(checkUser(currentUserId, workspaceId));
   if (error) throw new Error('无权限');
-  const { data, error: taskError } = await supabaseJebt.from('tasks').select('*,remark(*)').eq('id', id).eq('workspaceId', workspaceId).eq('projectId', projectId);
+  const { data, error: taskError } = await supabaseJebt
+    .from('tasks')
+    .select('*,remark(*)')
+    .eq('id', id)
+    .eq('workspaceId', workspaceId)
+    .eq('projectId', projectId);
 
   if (taskError) throw new Error('服务器错误');
   return data[0];

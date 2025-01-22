@@ -4,7 +4,9 @@ import { ChevronRight } from 'lucide-vue-next';
 import { ContextMenuSubTrigger, type ContextMenuSubTriggerProps, useForwardProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<ContextMenuSubTriggerProps & { class?: HTMLAttributes['class']; inset?: boolean }>();
+const props = defineProps<
+  ContextMenuSubTriggerProps & { class?: HTMLAttributes['class']; inset?: boolean }
+>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

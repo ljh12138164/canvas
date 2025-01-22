@@ -21,13 +21,18 @@ const ChatMeta = observer(({ workspace }: ChatMetaProps) => {
   const { connectCount, socket } = chatStore;
   return (
     <HeaderContainer>
-      {socket && <p className="text-sm text-muted-foreground whitespace-nowrap">在线：{connectCount}</p>}
+      {socket && (
+        <p className="text-sm text-muted-foreground whitespace-nowrap">在线：{connectCount}</p>
+      )}
       <div className="text-center">
         <p>{workspace.name}</p>
       </div>
       <ConnectedContent>
         {socket ? (
-          <Badge variant="outline" className="bg-green-300 py-2 ml-auto  dark:bg-green-300/10 w-16 ">
+          <Badge
+            variant="outline"
+            className="bg-green-300 py-2 ml-auto  dark:bg-green-300/10 w-16 "
+          >
             已连接
           </Badge>
         ) : (

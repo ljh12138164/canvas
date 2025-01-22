@@ -9,7 +9,10 @@ import type { BaseChartProps } from '.';
 
 const props = withDefaults(
   defineProps<
-    Pick<BaseChartProps<T>, 'data' | 'colors' | 'index' | 'margin' | 'showLegend' | 'showTooltip' | 'filterOpacity'> & {
+    Pick<
+      BaseChartProps<T>,
+      'data' | 'colors' | 'index' | 'margin' | 'showLegend' | 'showTooltip' | 'filterOpacity'
+    > & {
       /**
        * Sets the name of the key containing the quantitative chart values.
        */
@@ -52,7 +55,11 @@ const index = computed(() => props.index as KeyOfT);
 
 const isMounted = useMounted();
 const activeSegmentKey = ref<string>();
-const colors = computed(() => (props.colors?.length ? props.colors : defaultColors(props.data.filter((d) => d[props.category]).filter(Boolean).length)));
+const colors = computed(() =>
+  props.colors?.length
+    ? props.colors
+    : defaultColors(props.data.filter((d) => d[props.category]).filter(Boolean).length),
+);
 const legendItems = computed(() =>
   props.data.map((item, i) => ({
     name: item[props.index],

@@ -14,9 +14,17 @@ import Switch from './FormItem/switch.vue';
 const props = defineProps<{
   id: string[];
   data: CreateFormItem | undefined;
-  updateList: (id: string[], type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => void;
+  updateList: (
+    id: string[],
+    type: FormType,
+    newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
+  ) => void;
 }>();
-const updateList2 = (id: string, type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => {
+const updateList2 = (
+  id: string,
+  type: FormType,
+  newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
+) => {
   props.updateList(props.id, type, newValue);
 };
 </script>

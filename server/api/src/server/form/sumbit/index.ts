@@ -45,7 +45,10 @@ export const getMySubmit = async ({
   token: string;
   userId: string;
 }): Promise<(SumbitForm & { form: Form })[]> => {
-  const { data, error } = await supabaseForm(token).from('submit').select('*,form(*)').eq('userId', userId);
+  const { data, error } = await supabaseForm(token)
+    .from('submit')
+    .select('*,form(*)')
+    .eq('userId', userId);
   if (error) throw new Error('服务器错误');
   return data;
 };

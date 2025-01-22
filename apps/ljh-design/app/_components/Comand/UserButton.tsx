@@ -1,6 +1,11 @@
 'use client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/_components/ui/Avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/_components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/app/_components/ui/dropdown-menu';
 import { logout } from '@/app/_database/user';
 import useUsers from '@/app/_hook/useUser';
 import { User } from 'lucide-react';

@@ -1,4 +1,13 @@
-import type { BigText, CreateFormItem, DatePicker, FormInput, ObjectItem, Radio, Select, Slider } from '@/types/form';
+import type {
+  BigText,
+  CreateFormItem,
+  DatePicker,
+  FormInput,
+  ObjectItem,
+  Radio,
+  Select,
+  Slider,
+} from '@/types/form';
 import type { Files } from '@/types/form';
 import type { Ref } from 'vue';
 import { z } from 'zod';
@@ -24,7 +33,10 @@ export const checkInputProps = (obj: Record<string | 'inputProps', any>) => {
  * @param schema zod校验
  * @returns zod校验
  */
-export const genAutoFormPlaceHolder = (obj: Record<string | 'inputProps', any>, placeholder: string) => {
+export const genAutoFormPlaceHolder = (
+  obj: Record<string | 'inputProps', any>,
+  placeholder: string,
+) => {
   if (placeholder) obj.inputProps.placeholder = placeholder;
   return obj;
 };
@@ -90,7 +102,8 @@ export const inputZod = (schema: FormInput, fieldConfig: Ref<Record<string, any>
     // 必填
     if (schema.isRequired) zodSchema = zodSchema?.min(1, { message: '必填' });
     // 标签
-    if (schema.description && !schema.hiddenLabel) zodSchema = hasDescription(zodSchema, schema.description);
+    if (schema.description && !schema.hiddenLabel)
+      zodSchema = hasDescription(zodSchema, schema.description);
     else obj.hideLabel = true;
     // 默认值
     if (schema.defaultValue) {
@@ -107,10 +120,13 @@ export const inputZod = (schema: FormInput, fieldConfig: Ref<Record<string, any>
     // 必填
     if (schema.isRequired) zodSchema = zodSchema.min(0, { message: '必填' });
     // 标签
-    if (schema.description && !schema.hiddenLabel) zodSchema = hasDescription(zodSchema, schema.description);
+    if (schema.description && !schema.hiddenLabel)
+      zodSchema = hasDescription(zodSchema, schema.description);
     else obj.hideLabel = true;
     // 默认值
-    zodSchema = zodSchema.default(Number.isNaN(Number(schema.defaultValue)) ? 0 : Number(schema.defaultValue));
+    zodSchema = zodSchema.default(
+      Number.isNaN(Number(schema.defaultValue)) ? 0 : Number(schema.defaultValue),
+    );
     // 非必填
     if (!schema.isRequired) zodSchema = zodSchema.optional();
   }
@@ -175,7 +191,8 @@ export const bigTextZod = (schema: BigText, fieldConfig: Ref<Record<string, any>
   // 必填
   if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' });
   // 标签
-  if (schema.description && !schema.hiddenLabel) zodSchema = hasDescription(zodSchema, schema.description);
+  if (schema.description && !schema.hiddenLabel)
+    zodSchema = hasDescription(zodSchema, schema.description);
   else obj.hideLabel = true;
 
   // 默认值
@@ -267,7 +284,8 @@ export const fileZod = (schema: Files, fieldConfig: Ref<Record<string, any>>) =>
   // 必填
   if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' });
   // 标签
-  if (schema.description && !schema.hiddenLabel) zodSchema = hasDescription(zodSchema, schema.description);
+  if (schema.description && !schema.hiddenLabel)
+    zodSchema = hasDescription(zodSchema, schema.description);
   else obj.hideLabel = true;
 
   // 默认值
@@ -295,7 +313,9 @@ export const objectZod = (schema: ObjectItem, fieldConfig: Ref<Record<string, an
   for (const item of schema.children) {
     const itemSchema = getZodSchema(item, fieldConfig, 'obj');
     if (itemSchema) {
-      zodObject = zodObject.merge(z.object({ [item.description || item.defaultTypeName]: itemSchema }));
+      zodObject = zodObject.merge(
+        z.object({ [item.description || item.defaultTypeName]: itemSchema }),
+      );
     }
   }
   if (schema.description) return zodObject.describe(schema.description);
@@ -308,7 +328,11 @@ export const objectZod = (schema: ObjectItem, fieldConfig: Ref<Record<string, an
  * @param fieldConfig<Ref<Record<string, any>>>  配置
  * @returns zod校验
  */
-export function getZodSchema(schema: CreateFormItem, fieldConfig: Ref<Record<string, any>>, type?: 'obj') {
+export function getZodSchema(
+  schema: CreateFormItem,
+  fieldConfig: Ref<Record<string, any>>,
+  type?: 'obj',
+) {
   // 输入框
   if (schema.type === 'input') {
     const zodSchema = inputZod(schema, fieldConfig);

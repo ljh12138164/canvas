@@ -13,7 +13,11 @@ type FolderRequest = InferRequestType<typeof client.folder.create.$post>;
  * @param tokenb
  */
 export const useCreateFolder = () => {
-  const { mutate: createFolder, isPending: createFolderIsLoading } = useMutation<Folder, Error, FolderRequest>({
+  const { mutate: createFolder, isPending: createFolderIsLoading } = useMutation<
+    Folder,
+    Error,
+    FolderRequest
+  >({
     mutationFn: async (data) => {
       const token = await getNewToken();
       if (!token) router.push('/login');
@@ -37,7 +41,11 @@ type DeleteFolderResponse = InferResponseType<typeof client.folder.delete.$delet
  * @param folderId
  */
 export const useDeleteFolder = () => {
-  const { mutate: deleteFolder, isPending: deleteFolderIsLoading } = useMutation<DeleteFolderResponse, Error, DeleteFolderRequest>({
+  const { mutate: deleteFolder, isPending: deleteFolderIsLoading } = useMutation<
+    DeleteFolderResponse,
+    Error,
+    DeleteFolderRequest
+  >({
     mutationFn: async (data) => {
       const token = await getNewToken();
       if (!token) router.push('/login');

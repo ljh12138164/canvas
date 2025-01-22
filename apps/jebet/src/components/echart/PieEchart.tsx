@@ -45,7 +45,13 @@ export const PieEchart = ({
       legend: {
         bottom: 10,
         left: 'center',
-        data: [TaskStatus.BACKLOG, TaskStatus.TODO, TaskStatus.IN_PROGRESS, TaskStatus.DONE, TaskStatus.IN_REVIEW],
+        data: [
+          TaskStatus.BACKLOG,
+          TaskStatus.TODO,
+          TaskStatus.IN_PROGRESS,
+          TaskStatus.DONE,
+          TaskStatus.IN_REVIEW,
+        ],
       },
       // 数据
       series: [

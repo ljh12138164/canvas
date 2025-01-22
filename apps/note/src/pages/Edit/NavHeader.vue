@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import ThemeChange from '@/components/common/ThemeChange.vue';
 import { Button } from '@/components/ui/button';
-import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from '@/components/ui/menubar';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { downloadFile } from '@/lib';
@@ -36,9 +42,14 @@ watch(
       fileId.value = route.params.fileId as string;
     }
     if (route.params.fileId) {
-      fileName.value = props.folders?.find((item) => item.id === folderId.value)?.files.find((item) => item.id === fileId.value)?.title + nanoid(6) || `${nanoid(6)}文件`;
+      fileName.value =
+        props.folders
+          ?.find((item) => item.id === folderId.value)
+          ?.files.find((item) => item.id === fileId.value)?.title + nanoid(6) || `${nanoid(6)}文件`;
     } else {
-      fileName.value = props.folders?.find((item) => item.id === folderId.value)?.title + nanoid(6) || `${nanoid(6)}文件夹`;
+      fileName.value =
+        props.folders?.find((item) => item.id === folderId.value)?.title + nanoid(6) ||
+        `${nanoid(6)}文件夹`;
     }
   },
   {

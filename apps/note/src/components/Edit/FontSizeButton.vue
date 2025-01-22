@@ -9,7 +9,11 @@ import DropdownMenuItem from '../ui/dropdown-menu/DropdownMenuItem.vue';
 const props = defineProps<{
   editor: Editor | null;
 }>();
-const fontSize = ref(props.editor?.getAttributes('textStyle').fontSize ? props.editor.getAttributes('textStyle').fontSize.replace('px', '') : '16');
+const fontSize = ref(
+  props.editor?.getAttributes('textStyle').fontSize
+    ? props.editor.getAttributes('textStyle').fontSize.replace('px', '')
+    : '16',
+);
 </script>
 <template>
   <TiptopDown

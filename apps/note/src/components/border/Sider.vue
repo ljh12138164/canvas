@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useGetWorkspaceById } from '@/hooks/workspace';
 import { useQueryClient } from '@tanstack/vue-query';
 import { ChevronRight, MoreHorizontal, Pencil, Plus, Trash2 } from 'lucide-vue-next';
@@ -9,7 +16,13 @@ import { useRoute, useRouter } from 'vue-router';
 import ResponsePop from '../common/ResponsePop.vue';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { Input } from '../ui/input';
-import { SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '../ui/sidebar';
+import {
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from '../ui/sidebar';
 import { Skeleton } from '../ui/skeleton';
 import FileFrom from './FileFrom.vue';
 const queryClient = useQueryClient();

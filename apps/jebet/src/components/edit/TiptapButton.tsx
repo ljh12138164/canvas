@@ -21,7 +21,17 @@ const TiptapButton = ({ icon, onClick, active, key, disabled, title }: TiptapBut
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <TiptopButtons key={key + title} variant="ghost" onClick={onClick} disabled={!disabled} className={active ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700' : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'}>
+          <TiptopButtons
+            key={key + title}
+            variant="ghost"
+            onClick={onClick}
+            disabled={!disabled}
+            className={
+              active
+                ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'
+            }
+          >
             {icon}
           </TiptopButtons>
         </TooltipTrigger>

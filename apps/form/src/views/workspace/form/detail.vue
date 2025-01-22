@@ -17,7 +17,8 @@ const { toast } = useToast();
 const router = useRouter();
 const route = useRoute();
 const paramsId = ref<string>(route.params.id as string);
-const { mutate: updateBoardInviteCode, isPending: isUpdateBoardInviteCodePending } = useUpdateBoardInviteCode();
+const { mutate: updateBoardInviteCode, isPending: isUpdateBoardInviteCodePending } =
+  useUpdateBoardInviteCode();
 const queryClient = useQueryClient();
 
 watch(

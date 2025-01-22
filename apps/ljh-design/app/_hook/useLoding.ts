@@ -13,7 +13,13 @@ type UseLoadingStateProps = {
  * ### 初始化画布
  * @param param0
  */
-export const useLoading = ({ authZoom, canvas, initState, canvasHistory, setHistoryIndex }: UseLoadingStateProps) => {
+export const useLoading = ({
+  authZoom,
+  canvas,
+  initState,
+  canvasHistory,
+  setHistoryIndex,
+}: UseLoadingStateProps) => {
   const inititaized = useRef(false);
   const [isLoading, setLoading] = useState<boolean>(true);
   useEffect(() => {

@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import FileFrom from '@/components/border/FileFrom.vue';
+import ResponsePop from '@/components/common/ResponsePop.vue';
 import { Button } from '@/components/ui/button';
 import Skeleton from '@/components/ui/skeleton/Skeleton.vue';
 import WorkspaceTable from '@/components/workspace/WorkspaceTable.vue';
 import { useGetWorkspaceById } from '@/hooks/workspace';
 import { useQueryClient } from '@tanstack/vue-query';
+import { Plus } from 'lucide-vue-next';
 import { onBeforeMount } from 'vue';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -11,7 +14,9 @@ const queryClient = useQueryClient();
 
 const route = useRoute();
 const workspaceId = ref(route.params.workspaceId as string);
-const { workspace, workspaceError, workspaceIsLoading, workspaceIsFetching } = useGetWorkspaceById(workspaceId.value);
+const { workspace, workspaceError, workspaceIsLoading, workspaceIsFetching } = useGetWorkspaceById(
+  workspaceId.value,
+);
 watch(
   () => route.params.workspaceId,
   () => {
@@ -32,6 +37,20 @@ const handleManageCollaborators = () => {
 </script>
 <template>
   <div class="workspace-item-container">
+    <nav class="nav-container">
+      <Button @click="router.back()">返回</Button>
+      <ResponsePop title="新建文件夹" ref="responsePopRef">
+      <template #trigger>
+        <Button class="flex items-center">
+          <Plus class="ml-auto" />
+          新建文件夹
+        </Button>
+      </template>
+      <template #content>
+        <FileFrom />
+      </template>
+    </ResponsePop>
+    </nav>
     <div v-if="workspaceIsLoading || workspaceIsFetching">
       <div class="space-y-4">
         <!-- 标题骨架 -->
@@ -83,5 +102,10 @@ const handleManageCollaborators = () => {
   display: flex;
   /* align-items: center; */
   justify-content: start;
+}
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+
 }
 </style>

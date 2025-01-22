@@ -19,7 +19,9 @@ export const chat = new Hono()
     ),
     async (c) => {
       const { workspaceId, userId, pageTo } = c.req.valid('query');
-      const [error, messages] = await to(getChatMessage(workspaceId, userId, Number.isNaN(+pageTo) ? 0 : +pageTo));
+      const [error, messages] = await to(
+        getChatMessage(workspaceId, userId, Number.isNaN(+pageTo) ? 0 : +pageTo),
+      );
       if (error) return c.json(error.message, errorCheck(error));
       return c.json({ messages });
     },
@@ -55,7 +57,9 @@ export const chat = new Hono()
     async (c) => {
       const { file, userId, workspaceId } = c.req.valid('form');
       if (!file) return c.json({ message: '文件不能为空' }, 400);
-      const [error, data] = await to(uploadImage(workspaceId as string, userId as string, file as File));
+      const [error, data] = await to(
+        uploadImage(workspaceId as string, userId as string, file as File),
+      );
       if (error) return c.json(error.message, errorCheck(error));
       return c.json({ message: data });
     },

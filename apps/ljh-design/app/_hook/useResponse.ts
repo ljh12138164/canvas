@@ -23,7 +23,9 @@ const useResponse = ({ canvas, contain }: ResponseProps) => {
     //缩放比例
     const zoomRation = 0.85;
     //画布对象
-    const localWorkspace = canvas.getObjects().find((item) => (item as InitFabicObject).name === 'board');
+    const localWorkspace = canvas
+      .getObjects()
+      .find((item) => (item as InitFabicObject).name === 'board');
     // 缩放
 
     if (!localWorkspace) return;

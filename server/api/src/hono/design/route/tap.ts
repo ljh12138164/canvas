@@ -16,11 +16,15 @@ const tap = new Hono()
     return c.json(data);
   })
   // 创建标签
-  .post('/create', zValidator('json', z.object({ tag: z.string(), userId: z.string() })), async (c) => {
-    const { auth, token } = getSupabaseAuth(c);
-    const { tag } = c.req.valid('json');
-    const [error, data] = await to(createUserTap({ userId: auth.sub, token, tag }));
-    if (error) return c.json({ message: error.message }, errorCheck(error));
-    return c.json(data);
-  });
+  .post(
+    '/create',
+    zValidator('json', z.object({ tag: z.string(), userId: z.string() })),
+    async (c) => {
+      const { auth, token } = getSupabaseAuth(c);
+      const { tag } = c.req.valid('json');
+      const [error, data] = await to(createUserTap({ userId: auth.sub, token, tag }));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    },
+  );
 export default tap;

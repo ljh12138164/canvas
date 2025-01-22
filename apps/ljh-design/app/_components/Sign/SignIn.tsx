@@ -82,22 +82,50 @@ const SignIn = () => {
         <section className="space-y-2.5 mt-6 flex flex-col gap-y-2.5">
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
             <div className={`${login ? 'hidden' : 'block'}`}>
-              <Input {...register('name')} placeholder="用户名" className={`${formState.errors.name && 'border-red-500'}`} />
-              {formState.errors.name && <span className="text-red-500 text-sm">{formState.errors.name.message}</span>}
+              <Input
+                {...register('name')}
+                placeholder="用户名"
+                className={`${formState.errors.name && 'border-red-500'}`}
+              />
+              {formState.errors.name && (
+                <span className="text-red-500 text-sm">{formState.errors.name.message}</span>
+              )}
             </div>
             <div>
-              <Input {...register('accoute')} placeholder="请输入邮箱" className={`${formState.errors.accoute && 'border-red-500'}`} />
-              {formState.errors?.accoute && <span className="text-red-500 text-sm">{formState.errors?.accoute.message}</span>}
+              <Input
+                {...register('accoute')}
+                placeholder="请输入邮箱"
+                className={`${formState.errors.accoute && 'border-red-500'}`}
+              />
+              {formState.errors?.accoute && (
+                <span className="text-red-500 text-sm">{formState.errors?.accoute.message}</span>
+              )}
             </div>
             <div className=" relative">
               {showPassword ? (
-                <BsEye onClick={() => setShowPassword((show) => !show)} size={18} className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2  rounded-md hover:text-blue-500 transition-colors duration-300  " />
+                <BsEye
+                  onClick={() => setShowPassword((show) => !show)}
+                  size={18}
+                  className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2  rounded-md hover:text-blue-500 transition-colors duration-300  "
+                />
               ) : (
-                <BsEyeSlash onClick={() => setShowPassword((show) => !show)} size={18} className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2  hover:text-blue-500    transition-colors duration-300  " />
+                <BsEyeSlash
+                  onClick={() => setShowPassword((show) => !show)}
+                  size={18}
+                  className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2  hover:text-blue-500    transition-colors duration-300  "
+                />
               )}
 
-              <Input {...register('password')} placeholder="密码" className={`${formState.errors.password && 'border-red-500'}`} type={showPassword ? 'text' : 'password'} maxLength={20} />
-              {formState.errors.password && <span className="text-red-500 text-sm">{formState.errors.password.message}</span>}
+              <Input
+                {...register('password')}
+                placeholder="密码"
+                className={`${formState.errors.password && 'border-red-500'}`}
+                type={showPassword ? 'text' : 'password'}
+                maxLength={20}
+              />
+              {formState.errors.password && (
+                <span className="text-red-500 text-sm">{formState.errors.password.message}</span>
+              )}
             </div>
             <Button type="submit" className="w-full mt-2.5" disabled={loading}>
               {login ? `登录${loading ? '中...' : ''}` : `注册${loading ? '中...' : ''}`}

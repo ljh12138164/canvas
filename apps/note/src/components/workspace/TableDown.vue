@@ -1,27 +1,42 @@
 <script setup lang="ts">
+import FileFrom from '@/components/border/FileFrom.vue';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useDeleteFolder } from '@/hooks/floders';
 import type { getWorkspaceByIdResponse } from '@/hooks/workspace';
 import { useQueryClient } from '@tanstack/vue-query';
-import { MoreVertical, Pencil, Presentation, Trash2 } from 'lucide-vue-next';
-import { FormInputIcon } from 'lucide-vue-next';
+import { Eye, MoreVertical, Pencil, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+const router = useRouter();
+const route = useRoute();
 const queryClient = useQueryClient();
 const { deleteFolder, deleteFolderIsLoading } = useDeleteFolder();
 
 const closeRef = ref<HTMLButtonElement>();
-const closeRef2 = ref<HTMLButtonElement>();
 const props = defineProps<{
-  payment: getWorkspaceByIdResponse['folders'][];
+  payment: getWorkspaceByIdResponse['folders'][number];
 }>();
-const handleUpdateFomr = () => {};
-const handlePreview = () => {};
 const handleDelete = () => {
   deleteFolder(
-    { query: { id: props.payment.id, workspaceId: props.payment.workspaceId } },
+    {
+      query: { id: props.payment.id!, workspaceId: props.payment.workspaceId },
+    },
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['folders'] });
@@ -29,29 +44,22 @@ const handleDelete = () => {
     },
   );
 };
+const handleDetail = () => {
+  router.push(`/workspace/${route.params.workspaceId}/detail/${props.payment.id}`);
+};
 </script>
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
-      <Button variant="ghost" class="p-0 w-full">
+      <Button variant="ghost" class="p-0 w-full" @click.stop="">
         <MoreVertical />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
-      <DropdownMenuItem class="flex items-center gap-2" asChild>
-        <Button
-          variant="ghost"
-          class="p-0 w-full cursor-pointer"
-          @click.stop="handlePreview"
-        >
-          <Presentation />
-          <span>文件夹</span>
-        </Button>
-      </DropdownMenuItem>
-      <DropdownMenuItem class="flex items-center gap-2" asChild>
-        <Button variant="ghost" class="p-0 w-full cursor-pointer">
-          <FormInputIcon />
-          <span>文件夹编辑</span>
+      <DropdownMenuItem as-child>
+        <Button variant="ghost" class="p-0 w-full cursor-pointer" @click="handleDetail">
+          <Eye />
+          <span>查看详细</span>
         </Button>
       </DropdownMenuItem>
       <DropdownMenuItem class="flex items-center gap-2" asChild>
@@ -69,16 +77,12 @@ const handleDelete = () => {
             <DialogDescription>
               <p>确定要编辑文件夹吗？</p>
             </DialogDescription>
-            <Input />
-            <Input />
-            <DialogFooter>
-              <DialogClose>
-                <Button ref="closeRef2"> 取消 </Button>
-              </DialogClose>
-              <Button variant="destructive">
-                <p class="flex items-center gap-2"><Pencil />编辑</p>
-              </Button>
-            </DialogFooter>
+            <FileFrom
+              edit
+              :title="props.payment.title"
+              :inconId="props.payment.inconId"
+              :id="props.payment.id"
+            />
           </DialogContent>
         </Dialog>
       </DropdownMenuItem>

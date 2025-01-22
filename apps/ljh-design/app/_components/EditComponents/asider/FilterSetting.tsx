@@ -1,8 +1,23 @@
 import { Label } from '@/app/_components/ui/label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/app/_components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/app/_components/ui/select';
 import { Separator } from '@/app/_components/ui/separator';
 import { Slider } from '@/app/_components/ui/slider';
-import { CanfilterSetting, type CheckboxProps, type ColorFilterProps, type Edit, type OptionFilterProps, type SiderProps } from '@/app/_types/Edit';
+import {
+  CanfilterSetting,
+  type CheckboxProps,
+  type ColorFilterProps,
+  type Edit,
+  type OptionFilterProps,
+  type SiderProps,
+} from '@/app/_types/Edit';
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import { ChromePicker } from 'react-color';
@@ -24,7 +39,10 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
   // 初始化颜色
   // @ts-ignore
   const [color, setColor] = useState<string>(effect?.color || '#000');
-  const defalutValue = (item: SiderProps | CheckboxProps | ColorFilterProps | OptionFilterProps, index: number | undefined) => {
+  const defalutValue = (
+    item: SiderProps | CheckboxProps | ColorFilterProps | OptionFilterProps,
+    index: number | undefined,
+  ) => {
     if (index === undefined)
       // @ts-ignore
       return [effect[item?.id]];

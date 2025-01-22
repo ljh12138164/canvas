@@ -1,6 +1,11 @@
 import { bitToMB } from '@/lib/storage';
 import { X } from 'lucide-react';
-import { AiOutlineFile, AiOutlineFileGif, AiOutlineFileImage, AiOutlineFileMarkdown } from 'react-icons/ai';
+import {
+  AiOutlineFile,
+  AiOutlineFileGif,
+  AiOutlineFileImage,
+  AiOutlineFileMarkdown,
+} from 'react-icons/ai';
 import { LuFileAudio, LuFileJson, LuFileVideo } from 'react-icons/lu';
 import {
   TbFileTypeBmp,
@@ -52,7 +57,8 @@ const IconContainer = styled.span`
   justify-content: center;
 `;
 export const FileIcons = (fileType: string, size = 10) => {
-  if (fileType === 'jpg' || fileType === 'png') return <TbFileTypePng className={`h-${size} w-${size}`} />;
+  if (fileType === 'jpg' || fileType === 'png')
+    return <TbFileTypePng className={`h-${size} w-${size}`} />;
   if (fileType === 'mp3') return <LuFileAudio className={`h-${size} w-${size}`} />;
   if (fileType === 'wav') return <LuFileAudio className={`h-${size} w-${size}`} />;
   if (fileType === 'ogg') return <LuFileAudio className={`h-${size} w-${size}`} />;
@@ -136,7 +142,9 @@ const Filelist = ({
             </div>
           </TooltipTrigger>
           <TooltipContent>
-            {file.type.startsWith('image') && <img src={URL.createObjectURL(file)} alt={file?.name} />}
+            {file.type.startsWith('image') && (
+              <img src={URL.createObjectURL(file)} alt={file?.name} />
+            )}
             {file.type.startsWith('video') && <video src={URL.createObjectURL(file)} controls />}
             {file.type.startsWith('audio') && <audio src={URL.createObjectURL(file)} controls />}
             {file.type.startsWith('application') && <p>{file?.name}</p>}

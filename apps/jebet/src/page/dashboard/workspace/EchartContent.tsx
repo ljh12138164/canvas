@@ -6,7 +6,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scrollArea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useWorkspace } from '@/server/hooks/board';
@@ -230,7 +236,9 @@ const EchartContent = ({
             <Calendar size={24} />
           </IconWrapper>
           <StatsInfo>
-            <StatsValue>{((finshTask.length / workspaces.tasks.length) * 100).toFixed(2)}%</StatsValue>
+            <StatsValue>
+              {((finshTask.length / workspaces.tasks.length) * 100).toFixed(2)}%
+            </StatsValue>
             <StatsLabel>完成率</StatsLabel>
           </StatsInfo>
         </StatsCard>
@@ -238,12 +246,20 @@ const EchartContent = ({
       {/* 任务数 */}
       <CardContainer>
         <TaskCount className="bg-muted dark:bg-muted-foreground">
-          <p className="text-xl text-muted-foreground font-bold">任务数({workspaces.tasks.length})</p>
+          <p className="text-xl text-muted-foreground font-bold">
+            任务数({workspaces.tasks.length})
+          </p>
           <Separator className="h-[1px] mb-2" />
           <ScrollArea className="max-h-[300px]">
             {showMore
               ? workspaces.tasks.map((item) => (
-                  <TaskItem key={item.id} className="bg-[#fff]  dark:bg-black cursor-pointer" onClick={() => navigator(`/dashboard/${workspaceId}/${item.projectId}/home/${item.id}`)}>
+                  <TaskItem
+                    key={item.id}
+                    className="bg-[#fff]  dark:bg-black cursor-pointer"
+                    onClick={() =>
+                      navigator(`/dashboard/${workspaceId}/${item.projectId}/home/${item.id}`)
+                    }
+                  >
                     <p className="flex flex-col">
                       <span>{item.name}</span>
                       <span className="text-sm text-muted-foreground flex items-center gap-1">
@@ -257,7 +273,13 @@ const EchartContent = ({
                   </TaskItem>
                 ))
               : workspaces.tasks.slice(0, 2).map((item) => (
-                  <TaskItem key={item.id} className="bg-[#fff]  dark:bg-black cursor-pointer" onClick={() => navigator(`/dashboard/${workspaceId}/${item.projectId}/home/${item.id}`)}>
+                  <TaskItem
+                    key={item.id}
+                    className="bg-[#fff]  dark:bg-black cursor-pointer"
+                    onClick={() =>
+                      navigator(`/dashboard/${workspaceId}/${item.projectId}/home/${item.id}`)
+                    }
+                  >
                     <p className="flex flex-col">
                       <span>{item.name}</span>
                       <span className="text-sm text-muted-foreground flex items-center gap-1">
@@ -277,12 +299,18 @@ const EchartContent = ({
         </TaskCount>
         {/* 项目 */}
         <TaskCount className="bg-[#fff] dark:bg-black">
-          <p className="text-xl text-muted-foreground font-bold">项目({workspaces.projects.length})</p>
+          <p className="text-xl text-muted-foreground font-bold">
+            项目({workspaces.projects.length})
+          </p>
           <Separator className="h-[1px] mb-2" />
           <ScrollArea className="max-h-[300px]">
             <ProjectContainer>
               {workspaces.projects.map((item) => (
-                <TaskItem key={item.id} className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center" onClick={() => navigator(`/dashboard/${workspaceId}/${item.id}`)}>
+                <TaskItem
+                  key={item.id}
+                  className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center"
+                  onClick={() => navigator(`/dashboard/${workspaceId}/${item.id}`)}
+                >
                   <Avatar>
                     <AvatarImage src={item.imageUrl} />
                     <AvatarFallback>{item.name.slice(0, 2)}</AvatarFallback>
@@ -295,12 +323,18 @@ const EchartContent = ({
         </TaskCount>
         {/* 成员 */}
         <TaskCount className="bg-[#fff] dark:bg-black">
-          <p className="text-xl text-muted-foreground font-bold">成员({workspaces.member.length})</p>
+          <p className="text-xl text-muted-foreground font-bold">
+            成员({workspaces.member.length})
+          </p>
           <Separator className="h-[1px] mb-2" />
           <ScrollArea className="max-h-[300px]">
             <ProjectContainer>
               {workspaces.member.map((item) => (
-                <TaskItem key={item.id} className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col" onClick={() => navigator(`/dashboard/${workspaceId}/${item.id}`)}>
+                <TaskItem
+                  key={item.id}
+                  className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col"
+                  onClick={() => navigator(`/dashboard/${workspaceId}/${item.id}`)}
+                >
                   <Avatar>
                     <AvatarImage src={item.userImage} />
                     <AvatarFallback>{item.username}</AvatarFallback>
@@ -316,12 +350,18 @@ const EchartContent = ({
         </TaskCount>
         {/* 工作流 */}
         <TaskCount className="bg-[#fff] dark:bg-black">
-          <p className="text-xl text-muted-foreground font-bold">工作流({workspaces.flow.length})</p>
+          <p className="text-xl text-muted-foreground font-bold">
+            工作流({workspaces.flow.length})
+          </p>
           <Separator className="h-[1px] mb-2" />
           <ScrollArea className="max-h-[300px]">
             <ProjectContainer>
               {workspaces.flow.map((item) => (
-                <TaskItem key={item.id} className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col" onClick={() => navigator(`/dashboard/${workspaceId}/flow/detail/${item.id}`)}>
+                <TaskItem
+                  key={item.id}
+                  className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col"
+                  onClick={() => navigator(`/dashboard/${workspaceId}/flow/detail/${item.id}`)}
+                >
                   <p>{item.name}</p>
                   <p>{item.description}</p>
                   <p className="flex items-center gap-2">

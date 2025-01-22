@@ -20,8 +20,14 @@ const showPassword = ref(false);
 
 // 表单验证
 const zodSchema = zod.object({
-  email: zod.string({ required_error: '请输入邮箱' }).min(1, { message: '请输入邮箱' }).email({ message: '请输入正确的邮箱' }),
-  password: zod.string({ required_error: '请输入密码' }).min(6, { message: '请输入密码' }).max(16, { message: '密码长度最多为16位' }),
+  email: zod
+    .string({ required_error: '请输入邮箱' })
+    .min(1, { message: '请输入邮箱' })
+    .email({ message: '请输入正确的邮箱' }),
+  password: zod
+    .string({ required_error: '请输入密码' })
+    .min(6, { message: '请输入密码' })
+    .max(16, { message: '密码长度最多为16位' }),
   name: zod.string().min(1, { message: '请输入昵称' }).optional(),
 });
 const validationSchema = toTypedSchema(zodSchema);

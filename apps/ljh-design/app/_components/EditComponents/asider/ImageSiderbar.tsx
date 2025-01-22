@@ -54,15 +54,29 @@ const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSide
   };
 
   return (
-    <aside className={cn('z-[100] bg-white  relative transition  h-full flex flex-col', activeTool === Tool.Image ? 'visible' : 'hidden')} style={{ flexBasis: '300px' }}>
+    <aside
+      className={cn(
+        'z-[100] bg-white  relative transition  h-full flex flex-col',
+        activeTool === Tool.Image ? 'visible' : 'hidden',
+      )}
+      style={{ flexBasis: '300px' }}
+    >
       <ToolSiderbar title="图片" description="插入图片" />
       {userId && (
         <>
           <div className="flex gap-x-2 px-4 my-2">
-            <Button variant="ghost" className={`${imageList === ImageType.Recommend && 'bg-muted'} w-full`} onClick={() => setImageList(ImageType.Recommend)}>
+            <Button
+              variant="ghost"
+              className={`${imageList === ImageType.Recommend && 'bg-muted'} w-full`}
+              onClick={() => setImageList(ImageType.Recommend)}
+            >
               <span className="text-sm font-medium">推荐</span>
             </Button>
-            <Button variant="ghost" className={` ${imageList === ImageType.Cloud && 'bg-muted'} w-full`} onClick={() => setImageList(ImageType.Cloud)}>
+            <Button
+              variant="ghost"
+              className={` ${imageList === ImageType.Cloud && 'bg-muted'} w-full`}
+              onClick={() => setImageList(ImageType.Cloud)}
+            >
               <span className="text-sm font-medium">用户图片</span>
             </Button>
           </div>
@@ -80,12 +94,22 @@ const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSide
             className={`flex items-center justify-center bg-blue-500 w-full h-full rounded-md  cursor-pointer ${uploadImage && ' opacity-50'}`}
           >
             <p className="text-white font-medium">上传图片</p>
-            <input accept="image/gif, image/jpeg, image/png" type="file" className="hidden" ref={fileRef} onChange={handleFileChange} />
+            <input
+              accept="image/gif, image/jpeg, image/png"
+              type="file"
+              className="hidden"
+              ref={fileRef}
+              onChange={handleFileChange}
+            />
           </button>
         </div>
         <div className="p-4 pb-20 grid grid-cols-2 gap-4 mt-4">
-          {activeTool === Tool.Image && imageList === ImageType.Recommend && <ImageBox editor={editor} />}
-          {activeTool === Tool.Image && imageList === ImageType.Cloud && userId && <UserImageBox editor={editor} userId={userId} />}
+          {activeTool === Tool.Image && imageList === ImageType.Recommend && (
+            <ImageBox editor={editor} />
+          )}
+          {activeTool === Tool.Image && imageList === ImageType.Cloud && userId && (
+            <UserImageBox editor={editor} userId={userId} />
+          )}
         </div>
       </ScrollArea>
 

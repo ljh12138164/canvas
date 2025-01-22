@@ -10,7 +10,11 @@ import type { ZodType } from 'zod';
 const props = defineProps<{
   id: string;
   data: BigText;
-  updateList2: (id: string, type: FormType, newValue: string | boolean | number | undefined) => void;
+  updateList2: (
+    id: string,
+    type: FormType,
+    newValue: string | boolean | number | undefined,
+  ) => void;
 }>();
 // 默认值
 const defaultValue = ref(props.data?.defaultValue);

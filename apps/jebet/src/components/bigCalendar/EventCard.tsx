@@ -18,38 +18,39 @@ interface EvenetCardProps {
 }
 
 // 状态样式映射表
-const STATUS_STYLES: Record<TaskStatus, { backgroundColor: string; color: string; label: string }> = {
-  [TaskStatus.TODO]: {
-    backgroundColor: '#F3F4F6',
-    color: '#4B5563',
-    label: '待处理',
-  },
-  [TaskStatus.IN_PROGRESS]: {
-    backgroundColor: '#DBEAFE',
-    color: '#2563EB',
-    label: '进行中',
-  },
-  [TaskStatus.DONE]: {
-    backgroundColor: '#D1FAE5',
-    color: '#059669',
-    label: '已完成',
-  },
-  [TaskStatus.ALL]: {
-    backgroundColor: '#F3F4F6',
-    color: '#4B5563',
-    label: '全部',
-  },
-  [TaskStatus.IN_REVIEW]: {
-    backgroundColor: '#F3F4F6',
-    color: '#4B5563',
-    label: '等待审核',
-  },
-  [TaskStatus.BACKLOG]: {
-    backgroundColor: '#F3F4F6',
-    color: '#4B5563',
-    label: '待办',
-  },
-};
+const STATUS_STYLES: Record<TaskStatus, { backgroundColor: string; color: string; label: string }> =
+  {
+    [TaskStatus.TODO]: {
+      backgroundColor: '#F3F4F6',
+      color: '#4B5563',
+      label: '待处理',
+    },
+    [TaskStatus.IN_PROGRESS]: {
+      backgroundColor: '#DBEAFE',
+      color: '#2563EB',
+      label: '进行中',
+    },
+    [TaskStatus.DONE]: {
+      backgroundColor: '#D1FAE5',
+      color: '#059669',
+      label: '已完成',
+    },
+    [TaskStatus.ALL]: {
+      backgroundColor: '#F3F4F6',
+      color: '#4B5563',
+      label: '全部',
+    },
+    [TaskStatus.IN_REVIEW]: {
+      backgroundColor: '#F3F4F6',
+      color: '#4B5563',
+      label: '等待审核',
+    },
+    [TaskStatus.BACKLOG]: {
+      backgroundColor: '#F3F4F6',
+      color: '#4B5563',
+      label: '待办',
+    },
+  };
 
 // 样式组件
 const CardWrapper = styled.div`
@@ -113,7 +114,11 @@ export const EventCard = ({ event }: EvenetCardProps) => {
   const statusStyle = STATUS_STYLES[event.status];
 
   return (
-    <CardWrapper onClick={() => navigate(`/dashboard/${event.workspace.id}/${event.project.id}/home/${event.id}`)}>
+    <CardWrapper
+      onClick={() =>
+        navigate(`/dashboard/${event.workspace.id}/${event.project.id}/home/${event.id}`)
+      }
+    >
       {/* 任务标题 */}
       <Title>{event?.title}</Title>
 

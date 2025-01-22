@@ -1,6 +1,14 @@
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { Tool } from '@/app/_types/Edit';
-import { LuImage, LuLayoutDashboard, LuMessageSquare, LuPencil, LuSettings, LuShapes, LuType } from 'react-icons/lu';
+import {
+  LuImage,
+  LuLayoutDashboard,
+  LuMessageSquare,
+  LuPencil,
+  LuSettings,
+  LuShapes,
+  LuType,
+} from 'react-icons/lu';
 import SiderBarItem from '../asider/SiderBarItem';
 interface SiderBarProps {
   acitiveTool: Tool;
@@ -8,7 +16,11 @@ interface SiderBarProps {
 }
 const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
   return (
-    <aside id="editSider" className="w-[100px] z-[40]  bg-white  border-r border-t-black border-slate-200 overflow-y-auto" style={{ flexBasis: '100px' }}>
+    <aside
+      id="editSider"
+      className="w-[100px] z-[40]  bg-white  border-r border-t-black border-slate-200 overflow-y-auto"
+      style={{ flexBasis: '100px' }}
+    >
       <ScrollArea>
         <ul className="flex flex-col w-[6.2rem]">
           {/* 设计 */}

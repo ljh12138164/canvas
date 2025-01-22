@@ -48,7 +48,14 @@ const ProjectSetting = observer(
                   }}
                 />
               </Card>
-              <DeleteCard type="project" imageUrl={project.imageUrl} workspaceId={workSpace.id} projectId={project.id} canEdit={data?.user.role === 'admin'} userId={userData.id} />
+              <DeleteCard
+                type="project"
+                imageUrl={project.imageUrl}
+                workspaceId={workSpace.id}
+                projectId={project.id}
+                canEdit={data?.user.role === 'admin'}
+                userId={userData.id}
+              />
             </>
           )}
         </WorkSpaceSettingCard>

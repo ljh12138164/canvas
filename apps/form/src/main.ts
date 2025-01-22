@@ -44,4 +44,10 @@ i18next.init({
 });
 z.setErrorMap(zodI18nMap);
 
-app.use(router).use(i18n).use(VueQueryPlugin, vueQueryPluginOptions).use(autoAnimatePlugin).use(pinia).mount('#app');
+app
+  .use(router)
+  .use(i18n)
+  .use(VueQueryPlugin, vueQueryPluginOptions)
+  .use(autoAnimatePlugin)
+  .use(pinia)
+  .mount('#app');

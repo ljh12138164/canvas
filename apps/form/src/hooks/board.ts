@@ -159,7 +159,10 @@ export const useUpdateBoardInviteCode = () => {
   });
 };
 
-type GetInviteCodeDataResponse = InferResponseType<(typeof client.board.submit)[':inviteCode']['$get'], 200>;
+type GetInviteCodeDataResponse = InferResponseType<
+  (typeof client.board.submit)[':inviteCode']['$get'],
+  200
+>;
 
 /**
  * @description 获取邀请码数据

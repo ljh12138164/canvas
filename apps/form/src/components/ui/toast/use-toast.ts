@@ -79,7 +79,9 @@ function dispatch(action: Action) {
       break;
 
     case actionTypes.UPDATE_TOAST:
-      state.value.toasts = state.value.toasts.map((t) => (t.id === action.toast.id ? { ...t, ...action.toast } : t));
+      state.value.toasts = state.value.toasts.map((t) =>
+        t.id === action.toast.id ? { ...t, ...action.toast } : t,
+      );
       break;
 
     case actionTypes.DISMISS_TOAST: {

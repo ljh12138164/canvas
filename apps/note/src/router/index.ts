@@ -27,6 +27,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/pages/workspace/member.vue'),
         beforeEnter: routerCheckLogin,
       },
+      {
+        path: ':workspaceId/detail/:folderId',
+        component: () => import('@/pages/workspace/detail.vue'),
+        beforeEnter: routerCheckLogin,
+      },
     ],
   },
   {

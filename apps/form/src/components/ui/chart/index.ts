@@ -9,7 +9,14 @@ export function defaultColors(count = 3) {
 
   const primaryCount = quotient + remainder;
   const secondaryCount = quotient;
-  return [...Array.from(new Array(primaryCount).keys()).map((i) => `hsl(var(--vis-primary-color) / ${1 - (1 / primaryCount) * i})`), ...Array.from(new Array(secondaryCount).keys()).map((i) => `hsl(var(--vis-secondary-color) / ${1 - (1 / secondaryCount) * i})`)];
+  return [
+    ...Array.from(new Array(primaryCount).keys()).map(
+      (i) => `hsl(var(--vis-primary-color) / ${1 - (1 / primaryCount) * i})`,
+    ),
+    ...Array.from(new Array(secondaryCount).keys()).map(
+      (i) => `hsl(var(--vis-secondary-color) / ${1 - (1 / secondaryCount) * i})`,
+    ),
+  ];
 }
 
 export * from './interface';

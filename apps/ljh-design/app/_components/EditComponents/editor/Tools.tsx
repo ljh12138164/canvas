@@ -4,7 +4,16 @@ import { ScrollArea, ScrollBar } from '@/app/_components/ui/scroll-area';
 import { cn, isText } from '@/app/_lib/utils';
 import { type Edit, Tool } from '@/app/_types/Edit';
 import { BsBorderWidth, BsTransparency } from 'react-icons/bs';
-import { FaAlignCenter, FaAlignLeft, FaAlignRight, FaBold, FaItalic, FaStrikethrough, FaTrash, FaUnderline } from 'react-icons/fa6';
+import {
+  FaAlignCenter,
+  FaAlignLeft,
+  FaAlignRight,
+  FaBold,
+  FaItalic,
+  FaStrikethrough,
+  FaTrash,
+  FaUnderline,
+} from 'react-icons/fa6';
 import { LuArrowDown, LuArrowUp, LuChevronDown, LuCopy } from 'react-icons/lu';
 import { TbColorFilter } from 'react-icons/tb';
 import FontSizeInput from '../asider/FontSizeInput';
@@ -26,7 +35,9 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
   const storkeColor = editor?.getActiveStokeColor();
   //字体
   if (!editor?.selectedObject?.length) {
-    return <section className="h-[3.3rem]  p-[0.1rem] space-x-4 bg-white items-center flex w-full z-[50]" />;
+    return (
+      <section className="h-[3.3rem]  p-[0.1rem] space-x-4 bg-white items-center flex w-full z-[50]" />
+    );
   }
   const seltectedObject = editor?.canvas?.getActiveObjects()[0];
   const textYype = isText(seltectedObject);
@@ -37,14 +48,27 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
         <section className="flex items-center gap-2">
           {!isImage && (
             <TooltipComponents label="颜色" side="bottom" sideOffset={5} key={Tool.Fill}>
-              <Button onClick={() => onChangeActiveTool(Tool.Fill)} size="icon" variant="ghost" className={cn(activeTool === Tool.Fill && 'bg-gray-100')}>
-                <div className="rounded-small size-4 border bg-white" style={{ backgroundColor: fillColor ? fillColor : 'black' }} />
+              <Button
+                onClick={() => onChangeActiveTool(Tool.Fill)}
+                size="icon"
+                variant="ghost"
+                className={cn(activeTool === Tool.Fill && 'bg-gray-100')}
+              >
+                <div
+                  className="rounded-small size-4 border bg-white"
+                  style={{ backgroundColor: fillColor ? fillColor : 'black' }}
+                />
               </Button>
             </TooltipComponents>
           )}
           {!textYype && (
             <TooltipComponents label="边框颜色" side="bottom" sideOffset={5} key={Tool.StrokeColor}>
-              <Button onClick={() => onChangeActiveTool(Tool.StrokeColor)} size="icon" variant="ghost" className={cn(activeTool === Tool.StrokeColor && 'bg-gray-100')}>
+              <Button
+                onClick={() => onChangeActiveTool(Tool.StrokeColor)}
+                size="icon"
+                variant="ghost"
+                className={cn(activeTool === Tool.StrokeColor && 'bg-gray-100')}
+              >
                 <div
                   className="rounded-small size-4 border bg-white"
                   style={{
@@ -56,7 +80,12 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
           )}
           {!textYype && (
             <TooltipComponents label="边框宽度" side="bottom" sideOffset={5} key={Tool.StrokeWidth}>
-              <Button onClick={() => onChangeActiveTool(Tool.StrokeWidth)} size="icon" variant="ghost" className={cn(activeTool === Tool.StrokeWidth && 'bg-gray-100')}>
+              <Button
+                onClick={() => onChangeActiveTool(Tool.StrokeWidth)}
+                size="icon"
+                variant="ghost"
+                className={cn(activeTool === Tool.StrokeWidth && 'bg-gray-100')}
+              >
                 <BsBorderWidth className="size-4" />
               </Button>
             </TooltipComponents>
@@ -119,7 +148,10 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 }}
                 size="icon"
                 variant="ghost"
-                className={cn('w-auto', editor?.getActiveFontItalic() === 'italic' && 'bg-gray-100')}
+                className={cn(
+                  'w-auto',
+                  editor?.getActiveFontItalic() === 'italic' && 'bg-gray-100',
+                )}
               >
                 <div className="px-2">
                   <FaItalic className="size-4" />
@@ -161,7 +193,12 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
           )}
 
           {textYype && (
-            <TooltipComponents label="水平居中" side="bottom" sideOffset={5} key={'textAlignCenter'}>
+            <TooltipComponents
+              label="水平居中"
+              side="bottom"
+              sideOffset={5}
+              key={'textAlignCenter'}
+            >
               <Button
                 size="icon"
                 variant="ghost"
@@ -220,7 +257,12 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
             </Button>
           </TooltipComponents>
           <TooltipComponents label="透明度" side="bottom" sideOffset={5} key={Tool.Opacity}>
-            <Button onClick={() => onChangeActiveTool(Tool.Opacity)} size="icon" variant="ghost" className={cn(activeTool === Tool.Opacity && 'bg-gray-100')}>
+            <Button
+              onClick={() => onChangeActiveTool(Tool.Opacity)}
+              size="icon"
+              variant="ghost"
+              className={cn(activeTool === Tool.Opacity && 'bg-gray-100')}
+            >
               <BsTransparency className="size-4" />
             </Button>
           </TooltipComponents>

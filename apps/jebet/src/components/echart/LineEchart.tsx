@@ -28,7 +28,10 @@ export const LineEchart = ({
   }, [arrDate]);
   (workspace[types] as Task[] | Member[]).forEach((item) => {
     const time = new Date().getTime() - new Date(item.created_at).getTime();
-    if (new Date().getTime() - new Date(item.created_at).getTime() < new Date(date * 24 * 60 * 60 * 1000).getTime()) {
+    if (
+      new Date().getTime() - new Date(item.created_at).getTime() <
+      new Date(date * 24 * 60 * 60 * 1000).getTime()
+    ) {
       const dates = Math.floor(time / (24 * 60 * 60 * 1000));
       Workspacedata[dates].value++;
     }

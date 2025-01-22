@@ -5,7 +5,18 @@ import { Separator } from '@/app/_components/ui/separator';
 import { Slider } from '@/app/_components/ui/slider';
 import { cn } from '@/app/_lib/utils';
 import type { Filter } from '@/app/_types/Edit';
-import { CANVAS_COLOR, type Edit, FILL_COLOR, FilterItem, STROKE_COLOR, Tool, ToolItem, canfilterArr, filters, fonts } from '@/app/_types/Edit';
+import {
+  CANVAS_COLOR,
+  type Edit,
+  FILL_COLOR,
+  FilterItem,
+  STROKE_COLOR,
+  Tool,
+  ToolItem,
+  canfilterArr,
+  filters,
+  fonts,
+} from '@/app/_types/Edit';
 import { useEffect, useRef, useState } from 'react';
 import { AiChatSider } from './AiChatSider';
 import ColorPicker from './ColorPicker';
@@ -58,8 +69,22 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
     return editor?.getActiveFilter().includes(item) || false;
   };
   return (
-    <aside className={cn('z-[40] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col', onShow() ? 'visible' : 'hidden')}>
-      <ToolSiderbar onChangeActive={onChangeActive} front={onShow() === Tool.FilterSetting} title={ToolItem[onShow() as keyof typeof ToolItem] || ''} description={onShow() !== Tool.Ai ? `更改${ToolItem[onShow() as keyof typeof ToolItem] || ''}` : 'Ai对话'} />
+    <aside
+      className={cn(
+        'z-[40] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col',
+        onShow() ? 'visible' : 'hidden',
+      )}
+    >
+      <ToolSiderbar
+        onChangeActive={onChangeActive}
+        front={onShow() === Tool.FilterSetting}
+        title={ToolItem[onShow() as keyof typeof ToolItem] || ''}
+        description={
+          onShow() !== Tool.Ai
+            ? `更改${ToolItem[onShow() as keyof typeof ToolItem] || ''}`
+            : 'Ai对话'
+        }
+      />
       <ScrollArea className="z-[601] h-full">
         <div className="p-4 space-y-4">
           {onShow() === Tool.Fill && (
@@ -141,15 +166,29 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
                     className={`w-full h-16 relative  justify-start text-left ${check(item) && 'border-blue-500 border-2'}`}
                   >
                     {FilterItem[item]}
-                    {check(item) && <div className=" absolute top-0 right-0 bg-indigo-600 text-white text-xs px-2 duration-300">{editor && item !== 'none' && editor?.getActiveFilterIndex(item) + 1}</div>}
-                    {canfilterArr.includes(item) && <ImageSetting filter={item} setFilterSetting={setFilterSetting} activeTool={activeTool} onChangeActive={onChangeActive} isShow={check(item) && item !== 'none'} />}
+                    {check(item) && (
+                      <div className=" absolute top-0 right-0 bg-indigo-600 text-white text-xs px-2 duration-300">
+                        {editor && item !== 'none' && editor?.getActiveFilterIndex(item) + 1}
+                      </div>
+                    )}
+                    {canfilterArr.includes(item) && (
+                      <ImageSetting
+                        filter={item}
+                        setFilterSetting={setFilterSetting}
+                        activeTool={activeTool}
+                        onChangeActive={onChangeActive}
+                        isShow={check(item) && item !== 'none'}
+                      />
+                    )}
                   </Button>
                 );
               })}
             </section>
           )}
           {/* 滤镜设置 */}
-          {onShow() === Tool.FilterSetting && <FilterSetting editor={editor} filterSetting={filterSetting} />}
+          {onShow() === Tool.FilterSetting && (
+            <FilterSetting editor={editor} filterSetting={filterSetting} />
+          )}
           {/* 画笔 */}
           {onShow() === Tool.Draw && (
             <section>

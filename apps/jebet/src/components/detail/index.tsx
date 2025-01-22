@@ -6,7 +6,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { LuArrowLeft, LuCalendar, LuFlag, LuLayoutList, LuMessageSquare, LuSend } from 'react-icons/lu';
+import {
+  LuArrowLeft,
+  LuCalendar,
+  LuFlag,
+  LuLayoutList,
+  LuMessageSquare,
+  LuSend,
+} from 'react-icons/lu';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
@@ -241,7 +248,12 @@ const Detail = ({
   const { createTaskRemark, createTaskRemarkLoading } = useCreateTaskRemark();
   const navigate = useNavigate();
   const params = useParams();
-  const { data: taskDetail, isLoading } = useGetTaskDetail(workspaceId, projectId, userData.id, params.taskId!);
+  const { data: taskDetail, isLoading } = useGetTaskDetail(
+    workspaceId,
+    projectId,
+    userData.id,
+    params.taskId!,
+  );
 
   // 模拟数据
 
@@ -336,7 +348,11 @@ const Detail = ({
             <LuCalendar size={20} />
             <MetaContent>
               <MetaLabel>创建时间</MetaLabel>
-              <MetaValue>{taskDetail?.created_at ? dayjs(taskDetail.created_at).format('YYYY-MM-DD HH:mm') : '未知'}</MetaValue>
+              <MetaValue>
+                {taskDetail?.created_at
+                  ? dayjs(taskDetail.created_at).format('YYYY-MM-DD HH:mm')
+                  : '未知'}
+              </MetaValue>
             </MetaContent>
           </MetaItem>
           <MetaItem>
@@ -373,8 +389,17 @@ const Detail = ({
                   <AvatarFallback>{userData.username?.[0] || 'U'}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 flex gap-2">
-                  <Textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="写下你的评论..." className="flex-1" />
-                  <Button size="icon" onClick={handleComment} disabled={!comment.trim() || createTaskRemarkLoading}>
+                  <Textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="写下你的评论..."
+                    className="flex-1"
+                  />
+                  <Button
+                    size="icon"
+                    onClick={handleComment}
+                    disabled={!comment.trim() || createTaskRemarkLoading}
+                  >
                     <LuSend size={16} />
                   </Button>
                 </div>
@@ -383,11 +408,18 @@ const Detail = ({
               <AnimatePresence>
                 <CommentList>
                   {taskDetail?.remark.map((remark) => (
-                    <CommentItem key={remark.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+                    <CommentItem
+                      key={remark.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                    >
                       <CommentContent>
                         <CommentHeader>
                           <CommentAuthor />
-                          <CommentTime>{dayjs(remark.created_at).format('YYYY-MM-DD HH:mm')}</CommentTime>
+                          <CommentTime>
+                            {dayjs(remark.created_at).format('YYYY-MM-DD HH:mm')}
+                          </CommentTime>
                         </CommentHeader>
                         <CommentText>{remark.content}</CommentText>
                       </CommentContent>

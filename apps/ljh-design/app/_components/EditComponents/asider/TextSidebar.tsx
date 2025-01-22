@@ -12,7 +12,13 @@ interface TextSidebarProps {
 }
 const TextSidebar = ({ activeTool, onChangeActive, editor }: TextSidebarProps) => {
   return (
-    <aside className={cn('z-[100] bg-white  relative transition  h-full flex flex-col', activeTool === Tool.Font ? 'visible' : 'hidden')} style={{ flexBasis: '300px' }}>
+    <aside
+      className={cn(
+        'z-[100] bg-white  relative transition  h-full flex flex-col',
+        activeTool === Tool.Font ? 'visible' : 'hidden',
+      )}
+      style={{ flexBasis: '300px' }}
+    >
       <ToolSiderbar title="字体" description="插入字体" />
       <ScrollArea>
         <section className=" p-4 border-b space-y-4">

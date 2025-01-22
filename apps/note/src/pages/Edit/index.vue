@@ -4,7 +4,19 @@ import Sider from '@/components/border/Sider.vue';
 import ResponsePop from '@/components/common/ResponsePop.vue';
 import UserButton from '@/components/common/UserButton.vue';
 import { Collapsible } from '@/components/ui/collapsible';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarRail } from '@/components/ui/sidebar';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarRail,
+} from '@/components/ui/sidebar';
 import SidebarGroupLabel from '@/components/ui/sidebar/SidebarGroupLabel.vue';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGetWorkspaceById } from '@/hooks/workspace';
@@ -22,7 +34,9 @@ const router = useRouter();
 const routerParams = ref(route.params.workspaceId);
 const { userData } = useUser();
 
-const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(routerParams.value as string);
+const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
+  routerParams.value as string,
+);
 const isMobile = useMediaQuery('(max-width: 768px)');
 watch(
   () => route.params.folderId,

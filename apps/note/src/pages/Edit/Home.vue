@@ -15,7 +15,9 @@ watch(
     workspaceId.value = newVal;
   },
 );
-const { workspace, workspaceIsLoading, workspaceIsFetching } = useGetWorkspaceById(workspaceId.value as string);
+const { workspace, workspaceIsLoading, workspaceIsFetching } = useGetWorkspaceById(
+  workspaceId.value as string,
+);
 const { data, isLoading, isFetching } = useGetDoc();
 </script>
 <template>

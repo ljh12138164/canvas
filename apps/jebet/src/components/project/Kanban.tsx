@@ -1,6 +1,12 @@
 import { useMoveTask } from '@/server/hooks/tasks';
 import { TaskStatus, type TaskWithWorkspace } from '@/types/workspace';
-import { DndContext, type DragEndEvent, DragOverlay, type UniqueIdentifier, defaultDropAnimationSideEffects } from '@dnd-kit/core';
+import {
+  DndContext,
+  type DragEndEvent,
+  DragOverlay,
+  type UniqueIdentifier,
+  defaultDropAnimationSideEffects,
+} from '@dnd-kit/core';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemoizedFn } from 'ahooks';
@@ -125,8 +131,14 @@ const Kanban = ({
         return;
       }
       // 获取旧数据
-      const oldData = queryClient.getQueryData<TaskWithWorkspace[]>(['taskList', activeTask.workspaceId, activeTask.projectId]);
-      const newData = oldData?.map((task) => (task.id === activeTask.id ? { ...task, status: overStatus } : task));
+      const oldData = queryClient.getQueryData<TaskWithWorkspace[]>([
+        'taskList',
+        activeTask.workspaceId,
+        activeTask.projectId,
+      ]);
+      const newData = oldData?.map((task) =>
+        task.id === activeTask.id ? { ...task, status: overStatus } : task,
+      );
       // 设置乐观更新
       queryClient.setQueryData(['taskList', activeTask.workspaceId, activeTask.projectId], newData);
       // 更新任务状态
@@ -145,7 +157,10 @@ const Kanban = ({
           // 错误时
           onError: (error) => {
             console.error(error);
-            queryClient.setQueryData(['taskList', activeTask.workspaceId, activeTask.projectId], oldData);
+            queryClient.setQueryData(
+              ['taskList', activeTask.workspaceId, activeTask.projectId],
+              oldData,
+            );
           },
         },
       );
@@ -155,23 +170,34 @@ const Kanban = ({
   if (!taskList) return null;
   return (
     // DND 上下文
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} modifiers={[restrictToWindowEdges]}>
+    <DndContext
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      modifiers={[restrictToWindowEdges]}
+    >
       <div style={{ position: 'relative', zIndex: 0 }}>
         {/* 状态栏 */}
         <KanbanNav>
-          {Object.entries(taskStateIcon).map(([status, { icon: Icon, color, state, dropColor }]) => (
-            <div key={status} style={{ minWidth: '200px', minHeight: '200px' }}>
-              {/* 头部状态栏 */}
-              <StateItem className="bg-zinc-100 dark:bg-zinc-800">
-                <Icon className={color} />
-                <span>{state}</span>
-                <span>{state !== TaskStatus.ALL && taskStateList[state].length}</span>
-              </StateItem>
-              <Separator />
-              {/* 拖拽区域 */}
-              <KanbanDrop status={state} parent={parent} color={dropColor} taskList={state !== TaskStatus.ALL && taskStateList[state]} />
-            </div>
-          ))}
+          {Object.entries(taskStateIcon).map(
+            ([status, { icon: Icon, color, state, dropColor }]) => (
+              <div key={status} style={{ minWidth: '200px', minHeight: '200px' }}>
+                {/* 头部状态栏 */}
+                <StateItem className="bg-zinc-100 dark:bg-zinc-800">
+                  <Icon className={color} />
+                  <span>{state}</span>
+                  <span>{state !== TaskStatus.ALL && taskStateList[state].length}</span>
+                </StateItem>
+                <Separator />
+                {/* 拖拽区域 */}
+                <KanbanDrop
+                  status={state}
+                  parent={parent}
+                  color={dropColor}
+                  taskList={state !== TaskStatus.ALL && taskStateList[state]}
+                />
+              </div>
+            ),
+          )}
         </KanbanNav>
       </div>
       {/* 拖拽覆盖 */}

@@ -75,7 +75,9 @@ export default function Home() {
         <FeatureCard>
           <CardContent>
             <FeatureTitle>团队协作</FeatureTitle>
-            <FeatureDescription>实时协作工具，让团队成员随时保持联系，提高工作效率</FeatureDescription>
+            <FeatureDescription>
+              实时协作工具，让团队成员随时保持联系，提高工作效率
+            </FeatureDescription>
           </CardContent>
         </FeatureCard>
 

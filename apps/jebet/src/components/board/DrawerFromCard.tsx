@@ -26,7 +26,16 @@ const DrawerFromCard = observer(
     if (!isDesktop) {
       return (
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger>{children ? children : <IoIosAddCircleOutline size={20} className="cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200" />}</DialogTrigger>
+          <DialogTrigger>
+            {children ? (
+              children
+            ) : (
+              <IoIosAddCircleOutline
+                size={20}
+                className="cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200"
+              />
+            )}
+          </DialogTrigger>
           <DialogClose asChild>
             <Button variant="outline" className="hidden" ref={dialogref}>
               取消
@@ -41,7 +50,16 @@ const DrawerFromCard = observer(
 
     return (
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger>{children ? children : <IoIosAddCircleOutline size={20} className="cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200" />}</DrawerTrigger>
+        <DrawerTrigger>
+          {children ? (
+            children
+          ) : (
+            <IoIosAddCircleOutline
+              size={20}
+              className="cursor-pointer text-black/40 hover:text-black hover:bg-slate-100 transition-all duration-200"
+            />
+          )}
+        </DrawerTrigger>
         <DrawerContent>
           <DrawerClose ref={drawref} />
           <FromCard type="create" formType={type} userData={userData} closeRef={drawref} />

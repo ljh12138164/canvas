@@ -1,16 +1,35 @@
 import TooltipComponents from '@/app/_components/shadui-Components/Tooltip';
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/_components/ui/Avatar';
 import { Button } from '@/app/_components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/_components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/app/_components/ui/dropdown-menu';
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { Separator } from '@/app/_components/ui/separator';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/app/_components/ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/app/_components/ui/tooltip';
 import { getUserColor } from '@/app/_lib/utils';
 import { type Edit, Tool, type UserState } from '@/app/_types/Edit';
 import { Fragment } from 'react';
 import { BsCloud, BsCloudCheck } from 'react-icons/bs';
 import { CiFileOn } from 'react-icons/ci';
-import { LuChevronDown, LuDownload, LuEye, LuFile, LuMousePointerClick, LuRedo2, LuUndo2, LuUser } from 'react-icons/lu';
+import {
+  LuChevronDown,
+  LuDownload,
+  LuEye,
+  LuFile,
+  LuMousePointerClick,
+  LuRedo2,
+  LuUndo2,
+  LuUser,
+} from 'react-icons/lu';
 import { useFilePicker } from 'use-file-picker';
 import Logo from '../../Comand/Logo';
 interface NavBarProps {
@@ -21,7 +40,14 @@ interface NavBarProps {
   userId?: string;
   userState: [number, UserState][];
 }
-const NavBar = ({ activeTool, onChangeTool, editor, isPending, userId, userState }: NavBarProps) => {
+const NavBar = ({
+  activeTool,
+  onChangeTool,
+  editor,
+  isPending,
+  userId,
+  userState,
+}: NavBarProps) => {
   const { openFilePicker } = useFilePicker({
     accept: '.json',
     onFilesSelected: ({ plainFiles }) => {
@@ -143,7 +169,9 @@ const NavBar = ({ activeTool, onChangeTool, editor, isPending, userId, userState
                                 }}
                               >
                                 <AvatarImage src={item[1].user.image} />
-                                <AvatarFallback className="bg-gray-200">{item[1].user.name}</AvatarFallback>
+                                <AvatarFallback className="bg-gray-200">
+                                  {item[1].user.name}
+                                </AvatarFallback>
                               </Avatar>
                               <TooltipProvider>
                                 <Tooltip>
@@ -165,34 +193,50 @@ const NavBar = ({ activeTool, onChangeTool, editor, isPending, userId, userState
 
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <Button variant={'ghost'} size={'sm'} className="w-20 font-bold flex items-center justify-center gap-2">
+              <Button
+                variant={'ghost'}
+                size={'sm'}
+                className="w-20 font-bold flex items-center justify-center gap-2"
+              >
                 <p>导出</p>
                 <LuDownload size="18" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-40 z-[1000]">
-              <DropdownMenuItem className="flex items-center gap-2" onClick={() => editor?.saveJson()}>
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => editor?.saveJson()}
+              >
                 <LuFile size={20} />
                 <div className="flex flex-col">
                   <p className="text-xs font-bold">JSON</p>
                   <p className="text-xs text-muted-foreground">保存最后一次编辑</p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2" onClick={() => editor?.savePng()}>
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => editor?.savePng()}
+              >
                 <LuFile size={20} />
                 <div className="flex flex-col">
                   <p className="text-xs font-bold">PNG</p>
                   <p className="text-xs text-muted-foreground">可以分享给别人看</p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2" onClick={() => editor?.savejpg()}>
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => editor?.savejpg()}
+              >
                 <LuFile size={20} />
                 <div className="flex flex-col">
                   <p className="text-xs font-bold">JPG</p>
                   <p className="text-xs text-muted-foreground">可以分享给别人看</p>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2" onClick={() => editor?.saveSvg()}>
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => editor?.saveSvg()}
+              >
                 <LuFile size={20} />
                 <div className="flex flex-col">
                   <p className="text-xs font-bold">SVG</p>

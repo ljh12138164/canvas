@@ -4,7 +4,12 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
-import { getCollaborators, inviteCollaborator, refreshInviteCode, removeCollaborator } from '../../../server/note/collaborators';
+import {
+  getCollaborators,
+  inviteCollaborator,
+  refreshInviteCode,
+  removeCollaborator,
+} from '../../../server/note/collaborators';
 
 const collaborators = new Hono()
   .use(checkToken(process.env.SUPABASE_NOTE_JWT!))

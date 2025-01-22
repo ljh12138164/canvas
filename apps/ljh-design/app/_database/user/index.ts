@@ -1,7 +1,8 @@
 import type { Sessions } from '@/app/_types/user';
 import { deleteImageClound, uploadImageclound } from '../image';
 import supabase from '../supabase';
-const DEFAULT_AVATAR = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/avatar.svg';
+const DEFAULT_AVATAR =
+  'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/avatar.svg';
 
 /**
  * ## 获取用户消息

@@ -9,7 +9,9 @@ const SiderBar = ({
   closeRef?: React.RefObject<HTMLButtonElement | null>;
 }) => {
   return (
-    <aside className={`bg-muted transition-all ${!hide ? 'hidden' : 'flex'}  duration-300s fixed flex-col w-[300px] left-0 shrink-0 h-full lg:flex`}>
+    <aside
+      className={`bg-muted transition-all ${!hide ? 'hidden' : 'flex'}  duration-300s fixed flex-col w-[300px] left-0 shrink-0 h-full lg:flex`}
+    >
       {!hide && (
         <div className="m-2 flex items-center gap-x-4">
           <Logo to="/" />

@@ -160,7 +160,13 @@ const ProjectContent = ({
               ))}
             </TabsList>
           </Tabs>
-          <TaskFromCard currentUserId={userData.id} type="create" workspaceId={workspaceId} projectId={projectId} userData={memberData?.data}>
+          <TaskFromCard
+            currentUserId={userData.id}
+            type="create"
+            workspaceId={workspaceId}
+            projectId={projectId}
+            userData={memberData?.data}
+          >
             <PlusButton>
               <FiPlus />
               <span>添加</span>
@@ -191,7 +197,11 @@ const ProjectContent = ({
                 </SelectTrigger>
                 <SelectContent>
                   {Object.values(TaskStatus).map((status) => (
-                    <SelectItem key={status} value={status} className={taskListFetching ? 'opacity-50 cursor-not-allowed' : ''}>
+                    <SelectItem
+                      key={status}
+                      value={status}
+                      className={taskListFetching ? 'opacity-50 cursor-not-allowed' : ''}
+                    >
                       {status}
                     </SelectItem>
                   ))}
@@ -213,11 +223,18 @@ const ProjectContent = ({
                   <SelectValue placeholder="选择负责人" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="全部" className={taskListFetching ? 'opacity-50 cursor-not-allowed' : ''}>
+                  <SelectItem
+                    value="全部"
+                    className={taskListFetching ? 'opacity-50 cursor-not-allowed' : ''}
+                  >
                     所有人
                   </SelectItem>
                   {memberData?.data?.map((member) => (
-                    <SelectItem className={taskListFetching ? 'opacity-50 cursor-not-allowed' : ''} key={member.id} value={member.userId}>
+                    <SelectItem
+                      className={taskListFetching ? 'opacity-50 cursor-not-allowed' : ''}
+                      key={member.id}
+                      value={member.userId}
+                    >
                       {member.username}
                     </SelectItem>
                   ))}
@@ -225,10 +242,17 @@ const ProjectContent = ({
               </Select>
               <Popover>
                 <PopoverTrigger asChild>
-                  <button type="button" className="w-full px-2 h-8 border border-input bg-background shadow-sm cursor-pointer">
+                  <button
+                    type="button"
+                    className="w-full px-2 h-8 border border-input bg-background shadow-sm cursor-pointer"
+                  >
                     <div className="flex items-center gap-2">
                       <CalendarIcon className=" h-4 w-4 opacity-50" />
-                      {date ? format(date, 'yyyy-MM-dd') : <span className="text-xs">请选择最后时间</span>}
+                      {date ? (
+                        format(date, 'yyyy-MM-dd')
+                      ) : (
+                        <span className="text-xs">请选择最后时间</span>
+                      )}
                       {date && (
                         <XIcon
                           className="ml-auto h-6 w-6 opacity-50 z-100"

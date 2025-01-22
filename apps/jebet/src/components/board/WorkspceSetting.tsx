@@ -39,8 +39,19 @@ const WorkspceSetting = ({
           }}
         />
       </Card>
-      <RefreshInviteCode canEdit={data?.user.role === 'admin'} inviteCode={workSpace.inviteCode} workspaceId={workSpace.id} userId={userData.id} />
-      <DeleteCard type="workspace" imageUrl={workSpace.imageUrl} canEdit={data?.user.role === 'admin'} workspaceId={workSpace.id} userId={userData.id} />
+      <RefreshInviteCode
+        canEdit={data?.user.role === 'admin'}
+        inviteCode={workSpace.inviteCode}
+        workspaceId={workSpace.id}
+        userId={userData.id}
+      />
+      <DeleteCard
+        type="workspace"
+        imageUrl={workSpace.imageUrl}
+        canEdit={data?.user.role === 'admin'}
+        workspaceId={workSpace.id}
+        userId={userData.id}
+      />
     </CardContent>
   );
 };

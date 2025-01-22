@@ -47,7 +47,9 @@ type KeyOfT = Extract<keyof T, string>;
 type Data = (typeof props.data)[number];
 
 const index = computed(() => props.index as KeyOfT);
-const colors = computed(() => (props.colors?.length ? props.colors : defaultColors(props.categories.length)));
+const colors = computed(() =>
+  props.colors?.length ? props.colors : defaultColors(props.categories.length),
+);
 const legendItems = ref<BulletLegendItemInterface[]>(
   props.categories.map((category, i) => ({
     name: category,
@@ -63,7 +65,9 @@ function handleLegendItemClick(d: BulletLegendItemInterface, i: number) {
 }
 
 const VisBarComponent = computed(() => (props.type === 'grouped' ? VisGroupedBar : VisStackedBar));
-const selectorsBar = computed(() => (props.type === 'grouped' ? GroupedBar.selectors.bar : StackedBar.selectors.bar));
+const selectorsBar = computed(() =>
+  props.type === 'grouped' ? GroupedBar.selectors.bar : StackedBar.selectors.bar,
+);
 </script>
 
 <template>

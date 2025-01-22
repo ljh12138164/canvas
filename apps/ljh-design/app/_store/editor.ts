@@ -1,6 +1,27 @@
 import { center, getWorkspace } from '@/app/_lib/editor/editor';
-import { type Effect, createFilter, downloadImage, isText, transformToTest } from '@/app/_lib/utils';
-import { type AddObject, type Edit, FONT_FAMILY, FONT_SIZE, FONT_WEIGHT, type FontStyle, type FontWeightType, type InitFabicObject, JSON_KEY, OPACITY, STROKE_DASH_ARRAY, STROKE_WIDTH, TEXTBOX_OPTION, type buildEditorProps } from '@/app/_types/Edit';
+import {
+  type Effect,
+  createFilter,
+  downloadImage,
+  isText,
+  transformToTest,
+} from '@/app/_lib/utils';
+import {
+  type AddObject,
+  type Edit,
+  FONT_FAMILY,
+  FONT_SIZE,
+  FONT_WEIGHT,
+  type FontStyle,
+  type FontWeightType,
+  type InitFabicObject,
+  JSON_KEY,
+  OPACITY,
+  STROKE_DASH_ARRAY,
+  STROKE_WIDTH,
+  TEXTBOX_OPTION,
+  type buildEditorProps,
+} from '@/app/_types/Edit';
 import * as fabric from 'fabric';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
@@ -318,7 +339,9 @@ export const buildEditor = ({
           const effects = createFilter(filter);
           imageObj.filtersArray.push({ name: filter, effect: effects });
           // @ts-ignore
-          imageObj.filters = imageObj.filtersArray[0]?.effect ? imageObj.filtersArray.map((item) => item.effect) : [];
+          imageObj.filters = imageObj.filtersArray[0]?.effect
+            ? imageObj.filtersArray.map((item) => item.effect)
+            : [];
           fixImageSize(imageObj);
 
           save();
@@ -334,9 +357,14 @@ export const buildEditor = ({
       canvas.getActiveObjects().forEach((item: fabric.FabricObject) => {
         if (item.type === 'image') {
           const imageObj = item as fabric.FabricImage;
-          imageObj.filtersArray = [...imageObj.filtersArray.filter((item) => item.name !== filter), { name: filter, effect: value }];
+          imageObj.filtersArray = [
+            ...imageObj.filtersArray.filter((item) => item.name !== filter),
+            { name: filter, effect: value },
+          ];
           // @ts-ignore
-          imageObj.filters = imageObj.filtersArray[0]?.effect ? imageObj.filtersArray.map((item) => item.effect) : [];
+          imageObj.filters = imageObj.filtersArray[0]?.effect
+            ? imageObj.filtersArray.map((item) => item.effect)
+            : [];
           imageObj.applyFilters();
           canvas.renderAll();
         }
@@ -350,7 +378,9 @@ export const buildEditor = ({
         if (item.type === 'image') {
           const imageObj = item as fabric.FabricImage;
           imageObj.filtersArray = imageObj.filtersArray.filter((item) => item.name !== filter);
-          imageObj.filters = imageObj.filtersArray[0]?.effect ? [imageObj.filtersArray[0]?.effect] : [];
+          imageObj.filters = imageObj.filtersArray[0]?.effect
+            ? [imageObj.filtersArray[0]?.effect]
+            : [];
           imageObj.applyFilters();
           canvas.renderAll();
         }

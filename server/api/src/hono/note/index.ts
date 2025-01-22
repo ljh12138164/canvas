@@ -6,4 +6,10 @@ import { folder } from './route/folder';
 import { webhook } from './route/webhook';
 import { workspace } from './route/workspace';
 
-export const note = new Hono().route('/editor', editor).route('/folder', folder).route('/workspace', workspace).route('/webhook', webhook).route('/collaborators', collaborators).route('/file', file);
+export const note = new Hono()
+  .route('/editor', editor)
+  .route('/folder', folder)
+  .route('/workspace', workspace)
+  .route('/webhook', webhook)
+  .route('/collaborators', collaborators)
+  .route('/file', file);

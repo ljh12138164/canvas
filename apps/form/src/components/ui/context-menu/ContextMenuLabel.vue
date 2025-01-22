@@ -3,7 +3,9 @@ import { cn } from '@/lib/utils';
 import { ContextMenuLabel, type ContextMenuLabelProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<ContextMenuLabelProps & { class?: HTMLAttributes['class']; inset?: boolean }>();
+const props = defineProps<
+  ContextMenuLabelProps & { class?: HTMLAttributes['class']; inset?: boolean }
+>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

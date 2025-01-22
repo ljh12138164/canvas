@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils';
-import { NavigationMenuRoot, type NavigationMenuRootEmits, type NavigationMenuRootProps, useForwardPropsEmits } from 'radix-vue';
+import {
+  NavigationMenuRoot,
+  type NavigationMenuRootEmits,
+  type NavigationMenuRootProps,
+  useForwardPropsEmits,
+} from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 import NavigationMenuViewport from './NavigationMenuViewport.vue';
 

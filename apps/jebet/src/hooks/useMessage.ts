@@ -7,7 +7,12 @@ interface UseMessageProps {
   fetchNextPage: () => void;
 }
 
-export const useMessage = ({ messageLoading, messageHasNextPage, isFetchingNextPage, fetchNextPage }: UseMessageProps) => {
+export const useMessage = ({
+  messageLoading,
+  messageHasNextPage,
+  isFetchingNextPage,
+  fetchNextPage,
+}: UseMessageProps) => {
   // 初始化数据
   const [initData, setInitData] = useState<boolean>(false);
   const topRef = useRef<HTMLDivElement>(null);

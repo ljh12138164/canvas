@@ -29,7 +29,8 @@ const MessageContainer = styled.div`
 `;
 
 const ChatMessageList = observer(({ workspace, userId }: ChatMessageListProps) => {
-  const { messageLoading, message, messageHasNextPage, fetchNextPage, isFetchingNextPage } = useGetMessage(workspace.id, workspace.member[0].userId, chatStore.isConnected);
+  const { messageLoading, message, messageHasNextPage, fetchNextPage, isFetchingNextPage } =
+    useGetMessage(workspace.id, workspace.member[0].userId, chatStore.isConnected);
   const { topRef, bottomRef, messageRef } = useMessage({
     messageLoading,
     fetchNextPage,
@@ -39,10 +40,22 @@ const ChatMessageList = observer(({ workspace, userId }: ChatMessageListProps) =
   return (
     <ChatMessageContainer ref={messageRef}>
       <MessageContainer>
-        {!messageLoading && <section>{messageHasNextPage ? <p className="text-sm text-zinc-500 text-center mb-4">{isFetchingNextPage ? '加载中...' : '加载更多'}</p> : <p className="text-sm h-full text-zinc-500 flex mb-4  flex-col items-center justify-center" />}</section>}
+        {!messageLoading && (
+          <section>
+            {messageHasNextPage ? (
+              <p className="text-sm text-zinc-500 text-center mb-4">
+                {isFetchingNextPage ? '加载中...' : '加载更多'}
+              </p>
+            ) : (
+              <p className="text-sm h-full text-zinc-500 flex mb-4  flex-col items-center justify-center" />
+            )}
+          </section>
+        )}
         <div className="h-5" ref={topRef} />
         {/* 消息显示 */}
-        {!messageLoading && message?.pages?.length && <ChatMessage userId={userId} workspace={workspace} message={message} />}
+        {!messageLoading && message?.pages?.length && (
+          <ChatMessage userId={userId} workspace={workspace} message={message} />
+        )}
         {messageLoading && <div>加载中</div>}
         <div className="h-10" ref={bottomRef} />
       </MessageContainer>

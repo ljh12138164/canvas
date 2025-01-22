@@ -1,5 +1,10 @@
 <script setup lang="ts" generic="T extends ZodRawShape">
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { FormItem } from '@/components/ui/form';
 import { FieldContextKey, useField } from 'vee-validate';
 import { computed, provide } from 'vue';
@@ -27,7 +32,8 @@ const shapes = computed(() => {
   Object.keys(shape).forEach((name) => {
     const item = shape[name] as ZodAny;
     const baseItem = getBaseSchema(item) as ZodAny;
-    let options = baseItem && 'values' in baseItem._def ? (baseItem._def.values as string[]) : undefined;
+    let options =
+      baseItem && 'values' in baseItem._def ? (baseItem._def.values as string[]) : undefined;
     if (!Array.isArray(options) && typeof options === 'object') options = Object.values(options);
 
     val[name as keyof T] = {
