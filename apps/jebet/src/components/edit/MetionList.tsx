@@ -60,7 +60,12 @@ export default forwardRef(function MetionList(props, ref) {
       {props.items.length ? (
         // @ts-ignore
         props.items.map((item, index) => (
-          <button type="button" className={index === selectedIndex ? 'is-selected' : ''} key={nanoid()} onClick={() => selectItem(index)}>
+          <button
+            type="button"
+            className={index === selectedIndex ? 'is-selected' : ''}
+            key={nanoid()}
+            onClick={() => selectItem(index)}
+          >
             {item}
           </button>
         ))

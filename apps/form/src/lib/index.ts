@@ -6,7 +6,8 @@ import type { Ref } from 'vue';
 import type { RouteLocationNormalized } from 'vue-router';
 import useUser from '../stores/user';
 
-export const DEFAULT_AVATAR = 'https://spvppoqewfwqyzlsmtru.supabase.co/storage/v1/object/public/ASSETS/avatar.svg';
+export const DEFAULT_AVATAR =
+  'https://spvppoqewfwqyzlsmtru.supabase.co/storage/v1/object/public/ASSETS/avatar.svg';
 export const USER_IMAGE_URL = 'https://spvppoqewfwqyzlsmtru.supabase.co/storage/v1/object/public/';
 
 const { toast: UiToast } = useToast();
@@ -49,7 +50,12 @@ export const checkUserLogin = async () => {
  * @param __
  * @param next
  */
-export async function routerCheckLogin(to: RouteLocationNormalized, _: RouteLocationNormalized, next: (go?: string) => void, redirect = true) {
+export async function routerCheckLogin(
+  to: RouteLocationNormalized,
+  _: RouteLocationNormalized,
+  next: (go?: string) => void,
+  redirect = true,
+) {
   try {
     const data = await getCurrentUser();
     const { setUserData } = useUser();

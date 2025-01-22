@@ -26,7 +26,13 @@ const Task = observer(() => {
     toast.error('未选择项目');
     return <Navigate to="/dashboard" replace />;
   }
-  return <Detail workspaceId={params.workspaceId} projectId={params.projectId} userData={store.userData} />;
+  return (
+    <Detail
+      workspaceId={params.workspaceId}
+      projectId={params.projectId}
+      userData={store.userData}
+    />
+  );
 });
 
 export default Task;

@@ -115,7 +115,10 @@ export const getJebtFileList = async ({
 }): Promise<StoageData[]> => {
   const [noUser] = await to(checkUser(userId, workspaceId));
   if (noUser) throw new Error('未找到用户');
-  const { data, error } = await supabaseJebt.from('stoages').select('*').eq('workspaceId', workspaceId);
+  const { data, error } = await supabaseJebt
+    .from('stoages')
+    .select('*')
+    .eq('workspaceId', workspaceId);
   if (error) throw new Error('服务器错误');
   return data;
 };
@@ -136,7 +139,11 @@ export const deleteJebtFile = async ({
   if (noUser) throw new Error('未找到用户');
   const [deleteError] = await to(deleteImageClound({ image: file }));
   if (deleteError) throw new Error('删除文件失败');
-  const { error } = await supabaseJebt.from('stoages').delete().eq('id', id).eq('workspaceId', workspaceId);
+  const { error } = await supabaseJebt
+    .from('stoages')
+    .delete()
+    .eq('id', id)
+    .eq('workspaceId', workspaceId);
   if (error) throw new Error('服务器错误');
   return true;
 };
@@ -165,7 +172,12 @@ export const updateJebtFile = async ({
 }): Promise<StoageData> => {
   const [noUser] = await to(checkUser(userId, workspaceId));
   if (noUser) throw new Error('未找到用户');
-  const { error, data } = await supabaseJebt.from('stoages').update({ name, description, updated_at: new Date().toISOString() }).eq('id', id).eq('workspaceId', workspaceId).select('*');
+  const { error, data } = await supabaseJebt
+    .from('stoages')
+    .update({ name, description, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .eq('workspaceId', workspaceId)
+    .select('*');
   if (error) throw new Error('服务器错误');
   return data[0];
 };

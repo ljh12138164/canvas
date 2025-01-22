@@ -1,6 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { useRefreshWorkspace } from '@/server/hooks/board';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -101,7 +110,11 @@ export default function RefreshInviteCode({
                     取消
                   </Button>
                 </DialogClose>
-                <Button variant="destructive" onClick={handleRefresh} disabled={!canEdit || isRefreshing}>
+                <Button
+                  variant="destructive"
+                  onClick={handleRefresh}
+                  disabled={!canEdit || isRefreshing}
+                >
                   {isRefreshing ? '刷新中...' : '刷新邀请码'}
                 </Button>
               </DialogFooter>

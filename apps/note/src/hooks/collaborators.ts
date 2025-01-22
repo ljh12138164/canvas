@@ -8,7 +8,10 @@ const router = useRouter();
 // type getCollaboratorsRequest = InferRequestType<
 //   (typeof client.collaborators)[":workspaceId"]["$get"]
 // >;
-type getCollaboratorsResponse = InferResponseType<(typeof client.collaborators)[':workspaceId']['$get'], 200>;
+type getCollaboratorsResponse = InferResponseType<
+  (typeof client.collaborators)[':workspaceId']['$get'],
+  200
+>;
 
 /**
  * 获取协作者
@@ -17,7 +20,11 @@ type getCollaboratorsResponse = InferResponseType<(typeof client.collaborators)[
  * @returns
  */
 export const useCollaborators = (workspaceId: string) => {
-  const { data: collaborators, isLoading } = useQuery<getCollaboratorsResponse, Error, getCollaboratorsResponse>({
+  const { data: collaborators, isLoading } = useQuery<
+    getCollaboratorsResponse,
+    Error,
+    getCollaboratorsResponse
+  >({
     queryKey: ['collaborators', workspaceId],
     queryFn: async () => {
       const token = await getNewToken();
@@ -42,13 +49,19 @@ export const useCollaborators = (workspaceId: string) => {
 };
 
 type inviteCollaboratorRequest = InferRequestType<(typeof client.collaborators)['invite']['$post']>;
-type inviteCollaboratorResponse = InferResponseType<(typeof client.collaborators)['invite']['$post']>;
+type inviteCollaboratorResponse = InferResponseType<
+  (typeof client.collaborators)['invite']['$post']
+>;
 /**
  * 邀请协作者
  * @returns
  */
 export const useInviteCollaborator = () => {
-  const { mutate: inviteCollaborator, isPending: isInviting } = useMutation<inviteCollaboratorResponse, Error, inviteCollaboratorRequest>({
+  const { mutate: inviteCollaborator, isPending: isInviting } = useMutation<
+    inviteCollaboratorResponse,
+    Error,
+    inviteCollaboratorRequest
+  >({
     mutationFn: async (data) => {
       const token = await getNewToken();
       if (!token) router.push('/login');
@@ -68,15 +81,23 @@ export const useInviteCollaborator = () => {
   return { inviteCollaborator, isInviting };
 };
 
-type removeCollaboratorRequest = InferRequestType<(typeof client.collaborators)['collaborators']['$delete']>;
-type removeCollaboratorResponse = InferResponseType<(typeof client.collaborators)['collaborators']['$delete']>;
+type removeCollaboratorRequest = InferRequestType<
+  (typeof client.collaborators)['collaborators']['$delete']
+>;
+type removeCollaboratorResponse = InferResponseType<
+  (typeof client.collaborators)['collaborators']['$delete']
+>;
 /**
  * 移除协作者
  * @param token
  * @returns
  */
 export const useRemoveCollaborator = () => {
-  const { mutate: removeCollaborator, isPending: isRemoving } = useMutation<removeCollaboratorResponse, Error, removeCollaboratorRequest>({
+  const { mutate: removeCollaborator, isPending: isRemoving } = useMutation<
+    removeCollaboratorResponse,
+    Error,
+    removeCollaboratorRequest
+  >({
     mutationFn: async (data) => {
       const token = await getNewToken();
       if (!token) router.push('/login');

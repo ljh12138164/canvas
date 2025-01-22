@@ -45,7 +45,11 @@ export function rgbaObjToString(color: RGBColor | 'transparent') {
  */
 export function isText(fabricObject: fabric.FabricObject) {
   if (!fabricObject) return false;
-  return fabricObject.type === 'i-text' || fabricObject.type === 'text' || fabricObject.type === 'textbox';
+  return (
+    fabricObject.type === 'i-text' ||
+    fabricObject.type === 'text' ||
+    fabricObject.type === 'textbox'
+  );
 }
 /**
  * ### 滤镜类型
@@ -256,7 +260,12 @@ export async function getTryBoardById(id: string) {
  * @param canvas 画布
  * @returns 工作区
  */
-export const getWorkspace = (canvas: fabric.Canvas): fabric.Rect => canvas.getObjects().find((item: InitFabicObject | fabric.FabricObject) => (item as InitFabicObject).name === 'board') as fabric.Rect;
+export const getWorkspace = (canvas: fabric.Canvas): fabric.Rect =>
+  canvas
+    .getObjects()
+    .find(
+      (item: InitFabicObject | fabric.FabricObject) => (item as InitFabicObject).name === 'board',
+    ) as fabric.Rect;
 /**
  * 通过fabric.js的JSON数据生成图片
  * @param fabrics 包含JSON数据和画布尺寸的对象
@@ -300,7 +309,28 @@ export const importJsonToFabric = (fabrics: {
   });
 };
 // 高亮色调增强
-export const HIGHLIGHT_COLORS = ['#F59E0B', '#EF4444', '#10B981', '#3B82F6', '#8B5CF6', '#D97706', '#EC4899', '#6366F1', '#22C55E', '#F97316', '#E11D48', '#2563EB', '#14B8A6', '#7C3AED', '#F43F5E', '#0EA5E9', '#6D28D9', '#047857', '#D946EF', '#0891B2'];
+export const HIGHLIGHT_COLORS = [
+  '#F59E0B',
+  '#EF4444',
+  '#10B981',
+  '#3B82F6',
+  '#8B5CF6',
+  '#D97706',
+  '#EC4899',
+  '#6366F1',
+  '#22C55E',
+  '#F97316',
+  '#E11D48',
+  '#2563EB',
+  '#14B8A6',
+  '#7C3AED',
+  '#F43F5E',
+  '#0EA5E9',
+  '#6D28D9',
+  '#047857',
+  '#D946EF',
+  '#0891B2',
+];
 
 /**
  * 随机颜色

@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import type { getWorkspaceByIdResponse } from '@/hooks/workspace';
 import { valueUpdater } from '@/lib';
 import { cn } from '@/lib/utils';
@@ -13,7 +25,16 @@ import type {
   SortingState,
   VisibilityState,
 } from '@tanstack/vue-table';
-import { FlexRender, createColumnHelper, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useVueTable } from '@tanstack/vue-table';
+import {
+  FlexRender,
+  createColumnHelper,
+  getCoreRowModel,
+  getExpandedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useVueTable,
+} from '@tanstack/vue-table';
 import dayjs from 'dayjs';
 import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { h, ref } from 'vue';
@@ -113,7 +134,7 @@ const columns = [
       );
     },
     cell: ({ row }) => {
-      const formatted = dayjs(row.getValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
+      const formatted = dayjs(row.getValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
       return h('div', { class: 'text-right' }, h(TooltipComponent, { content: formatted }));
     },
   }),
@@ -254,11 +275,12 @@ const handleGoFolder = (folderId: string) => {
           <template v-if="table.getRowModel().rows?.length">
             <template v-for="row in table.getRowModel().rows" :key="row.id">
               <TableRow :data-state="row.getIsSelected() && 'selected'">
+                <!-- @vue-ignore -->
                 <TableCell
                   v-for="cell in row.getVisibleCells()"
                   :key="cell.id"
                   :data-pinned="cell.column.getIsPinned()"
-                  @click="handleGoFolder(row.original.id)"
+                  @click="handleGoFolder(row.original.id!)"
                   :class="
                     cn(
                       { 'sticky bg-background/95': cell.column.getIsPinned() },

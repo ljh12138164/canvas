@@ -1,7 +1,14 @@
 import { flowStore } from '@/store/flow';
 // import { Workspace } from '@/types/workspace';
 // import { UserResource } from '@clerk/types';
-import { Background, BackgroundVariant, Controls, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react';
+import {
+  Background,
+  BackgroundVariant,
+  Controls,
+  ReactFlow,
+  useEdgesState,
+  useNodesState,
+} from '@xyflow/react';
 import { ArrowLeftIcon } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { Button } from '../ui/button';
@@ -34,7 +41,13 @@ export const FlowDetail = observer(() => {
         </div>
       </header>
       <div className=" h-[calc(100dvh-200px)]">
-        <ReactFlow nodes={nodes} edges={edge} edgeTypes={edgeTypes} onNodesChange={onNodeChange} onEdgesChange={onEdgeChange}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edge}
+          edgeTypes={edgeTypes}
+          onNodesChange={onNodeChange}
+          onEdgesChange={onEdgeChange}
+        >
           {/* 背景 */}
           <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
           {/* 控制 */}

@@ -3,7 +3,8 @@ import UserButton from '@/components/common/UserButton.vue';
 import WorkspaceList from '@/components/workspace/WorkspaceList.vue';
 import { useGetWorkspaces } from '@/hooks/workspace';
 import { RouterView } from 'vue-router';
-const { workspaces, workspacesError, workspacesIsLoading, workspacesIsFetching } = useGetWorkspaces();
+const { workspaces, workspacesError, workspacesIsLoading, workspacesIsFetching } =
+  useGetWorkspaces();
 </script>
 <template>
   <!-- <FromCard /> -->
@@ -22,7 +23,6 @@ const { workspaces, workspacesError, workspacesIsLoading, workspacesIsFetching }
           <h1 class="nav-title">工作区</h1>
         </div>
         <div class="nav-right">
-          <!-- 这里可以添加右侧的操作按钮 -->
           <UserButton />
         </div>
       </nav>

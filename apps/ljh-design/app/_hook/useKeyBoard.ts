@@ -43,7 +43,9 @@ const useKeyBoard = ({ canvas, undo, redo, save, copy, pasty }: UseKeyBoardProps
       if (e.key === 'a') {
         e.preventDefault();
         canvas?.discardActiveObject();
-        const allObject = canvas?.getObjects().filter((item) => (item as InitFabicObject).name !== 'board');
+        const allObject = canvas
+          ?.getObjects()
+          .filter((item) => (item as InitFabicObject).name !== 'board');
 
         canvas?.setActiveObject(new fabric.ActiveSelection(allObject, { canvas }));
         canvas?.renderAll();

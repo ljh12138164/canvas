@@ -9,8 +9,22 @@ import { useRef } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useParams } from 'react-router-dom';
 import { Button } from '../ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import Form from './Form';
 
 const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
@@ -47,7 +61,12 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
               <DialogHeader>
                 <DialogTitle>编辑工作流</DialogTitle>
               </DialogHeader>
-              <Form type="update" defaultData={row.original} userId={useUser.userData.id} workspaceId={workspaceId} />
+              <Form
+                type="update"
+                defaultData={row.original}
+                userId={useUser.userData.id}
+                workspaceId={workspaceId}
+              />
             </DialogContent>
           </Dialog>
         </DropdownMenuItem>

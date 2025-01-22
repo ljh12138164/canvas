@@ -39,7 +39,9 @@ function onLegendItemClick(d: BulletLegendItemInterface, i: number) {
     // apply selection, set other item as inactive
     emits(
       'update:items',
-      props.items.map((item) => (item.name === d.name ? { ...d, inactive: false } : { ...item, inactive: true })),
+      props.items.map((item) =>
+        item.name === d.name ? { ...d, inactive: false } : { ...item, inactive: true },
+      ),
     );
   }
 }

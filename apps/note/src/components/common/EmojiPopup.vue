@@ -5,7 +5,10 @@ import 'vue3-emoji-picker/css';
 
 import { useColorMode } from '@vueuse/core';
 import { ref } from 'vue';
-const emojis = ref<string>('');
+const props = defineProps<{
+  defaultEmoji: string | undefined;
+}>();
+const emojis = ref<string>(props.defaultEmoji || '');
 const emit = defineEmits<(e: 'onChangeEmoji', emojis: string) => void>();
 function onSelectEmoji(emoji: any) {
   emojis.value = emoji.i;

@@ -1,6 +1,26 @@
 import { nanoid } from 'nanoid';
 
-export type Type = 'input' | 'checkbox' | 'radio' | 'switch' | 'textarea' | 'select' | 'date' | 'time' | 'datetime' | 'datetime-local' | 'number' | 'email' | 'url' | 'password' | 'file' | 'array' | 'object' | 'enum' | 'regex' | 'custom';
+export type Type =
+  | 'input'
+  | 'checkbox'
+  | 'radio'
+  | 'switch'
+  | 'textarea'
+  | 'select'
+  | 'date'
+  | 'time'
+  | 'datetime'
+  | 'datetime-local'
+  | 'number'
+  | 'email'
+  | 'url'
+  | 'password'
+  | 'file'
+  | 'array'
+  | 'object'
+  | 'enum'
+  | 'regex'
+  | 'custom';
 //下拉的默认值
 export const selectDefaultValue = [
   {
@@ -123,7 +143,18 @@ export const formItemList = [
 ];
 
 // 可更改表单项
-export type FormType = 'name' | 'type' | 'label' | 'isRequired' | 'placeholder' | 'defaultValue' | 'description' | 'hiddenLabel' | 'inputType' | 'options' | 'defaultTypeName';
+export type FormType =
+  | 'name'
+  | 'type'
+  | 'label'
+  | 'isRequired'
+  | 'placeholder'
+  | 'defaultValue'
+  | 'description'
+  | 'hiddenLabel'
+  | 'inputType'
+  | 'options'
+  | 'defaultTypeName';
 
 // 基础表单项
 export interface FormItem {
@@ -179,5 +210,13 @@ export interface ObjectItem extends FormItem {
   children: CreateFormItem[];
 }
 // 表单项
-export type CreateFormItem = FormInput | Files | Radio | Select | DatePicker | BigText | Slider | ObjectItem;
+export type CreateFormItem =
+  | FormInput
+  | Files
+  | Radio
+  | Select
+  | DatePicker
+  | BigText
+  | Slider
+  | ObjectItem;
 // 可更改表单项

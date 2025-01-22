@@ -15,7 +15,8 @@ import { BoardTable } from './BoardTable';
 import { columns } from './BoardTableColume';
 const BoardMain = ({ userId }: { userId: string }) => {
   const footerRef = useRef<HTMLTableSectionElement>(null);
-  const { data, error, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching } = useBoardUserQuery({ userId });
+  const { data, error, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching } =
+    useBoardUserQuery({ userId });
   const {
     // data: boardData,
     isLoading: boardLoading,
@@ -57,7 +58,11 @@ const BoardMain = ({ userId }: { userId: string }) => {
         {error && <div className="h-[200px]" />}
         <div className=" flex flex-col  gap-2 h-[calc(100dvh-300px)]   text-5xl">
           {error && (
-            <Button variant="outline" className=" w-fit text-black px-6 py-4 m-auto" onClick={() => query.invalidateQueries({ queryKey: ['board', userId] })}>
+            <Button
+              variant="outline"
+              className=" w-fit text-black px-6 py-4 m-auto"
+              onClick={() => query.invalidateQueries({ queryKey: ['board', userId] })}
+            >
               重试
             </Button>
           )}
@@ -140,14 +145,18 @@ const BoardMain = ({ userId }: { userId: string }) => {
                 </div>
               )}
               <footer className="h-12 flex items-center justify-center" ref={footerRef}>
-                {hasNextPage && !isFetchingNextPage && <p className="text-muted-foreground text-sm">加载更多...</p>}
+                {hasNextPage && !isFetchingNextPage && (
+                  <p className="text-muted-foreground text-sm">加载更多...</p>
+                )}
                 {isFetchingNextPage && (
                   <p className="text-muted-foreground text-sm flex flex-col items-center gap-2">
                     <LuLoader className="size-4 animate-spin mr-2" />
                     <span>加载中...</span>
                   </p>
                 )}
-                {!hasNextPage && !isLoading && <p className="text-muted-foreground text-sm">没有更多了</p>}
+                {!hasNextPage && !isLoading && (
+                  <p className="text-muted-foreground text-sm">没有更多了</p>
+                )}
               </footer>
             </ScrollArea>
           )}

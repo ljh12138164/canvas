@@ -10,7 +10,11 @@ import type { ZodType } from 'zod';
 const props = defineProps<{
   id: string;
   data: DatePicker;
-  updateList2: (id: string, type: FormType, newValue: string | boolean | number | undefined | DateValue) => void;
+  updateList2: (
+    id: string,
+    type: FormType,
+    newValue: string | boolean | number | undefined | DateValue,
+  ) => void;
 }>();
 // 默认值
 // 占位符
@@ -52,7 +56,10 @@ schema.value = getZodSchema(props.data, fieldConfig);
 const updateSchema = () => {
   schema.value = getZodSchema(props.data, fieldConfig);
 };
-const updateList = (type: FormType, newValue: string | boolean | number | undefined | DateValue) => {
+const updateList = (
+  type: FormType,
+  newValue: string | boolean | number | undefined | DateValue,
+) => {
   props.updateList2(props.id, type, newValue);
   updateSchema();
 };

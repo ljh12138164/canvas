@@ -93,7 +93,9 @@ const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) 
   return (
     <section className="flex flex-col gap-4">
       <DialogHeader>
-        <DialogTitle className="text-2xl font-bold">{type === 'create' ? '创建文件' : '更新文件'}</DialogTitle>
+        <DialogTitle className="text-2xl font-bold">
+          {type === 'create' ? '创建文件' : '更新文件'}
+        </DialogTitle>
       </DialogHeader>
       <FormContainer onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -101,14 +103,23 @@ const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) 
             工作流名称
           </Label>
           <Input {...register('name')} id="name" placeholder="请输入工作流名称" className="mt-2" />
-          {formState.errors.name && <p className="text-red-500 text-sm">{formState.errors.name.message}</p>}
+          {formState.errors.name && (
+            <p className="text-red-500 text-sm">{formState.errors.name.message}</p>
+          )}
         </div>
         <div>
           <Label htmlFor="description" id="description">
             工作流描述
           </Label>
-          <Input {...register('description')} id="description" placeholder="请输入工作流描述(选填)" className="mt-2" />
-          {formState.errors.description && <p className="text-red-500 text-sm">{formState.errors.description.message}</p>}
+          <Input
+            {...register('description')}
+            id="description"
+            placeholder="请输入工作流描述(选填)"
+            className="mt-2"
+          />
+          {formState.errors.description && (
+            <p className="text-red-500 text-sm">{formState.errors.description.message}</p>
+          )}
         </div>
         <DialogClose asChild>
           <Button variant={'outline'} ref={close} className="w-full mt-auto hidden">

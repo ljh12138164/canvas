@@ -1,6 +1,15 @@
 <script lang="ts" setup>
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
@@ -64,7 +73,11 @@ const deleteList2 = (id: string) => {
   list2.value = list2.value.filter((item) => item.id !== id);
 };
 // 更新
-const updateList2 = async (id: string, type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => {
+const updateList2 = async (
+  id: string,
+  type: FormType,
+  newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
+) => {
   list2.value = list2.value.map((item) => {
     if (item.id === id) {
       (item as any)[type] = newValue;
@@ -73,7 +86,11 @@ const updateList2 = async (id: string, type: FormType, newValue: string | boolea
   });
   await handleUpdate();
 };
-const updateArray = async (id: string[], type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => {
+const updateArray = async (
+  id: string[],
+  type: FormType,
+  newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
+) => {
   // 更新数组
   list2.value = list2.value.map((item) => {
     if (item.id === id[0]) {
@@ -102,8 +119,28 @@ const activeArea = ref<string>('');
 const isMobile = useMediaQuery('(max-width: 768px)');
 
 const [parent] = useAutoAnimate();
-const onClone = (element: Record<'name' | 'id' | 'type' | 'isRequired' | 'placeholder' | 'defaultValue' | 'label' | 'options' | 'hiddenLabel' | 'description' | 'defaultValue' | 'defaultTypeName', string>) => {
-  const existingNames = new Set(list2.value.filter((item: CreateFormItem) => item.type === element.type).map((item) => item.name));
+const onClone = (
+  element: Record<
+    | 'name'
+    | 'id'
+    | 'type'
+    | 'isRequired'
+    | 'placeholder'
+    | 'defaultValue'
+    | 'label'
+    | 'options'
+    | 'hiddenLabel'
+    | 'description'
+    | 'defaultValue'
+    | 'defaultTypeName',
+    string
+  >,
+) => {
+  const existingNames = new Set(
+    list2.value
+      .filter((item: CreateFormItem) => item.type === element.type)
+      .map((item) => item.name),
+  );
   for (const item of list2.value) {
     if (item.type === 'obj') {
       for (const child of item.children) {
@@ -193,7 +230,23 @@ const handleCopy = async (id: string) => {
   await handleUpdate();
 };
 // const fieldConfig = ref<Record<string, any>>({})
-const parmasClone = (element: Record<'name' | 'id' | 'type' | 'isRequired' | 'placeholder' | 'defaultValue' | 'label' | 'options' | 'hiddenLabel' | 'description' | 'defaultValue' | 'defaultTypeName', string>) => {
+const parmasClone = (
+  element: Record<
+    | 'name'
+    | 'id'
+    | 'type'
+    | 'isRequired'
+    | 'placeholder'
+    | 'defaultValue'
+    | 'label'
+    | 'options'
+    | 'hiddenLabel'
+    | 'description'
+    | 'defaultValue'
+    | 'defaultTypeName',
+    string
+  >,
+) => {
   if (element.type === 'obj') return;
   return element;
 };
@@ -208,7 +261,9 @@ watch(activeArea, () => {
 watch(subId, () => {
   if (subId.value.length) {
     activeArea.value = '';
-    datas.value = (list2.value.find((item) => item.id === subId.value[0]) as ObjectItem)?.children.find((item: CreateFormItem) => item.id === subId.value[1]);
+    datas.value = (
+      list2.value.find((item) => item.id === subId.value[0]) as ObjectItem
+    )?.children.find((item: CreateFormItem) => item.id === subId.value[1]);
   }
 });
 

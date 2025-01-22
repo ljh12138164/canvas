@@ -2,7 +2,13 @@ import type { Table } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { Button } from '@/app/_components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/_components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/app/_components/ui/select';
 
 interface BoardTablePaginationProps<TData> {
   table: Table<TData>;
@@ -46,11 +52,21 @@ export function BoardTablePagination<TData>({ table }: BoardTablePaginationProps
             <span className='sr-only'>首页</span>
             <ChevronsLeft />
           </Button> */}
-          <Button variant="outline" className="h-8 w-8 p-0" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
             <span className="sr-only">上一页</span>
             <ChevronLeft />
           </Button>
-          <Button variant="outline" className="h-8 w-8 p-0" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
             <span className="sr-only">下一页</span>
             <ChevronRight />
           </Button>

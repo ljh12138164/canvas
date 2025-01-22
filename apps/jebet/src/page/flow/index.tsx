@@ -67,7 +67,11 @@ const Flow = observer(() => {
             <span className="text-sm text-gray-500">工作流</span>
           </div>
           <section className="ml-auto">
-            <CreateForm workspaceId={activeWorkSpace.id} userId={store.userData.id} workspace={activeWorkSpace} />
+            <CreateForm
+              workspaceId={activeWorkSpace.id}
+              userId={store.userData.id}
+              workspace={activeWorkSpace}
+            />
           </section>
         </FlowTitle>
         <Separator className="my-2" />

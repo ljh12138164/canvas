@@ -5,7 +5,16 @@ import { Loader2 } from 'lucide-react';
 import { useRef } from 'react';
 import { FaArrowRight, FaStar } from 'react-icons/fa6';
 import { Button } from '../ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import BoardCreateFrom from './BoardCreateFrom';
 
 const BoardCreate = ({
@@ -31,7 +40,9 @@ const BoardCreate = ({
           </div>
         </header>
         <main className="flex flex-col justify-center gap-2">
-          <div className="text-white text-2xl ">{data?.length ? '创建你的画布以开始使用' : '创建第一个画布'}</div>
+          <div className="text-white text-2xl ">
+            {data?.length ? '创建你的画布以开始使用' : '创建第一个画布'}
+          </div>
           <span>
             <Dialog>
               <DialogTrigger asChild>

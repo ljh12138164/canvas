@@ -20,9 +20,18 @@ export interface Board {
   width: number;
 }
 const zod = z.object({
-  name: z.string({ message: '请输入画布名称' }).min(2, { message: '画布名称至少为2个字符' }).max(20, { message: '画布名称最多为20个字符' }),
-  width: z.string({ message: '请输入画布宽度' }).min(1, { message: '画布宽度最小为1' }).max(7, { message: '画布宽度最大为999999' }),
-  height: z.string({ message: '请输入画布高度' }).min(1, { message: '画布高度最小为1' }).max(7, { message: '画布高度最大为999999' }),
+  name: z
+    .string({ message: '请输入画布名称' })
+    .min(2, { message: '画布名称至少为2个字符' })
+    .max(20, { message: '画布名称最多为20个字符' }),
+  width: z
+    .string({ message: '请输入画布宽度' })
+    .min(1, { message: '画布宽度最小为1' })
+    .max(7, { message: '画布宽度最大为999999' }),
+  height: z
+    .string({ message: '请输入画布高度' })
+    .min(1, { message: '画布高度最小为1' })
+    .max(7, { message: '画布高度最大为999999' }),
 });
 interface BoardCreateFromProps {
   type: 'create' | 'edit' | 'copy';
@@ -44,7 +53,15 @@ interface BoardCreateFromProps {
       >
     | undefined;
 }
-const BoardCreateFrom = ({ type, children, closeref, defaultValues, userId, mutate, setChange }: BoardCreateFromProps) => {
+const BoardCreateFrom = ({
+  type,
+  children,
+  closeref,
+  defaultValues,
+  userId,
+  mutate,
+  setChange,
+}: BoardCreateFromProps) => {
   const query = useQueryClient();
   const { register, handleSubmit, formState } = useForm<z.infer<typeof zod>>({
     resolver: zodResolver(zod),
@@ -167,23 +184,61 @@ const BoardCreateFrom = ({ type, children, closeref, defaultValues, userId, muta
         <Label htmlFor="name" aria-label="画布名称">
           画布名称
         </Label>
-        <Input id="name" className={cn(formState.errors.name && 'border-red-500')} placeholder="请输入画布名称" {...register('name')} />
-        <span className={cn('transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]', formState.errors.name && 'h-4')}>{formState.errors.name?.message}</span>
+        <Input
+          id="name"
+          className={cn(formState.errors.name && 'border-red-500')}
+          placeholder="请输入画布名称"
+          {...register('name')}
+        />
+        <span
+          className={cn(
+            'transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]',
+            formState.errors.name && 'h-4',
+          )}
+        >
+          {formState.errors.name?.message}
+        </span>
       </div>
       <section className="flex gap-2 ">
         <div className="flex flex-col gap-2 flex-1">
           <Label htmlFor="width" aria-label="画布宽度">
             画布宽度
           </Label>
-          <Input className={cn(formState.errors.width && 'border-red-500')} id="width" placeholder="请输入画布宽度" type="number" {...register('width')} />
-          <span className={cn('transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]', formState.errors.width && 'h-4')}>{formState.errors.width?.message}</span>
+          <Input
+            className={cn(formState.errors.width && 'border-red-500')}
+            id="width"
+            placeholder="请输入画布宽度"
+            type="number"
+            {...register('width')}
+          />
+          <span
+            className={cn(
+              'transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]',
+              formState.errors.width && 'h-4',
+            )}
+          >
+            {formState.errors.width?.message}
+          </span>
         </div>
         <div className="flex flex-col gap-2  flex-1">
           <Label htmlFor="height" aria-label="画布高度">
             画布高度
           </Label>
-          <Input className={cn(formState.errors.height && 'border-red-500')} id="height" placeholder="请输入画布高度" type="number" {...register('height')} />
-          <span className={cn('transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]', formState.errors.height && 'h-4')}>{formState.errors.height?.message}</span>
+          <Input
+            className={cn(formState.errors.height && 'border-red-500')}
+            id="height"
+            placeholder="请输入画布高度"
+            type="number"
+            {...register('height')}
+          />
+          <span
+            className={cn(
+              'transition-all duration-300 text-sm h-0 ml-2 text-red-500/70 font-[500]',
+              formState.errors.height && 'h-4',
+            )}
+          >
+            {formState.errors.height?.message}
+          </span>
         </div>
       </section>
       <footer>{children}</footer>

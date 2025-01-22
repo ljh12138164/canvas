@@ -11,7 +11,10 @@ import { checkMember } from '../board';
  * @returns 工作区成员列表和自己的权限信息
  */
 export const getJebtUserList = async (workspaceId: string, userId: string) => {
-  const { data, error } = (await supabaseJebt.from('member').select('*').eq('workspaceId', workspaceId)) as {
+  const { data, error } = (await supabaseJebt
+    .from('member')
+    .select('*')
+    .eq('workspaceId', workspaceId)) as {
     data: Member[];
     error: PostgrestError | null;
   };
@@ -43,7 +46,12 @@ export const updateJebtUserRole = async ({
   // 检查用户权限
   const [error, _] = await to(checkMember(currentUserId, workspaceId));
   if (error) throw new Error(error.message);
-  const { data, error: memberError } = await supabaseJebt.from('member').update([{ role }]).eq('userId', userId).eq('workspaceId', workspaceId).select('*');
+  const { data, error: memberError } = await supabaseJebt
+    .from('member')
+    .update([{ role }])
+    .eq('userId', userId)
+    .eq('workspaceId', workspaceId)
+    .select('*');
   if (memberError) throw new Error('服务器错误');
   if (!data) throw new Error('未找到用户');
   return data[0];
@@ -70,7 +78,11 @@ export const deleteJebtUser = async ({
     const [error, _] = await to(checkMember(currentUserId, workspaceId));
     if (error) throw new Error(error.message);
   }
-  const { error: memberError } = await supabaseJebt.from('member').delete().eq('userId', userId).eq('workspaceId', workspaceId);
+  const { error: memberError } = await supabaseJebt
+    .from('member')
+    .delete()
+    .eq('userId', userId)
+    .eq('workspaceId', workspaceId);
   if (memberError) throw new Error('服务器错误');
   return true;
 };

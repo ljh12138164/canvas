@@ -5,9 +5,12 @@ import { ChevronsRight } from 'lucide-vue-next';
 import { PaginationLast, type PaginationLastProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = withDefaults(defineProps<PaginationLastProps & { class?: HTMLAttributes['class'] }>(), {
-  asChild: true,
-});
+const props = withDefaults(
+  defineProps<PaginationLastProps & { class?: HTMLAttributes['class'] }>(),
+  {
+    asChild: true,
+  },
+);
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

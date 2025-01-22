@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils';
-import { ContextMenuSubContent, type DropdownMenuSubContentEmits, type DropdownMenuSubContentProps, useForwardPropsEmits } from 'radix-vue';
+import {
+  ContextMenuSubContent,
+  type DropdownMenuSubContentEmits,
+  type DropdownMenuSubContentProps,
+  useForwardPropsEmits,
+} from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
 const props = defineProps<DropdownMenuSubContentProps & { class?: HTMLAttributes['class'] }>();

@@ -6,7 +6,17 @@ import TaskList from '@tiptap/extension-task-list';
 import Underline from '@tiptap/extension-underline';
 import { Editor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { FaBold, FaItalic, FaList, FaListOl, FaListUl, FaRedo, FaStrikethrough, FaUnderline, FaUndo } from 'react-icons/fa';
+import {
+  FaBold,
+  FaItalic,
+  FaList,
+  FaListOl,
+  FaListUl,
+  FaRedo,
+  FaStrikethrough,
+  FaUnderline,
+  FaUndo,
+} from 'react-icons/fa';
 import './tiptap.css';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';

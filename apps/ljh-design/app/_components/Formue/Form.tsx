@@ -16,8 +16,26 @@ import { z } from 'zod';
 import Edit from '../Comand/RiceEdit/Edit';
 import { Button } from '../ui/button';
 import { Checkbox } from '../ui/checkbox';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '../ui/drawer';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '../ui/drawer';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { ScrollArea } from '../ui/scroll-area';
@@ -89,7 +107,9 @@ const Form = ({ defaultValue, userId }: FormProps) => {
         <div>
           <Label htmlFor="title"> 标题 </Label>
           <Input {...form.register('title')} />
-          {form.formState.errors.title && <p className="text-red-500">{form.formState.errors.title.message}</p>}
+          {form.formState.errors.title && (
+            <p className="text-red-500">{form.formState.errors.title.message}</p>
+          )}
         </div>
 
         <div>
@@ -127,11 +147,17 @@ const Form = ({ defaultValue, userId }: FormProps) => {
           ) : (
             <Skeleton className="h-10 w-full" />
           )}
-          {form.formState.errors.relativeTheme && <p className="text-red-500">{form.formState.errors.relativeTheme.message}</p>}
+          {form.formState.errors.relativeTheme && (
+            <p className="text-red-500">{form.formState.errors.relativeTheme.message}</p>
+          )}
         </div>
         <div>
           <Label htmlFor="explanation"> 描述 </Label>
-          <Edit content={defaultValue?.explanation || ''} setValue={form.setValue} setError={form.setError} />
+          <Edit
+            content={defaultValue?.explanation || ''}
+            setValue={form.setValue}
+            setError={form.setError}
+          />
         </div>
         <div>
           <Label htmlFor="tap"> 标签 </Label>
@@ -157,7 +183,9 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle>选择标签</DialogTitle>
-                      <DialogDescription>选择标签后，点击确定按钮，标签将添加到模板中</DialogDescription>
+                      <DialogDescription>
+                        选择标签后，点击确定按钮，标签将添加到模板中
+                      </DialogDescription>
                     </DialogHeader>
                     <DialogClose ref={tapRef} />
                     <ScrollArea className="max-h-[35dvh] flex flex-col gap-2">
@@ -167,10 +195,20 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                             id={item.tag}
                             defaultChecked={form.getValues('tap')?.includes(item.tag)}
                             onCheckedChange={(checked) => {
-                              form.setValue('tap', checked ? [...(form.getValues('tap') || []), item.tag] : (form.getValues('tap') || [])?.filter((tag) => tag !== item.tag));
+                              form.setValue(
+                                'tap',
+                                checked
+                                  ? [...(form.getValues('tap') || []), item.tag]
+                                  : (form.getValues('tap') || [])?.filter(
+                                      (tag) => tag !== item.tag,
+                                    ),
+                              );
                             }}
                           />
-                          <label htmlFor={item.tag} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                          <label
+                            htmlFor={item.tag}
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
                             {item.tag}
                           </label>
                         </div>
@@ -196,7 +234,9 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                 <DrawerContent>
                   <DrawerHeader className="text-left">
                     <DrawerTitle>选择标签</DrawerTitle>
-                    <DrawerDescription>选择标签后，点击确定按钮，标签将添加到模板中</DrawerDescription>
+                    <DrawerDescription>
+                      选择标签后，点击确定按钮，标签将添加到模板中
+                    </DrawerDescription>
                   </DrawerHeader>
                   <ScrollArea className="max-h-[35dvh] flex flex-col gap-2">
                     {tapData?.map((item) => (
@@ -205,10 +245,18 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                           id={item.tag}
                           defaultChecked={form.getValues('tap')?.includes(item.tag)}
                           onCheckedChange={(checked) => {
-                            form.setValue('tap', checked ? [...(form.getValues('tap') || []), item.tag] : (form.getValues('tap') || [])?.filter((tag) => tag !== item.tag));
+                            form.setValue(
+                              'tap',
+                              checked
+                                ? [...(form.getValues('tap') || []), item.tag]
+                                : (form.getValues('tap') || [])?.filter((tag) => tag !== item.tag),
+                            );
                           }}
                         />
-                        <label htmlFor={item.tag} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        <label
+                          htmlFor={item.tag}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
                           {item.tag}
                         </label>
                       </div>
@@ -236,7 +284,11 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                       <DialogDescription>请输入标签</DialogDescription>
                     </DialogHeader>
                     <DialogClose ref={closeRef} />
-                    <Input placeholder="请输入标签" value={tapInput} onChange={(e) => setTapInput(e.target.value)} />
+                    <Input
+                      placeholder="请输入标签"
+                      value={tapInput}
+                      onChange={(e) => setTapInput(e.target.value)}
+                    />
                     <DialogFooter>
                       <DialogClose ref={closeRef1} asChild>
                         <Button type="button" variant="outline">
@@ -261,7 +313,11 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                       <DrawerTitle>创建标签</DrawerTitle>
                       <DrawerDescription>请输入标签</DrawerDescription>
                     </DrawerHeader>
-                    <Input placeholder="请输入标签" value={tapInput} onChange={(e) => setTapInput(e.target.value)} />
+                    <Input
+                      placeholder="请输入标签"
+                      value={tapInput}
+                      onChange={(e) => setTapInput(e.target.value)}
+                    />
                     <DrawerFooter className="pt-2">
                       <DrawerClose ref={closeRef1} asChild>
                         <Button variant="outline">关闭</Button>
@@ -276,7 +332,9 @@ const Form = ({ defaultValue, userId }: FormProps) => {
             </section>
           )}
         </div>
-        {form.formState.errors.tap && <p className="text-red-500">{form.formState.errors.tap.message}</p>}
+        {form.formState.errors.tap && (
+          <p className="text-red-500">{form.formState.errors.tap.message}</p>
+        )}
         {isLoading || tapLoading ? (
           <Skeleton className="h-10 w-full" />
         ) : (

@@ -19,7 +19,11 @@ const activeItem = ref<string | null>(null);
 const props = defineProps<{
   id: string;
   data: Radio;
-  updateList2: (id: string, type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => void;
+  updateList2: (
+    id: string,
+    type: FormType,
+    newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
+  ) => void;
 }>();
 const list = ref(props.data?.options);
 // 默认值
@@ -103,7 +107,10 @@ const addItem = () => {
     });
   }
 };
-const updateList = (type: FormType, newValue: string | boolean | number | undefined | DateValue) => {
+const updateList = (
+  type: FormType,
+  newValue: string | boolean | number | undefined | DateValue,
+) => {
   // console.log(newValue, type);
   props.updateList2(props.id, type, newValue);
   updateSchema();

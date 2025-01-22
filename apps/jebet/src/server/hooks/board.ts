@@ -10,7 +10,11 @@ type RequestType = InferRequestType<typeof client.board.create.$post>;
 type ResponseTypeSucees = InferResponseType<typeof client.board.create.$post, 200>;
 export const useCreateWorkspace = (userId: string) => {
   const queryClient = useQueryClient();
-  const { mutate: createWorkspace, isPending: isCreating } = useMutation<ResponseTypeSucees, Error, RequestType>({
+  const { mutate: createWorkspace, isPending: isCreating } = useMutation<
+    ResponseTypeSucees,
+    Error,
+    RequestType
+  >({
     mutationFn: async (data) => {
       toast.loading('创建中');
       const workspace = await client.board.create.$post({
@@ -62,7 +66,11 @@ type UpdateResponseType = InferResponseType<typeof client.board.update.$patch>;
  * ## 更新工作区
  */
 export const useUpdateWorkspace = () => {
-  const { mutate: updateWorkspace, isPending: isUpdating } = useMutation<UpdateResponseType, Error, UpdateRequestType>({
+  const { mutate: updateWorkspace, isPending: isUpdating } = useMutation<
+    UpdateResponseType,
+    Error,
+    UpdateRequestType
+  >({
     mutationFn: async (data) => {
       const res = await client.board.update.$patch({
         form: data.form,
@@ -82,7 +90,11 @@ type DeleteResponseType = InferResponseType<(typeof client.board)[':id']['$delet
  * ## 删除工作区
  */
 export const useDeleteWorkspace = () => {
-  const { mutate: deleteWorkspace, isPending: isDeleting } = useMutation<DeleteResponseType, Error, DeleteRequestType>({
+  const { mutate: deleteWorkspace, isPending: isDeleting } = useMutation<
+    DeleteResponseType,
+    Error,
+    DeleteRequestType
+  >({
     mutationFn: async (data) => {
       const res = await client.board[':id'].$delete({
         param: data.param,
@@ -104,7 +116,11 @@ type RefreshResponseSuccessType = InferResponseType<typeof client.board.refresh.
  * ## 刷新邀请码
  */
 export const useRefreshWorkspace = () => {
-  const { mutate: refreshWorkspace, isPending: isRefreshing } = useMutation<RefreshResponseSuccessType, Error, RefreshRequestType>({
+  const { mutate: refreshWorkspace, isPending: isRefreshing } = useMutation<
+    RefreshResponseSuccessType,
+    Error,
+    RefreshRequestType
+  >({
     mutationFn: async (data) => {
       const res = await client.board.refresh.$post(data);
       if (!res.ok) {
@@ -119,13 +135,20 @@ export const useRefreshWorkspace = () => {
 // type JoinResponseType = InferResponseType<
 //   (typeof client.board.dashboard)[":inviteCode"]["$get"]
 // >;
-type JoinResponseSuccessType = InferResponseType<(typeof client.board.dashboard)[':inviteCode']['$get'], 200>;
+type JoinResponseSuccessType = InferResponseType<
+  (typeof client.board.dashboard)[':inviteCode']['$get'],
+  200
+>;
 
 /**
  * ## 根据邀请码获取工作区
  */
 export const useJoinWorkspace = (id: string) => {
-  const { isLoading, data, error } = useQuery<JoinResponseSuccessType, Error, JoinResponseSuccessType>({
+  const { isLoading, data, error } = useQuery<
+    JoinResponseSuccessType,
+    Error,
+    JoinResponseSuccessType
+  >({
     queryKey: ['join', id],
     queryFn: async () => {
       const res = await client.board.dashboard[':inviteCode'].$get({
@@ -146,7 +169,11 @@ type UserJoinResponseSuccessType = InferResponseType<typeof client.board.join.$p
  * ## 加入工作区
  */
 export const useUserJoinWorkspace = () => {
-  const { mutate: joinWorkspace, isPending: isJoining } = useMutation<UserJoinResponseSuccessType, Error, UserJoinRequestType>({
+  const { mutate: joinWorkspace, isPending: isJoining } = useMutation<
+    UserJoinResponseSuccessType,
+    Error,
+    UserJoinRequestType
+  >({
     mutationFn: async (data) => {
       const res = await client.board.join.$post(data);
       if (!res.ok) {

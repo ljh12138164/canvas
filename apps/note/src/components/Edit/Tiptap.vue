@@ -83,7 +83,10 @@ const props = defineProps<{
   doc: Doc | undefined;
 }>();
 // 本地持久化
-new IndexeddbPersistence(fileId.value ? `${folderId.value}/${fileId.value}` : `/${folderId.value}`, doc);
+new IndexeddbPersistence(
+  fileId.value ? `${folderId.value}/${fileId.value}` : `/${folderId.value}`,
+  doc,
+);
 // provider.on('synced', () => {
 //   isLoading.value = false;
 // });
@@ -118,7 +121,11 @@ const hocuspocusConnections = new HocuspocusProvider({
     isLoading.value = false;
   },
   onAwarenessUpdate: ({ states }: { states: any }) => {
-    activeUserStore.setActiveUserList(states.map((item: { activeUser: { name: string; id: string; color: string } }) => item.activeUser));
+    activeUserStore.setActiveUserList(
+      states.map(
+        (item: { activeUser: { name: string; id: string; color: string } }) => item.activeUser,
+      ),
+    );
   },
 });
 

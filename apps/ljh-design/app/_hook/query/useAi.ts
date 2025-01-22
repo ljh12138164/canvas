@@ -6,7 +6,11 @@ type UpdateRequestType = InferRequestType<typeof clientAi.chat.stream.$post>;
  * ## 使用AI 聊天 stream
  */
 export const useAi = () => {
-  const { mutate: getAiStream, isPending: getAiStreamPending } = useMutation<ReadableStream<Buffer>, Error, UpdateRequestType>({
+  const { mutate: getAiStream, isPending: getAiStreamPending } = useMutation<
+    ReadableStream<Buffer>,
+    Error,
+    UpdateRequestType
+  >({
     mutationFn: async (datas) => {
       const response = await clientAi.chat.stream.$post(datas);
       if (!response.ok) {
@@ -24,7 +28,11 @@ type AiAnswerType = InferResponseType<typeof clientAi.chat.answer.$post>;
  * ## 使用AI 聊天 非流式
  */
 export const useAiAnswer = () => {
-  const { mutate: getAiAnswer, isPending: getAiAnswerPending } = useMutation<AiAnswerType, Error, UpdateRequestType>({
+  const { mutate: getAiAnswer, isPending: getAiAnswerPending } = useMutation<
+    AiAnswerType,
+    Error,
+    UpdateRequestType
+  >({
     mutationFn: async (datas) => {
       const response = await clientAi.chat.answer.$post(datas);
       if (!response.ok) {
@@ -41,7 +49,11 @@ export const useAiAnswer = () => {
  * ### 流式传输
  */
 export const useAiChat = () => {
-  const { mutate: getAiChat, isPending: getAiChatPending } = useMutation<ReadableStream<Buffer>, Error, UpdateRequestType>({
+  const { mutate: getAiChat, isPending: getAiChatPending } = useMutation<
+    ReadableStream<Buffer>,
+    Error,
+    UpdateRequestType
+  >({
     mutationFn: async (datas) => {
       const response = await clientAi.chat.chat.$post(datas);
       if (!response.ok) {

@@ -1,4 +1,15 @@
-import { type Connection, type Edge, type EdgeChange, MarkerType, type Node, type NodeChange, type XYPosition, addEdge, applyEdgeChanges, applyNodeChanges } from '@xyflow/react';
+import {
+  type Connection,
+  type Edge,
+  type EdgeChange,
+  MarkerType,
+  type Node,
+  type NodeChange,
+  type XYPosition,
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
+} from '@xyflow/react';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
 

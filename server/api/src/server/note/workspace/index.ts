@@ -1,6 +1,12 @@
 import to from 'await-to-js';
 import { nanoid } from 'nanoid';
-import type { Collaborators, Filts, Folders, Profiles, Workspace } from '../../../types/note/workspace';
+import type {
+  Collaborators,
+  Filts,
+  Folders,
+  Profiles,
+  Workspace,
+} from '../../../types/note/workspace';
 import { supabaseNote } from '../../supabase/note';
 
 /**
@@ -18,7 +24,10 @@ export const createWorkspace = async ({
   token: string;
 }): Promise<Workspace> => {
   const inviteCode = nanoid(6);
-  const { data, error } = await supabaseNote(token).from('workspace').insert<Workspace>({ title: name, userId, inconId, inviteCode }).select('*');
+  const { data, error } = await supabaseNote(token)
+    .from('workspace')
+    .insert<Workspace>({ title: name, userId, inconId, inviteCode })
+    .select('*');
   if (error) throw new Error('服务器错误');
   await supabaseNote(token).from('folders').insert<Folders>({
     title: '默认文件夹',
@@ -39,10 +48,26 @@ export const getWorkspaces = async ({
   token: string;
   userId: string;
 }): Promise<(Workspace & { profiles: Profiles })[]> => {
-  const [{ data: workspaces, error: workspacesError }, { data: collaborators, error: collaboratorsError }] = await Promise.all([supabaseNote(token).from('workspace').select('*,profiles(*)').eq('userId', userId), supabaseNote(token).from('collaborators').select('*,workspace(*,profiles(*))').eq('userId', userId)]);
+  const [
+    { data: workspaces, error: workspacesError },
+    { data: collaborators, error: collaboratorsError },
+  ] = await Promise.all([
+    supabaseNote(token).from('workspace').select('*,profiles(*)').eq('userId', userId),
+    supabaseNote(token)
+      .from('collaborators')
+      .select('*,workspace(*,profiles(*))')
+      .eq('userId', userId),
+  ]);
   if (workspacesError || collaboratorsError) throw new Error('服务器错误');
 
-  return [...workspaces, ...collaborators.map((collaborator) => (!workspaces.find((workspace) => workspace.id === collaborator.workspace.id) ? collaborator.workspace : null))].filter((workspace) => workspace !== null);
+  return [
+    ...workspaces,
+    ...collaborators.map((collaborator) =>
+      !workspaces.find((workspace) => workspace.id === collaborator.workspace.id)
+        ? collaborator.workspace
+        : null,
+    ),
+  ].filter((workspace) => workspace !== null);
 };
 
 /**
@@ -57,9 +82,17 @@ export const getWorkspaceById = async ({
   userId: string;
   workspaceId: string;
 }): Promise<Workspace & { profiles: Profiles; folders: (Folders & { files: Filts[] })[] }> => {
-  const { data, error } = await supabaseNote(token).from('workspace').select('*,profiles(*),folders(*,files(*)),collaborators(*)').eq('id', workspaceId);
+  const { data, error } = await supabaseNote(token)
+    .from('workspace')
+    .select('*,profiles(*),folders(*,files(*)),collaborators(*)')
+    .eq('id', workspaceId);
   if (error) throw new Error('服务器错误');
-  if (!data.length || (data[0].userId !== userId && !data[0].collaborators.find((collaborator: Collaborators) => collaborator.userId === userId))) throw new Error('无权限');
+  if (
+    !data.length ||
+    (data[0].userId !== userId &&
+      !data[0].collaborators.find((collaborator: Collaborators) => collaborator.userId === userId))
+  )
+    throw new Error('无权限');
   return data[0];
 };
 
@@ -79,11 +112,15 @@ export const checkPermission = async ({
   workspaceId: string;
   userId: string;
 }): Promise<boolean> => {
-  const { data, error } = await supabaseNote(token).from('workspace').select('*,collaborators(*)').eq('id', workspaceId);
+  const { data, error } = await supabaseNote(token)
+    .from('workspace')
+    .select('*,collaborators(*)')
+    .eq('id', workspaceId);
   if (error) throw new Error('服务器错误');
   if (data.length === 0) throw new Error('工作区不存在');
   if (data[0].userId === userId) return true;
-  if (data[0].collaborators.find((collaborator: Collaborators) => collaborator.userId === userId)) return true;
+  if (data[0].collaborators.find((collaborator: Collaborators) => collaborator.userId === userId))
+    return true;
   return false;
 };
 

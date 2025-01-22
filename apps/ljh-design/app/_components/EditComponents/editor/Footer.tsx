@@ -20,7 +20,12 @@ const Footer = ({ editor }: FooterProps) => {
         </Button>
       </TooltipComponents>
       <TooltipComponents label="重置" side="bottom" sideOffset={5} key={Tool.zoomResize}>
-        <Button className="h-full" onClick={async () => await editor?.authZoom()} size="icon" variant="ghost">
+        <Button
+          className="h-full"
+          onClick={async () => await editor?.authZoom()}
+          size="icon"
+          variant="ghost"
+        >
           <LuMinimize />
         </Button>
       </TooltipComponents>

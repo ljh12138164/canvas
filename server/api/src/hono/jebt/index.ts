@@ -6,4 +6,11 @@ import project from './route/project';
 import { storage } from './route/stoage';
 import task from './route/task';
 import user from './route/user';
-export const jebt = new Hono().route('/board', board).route('/user', user).route('/project', project).route('/task', task).route('/chat', chat).route('/storage', storage).route('/flow', flow);
+export const jebt = new Hono()
+  .route('/board', board)
+  .route('/user', user)
+  .route('/project', project)
+  .route('/task', task)
+  .route('/chat', chat)
+  .route('/storage', storage)
+  .route('/flow', flow);

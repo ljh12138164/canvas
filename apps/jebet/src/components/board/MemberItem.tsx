@@ -8,8 +8,22 @@ import { FaEllipsisH, FaUser, FaUserCog } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '../ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 const UserInfoContain = styled.div`
@@ -125,7 +139,9 @@ const MemberItem = ({
             {user.username}
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>{isAdmin ? <FaUserCog size={16} /> : <FaUser size={16} />}</TooltipTrigger>
+                <TooltipTrigger>
+                  {isAdmin ? <FaUserCog size={16} /> : <FaUser size={16} />}
+                </TooltipTrigger>
                 <TooltipContent>{isAdmin ? '管理员' : '成员'}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -143,8 +159,15 @@ const MemberItem = ({
           <DropdownMenuContent className="flex flex-col gap-2">
             <DropdownMenuItem asChild>
               <Dialog>
-                <DialogTrigger disabled={!canOperation || currentUserId === user.userId} className={!canOperation ? 'cursor-not-allowed' : ''}>
-                  <OperationButton variant="ghost" disabled={!canOperation || currentUserId === user.userId} className={!canOperation ? 'cursor-not-allowed' : ''}>
+                <DialogTrigger
+                  disabled={!canOperation || currentUserId === user.userId}
+                  className={!canOperation ? 'cursor-not-allowed' : ''}
+                >
+                  <OperationButton
+                    variant="ghost"
+                    disabled={!canOperation || currentUserId === user.userId}
+                    className={!canOperation ? 'cursor-not-allowed' : ''}
+                  >
                     {isAdmin ? '设置为成员' : '设置为管理员'}
                   </OperationButton>
                 </DialogTrigger>
@@ -165,7 +188,11 @@ const MemberItem = ({
                       </Button>
                     </DialogClose>
 
-                    <Button variant="destructive" disabled={currentUserId === user.userId || !canOperation || newRoleIsPending} onClick={handleSetRole}>
+                    <Button
+                      variant="destructive"
+                      disabled={currentUserId === user.userId || !canOperation || newRoleIsPending}
+                      onClick={handleSetRole}
+                    >
                       确定
                     </Button>
                   </DialogFooter>
@@ -174,14 +201,27 @@ const MemberItem = ({
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Dialog>
-                <DialogTrigger disabled={!canOperation || currentUserId === user.userId} className={!canOperation ? 'cursor-not-allowed' : ''}>
-                  <OperationButton variant="ghost" disabled={currentUserId === user.userId || !canOperation} className={currentUserId === user.userId || !canOperation ? 'cursor-not-allowed' : ''}>
-                    <p className="text-red-500">{currentUserId === user.userId ? '退出工作区' : '删除该成员'}</p>
+                <DialogTrigger
+                  disabled={!canOperation || currentUserId === user.userId}
+                  className={!canOperation ? 'cursor-not-allowed' : ''}
+                >
+                  <OperationButton
+                    variant="ghost"
+                    disabled={currentUserId === user.userId || !canOperation}
+                    className={
+                      currentUserId === user.userId || !canOperation ? 'cursor-not-allowed' : ''
+                    }
+                  >
+                    <p className="text-red-500">
+                      {currentUserId === user.userId ? '退出工作区' : '删除该成员'}
+                    </p>
                   </OperationButton>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>{currentUserId === user.userId ? '退出工作区' : '删除该成员'}</DialogTitle>
+                    <DialogTitle>
+                      {currentUserId === user.userId ? '退出工作区' : '删除该成员'}
+                    </DialogTitle>
                     <DialogDescription>
                       {currentUserId === user.userId ? (
                         '退出工作区后，将无法再访问该工作区'
@@ -201,7 +241,11 @@ const MemberItem = ({
                       </Button>
                     </DialogClose>
 
-                    <Button variant="destructive" disabled={currentUserId === user.userId || !canOperation || deleteIsPending} onClick={handleDelete}>
+                    <Button
+                      variant="destructive"
+                      disabled={currentUserId === user.userId || !canOperation || deleteIsPending}
+                      onClick={handleDelete}
+                    >
                       确定
                     </Button>
                   </DialogFooter>

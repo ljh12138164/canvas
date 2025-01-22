@@ -14,8 +14,22 @@ import { TbDetails } from 'react-icons/tb';
 import { useParams } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import Form from './Form';
 
 const MoreOpate = observer(({ row }: { row: Row<StoageData> }) => {
@@ -74,7 +88,12 @@ const MoreOpate = observer(({ row }: { row: Row<StoageData> }) => {
               <DialogHeader>
                 <DialogTitle>编辑文件</DialogTitle>
               </DialogHeader>
-              <Form type="update" defaultData={row.original} userId={useUser.userData.id} workspaceId={workspaceId} />
+              <Form
+                type="update"
+                defaultData={row.original}
+                userId={useUser.userData.id}
+                workspaceId={workspaceId}
+              />
             </DialogContent>
           </Dialog>
         </DropdownMenuItem>
@@ -136,7 +155,11 @@ const MoreOpate = observer(({ row }: { row: Row<StoageData> }) => {
           </Dialog>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Button onClick={() => downloadFile(row.original.file, row.original.name, row.original.type)} variant="ghost" className="w-full cursor-pointer">
+          <Button
+            onClick={() => downloadFile(row.original.file, row.original.name, row.original.type)}
+            variant="ghost"
+            className="w-full cursor-pointer"
+          >
             <Download className="w-4 h-4" />
             <span>下载</span>
           </Button>

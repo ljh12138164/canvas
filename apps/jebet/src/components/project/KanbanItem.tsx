@@ -111,7 +111,14 @@ const KanbanItem = ({ task }: { task: TaskWithWorkspace }) => {
   }, [task.workspace.member, task.assigneeId]);
   return (
     // 任务项添加拖拽拖拽元素
-    <TaskItem className="bg-zinc-100 dark:bg-zinc-800" ref={setNodeRef} {...attributes} {...listeners} style={style} isDragging={isDragging}>
+    <TaskItem
+      className="bg-zinc-100 dark:bg-zinc-800"
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
+      isDragging={isDragging}
+    >
       {/* 状态指示器 */}
       <StatusIndicator status={task.status} />
       {/* 任务名称 */}
@@ -134,7 +141,9 @@ const KanbanItem = ({ task }: { task: TaskWithWorkspace }) => {
             }}
           />
         ) : (
-          <TaskImageFallback className="bg-zinc-200 dark:bg-zinc-700">{assigneeMemeber?.username || '?'}</TaskImageFallback>
+          <TaskImageFallback className="bg-zinc-200 dark:bg-zinc-700">
+            {assigneeMemeber?.username || '?'}
+          </TaskImageFallback>
         )}
         <MoveLeft className="w-4 h-4" />
         {/* 任务日期 */}

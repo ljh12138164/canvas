@@ -10,7 +10,11 @@ type CreateFilesResponse = InferResponseType<(typeof client.file.createFile)['$p
 type CreateFilesRequest = InferRequestType<typeof client.file.createFile.$post>;
 
 export const createFiles = () => {
-  const { mutate: createFile, isPending: createFileIsPending } = useMutation<CreateFilesResponse, Error, CreateFilesRequest>({
+  const { mutate: createFile, isPending: createFileIsPending } = useMutation<
+    CreateFilesResponse,
+    Error,
+    CreateFilesRequest
+  >({
     mutationFn: async (data) => {
       const token = await getNewToken();
       if (!token) router.push('/login');
@@ -27,4 +31,30 @@ export const createFiles = () => {
     },
   });
   return { createFile, createFileIsPending };
+};
+
+type UpdateFilesResponse = InferResponseType<(typeof client.folder.update)['$patch'], 200>;
+type UpdateFilesRequest = InferRequestType<typeof client.folder.update.$patch>;
+export const updateFiles = () => {
+  const { mutate: updateFile, isPending: updateFileIsPending } = useMutation<
+    UpdateFilesResponse,
+    Error,
+    UpdateFilesRequest
+  >({
+    mutationFn: async (data) => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
+      const res = await client.folder.update.$patch(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return res.json();
+    },
+  });
+  return { updateFile, updateFileIsPending };
 };

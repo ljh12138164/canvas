@@ -3,7 +3,15 @@ import to from 'await-to-js';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
-import { addJebtTaskRemark, createJebtTask, deleteJebtTask, getJebtTask, getJebtTaskDetail, moveJebtTask, updateJebtTask } from '../../../server/jebt/task';
+import {
+  addJebtTaskRemark,
+  createJebtTask,
+  deleteJebtTask,
+  getJebtTask,
+  getJebtTaskDetail,
+  moveJebtTask,
+  updateJebtTask,
+} from '../../../server/jebt/task';
 import { TaskStatus } from '../../../types/jebt/board';
 
 const task = new Hono()
@@ -24,7 +32,16 @@ const task = new Hono()
       }),
     ),
     async (c) => {
-      const { name, projectId, workspaceId, description, assigneeId, status, lastTime, currentUserId } = c.req.valid('json');
+      const {
+        name,
+        projectId,
+        workspaceId,
+        description,
+        assigneeId,
+        status,
+        lastTime,
+        currentUserId,
+      } = c.req.valid('json');
       const [error, data] = await to(
         createJebtTask({
           currentUserId,
@@ -59,7 +76,17 @@ const task = new Hono()
       }),
     ),
     async (c) => {
-      const { name, projectId, workspaceId, description, assigneeId, status, lastTime, currentUserId, id } = c.req.valid('json');
+      const {
+        name,
+        projectId,
+        workspaceId,
+        description,
+        assigneeId,
+        status,
+        lastTime,
+        currentUserId,
+        id,
+      } = c.req.valid('json');
       const [error, data] = await to(
         updateJebtTask({
           currentUserId,
@@ -93,7 +120,8 @@ const task = new Hono()
       }),
     ),
     async (c) => {
-      const { workspaceId, projectId, currentUserId, status, search, lastTime, assigneeId } = c.req.valid('query');
+      const { workspaceId, projectId, currentUserId, status, search, lastTime, assigneeId } =
+        c.req.valid('query');
       const [error, data] = await to(
         getJebtTask({
           currentUserId,
@@ -142,7 +170,9 @@ const task = new Hono()
     ),
     async (c) => {
       const { id, workspaceId, projectId, currentUserId } = c.req.valid('query');
-      const [error, data] = await to(getJebtTaskDetail({ id, workspaceId, projectId, currentUserId }));
+      const [error, data] = await to(
+        getJebtTaskDetail({ id, workspaceId, projectId, currentUserId }),
+      );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },
@@ -180,7 +210,8 @@ const task = new Hono()
       }),
     ),
     async (c) => {
-      const { taskId, currentUserId, workspaceId, projectId, position, TaskStatus } = c.req.valid('json');
+      const { taskId, currentUserId, workspaceId, projectId, position, TaskStatus } =
+        c.req.valid('json');
       const [error, data] = await to(
         moveJebtTask({
           taskId,

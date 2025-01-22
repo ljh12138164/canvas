@@ -90,34 +90,35 @@ export const useBoardEditQuery = ({ id }: { id: string }) => {
  * @returns
  */
 export const useBoardUserQuery = ({ userId }: { userId: string }) => {
-  const { data, isLoading, error, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['board', userId],
-    queryFn: async ({ pageParam }) => {
-      const token = await getNewToken();
-      if (!token) redirect('/sign-in');
-      const response = await client.board.getBoard.$post(
-        {
-          json: { pageParam: pageParam as number },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+  const { data, isLoading, error, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['board', userId],
+      queryFn: async ({ pageParam }) => {
+        const token = await getNewToken();
+        if (!token) redirect('/sign-in');
+        const response = await client.board.getBoard.$post(
+          {
+            json: { pageParam: pageParam as number },
           },
-        },
-      );
-      if (!response.ok) {
-        const error = (await response.json()) as { message: string };
-        throw new Error(error.message);
-      }
-      return response.json();
-    },
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage.length === 0) return undefined;
-      if (lastPage[0].count / PAGE_SIZE > pages.length) return pages.length;
-      return undefined;
-    },
-  });
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        if (!response.ok) {
+          const error = (await response.json()) as { message: string };
+          throw new Error(error.message);
+        }
+        return response.json();
+      },
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.length === 0) return undefined;
+        if (lastPage[0].count / PAGE_SIZE > pages.length) return pages.length;
+        return undefined;
+      },
+    });
   return {
     data,
     isLoading,
@@ -211,7 +212,11 @@ export const useBoardDeleteQuery = () => {
  */
 export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
   const queryClient = useQueryClient();
-  const { mutate, isPending, error } = useMutation<AutoSaveResponseType, Error, AutoSaveRequestType>({
+  const { mutate, isPending, error } = useMutation<
+    AutoSaveResponseType,
+    Error,
+    AutoSaveRequestType
+  >({
     mutationFn: async (board) => {
       const token = await getNewToken();
       if (!token) redirect('/sign-in');

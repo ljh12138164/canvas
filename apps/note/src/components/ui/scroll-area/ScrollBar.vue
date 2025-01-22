@@ -3,9 +3,12 @@ import { cn } from '@/lib/utils';
 import { ScrollAreaScrollbar, type ScrollAreaScrollbarProps, ScrollAreaThumb } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = withDefaults(defineProps<ScrollAreaScrollbarProps & { class?: HTMLAttributes['class'] }>(), {
-  orientation: 'vertical',
-});
+const props = withDefaults(
+  defineProps<ScrollAreaScrollbarProps & { class?: HTMLAttributes['class'] }>(),
+  {
+    orientation: 'vertical',
+  },
+);
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

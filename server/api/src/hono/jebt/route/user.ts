@@ -7,12 +7,16 @@ import { deleteJebtUser, getJebtUserList, updateJebtUserRole } from '../../../se
 // import { getJebtUserList } from "../../../server/jebt/user";
 const user = new Hono()
   // 获取工作区成员列表
-  .get('/list', zValidator('query', z.object({ workspaceId: z.string(), userId: z.string() })), async (c) => {
-    const { workspaceId, userId } = c.req.valid('query');
-    const [error, data] = await to(getJebtUserList(workspaceId, userId));
-    if (error) return c.json({ message: error.message }, errorCheck(error));
-    return c.json(data);
-  })
+  .get(
+    '/list',
+    zValidator('query', z.object({ workspaceId: z.string(), userId: z.string() })),
+    async (c) => {
+      const { workspaceId, userId } = c.req.valid('query');
+      const [error, data] = await to(getJebtUserList(workspaceId, userId));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    },
+  )
   // 修改用户角色
   .post(
     '/update',
@@ -27,7 +31,9 @@ const user = new Hono()
     ),
     async (c) => {
       const { userId, role, workspaceId, currentUserId } = c.req.valid('json');
-      const [error, data] = await to(updateJebtUserRole({ workspaceId, userId, role, currentUserId }));
+      const [error, data] = await to(
+        updateJebtUserRole({ workspaceId, userId, role, currentUserId }),
+      );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },

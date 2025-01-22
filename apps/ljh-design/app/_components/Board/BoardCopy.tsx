@@ -3,7 +3,15 @@ import type { Board } from '@/app/_types/board';
 import { Loader2 } from 'lucide-react';
 import { useRef } from 'react';
 import { Button } from '../ui/button';
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import BoardCreateFrom from './BoardCreateFrom';
 
 export const BoardCopy = ({
@@ -27,7 +35,14 @@ export const BoardCopy = ({
           <DialogHeader>
             <DialogTitle>复制看板</DialogTitle>
           </DialogHeader>
-          <BoardCreateFrom setChange={setChange} type="copy" defaultValues={board} closeref={closeRef} userId={userId} mutate={mutate as any}>
+          <BoardCreateFrom
+            setChange={setChange}
+            type="copy"
+            defaultValues={board}
+            closeref={closeRef}
+            userId={userId}
+            mutate={mutate as any}
+          >
             <DialogFooter className="mt-6 flex gap-1">
               <DialogClose asChild>
                 <Button

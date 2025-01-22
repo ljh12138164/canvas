@@ -27,7 +27,10 @@ export const createUserTap = async ({
   token: string;
   tag: string;
 }): Promise<Tag> => {
-  const { data, error } = await supabaseDesign(token).from('tags').insert([{ userId, tag }]).select('*');
+  const { data, error } = await supabaseDesign(token)
+    .from('tags')
+    .insert([{ userId, tag }])
+    .select('*');
   if (error) throw new Error('服务器错误');
   return data[0];
 };

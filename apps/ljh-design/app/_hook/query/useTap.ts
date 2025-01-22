@@ -40,7 +40,11 @@ type CreateRequestType = InferRequestType<(typeof client.tap)['create']['$post']
  * @returns
  */
 export const useCreateTap = () => {
-  const { mutate: createTap, isPending: createTapPending } = useMutation<CreateResponseType, Error, CreateRequestType>({
+  const { mutate: createTap, isPending: createTapPending } = useMutation<
+    CreateResponseType,
+    Error,
+    CreateRequestType
+  >({
     mutationFn: async (data) => {
       const token = await getNewToken();
       const response = await client.tap.create.$post(data, {

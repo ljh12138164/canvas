@@ -10,7 +10,14 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import useUser from '@/stores/user';
 import { Icon } from '@iconify/vue';
-import { ChartBarIcon, HomeIcon, LucideMousePointerSquareDashed, Menu, Search, ShoppingCartIcon } from 'lucide-vue-next';
+import {
+  ChartBarIcon,
+  HomeIcon,
+  LucideMousePointerSquareDashed,
+  Menu,
+  Search,
+  ShoppingCartIcon,
+} from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 

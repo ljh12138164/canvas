@@ -23,7 +23,10 @@ export const createFile = async ({
   const [fetcherror, result] = await to(checkPermission({ token, workspaceId, userId }));
   if (fetcherror?.message === '工作区不存在') throw new Error('工作区不存在');
   if (!result) throw new Error('无权限');
-  const { data, error } = await supabaseNote(token).from('files').insert({ title, inconId, workspaceId, data: content, foldId: folderId }).select('*');
+  const { data, error } = await supabaseNote(token)
+    .from('files')
+    .insert({ title, inconId, workspaceId, data: content, foldId: folderId })
+    .select('*');
   if (error) throw new Error('服务器错误');
   return data[0];
 };

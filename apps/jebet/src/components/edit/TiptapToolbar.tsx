@@ -11,7 +11,15 @@ import toast from 'react-hot-toast';
 import styled from 'styled-components';
 import EditorButton from '../command/EditorButton';
 import { Button } from '../ui/button';
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import TiptapButton from './TiptapButton';
 
 interface TiptapToolbar {
@@ -102,7 +110,14 @@ const TiptapToolbar = observer(({ editor, userId, workspace, tiptapToolBar }: Ti
     <>
       <TiptapToolbarContainer>
         {tiptapToolBar.map((item) => (
-          <TiptapButton title={item.title} key={item.key} onClick={item.onClick} icon={item.icon} active={item.active} disabled={item.disabled} />
+          <TiptapButton
+            title={item.title}
+            key={item.key}
+            onClick={item.onClick}
+            icon={item.icon}
+            active={item.active}
+            disabled={item.disabled}
+          />
         ))}
       </TiptapToolbarContainer>
       <Dialog>
@@ -144,7 +159,11 @@ const TiptapToolbar = observer(({ editor, userId, workspace, tiptapToolBar }: Ti
                         </ReactCrop>
                       </CropperContainer>
                     ) : ( */}
-                  <PreviewImage src={URL.createObjectURL(file)} alt="用户上传的图片" className="w-full h-full object-contain" />
+                  <PreviewImage
+                    src={URL.createObjectURL(file)}
+                    alt="用户上传的图片"
+                    className="w-full h-full object-contain"
+                  />
                   {/* )} */}
                 </p>
               )}
@@ -166,7 +185,13 @@ const TiptapToolbar = observer(({ editor, userId, workspace, tiptapToolBar }: Ti
                 </div>
               )}
             </UploadContainer>
-            <input hidden type="file" ref={fileRef} onChange={handleFileChange} accept="image/*,application/pdf" />
+            <input
+              hidden
+              type="file"
+              ref={fileRef}
+              onChange={handleFileChange}
+              accept="image/*,application/pdf"
+            />
           </section>
           {/* {file && (
               <UplaodFooter>
@@ -301,7 +326,11 @@ const TiptapToolbar = observer(({ editor, userId, workspace, tiptapToolBar }: Ti
 
       <SubmitButton
         variant="ghost"
-        className={messagePending ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 border-l-2 border-zinc-200 dark:border-zinc-700 dark:hover:bg-zinc-700 h-7' : 'hover:bg-zinc-100  border-l-2 border-zinc-200 dark:border-zinc-700 dark:hover:bg-zinc-700 h-7'}
+        className={
+          messagePending
+            ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 border-l-2 border-zinc-200 dark:border-zinc-700 dark:hover:bg-zinc-700 h-7'
+            : 'hover:bg-zinc-100  border-l-2 border-zinc-200 dark:border-zinc-700 dark:hover:bg-zinc-700 h-7'
+        }
         disabled={messagePending || messageLoading}
         onClick={() => {
           if (messagePending || messageLoading) return;

@@ -11,7 +11,8 @@ export default function ProjectSettingPage() {
     navigate('/dashboard/project');
   }
   const store = useStore;
-  if (store.userData === null || store.activeProject === null || store.workspace === null) return null;
+  if (store.userData === null || store.activeProject === null || store.workspace === null)
+    return null;
   if (!store.userData) {
     toast.error('请先登录');
     return <Navigate to="/sign-in" replace />;
@@ -25,5 +26,7 @@ export default function ProjectSettingPage() {
     toast.error('未找到工作区');
     return <Navigate to="/dashboard" replace />;
   }
-  return <ProjectSetting workSpace={workSpace} project={store.activeProject} userData={store.userData} />;
+  return (
+    <ProjectSetting workSpace={workSpace} project={store.activeProject} userData={store.userData} />
+  );
 }

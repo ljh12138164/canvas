@@ -32,17 +32,21 @@ export const flow = new Hono()
       return c.json(data);
     },
   )
-  .get('/list', zValidator('query', z.object({ workspaceId: z.string(), userId: z.string() })), async (c) => {
-    const { workspaceId, userId } = c.req.valid('query');
-    const [error, data] = await to(
-      getJebtFlow({
-        workspaceId: workspaceId,
-        userId,
-      }),
-    );
-    if (error) return c.json({ message: error.message }, errorCheck(error));
-    return c.json(data);
-  })
+  .get(
+    '/list',
+    zValidator('query', z.object({ workspaceId: z.string(), userId: z.string() })),
+    async (c) => {
+      const { workspaceId, userId } = c.req.valid('query');
+      const [error, data] = await to(
+        getJebtFlow({
+          workspaceId: workspaceId,
+          userId,
+        }),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    },
+  )
   .delete(
     '/delete',
     zValidator(
@@ -74,7 +78,9 @@ export const flow = new Hono()
     ),
     async (c) => {
       const { id, userId, workspaceId, name, description } = c.req.valid('json');
-      const [error, data] = await to(updateJebtFlow({ id, userId, workspaceId, name, description }));
+      const [error, data] = await to(
+        updateJebtFlow({ id, userId, workspaceId, name, description }),
+      );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },

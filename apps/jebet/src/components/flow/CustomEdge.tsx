@@ -18,7 +18,15 @@ const IconContainer = styled.div<{
  * @param param0
  * @returns
  */
-export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }: EdgeProps) {
+export default function CustomEdge({
+  id,
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  sourcePosition,
+  targetPosition,
+}: EdgeProps) {
   // 获取路径和路径点
   const [edgePath, pathX, pathY] = getSmoothStepPath({
     sourceX,

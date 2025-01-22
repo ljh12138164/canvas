@@ -4,9 +4,12 @@ import type { ComboboxContentEmits, ComboboxContentProps } from 'radix-vue';
 import { ComboboxContent, useForwardPropsEmits } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = withDefaults(defineProps<ComboboxContentProps & { class?: HTMLAttributes['class'] }>(), {
-  dismissable: false,
-});
+const props = withDefaults(
+  defineProps<ComboboxContentProps & { class?: HTMLAttributes['class'] }>(),
+  {
+    dismissable: false,
+  },
+);
 const emits = defineEmits<ComboboxContentEmits>();
 
 const delegatedProps = computed(() => {

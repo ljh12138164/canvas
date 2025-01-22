@@ -22,7 +22,12 @@ interface IndexDBChanagePros {
  * @param editData 编辑的数据
  * @returns
  */
-export async function indexDBChange({ type, data, deletItem, id }: IndexDBChanagePros): Promise<boolean> {
+export async function indexDBChange({
+  type,
+  data,
+  deletItem,
+  id,
+}: IndexDBChanagePros): Promise<boolean> {
   if (type === 'delete' && deletItem) {
     await localforage.removeItem(deletItem);
     return true;

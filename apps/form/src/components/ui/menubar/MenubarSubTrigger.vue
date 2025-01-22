@@ -4,7 +4,9 @@ import { ChevronRight } from 'lucide-vue-next';
 import { MenubarSubTrigger, type MenubarSubTriggerProps, useForwardProps } from 'radix-vue';
 import { type HTMLAttributes, computed } from 'vue';
 
-const props = defineProps<MenubarSubTriggerProps & { class?: HTMLAttributes['class']; inset?: boolean }>();
+const props = defineProps<
+  MenubarSubTriggerProps & { class?: HTMLAttributes['class']; inset?: boolean }
+>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

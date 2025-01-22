@@ -33,7 +33,11 @@ type ProjectRequestType = InferRequestType<typeof client.project.create.$post>;
  * 创建项目信息
  */
 export const useProjectCreate = () => {
-  const { mutate: createProject, isPending: isCreatingProject } = useMutation<ProjectType, Error, ProjectRequestType>({
+  const { mutate: createProject, isPending: isCreatingProject } = useMutation<
+    ProjectType,
+    Error,
+    ProjectRequestType
+  >({
     mutationFn: async (data) => {
       const res = await client.project.create.$post({
         form: data.form,
@@ -51,7 +55,11 @@ type ProjectUpdateRequestType = InferRequestType<typeof client.project.update.$p
  * 更新项目信息
  */
 export const useProjectUpdate = () => {
-  const { mutate: updateProject, isPending: isUpdatingProject } = useMutation<ProjectUpdateType, Error, ProjectUpdateRequestType>({
+  const { mutate: updateProject, isPending: isUpdatingProject } = useMutation<
+    ProjectUpdateType,
+    Error,
+    ProjectUpdateRequestType
+  >({
     mutationFn: async (data) => {
       const res = await client.project.update.$patch({
         form: data.form,
@@ -69,7 +77,11 @@ type ProjectDeleteRequestType = InferRequestType<typeof client.project.delete.$d
  * 删除项目
  */
 export const useProjectDelete = () => {
-  const { mutate: deleteProject, isPending: isDeletingProject } = useMutation<ProjectDeleteType, Error, ProjectDeleteRequestType>({
+  const { mutate: deleteProject, isPending: isDeletingProject } = useMutation<
+    ProjectDeleteType,
+    Error,
+    ProjectDeleteRequestType
+  >({
     mutationFn: async (data) => {
       const res = await client.project.delete.$delete({
         json: data.json,

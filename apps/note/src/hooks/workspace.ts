@@ -79,7 +79,10 @@ export const useGetWorkspaces = () => {
   };
 };
 
-export type getWorkspaceByIdResponse = InferResponseType<(typeof client.workspace.workspaces)[':workspaceId']['$get'], 200>;
+export type getWorkspaceByIdResponse = InferResponseType<
+  (typeof client.workspace.workspaces)[':workspaceId']['$get'],
+  200
+>;
 // type getWorkspaceByIdRequest = InferRequestType<
 //   (typeof client.workspace.workspaces)[':workspaceId']['$get']
 // >;
@@ -124,7 +127,10 @@ export const useGetWorkspaceById = (id: string) => {
 };
 
 type refreshInviteCodeRequest = InferRequestType<(typeof client.collaborators.refresh)['$post']>;
-type refreshInviteCodeResponse = InferResponseType<(typeof client.collaborators.refresh)['$post'], 200>;
+type refreshInviteCodeResponse = InferResponseType<
+  (typeof client.collaborators.refresh)['$post'],
+  200
+>;
 /**
  * 刷新邀请码
  * @param workspaceId
@@ -132,7 +138,11 @@ type refreshInviteCodeResponse = InferResponseType<(typeof client.collaborators.
  */
 export const useRefreshInviteCode = () => {
   const router = useRouter();
-  const { mutate: refreshInviteCode, isPending: isRefreshing } = useMutation<refreshInviteCodeResponse, Error, refreshInviteCodeRequest>({
+  const { mutate: refreshInviteCode, isPending: isRefreshing } = useMutation<
+    refreshInviteCodeResponse,
+    Error,
+    refreshInviteCodeRequest
+  >({
     mutationFn: async (workspaceId) => {
       const token = await getNewToken();
       if (!token) router.push('/login');

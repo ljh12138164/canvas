@@ -19,7 +19,28 @@ import { useWindowEvent } from '@/app/_hook/useWindowEvent';
 import { useYjs } from '@/app/_hook/useYjs';
 import { getUserColor } from '@/app/_lib/utils';
 import { buildEditor } from '@/app/_store/editor';
-import { CANVAS_COLOR, CANVAS_HEIGHT, CANVAS_WIDTH, type DefalutUser, FILL_COLOR, FONT_ALIGN, FONT_FAMILY, FONT_ITALICS, FONT_SIZE, FONT_THOUGHT, FONT_UNDERLINE, FONT_WEIGHT, type FontStyle, type FontWeightType, JSON_KEY, OPACITY, STROKE_COLOR, STROKE_DASH_ARRAY, STROKE_WIDTH, Tool } from '@/app/_types/Edit';
+import {
+  CANVAS_COLOR,
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  type DefalutUser,
+  FILL_COLOR,
+  FONT_ALIGN,
+  FONT_FAMILY,
+  FONT_ITALICS,
+  FONT_SIZE,
+  FONT_THOUGHT,
+  FONT_UNDERLINE,
+  FONT_WEIGHT,
+  type FontStyle,
+  type FontWeightType,
+  JSON_KEY,
+  OPACITY,
+  STROKE_COLOR,
+  STROKE_DASH_ARRAY,
+  STROKE_WIDTH,
+  Tool,
+} from '@/app/_types/Edit';
 import type { Board } from '@/app/_types/board';
 import type { Sessions } from '@/app/_types/user';
 import { useMemoizedFn } from 'ahooks';
@@ -258,15 +279,32 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
         scrollbarWidth: 'none',
       }}
     >
-      <NavBar userId={user.user.id} isPending={isPending} editor={editor()} activeTool={tool} onChangeTool={onChangeActive} userState={userState} />
+      <NavBar
+        userId={user.user.id}
+        isPending={isPending}
+        editor={editor()}
+        activeTool={tool}
+        onChangeTool={onChangeActive}
+        userState={userState}
+      />
       <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
         <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} />
         <TextSidebar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
         <ShapeSidle editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
-        <ImageSiderbar userId={user.user.id} editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
+        <ImageSiderbar
+          userId={user.user.id}
+          editor={editor()}
+          activeTool={tool}
+          onChangeActive={onChangeActive}
+        />
         <ColorSoiberbar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
         <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
-          <Tools editor={editor()} activeTool={tool} onChangeActiveTool={onChangeActive} key={JSON.stringify(editor()?.canvas.getActiveObject())} />
+          <Tools
+            editor={editor()}
+            activeTool={tool}
+            onChangeActiveTool={onChangeActive}
+            key={JSON.stringify(editor()?.canvas.getActiveObject())}
+          />
           <section className="flex flex-col relative flex-1 overflow-hidden" ref={containEl}>
             <canvas ref={canvasEl} />
           </section>

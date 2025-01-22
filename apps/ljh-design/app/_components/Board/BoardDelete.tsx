@@ -7,7 +7,15 @@ import { Loader2 } from 'lucide-react';
 import { useRef } from 'react';
 import toast from 'react-hot-toast';
 import { Button } from '../ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 
 const BoardDelete = ({
   children,

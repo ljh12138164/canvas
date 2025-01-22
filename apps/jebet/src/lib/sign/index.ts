@@ -7,7 +7,10 @@ type Payload = {
 
 export function jwtEncode(payload: Payload) {
   const JWT_SECRET = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
-  return new SignJWT(payload).setProtectedHeader({ alg: 'HS256' }).setExpirationTime('30d').sign(JWT_SECRET);
+  return new SignJWT(payload)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('30d')
+    .sign(JWT_SECRET);
 }
 interface DecodeResult extends JWTPayload {
   userid: string;

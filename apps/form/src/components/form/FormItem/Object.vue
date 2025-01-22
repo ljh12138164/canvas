@@ -13,7 +13,11 @@ const fieldConfig = ref<Record<string, any>>({});
 const props = defineProps<{
   id: string;
   data: ObjectItem;
-  updateList2: (id: string, type: FormType, newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue) => void;
+  updateList2: (
+    id: string,
+    type: FormType,
+    newValue: string | boolean | number | undefined | { name: string; id: string }[] | DateValue,
+  ) => void;
 }>();
 const schema = ref<ZodType<any> | null | undefined>(null);
 const defaultDescription = ref(props.data?.description);
@@ -29,7 +33,10 @@ const updateSchema = () => {
   // props.updateList2(props.id, 'description', defaultDescription.value)
   schema.value = getZodSchema(props.data, fieldConfig);
 };
-const updateList = (type: FormType, newValue: string | boolean | number | undefined | DateValue) => {
+const updateList = (
+  type: FormType,
+  newValue: string | boolean | number | undefined | DateValue,
+) => {
   props.updateList2(props.id, type, newValue);
   updateSchema();
 };

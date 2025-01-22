@@ -16,7 +16,11 @@ export const useGetJebtUserList = ({
   workspaceId: string;
   userId: string;
 }) => {
-  const { data, error, isLoading } = useQuery<GetJebtUserListResponseType, Error, GetJebtUserListResponseType>({
+  const { data, error, isLoading } = useQuery<
+    GetJebtUserListResponseType,
+    Error,
+    GetJebtUserListResponseType
+  >({
     queryKey: ['userList', workspaceId],
     queryFn: async () => {
       const res = await client.user.list.$get({

@@ -3,7 +3,12 @@ import to from 'await-to-js';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
-import { createJebtProject, deleteJebtProject, getJebtProjectList, updateJebtProject } from '../../../server/jebt/project';
+import {
+  createJebtProject,
+  deleteJebtProject,
+  getJebtProjectList,
+  updateJebtProject,
+} from '../../../server/jebt/project';
 
 const project = new Hono()
   // 获取项目列表

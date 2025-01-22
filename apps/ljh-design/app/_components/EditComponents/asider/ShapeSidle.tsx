@@ -13,12 +13,24 @@ interface ShapeSidleProps {
 }
 const ShapeSidle = ({ activeTool, onChangeActive, editor }: ShapeSidleProps) => {
   return (
-    <aside className={cn('z-[100] bg-white  relative transition  h-full flex flex-col ', activeTool === Tool.Shapes ? 'visible' : 'hidden')} style={{ flexBasis: '300px' }}>
+    <aside
+      className={cn(
+        'z-[100] bg-white  relative transition  h-full flex flex-col ',
+        activeTool === Tool.Shapes ? 'visible' : 'hidden',
+      )}
+      style={{ flexBasis: '300px' }}
+    >
       <ToolSiderbar title="形状" description="选择形状工具" />
       <ScrollArea>
         <div className="grid grid-cols-3 gap-4 p-4">
           {addObject.map((item) => (
-            <ShapeTool key={item.key} Icon={item.icon} title={item.title} onClick={() => editor?.addObject(item)} iconClassName={item.otherOption?.angle ? 'rotate-180' : ''} />
+            <ShapeTool
+              key={item.key}
+              Icon={item.icon}
+              title={item.title}
+              onClick={() => editor?.addObject(item)}
+              iconClassName={item.otherOption?.angle ? 'rotate-180' : ''}
+            />
           ))}
         </div>
       </ScrollArea>

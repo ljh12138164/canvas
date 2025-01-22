@@ -60,7 +60,8 @@ function handleNav(direction: 'prev' | 'next') {
 
 onMounted(async () => {
   await nextTick();
-  if (modelValue.value instanceof Date && calendarRef.value) calendarRef.value.focusDate(modelValue.value);
+  if (modelValue.value instanceof Date && calendarRef.value)
+    calendarRef.value.focusDate(modelValue.value);
 });
 
 const $slots = useSlots();

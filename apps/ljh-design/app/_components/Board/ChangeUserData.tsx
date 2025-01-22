@@ -83,8 +83,20 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
                 }
               }}
             >
-              <Image src={image || data.user.user_metadata.image} alt="用户图片" className="cursor-pointer aspect-[1/1] hover:scale-110 transition-all border-1 border-gray-200 rounded-full" width={100} height={100} />
-              <input accept="image/gif, image/jpeg, image/png" className="hidden" type="file" onChange={changeImage} ref={ImageRef} />
+              <Image
+                src={image || data.user.user_metadata.image}
+                alt="用户图片"
+                className="cursor-pointer aspect-[1/1] hover:scale-110 transition-all border-1 border-gray-200 rounded-full"
+                width={100}
+                height={100}
+              />
+              <input
+                accept="image/gif, image/jpeg, image/png"
+                className="hidden"
+                type="file"
+                onChange={changeImage}
+                ref={ImageRef}
+              />
             </div>
           </CardContent>
           <CardFooter className="flex  bg-[#fafafa] items-center py-4 justify-between border-t-1">
@@ -117,7 +129,12 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
               </div>
               <div className="flex flex-col gap-2">
                 <Label className="text-sm text-gray-500">重复输入新密码</Label>
-                <Input className="w-[300px]" type="text" value={repetPassword} onChange={(e) => setRepetPassword(e.target.value)} />
+                <Input
+                  className="w-[300px]"
+                  type="text"
+                  value={repetPassword}
+                  onChange={(e) => setRepetPassword(e.target.value)}
+                />
               </div>
             </div>
           </CardContent>

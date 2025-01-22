@@ -28,12 +28,22 @@ const TaskFromCard = ({
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger className={`${type === 'edit' && 'w-full'} cursor-pointer`}>{children}</DrawerTrigger>
+        <DrawerTrigger className={`${type === 'edit' && 'w-full'} cursor-pointer`}>
+          {children}
+        </DrawerTrigger>
         <DrawerContent className="py-4">
           <DrawerHeader>
             <DrawerTitle>{type === 'create' ? '添加任务' : '编辑任务'}</DrawerTitle>
           </DrawerHeader>
-          <TaskFrom workspaceId={workspaceId} projectId={projectId} isMobile={isMobile} type={type} userData={userData} currentUserId={currentUserId} defaultData={defaultData} />
+          <TaskFrom
+            workspaceId={workspaceId}
+            projectId={projectId}
+            isMobile={isMobile}
+            type={type}
+            userData={userData}
+            currentUserId={currentUserId}
+            defaultData={defaultData}
+          />
         </DrawerContent>
       </Drawer>
     );
@@ -48,7 +58,15 @@ const TaskFromCard = ({
         <DialogHeader>
           <DialogTitle>{type === 'create' ? '添加任务' : '编辑任务'}</DialogTitle>
         </DialogHeader>
-        <TaskFrom workspaceId={workspaceId} projectId={projectId} type={type} userData={userData} isMobile={isMobile} currentUserId={currentUserId} defaultData={defaultData} />
+        <TaskFrom
+          workspaceId={workspaceId}
+          projectId={projectId}
+          type={type}
+          userData={userData}
+          isMobile={isMobile}
+          currentUserId={currentUserId}
+          defaultData={defaultData}
+        />
       </DialogContent>
     </Dialog>
   );

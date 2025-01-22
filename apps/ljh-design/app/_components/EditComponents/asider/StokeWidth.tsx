@@ -22,10 +22,20 @@ const StokeWidth = ({ editor }: StokeWidthProps) => {
       />
       <section className="p-4a space-y-4 border-b">
         <Label className="text-sm">边框类型</Label>
-        <Button onClick={() => editor?.changeStokeDashArray([])} variant="secondary" size="lg" className={`w-full h-16 justify-start text-left px-2 py-4 ${JSON.stringify(editor?.getActiveStokeDashArray()) === '[]' && 'border-blue-500 border'}`}>
+        <Button
+          onClick={() => editor?.changeStokeDashArray([])}
+          variant="secondary"
+          size="lg"
+          className={`w-full h-16 justify-start text-left px-2 py-4 ${JSON.stringify(editor?.getActiveStokeDashArray()) === '[]' && 'border-blue-500 border'}`}
+        >
           <div className="w-full border-black rounded-full border-4 " />
         </Button>
-        <Button onClick={() => editor?.changeStokeDashArray([2, 2])} variant="secondary" size="lg" className={`w-full h-16 justify-start text-left px-2 py-4 ${JSON.stringify(editor?.getActiveStokeDashArray()) === '[2,2]' && 'border-blue-500 border'}`}>
+        <Button
+          onClick={() => editor?.changeStokeDashArray([2, 2])}
+          variant="secondary"
+          size="lg"
+          className={`w-full h-16 justify-start text-left px-2 py-4 ${JSON.stringify(editor?.getActiveStokeDashArray()) === '[2,2]' && 'border-blue-500 border'}`}
+        >
           <div className="w-full border-black rounded-full border-4 border-dashed" />
         </Button>
       </section>

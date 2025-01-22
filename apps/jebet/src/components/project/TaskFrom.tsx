@@ -17,7 +17,14 @@ import { DialogClose } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { ScrollArea } from '../ui/scrollArea';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 import { Textarea } from '../ui/textarea';
 
 const zShema = z.object({
@@ -216,9 +223,17 @@ const TaskFrom = ({
               <SelectContent>
                 <SelectGroup>
                   {userData?.map((item) => (
-                    <SelectItem className="cursor-pointer flex items-center gap-2" key={item.id} value={item.userId}>
+                    <SelectItem
+                      className="cursor-pointer flex items-center gap-2"
+                      key={item.id}
+                      value={item.userId}
+                    >
                       <SelectContents>
-                        <img className="w-8 h-8 rounded-full" src={item.userImage} alt={item.username} />
+                        <img
+                          className="w-8 h-8 rounded-full"
+                          src={item.userImage}
+                          alt={item.username}
+                        />
                         <p>{item.username}</p>
                       </SelectContents>
                     </SelectItem>
@@ -251,7 +266,11 @@ const TaskFrom = ({
           </FromItem>
           <FromItem>
             <Label htmlFor="description">描述</Label>
-            <Textarea id="description" {...register('description')} defaultValue={defaultData?.description} />
+            <Textarea
+              id="description"
+              {...register('description')}
+              defaultValue={defaultData?.description}
+            />
             <p className="text-red-500 text-sm">{formState.errors.description?.message}</p>
           </FromItem>
         </ScrollArea>
@@ -263,7 +282,11 @@ const TaskFrom = ({
                   取消
                 </Button>
               </DialogClose>
-              <Button className="w-full" type="submit" disabled={createTaskLoading || updateTaskLoading}>
+              <Button
+                className="w-full"
+                type="submit"
+                disabled={createTaskLoading || updateTaskLoading}
+              >
                 {type === 'create' ? '添加' : '保存'}
               </Button>
             </>

@@ -7,7 +7,13 @@ import type { ZodAny, z } from 'zod';
 import AutoFormField from './AutoFormField.vue';
 import { provideDependencies } from './dependencies';
 import type { Config, ConfigItem, Dependency, Shape } from './interface';
-import { type ZodObjectOrWrapped, getBaseSchema, getBaseType, getDefaultValueInZodStack, getObjectFormSchema } from './utils';
+import {
+  type ZodObjectOrWrapped,
+  getBaseSchema,
+  getBaseType,
+  getDefaultValueInZodStack,
+  getObjectFormSchema,
+} from './utils';
 
 const props = defineProps<{
   schema: T;
@@ -31,7 +37,8 @@ const shapes = computed(() => {
   Object.keys(shape).forEach((name) => {
     const item = shape[name] as ZodAny;
     const baseItem = getBaseSchema(item) as ZodAny;
-    let options = baseItem && 'values' in baseItem._def ? (baseItem._def.values as string[]) : undefined;
+    let options =
+      baseItem && 'values' in baseItem._def ? (baseItem._def.values as string[]) : undefined;
     if (!Array.isArray(options) && typeof options === 'object') options = Object.values(options);
 
     val[name as keyof T] = {
