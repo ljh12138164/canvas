@@ -5,6 +5,7 @@ export interface Board {
   updated_at?: string;
   json: string;
   height: number;
+  image: string;
   url?: string;
   isTemplate?: boolean;
   width: number;

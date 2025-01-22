@@ -7,7 +7,7 @@ export interface Show {
   updated_at?: string;
   explanation: string;
   relativeTheme: string;
-  tags: string[];
+  tags: string;
   image: string;
   json: string;
 }
