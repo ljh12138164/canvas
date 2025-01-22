@@ -32,9 +32,8 @@ export const file = new Hono().use(checkToken(process.env.SUPABASE_NOTE_JWT!)).p
         folderId,
       }),
     );
-    if (error) {
-      return c.json({ message: error.message }, errorCheck(error));
-    }
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+
     return c.json(result);
   },
 );

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-nocheck
 import ResponsePop from '@/components/common/ResponsePop.vue';
 import { Button } from '@/components/ui/button';
 import { PinInput, PinInputGroup, PinInputInput } from '@/components/ui/pin-input';
@@ -10,21 +11,26 @@ import { ref, watch } from 'vue';
 const queryClient = useQueryClient();
 
 const { inviteCollaborator, isInviting } = useInviteCollaborator();
-const value = ref<string[]>([]);
-const handleComplete = (value: string) => {
-  // console.log(value);
-};
-
-watch(value, (value) => {
+const valueString = ref<string[]>([]);
+watch(valueString, (value) => {
   if (value.length === 6) {
     toast.loading('加入中...');
     inviteCollaborator(
       { json: { inviteCode: value.join('') } },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           toast.dismiss();
           toast.success('加入成功');
           queryClient.invalidateQueries({ queryKey: ['collaborators'] });
+          queryClient.invalidateQueries({ queryKey: ['workspaces'] });
+          router.push(`/workspace/${data.id}`);
+          valueString.value = [];
+        },
+        onError: (error) => {
+          toast.dismiss();
+          setTimeout(() => {
+            toast.error(error.message);
+          }, 1000);
         },
       },
     );
@@ -32,9 +38,9 @@ watch(value, (value) => {
 });
 </script>
 <template>
-  <ResponsePop title="邀请成员">
+  <ResponsePop title="工作区邀请码">
     <template #trigger>
-      <Button variant="outline">加入成员</Button>
+      <Button variant="outline">加入工作区</Button>
     </template>
     <template #content>
       <section
@@ -43,7 +49,7 @@ watch(value, (value) => {
         <PinInput
           class="pin-input"
           id="pin-input"
-          v-model="value"
+          v-model="valueString"
           placeholder="○"
           :disabled="isInviting"
         >
@@ -53,7 +59,6 @@ watch(value, (value) => {
               v-for="(id, index) in 6"
               :key="id"
               :index="index"
-              @complete="handleComplete"
             />
           </PinInputGroup>
         </PinInput>

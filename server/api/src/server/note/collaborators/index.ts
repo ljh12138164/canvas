@@ -1,5 +1,6 @@
 import type { PostgrestError } from '@supabase/supabase-js';
 import to from 'await-to-js';
+import { nanoid } from 'nanoid';
 import type { Collaborators, Profiles, Workspace } from '../../../types/note/workspace';
 import { supabaseNote } from '../../supabase/note';
 import { checkPermission } from '../workspace';
@@ -73,6 +74,26 @@ export const removeCollaborator = async ({
   const [errors, permission] = await to(checkPermission({ token, workspaceId, userId: doUser }));
   if (errors || !permission) throw new Error('没有权限');
   const { error } = await supabaseNote(token).from('collaborators').delete().eq('workspaceId', workspaceId).eq('userId', userId);
+  if (error) throw new Error('服务器错误');
+  return true;
+};
+
+// 刷新邀请码
+export const refreshInviteCode = async ({
+  token,
+  doUser,
+  workspaceId,
+}: {
+  token: string;
+  doUser: string;
+  workspaceId: string;
+}): Promise<boolean> => {
+  const [errors, permission] = await to(checkPermission({ token, workspaceId, userId: doUser }));
+  if (errors || !permission) throw new Error('没有权限');
+  const { error } = await supabaseNote(token)
+    .from('workspace')
+    .update([{ inviteCode: nanoid(6) }])
+    .eq('id', workspaceId);
   if (error) throw new Error('服务器错误');
   return true;
 };

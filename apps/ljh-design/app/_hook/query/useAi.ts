@@ -10,7 +10,8 @@ export const useAi = () => {
     mutationFn: async (datas) => {
       const response = await clientAi.chat.stream.$post(datas);
       if (!response.ok) {
-        throw new Error('请求错误');
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
       }
       return response.body as ReadableStream<Buffer>;
     },
@@ -27,7 +28,8 @@ export const useAiAnswer = () => {
     mutationFn: async (datas) => {
       const response = await clientAi.chat.answer.$post(datas);
       if (!response.ok) {
-        throw new Error('请求错误');
+        const error = (await response.json()) as { result: string };
+        throw new Error(error.result);
       }
       return response.json();
     },
@@ -43,7 +45,8 @@ export const useAiChat = () => {
     mutationFn: async (datas) => {
       const response = await clientAi.chat.chat.$post(datas);
       if (!response.ok) {
-        throw new Error('请求错误');
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
       }
       return response.body as ReadableStream<Buffer>;
     },

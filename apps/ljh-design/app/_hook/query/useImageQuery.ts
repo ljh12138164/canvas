@@ -11,7 +11,8 @@ export const useImageQuery = () => {
     queryFn: async () => {
       const response = await client.image.$get();
       if (!response.ok) {
-        throw new Error('请求错误');
+        const error = (await response.json()) as { errors: string[] };
+        throw new Error(error.errors.join('\n'));
       }
       const { data } = await response.json();
       return data;

@@ -20,7 +20,7 @@ const features = ref([
   },
   {
     title: '强大功能',
-    description: '支持 Markdown、富文本编辑、文件管理等多种功能',
+    description: '支持 Markdown、富文本编辑、多种功能',
     icon: '⚡',
   },
   {
@@ -32,9 +32,7 @@ const features = ref([
 onBeforeMount(async () => {
   const users = await getCurrentUser();
   loading.value = false;
-  if (users) {
-    user.value = users.session as Sessions;
-  }
+  if (users) user.value = users.session as Sessions;
 });
 </script>
 
@@ -53,12 +51,12 @@ onBeforeMount(async () => {
 
     <main>
       <section class="hero">
-        <h1>重新定义你的笔记体验</h1>
+        <h1>你的笔记记录工具</h1>
         <p class="subtitle">
           简单、强大、安全的笔记应用，助你更好地整理思维和知识
         </p>
         <RouterLink to="/workspace">
-          <button class="cta-btn">免费使用</button>
+          <button class="cta-btn">开始使用</button>
         </RouterLink>
       </section>
 

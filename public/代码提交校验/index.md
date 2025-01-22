@@ -27,3 +27,33 @@ husky为我们提供了一系列的git hooks，用于在进行git操作时的一
 ### stylelint
 
 ![alt text](image-2.png)
+
+### 在项目中添加一个配置仓库
+![alt text](image-3.png)
+
+### 通过工作区引入配置项
+![alt text](image-4.png)
+
+![alt text](image-5.png)
+
+### 添加lint到项目中
+
+![alt text](image-6.png)
+
+### 添加到单仓库的根路径
+
+![alt text](image-7.png)
+
+
+### 用turbo来启动工作区
+
+![alt text](image-8.png)
+![alt text](image-10.png)
+
+### 添加simply-git-hook配置
+
+![alt text](image-9.png)
+
+### 测试git提交
+
+![alt text](image-11.png)

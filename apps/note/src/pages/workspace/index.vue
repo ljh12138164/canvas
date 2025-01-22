@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserButton from '@/components/common/UserButton.vue';
 import WorkspaceList from '@/components/workspace/WorkspaceList.vue';
 import { useGetWorkspaces } from '@/hooks/workspace';
 import { RouterView } from 'vue-router';
@@ -16,7 +17,18 @@ const { workspaces, workspacesError, workspacesIsLoading, workspacesIsFetching }
       />
     </aside>
     <section class="main-content-container">
-      <RouterView />
+      <nav class="nav-header">
+        <div class="nav-left">
+          <h1 class="nav-title">工作区</h1>
+        </div>
+        <div class="nav-right">
+          <!-- 这里可以添加右侧的操作按钮 -->
+          <UserButton />
+        </div>
+      </nav>
+      <div class="flex-1">
+        <RouterView />
+      </div>
     </section>
   </div>
 </template>
@@ -27,5 +39,30 @@ const { workspaces, workspacesError, workspacesIsLoading, workspacesIsFetching }
 }
 .main-content-container {
   flex: 1;
+
+  .nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 16px;
+    border-bottom: 1px solid #e5e7eb;
+
+    :deep(.dark) & {
+      border-color: #1f2937;
+    }
+  }
+
+  .nav-left,
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
 }
 </style>

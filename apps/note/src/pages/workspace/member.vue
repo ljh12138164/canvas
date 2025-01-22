@@ -5,10 +5,11 @@ import MemberTable from '@/components/workspace/MemberTable.vue';
 import { useCollaborators } from '@/hooks/collaborators';
 import { useQueryClient } from '@tanstack/vue-query';
 import { onBeforeMount, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const queryClient = useQueryClient();
 const route = useRoute();
+const router = useRouter();
 const workspaceId = ref(route.params.workspaceId as string);
 watch(
   () => route.params.workspaceId,
@@ -25,15 +26,21 @@ const { collaborators, isLoading: collaboratorsIsLoading } = useCollaborators(wo
 <template>
   <div class="container">
     <ScrollArea class="h-[80dvh]">
+      <nav class="nav-container">
+        <Button @click="router.back()">返回</Button>
+      </nav>
       <div class="flex flex-col gap-4">
+        <!-- 邀请码 -->
         <InviteCode
           :collaborators="collaborators"
           :isLoading="collaboratorsIsLoading"
         />
+        <!-- 成员列表 -->
         <MemberTable
           :collaborators="collaborators"
           :isLoading="collaboratorsIsLoading"
         />
+        <!--  -->
       </div>
     </ScrollArea>
   </div>
@@ -41,6 +48,9 @@ const { collaborators, isLoading: collaboratorsIsLoading } = useCollaborators(wo
 
 <style lang="scss" scoped>
 .container {
+  padding: 20px;
+}
+.nav-container {
   padding: 20px;
 }
 </style>

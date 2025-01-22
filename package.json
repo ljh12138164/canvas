@@ -28,8 +28,22 @@
     "build:jebet": "turbo --filter=jebet build",
     "deploy": "cd server/api && pnpm run tsup && pnpm run deploy:prod",
     "lint:all": "turbo lint",
-    "lint": "biome check --fix --unsafe && biome lint .&& pnpm run lint:all",
-    "postinstall": "simple-git-hooks"
+    "lint": "biome check --fix --unsafe && biome lint .&& pnpm run lint:all"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "biome check --fix --unsafe && biome lint && pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,vue,scss,css,html,md,mdx}": [
+      "biome check --fix --unsafe --no-errors-on-unmatched",
+      "biome check --files-ignore-unknown=true",
+      "biome check --write --no-errors-on-unmatched",
+      "biome check --write --organize-imports-enabled=false --no-errors-on-unmatched",
+      "biome check --write --unsafe --no-errors-on-unmatched",
+      "biome lint --write --no-errors-on-unmatched"
+    ],
+    "*": ["biome check --no-errors-on-unmatched --files-ignore-unknown=true"],
+    "*.{scss,css}": ["stylelint --fix --no-errors-on-unmatched"]
   },
   "packageManager": "pnpm@9.4.0",
   "devDependencies": {
@@ -43,21 +57,6 @@
   },
   "dependencies": {
     "lint-staged": "^15.4.1"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm run lint && pnpm lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,vue,scss,css,html,md,mdx}": [
-      "biome check --files-ignore-unknown=true",
-      "biome check --write --no-errors-on-unmatched",
-      "biome check --write --organize-imports-enabled=false --no-errors-on-unmatched",
-      "biome check --write --unsafe --no-errors-on-unmatched",
-      "biome check --fix --unsafe --no-errors-on-unmatched",
-      "biome lint --write --no-errors-on-unmatched"
-    ],
-    "*": ["biome check --no-errors-on-unmatched --files-ignore-unknown=true"],
-    "*.{scss,css}": ["stylelint --fix"]
   },
   "pnpm": {
     "overrides": {

@@ -51,9 +51,7 @@ const { data, isLoading, isFetching } = useGetDoc();
 
     <!-- 主要内容区域骨架 -->
     <div class="space-y-4 mt-8">
-      {Array.from({ length: 8 }).map((_, index) => (
-      <Skeleton :key="index" class="h-4 w-full" />
-      ))}
+      <Skeleton v-for="index in 8" :key="index" class="h-4 w-full" />
     </div>
   </div>
   <div v-else class="h-full">

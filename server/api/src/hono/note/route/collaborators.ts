@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
-import { getCollaborators, inviteCollaborator, removeCollaborator } from '../../../server/note/collaborators';
+import { getCollaborators, inviteCollaborator, refreshInviteCode, removeCollaborator } from '../../../server/note/collaborators';
 
 const collaborators = new Hono()
   .use(checkToken(process.env.SUPABASE_NOTE_JWT!))
@@ -60,6 +60,22 @@ const collaborators = new Hono()
           doUser: auth.sub,
         }),
       );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(result);
+    },
+  )
+  .post(
+    '/refresh',
+    zValidator(
+      'json',
+      z.object({
+        workspaceId: z.string(),
+      }),
+    ),
+    async (c) => {
+      const { token, auth } = getSupabaseAuth(c);
+      const workspaceId = c.req.valid('json').workspaceId;
+      const [error, result] = await to(refreshInviteCode({ token, workspaceId, doUser: auth.sub }));
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(result);
     },
