@@ -21,6 +21,7 @@ const useUsers = ({
       const user = await getCurrentUser();
       if (!user) {
         if (redirects && type === 'goError') {
+          toast.dismiss();
           toast.error('请先登录');
           redirect('/sign-in');
         }

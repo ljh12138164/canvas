@@ -60,6 +60,7 @@ const Project = observer(() => {
       );
     }
     if (!store.userData) {
+      toast.dismiss();
       toast.error('请先登录');
       return <Navigate to="/sign-in" replace />;
     }

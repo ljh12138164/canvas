@@ -7,6 +7,10 @@ export interface Show {
   updated_at?: string;
   explanation: string;
   relativeTheme: string;
+  tags: string;
+  image: string;
+  json: string;
+  clone: number;
 }
 // 收藏模板
 export interface Collections {
@@ -19,18 +23,19 @@ export interface Collections {
 export interface Upvote {
   showId: string;
   userId: string;
-  answerId: string;
   created_at: string;
   updated_at?: string;
 }
 
 // 标签
 export interface Tag {
+  id: string;
   showId: string;
   tag: string;
   userId: string;
   created_at: string;
   updated_at?: string;
+  isTrash: Date | null;
 }
 
 // 评论

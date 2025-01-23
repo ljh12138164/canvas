@@ -1,7 +1,7 @@
-import type { Show } from 'src/types/design/show';
-import type { Board, BoardResponse } from '../../../types/design/board';
-import type { UserImage } from '../../../types/design/user';
-import { supabaseDesign } from '../../supabase/design';
+import type { Comment, Show, Upvote } from '../../../types/design/show';
+import type { Profiles } from '../../../types/note/workspace';
+import { supabaseDesign, supabaseDesignPublic } from '../../supabase/design';
+const LIMIT = 10;
 
 // id: string;
 // title: string;
@@ -17,14 +17,16 @@ import { supabaseDesign } from '../../supabase/design';
  * ### 创建评论
  */
 export const createShow = async ({
+  title,
   content,
   tap,
   userId,
   json,
-  image,
   relativeTheme,
   token,
+  image,
 }: {
+  title: string;
   content: string;
   tap: string;
   userId: string;
@@ -35,8 +37,65 @@ export const createShow = async ({
 }): Promise<Show> => {
   const { data, error } = await supabaseDesign(token)
     .from('show')
-    .insert([{ explanation: content, userId, json, image, relativeTheme, tap }])
+    .insert([
+      {
+        explanation: content,
+        userId,
+        json,
+        relativeTheme,
+        tags: tap,
+        title,
+        image,
+      },
+    ])
     .select('*');
+  if (error) throw new Error('服务器错误');
+  return data[0];
+};
+
+/**
+ * ### 获取随机展示分页
+ * @param tap 标签
+ * @param page 页码
+ * @returns
+ */
+export const getRandomShow = async ({
+  tap,
+  page,
+}: {
+  tap: string;
+  page: number;
+}): Promise<{
+  data: (Show & { profiles: Profiles; answers: Comment[]; upvotes: Upvote[] })[];
+  count: number;
+}> => {
+  let supabase = supabaseDesignPublic.from('show').select('*,answers(*),profiles(*),upvotes(*)', {
+    count: 'exact',
+  });
+  // 模糊查询
+  if (tap) supabase = supabase.like('tags', `%${tap}%`).like('title', `%${tap}%`);
+
+  // 随机获取10条
+  const { data, error, count } = await supabase
+    .order('created_at', { ascending: false })
+    .limit(LIMIT)
+    .range((page - 1) * LIMIT, page * LIMIT);
+  if (error) throw new Error('服务器错误');
+  return { data, count: count ?? 0 };
+};
+
+/**
+ * ### 获取展示
+ * @param show
+ * @returns
+ */
+export const getShow = async (
+  id: string,
+): Promise<Show & { profiles: Profiles; answers: Comment[]; upvotes: Upvote[] }> => {
+  const { data, error } = await supabaseDesignPublic
+    .from('show')
+    .select('*,answers(*),profiles(*),upvotes(*)')
+    .eq('id', id);
   if (error) throw new Error('服务器错误');
   return data[0];
 };

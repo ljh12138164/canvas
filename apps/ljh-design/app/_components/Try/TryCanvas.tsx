@@ -1,5 +1,5 @@
 'use client';
-import { useTryStore } from '@/app/_hook/useTryData';
+import { useTryStore } from '@/app/_hook/edior/useTryData';
 import { redirect } from 'next/navigation';
 import toast from 'react-hot-toast';
 import TryEdit from '../EditComponents/editor/TryEdit';

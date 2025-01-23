@@ -35,7 +35,7 @@
   },
   "lint-staged": {
     "*.{js,ts,cjs,mjs,jsx,tsx,json,jsonc,vue,scss,css,html,md,mdx}": [
-      "biome check --fix --unsafe --no-errors-on-unmatched",
+      "biome check --fix --unsafe",
       "biome check --write --no-errors-on-unmatched",
       "biome check --write --organize-imports-enabled=false --no-errors-on-unmatched",
       "biome check --write --unsafe --no-errors-on-unmatched",

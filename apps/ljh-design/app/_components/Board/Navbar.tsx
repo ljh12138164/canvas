@@ -7,7 +7,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/app/_components/ui/sheet';
-import { useIsMobile } from '@/app/_hook/use-mobile';
+import { useMediaQuery } from '@/app/_hook/useMediaQuery';
 import { MenuIcon } from 'lucide-react';
 import { useRef } from 'react';
 import Logo from '../Comand/Logo';
@@ -17,12 +17,12 @@ import { Button } from '../ui/button';
 import SiderBar from './SiderBar';
 
 const NavBar = () => {
-  const isMobile = useIsMobile();
+  const isMobile = useMediaQuery('(max-width: 1024px)');
   const closeRef = useRef<HTMLButtonElement | null>(null);
 
   return (
     <nav className="bg-muted flex p-4 items-center h-[60px] w-full">
-      {!isMobile && (
+      {isMobile && (
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline">
@@ -39,7 +39,7 @@ const NavBar = () => {
               </SheetTitle>
               <SheetClose ref={closeRef} />
             </SheetHeader>
-            <SiderBar hide={!isMobile} closeRef={closeRef} />
+            <SiderBar hide={isMobile} closeRef={closeRef} />
           </SheetContent>
         </Sheet>
       )}

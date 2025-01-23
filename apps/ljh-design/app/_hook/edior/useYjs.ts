@@ -3,10 +3,10 @@ import { type RefObject, useEffect, useState } from 'react';
 import { IndexeddbPersistence } from 'y-indexeddb';
 import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
-import { getAddObject, getUserState, typeToActive } from '../_lib/editor/editor';
-import type { DefalutUser, UserState } from '../_types/Edit';
-import type { Board } from '../_types/board';
-import type { Sessions } from '../_types/user';
+import { getAddObject, getUserState, typeToActive } from '../../_lib/editor/editor';
+import type { DefalutUser, UserState } from '../../_types/Edit';
+import type { Board } from '../../_types/board';
+import type { Sessions } from '../../_types/user';
 
 //创建文档
 const ydoc = new Y.Doc();

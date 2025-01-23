@@ -82,6 +82,7 @@
     "nanoid": "^5.0.9",
     "next": "15.1.4",
     "next-themes": "^0.4.4",
+    "query-string": "^9.1.1",
     "quill": "^2.0.3",
     "react": "19.0.0-rc.1",
     "react-color": "^2.19.3",
@@ -114,13 +115,13 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "@ljh/lint": "workspace:*",
     "@types/node": "^22.10.5",
     "@types/react": "19.0.4",
     "@types/react-dom": "19.0.2",
     "eslint": "^9.17.0",
     "eslint-config-next": "15.1.4",
     "postcss": "^8.4.49",
-    "@ljh/lint": "workspace:*",
     "stylelint": "^16.13.2",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2"
