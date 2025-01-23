@@ -1,9 +1,11 @@
 import type { Sessions } from '@/app/_types/user';
+import to from 'await-to-js';
 import { deleteImageClound, uploadImageclound } from '../image';
 import supabase from '../supabase';
 const DEFAULT_AVATAR =
   'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/avatar.svg';
 
+const USER_IMAGE = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/';
 /**
  * ## 获取用户消息
  */
@@ -44,6 +46,11 @@ export async function signup({
   email: string;
   password: string;
 }) {
+  const { data: login } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+  if (login) return;
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -74,7 +81,40 @@ export async function login({
     email: email,
     password: password,
   });
+  if (error) if (error.message === 'Invalid login credentials') throw new Error('账户或密码错误');
+
+  return data;
+}
+
+/**
+ * ### 更新用户名
+ * @param name
+ * @returns
+ */
+export async function updateName(name: string) {
+  const { data, error } = await supabase.auth.updateUser({
+    data: { name },
+  });
   if (error) throw new Error('服务器错误');
+  return data;
+}
+
+/**
+ * ### 更新用户头像
+ * @param imageUrl
+ * @returns
+ */
+export async function updateImage(imageUrl: string | File, oldImageUrl: string) {
+  // 如果是图片链接，则不更新
+  if (!(imageUrl instanceof File)) return;
+  const uploadImage = await uploadImageclound({ file: imageUrl });
+  // 更新图像
+  const { data, error } = await supabase.auth.updateUser({
+    data: { image: USER_IMAGE + uploadImage },
+  });
+  if (error) throw new Error('服务器错误');
+  // 如果旧头像不是默认头像，则删除旧头像
+  if (oldImageUrl !== DEFAULT_AVATAR) await deleteImageClound({ image: oldImageUrl });
   return data;
 }
 
@@ -84,31 +124,27 @@ export async function login({
  * @returns
  */
 export async function updateCurrentUser({
-  password,
-  name,
-  imageUrl,
-  oldImageUrl,
+  datas,
 }: {
-  password: string;
-  name: string;
-  imageUrl: string | File;
-  oldImageUrl: string;
+  datas:
+    | {
+        type: 'name';
+        name: string;
+      }
+    | {
+        type: 'image';
+        image: string | File;
+        oldImageUrl: string;
+      };
 }) {
-  const userData = {
-    password,
-    data: {
-      name,
-      image: imageUrl,
-    },
-  };
-  if (imageUrl instanceof File) {
-    let deletePromise: Promise<boolean> = Promise.resolve(true);
-    if (oldImageUrl !== DEFAULT_AVATAR) deletePromise = deleteImageClound({ image: oldImageUrl });
-    const [result] = await Promise.all([uploadImageclound({ file: imageUrl }), deletePromise]);
-    if (result) userData.data.image = result as string;
+  if (datas.type === 'image') {
+    const [error, data] = await to(updateImage(datas.image, datas.oldImageUrl));
+    if (error) throw new Error('修改失败');
+    return data;
   }
-  // 更新用户信息
-  const { data, error } = await supabase.auth.updateUser(userData);
-  if (error) throw new Error('服务器错误');
-  return data.user;
+  if (datas.type === 'name') {
+    const [error, data] = await to(updateName(datas.name));
+    if (error) throw new Error('修改失败');
+    return data;
+  }
 }

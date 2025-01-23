@@ -1,20 +1,19 @@
 'use client';
 import { Badge } from '@/app/_components/ui/badge';
 import { useBoardListQuery } from '@/app/_hook/query/useBoardQuery';
+import { useShow } from '@/app/_hook/query/useShow';
 import { useCreateTap, useDeleteTap, useEditTap, useGetTap } from '@/app/_hook/query/useTap';
 import type { Board } from '@/app/_types/board';
 import type { Show } from '@/app/_types/show';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
+import { MoreHorizontal, Plus, Trash2 } from 'lucide-react';
+import { redirect, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
-import { useShow } from '@/app/_hook/query/useShow';
-import { useQueryClient } from '@tanstack/react-query';
-import { MoreHorizontal, Pencil, Plus, Trash2 } from 'lucide-react';
-import { redirect } from 'next/navigation';
-import { flushSync } from 'react-dom';
-import toast from 'react-hot-toast';
 import { useMedia } from 'react-use';
 import { z } from 'zod';
 import { Response } from '../Comand/Response';
@@ -66,6 +65,7 @@ const zod = z.object({
     .optional(),
 });
 const Form = ({ defaultValue, userId }: FormProps) => {
+  const router = useRouter();
   // 获取模板
   const { data, isLoading } = useBoardListQuery();
   // 获取标签
@@ -104,16 +104,15 @@ const Form = ({ defaultValue, userId }: FormProps) => {
           json: {
             content: datas.explanation,
             tap: datas.tap?.join(',') || '',
-            image: relativeTheme?.image,
             relativeTheme: datas.relativeTheme,
             json: relativeTheme.json,
+            title: datas.title,
           },
         },
         {
-          onSuccess: () => {
+          onSuccess: (data) => {
             toast.success('创建成功');
-            // TODO:跳转帖子
-            redirect('/formue');
+            router.push(`/board/formue/${data.id}`);
           },
         },
       );
@@ -275,6 +274,7 @@ const Form = ({ defaultValue, userId }: FormProps) => {
             </div>
           </div>
           <section className="flex gap-2">
+            {/* 选择标签 */}
             {!tapLoading ? (
               !isModal ? (
                 <section>
@@ -411,7 +411,9 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                       </ScrollArea>
                       <DialogFooter>
                         <DialogClose asChild>
-                          <Button type="button">确定</Button>
+                          <Button type="button" onClick={() => setTapOpen(false)}>
+                            确定
+                          </Button>
                         </DialogClose>
                       </DialogFooter>
                     </DialogContent>
@@ -432,33 +434,126 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                       </DrawerDescription>
                     </DrawerHeader>
                     <ScrollArea className="max-h-[35dvh] flex flex-col gap-2">
-                      {tapData?.map((item) => (
-                        <div key={item.tag} className="flex items-center gap-2">
-                          <Checkbox
-                            id={item.tag}
-                            defaultChecked={form.getValues('tap')?.includes(item.tag)}
-                            onCheckedChange={(checked) => {
-                              form.setValue(
-                                'tap',
-                                checked
-                                  ? [...(form.getValues('tap') || []), item.tag]
-                                  : (form.getValues('tap') || [])?.filter(
-                                      (tag) => tag !== item.tag,
-                                    ),
-                              );
-                            }}
-                          />
-                          <label
-                            htmlFor={item.tag}
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            {item.tag}
-                          </label>
-                        </div>
-                      ))}
+                      <div className="flex flex-col gap-2">
+                        {tapData?.map((item) => (
+                          <section key={item.tag} className="flex items-center justify-between">
+                            <div>
+                              <Checkbox
+                                id={item.tag}
+                                defaultChecked={form.getValues('tap')?.includes(item.tag)}
+                                onCheckedChange={(checked) => {
+                                  form.setValue(
+                                    'tap',
+                                    checked
+                                      ? [...(form.getValues('tap') || []), item.tag]
+                                      : (form.getValues('tap') || [])?.filter(
+                                          (tag) => tag !== item.tag,
+                                        ),
+                                  );
+                                }}
+                              />
+                              <label
+                                htmlFor={item.tag}
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                {item.tag}
+                              </label>
+                            </div>
+                            <div>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                  <Button variant="outline" type="button" asChild>
+                                    <span>
+                                      <MoreHorizontal />
+                                    </span>
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="flex flex-col gap-2">
+                                  <DropdownMenuItem asChild>
+                                    <Button asChild variant="outline" className="cursor-pointer">
+                                      <Response
+                                        title="编辑"
+                                        description="确定编辑吗？"
+                                        ref={responseRef}
+                                        disabled={editTapPending}
+                                        onConfirm={() => {
+                                          if (!editTapRef.current?.value) {
+                                            toast.error('标签不能为空');
+                                            return;
+                                          }
+                                          if (
+                                            tapData?.find(
+                                              (item) => item.tag === editTapRef.current?.value,
+                                            )
+                                          ) {
+                                            toast.error('标签已存在');
+                                            return;
+                                          }
+                                          editTap(
+                                            {
+                                              json: {
+                                                id: item.id,
+                                                tag: editTapRef.current?.value,
+                                              },
+                                            },
+                                            {
+                                              onSuccess: () => {
+                                                toast.success('编辑成功');
+                                                queryClient.invalidateQueries({
+                                                  queryKey: ['tap', userId],
+                                                });
+                                                responseRef.current?.closeModel();
+                                              },
+                                            },
+                                          );
+                                        }}
+                                      >
+                                        <span className="flex items-center gap-2">
+                                          <Input ref={editTapRef} defaultValue={item.tag} />
+                                        </span>
+                                      </Response>
+                                    </Button>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem asChild>
+                                    <Button asChild variant="outline" className="cursor-pointer">
+                                      <Response
+                                        title="删除"
+                                        disabled={deleteTapPending}
+                                        description="确定删除吗？"
+                                        ref={responseRef}
+                                        onConfirm={() => {
+                                          deleteTap(
+                                            { json: { id: item.id } },
+                                            {
+                                              onSuccess: () => {
+                                                toast.success('删除成功');
+                                                queryClient.invalidateQueries({
+                                                  queryKey: ['tap', userId],
+                                                });
+                                                responseRef.current?.closeModel();
+                                              },
+                                            },
+                                          );
+                                        }}
+                                      >
+                                        <span className="flex items-center gap-2">
+                                          <Trash2 />
+                                          <span> 删除 </span>
+                                        </span>
+                                      </Response>
+                                    </Button>
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </section>
+                        ))}
+                      </div>
                     </ScrollArea>
                     <DrawerFooter>
-                      <Button type="button">确定</Button>
+                      <Button type="button" onClick={() => setTapOpen(false)}>
+                        确定
+                      </Button>
                     </DrawerFooter>
                   </DrawerContent>
                 </Drawer>

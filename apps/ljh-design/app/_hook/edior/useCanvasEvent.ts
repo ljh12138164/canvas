@@ -3,7 +3,7 @@ import type * as fabric from 'fabric';
 import { type RefObject, useEffect } from 'react';
 import type { WebsocketProvider } from 'y-websocket';
 import type * as Y from 'yjs';
-import type { Sessions } from '../_types/user';
+import type { Sessions } from '../../_types/user';
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
   tool: Tool;

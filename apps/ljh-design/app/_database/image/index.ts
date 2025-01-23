@@ -9,7 +9,7 @@ interface UploadImageClound {
   file: File;
 }
 export const uploadImageclound = async ({ file }: UploadImageClound) => {
-  const fileName = `${nanoid()}-${file.name}`.replace('/', '');
+  const fileName = `${nanoid()}-`.replace('/', '');
   const { data, error } = await supabase.storage
     // 桶名字
     .from('UPLOAD_IMG')

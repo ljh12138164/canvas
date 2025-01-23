@@ -14,15 +14,18 @@ export default function ProjectSettingPage() {
   if (store.userData === null || store.activeProject === null || store.workspace === null)
     return null;
   if (!store.userData) {
+    toast.dismiss();
     toast.error('请先登录');
     return <Navigate to="/sign-in" replace />;
   }
   if (!store.activeProject) {
+    toast.dismiss();
     toast.error('未找到项目');
     return <Navigate to="/dashboard" replace />;
   }
   const workSpace = store.workspace.find((item) => item.id === workspaceId);
   if (!workSpace) {
+    toast.dismiss();
     toast.error('未找到工作区');
     return <Navigate to="/dashboard" replace />;
   }

@@ -9,13 +9,14 @@ import {
 import { logout } from '@/app/_database/user';
 import useUsers from '@/app/_hook/useUser';
 import { User } from 'lucide-react';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LuLogOut } from 'react-icons/lu';
 import { Skeleton } from '../ui/skeleton';
 
 const UserButton = () => {
   const { user, loading } = useUsers({ redirects: false });
+  const router = useRouter();
 
   return (
     <>
@@ -30,7 +31,12 @@ const UserButton = () => {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-60">
-            <DropdownMenuItem className="h-10 cursor-pointer" onClick={() => {}}>
+            <DropdownMenuItem
+              className="h-10 cursor-pointer"
+              onClick={() => {
+                router.push('/board/user');
+              }}
+            >
               <User className="size-4 mr-2 " />
               个人中心
             </DropdownMenuItem>
