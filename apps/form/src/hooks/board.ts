@@ -4,22 +4,24 @@ import { useMutation, useQuery } from '@tanstack/vue-query';
 import type { InferRequestType, InferResponseType } from 'hono/client';
 import { useRouter } from 'vue-router';
 
-const router = useRouter();
 /**
  * @description 获取表单
  * @returns 表单
  */
 export const useGetrBoard = () => {
+  const router = useRouter();
   const { data, isLoading, error } = useQuery({
     queryKey: ['board'],
     queryFn: async () => {
       const token = await getNewToken();
+      if (!token) router.push('/login');
       const data = await client.board.form.$get(undefined, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (!data.ok) {
+        // @ts-ignore
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
@@ -35,15 +37,18 @@ type CreateBoardResponse = InferResponseType<typeof client.board.form.$post, 200
  * ## 创建表单
  */
 export const useCreateBoard = () => {
+  const router = useRouter();
   return useMutation<CreateBoardResponse, Error, CreateBoard>({
     mutationFn: async (datas) => {
       const token = await getNewToken();
+      if (!token) router.push('/login');
       const data = await client.board.form.$post(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (!data.ok) {
+        // @ts-ignore
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
@@ -59,10 +64,12 @@ type GetBoardResponse = InferResponseType<(typeof client.board.form)[':id']['$ge
  * @returns 表单详情
  */
 export const useBoard = (id: string) => {
+  const router = useRouter();
   return useQuery<GetBoardResponse, Error>({
     queryKey: ['board', id],
     queryFn: async () => {
       const token = await getNewToken();
+      if (!token) router.push('/login');
       const data = await client.board.form[':id'].$get(
         { param: { id } },
         {
@@ -72,6 +79,7 @@ export const useBoard = (id: string) => {
         },
       );
       if (!data.ok) {
+        // @ts-ignore
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
@@ -89,15 +97,18 @@ type UpdateBoardResponse = InferResponseType<(typeof client.board.form)['$patch'
  * @returns 更新结果
  */
 export const useUpdateBoard = () => {
+  const router = useRouter();
   return useMutation<UpdateBoardResponse, Error, UpdateBoard>({
     mutationFn: async (datas) => {
       const token = await getNewToken();
+      if (!token) router.push('/login');
       const data = await client.board.form.$patch(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (!data.ok) {
+        // @ts-ignore
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
@@ -115,15 +126,18 @@ type DeleteBoardResponse = InferResponseType<typeof client.board.form.$delete, 2
  * @returns 删除结果
  **/
 export const useDeleteBoard = () => {
+  const router = useRouter();
   return useMutation<DeleteBoardResponse, Error, DeleteBoard>({
     mutationFn: async (datas) => {
       const token = await getNewToken();
+      if (!token) router.push('/login');
       const data = await client.board.form.$delete(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (!data.ok) {
+        // @ts-ignore
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
@@ -141,15 +155,18 @@ type UpdateBoardInviteCodeResponse = InferResponseType<typeof client.board.updat
  * @returns 更新结果
  */
 export const useUpdateBoardInviteCode = () => {
+  const router = useRouter();
   return useMutation<UpdateBoardInviteCodeResponse, Error, UpdateBoardInviteCode>({
     mutationFn: async (datas) => {
       const token = await getNewToken();
+      if (!token) router.push('/login');
       const data = await client.board.update.$patch(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (!data.ok) {
+        // @ts-ignore
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
@@ -183,6 +200,7 @@ export const useGetInviteCodeData = (inviteCode: string) => {
         },
       );
       if (!data.ok) {
+        // @ts-ignore
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }

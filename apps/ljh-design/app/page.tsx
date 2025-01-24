@@ -9,7 +9,6 @@ export default async function Home() {
       <div className={`${inter.className} ${myFont.variable} min-h-[100dvh]`}>
         {/* 导航栏 */}
         <NavBar />
-
         {/* 主要内容区 */}
         <Main />
       </div>

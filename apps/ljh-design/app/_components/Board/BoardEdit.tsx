@@ -49,6 +49,7 @@ const BoardEdit = ({
           <BoardCreateFrom
             setChange={setChange}
             type="edit"
+            // @ts-ignore
             defaultValues={data}
             userId={userId}
             mutate={

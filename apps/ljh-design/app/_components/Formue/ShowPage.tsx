@@ -52,7 +52,7 @@ export function ShowPage({ id }: { id: string }) {
       </section>
     );
   return (
-    <ScrollArea className="h-[calc(100dvh-150px)] flex flex-col gap-4">
+    <ScrollArea className="h-[calc(100dvh-100px)] flex flex-col gap-4">
       {/* 头部 */}
       <ShowHead showData={showData} remarkRef={remark} />
       <Separator className="w-full my-2" />
@@ -60,7 +60,7 @@ export function ShowPage({ id }: { id: string }) {
       <ShowMain showData={showData} />
       <Separator className="w-full my-2" />
       {/* 操作 */}
-      <ShowOption showData={showData} />
+      <ShowOption showData={showData} id={id} />
       {/* 底部 */}
       <ShowFooter showData={showData} ref={remark} />
     </ScrollArea>

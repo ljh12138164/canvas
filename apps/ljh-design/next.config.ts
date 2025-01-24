@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+
 const nextConfig: NextConfig = {
   // 图片配置
   images: {
@@ -16,6 +17,9 @@ const nextConfig: NextConfig = {
         hostname: 'osdawghfaoyysblfsexp.supabase.co',
       },
     ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 

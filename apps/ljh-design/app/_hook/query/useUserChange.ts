@@ -34,7 +34,6 @@ type UserChangePasswordRequestType = InferRequestType<(typeof client.user.passwo
 type UserChangePasswordResponseType = InferResponseType<(typeof client.user.password)['$post']>;
 /**
  * ### 修改用户密码
- *
  */
 export const useUserChangePassword = () => {
   const router = useRouter();

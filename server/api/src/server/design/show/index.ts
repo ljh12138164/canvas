@@ -93,22 +93,31 @@ export const getShow = async (
   id: string,
   userId?: string,
   token?: string,
-): Promise<Show & { profiles: Profiles; answers: Comment[]; upvotes: Upvote[] }> => {
+): Promise<
+  Show & {
+    profiles: Profiles;
+    answers: Comment & { profiles: Profiles }[];
+    upvotes: null;
+    collections: null;
+    isUpvote: boolean;
+    isCollect: boolean;
+  }
+> => {
   if (userId && token) {
     const { data, error } = await supabaseDesign(token)
       .from('show')
-      .select('*,answers(*),profiles(*),upvotes(*),collections(*)')
+      .select('*,answers(*,profiles(*)),profiles(*),upvotes(*),collections(*)')
       .eq('id', id);
     if (error) throw new Error('服务器错误');
-    // 判断是否收藏
+    // 判断是否收藏和点赞
     return data.map((item) => ({
       ...item,
-      collections: {
-        ...item.collections,
-        isCollect:
-          item.collections.filter((collection: Collections) => collection.userId === userId)
-            .length > 0,
-      },
+      upvotes: null,
+      collections: null,
+      isCollect:
+        item.collections.filter((collection: Collections) => collection.userId === userId).length >
+        0,
+      isUpvote: item.upvotes.filter((upvote: Upvote) => upvote.userId === userId).length > 0,
     }))[0];
   }
   const { data, error } = await supabaseDesignPublic

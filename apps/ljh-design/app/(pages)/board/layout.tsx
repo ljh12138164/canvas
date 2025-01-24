@@ -3,7 +3,7 @@ import SiderBar from '@/app/_components/Board/SiderBar';
 import { Providers } from '@/app/_provide/providers';
 import type { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: 'LJH Design ',
+  title: '面板',
   description: 'LJH Design',
 };
 

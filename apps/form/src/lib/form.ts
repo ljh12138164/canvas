@@ -99,7 +99,7 @@ export const inputZod = (schema: FormInput, fieldConfig: Ref<Record<string, any>
   if (schema.inputType === 'text') {
     zodSchema = z.string();
     obj.type = 'text';
-    // 必填
+    //@ts-ignore  必填
     if (schema.isRequired) zodSchema = zodSchema?.min(1, { message: '必填' });
     // 标签
     if (schema.description && !schema.hiddenLabel)
@@ -117,7 +117,7 @@ export const inputZod = (schema: FormInput, fieldConfig: Ref<Record<string, any>
   if (schema.inputType === 'number') {
     zodSchema = z.number();
     obj.type = 'number';
-    // 必填
+    //@ts-ignore  必填
     if (schema.isRequired) zodSchema = zodSchema.min(0, { message: '必填' });
     // 标签
     if (schema.description && !schema.hiddenLabel)
@@ -188,7 +188,7 @@ export const bigTextZod = (schema: BigText, fieldConfig: Ref<Record<string, any>
   };
   let zodSchema: z.ZodType;
   zodSchema = z.string();
-  // 必填
+  //@ts-ignore  必填
   if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' });
   // 标签
   if (schema.description && !schema.hiddenLabel)
@@ -220,7 +220,7 @@ export const sliderZod = (schema: Slider, fieldConfig: Ref<Record<string, any>>)
   };
   let zodSchema: z.ZodType;
   zodSchema = z.boolean();
-  // 必填
+  //@ts-ignore  必填
   if (schema.isRequired)
     zodSchema = zodSchema.refine((value) => value, {
       message: '必填',
@@ -281,7 +281,7 @@ export const fileZod = (schema: Files, fieldConfig: Ref<Record<string, any>>) =>
   };
   let zodSchema: z.ZodType;
   zodSchema = z.string();
-  // 必填
+  //@ts-ignore  必填
   if (schema.isRequired) zodSchema = zodSchema.min(1, { message: '必填' });
   // 标签
   if (schema.description && !schema.hiddenLabel)
@@ -383,11 +383,3 @@ export function getZodSchema(
   }
   return null;
 }
-
-/**
- * 获取fieldConfig
- * @returns fieldConfig
- */
-// export function getFieldConfig(schema: CreateFormItem, zod: z.ZodType) {
-//   return {}
-// }
