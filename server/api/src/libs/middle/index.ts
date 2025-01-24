@@ -1,7 +1,7 @@
 import type { Context, MiddlewareHandler } from 'hono';
 import { verify } from 'hono/jwt';
 
-interface Payload {
+export interface Payload {
   // 签发者
   iss: string;
   // 用户唯一标识
@@ -53,14 +53,14 @@ export const getSupabaseAuth = (c: Context) => {
 
 export const checkToken = (supabase: string): MiddlewareHandler => {
   return async (c, next) => {
-    const secret = supabase;
-    const token = c.req.header('Authorization');
-
-    if (!token) return c.json({ message: 'token is required' }, 401);
-    const jwt = token.split(' ').at(-1);
-    if (!jwt) return c.json({ message: 'token is invalid' }, 401);
-
     try {
+      const secret = supabase;
+      const token = c.req.header('Authorization');
+
+      if (!token) return c.json({ message: 'token is required' }, 401);
+      const jwt = token.split(' ').at(-1);
+      if (!jwt) return c.json({ message: 'token is invalid' }, 401);
+
       const payload = await verify(jwt, secret);
       c.set('supabaseAuth', { auth: payload as any as Payload, token: jwt });
       await next();
