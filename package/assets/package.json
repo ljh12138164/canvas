@@ -1,0 +1,13 @@
+{
+  "name": "@ljh/assets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint": "biome check --fix && biome lint ."
+  }
+}

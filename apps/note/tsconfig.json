@@ -7,14 +7,12 @@
     "skipLibCheck": true,
     "jsxImportSource": "vue",
     "useDefineForClassFields": true,
-
     /* modules */
     "module": "ESNext",
     "isolatedModules": true,
     "resolveJsonModule": true,
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
-
     /* type checking */
     "strict": true,
     "noUnusedLocals": true,
@@ -24,5 +22,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "src/pages/edit/Workspace.vue"]
+  "include": ["src"]
 }

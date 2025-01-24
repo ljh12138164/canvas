@@ -38,6 +38,7 @@ export const BoardCopy = ({
           <BoardCreateFrom
             setChange={setChange}
             type="copy"
+            // @ts-ignore
             defaultValues={board}
             closeref={closeRef}
             userId={userId}

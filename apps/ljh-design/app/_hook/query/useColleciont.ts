@@ -16,13 +16,15 @@ type GetCollectionRequestType = InferRequestType<(typeof client.collection.colle
  * @returns
  */
 export const useCollection = () => {
-  const { data: collectionData, isPending: collectionLoading } = useMutation<
+  const router = useRouter();
+  const { mutate: collectionMutate, isPending: collectionLoading } = useMutation<
     GetCollectionResponseType,
     Error,
     GetCollectionRequestType
   >({
     mutationFn: async (data) => {
       const token = await getNewToken();
+      if (!token) router.push('/sign-in');
       const res = await client.collection.collection.$post(data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -35,7 +37,7 @@ export const useCollection = () => {
       return await res.json();
     },
   });
-  return { collectionData, collectionLoading };
+  return { collectionMutate, collectionLoading };
 };
 
 type CancelCollectionRequestType = InferRequestType<(typeof client.collection.delte)['$delete']>;
@@ -49,7 +51,7 @@ type CancelCollectionResponseType = InferResponseType<
  */
 export const useCancelCollection = () => {
   const router = useRouter();
-  const { data: cancelCollectionData, isPending: cancelCollectionLoading } = useMutation<
+  const { mutate: cancelCollection, isPending: cancelCollectionPending } = useMutation<
     CancelCollectionResponseType,
     Error,
     CancelCollectionRequestType
@@ -69,7 +71,7 @@ export const useCancelCollection = () => {
       return await res.json();
     },
   });
-  return { cancelCollectionData, cancelCollectionLoading };
+  return { cancelCollection, cancelCollectionPending };
 };
 
 /**

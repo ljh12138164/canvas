@@ -1,6 +1,6 @@
 'use client';
 import { Separator } from '@/app/_components/ui/separator';
-import { Home, MessageSquare, Search, User } from 'lucide-react';
+import { Database, Home, MessageSquare, Search, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import SiderBarItem from './SiderBarItem';
 
@@ -16,7 +16,7 @@ const SiderBarRoutes = ({
         <Separator />
       </div>
       <ul className="flex flex-col h-full">
-        <li className="flex-1 p-4 flex flex-col gap-y-4">
+        <li className="flex-1 p-4 flex flex-col gap-4">
           <SiderBarItem
             href="/board"
             label="主页"
@@ -40,7 +40,13 @@ const SiderBarRoutes = ({
           />
         </li>
         <Separator />
-        <li className="p-4">
+        <li className="p-4 flex flex-col gap-4">
+          <SiderBarItem
+            href="/board/userData"
+            label="用户数据"
+            Icon={Database}
+            isActive={pathname === '/board/userData'}
+          />
           <SiderBarItem
             href="/board/user"
             label="用户"
