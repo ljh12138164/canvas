@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import board from './route/board';
+import { collections } from './route/collections';
 // import user from './route/user';
 import image from './route/image';
 import { show, showPublic } from './route/show';
@@ -14,4 +15,5 @@ export const design = new Hono()
   .route('/show', show)
   .route('/tap', tap)
   .route('/webhook', webhooks)
-  .route('/user', user);
+  .route('/user', user)
+  .route('/collection', collections);

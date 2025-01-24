@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import FormueList from './FormueList';
 
@@ -48,16 +49,28 @@ export default function FormueMain() {
       {formueLoading ? (
         <div className="space-y-6">
           {new Array(3).fill(0).map((_) => (
-            <div key={nanoid()} className="space-y-3">
-              <div className="flex items-center space-x-4">
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-[250px]" />
-                  <Skeleton className="h-4 w-[200px]" />
+            <Card className="p-4 cursor-pointer" key={nanoid()}>
+              <CardHeader>
+                <CardTitle className="flex justify-between">
+                  <Skeleton className="w-10 h-10" />
+                  <div className="text-sm text-gray-500 whitespace-nowrap flex gap-2 items-center">
+                    <Skeleton className="w-10 h-10" />
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent aria-describedby="formue-item-content">
+                <CardDescription className="flex gap-2">
+                  <Skeleton className="w-full h-10" />
+                  <Skeleton className="w-full h-10" />
+                </CardDescription>
+              </CardContent>
+              <CardFooter>
+                <div className="flex items-center gap-2">
+                  <Skeleton className="w-10 h-10" />
+                  <Skeleton className="w-10 h-10" />
                 </div>
-              </div>
-              <Skeleton className="h-[1px] w-full" />
-            </div>
+              </CardFooter>
+            </Card>
           ))}
         </div>
       ) : (

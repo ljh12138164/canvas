@@ -1,9 +1,10 @@
 import { zValidator } from '@hono/zod-validator';
 import to from 'await-to-js';
 import { Hono } from 'hono';
+import { verify } from 'hono/jwt';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
-import { checkToken, getSupabaseAuth } from '../../../libs/middle';
+import { Payload, checkToken, getSupabaseAuth } from '../../../libs/middle';
 import { createShow, getRandomShow, getShow } from '../../../server/design/show/index';
 
 const show = new Hono()
@@ -62,7 +63,24 @@ const showPublic = new Hono()
     },
   )
   .get('/get', zValidator('query', z.object({ id: z.string() })), async (c) => {
+    const secret = process.env.SUPABASE_DESIGN_JWT!;
+    const token = c.req.header('Authorization');
     const { id } = c.req.valid('query');
+
+    const jwt = token?.split(' ').at(-1);
+    // 登录看有没有收藏
+    if (jwt) {
+      const [errors, payload] = await to(verify(jwt, secret));
+      if (errors) {
+        const [error, data] = await to(getShow(id));
+        if (error) return c.json({ message: error.message }, errorCheck(error));
+        return c.json(data);
+      }
+
+      const [error, data] = await to(getShow(id, payload.sub as string, jwt));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    }
     const [error, data] = await to(getShow(id));
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(data);

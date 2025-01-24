@@ -1,5 +1,13 @@
 import type { GetShowResponseType } from '@/app/_hook/query/useShow';
+import ReactQuill from '../Comand/editor/quill';
 
-export function ShowFooter({ showData }: { showData: GetShowResponseType }) {
-  return <div>{showData.title}</div>;
+export function ShowFooter({
+  showData,
+  ref,
+}: { showData: GetShowResponseType; ref: React.RefObject<HTMLDivElement | null> }) {
+  return (
+    <div ref={ref}>
+      <ReactQuill />
+    </div>
+  );
 }

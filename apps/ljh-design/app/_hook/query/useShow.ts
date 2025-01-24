@@ -88,7 +88,15 @@ export const useGetShow = (id: string) => {
   >({
     queryKey: ['show', id],
     queryFn: async () => {
-      const res = await client.showPublic.get.$get({ query: { id } });
+      const token = await getNewToken();
+      const res = await client.showPublic.get.$get(
+        { query: { id } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!res.ok) {
         const error = (await res.json()) as { message: string };
         throw new Error(error.message);

@@ -2,14 +2,19 @@
 import { ShowFooter } from '@/app/_components/Formue/ShowFooter';
 import { ShowHead } from '@/app/_components/Formue/ShowHead';
 import { ShowMain } from '@/app/_components/Formue/ShowMain';
+import { ShowOption } from '@/app/_components/Formue/ShowOption';
 import { Skeleton } from '@/app/_components/ui/skeleton';
 import { useGetShow } from '@/app/_hook/query/useShow';
 import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
 import { Button } from '../ui/button';
+import { ScrollArea } from '../ui/scroll-area';
+import { Separator } from '../ui/separator';
 
 export function ShowPage({ id }: { id: string }) {
   const router = useRouter();
   const { showData, showLoading } = useGetShow(id);
+  const remark = useRef<HTMLDivElement>(null);
 
   if (showLoading)
     return (
@@ -47,10 +52,17 @@ export function ShowPage({ id }: { id: string }) {
       </section>
     );
   return (
-    <>
-      <ShowHead showData={showData} />
+    <ScrollArea className="h-[calc(100dvh-150px)] flex flex-col gap-4">
+      {/* 头部 */}
+      <ShowHead showData={showData} remarkRef={remark} />
+      <Separator className="w-full my-2" />
+      {/* 主体 */}
       <ShowMain showData={showData} />
-      <ShowFooter showData={showData} />
-    </>
+      <Separator className="w-full my-2" />
+      {/* 操作 */}
+      <ShowOption showData={showData} />
+      {/* 底部 */}
+      <ShowFooter showData={showData} ref={remark} />
+    </ScrollArea>
   );
 }

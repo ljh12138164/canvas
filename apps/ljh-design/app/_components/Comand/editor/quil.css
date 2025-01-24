@@ -1,0 +1,15 @@
+.ql-editor {
+  min-height: 150px !important;
+  max-height: 500px !important;
+}
+
+.ql-tooltip {
+  background-color: #333 !important; /* 暗色背景 */
+  color: #fff !important; /* 白色文字 */
+  border: 1px solid #555 !important; /* 暗色边框 */
+}
+
+.ql-tooltip input {
+  background-color: #333 !important; /* 暗色背景 */
+  color: #fff !important; /* 白色文字 */
+}
