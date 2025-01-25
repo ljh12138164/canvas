@@ -1,9 +1,15 @@
-import UserData from '@/app/_components/Board/UserData';
-import { inter, myFont } from '@/app/_lib/font';
-export default async function Home() {
+'use client';
+import UserInfo from '@/app/_components/UserData/UserInfo';
+import useUser from '@/app/_hook/useUser';
+import { redirect } from 'next/navigation';
+
+export default function UserProfilePage() {
+  const { user, loading } = useUser({ redirects: true });
+  if (loading) return;
+  if (!user) redirect('/sign-in');
   return (
-    <main className={`${inter.className} ${myFont.variable} min-w-[380px] w-full h-full entry`}>
-      <UserData />
-    </main>
+    <div className="p-6">
+      <UserInfo />
+    </div>
   );
 }

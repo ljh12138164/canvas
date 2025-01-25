@@ -43,7 +43,7 @@ const SiderBarRoutes = ({
         <li className="p-4 flex flex-col gap-4">
           <SiderBarItem
             href="/board/userData"
-            label="用户数据"
+            label="数据统计"
             Icon={Database}
             isActive={pathname === '/board/userData'}
           />

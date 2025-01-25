@@ -7,14 +7,14 @@ interface SiderBarItemProps {
   href: string;
   isActive?: boolean;
   closeRef?: React.RefObject<HTMLButtonElement | null>;
+  onClick?: () => void;
 }
-const SiderBarItem = ({ label, Icon, href, isActive, closeRef }: SiderBarItemProps) => {
+const SiderBarItem = ({ label, Icon, href, isActive, closeRef, onClick }: SiderBarItemProps) => {
   return (
     <Link
       onClick={() => {
-        if (closeRef) {
-          closeRef.current?.click();
-        }
+        onClick?.();
+        closeRef?.current?.click();
       }}
       href={href}
       className={cn(

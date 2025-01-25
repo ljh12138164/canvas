@@ -1,3 +1,5 @@
+import type { Profiles } from 'src/types/note/workspace';
+import type { Collections, Show, Upvote } from '../../../types/design/show';
 import { supabaseDesign, supabaseServiceDesign } from '../../supabase/design/index';
 
 /**
@@ -52,5 +54,47 @@ export const updatePassword = async ({
     password,
   });
   if (error) throw Error(error.message, { cause: error });
+  return data;
+};
+
+/**
+ * ### 获取用户点赞
+ * @param token
+ * @param userId
+ * @returns
+ */
+export const getUserLike = async ({
+  token,
+  userId,
+}: {
+  token: string;
+  userId: string;
+}): Promise<(Upvote & { show: Show & { profiles: Profiles } })[]> => {
+  const { data, error } = await supabaseDesign(token)
+    .from('upvotes')
+    .select('*,show(*,profiles(*))')
+    .eq('userId', userId);
+  if (error) throw new Error('服务器错误');
+  return data;
+};
+
+/**
+ * ### 获取用户的收藏
+ * @param token
+ * @param userId
+ * @returns
+ */
+export const getUserCollect = async ({
+  token,
+  userId,
+}: {
+  token: string;
+  userId: string;
+}): Promise<(Collections & { show: Show & { profiles: Profiles } })[]> => {
+  const { data, error } = await supabaseDesign(token)
+    .from('collections')
+    .select('*,show(*,profiles(*))')
+    .eq('userId', userId);
+  if (error) throw new Error('服务器错误');
   return data;
 };
