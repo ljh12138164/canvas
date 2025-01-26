@@ -60,7 +60,7 @@ const server = Server.configure({
   extensions: [
     new Webhook({
       url: 'https://ljhboard.cn/api/note/webhook/save',
-      secret: '459824aaffa928e05f5b1caec411ae5f111',
+      secret: process.env.WEBHOOK_SECRET,
       events: [Events.onChange, Events.onCreate],
       debounce: 5000,
       transformer: TiptapTransformer.extensions([

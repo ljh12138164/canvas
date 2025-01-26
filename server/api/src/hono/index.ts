@@ -23,7 +23,6 @@ const app = new Hono()
   .route('/form', form)
   .route('/ai', ai)
   .route('/storage', storage);
-// 质谱： 901990b9c3b253eb71e20617aa2ee4cc.2pChbHlMynsuHd1M
 
 export type App = typeof app;
 export default app;
