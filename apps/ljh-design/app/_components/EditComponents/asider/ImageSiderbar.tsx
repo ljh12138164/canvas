@@ -56,7 +56,7 @@ const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSide
   return (
     <aside
       className={cn(
-        'z-[100] bg-white  relative transition  h-full flex flex-col',
+        'z-[100] bg-white dark:bg-background  relative transition  h-full flex flex-col',
         activeTool === Tool.Image ? 'visible' : 'hidden',
       )}
       style={{ flexBasis: '300px' }}
@@ -83,8 +83,8 @@ const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSide
           <Separator orientation="horizontal" />
         </>
       )}
-      <ScrollArea className="scroll-mt-12">
-        <div className="h-16  relative  border-b-2  flex items-center justify-center border-black/10 px-4 py-2">
+      <ScrollArea className="pb-12 max-h-[calc(100dvh-10rem)]">
+        <div className="h-16 dark:bg-background  relative  border-b-2  flex items-center justify-center border-black/10 px-4 py-2">
           <button
             onClick={() => {
               if (!uploadImage) fileRef.current?.click();
@@ -103,7 +103,7 @@ const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSide
             />
           </button>
         </div>
-        <div className="p-4 pb-20 grid grid-cols-2 gap-4 mt-4">
+        <div className="p-4 grid grid-cols-2 gap-4 mt-4">
           {activeTool === Tool.Image && imageList === ImageType.Recommend && (
             <ImageBox editor={editor} />
           )}
@@ -119,7 +119,7 @@ const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSide
         </div>
       )}
       {getImageError && imageList === ImageType.Recommend && (
-        <div className="flex flex-col gap-y-4 justify-center items-center flex-1">
+        <div className="flex flex-col gap-y-4 justify-center dark:bg-background items-center flex-1">
           <LuBadgeAlert className="size-4  text-muted-foreground" />
           <p className=" text-muted-foreground text-xs">获取图片失败</p>
         </div>

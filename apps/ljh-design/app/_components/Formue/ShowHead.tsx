@@ -35,6 +35,9 @@ export function ShowHead({
         <Button onClick={onClick} type="button" variant="outline" className="h-8">
           跳转到评论
         </Button>
+        <Button type="button" className="h-8">
+          克隆至我的看板
+        </Button>
       </div>
     </section>
   );

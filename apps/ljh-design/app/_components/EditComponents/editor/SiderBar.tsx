@@ -18,7 +18,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
   return (
     <aside
       id="editSider"
-      className="w-[100px] z-[40]  bg-white  border-r border-t-black border-slate-200 overflow-y-auto"
+      className="w-[100px] z-[40]  border-r bg-[#fff] dark:bg-background overflow-y-auto"
       style={{ flexBasis: '100px' }}
     >
       <ScrollArea>

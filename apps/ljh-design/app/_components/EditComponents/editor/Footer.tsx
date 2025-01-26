@@ -8,7 +8,7 @@ interface FooterProps {
 }
 const Footer = ({ editor }: FooterProps) => {
   return (
-    <div className="h-[50px] border-r bg-white w-full flex items-center overflow-x-auto z-[49] p-2 gap-x-1 shrink-0 px-4 flex-row-reverse">
+    <div className="h-[50px] border-r bg-white dark:bg-background w-full flex items-center overflow-x-auto z-[49] p-2 gap-x-1 shrink-0 px-4 flex-row-reverse">
       <TooltipComponents label="放大" side="bottom" sideOffset={5} key={Tool.zoomIn}>
         <Button className="h-full" size="icon" variant="ghost" onClick={() => editor?.zoomIn()}>
           <LuZoomIn />

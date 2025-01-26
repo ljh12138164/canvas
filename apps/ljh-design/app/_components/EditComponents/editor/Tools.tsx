@@ -36,14 +36,14 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
   //字体
   if (!editor?.selectedObject?.length) {
     return (
-      <section className="h-[3.3rem]  p-[0.1rem] space-x-4 bg-white items-center flex w-full z-[50]" />
+      <section className="h-[3.3rem]  p-[0.1rem] space-x-4 dark:bg-background items-center flex w-full z-[50]" />
     );
   }
   const seltectedObject = editor?.canvas?.getActiveObjects()[0];
   const textYype = isText(seltectedObject);
   const isImage = selectedObject?.type === 'image';
   return (
-    <ScrollArea className="h-[3.3rem]  p-[0.1rem]  space-x-4 bg-white items-center flex w-full z-[50]">
+    <ScrollArea className="h-[3.3rem]  p-[0.1rem]  space-x-4 bg-[#fff] dark:bg-background items-center flex w-full z-[50]">
       <div className="flex items-center h-full  gap-2 w-full  overflow-y-hidden">
         <section className="flex items-center gap-2">
           {!isImage && (
@@ -52,10 +52,10 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 onClick={() => onChangeActiveTool(Tool.Fill)}
                 size="icon"
                 variant="ghost"
-                className={cn(activeTool === Tool.Fill && 'bg-gray-100')}
+                className={cn(activeTool === Tool.Fill && 'bg-gray-100 dark:bg-background')}
               >
                 <div
-                  className="rounded-small size-4 border bg-white"
+                  className="rounded-small size-4 border dark:bg-background"
                   style={{ backgroundColor: fillColor ? fillColor : 'black' }}
                 />
               </Button>
@@ -67,10 +67,10 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 onClick={() => onChangeActiveTool(Tool.StrokeColor)}
                 size="icon"
                 variant="ghost"
-                className={cn(activeTool === Tool.StrokeColor && 'bg-gray-100')}
+                className={cn(activeTool === Tool.StrokeColor && 'bg-gray-100 dark:bg-background')}
               >
                 <div
-                  className="rounded-small size-4 border bg-white"
+                  className="rounded-small size-4 border dark:bg-background"
                   style={{
                     border: storkeColor ? `2px solid ${storkeColor}` : '2px solid black',
                   }}
@@ -84,7 +84,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 onClick={() => onChangeActiveTool(Tool.StrokeWidth)}
                 size="icon"
                 variant="ghost"
-                className={cn(activeTool === Tool.StrokeWidth && 'bg-gray-100')}
+                className={cn(activeTool === Tool.StrokeWidth && 'bg-gray-100 dark:bg-background')}
               >
                 <BsBorderWidth className="size-4" />
               </Button>
@@ -98,7 +98,10 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 }}
                 size="icon"
                 variant="ghost"
-                className={cn('w-auto', activeTool === Tool.FontFamily && 'bg-gray-100')}
+                className={cn(
+                  'w-auto',
+                  activeTool === Tool.FontFamily && 'bg-gray-100 dark:bg-background',
+                )}
               >
                 <div className="max-w-[100px] truncate px-2">{editor?.getActiveFontFamily()}</div>
                 <LuChevronDown className="size-4" />
@@ -114,7 +117,10 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 }}
                 size="icon"
                 variant="ghost"
-                className={cn('w-auto', editor?.getActiveFontLineThrough() && 'bg-gray-100')}
+                className={cn(
+                  'w-auto',
+                  editor?.getActiveFontLineThrough() && 'bg-gray-100 dark:bg-background',
+                )}
               >
                 <div className="px-2">
                   <FaStrikethrough className="size-4" />
@@ -131,7 +137,10 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 }}
                 size="icon"
                 variant="ghost"
-                className={cn('w-auto', editor?.getActiveFontUnderline() && 'bg-gray-100')}
+                className={cn(
+                  'w-auto',
+                  editor?.getActiveFontUnderline() && 'bg-gray-100 dark:bg-background',
+                )}
               >
                 <div className="px-2">
                   <FaUnderline className="size-4" />
@@ -150,7 +159,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 variant="ghost"
                 className={cn(
                   'w-auto',
-                  editor?.getActiveFontItalic() === 'italic' && 'bg-gray-100',
+                  editor?.getActiveFontItalic() === 'italic' && 'bg-gray-100 dark:bg-background',
                 )}
               >
                 <div className="px-2">
@@ -171,7 +180,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                     editor?.changeFontWeight('normal');
                   }
                 }}
-                className={`${editor?.getActiveStrokeWeight() === 'bold' && 'bg-gray-100'}`}
+                className={`${editor?.getActiveStrokeWeight() === 'bold' && 'bg-gray-100 dark:bg-background'}`}
               >
                 <FaBold className="size-4" />
               </Button>
@@ -185,7 +194,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 onClick={() => {
                   editor?.changeFontAlign('left');
                 }}
-                className={`${editor?.getActiveFontAlign() === 'left' && 'bg-gray-100'}`}
+                className={`${editor?.getActiveFontAlign() === 'left' && 'bg-gray-100 dark:bg-background'}`}
               >
                 <FaAlignLeft className="size-4" />
               </Button>
@@ -205,7 +214,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 onClick={() => {
                   editor?.changeFontAlign('center');
                 }}
-                className={`${editor?.getActiveFontAlign() === 'center' && 'bg-gray-100'}`}
+                className={`${editor?.getActiveFontAlign() === 'center' && 'bg-gray-100 dark:bg-background'}`}
               >
                 <FaAlignCenter className="size-4" />
               </Button>
@@ -219,7 +228,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 onClick={() => {
                   editor?.changeFontAlign('right');
                 }}
-                className={`${editor?.getActiveFontAlign() === 'right' && 'bg-gray-100'}`}
+                className={`${editor?.getActiveFontAlign() === 'right' && 'bg-gray-100 dark:bg-background'}`}
               >
                 <FaAlignRight className="size-4" />
               </Button>
@@ -238,7 +247,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
                 onClick={() => {
                   onChangeActiveTool(Tool.Filter);
                 }}
-                className={`${activeTool === Tool.Filter && 'bg-gray-100'}`}
+                className={`${activeTool === Tool.Filter && 'bg-gray-100 dark:bg-background'}`}
               >
                 <TbColorFilter className="size-4" />
               </Button>
@@ -261,7 +270,7 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
               onClick={() => onChangeActiveTool(Tool.Opacity)}
               size="icon"
               variant="ghost"
-              className={cn(activeTool === Tool.Opacity && 'bg-gray-100')}
+              className={cn(activeTool === Tool.Opacity && 'bg-gray-100 dark:bg-background')}
             >
               <BsTransparency className="size-4" />
             </Button>

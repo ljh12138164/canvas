@@ -44,6 +44,8 @@ export function ShowOption({ showData, id }: { showData: GetShowResponseType; id
           onSuccess: () => {
             toast.success('取消收藏成功');
             queryClient.invalidateQueries({ queryKey: ['show', showData.id] });
+            queryClient.invalidateQueries({ queryKey: ['like', ''] });
+            queryClient.invalidateQueries({ queryKey: ['collection', ''] });
           },
         },
       );
@@ -53,6 +55,8 @@ export function ShowOption({ showData, id }: { showData: GetShowResponseType; id
         onSuccess: () => {
           toast.success('收藏成功');
           queryClient.invalidateQueries({ queryKey: ['show', showData.id] });
+          queryClient.invalidateQueries({ queryKey: ['like', ''] });
+          queryClient.invalidateQueries({ queryKey: ['collection', ''] });
         },
       },
     );
@@ -73,7 +77,7 @@ export function ShowOption({ showData, id }: { showData: GetShowResponseType; id
           onClick={handleCollection}
           disabled={cancelCollectionPending || collectionLoading || showFetching}
         >
-          <BookmarkIcon className="w-4 h-4" />
+          <BookmarkIcon className={`w-4 h-4 ${showData.isCollect ? 'text-blue-500' : ''}`} />
           {showData.isCollect ? '已收藏' : '收藏'}
         </Button>
       </div>

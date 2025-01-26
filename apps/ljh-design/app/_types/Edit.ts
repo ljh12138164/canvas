@@ -2,16 +2,8 @@ import type { Effect } from '@/app/_lib/utils';
 import * as fabric from 'fabric';
 import material from 'material-colors';
 import type { IconType } from 'react-icons';
-import {
-  FaArrowRight,
-  FaCircle,
-  FaCloud,
-  FaHeart,
-  FaSquare,
-  FaStar,
-  FaWaveSquare,
-} from 'react-icons/fa';
-import { FaDiamond, FaGear, FaSquareFull } from 'react-icons/fa6';
+import { FaCircle, FaDiamond, FaSquare, FaSquareFull } from 'react-icons/fa6';
+import { IoIosStar } from 'react-icons/io';
 import { IoTriangle } from 'react-icons/io5';
 export type TBlendMode =
   | 'multiply'
@@ -637,85 +629,6 @@ export const SPIRAL_OPTION = {
   stroke: STROKE_COLOR,
   strokeWidth: STROKE_WIDTH,
 };
-// 星形
-export const LINE_OPTION = {
-  left: 100,
-  top: 100,
-  fill: 'red',
-  stroke: STROKE_COLOR,
-  strokeWidth: STROKE_WIDTH,
-  scaleX: 0.2,
-  scaleY: 0.2,
-};
-// 添加
-export const ARROW_OPTION = {
-  left: 100,
-  top: 100,
-  fill: FILL_COLOR,
-  stroke: STROKE_COLOR,
-  strokeWidth: STROKE_WIDTH,
-};
-// 创建螺旋
-let spiralPath = 'M 50 50';
-for (let i = 0; i < 10; i++) {
-  const angle = (i * Math.PI) / 2;
-  const radius = 5 * i;
-  spiralPath += ` L ${50 + radius * Math.cos(angle)} ${50 + radius * Math.sin(angle)}`;
-}
-export const SPIRAL_PATH = {
-  left: 100,
-  top: 100,
-  fill: 'transparent',
-  stroke: STROKE_COLOR,
-  strokeWidth: STROKE_WIDTH,
-};
-
-// 创建齿轮
-const points: { x: number; y: number }[] = [];
-const teeth = 12; // 齿轮齿数
-const outerRadius = 50;
-const innerRadius = 35;
-
-for (let i = 0; i < teeth * 2; i++) {
-  const radius = i % 2 === 0 ? outerRadius : innerRadius;
-  const angle = (i * Math.PI) / teeth;
-  points.push({
-    x: radius * Math.cos(angle),
-    y: radius * Math.sin(angle),
-  });
-}
-export const GEAR_PATH = {
-  left: 100,
-  top: 100,
-  fill: FILL_COLOR,
-  stroke: STROKE_COLOR,
-  strokeWidth: STROKE_WIDTH,
-};
-
-// 创建波浪线
-const wavePath = new Array(4)
-  .fill(0)
-  .reduce(
-    (path, _, i) => `${path} Q ${50 + i * 100},${i % 2 ? 0 : 100} ${100 + i * 100},50`,
-    'M 0,50',
-  );
-export const WAVE_PATH = {
-  left: 100,
-  top: 100,
-  fill: 'transparent',
-  stroke: STROKE_COLOR,
-  strokeWidth: STROKE_WIDTH,
-};
-// 创建云朵
-export const CLOUD_PATH = {
-  left: 100,
-  top: 100,
-  fill: '#white',
-  stroke: STROKE_COLOR,
-  strokeWidth: STROKE_WIDTH,
-  scaleX: 2,
-  scaleY: 2,
-};
 
 export interface AddObject {
   // 添加的farbic类型
@@ -812,55 +725,7 @@ export const addObject: AddObject[] = [
       { x: 2, y: 35 },
       { x: 39, y: 35 },
     ],
-    icon: FaStar,
-  },
-  {
-    key: '星形',
-    title: '添加星形',
-    option: LINE_OPTION,
-    path: 'M 272.70141,238.71731 C 206.46141,238.71731 152.70146,292.4773 152.70146,358.71731 C 152.70146,493.47282 272.70141,528.71731 272.70141,528.71731 C 272.70141,528.71731 392.70141,493.47282 392.70141,358.71731 C 392.70141,292.4773 338.94141,238.71731 272.70141,238.71731 z',
-    addType: 'Path',
-    icon: FaHeart,
-  },
-  {
-    key: '箭头',
-    title: '添加箭头',
-    option: ARROW_OPTION,
-    path: 'M 0 0 L 200 0 L 200 30 L 250 30 L 150 100 L 50 30 L 100 30 L 100 0 z',
-    addType: 'Path',
-    icon: FaArrowRight,
-  },
-  {
-    key: '螺旋',
-    title: '添加螺旋',
-    option: SPIRAL_PATH,
-    path: spiralPath,
-    addType: 'Path',
-    icon: FaArrowRight,
-  },
-  {
-    key: '云朵',
-    title: '添加云朵',
-    option: CLOUD_PATH,
-    path: 'M 25,60 a 20,20 1 0,0 0,-40 a 20,20 1 0,0 -40,0 a 20,20 1 0,0 0,40 z',
-    addType: 'Path',
-    icon: FaCloud,
-  },
-  {
-    key: '波浪线',
-    title: '添加波浪线',
-    option: WAVE_PATH,
-    path: wavePath,
-    addType: 'Path',
-    icon: FaWaveSquare,
-  },
-  {
-    key: '齿轮',
-    title: '添加齿轮',
-    option: GEAR_PATH,
-    points,
-    addType: 'Polygon',
-    icon: FaGear,
+    icon: IoIosStar,
   },
 ];
 

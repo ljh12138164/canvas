@@ -4,7 +4,7 @@ import useUsers from '@/app/_hook/useUser';
 import Link from 'next/link';
 
 const Main = () => {
-  const { user } = useUsers({ redirects: false });
+  const { user, loading } = useUsers({ redirects: false });
   return (
     <main className="container mx-auto px-4 pt-24">
       {/* Hero部分 */}
@@ -15,7 +15,9 @@ const Main = () => {
         <p className="text-xl text-gray-600 mb-8">简单易用的在线设计工具，让创意更轻松地实现</p>
         <div className="space-x-4">
           <Link href={user ? '/board' : '/try/Edit'}>
-            <Button size="lg">前往工作区</Button>
+            <Button size="lg" disabled={loading}>
+              前往工作区
+            </Button>
           </Link>
           <Link href="/forum">
             <Button variant="outline" size="lg">

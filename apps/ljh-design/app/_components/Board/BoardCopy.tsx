@@ -7,6 +7,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -34,6 +35,10 @@ export const BoardCopy = ({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>复制看板</DialogTitle>
+            <DialogDescription>
+              确定要复制<span className="font-bold text-blue-400 mx-1">{board.name}</span>
+              吗？
+            </DialogDescription>
           </DialogHeader>
           <BoardCreateFrom
             setChange={setChange}

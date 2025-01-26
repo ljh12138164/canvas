@@ -14,7 +14,7 @@ const SiderBarItem = ({ icon: Icon, label, isActive, onClick, className }: Sider
       variant="ghost"
       onClick={onClick}
       className={cn(
-        `w-full h-[5rem] aspect-video p-5 flex flex-col font-light   rounded-none ${isActive && 'bg-muted text-primary'}`,
+        `w-full h-[5rem] aspect-video p-5 flex flex-col font-light dark:bg-background rounded-none dark:hover:bg-slate-700 ${isActive && ' bg-muted dark:bg-slate-700 text-primary'}`,
         className,
       )}
     >

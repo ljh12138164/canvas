@@ -11,12 +11,21 @@
   }
 }
 
+@keyframes draw-path {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
   .entry {
     animation: entrys 0.35s ease-in-out;
+  }
+  .animate-draw-path {
+    animation: draw-path 1.5s ease-out infinite;
   }
 }
 
@@ -131,4 +140,8 @@
   background-color: var(--foreground);
   border-radius: 10px;
   border: 2px solid var(--background);
+}
+
+.dark .lower-canvas {
+  background-color: #0c0a19e9;
 }

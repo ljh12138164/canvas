@@ -106,7 +106,10 @@ const Form = ({ defaultValue, userId }: FormProps) => {
             tap: datas.tap?.join(',') || '',
             relativeTheme: datas.relativeTheme,
             json: relativeTheme.json,
+            image: relativeTheme.image,
             title: datas.title,
+            width: relativeTheme.width,
+            height: relativeTheme.height,
           },
         },
         {

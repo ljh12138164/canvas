@@ -106,8 +106,8 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
   const [drewColor, setDrewColor] = useState<string>(STROKE_COLOR);
   const [drawWidth, setDrawWidth] = useState<number>(STROKE_WIDTH);
   //画布大小
-  const [canvasWidth, setCanvasWidth] = useState<number>(CANVAS_WIDTH);
-  const [canvasHeight, setCanvasHeight] = useState<number>(CANVAS_HEIGHT);
+  const [canvasWidth, setCanvasWidth] = useState<number>(+data.width || CANVAS_WIDTH);
+  const [canvasHeight, setCanvasHeight] = useState<number>(+data.height || CANVAS_HEIGHT);
   //画布颜色
   const [canvasColor, setCanvasColor] = useState<string>(CANVAS_COLOR);
   const { authZoom } = useResponse({ canvas, contain }) as { authZoom: any };
@@ -160,15 +160,10 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
   useWindowEvent();
   // 工具栏
   const onChangeActive = (tools: Tool) => {
-    if (tools === Tool.Draw) {
-      editor()?.enableDraw();
-    }
-    if (tool === Tool.Draw) {
-      editor()?.disableDraw();
-    }
-    if (tools === tool) {
-      return setTool(Tool.Select);
-    }
+    if (tools === Tool.Draw) editor()?.enableDraw();
+
+    if (tool === Tool.Draw) editor()?.disableDraw();
+    if (tools === tool) setTool(Tool.Select);
     setTool(tools);
   };
   //编辑器
@@ -197,6 +192,7 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
         canvasHeight,
         canvasColor,
         canvasHistory: canvasHistory.current,
+        authZoom,
         pasty,
         save,
         canRedo,
@@ -207,7 +203,6 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
         setCanvasHeight,
         setCanvasColor,
         setCanvasWidth,
-        authZoom,
         setDrawWidth,
         setDrewColor,
         copy,
@@ -246,6 +241,7 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
       // 阻止浏览器默认的右键上下文菜单
       stopContextMenu: true,
     });
+    // 阻止浏览器默认的右键上下文菜单
     canvas.wrapperEl.addEventListener(
       'contextmenu',
       (e) => {
@@ -269,6 +265,7 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
     return () => {
       canvas.dispose();
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [init]);
 

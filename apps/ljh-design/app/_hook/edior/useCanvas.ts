@@ -1,6 +1,7 @@
 import { STROKE_COLOR, STROKE_WIDTH } from '@/app/_types/Edit';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
+import { useTheme } from 'next-themes';
 import type { RefObject } from 'react';
 
 interface CanvasProps {
@@ -8,6 +9,7 @@ interface CanvasProps {
   initHeight?: RefObject<number> | number;
 }
 const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
+  const { theme } = useTheme();
   const init = useMemoizedFn(
     ({
       initCanvas,
@@ -17,13 +19,13 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       initContainer: HTMLDivElement;
     }) => {
       fabric.FabricObject.prototype.set({
-        cornerColor: '#FFF',
+        cornerColor: theme === 'dark' ? '#fff' : '#3b82f6',
         cornerStyle: 'circle',
-        borderColor: '#3b82f6',
+        borderColor: theme === 'dark' ? '#fff' : '#3b82f6',
         borderScaleFactor: 1.5,
         transparentCorners: false,
         borderOpacityWhenMoving: 1,
-        cornerStrokeColor: '#3b82f6',
+        cornerStrokeColor: theme === 'dark' ? '#fff' : '#3b82f6',
       });
       //初始化画布笔画
       initCanvas.freeDrawingBrush = new fabric.PencilBrush(initCanvas);
@@ -47,8 +49,12 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
 
       initCanvas.add(initRect);
       initCanvas.centerObject(initRect);
-      initCanvas.setWidth(initContainer.offsetWidth);
-      initCanvas.setHeight(initContainer.offsetHeight);
+      // 设置画布尺寸
+      initCanvas.setDimensions({
+        width: initContainer.offsetWidth,
+        height: initContainer.offsetHeight,
+      });
+      // 设置画布背景颜色
       //溢出不显示
       initCanvas.clipPath = initRect;
     },
