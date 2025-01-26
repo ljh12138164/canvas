@@ -36,16 +36,20 @@ export const user = new Hono()
     return c.json(data);
   })
   // 获取用户点赞
-  .get('/like', async (c) => {
+  .get('/like', zValidator('query', z.object({ search: z.string().optional() })), async (c) => {
     const { auth, token } = getSupabaseAuth(c);
-    const [error, data] = await to(getUserLike({ token, userId: auth.sub! }));
+    const { search } = c.req.valid('query');
+    const [error, data] = await to(getUserLike({ token, userId: auth.sub!, search: search ?? '' }));
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(data);
   })
   // 获取用户的收藏
-  .get('/collect', async (c) => {
+  .get('/collect', zValidator('query', z.object({ search: z.string().optional() })), async (c) => {
     const { auth, token } = getSupabaseAuth(c);
-    const [error, data] = await to(getUserCollect({ token, userId: auth.sub! }));
+    const { search } = c.req.valid('query');
+    const [error, data] = await to(
+      getUserCollect({ token, userId: auth.sub!, search: search ?? '' }),
+    );
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(data);
   });

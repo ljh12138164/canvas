@@ -66,16 +66,21 @@ export const updatePassword = async ({
 export const getUserLike = async ({
   token,
   userId,
+  search,
 }: {
   token: string;
   userId: string;
+  search: string;
 }): Promise<(Upvote & { show: Show & { profiles: Profiles } })[]> => {
-  const { data, error } = await supabaseDesign(token)
+  let supabase = supabaseDesign(token)
     .from('upvotes')
     .select('*,show(*,profiles(*))')
-    .eq('userId', userId);
+    .eq('userId', userId)
+    .order('created_at', { ascending: false });
+  if (search) supabase = supabase.like('show.title', `%${search}%`);
+  const { data, error } = await supabase;
   if (error) throw new Error('服务器错误');
-  return data;
+  return data.filter((item) => item.show !== null);
 };
 
 /**
@@ -87,14 +92,20 @@ export const getUserLike = async ({
 export const getUserCollect = async ({
   token,
   userId,
+  search,
 }: {
   token: string;
   userId: string;
+  search: string;
 }): Promise<(Collections & { show: Show & { profiles: Profiles } })[]> => {
-  const { data, error } = await supabaseDesign(token)
+  let supabase = supabaseDesign(token)
     .from('collections')
     .select('*,show(*,profiles(*))')
     .eq('userId', userId);
+
+  if (search) supabase = supabase.like('show.title', `%${search}%`);
+
+  const { data, error } = await supabase.order('created_at', { ascending: false });
   if (error) throw new Error('服务器错误');
-  return data;
+  return data.filter((item) => item.show !== null);
 };

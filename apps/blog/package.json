@@ -11,18 +11,19 @@
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.0",
     "next": "15.1.6",
-    "nextra": "^4.0.9",
-    "nextra-theme-docs": "^4.0.9",
+    "nextra": "latest",
+    "nextra-theme-blog": "^4.1.0",
+    "nextra-theme-docs": "latest",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@ljh/lint": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "postcss": "^8",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5",
-    "@ljh/lint": "workspace:*"
+    "typescript": "^5"
   }
 }

@@ -7,7 +7,7 @@ export const Loading = () => {
       {/* 内容区域骨架 */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {[...Array(8)].map((_) => (
-          <Skeleton key={nanoid()} className="rounded-lg h-[150px]" />
+          <Skeleton key={nanoid()} className="rounded-lg h-[100px]" />
         ))}
       </div>
     </div>

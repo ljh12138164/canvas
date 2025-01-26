@@ -10,7 +10,7 @@ interface ToolSiderbarProps {
 }
 const ToolSiderbar = ({ title, description, front, onChangeActive }: ToolSiderbarProps) => {
   return (
-    <div className=" relative w-full border-b p-4 space-y-1 h-[3rem] group border-r border-y px-1 pr-2 transform  bg-white flex flex-col items-center justify-center">
+    <div className=" relative w-full border-b p-4 space-y-1 h-[3rem] group border-r border-y px-1 pr-2 transform  bg-white dark:bg-background flex flex-col items-center justify-center">
       {front && (
         <button
           type="button"

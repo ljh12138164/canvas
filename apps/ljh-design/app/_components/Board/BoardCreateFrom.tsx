@@ -19,6 +19,11 @@ export interface Board {
   url: string;
   width: number;
 }
+const typeObj = {
+  create: '创建',
+  edit: '编辑',
+  copy: '复制',
+};
 const zod = z.object({
   name: z
     .string({ message: '请输入画布名称' })
@@ -78,104 +83,96 @@ const BoardCreateFrom = ({
         },
   });
   const onSubmit = (data: z.infer<typeof zod>) => {
+    // 用户登录
     if (userId) {
       query.invalidateQueries({ queryKey: ['board'] });
-      toast.loading('创建中');
-      if (mutate) {
-        mutate(
-          {
-            ...data,
-            width: Number(data.width),
-            height: Number(data.height),
-            // @ts-ignore
-            json: type === 'create' ? '' : defaultValues.json,
+      toast.loading(`${typeObj[type]}中...`);
+      // 创建
+      mutate?.(
+        {
+          ...data,
+          width: Number(data.width),
+          height: Number(data.height),
+          // @ts-ignore
+          json: type === 'create' ? '' : defaultValues.json,
+        },
+        {
+          onSuccess: () => {
+            query.invalidateQueries({ queryKey: ['board'] });
+            toast.dismiss();
+            toast.success(type === 'create' ? '创建成功' : '更新成功');
+            return closeref?.current?.click();
           },
-          {
-            onSuccess: () => {
-              query.invalidateQueries({ queryKey: ['board'] });
-              toast.dismiss();
-              toast.success(type === 'create' ? '创建成功' : '更新成功');
-              if (closeref?.current) {
-                closeref.current.click();
-              }
-            },
-            onError: (error) => {
-              console.error(error);
-              toast.dismiss();
-              toast.error(type === 'create' ? '创建失败' : '更新失败');
-            },
+          onError: (error) => {
+            console.error(error);
+            toast.dismiss();
+            toast.error(type === 'create' ? '创建失败' : '更新失败');
           },
-        );
-      }
-    } else {
-      if (type === 'create') {
-        toast.loading('创建中...');
-        indexDBChange({
+        },
+      );
+      return;
+    }
+    // 创建
+    if (type === 'create') {
+      // 创建
+      toast.loading('创建中...');
+      indexDBChange({
+        type: 'add',
+        data: {
+          ...data,
+          id: nanoid(),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          json: '',
+        },
+      });
+      if (setChange) setChange(true);
+      toast.dismiss();
+      toast.success('创建成功');
+      return closeref?.current?.click();
+    }
+    // 编辑
+    if (type === 'edit') {
+      toast.loading('修改中...');
+      indexDBChange({
+        type: 'edit',
+        // @ts-ignore
+        editData: {
+          ...defaultValues,
+          ...data,
+          updated_at: new Date().toISOString(),
+        },
+      });
+      if (setChange) setChange(true);
+      toast.dismiss();
+      toast.success('修改成功');
+      return closeref?.current?.click();
+    }
+    // 复制
+    if (type === 'copy') {
+      toast.dismiss();
+      (async () => {
+        toast.loading('复制中...');
+        // @ts-ignore
+        const board = await getTryBoardById(defaultValues.id);
+        await indexDBChange({
           type: 'add',
           data: {
-            ...data,
+            ...board,
+            json: board?.json || '',
             id: nanoid(),
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
-            json: '',
+            name: data.name,
+            width: data.width,
+            height: data.height,
           },
         });
-        if (setChange) {
-          setChange(true);
-        }
+        if (setChange) setChange(true);
         toast.dismiss();
-        toast.success('创建成功');
-        if (closeref?.current) {
-          closeref.current.click();
-        }
-      } else if (type === 'edit') {
-        toast.loading('修改中...');
-        indexDBChange({
-          type: 'edit',
-          // @ts-ignore
-          editData: {
-            ...defaultValues,
-            ...data,
-            updated_at: new Date().toISOString(),
-          },
-        });
-        if (setChange) {
-          setChange(true);
-        }
-        toast.dismiss();
-        toast.success('修改成功');
-        if (closeref?.current) {
-          closeref.current.click();
-        }
-      } else if (type === 'copy') {
-        toast.dismiss();
-        (async () => {
-          toast.loading('复制中...');
-          // @ts-ignore
-          const board = await getTryBoardById(defaultValues.id);
-          await indexDBChange({
-            type: 'add',
-            data: {
-              ...board,
-              json: board?.json || '',
-              id: nanoid(),
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-              name: data.name,
-              width: data.width,
-              height: data.height,
-            },
-          });
-          if (setChange) {
-            setChange(true);
-          }
-          toast.dismiss();
-          toast.success('复制成功');
-          if (closeref?.current) {
-            closeref.current.click();
-          }
-        })();
-      }
+        toast.success('复制成功');
+        return closeref?.current?.click();
+      })();
     }
   };
   return (

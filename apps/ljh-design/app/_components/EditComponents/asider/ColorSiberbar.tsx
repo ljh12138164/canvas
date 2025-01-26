@@ -71,7 +71,7 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
   return (
     <aside
       className={cn(
-        'z-[40] bg-white border-r-2 pb-12 border-black/10 relative transition w-[300px] h-full flex flex-col',
+        'z-[40] bg-white dark:bg-background  border-black/10 relative transition w-[300px] h-full flex flex-col',
         onShow() ? 'visible' : 'hidden',
       )}
     >
@@ -85,8 +85,8 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
             : 'Ai对话'
         }
       />
-      <ScrollArea className="z-[601] h-full">
-        <div className="p-4 space-y-4">
+      <ScrollArea className="z-[601] h-[calc(100vh-10rem)] dark:bg-background">
+        <div className="p-4 space-y-4 ">
           {onShow() === Tool.Fill && (
             <ColorPicker
               value={value}
@@ -113,9 +113,7 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
               key={Tool.Opacity}
               value={[editor?.getOpacty() || 0]}
               step={0.01}
-              onValueChange={(value) => {
-                editor?.changeOpacty(value[0]);
-              }}
+              onValueChange={(value) => editor?.changeOpacty(value[0])}
             />
           )}
           {onShow() === Tool.FontFamily && (
@@ -130,9 +128,7 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
                       fontSize: '16px',
                       padding: '8px 16px',
                     }}
-                    onClick={() => {
-                      editor?.setFontFamily(item);
-                    }}
+                    onClick={() => editor?.setFontFamily(item)}
                     className={`w-full h-16 justify-start text-left ${editor?.fontFamily === item && 'border-blue-500 border-2'}`}
                   >
                     {item}
@@ -192,7 +188,7 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
           {/* 画笔 */}
           {onShow() === Tool.Draw && (
             <section>
-              <div className=" pb-6  pt-2 w-full flex mb-2   justify-center gap-4 flex-col">
+              <div className=" pb-6   pt-2 w-full flex mb-2   justify-center gap-4 flex-col">
                 <p>
                   画笔粗细<span>({editor?.drawWidth || 1}px)</span>
                 </p>

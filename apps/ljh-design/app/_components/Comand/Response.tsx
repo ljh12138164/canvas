@@ -19,16 +19,17 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/app/_components/ui/drawer';
-import { type ReactNode, type RefObject, useImperativeHandle, useRef, useState } from 'react';
+import { type ReactNode, type RefObject, useImperativeHandle, useState } from 'react';
 import { useMediaQuery } from '../../_hook/useMediaQuery';
 
 interface DrawerDialogProps {
   title: string;
   description: string;
-  ref: RefObject<{ closeModel: () => void }>;
+  ref: RefObject<{ closeModel: () => void } | null>;
   onConfirm: () => void;
   disabled?: boolean;
   children: ReactNode;
+  showFooter?: boolean;
 }
 /**
  * 弹窗组件
@@ -61,6 +62,7 @@ export function Response({
   onConfirm,
   ref,
   disabled = false,
+  showFooter = true,
 }: DrawerDialogProps) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
@@ -81,14 +83,16 @@ export function Response({
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
           {children}
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">取消</Button>
-            </DialogClose>
-            <Button variant="outline" onClick={onConfirm} disabled={disabled}>
-              确定
-            </Button>
-          </DialogFooter>
+          {showFooter && (
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">取消</Button>
+              </DialogClose>
+              <Button variant="outline" onClick={onConfirm} disabled={disabled}>
+                确定
+              </Button>
+            </DialogFooter>
+          )}
         </DialogContent>
       </Dialog>
     );

@@ -15,7 +15,7 @@ const ShapeSidle = ({ activeTool, onChangeActive, editor }: ShapeSidleProps) => 
   return (
     <aside
       className={cn(
-        'z-[100] bg-white  relative transition  h-full flex flex-col ',
+        'z-[100] bg-white dark:bg-background  relative transition  h-full flex flex-col ',
         activeTool === Tool.Shapes ? 'visible' : 'hidden',
       )}
       style={{ flexBasis: '300px' }}

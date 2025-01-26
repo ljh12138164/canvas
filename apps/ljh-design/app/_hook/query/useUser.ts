@@ -9,22 +9,25 @@ export type UserResponseType = InferResponseType<(typeof client.user.like)['$get
  * ### 获取点赞
  * @returns
  */
-export const useUserLike = (enabled: boolean) => {
+export const useUserLike = (enabled: boolean, search: string) => {
   const { data: userLike, isLoading: userLikeLoading } = useQuery<
     UserResponseType,
     Error,
     UserResponseType
   >({
-    queryKey: ['like'],
+    queryKey: ['like', search],
     enabled,
     queryFn: async () => {
       const token = await getNewToken();
       if (!token) redirect('/sign-in');
-      const response = await client.user.like.$get(undefined, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await client.user.like.$get(
+        { query: { search } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       if (!response.ok) {
         const error = (await response.json()) as { message: string };
         throw new Error(error.message);
@@ -44,22 +47,25 @@ export type UserCollectionResponseType = InferResponseType<
  * ### 获取用户收藏
  *
  */
-export const useUserCollection = (enabled: boolean) => {
+export const useUserCollection = (enabled: boolean, search: string) => {
   const { data: userCollection, isLoading: userCollectionLoading } = useQuery<
     UserCollectionResponseType,
     Error,
     UserCollectionResponseType
   >({
-    queryKey: ['collection'],
+    queryKey: ['collection', search],
     enabled,
     queryFn: async () => {
       const token = await getNewToken();
       if (!token) redirect('/sign-in');
-      const response = await client.user.collect.$get(undefined, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await client.user.collect.$get(
+        { query: { search } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       if (!response.ok) {
         const error = (await response.json()) as { message: string };
         throw new Error(error.message);

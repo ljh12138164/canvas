@@ -3,6 +3,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -30,15 +31,18 @@ const NavBar = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="bg-muted w-[300px]">
-            <SheetHeader>
+            <SheetHeader className="flex ">
               <SheetTitle>
                 <div className="m-2 flex items-center gap-x-4">
                   <Logo to="/" />
                   <span className="text-xl font-semibold text-primary">ljh-design</span>
                 </div>
               </SheetTitle>
-              <SheetClose ref={closeRef} />
+              <SheetDescription asChild>
+                <span className="text-sm text-muted-foreground hidden">侧边栏</span>
+              </SheetDescription>
             </SheetHeader>
+            <SheetClose ref={closeRef} />
             <SiderBar hide={isMobile} closeRef={closeRef} />
           </SheetContent>
         </Sheet>

@@ -25,6 +25,8 @@ export const createShow = async ({
   relativeTheme,
   token,
   image,
+  width,
+  height,
 }: {
   title: string;
   content: string;
@@ -32,6 +34,8 @@ export const createShow = async ({
   userId: string;
   json: string;
   image: string;
+  width: number;
+  height: number;
   relativeTheme: string;
   token: string;
 }): Promise<Show> => {
@@ -46,6 +50,8 @@ export const createShow = async ({
         tags: tap,
         title,
         image,
+        width,
+        height,
       },
     ])
     .select('*');

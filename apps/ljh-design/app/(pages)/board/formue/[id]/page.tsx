@@ -14,7 +14,7 @@ export default async function Home({
   const { id } = await params;
   return (
     <ScrollArea
-      className={`${inter.className} ${myFont.variable} h-[calc(100dvh-150px)] flex flex-col overflow-hidden entry gap-4`}
+      className={`${inter.className} ${myFont.variable} h-[calc(100dvh-100px)] flex flex-col overflow-hidden entry gap-4`}
     >
       <Providers>
         <ShowPage id={id} />

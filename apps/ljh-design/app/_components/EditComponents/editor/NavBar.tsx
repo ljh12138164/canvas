@@ -32,6 +32,7 @@ import {
 } from 'react-icons/lu';
 import { useFilePicker } from 'use-file-picker';
 import Logo from '../../Comand/Logo';
+import { ThemeToggle } from '../../Comand/ThemeToggle';
 interface NavBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
@@ -61,7 +62,7 @@ const NavBar = ({
     },
   });
   return (
-    <nav className="w-full text-xl font-medium h-[4rem] bg-white flex items-center px-4 border-b border-gray-200 justify-center  xl:justify-start">
+    <nav className="w-full text-xl font-medium h-[4rem] bg-[#fff] dark:bg-background flex items-center px-4 border-b  justify-center  xl:justify-start">
       <Logo to={userId ? '/board' : '/try/board'} />
       <div className="ml-4 w-full flex gap-4 h-[4rem] items-center ">
         <DropdownMenu modal={false}>
@@ -94,7 +95,7 @@ const NavBar = ({
             onClick={() => {
               onChangeTool(Tool.Select);
             }}
-            className={`${activeTool === Tool.Select && 'bg-gray-100'}`}
+            className={`${activeTool === Tool.Select && 'bg-gray-100 dark:bg-slate-700'}`}
           >
             <LuMousePointerClick size="20" />
           </Button>
@@ -144,6 +145,7 @@ const NavBar = ({
           )}
         </div>
         <div className="ml-auto flex items-center gap-x-4">
+          <ThemeToggle />
           <div className="flex items-center gap-2 text-xs">
             <LuUser size={20} />
             <TooltipProvider>

@@ -267,17 +267,17 @@ export const buildEditor = ({
     changeBackground: (color: string) => {
       setCanvasColor(color);
       const workspace = getWorkspace(canvas);
-      if (workspace) {
-        workspace.fill = color;
-      }
+      if (workspace) workspace.fill = color;
+
       canvas.renderAll();
       save();
     },
     copy,
     enableDraw: () => {
       canvas.discardActiveObject();
-      canvas.renderAll();
+
       canvas.isDrawingMode = true;
+      canvas.renderAll();
 
       if (canvas.freeDrawingBrush) {
         canvas.freeDrawingBrush.width = strokeWidth;

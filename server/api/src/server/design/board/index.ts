@@ -204,3 +204,17 @@ export const getUserBoardList = async ({
   if (error) throw new Error('服务器错误');
   return data;
 };
+
+/**
+ * 克隆看板
+ * @returns
+ */
+export const cloneBoard = async ({
+  userId,
+  board,
+  token,
+}: {
+  board: CreateBoard;
+  userId: string;
+  token: string;
+}) => {};

@@ -232,7 +232,7 @@ export const AiChatSider = () => {
     );
 
   return (
-    <div className="flex flex-col h-full">
+    <ScrollArea className="flex flex-col max-h-[calc(100vh-15rem)]">
       <section className="flex items-center justify-between gap-2">
         <Dialog>
           <DialogTrigger asChild>
@@ -317,27 +317,25 @@ export const AiChatSider = () => {
           </DialogContent>
         </Dialog>
       </section>
-      <ScrollArea className="h-[calc(100vh-230px)] p-4">
-        <section>
-          {ai
-            .find((chat) => chat.id === currentId)
-            ?.history.map((message) => (
-              <div
-                key={nanoid()}
-                className={`mb-4 p-2 rounded-lg ${message.role === 'user' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'} max-w-[80%]`}
-              >
-                {message.role === 'user' ? (
-                  <span>
-                    {message.parts[0].text}
-                    <span className="text-gray-500">{message.parts[0].text}</span>
-                  </span>
-                ) : (
-                  <MarkDown>{message.parts[0].text}</MarkDown>
-                )}
-              </div>
-            ))}
-        </section>
-      </ScrollArea>
+      <section>
+        {ai
+          .find((chat) => chat.id === currentId)
+          ?.history.map((message) => (
+            <div
+              key={nanoid()}
+              className={`mb-4 p-2 rounded-lg ${message.role === 'user' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'} max-w-[80%]`}
+            >
+              {message.role === 'user' ? (
+                <span>
+                  {message.parts[0].text}
+                  <span className="text-gray-500">{message.parts[0].text}</span>
+                </span>
+              ) : (
+                <MarkDown>{message.parts[0].text}</MarkDown>
+              )}
+            </div>
+          ))}
+      </section>
       <Separator className="mt-4 " />
       <form className="flex gap-2 pt-2" onSubmit={handleSubmit(handleSend)}>
         <Input placeholder="输入消息..." {...register('input')} />
@@ -345,6 +343,6 @@ export const AiChatSider = () => {
           {formState.isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : '发送'}
         </Button>
       </form>
-    </div>
+    </ScrollArea>
   );
 };

@@ -22,10 +22,10 @@ const BoardMain = ({ userId }: { userId: string }) => {
     isLoading: boardLoading,
     // isFetching: boardFetching,
   } = useBoardListQuery();
-  const [list, setList] = useState<boolean>(!!localStorage.getItem('showList') || false);
+  const [list, setList] = useState<boolean>(localStorage.getItem('showList') === 'list' || false);
   const query = useQueryClient();
   useEffect(() => {
-    if (!hasNextPage || !footerRef.current) return;
+    if (!hasNextPage || !footerRef.current || !list) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) fetchNextPage();
@@ -36,7 +36,7 @@ const BoardMain = ({ userId }: { userId: string }) => {
     );
     observer.observe(footerRef.current);
     return () => observer?.disconnect();
-  }, [hasNextPage, fetchNextPage]);
+  }, [hasNextPage, fetchNextPage, list]);
   return (
     <>
       <ScrollArea className="w-full h-full overflow-auto ">
@@ -56,6 +56,7 @@ const BoardMain = ({ userId }: { userId: string }) => {
           <BoardCreate data={data?.pages || []} userId={userId} />
         )}
         {error && <div className="h-[200px]" />}
+        {/* 表格 */}
         <div className=" flex flex-col  gap-2 h-[calc(100dvh-300px)]   text-5xl">
           {error && (
             <Button
@@ -72,6 +73,7 @@ const BoardMain = ({ userId }: { userId: string }) => {
               <span>😢😢😢</span>
             </p>
           )}
+          {/* 表格 */}
           {!isLoading && !boardLoading && !error && data?.pages.length && (
             <section className="text-[1rem] x px-2 font-bold mt-3 w-full flex justify-between items-center text-muted-foreground">
               <span className="flex items-center gap-2">
@@ -83,6 +85,7 @@ const BoardMain = ({ userId }: { userId: string }) => {
                   value={list ? 'list' : 'grid'}
                   onValueChange={(value) => {
                     setList(value === 'list');
+                    localStorage.setItem('showList', value);
                   }}
                 >
                   <SelectTrigger>

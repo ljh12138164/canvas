@@ -52,7 +52,7 @@ export function ShowPage({ id }: { id: string }) {
       </section>
     );
   return (
-    <ScrollArea className="h-[calc(100dvh-100px)] flex flex-col gap-4">
+    <ScrollArea className=" flex flex-col gap-4 py-6">
       {/* 头部 */}
       <ShowHead showData={showData} remarkRef={remark} />
       <Separator className="w-full my-2" />
