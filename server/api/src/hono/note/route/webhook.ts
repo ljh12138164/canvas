@@ -1,12 +1,12 @@
 import { to } from 'await-to-js';
 import { Hono } from 'hono';
 import { getDocs, saveDocument } from '../../../server/note/webhook';
-import { getDoc } from '../../../server/note/workspace';
 //工作原理
 // webhook 扩展最多可监听四个可配置的事件/钩子，这些事件/钩子将触发对配置的 url 的 POST 请求。
 export const webhook = new Hono()
   .post('/save', async (c) => {
     const json = await c.req.json();
+
     // console.log(json.event);
     if (json.event === 'change') {
       const documentName = json.payload.documentName.split('/');
