@@ -6,8 +6,8 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
   title: 'ljh的技术博客',
   description:
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
+  maximumScale: 5,
   minimumScale: 1,
-  userScalable: false,
+  userScalable: 'no',
 };
 const navbar = (
   <Navbar
