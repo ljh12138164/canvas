@@ -21,10 +21,25 @@ interface YjsProps {
  * @param data 画板数据
  * @returns {ydoc:Y.Doc,websocket:WebsocketProvider} 文档和websocket的连接
  */
-export const useYjs = ({ data, canvas, user, userData }: YjsProps) => {
+export const useYjs = ({
+  data,
+  canvas,
+  user,
+  userData,
+}: YjsProps): {
+  ydoc: Y.Doc;
+  websockets: WebsocketProvider | null;
+  userState: [number, UserState][];
+  yMap: Y.Map<any>;
+  yMaps: Y.Map<string>;
+} => {
+  // 文档
   const [yMap] = useState<Y.Map<any>>(ydoc.getMap(`${data.id}:json`));
+  // 用户状态
   const [userState, setUserState] = useState<[number, UserState][]>([]);
+  // websocket
   const [websockets, setWebsockets] = useState<WebsocketProvider | null>(null);
+  // 画布
   const [yMaps] = useState<Y.Map<string>>(ydoc.getMap<string>(data.id));
   // 本地降级处理
   useEffect(() => {
@@ -39,13 +54,16 @@ export const useYjs = ({ data, canvas, user, userData }: YjsProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 协同
+  // 协同的websocke
   useEffect(() => {
     const websocket = new WebsocketProvider(process.env.NEXT_PUBLIC_WS_URL!, data?.id, ydoc, {
+      // 连接
       connect: true,
+      // 最大重连时间
       maxBackoffTime: 5000,
       // 禁用广播通道,同源策略的
       disableBc: true,
+      // 连接失败
     });
     // 设置本地状态
     websocket.awareness.setLocalStateField('user', userData.current);
