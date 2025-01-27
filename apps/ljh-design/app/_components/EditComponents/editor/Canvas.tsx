@@ -193,6 +193,8 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
         canvasColor,
         canvasHistory: canvasHistory.current,
         authZoom,
+        yMaps,
+        userId: user.user.id,
         pasty,
         save,
         canRedo,
@@ -259,9 +261,9 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
     setContain(containEl.current);
 
     //初始化
-    const currentState = canvas.toObject(JSON_KEY);
-    canvasHistory.current = [currentState];
-    setHitoryIndex(0);
+    // const currentState = canvas.toObject(JSON_KEY);
+    // canvasHistory.current = [currentState];
+    // setHitoryIndex(0);
     return () => {
       canvas.dispose();
     };

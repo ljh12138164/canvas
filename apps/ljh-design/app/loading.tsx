@@ -1,8 +1,9 @@
 'use client';
-
+import { useTheme } from 'next-themes';
 export default function Loading() {
+  const { theme } = useTheme();
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+    <div className="fixed inset-0 flex bg-[#fff] dark:bg-background  items-center justify-center  backdrop-blur-sm">
       <div className="flex flex-col items-center gap-4">
         <div className="relative h-16 w-16">
           <svg

@@ -5,6 +5,7 @@ import type { IconType } from 'react-icons';
 import { FaCircle, FaDiamond, FaSquare, FaSquareFull } from 'react-icons/fa6';
 import { IoIosStar } from 'react-icons/io';
 import { IoTriangle } from 'react-icons/io5';
+import type * as Y from 'yjs';
 export type TBlendMode =
   | 'multiply'
   | 'add'
@@ -824,6 +825,8 @@ export interface buildEditorProps {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
+  userId: string;
+  yMaps: Y.YMap<string, string>;
   pasty: () => void;
   save: (skip?: boolean) => void;
   canRedo: () => boolean;

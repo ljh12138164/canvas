@@ -1,4 +1,4 @@
-import type { Folders, Workspace } from '../../../types/note/workspace';
+import type { Folders } from '../../../types/note/workspace';
 import { supabaseNote } from '../../supabase/note';
 
 /**

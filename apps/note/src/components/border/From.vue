@@ -2,7 +2,6 @@
 import { Button } from '@/components/ui/button';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useCreateFolder } from '@/hooks/floders';
-import useUser from '@/store/user';
 import { useQueryClient } from '@tanstack/vue-query';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
@@ -79,7 +78,7 @@ const onChangeEmoji = (emoji: string) => {
       <FormItem class="form-item">
         <FormLabel class="form-label">图标</FormLabel>
         <FormControl>
-          <EmojiPopup @onChangeEmoji="onChangeEmoji">
+          <EmojiPopup @onChangeEmoji="onChangeEmoji" :defaultEmoji="showEmoji">
             <template #trigger>
               <Button type="button" class="emoji-button" variant="outline">
                 <input class="emojiInput" type="text" v-bind="componentField" />
@@ -103,23 +102,28 @@ const onChangeEmoji = (emoji: string) => {
   width: 0;
   display: none;
 }
+
 .emoji {
   font-size: 2em;
 }
+
 .form-item {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .emoji-button {
   margin: 0 !important;
 }
+
 .from {
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+
   &-label {
     font-size: 14px;
     color: #666;

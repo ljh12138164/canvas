@@ -62,7 +62,7 @@ export const useYjs = ({
       // 最大重连时间
       maxBackoffTime: 5000,
       // 禁用广播通道,同源策略的
-      disableBc: true,
+      // disableBc: true,
       // 连接失败
     });
     // 设置本地状态
@@ -86,6 +86,7 @@ export const useYjs = ({
   // 监听canvas事件
   useEffect(() => {
     if (!canvas || !websockets) return;
+
     // 清除初始的ymap
     yMaps.clear();
     // 监听doc的更新
@@ -96,12 +97,13 @@ export const useYjs = ({
     yMaps.observe((event) => {
       const obj = getAddObject(event);
       if (!obj) return;
-      const changeType = obj.FarbicType;
+      const changeType = obj.changeType;
+      const fabircType = obj.FarbicType;
       const changeClientId = obj.changeClientId;
       // if()
       if (user.user.id === changeClientId) return;
       // 根据类型进行活动
-      typeToActive(changeType, obj, canvas, yMaps);
+      typeToActive(changeType, obj, canvas, yMaps, fabircType);
     });
   }, [canvas, websockets, yMaps, user.user.id]);
 

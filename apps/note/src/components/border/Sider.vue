@@ -8,9 +8,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useDeleteFolderTrash } from '@/hooks/floders';
 import { useGetWorkspaceById } from '@/hooks/workspace';
 import { useQueryClient } from '@tanstack/vue-query';
-import { ChevronRight, MoreHorizontal, Pencil, Plus, Trash2 } from 'lucide-vue-next';
+import {
+  ChevronRight,
+  MoreHorizontal,
+  MoreHorizontalIcon,
+  Pencil,
+  Plus,
+  Trash2,
+  Trash2Icon,
+} from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ResponsePop from '../common/ResponsePop.vue';
@@ -31,6 +40,7 @@ const router = useRouter();
 const props = defineProps<{
   routerParams: string;
 }>();
+const { deleteFolderTrash, deleteFolderTrashIsLoading } = useDeleteFolderTrash();
 const folderId = ref<string>(route.params.folderId as string);
 const fileId = ref<string>(route.params.fileId as string);
 
@@ -75,43 +85,63 @@ const closeDialog = () => {
 <template>
   <div>
     <SidebarMenuItem v-if="!workspaceIsLoading">
-      <Collapsible
-        as-child
-        class="group/collapsible"
-        v-for="item in workspace?.folders"
-        :key="item.title"
-      >
+      <Collapsible as-child class="group/collapsible" v-for="item in workspace?.folders" :key="item.title">
         <section>
           <CollapsibleTrigger as-child>
             <div class="flex items-center gap-2">
-              <SidebarMenuButton
-                :tooltip="item.title"
-                class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
+              <SidebarMenuButton :tooltip="item.title" class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
                 :class="{
                   'bg-slate-100 dark:bg-slate-900':
                     item.id === folderId && !fileId,
-                }"
-              >
-                <ChevronRight
-                  class="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
-                />
-                <div
-                  class="flex items-center gap-2"
-                  @click.stop="handleClick(item.id!)"
-                >
+                }">
+                <ChevronRight class="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                <div class="flex items-center gap-2" @click.stop="handleClick(item.id!)">
                   <span>{{ item.inconId }}</span>
                   <span class="group-data-[collapsible=icon]:hidden">{{
                     item.title
                   }}</span>
                 </div>
-                <ResponsePop title="新建文件" ref="responsePopRef">
-                  <template #trigger>
-                    <Plus class="ml-auto" />
-                  </template>
-                  <template #content>
-                    <FileFrom />
-                  </template>
-                </ResponsePop>
+                <DropdownMenu>
+                  <DropdownMenuTrigger as-child @click.stop>
+                    <MoreHorizontalIcon class="ml-auto" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem @click.stop>
+                      <ResponsePop title="新建文件" ref="responsePopRef">
+                        <template #trigger>
+                          <span class="flex items-center gap-2">
+                            <Plus class="h-4 w-4" />
+                            添加文件
+                          </span>
+                        </template>
+                        <template #content>
+                          <FileFrom />
+                        </template>
+                      </ResponsePop>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem @click.stop>
+                      <ResponsePop title="删除" ref="responsePopRef">
+                        <template #trigger>
+                          <span class="flex items-center gap-2">
+                            <Trash2Icon class="h-4 w-4" />
+                            删除文件夹
+                          </span>
+                        </template>
+                        <template #content>
+                          <span>确定删除吗？</span>
+                        </template>
+                        <template #close>
+                          <Button variant="outline">取消</Button>
+                        </template>
+                        <template #entry>
+                          <Button variant="destructive"
+                            @click="deleteFolderTrash({ json: { id: item.id!, workspaceId: props.routerParams } })"
+                            :disabled="deleteFolderTrashIsLoading">确定</Button>
+                        </template>
+                      </ResponsePop>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </SidebarMenuButton>
             </div>
           </CollapsibleTrigger>
@@ -119,15 +149,10 @@ const closeDialog = () => {
             <SidebarMenuSub v-for="items in item?.files" :key="items.title">
               <SidebarMenuSubItem :key="items.id">
                 <SidebarMenuSubButton
-                  class="w-full cursor-pointer dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
-                  :class="{
+                  class="w-full cursor-pointer dark:hover:bg-slate-900 transition-all hover:bg-zinc-100" :class="{
                     'bg-slate-100 dark:bg-slate-900': items.id === fileId,
-                  }"
-                >
-                  <div
-                    class="flex items-center gap-2"
-                    @click.stop="subHandleClick(items.id!, item.id!)"
-                  >
+                  }">
+                  <div class="flex items-center gap-2" @click.stop="subHandleClick(items.id!, item.id!)">
                     <span>{{ items.inconId }}</span>
                     <span class="group-data-[collapsible=icon]:hidden">{{
                       items.title
@@ -145,45 +170,34 @@ const closeDialog = () => {
                       <DropdownMenuItem>
                         <ResponsePop title="重命名" ref="responsePopRef">
                           <template #trigger>
-                            <Button
-                              variant="ghost"
-                              class="btn-item"
-                              @click.stop
-                              as-child
-                            >
-                              <span><Pencil class="mr-2 h-4 w-4" />重命名</span>
+                            <Button variant="ghost" class="btn-item" @click.stop as-child>
+                              <span>
+                                <Pencil class="mr-2 h-4 w-4" />重命名
+                              </span>
                             </Button>
                           </template>
                           <template #content>
                             <Input :default-value="items.title" />
                           </template>
                           <template #close>
-                            <Button variant="outline" @click="closeDialog"
-                              >取消</Button
-                            >
+                            <Button variant="outline" @click="closeDialog">取消</Button>
                           </template>
                           <template #entry>
-                            <Button variant="outline" @click="closeDialog"
-                              >确定</Button
-                            >
+                            <Button variant="outline" @click="closeDialog">确定</Button>
                           </template>
                         </ResponsePop>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <ResponsePop title="删除" ref="responsePopRef">
                           <template #trigger>
-                            <Button
-                              variant="ghost"
-                              class="btn-item"
-                              @click.stop="
-                                () => {
-                                  responsePopRef?.closeRef2?.click();
-                                  responsePopRef?.closeRef?.click();
-                                }
-                              "
-                              as-child
-                            >
-                              <span><Trash2 class="mr-2 h-4 w-4" />删除</span>
+                            <Button variant="ghost" class="btn-item" @click.stop="() => {
+                              responsePopRef?.closeRef2?.click();
+                              responsePopRef?.closeRef?.click();
+                            }
+                              " as-child>
+                              <span>
+                                <Trash2 class="mr-2 h-4 w-4" />删除
+                              </span>
                             </Button>
                           </template>
                           <template #content>
@@ -203,8 +217,8 @@ const closeDialog = () => {
               </SidebarMenuSubItem>
             </SidebarMenuSub>
           </CollapsibleContent>
-        </section></Collapsible
-      >
+        </section>
+      </Collapsible>
     </SidebarMenuItem>
     <div v-else-if="workspaceError">
       <div>{{ workspaceError.message }}</div>
@@ -227,8 +241,8 @@ const closeDialog = () => {
   flex-direction: column;
   // gap: 2px;
 }
+
 // .btn-item {
 //   width: 1rem;
 //   height: 1rem;
-// }
-</style>
+// }</style>

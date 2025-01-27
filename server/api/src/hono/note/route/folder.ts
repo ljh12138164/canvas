@@ -5,7 +5,13 @@ import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
 import { createFolder, getfolder } from '../../../server/note/board';
-import { deleteFolder, updateFolder } from '../../../server/note/folders';
+import {
+  deleteFolder,
+  deleteFolderTrash,
+  getFolderTrash,
+  restoreFolderTrash,
+  updateFolder,
+} from '../../../server/note/folders';
 
 export const folder = new Hono()
   .use(checkToken(process.env.SUPABASE_NOTE_JWT!))
@@ -82,5 +88,55 @@ export const folder = new Hono()
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json({ message: '更新成功' });
+    },
+  )
+  .post(
+    '/delete',
+    zValidator('query', z.object({ id: z.string(), workspaceId: z.string() })),
+    async (c) => {
+      const { token, auth } = getSupabaseAuth(c);
+      const { id, workspaceId } = c.req.valid('query');
+      const [error] = await to(
+        deleteFolderTrash({ token, id, workspaceId, userId: auth.sub as string }),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json({ message: '删除成功' });
+    },
+  )
+  .delete(
+    '/deleteTrash',
+    zValidator('json', z.object({ id: z.string(), workspaceId: z.string() })),
+    async (c) => {
+      const { token, auth } = getSupabaseAuth(c);
+      const { id, workspaceId } = c.req.valid('json');
+      const [error] = await to(
+        deleteFolder({ token, id, workspaceId, userId: auth.sub as string }),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json({ message: '删除成功' });
+    },
+  )
+  // 获取白板垃圾桶
+  .get('/getTrash', zValidator('query', z.object({ workspaceId: z.string() })), async (c) => {
+    const { token, auth } = getSupabaseAuth(c);
+    const { workspaceId } = c.req.valid('query');
+    const [error, folder] = await to(
+      getFolderTrash({ token, workspaceId, userId: auth.sub as string }),
+    );
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+    return c.json(folder);
+  })
+  // 恢复白板垃圾桶
+  .patch(
+    '/restoreTrash',
+    zValidator('json', z.object({ id: z.string(), workspaceId: z.string() })),
+    async (c) => {
+      const { token, auth } = getSupabaseAuth(c);
+      const { id, workspaceId } = c.req.valid('json');
+      const [error] = await to(
+        restoreFolderTrash({ token, id, workspaceId, userId: auth.sub as string }),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json({ message: '恢复成功' });
     },
   );

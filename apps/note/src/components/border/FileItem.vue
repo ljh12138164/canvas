@@ -14,29 +14,20 @@ defineProps<{
     <div v-for="file in file" class="w-full" :key="file.id">
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger as-child
-            ><div
-              class="folder-item bg-[#f1f1f1] hover:bg-[#dbdbdb] hover:text-black transition-all duration-300"
+          <TooltipTrigger as-child>
+            <div class="folder-item bg-[#f1f1f1] hover:bg-[#dbdbdb] hover:text-black transition-all duration-300"
               :class="{
                 smallItem: isSmall,
-              }"
-            >
+              }">
               <div></div>
-              <span
-                class="folder-item-title"
-                :class="{ 'text-left': !isSmall }"
-              >
-                <span
-                  :class="{
-                    small: isSmall,
-                  }"
-                  >{{ file.inconId }}</span
-                >
+              <span class="folder-item-title" :class="{ 'text-left': !isSmall }">
+                <span :class="{
+                  small: isSmall,
+                }">{{ file.inconId }}</span>
                 <span class="folder-item-title" v-show="!isSmall">{{
                   file.title
                 }}</span>
               </span>
-              <section>
             </div>
           </TooltipTrigger>
           <TooltipContent side="right">
@@ -56,6 +47,7 @@ defineProps<{
   align-items: center;
   height: 30px;
 }
+
 .folder-item-title {
   font-size: 14px;
   text-overflow: ellipsis;
@@ -63,20 +55,24 @@ defineProps<{
   white-space: nowrap;
   // text-align: center;
 }
+
 .file-list {
   max-height: 100%;
   overflow: auto;
   display: grid;
   grid-template-rows: 1fr;
 }
+
 .small {
   text-align: center;
   flex: 1;
   width: 100%;
 }
+
 .smallIcon {
   width: 20%;
 }
+
 .smallItem {
   display: flex;
   padding: 0 10px;

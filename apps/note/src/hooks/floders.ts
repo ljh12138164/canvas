@@ -1,6 +1,6 @@
 import { client } from '@/server';
 import { getNewToken } from '@/server/sign';
-import { useMutation } from '@tanstack/vue-query';
+import { useMutation, useQuery } from '@tanstack/vue-query';
 import type { InferRequestType, InferResponseType } from 'hono';
 import { useRouter } from 'vue-router';
 
@@ -60,4 +60,92 @@ export const useDeleteFolder = () => {
     },
   });
   return { deleteFolder, deleteFolderIsLoading };
+};
+
+type FolderTrash = InferResponseType<typeof client.folder.getTrash.$get, 200>;
+/**
+ * ### 获取白板垃圾桶
+ * @param workspaceId
+ * @returns
+ */
+export const useGetFolderTrash = (workspaceId: string) => {
+  const { data: folderTrash, isLoading: folderTrashIsLoading } = useQuery<FolderTrash, Error>({
+    queryKey: ['folderTrash'],
+    queryFn: async () => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
+      const res = await client.folder.getTrash.$get(
+        {
+          query: { workspaceId },
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (!res.ok) {
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return res.json();
+    },
+  });
+  return { folderTrash, folderTrashIsLoading };
+};
+
+type DeleteFolderTrashRequest = InferRequestType<typeof client.folder.deleteTrash.$delete>;
+type DeleteFolderTrashResponse = InferResponseType<typeof client.folder.deleteTrash.$delete, 200>;
+/**
+ * ### 删除白板垃圾桶
+ * @param workspaceId
+ * @returns
+ */
+export const useDeleteFolderTrash = () => {
+  const { mutate: deleteFolderTrash, isPending: deleteFolderTrashIsLoading } = useMutation<
+    DeleteFolderTrashResponse,
+    Error,
+    DeleteFolderTrashRequest
+  >({
+    mutationFn: async (data) => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
+      const res = await client.folder.deleteTrash.$delete(data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) {
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return res.json();
+    },
+  });
+  return { deleteFolderTrash, deleteFolderTrashIsLoading };
+};
+
+type RestoreFolderTrashRequest = InferRequestType<typeof client.folder.restoreTrash.$patch>;
+type RestoreFolderTrashResponse = InferResponseType<typeof client.folder.restoreTrash.$patch, 200>;
+/**
+ * ### 恢复白板垃圾桶
+ * @param workspaceId
+ * @returns
+ */
+export const useRestoreFolderTrash = () => {
+  const { mutate: restoreFolderTrash, isPending: restoreFolderTrashIsLoading } = useMutation<
+    RestoreFolderTrashResponse,
+    Error,
+    RestoreFolderTrashRequest
+  >({
+    mutationFn: async (data) => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
+      const res = await client.folder.restoreTrash.$patch(data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) {
+        const error = (await res.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return res.json();
+    },
+  });
+  return { restoreFolderTrash, restoreFolderTrashIsLoading };
 };

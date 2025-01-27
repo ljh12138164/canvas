@@ -78,55 +78,41 @@ const onSaveText = () => {
 </script>
 <template>
   <nav class="nav-container">
-    <header
-      v-if="useEditor().editorDatas"
-      class="flex h-14 w-full shrink-0 items-center justify-between gap-2 px-2 sm:px-4 transition-all duration-200 ease-in-out group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
-    >
+    <header v-if="useEditor().editorDatas"
+      class="flex h-14 w-full shrink-0 items-center justify-between gap-2 px-2 sm:px-4 transition-all duration-200 ease-in-out group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       <div class="flex items-center gap-2 sm:gap-3">
-        <SidebarTrigger
-          class="hover:bg-muted/60 rounded-md p-1 transition-colors"
-        />
+        <SidebarTrigger class="hover:bg-muted/60 rounded-md p-1 transition-colors" />
         <Separator orientation="vertical" class="h-5 hidden sm:block" />
       </div>
 
       <div class="flex items-center gap-2 sm:gap-4">
         <Menubar v-if="useEditor().editorDatas" class="border-none">
           <MenubarMenu>
-            <MenubarTrigger
-              class="font-medium hover:bg-muted/60 px-2 sm:px-3 py-1.5 text-sm sm:text-base"
-            >
-              <span class="hidden sm:inline cursor-pointer">导出文件</span>
-              <Icon icon="mdi:export" class="h-5 w-5 sm:hidden" />
+            <MenubarTrigger class="active:bg-transparent" as-child>
+              <span
+                class="dark:hover:bg-zinc-800 dark:bg-zinc-800 hover:bg-zinc-100 rounded-md p-1 transition-all bg-transparent">
+                <span class="hidden sm:inline cursor-pointer">导出文件</span>
+                <Icon icon="mdi:export" class="h-5 w-5 sm:hidden" />
+              </span>
             </MenubarTrigger>
             <MenubarContent>
               <MenubarItem as-child>
-                <Button
-                  variant="ghost"
-                  @click="onSaveJson"
-                  class="btn-item w-full justify-start"
-                >
+                <Button variant="ghost" @click="onSaveJson" class="btn-item w-full justify-start cursor-pointer">
                   <Icon icon="mdi:file-document-outline" class="h-4 w-4" />
                   <span class="hidden sm:inline">JSON导出</span>
                   <span class="sm:hidden">JSON</span>
                 </Button>
               </MenubarItem>
               <MenubarItem as-child>
-                <Button
-                  variant="ghost"
-                  @click="onSaveHtml"
-                  class="btn-item w-full justify-start dark:hover:bg-slate-900 transition-all hover:bg-zinc-100 cursor-pointer"
-                >
+                <Button variant="ghost" @click="onSaveHtml"
+                  class="btn-item w-full justify-start dark:hover:bg-slate-900 transition-all  hover:bg-zinc-100 cursor-pointer">
                   <Icon icon="mdi:file-document-outline" class="h-4 w-4" />
                   <span class="hidden sm:inline">HTML导出</span>
                   <span class="sm:hidden">HTML</span>
                 </Button>
               </MenubarItem>
               <MenubarItem as-child>
-                <Button
-                  variant="ghost"
-                  @click="onSaveText"
-                  class="btn-item w-full justify-start"
-                >
+                <Button variant="ghost" @click="onSaveText" class="btn-item w-full justify-start">
                   <Icon icon="mdi:file-document-outline" class="h-4 w-4" />
                   <span class="hidden sm:inline">文本导出</span>
                   <span class="sm:hidden">文本</span>
@@ -138,18 +124,10 @@ const onSaveText = () => {
         <ThemeChange />
       </div>
 
-      <div
-        v-if="user"
-        class="flex items-center gap-2 dark:bg-zinc-600 bg-zinc-100 rounded-xl px-2 py-1"
-      >
-        <Icon
-          icon="mdi:account-circle"
-          class="h-4 w-4 sm:h-5 sm:w-5 dark:text-white"
-        />
+      <div v-if="user" class="flex items-center gap-2 dark:bg-zinc-600 bg-zinc-100 rounded-xl px-2 py-1">
+        <Icon icon="mdi:account-circle" class="h-4 w-4 sm:h-5 sm:w-5 dark:text-white" />
         <span class="hidden sm:inline">{{ user.user_metadata.name }}</span>
-        <span
-          class="rounded-full bg-primary/10 px-1.5 sm:px-2 py-0.5 text-xs font-medium text-primary"
-        >
+        <span class="rounded-full bg-primary/10 px-1.5 sm:px-2 py-0.5 text-xs font-medium text-primary">
           {{ activeUserStore.activeUserList.size }}
         </span>
       </div>

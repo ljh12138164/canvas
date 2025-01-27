@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ThemeChange from '@/components/common/ThemeChange.vue';
 import UserButton from '@/components/common/UserButton.vue';
+import { Button } from '@/components/ui/button';
 import { getCurrentUser } from '@/server/supabase/user';
 import type { Sessions } from '@/types/user';
 import { onBeforeMount, ref } from 'vue';
@@ -56,17 +57,13 @@ onBeforeMount(async () => {
           简单、强大、安全的笔记应用，助你更好地整理思维和知识
         </p>
         <RouterLink to="/workspace">
-          <button class="cta-btn">开始使用</button>
+          <Button class="cta-btn">开始使用</Button>
         </RouterLink>
       </section>
 
       <section class="features">
         <div class="features-grid">
-          <div
-            v-for="feature in features"
-            :key="feature.title"
-            class="feature-card"
-          >
+          <div v-for="feature in features" :key="feature.title" class="feature-card">
             <div class="feature-icon">{{ feature.icon }}</div>
             <h3>{{ feature.title }}</h3>
             <p>{{ feature.description }}</p>
