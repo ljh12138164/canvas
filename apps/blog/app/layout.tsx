@@ -35,7 +35,7 @@ export const viewport = {
 const navbar = (
   <Navbar
     projectLink="https://github.com/ljh12138164"
-    logo={<b>ljh的技术博客</b>}
+    logo={<b aria-label="点击查看">ljh的技术博客</b>}
     // ... Your additional navbar options
   />
 );
