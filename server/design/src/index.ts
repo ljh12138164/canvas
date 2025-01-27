@@ -11,17 +11,17 @@ const server = http.createServer((_, response) => {
   response.end('okay');
 });
 
+// 处理连接
 wss.on('connection', setupWSConnection);
 
+// 处理升级
 server.on('upgrade', (request, socket, head) => {
-  // You may check auth of request here..
-  // See https://github.com/websockets/ws#client-authentication
-  /**
-   * @param {any} ws
-   */
+  // 处理权限
   const handleAuth = (ws: any) => {
+    // 权限管理
     wss.emit('connection', ws, request);
   };
+  // 处理升级
   wss.handleUpgrade(request, socket, head, handleAuth);
 });
 // @ts-ignore
