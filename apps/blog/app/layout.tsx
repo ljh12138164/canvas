@@ -5,6 +5,8 @@ import { Head } from 'nextra/components';
 import { GitHubIcon } from 'nextra/icons';
 import { getPageMap } from 'nextra/page-map';
 import type { ReactNode } from 'react';
+import './globals.css';
+
 export const metadata: Metadata = {
   robots: {
     index: true,
