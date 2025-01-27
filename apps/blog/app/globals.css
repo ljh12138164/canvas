@@ -7,16 +7,17 @@ a:focus-visible {
 
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-track {
-  border: 4px solid transparent;
+  border: 4px solid #ffffff;
   background-clip: padding-box;
   border-radius: 8px;
 }
+/* 滚动条背景 */
 ::-webkit-scrollbar-track {
-  background-color: transparent;
+  background-color: #515151;
 }
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-track {
-  border: 4px solid transparent;
+  border: 4px solid #292929;
   background-clip: padding-box;
   border-radius: 8px;
 }
@@ -25,7 +26,7 @@ a:focus-visible {
   background-color: #0d0d0d00;
 }
 ::-webkit-scrollbar-corner {
-  background-color: transparent;
+  background-color: #3b3b3b;
 }
 ::-webkit-scrollbar {
   width: 0.875rem;
@@ -33,6 +34,60 @@ a:focus-visible {
 }
 
 ::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+/* 亮色主题滚动条样式 */
+.light ::-webkit-scrollbar-thumb,
+.light ::-webkit-scrollbar-track {
+  border: 4px solid #ffffff;
+  background-clip: padding-box;
+  border-radius: 8px;
+}
+
+.light ::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+}
+
+.light ::-webkit-scrollbar-corner {
+  background-color: #f1f1f1;
+}
+
+/* 暗色主题滚动条样式 */
+.dark ::-webkit-scrollbar-thumb,
+.dark ::-webkit-scrollbar-track {
+  border: 4px solid #292929;
+  background-clip: padding-box;
+  border-radius: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background-color: #515151;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #737373;
+}
+
+.dark ::-webkit-scrollbar-corner {
+  background-color: #3b3b3b;
+}
+
+/* 通用滚动条大小设置 */
+.light ::-webkit-scrollbar,
+.dark ::-webkit-scrollbar {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.light ::-webkit-scrollbar-button,
+.dark ::-webkit-scrollbar-button {
   display: none;
   height: 0;
   width: 0;
