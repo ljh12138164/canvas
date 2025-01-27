@@ -18,7 +18,7 @@ interface CanvasEventProps {
 }
 
 /***
- * canvas事件，创建图形（create），变更选择图形（updated），取消选择图形（cleared）
+ * ### canvas事件，创建图形（create），变更选择图形（updated），取消选择图形（cleared）
  * @param {fabric.Canvas} canvas
  */
 const useCanvasEvent = ({
@@ -37,20 +37,20 @@ const useCanvasEvent = ({
     if (canvas) {
       // 不能用添加对象，因为初始化添加对象时，
       canvas.on('object:added', (event) => {
+        // 画布
+        if (event.target.name === 'board') return;
         // 添加到ymap
         // yMaps?.set(
-        //   event.target.id,
-        //   JSON.stringify({ ...event.target, changeType: "add" })
+        //   event.target?.id,
+        //   JSON.stringify({ ...event.target, changeType: 'add', changeClientId: user.user.id }),
         // );
-        save();
+        // save();
       });
       canvas.on('object:removed', (element) => {
         if (!user) return;
-
-        // yMaps?.set(
-        //   element.target.id,
-        //   JSON.stringify({ ...element.target, changeType: "delete" })
-        // );
+        // 画布
+        if (element.target.name === 'board') return;
+        // yMaps?.set(element.target.id, JSON.stringify({ ...element.target, changeType: 'delete' }));
         // 从ymap中删除
         // yMaps?.delete(item.target.id);
         // websocket?.emit("remove", [item]);
@@ -109,7 +109,6 @@ const useCanvasEvent = ({
         setSelectedObject([]);
       });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvas]);
   useEffect(() => {

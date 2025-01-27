@@ -71,7 +71,9 @@ export const getWorkspaces = async ({
 };
 
 /**
- * 获取工作区
+ * ### 获取工作区
+ * @param param0
+ * @returns
  */
 export const getWorkspaceById = async ({
   token,
@@ -93,7 +95,18 @@ export const getWorkspaceById = async ({
       !data[0].collaborators.find((collaborator: Collaborators) => collaborator.userId === userId))
   )
     throw new Error('无权限');
-  return data[0];
+  // 过滤删除的文件夹
+  const datas =
+    data[0].folders?.map((folder: Folders) => {
+      if (folder.inTrash) {
+        return {
+          ...folder,
+          files: folder.files?.filter((file: Filts) => !file.inTrash),
+        };
+      }
+      return folder;
+    }) || [];
+  return { ...data[0], folders: datas };
 };
 
 /**

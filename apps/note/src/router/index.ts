@@ -60,6 +60,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/pages/edit/Home.vue'),
         beforeEnter: routerCheckLogin,
       },
+      {
+        path: 'home',
+        component: () => import('@/pages/folder/Home.vue'),
+        beforeEnter: routerCheckLogin,
+      },
     ],
   },
   {

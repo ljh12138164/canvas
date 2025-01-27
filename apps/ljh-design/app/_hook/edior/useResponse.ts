@@ -15,7 +15,6 @@ const useResponse = ({ canvas, contain }: ResponseProps) => {
     if (!canvas || !contain) return;
     const width = contain.offsetWidth;
     const height = contain.offsetHeight;
-
     canvas.setWidth(width);
     canvas.setHeight(height);
     // 获取画布中心
@@ -51,6 +50,7 @@ const useResponse = ({ canvas, contain }: ResponseProps) => {
     canvas.clipPath = data;
     canvas.renderAll();
   }, [canvas, contain]);
+
   useEffect(() => {
     let resizeObserver: ResizeObserver | null = null;
     if (canvas && contain) {

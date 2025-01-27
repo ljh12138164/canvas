@@ -20,34 +20,23 @@ const handleLogin = () => {
 <template>
   <DropdownMenu v-if="userData?.session.user">
     <DropdownMenuTrigger>
-      <Avatar>
-        <AvatarImage
-          :src="userData?.session.user.user_metadata.image"
-          alt="用户图像"
-        />
-        <AvatarFallback>{{
-          userData?.session.user.user_metadata.name
-        }}</AvatarFallback>
-      </Avatar>
+      <template #default>
+        <Avatar>
+          <AvatarImage :src="userData?.session.user.user_metadata.image" alt="用户图像" />
+          <AvatarFallback>{{
+            userData?.session.user.user_metadata.name
+            }}</AvatarFallback>
+        </Avatar>
+      </template>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
       <DropdownMenuItem as-child>
-        <Button
-          class="w-full cursor-pointer hover:bg-[#fff] dark:hover:bg-[#272727]"
-          variant="ghost"
-          @click="handleLogout"
-        >
+        <Button class="w-full cursor-pointer hover:bg-[#fff] dark:hover:bg-[#272727]" variant="ghost"
+          @click="handleLogout">
           退出
         </Button>
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
-  <Button
-    v-else
-    class="w-full h-full rounded-sm"
-    variant="outline"
-    @click="handleLogin"
-    >登录</Button
-  >
+  <Button v-else class="w-full h-full rounded-sm" variant="outline" @click="handleLogin">登录</Button>
 </template>
-

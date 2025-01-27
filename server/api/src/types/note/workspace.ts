@@ -14,6 +14,7 @@ export interface Workspace {
 
 export interface Folders extends Workspace {
   workspaceId: string;
+  files?: Filts[];
 }
 
 export interface Filts extends Folders {

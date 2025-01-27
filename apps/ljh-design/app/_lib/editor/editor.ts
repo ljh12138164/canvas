@@ -18,6 +18,7 @@ export const center = (object: fabric.Object, canvas: fabric.Canvas) => {
   //居中
   const centers = workspace?.getCenterPoint();
   canvas._centerObject(object, centers as fabric.Point);
+  canvas.renderAll();
 };
 
 /**
@@ -61,8 +62,8 @@ export const findFabicObject = (canvas: fabric.Canvas, obj: AddFabicObject) => {
  * ### 协同的添加
  * @description 根据类型进行活动
  */
-export const genType = (obj: AddFabicObject) => {
-  switch (obj.type) {
+export const genType = (obj: AddFabicObject, fabircType: string) => {
+  switch (fabircType) {
     case 'Rect':
       return new fabric.Rect({
         ...obj,
@@ -109,20 +110,20 @@ export const typeToActive = (
   obj: AddFabicObject,
   canvas: fabric.Canvas | null,
   yMaps: Y.Map<string>,
+  fabircType: string,
 ) => {
   if (!canvas) return;
   switch (type) {
     //添加图像
     case 'add':
       // 生成fabric对象
-      const newObj = genType(obj);
+      const newObj = genType(obj, fabircType);
       if (!newObj) return;
       // 添加到画布
-      canvas?.add(newObj);
-      // 渲染
-      canvas?.renderAll();
+      // canvas?.add(newObj);
       // 居中
       center(newObj, canvas);
+      // 渲染
       return;
     // 修改图像
     case 'change':

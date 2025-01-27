@@ -50,10 +50,8 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       initCanvas.add(initRect);
       initCanvas.centerObject(initRect);
       // 设置画布尺寸
-      initCanvas.setDimensions({
-        width: initContainer.offsetWidth,
-        height: initContainer.offsetHeight,
-      });
+      initCanvas.setWidth(initContainer.offsetWidth);
+      initCanvas.setHeight(initContainer.offsetHeight);
       // 设置画布背景颜色
       //溢出不显示
       initCanvas.clipPath = initRect;

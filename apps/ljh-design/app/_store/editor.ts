@@ -36,6 +36,8 @@ declare module 'fabric' {
     FarbicType?: string;
     changeType?: string;
     changeClientId?: string;
+    // 保存后将添加到数据库，初始化时将删除
+    save?: boolean;
   }
   interface FabricObjectProps {
     id?: string;
@@ -66,6 +68,8 @@ export const buildEditor = ({
   canvasHeight,
   canvasColor,
   canvasHistory,
+  yMaps,
+  userId,
   pasty,
   save,
   canRedo,
@@ -669,6 +673,7 @@ export const buildEditor = ({
       //   },
       //   "add"
       // );
+      yMaps?.set(objs.id, JSON.stringify({ ...objs, changeType: 'add', changeClientId: userId }));
       canvas.add(objs);
       canvas.setActiveObject(objs);
     },

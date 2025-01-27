@@ -101,7 +101,13 @@ const NavBar = ({
           </Button>
         </TooltipComponents>
         <TooltipComponents label="预览">
-          <Button variant={'ghost'} size={'icon'}>
+          <Button
+            variant={'ghost'}
+            size={'icon'}
+            onClick={() => {
+              editor?.savePng();
+            }}
+          >
             <LuEye size="20" />
           </Button>
         </TooltipComponents>

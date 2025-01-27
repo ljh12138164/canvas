@@ -30,7 +30,6 @@ const workspace = new Hono()
   // 获取工作区
   .get('/workspaces', async (c) => {
     const { token, auth } = getSupabaseAuth(c);
-
     const [error, workspaces] = await to(getWorkspaces({ token, userId: auth.sub }));
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(workspaces);

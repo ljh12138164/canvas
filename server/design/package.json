@@ -12,8 +12,11 @@
     "@types/bun": "latest"
   },
   "dependencies": {
+    "@hocuspocus/extension-webhook": "^2.15.0",
+    "@hocuspocus/server": "^2.15.0",
     "@hono/node-server": "1.13.7",
     "@hono/node-ws": "^1.0.5",
+    "@ljh/lint": "workspace:*",
     "@types/express": "^5.0.0",
     "@types/express-ws": "^3.0.5",
     "@types/ws": "^8.5.13",
@@ -26,10 +29,9 @@
     "hono": "^4.6.16",
     "nanoid": "^5.0.9",
     "nest": "^0.1.6",
-    "@ljh/lint": "workspace:*",
     "socket.io": "^4.8.1",
     "y-protocols": "^1.0.6",
     "y-websocket": "^2.1.0",
-    "yjs": "^13.6.21"
+    "yjs": "^13.6.22"
   }
 }

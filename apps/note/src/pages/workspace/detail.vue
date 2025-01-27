@@ -1,3 +1,22 @@
+<script setup lang="ts">
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Skeleton from '@/components/ui/skeleton/Skeleton.vue';
+import { useGetWorkspaceById } from '@/hooks/workspace';
+import { ArrowLeft } from 'lucide-vue-next';
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+const router = useRouter();
+const route = useRoute();
+const { workspaceIsFetching, workspace } = useGetWorkspaceById(route.params.workspaceId as string);
+
+const activeFolder = computed(() => {
+  if (!workspace.value) return null;
+  const folder = workspace.value.folders.find((folder) => folder.id === route.params.folderId);
+  if (!folder) return null;
+  return folder;
+});
+</script>
 <template>
   <main class="main-container">
     <nav class="nav-container">
@@ -27,25 +46,6 @@
   </main>
 </template>
 
-<script setup lang="ts">
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Skeleton from '@/components/ui/skeleton/Skeleton.vue';
-import { useGetWorkspaceById } from '@/hooks/workspace';
-import { ArrowLeft } from 'lucide-vue-next';
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-const router = useRouter();
-const route = useRoute();
-const { workspaceIsFetching, workspace } = useGetWorkspaceById(route.params.workspaceId as string);
-
-const activeFolder = computed(() => {
-  if (!workspace.value) return null;
-  const folder = workspace.value.folders.find((folder) => folder.id === route.params.folderId);
-  if (!folder) return null;
-  return folder;
-});
-</script>
 <style scoped lang="scss">
 .card-container {
   padding: 10px;

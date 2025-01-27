@@ -15,29 +15,18 @@ import LineHeightButton from './LineHeightButton.vue';
 import Link from './Link.vue';
 import ListButton from './ListButton.vue';
 import TableInsert from './TableInsert.vue';
-
 const props = defineProps<{
   editor: Editor | null;
 }>();
 </script>
 
 <template>
-  <ScrollArea
-    class="starter-kit whitespace-nowrap overflow-y-hidden"
-    v-if="props.editor"
-  >
-    <div class="flex items-center gap-1 px-2">
+  <ScrollArea class="starter-kit whitespace-nowrap overflow-y-hidden" v-if="props.editor">
+    <div class="flex items-center gap-1 px-2" ref="scrollRef">
       <div class="flex items-center gap-1 border-r border-gray-200 pr-2">
-        <KitItem
-          :editor="props.editor"
-          v-for="item in useEditor().tiptapKit"
-          :key="item.label"
-          :iconName="item.icon"
-          :isActive="item?.isActive ? item?.isActive(props.editor) : false"
-          :onClick="item.onClick"
-          :label="item.label"
-          :disabled="item.disabled ? item.disabled(props.editor) : false"
-        />
+        <KitItem :editor="props.editor" v-for="item in useEditor().tiptapKit" :key="item.label" :iconName="item.icon"
+          :isActive="item?.isActive ? item?.isActive(props.editor) : false" :onClick="item.onClick" :label="item.label"
+          :disabled="item.disabled ? item.disabled(props.editor) : false" />
       </div>
 
       <div class="flex items-center gap-1 border-r border-gray-200 pr-2">

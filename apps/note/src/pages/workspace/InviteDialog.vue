@@ -40,26 +40,13 @@ watch(valueString, (value) => {
 <template>
   <ResponsePop title="工作区邀请码">
     <template #trigger>
-      <Button variant="outline">加入工作区</Button>
+      <Button>加入工作区</Button>
     </template>
     <template #content>
-      <section
-        class="flex flex-col gap-4 items-center h-[150px] justify-center"
-      >
-        <PinInput
-          class="pin-input"
-          id="pin-input"
-          v-model="valueString"
-          placeholder="○"
-          :disabled="isInviting"
-        >
+      <section class="flex flex-col gap-4 items-center h-[150px] justify-center">
+        <PinInput class="pin-input" id="pin-input" v-model="valueString" placeholder="○" :disabled="isInviting">
           <PinInputGroup class="pin-input-group">
-            <PinInputInput
-              class="pin-input-input"
-              v-for="(id, index) in 6"
-              :key="id"
-              :index="index"
-            />
+            <PinInputInput class="pin-input-input" v-for="(id, index) in 6" :key="id" :index="index" />
           </PinInputGroup>
         </PinInput>
       </section>
@@ -70,12 +57,14 @@ watch(valueString, (value) => {
 .pin-input {
   width: 100%;
 }
+
 .pin-input-input {
   width: 3rem;
   height: 3rem;
   border-radius: 0.5rem;
   border: 1px solid #e0e0e0;
 }
+
 .pin-input-group {
   width: 100%;
   display: flex;

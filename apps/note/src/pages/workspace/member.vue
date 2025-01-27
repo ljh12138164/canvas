@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Button } from '@/components/ui/button';
 import ScrollArea from '@/components/ui/scroll-area/ScrollArea.vue';
 import InviteCode from '@/components/workspace/InviteCode.vue';
 import MemberTable from '@/components/workspace/MemberTable.vue';
@@ -31,15 +32,9 @@ const { collaborators, isLoading: collaboratorsIsLoading } = useCollaborators(wo
       </nav>
       <div class="flex flex-col gap-4">
         <!-- 邀请码 -->
-        <InviteCode
-          :collaborators="collaborators"
-          :isLoading="collaboratorsIsLoading"
-        />
+        <InviteCode :collaborators="collaborators" :isLoading="collaboratorsIsLoading" />
         <!-- 成员列表 -->
-        <MemberTable
-          :collaborators="collaborators"
-          :isLoading="collaboratorsIsLoading"
-        />
+        <MemberTable :collaborators="collaborators" :isLoading="collaboratorsIsLoading" />
         <!--  -->
       </div>
     </ScrollArea>
@@ -50,6 +45,7 @@ const { collaborators, isLoading: collaboratorsIsLoading } = useCollaborators(wo
 .container {
   padding: 20px;
 }
+
 .nav-container {
   padding: 20px;
 }

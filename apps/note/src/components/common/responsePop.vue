@@ -45,7 +45,7 @@ const isOpen = ref(false);
   </UseTemplate>
 
   <Dialog v-if="isDesktop" v-model:open="isOpen">
-    <DialogTrigger as-child>
+    <DialogTrigger as-child @click.stop>
       <slot name="trigger" />
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
@@ -67,7 +67,7 @@ const isOpen = ref(false);
   </Dialog>
 
   <Drawer v-else v-model:open="isOpen">
-    <DrawerTrigger as-child>
+    <DrawerTrigger as-child @click.stop>
       <slot name="trigger" />
     </DrawerTrigger>
     <DrawerContent>
