@@ -1,8 +1,9 @@
-import { Footer, Layout, Navbar } from 'nextra-theme-docs';
-import { Head } from 'nextra/components';
-import { getPageMap } from 'nextra/page-map';
-import 'nextra-theme-docs/style.css';
 import type { Metadata } from 'next';
+import { Footer, Layout, Navbar } from 'nextra-theme-docs';
+import 'nextra-theme-docs/style.css';
+import { Head } from 'nextra/components';
+import { GitHubIcon } from 'nextra/icons';
+import { getPageMap } from 'nextra/page-map';
 import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   robots: {
@@ -34,8 +35,11 @@ export const viewport = {
 };
 const navbar = (
   <Navbar
+    projectIcon={
+      <GitHubIcon aria-label="点击查看项目地址" style={{ width: '1.5rem', height: '1.5rem' }} />
+    }
     projectLink="https://github.com/ljh12138164"
-    logo={<b aria-label="点击查看">ljh的技术博客</b>}
+    logo={<b>ljh的技术博客</b>}
     // ... Your additional navbar options
   />
 );
