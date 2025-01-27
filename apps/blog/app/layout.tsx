@@ -59,10 +59,19 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       </Head>
       <body>
         <Layout
+          feedback={{
+            content: null,
+            labels: undefined,
+          }}
+          editLink={null}
           navbar={navbar}
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/ljh12138164"
           footer={footer}
+          navigation={{
+            next: false,
+            prev: false,
+          }}
           // ... Your additional layout options
         >
           {children}
