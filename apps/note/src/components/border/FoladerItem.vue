@@ -3,7 +3,7 @@ import type { Files, Folders } from '@/types/board';
 import { Icon } from '@iconify/vue';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import ResponsePop from '../common/ResponsePop.vue';
+import ResponsePop from '../common/responsePop.vue';
 import CardContent from '../ui/card/CardContent.vue';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 import FileFrom from './FileFrom.vue';
@@ -27,44 +27,32 @@ watch(
 <template>
   <TooltipProvider>
     <Tooltip>
-      <TooltipTrigger
-        ><div
+      <TooltipTrigger>
+        <div
           class="folder-item bg-[#f1f1f1] dark:bg-[#242424] hover:bg-[#dbdbdb] dark:hover:bg-gray-800 hover:text-black transition-all duration-300"
           :class="{
             smallItem: isSmall,
-          }"
-        >
-          <Icon
-            :class="{
-              smallIcon: isSmall,
-            }"
-            width="15"
-            height="15"
-            :icon="
-              openFloaders.find((item) => item === folder.id)
+          }">
+          <Icon :class="{
+            smallIcon: isSmall,
+          }" width="15" height="15" :icon="openFloaders.find((item) => item === folder.id)
                 ? 'ion:chevron-up'
                 : 'ion:chevron-down'
-            "
-            @click="
-              () => {
+              " @click="() => {
                 if (isLoading) return;
                 openFloaders.find((item) => item === folder.id)
                   ? openFloaders.splice(
-                      openFloaders.indexOf(folder.id as string),
-                      1
-                    )
+                    openFloaders.indexOf(folder.id as string),
+                    1
+                  )
                   : openFloaders.push(folder.id as string);
               }
-            "
-          />
+              " />
           <!-- ion:chevron-up -->
           <span class="folder-item-title" :class="{ 'text-left': !isSmall }">
-            <span
-              :class="{
-                small: isSmall,
-              }"
-              >{{ folder.inconId }}</span
-            >
+            <span :class="{
+              small: isSmall,
+            }">{{ folder.inconId }}</span>
             <span class="folder-item-title" v-show="!isSmall">{{
               folder.title
             }}</span>
@@ -86,20 +74,11 @@ watch(
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>
-  <section
-    class="file-list"
-    :class="{
-      trans: openFloaders.find((item) => item === (folder.id as string)),
-    }"
-  >
-    <FileItem
-      :file="folder.files"
-      :isSmall="isSmall"
-      :openFolders="
-        !!openFloaders.find((item) => item === (folder.id as string))
-      "
-      :isLoading="isLoading"
-    />
+  <section class="file-list" :class="{
+    trans: openFloaders.find((item) => item === (folder.id as string)),
+  }">
+    <FileItem :file="folder.files" :isSmall="isSmall" :openFolders="!!openFloaders.find((item) => item === (folder.id as string))
+      " :isLoading="isLoading" />
   </section>
 </template>
 <style scoped lang="scss">
@@ -109,6 +88,7 @@ watch(
   align-items: center;
   height: 30px;
 }
+
 .folder-item-title {
   font-size: 14px;
   text-overflow: ellipsis;
@@ -116,26 +96,31 @@ watch(
   white-space: nowrap;
   text-align: center;
 }
+
 .file-list {
   display: grid;
   grid-template-rows: 0fr;
   width: 100%;
   transition: grid-template-rows 0.3s linear;
 }
+
 .small {
   text-align: center;
   flex: 1;
   width: 100%;
 }
+
 .smallIcon {
   width: 20%;
 }
+
 .smallItem {
   display: flex;
   padding: 0 2px 0 1px;
   align-items: center;
   // justify-content: center;
 }
+
 .trans {
   grid-template-rows: 1fr;
 }

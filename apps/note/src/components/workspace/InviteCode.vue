@@ -6,7 +6,7 @@ import { Icon } from '@iconify/vue';
 import { useQueryClient } from '@tanstack/vue-query';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import ResponsePop from '../common/ResponsePop.vue';
+import ResponsePop from '../common/responsePop.vue';
 import { Button } from '../ui/button';
 import { CardContent, CardHeader, CardTitle } from '../ui/card';
 import Card from '../ui/card/Card.vue';
@@ -67,27 +67,12 @@ const responsePopRef = ref();
     </CardHeader>
     <CardContent>
       <section class="invite-code-container" v-if="collaborators?.length">
-        <PinInput
-          class="pin-input"
-          id="pin-input"
-          v-model="value"
-          placeholder="○"
-          disabled
-        >
+        <PinInput class="pin-input" id="pin-input" v-model="value" placeholder="○" disabled>
           <PinInputGroup class="pin-input-group">
-            <PinInputInput
-              class="pin-input-input"
-              v-for="(id, index) in 6"
-              :key="id"
-              :index="index"
-            />
+            <PinInputInput class="pin-input-input" v-for="(id, index) in 6" :key="id" :index="index" />
           </PinInputGroup>
         </PinInput>
-        <Button
-          variant="outline"
-          @click="handleCopy"
-          class="pin-input-input ml-2"
-        >
+        <Button variant="outline" @click="handleCopy" class="pin-input-input ml-2">
           <Icon icon="heroicons:clipboard-document-list" />
         </Button>
         <ResponsePop title="刷新邀请码" ref="responsePopRef">
@@ -122,20 +107,24 @@ const responsePopRef = ref();
   display: flex;
   justify-content: center;
 }
+
 .skeleton {
   width: 100%;
   height: 100px;
   border-radius: 10px;
 }
+
 .pin-input {
   width: 100%;
 }
+
 .pin-input-group {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
   opacity: 0.5;
 }
+
 .pin-input-input {
   width: 3rem;
   height: 3rem;
