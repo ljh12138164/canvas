@@ -37,7 +37,7 @@ const useCanvasEvent = ({
     if (canvas) {
       // 不能用添加对象，因为初始化添加对象时，
       canvas.on('object:added', (event) => {
-        // 画布
+        // 画布 @ts-ignore
         if (event.target.name === 'board') return;
         // 添加到ymap
         // yMaps?.set(
@@ -48,7 +48,7 @@ const useCanvasEvent = ({
       });
       canvas.on('object:removed', (element) => {
         if (!user) return;
-        // 画布
+        // 画布 @ts-ignore
         if (element.target.name === 'board') return;
         // yMaps?.set(element.target.id, JSON.stringify({ ...element.target, changeType: 'delete' }));
         // 从ymap中删除

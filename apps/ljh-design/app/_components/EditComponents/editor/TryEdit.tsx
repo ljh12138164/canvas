@@ -131,7 +131,8 @@ export default function TryEdit({ id, data }: { id: string; data: Board }) {
   });
   useWindowEvent();
   const editor = canvas
-    ? buildEditor({
+    ? // @ts-ignore
+      buildEditor({
         canvas,
         fillColor,
         strokeColor,

@@ -33,6 +33,8 @@ declare module 'fabric' {
   }
   interface FabricObject {
     id: string;
+    // 画布名称
+    name?: string;
     FarbicType?: string;
     changeType?: string;
     changeClientId?: string;
