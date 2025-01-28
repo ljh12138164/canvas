@@ -59,18 +59,14 @@ export async function routerCheckLogin(
 
     if (!data) {
       // 用户未登录，只在非登录页时重定向到登录页
-      if (to.path !== '/login') {
-        return next('/login');
-      }
+      if (to.path !== '/login') return next('/login');
     } else {
       // 用户已登录
       if (data?.session) {
         setUserData({ session: data?.session as Sessions });
       }
       // 已登录用户访问登录页时重定向到首页
-      if (to.path === '/login') {
-        return next('/');
-      }
+      if (to.path === '/login') return next('/');
     }
     // 其他情况直接放行
     return next();

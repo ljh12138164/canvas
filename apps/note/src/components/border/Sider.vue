@@ -8,8 +8,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useDeleteFolderTrash } from '@/hooks/floders';
+import { updateFiles, useSoftDeleteFile } from '@/hooks/file';
+import { useDeleteFolder } from '@/hooks/floders';
 import { useGetWorkspaceById } from '@/hooks/workspace';
+import { toast } from '@/lib';
 import { useQueryClient } from '@tanstack/vue-query';
 import {
   ChevronRight,
@@ -40,14 +42,19 @@ const router = useRouter();
 const props = defineProps<{
   routerParams: string;
 }>();
-const { deleteFolderTrash, deleteFolderTrashIsLoading } = useDeleteFolderTrash();
+// 文件夹操作
+const { deleteFolder, deleteFolderIsLoading } = useDeleteFolder();
+
+// 文件操作
+const { softDeleteFile, softDeleteFileIsPending } = useSoftDeleteFile();
+const { updateFile, updateFileIsPending } = updateFiles();
+
+const workspaceId = ref<string>(route.params.workspaceId as string);
 const folderId = ref<string>(route.params.folderId as string);
 const fileId = ref<string>(route.params.fileId as string);
-
 watch(
   () => route.params.folderId,
   (newVal) => {
-    // console.log(route.params);
     folderId.value = newVal as string;
   },
 );
@@ -57,8 +64,15 @@ watch(
     fileId.value = newVal as string;
   },
 );
-const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(props.routerParams);
+watch(
+  () => route.params.workspaceId,
+  (newVal) => {
+    workspaceId.value = newVal as string;
+  },
+);
+const changeInput = ref<string>('');
 
+const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(workspaceId.value);
 const handleClick = (id: string) => {
   if (id === folderId.value && !fileId.value) return;
   queryClient.invalidateQueries({
@@ -73,32 +87,60 @@ const subHandleClick = (id: string, folderId: string) => {
   });
   router.push(`/workspace/${props.routerParams}/folders/${folderId}/files/${id}`);
 };
-
 const responsePopRef = ref<any>(null);
 
 const closeDialog = () => {
-  if (responsePopRef.value) {
-    responsePopRef.value.closeRef?.click();
-  }
+  if (responsePopRef.value) responsePopRef.value.closeRef?.click();
 };
+// 软删除
+function handleDeleteFile(id: string) {
+  softDeleteFile(
+    { query: { id: id, workspaceId: props.routerParams } },
+    {
+      onSuccess: () => {
+        toast.success('删除成功');
+        queryClient.invalidateQueries({
+          queryKey: ['fileTrash'],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['workspaceItem'],
+        });
+      },
+    },
+  );
+}
+// 重命名
+function handleRenameFile(id: string, inconId: string) {
+  updateFile(
+    { json: { id: id, workspaceId: props.routerParams, inconId, title: changeInput.value } },
+    {
+      onSuccess: () => {
+        toast.success('重命名成功');
+        queryClient.invalidateQueries({
+          queryKey: ['workspaceItem'],
+        });
+      },
+    },
+  );
+}
 </script>
 <template>
   <div>
     <SidebarMenuItem v-if="!workspaceIsLoading">
-      <Collapsible as-child class="group/collapsible" v-for="item in workspace?.folders" :key="item.title">
+      <Collapsible as-child class="group/collapsible" v-for="item in workspace?.folders" :key="item?.title">
         <section>
           <CollapsibleTrigger as-child>
             <div class="flex items-center gap-2">
-              <SidebarMenuButton :tooltip="item.title" class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
+              <SidebarMenuButton :tooltip="item?.title" class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
                 :class="{
                   'bg-slate-100 dark:bg-slate-900':
                     item.id === folderId && !fileId,
                 }">
                 <ChevronRight class="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                <div class="flex items-center gap-2" @click.stop="handleClick(item.id!)">
-                  <span>{{ item.inconId }}</span>
+                <div class="flex items-center gap-2" @click.stop="handleClick(item?.id!)">
+                  <span>{{ item?.inconId }}</span>
                   <span class="group-data-[collapsible=icon]:hidden">{{
-                    item.title
+                    item?.title
                   }}</span>
                 </div>
                 <DropdownMenu>
@@ -134,9 +176,15 @@ const closeDialog = () => {
                           <Button variant="outline">取消</Button>
                         </template>
                         <template #entry>
-                          <Button variant="destructive"
-                            @click="deleteFolderTrash({ json: { id: item.id!, workspaceId: props.routerParams } })"
-                            :disabled="deleteFolderTrashIsLoading">确定</Button>
+                          <Button variant="destructive" @click="() => {
+                            deleteFolder({ query: { id: item.id!, workspaceId: props.routerParams } })
+                            queryClient.invalidateQueries({
+                              queryKey: ['folderTrash'],
+                            })
+                            queryClient.invalidateQueries({
+                              queryKey: ['workspaceItem'],
+                            })
+                          }" :disabled="deleteFolderIsLoading">确定</Button>
                         </template>
                       </ResponsePop>
                     </DropdownMenuItem>
@@ -177,13 +225,14 @@ const closeDialog = () => {
                             </Button>
                           </template>
                           <template #content>
-                            <Input :default-value="items.title" />
+                            <Input v-model="changeInput" :default-value="item.title" />
                           </template>
                           <template #close>
                             <Button variant="outline" @click="closeDialog">取消</Button>
                           </template>
                           <template #entry>
-                            <Button variant="outline" @click="closeDialog">确定</Button>
+                            <Button variant="outline" @click="handleRenameFile(items.id!, items.inconId!)"
+                              :disabled="updateFileIsPending">确定</Button>
                           </template>
                         </ResponsePop>
                       </DropdownMenuItem>
@@ -207,7 +256,8 @@ const closeDialog = () => {
                             <Button variant="outline">取消</Button>
                           </template>
                           <template #entry>
-                            <Button variant="outline">确定</Button>
+                            <Button variant="outline" @click="handleDeleteFile(items.id!)"
+                              :disabled="softDeleteFileIsPending">确定</Button>
                           </template>
                         </ResponsePop>
                       </DropdownMenuItem>
@@ -230,19 +280,10 @@ const closeDialog = () => {
 </template>
 
 <style lang="scss" scoped>
-/* .footer-button {
-  margin-top: 10px;
-  width: 100%;
-} */
-
 .folderList {
   width: 100%;
   display: flex;
   flex-direction: column;
   // gap: 2px;
 }
-
-// .btn-item {
-//   width: 1rem;
-//   height: 1rem;
-// }</style>
+</style>

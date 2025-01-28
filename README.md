@@ -146,7 +146,7 @@
     - react-flow的工作流
     - 团队空间
 
-#### 3. 笔记应用 (8200端口)
+#### 3. 协同笔记应用 (8200端口) 已上线（https://note.ljhboard.cn）
 
 基于 Vue 3 + Rebuild 构建:
 
@@ -194,6 +194,32 @@ auth-form是基于zod检验来生成表单，具体实现看`public/自定义表
     - 表单设计
     - 表单验证
     - 数据收集
+
+#### 5.个人博客 (基于 Next.js + Nextra) 已上线（https://blog.ljhboard.cn）
+
+基于 Next.js 和 Nextra 构建的个人技术博客:
+
+- **目录结构**:
+  - `app/` - Next.js 应用代码
+    - `layout.tsx` - 全局布局
+    - `globals.css` - 全局样式
+  - `content/` - 博客内容 (MDX 格式)
+    - `ai调用/` - AI 相关文章
+    - `协同的实现/` - 协同编辑相关文章
+    - `项目的可行性研究/` - 技术调研文章
+  
+- **技术栈**:
+  - Next.js - React 框架
+  - Nextra - MDX 文档框架
+  - MDX - Markdown 增强
+  - Tailwind CSS - 样式框架
+
+- **主要功能**:
+  - 技术博客写作
+  - Markdown 支持
+  - 响应式设计
+  - 暗色/亮色主题
+  - SEO 优化
 
 ## 技术栈
 

@@ -34,8 +34,8 @@ export const useCreateFolder = () => {
   return { createFolder, createFolderIsLoading };
 };
 
-type DeleteFolderRequest = InferRequestType<typeof client.folder.delete.$delete>;
-type DeleteFolderResponse = InferResponseType<typeof client.folder.delete.$delete, 200>;
+type DeleteFolderRequest = InferRequestType<typeof client.folder.delete.$post>;
+type DeleteFolderResponse = InferResponseType<typeof client.folder.delete.$post, 200>;
 /**
  * ### 删除文件夹
  * @param folderId
@@ -49,7 +49,7 @@ export const useDeleteFolder = () => {
     mutationFn: async (data) => {
       const token = await getNewToken();
       if (!token) router.push('/login');
-      const res = await client.folder.delete.$delete(data, {
+      const res = await client.folder.delete.$post(data, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) {
@@ -68,9 +68,10 @@ type FolderTrash = InferResponseType<typeof client.folder.getTrash.$get, 200>;
  * @param workspaceId
  * @returns
  */
-export const useGetFolderTrash = (workspaceId: string) => {
+export const useGetFolderTrash = (workspaceId: string, type: 'folder' | 'file') => {
   const { data: folderTrash, isLoading: folderTrashIsLoading } = useQuery<FolderTrash, Error>({
     queryKey: ['folderTrash'],
+    enabled: type === 'folder',
     queryFn: async () => {
       const token = await getNewToken();
       if (!token) router.push('/login');

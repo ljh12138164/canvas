@@ -42,14 +42,13 @@ import { all, createLowlight } from 'lowlight';
 import ImageResize from 'tiptap-extension-resize-image';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { IndexeddbPersistence } from 'y-indexeddb';
 import * as Y from 'yjs';
 import { LineHeightExtension } from '../editExtenstions/LineHeight';
 import { FontSizeExtension } from '../editExtenstions/fontSize';
 import StarterKitComponent from './StarterKit.vue';
 const route = useRoute();
-const router = useRouter();
 const folderId = ref(route.params.folderId as string);
 const fileId = ref(route.params.fileId as string);
 watch(
@@ -64,9 +63,6 @@ watch(
     fileId.value = newVal as string;
   },
 );
-if (!folderId.value) {
-  router.push('/');
-}
 const user = useUser();
 const activeUserStore = useActiveUserStore();
 const isLoading = ref(true);
@@ -226,12 +222,7 @@ onBeforeUnmount(() => {
 
 <template>
   <main class="flex flex-col max-h-[calc(100dvh-250px)]" v-if="!isLoading">
-    <BubbleMenu
-      :editor="editor as Editor"
-      :tippy-options="{ duration: 100 }"
-      class="bubble-menu"
-      v-if="editor"
-    >
+    <BubbleMenu :editor="editor as Editor" :tippy-options="{ duration: 100 }" class="bubble-menu" v-if="editor">
       <StarterKitComponent :editor="editor as Editor" />
     </BubbleMenu>
     <!-- <StarterKitComponent :editor="editor as Editor" /> -->
@@ -240,29 +231,32 @@ onBeforeUnmount(() => {
   </main>
   <main v-else>
     <div class="flex justify-center items-center h-full">
-      <Skeleton class="w-full h-full" />
+      <Skeleton class="w-full h-full dark:bg-background" />
     </div>
   </main>
 </template>
 
 <style lang="scss">
 .tiptap {
-  min-height: calc(100dvh - 150px) !important;
+  min-height: calc(100dvh - 50px) !important;
   padding: 30px 40px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   /* aspect-ratio: 9/16; */
   background-color: white;
-  margin: 10px 0;
+  // margin: 10px 0;
   border: 1.5px solid #c7c7c7;
+
   &:focus-visible {
     outline: none;
   }
 }
+
 .bubble-menu {
   width: 80dvw;
 }
+
 .tiptap {
   //:first-child {
   //  margin-top: 0;
@@ -313,14 +307,17 @@ onBeforeUnmount(() => {
       margin-bottom: 0.25em;
     }
   }
+
   // 有序列表
   ol li {
     list-style-type: decimal;
+
     p {
       margin-top: 0.25em;
       margin-bottom: 0.25em;
     }
   }
+
   // 任务列表
   ul[data-type="taskList"] {
     list-style: none;
@@ -331,13 +328,13 @@ onBeforeUnmount(() => {
       align-items: flex-start;
       display: flex;
 
-      > label {
+      >label {
         flex: 0 0 auto;
         margin-right: 0.5rem;
         user-select: none;
       }
 
-      > div {
+      >div {
         flex: 1 1 auto;
       }
     }
@@ -368,7 +365,7 @@ onBeforeUnmount(() => {
       position: relative;
       vertical-align: top;
 
-      > * {
+      >* {
         margin-bottom: 0;
       }
     }
@@ -410,6 +407,7 @@ onBeforeUnmount(() => {
     &::-webkit-scrollbar {
       width: 12px;
       height: 12px;
+
       &:hover {
         cursor: pointer;
       }
@@ -434,6 +432,7 @@ onBeforeUnmount(() => {
     cursor: ew-resize;
     cursor: col-resize;
   }
+
   // 图片
   img {
     display: block;
@@ -445,12 +444,14 @@ onBeforeUnmount(() => {
       outline: 3px solid var(--purple);
     }
   }
+
   // 引用
   blockquote {
     border-left: 3px solid var(--gray-3);
     margin: 1.5rem 0;
     padding-left: 1rem;
   }
+
   hr {
     border: none;
     border-top: 1px solid var(--gray-2);
@@ -484,6 +485,7 @@ onBeforeUnmount(() => {
   .hljs-quote {
     color: #616161;
   }
+
   .hljs-variable,
   .hljs-template-variable,
   .hljs-attribute,
@@ -496,6 +498,7 @@ onBeforeUnmount(() => {
   .hljs-selector-class {
     color: #f98181;
   }
+
   .hljs-number,
   .hljs-meta,
   .hljs-built_in,
@@ -505,22 +508,27 @@ onBeforeUnmount(() => {
   .hljs-params {
     color: #fbbc88;
   }
+
   .hljs-string,
   .hljs-symbol,
   .hljs-bullet {
     color: #b9f18d;
   }
+
   .hljs-title,
   .hljs-section {
     color: #faf594;
   }
+
   .hljs-keyword,
   .hljs-selector-tag {
     color: #70cff8;
   }
+
   .hljs-emphasis {
     font-style: italic;
   }
+
   .hljs-strong {
     font-weight: 700;
   }
@@ -610,6 +618,81 @@ onBeforeUnmount(() => {
     top: -1.4em;
     user-select: none;
     white-space: nowrap;
+  }
+}
+
+.dark .tiptap {
+  background-color: #101725;
+  color: #e5e7eb;
+  border-color: #374151;
+
+  // 代码块样式
+  code {
+    background-color: rgba(99, 102, 241, 0.1);
+    color: #e5e7eb;
+  }
+
+  // 链接样式
+  a {
+    color: #818cf8;
+
+    &:hover {
+      color: #818cf8;
+      border-bottom: 1px solid #818cf8;
+    }
+  }
+
+  // 表格样式
+  table {
+
+    td,
+    th {
+      border-color: #374151;
+    }
+
+    th {
+      background-color: #1f2937;
+    }
+
+    .selectedCell:after {
+      background: #374151;
+    }
+  }
+
+  // 引用样式
+  blockquote {
+    border-left-color: #374151;
+  }
+
+  // 水平线
+  hr {
+    border-top-color: #374151;
+  }
+
+  // 滚动条样式
+  .tableWrapper {
+    &::-webkit-scrollbar-track {
+      background: #1f2937;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #4b5563;
+      border: 3px solid #1f2937;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #6b7280;
+    }
+  }
+
+  // 协作光标样式
+  .collaboration-cursor__caret {
+    border-left-color: #e5e7eb;
+    border-right-color: #e5e7eb;
+  }
+
+  .collaboration-cursor__label {
+    color: #e5e7eb;
   }
 }
 </style>

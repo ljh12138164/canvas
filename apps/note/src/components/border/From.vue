@@ -51,7 +51,7 @@ const onSubmit = form.handleSubmit((values) => {
       onSuccess: () => {
         form.resetForm();
         clinetQuery.invalidateQueries({
-          queryKey: ['workspaceItem'],
+          queryKey: ['workspaceItem', workspaceId.value],
         });
         showEmoji.value = '';
       },

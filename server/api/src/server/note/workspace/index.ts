@@ -97,15 +97,17 @@ export const getWorkspaceById = async ({
     throw new Error('无权限');
   // 过滤删除的文件夹
   const datas =
-    data[0].folders?.map((folder: Folders) => {
-      if (folder.inTrash) {
-        return {
-          ...folder,
-          files: folder.files?.filter((file: Filts) => !file.inTrash),
-        };
-      }
-      return folder;
-    }) || [];
+    data[0].folders
+      ?.map((folder: Folders) => {
+        if (!folder.inTrash) {
+          return {
+            ...folder,
+            files: folder.files?.filter((file: Filts) => !file.inTrash),
+          };
+        }
+        return null;
+      })
+      .filter((folder: Folders) => folder !== null) || [];
   return { ...data[0], folders: datas };
 };
 

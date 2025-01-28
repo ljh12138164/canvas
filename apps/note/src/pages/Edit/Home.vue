@@ -21,10 +21,7 @@ const { workspace, workspaceIsLoading, workspaceIsFetching } = useGetWorkspaceBy
 const { data, isLoading, isFetching } = useGetDoc();
 </script>
 <template>
-  <div
-    v-if="workspaceIsLoading || workspaceIsFetching || isFetching || isLoading"
-    class="h-full p-6 space-y-6"
-  >
+  <div v-if="workspaceIsLoading || workspaceIsFetching || isFetching || isLoading" class="h-full p-6 space-y-6">
     <!-- 头部骨架 -->
     <div class="flex items-center justify-between">
       <Skeleton class="h-8 w-[200px]" />
@@ -60,5 +57,3 @@ const { data, isLoading, isFetching } = useGetDoc();
     <Edit :workspace="workspace" :doc="data" />
   </div>
 </template>
-
-<style scoped></style>

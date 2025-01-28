@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import From from '@/components/border/From.vue';
 import ResponsePop from '@/components/common/ResponsePop.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -56,7 +57,7 @@ const handleManageCollaborators = () => {
               </Button>
             </template>
             <template #content>
-              <FolderForm />
+              <From />
             </template>
           </ResponsePop>
         </nav>
