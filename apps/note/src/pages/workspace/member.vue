@@ -21,13 +21,20 @@ watch(
 onBeforeMount(() => {
   queryClient.invalidateQueries({ queryKey: ['collaborators'] });
 });
+const fullPathArr = ref(route.fullPath.split('/'));
+watch(
+  () => route.fullPath,
+  (newVal) => {
+    fullPathArr.value = newVal.split('/');
+  },
+);
 const { collaborators, isLoading: collaboratorsIsLoading } = useCollaborators(workspaceId.value);
 // const { inviteCollaborator } = useInviteCollaborator();
 </script>
 <template>
   <div class="container">
     <ScrollArea class="h-[80dvh]">
-      <nav class="nav-container">
+      <nav class="nav-container" v-if="fullPathArr.length < 2">
         <Button @click="router.back()">返回</Button>
       </nav>
       <div class="flex flex-col gap-4">

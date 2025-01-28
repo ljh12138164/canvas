@@ -12,12 +12,12 @@ const props = defineProps<{
 </script>
 <template>
   <div class="editor-wrapper" v-if="props.workspace">
-    <ScrollArea class="h-full w-full bg-[rgb(248,250,254)]">
+    <ScrollArea class="h-full w-full bg-[#fff] dark:bg-transparent">
       <Editor :workspace="props.workspace" :doc="props.doc" />
     </ScrollArea>
   </div>
   <div v-else>
-    <Skeleton class="h-full w-full" />
+    <Skeleton class="h-full w-full dark:bg-transparent" />
   </div>
 </template>
 

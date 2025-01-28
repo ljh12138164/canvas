@@ -6,10 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build && pagefind --site .next/server/app --output-path public/_pagefind",
     "start": "next start",
-    "lint": "next lint"
+    "lint": " biome check --fix --unsafe --no-errors-on-unmatched   && biome check --write --no-errors-on-unmatched && biome check --write --organize-imports-enabled=false --no-errors-on-unmatched && biome check --write --unsafe --no-errors-on-unmatched && biome check --files-ignore-unknown=true&& biome lint --write --no-errors-on-unmatched"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.0.0",
     "next": "15.1.6",
     "nextra": "latest",
     "nextra-theme-docs": "latest",
@@ -17,6 +16,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
     "@ljh/lint": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^19",

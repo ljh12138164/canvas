@@ -41,28 +41,28 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
-    path: '/workspace/:workspaceId/folders/',
+    path: '/workspace/:workspaceId/',
     component: () => import('@/pages/edit/index.vue'),
     beforeEnter: routerCheckLogin,
     children: [
       {
-        path: ':folderId',
+        path: 'folders/:folderId',
         component: () => import('@/pages/edit/Home.vue'),
         beforeEnter: routerCheckLogin,
       },
       {
-        path: ':folderId/files/:fileId',
+        path: 'folders/:folderId/files/:fileId',
         component: () => import('@/pages/edit/Home.vue'),
         beforeEnter: routerCheckLogin,
       },
       {
-        path: ':folderId/:fileId',
+        path: 'folders/:folderId/:fileId',
         component: () => import('@/pages/edit/Home.vue'),
         beforeEnter: routerCheckLogin,
       },
       {
-        path: 'home',
-        component: () => import('@/pages/folder/Home.vue'),
+        path: 'edit/home',
+        component: () => import('@/pages/workspace/member.vue'),
         beforeEnter: routerCheckLogin,
       },
     ],

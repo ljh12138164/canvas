@@ -48,7 +48,7 @@ const isOpen = ref(false);
     <DialogTrigger as-child @click.stop>
       <slot name="trigger" />
     </DialogTrigger>
-    <DialogContent class="sm:max-w-[425px]">
+    <DialogContent class="sm:max-w-[600px]">
       <DialogHeader>
         <DialogTitle>{{ title }}</DialogTitle>
         <DialogDescription v-if="description">{{

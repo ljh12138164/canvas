@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import From from '@/components/border/From.vue';
 import Sider from '@/components/border/Sider.vue';
+import TrashTable from '@/components/border/TrashTable.vue';
 import ResponsePop from '@/components/common/ResponsePop.vue';
 import { Collapsible } from '@/components/ui/collapsible';
 import {
@@ -19,7 +20,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useGetWorkspaceById } from '@/hooks/workspace';
 import { useMediaQuery } from '@vueuse/core';
 import { format } from 'date-fns';
-import { Plus, Trash } from 'lucide-vue-next';
+import { Plus, Settings, Trash } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import NavHeader from './NavHeader.vue';
@@ -30,16 +31,16 @@ const router = useRouter();
 const routerParams = ref(route.params.workspaceId);
 const filesId = ref(route.params.fileId);
 const foldersId = ref(route.params.folderId);
+const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
+  routerParams.value as string,
+);
+const isMobile = useMediaQuery('(max-width: 768px)');
 watch(filesId, () => {
   routerParams.value = route.params.workspaceId;
 });
 watch(foldersId, () => {
   routerParams.value = route.params.workspaceId;
 });
-const { workspace, workspaceError, workspaceIsLoading } = useGetWorkspaceById(
-  routerParams.value as string,
-);
-const isMobile = useMediaQuery('(max-width: 768px)');
 watch(
   () => route.params.folderId,
   () => {
@@ -53,22 +54,24 @@ watch(workspaceError, (newVal) => {
 });
 watch(workspace, () => {
   if (!workspace.value) return;
+  // 文件夹不存在
   if (!workspace.value.folders.find((folder) => folder.id === foldersId.value)) {
-    router.push(`/workspace/${routerParams.value}/folders/home`);
+    router.push(`/workspace/${routerParams.value}/edit/home`);
   }
+  // 文件不存在
   if (
+    filesId.value &&
     !workspace.value.folders
       .find((folder) => folder.id === foldersId.value)
       ?.files?.find((file) => file.id === filesId.value)
   ) {
-    router.push(`/workspace/${routerParams.value}/files/home`);
+    router.push(`/workspace/${routerParams.value}/edit/home`);
   }
 });
 </script>
 <template>
   <SidebarProvider>
     <Sidebar collapsible="icon" v-if="!isMobile">
-      <!-- 头部 -->
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -102,13 +105,20 @@ watch(workspace, () => {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <!-- 内容 -->
       <SidebarContent>
         <SidebarGroup>
           <Collapsible as-child class="group/collapsible">
             <aside class="asider">
-              <!-- nav -->
               <SidebarGroupLabel class="font-semibold text-sm">工作区</SidebarGroupLabel>
+              <SidebarMenuButton>
+                <template #default>
+                  <div @click="router.push(`/workspace/${routerParams}/edit/home`)"
+                    class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 transition-all hover:bg-zinc-100">
+                    <Settings />
+                    <span class="group-data-[collapsible=icon]:hidden">工作区设置</span>
+                  </div>
+                </template>
+              </SidebarMenuButton>
               <SidebarMenuButton class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100">
                 <template #default>
                   <ResponsePop title="创建文档">
@@ -129,10 +139,19 @@ watch(workspace, () => {
               </SidebarMenuButton>
               <SidebarMenuButton class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100">
                 <template #default>
-                  <div class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 hover:bg-zinc-100">
-                    <Trash />
-                    <span class="group-data-[collapsible=icon]:hidden">回收站</span>
-                  </div>
+                  <ResponsePop title="回收站">
+                    <template #trigger>
+                      <div class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 hover:bg-zinc-100">
+                        <Trash />
+                        <span class="group-data-[collapsible=icon]:hidden">回收站</span>
+                      </div>
+                    </template>
+                    <template #content>
+                      <div>
+                        <TrashTable />
+                      </div>
+                    </template>
+                  </ResponsePop>
                 </template>
               </SidebarMenuButton>
             </aside>
@@ -145,7 +164,6 @@ watch(workspace, () => {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-    <!-- 内容 -->
     <SidebarInset>
       <NavHeader :folders="workspace?.folders" :isLoading="workspaceIsLoading" :foldersError="workspaceError" />
 
