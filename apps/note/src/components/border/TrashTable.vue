@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useGetFileTrash } from '@/hooks/file';
-import { useDeleteFile } from '@/hooks/file';
-import { useRestoreFile } from '@/hooks/file';
-import { useGetFolderTrash } from '@/hooks/floders';
-import { useRestoreFolderTrash } from '@/hooks/floders';
-import { useDeleteFolderTrash } from '@/hooks/floders';
+import { useDeleteFile, useGetFileTrash, useRestoreFile } from '@/hooks/file';
+import { useDeleteFolderTrash, useGetFolderTrash, useRestoreFolderTrash } from '@/hooks/floders';
 import { toast } from '@/lib/index';
 import { useQueryClient } from '@tanstack/vue-query';
 import dayjs from 'dayjs';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import ResponsePop from '../common/ResponsePop.vue';
 import { Button } from '../ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import ResponsePop from '../workspace/Respone.vue';
 
 const queryClient = useQueryClient();
 const router = useRoute();
