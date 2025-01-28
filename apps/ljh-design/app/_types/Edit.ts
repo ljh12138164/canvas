@@ -826,7 +826,8 @@ export interface buildEditorProps {
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
   userId: string;
-  yMaps: Y.YMap<string, string>;
+  // 画布数据
+  yMaps: Y.Map<string>;
   pasty: () => void;
   save: (skip?: boolean) => void;
   canRedo: () => boolean;
