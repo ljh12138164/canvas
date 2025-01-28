@@ -42,22 +42,22 @@ const routes: RouteRecordRaw[] = [
 
   {
     path: '/workspace/:workspaceId/',
-    component: () => import('@/pages/edit/Root.vue'),
+    component: () => import('../pages/edit/Root.vue'),
     beforeEnter: routerCheckLogin,
     children: [
       {
         path: 'folders/:folderId',
-        component: () => import('@/pages/edit/Home.vue'),
+        component: () => import('../pages/edit/Home.vue'),
         beforeEnter: routerCheckLogin,
       },
       {
         path: 'folders/:folderId/files/:fileId',
-        component: () => import('@/pages/edit/Home.vue'),
+        component: () => import('../pages/edit/Home.vue'),
         beforeEnter: routerCheckLogin,
       },
       {
         path: 'folders/:folderId/:fileId',
-        component: () => import('@/pages/edit/Home.vue'),
+        component: () => import('../pages/edit/Home.vue'),
         beforeEnter: routerCheckLogin,
       },
       {
