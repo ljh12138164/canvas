@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
-import ResponsePop from '../common/ResponsePop.vue';
+import ResponsePop from '../common/responsePop.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
 import { CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -61,10 +61,7 @@ watch(
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow
-              v-for="collaborators in props.collaborators?.[0].collaborators"
-              :key="collaborators.userId"
-            >
+            <TableRow v-for="collaborators in props.collaborators?.[0].collaborators" :key="collaborators.userId">
               <TableCell class="table-cell-ellipsis">
                 <TooltipProvider>
                   <Tooltip>
@@ -88,10 +85,7 @@ watch(
               </TableCell>
               <TableCell class="table-cell-ellipsis">
                 <Avatar>
-                  <AvatarImage
-                    :src="collaborators.profiles.image"
-                    alt="用户头像"
-                  />
+                  <AvatarImage :src="collaborators.profiles.image" alt="用户头像" />
                   <AvatarFallback>
                     {{ collaborators.profiles.name }}
                   </AvatarFallback>
@@ -129,11 +123,7 @@ watch(
               <TableCell class="table-cell-ellipsis">
                 <ResponsePop title="移除成员" ref="responsePopRef">
                   <template #trigger>
-                    <Button
-                      :disabled="isRemoving"
-                      variant="outline"
-                      size="icon"
-                    >
+                    <Button :disabled="isRemoving" variant="outline" size="icon">
                       <Icon icon="heroicons:trash" />
                     </Button>
                   </template>
@@ -144,33 +134,30 @@ watch(
                     <Button variant="outline">取消</Button>
                   </template>
                   <template #entry>
-                    <Button
-                      @click="
-                        removeCollaborator(
-                          {
-                            json: {
-                              userId: collaborators.userId,
-                              workspaceId: props.collaborators?.[0]
-                                .id as string,
-                            },
+                    <Button @click="
+                      removeCollaborator(
+                        {
+                          json: {
+                            userId: collaborators.userId,
+                            workspaceId: props.collaborators?.[0]
+                              .id as string,
                           },
-                          {
-                            onSuccess: () => {
-                              responsePopRef.value?.closeRef.value.click();
-                              responsePopRef.value?.closeRef2.value.click();
-                              queryClient.invalidateQueries({
-                                queryKey: ['collaborators'],
-                              });
-                              toast.success('移除成员成功');
-                            },
-                            onError: () => {
-                              toast.error('移除成员失败');
-                            },
-                          }
-                        )
-                      "
-                      >确定</Button
-                    >
+                        },
+                        {
+                          onSuccess: () => {
+                            responsePopRef.value?.closeRef.value.click();
+                            responsePopRef.value?.closeRef2.value.click();
+                            queryClient.invalidateQueries({
+                              queryKey: ['collaborators'],
+                            });
+                            toast.success('移除成员成功');
+                          },
+                          onError: () => {
+                            toast.error('移除成员失败');
+                          },
+                        }
+                      )
+                      ">确定</Button>
                   </template>
                 </ResponsePop>
               </TableCell>
@@ -192,6 +179,7 @@ watch(
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
+
 .table-cell-ellipsis {
   max-width: 100px;
   overflow: hidden;

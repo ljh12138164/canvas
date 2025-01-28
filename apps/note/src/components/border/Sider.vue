@@ -24,7 +24,7 @@ import {
 } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import ResponsePop from '../common/ResponsePop.vue';
+import ResponsePop from '../common/responsePop.vue';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { Input } from '../ui/input';
 import {
@@ -36,6 +36,7 @@ import {
 } from '../ui/sidebar';
 import { Skeleton } from '../ui/skeleton';
 import FileFrom from './FileFrom.vue';
+
 const queryClient = useQueryClient();
 const route = useRoute();
 const router = useRouter();

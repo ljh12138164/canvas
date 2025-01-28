@@ -11,7 +11,7 @@ import { useQueryClient } from '@tanstack/vue-query';
 import dayjs from 'dayjs';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import ResponsePop from '../common/ResponsePop.vue';
+import ResponsePop from '../common/responsePop.vue';
 import { Button } from '../ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
