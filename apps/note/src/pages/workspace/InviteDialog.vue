@@ -5,9 +5,10 @@ import { useInviteCollaborator } from '@/hooks/collaborators';
 import { toast } from '@/lib';
 import { useQueryClient } from '@tanstack/vue-query';
 import { ref, watch } from 'vue';
-// @ts-nocheck
+import { useRouter } from 'vue-router';
 import ResponsePop from '../components/workspace/Respone.vue';
 
+const router = useRouter();
 const queryClient = useQueryClient();
 
 const { inviteCollaborator, isInviting } = useInviteCollaborator();
@@ -16,6 +17,7 @@ watch(valueString, (value) => {
   if (value.length === 6) {
     toast.loading('加入中...');
     inviteCollaborator(
+      // @ts-ignore
       { json: { inviteCode: value.join('') } },
       {
         onSuccess: (data) => {
@@ -23,6 +25,7 @@ watch(valueString, (value) => {
           toast.success('加入成功');
           queryClient.invalidateQueries({ queryKey: ['collaborators'] });
           queryClient.invalidateQueries({ queryKey: ['workspaces'] });
+          // @ts-ignore
           router.push(`/workspace/${data.id}`);
           valueString.value = [];
         },
