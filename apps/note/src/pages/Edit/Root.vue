@@ -22,8 +22,8 @@ import { format } from 'date-fns';
 import { Plus, Settings, Trash } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import NavHeader from '../Naver.vue';
 import ResponsePop from '../components/workspace/Respone.vue';
-import NavHeader from './NavHeader.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -81,7 +81,7 @@ watch(workspace, () => {
                 class="flex border px-4 aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <span v-if="!workspaceIsLoading" class="text-xl">{{
                   workspace?.inconId
-                  }}</span>
+                }}</span>
                 <Skeleton v-else class="size-4" />
               </div>
               <div class="grid flex-1 text-left text-sm leading-tight">

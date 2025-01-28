@@ -23,7 +23,7 @@ import { Plus, Settings, Trash } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ResponsePop from '../components/workspace/Respone.vue';
-import NavHeader from './edit/NavHeader.vue';
+import NavHeader from './Nav.vue';
 
 const route = useRoute();
 const router = useRouter();
