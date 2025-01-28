@@ -1,6 +1,5 @@
 import { routerCheckLogin } from '@/lib';
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
-import EditPage from '../pages/edit/index.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -43,7 +42,7 @@ const routes: RouteRecordRaw[] = [
 
   {
     path: '/workspace/:workspaceId/',
-    component: EditPage,
+    component: () => import('../pages/edit/index.vue'),
     beforeEnter: routerCheckLogin,
     children: [
       {

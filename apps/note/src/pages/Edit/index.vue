@@ -2,7 +2,7 @@
 import From from '@/components/border/From.vue';
 import Sider from '@/components/border/Sider.vue';
 import TrashTable from '@/components/border/TrashTable.vue';
-import ResponsePop from '@/components/common/ResponsePop.vue';
+import ResponsePop from '@/components/common/responsePop.vue';
 import { Collapsible } from '@/components/ui/collapsible';
 import {
   Sidebar,
