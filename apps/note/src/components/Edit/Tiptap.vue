@@ -94,7 +94,7 @@ lowlight.register('js', js);
 lowlight.register('ts', ts);
 // 创建ws
 const websocket = new HocuspocusProviderWebsocket({
-  url: import.meta.env.PUBLIC_WS_RENDER,
+  url: import.meta.env.VITE_PUBLIC_WS_RENDER,
 });
 // 协同
 const hocuspocusConnections = new HocuspocusProvider({
