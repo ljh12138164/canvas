@@ -24,7 +24,6 @@ import {
 } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import ResponsePop from '../common/ResponsePop.vue';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { Input } from '../ui/input';
 import {
@@ -35,6 +34,7 @@ import {
   SidebarMenuSubItem,
 } from '../ui/sidebar';
 import { Skeleton } from '../ui/skeleton';
+import ResponsePop from '../workspace/Respone.vue';
 import FileFrom from './FileFrom.vue';
 
 const queryClient = useQueryClient();
@@ -142,7 +142,7 @@ function handleRenameFile(id: string, inconId: string) {
                   <span>{{ item?.inconId }}</span>
                   <span class="group-data-[collapsible=icon]:hidden">{{
                     item?.title
-                  }}</span>
+                    }}</span>
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger as-child @click.stop>
@@ -205,7 +205,7 @@ function handleRenameFile(id: string, inconId: string) {
                     <span>{{ items.inconId }}</span>
                     <span class="group-data-[collapsible=icon]:hidden">{{
                       items.title
-                    }}</span>
+                      }}</span>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger as-child>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-// @ts-nocheck
-import ResponsePop from '@/components/common/ResponsePop.vue';
 import { Button } from '@/components/ui/button';
 import { PinInput, PinInputGroup, PinInputInput } from '@/components/ui/pin-input';
 import { useInviteCollaborator } from '@/hooks/collaborators';
 import { toast } from '@/lib';
 import { useQueryClient } from '@tanstack/vue-query';
 import { ref, watch } from 'vue';
+// @ts-nocheck
+import ResponsePop from '../components/workspace/Respone.vue';
 
 const queryClient = useQueryClient();
 
