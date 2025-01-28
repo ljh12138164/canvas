@@ -24,7 +24,7 @@ import {
 } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import ResponsePop from '../common/responsePop.vue';
+import ResponsePop from '../common/ResponsePop.vue';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { Input } from '../ui/input';
 import {

@@ -6,7 +6,7 @@ import { Icon } from '@iconify/vue';
 import { useQueryClient } from '@tanstack/vue-query';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import ResponsePop from '../common/responsePop.vue';
+import ResponsePop from '../common/ResponsePop.vue';
 import { Button } from '../ui/button';
 import { CardContent, CardHeader, CardTitle } from '../ui/card';
 import Card from '../ui/card/Card.vue';

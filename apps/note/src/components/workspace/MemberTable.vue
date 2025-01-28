@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
-import ResponsePop from '../common/responsePop.vue';
+import ResponsePop from '../common/ResponsePop.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
 import { CardContent, CardHeader, CardTitle } from '../ui/card';
