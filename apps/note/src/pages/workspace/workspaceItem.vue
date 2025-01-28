@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import From from '@/components/border/From.vue';
-import ResponsePop from '@/components/common/ResponsePop.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Skeleton from '@/components/ui/skeleton/Skeleton.vue';
@@ -11,6 +10,7 @@ import { Plus } from 'lucide-vue-next';
 import { onBeforeMount } from 'vue';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import ResponsePop from '../components/workspace/Respone.vue';
 const queryClient = useQueryClient();
 
 const route = useRoute();
