@@ -52,12 +52,12 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'folders/:folderId/files/:fileId',
-        component: () => import('../pages/edit/Home.vue'),
+        component: () => import('../pages/Home.vue'),
         beforeEnter: routerCheckLogin,
       },
       {
         path: 'folders/:folderId/:fileId',
-        component: () => import('../pages/edit/Home.vue'),
+        component: () => import('../pages/Home.vue'),
         beforeEnter: routerCheckLogin,
       },
       {

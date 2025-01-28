@@ -4,7 +4,7 @@ import { useGetDoc } from '@/hooks/doc';
 import { useGetWorkspaceById } from '@/hooks/workspace';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import Edit from './Edit.vue';
+import Edit from './edit/Edit.vue';
 
 const route = useRoute();
 const workspaceId = ref(route.params.workspaceId);

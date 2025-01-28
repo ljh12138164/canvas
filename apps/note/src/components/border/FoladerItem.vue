@@ -3,9 +3,9 @@ import type { Files, Folders } from '@/types/board';
 import { Icon } from '@iconify/vue';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import ResponsePop from '../common/ResponsePop.vue';
 import CardContent from '../ui/card/CardContent.vue';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import ResponsePop from '../workspace/Respone.vue';
 import FileFrom from './FileFrom.vue';
 import FileItem from './FileItem.vue';
 
@@ -39,15 +39,15 @@ watch(
             ? 'ion:chevron-up'
             : 'ion:chevron-down'
             " @click="() => {
-                if (isLoading) return;
-                openFloaders.find((item) => item === folder.id)
-                  ? openFloaders.splice(
-                    openFloaders.indexOf(folder.id as string),
-                    1
-                  )
-                  : openFloaders.push(folder.id as string);
-              }
-                " />
+              if (isLoading) return;
+              openFloaders.find((item) => item === folder.id)
+                ? openFloaders.splice(
+                  openFloaders.indexOf(folder.id as string),
+                  1
+                )
+                : openFloaders.push(folder.id as string);
+            }
+              " />
           <!-- ion:chevron-up -->
           <span class="folder-item-title" :class="{ 'text-left': !isSmall }">
             <span :class="{

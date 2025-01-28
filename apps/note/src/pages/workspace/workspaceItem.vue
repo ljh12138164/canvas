@@ -10,7 +10,7 @@ import { Plus } from 'lucide-vue-next';
 import { onBeforeMount } from 'vue';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import ResponsePop from '../components/workspace/Respone.vue';
+import ResponsePop from '../../components/workspace/Respone.vue';
 const queryClient = useQueryClient();
 
 const route = useRoute();

@@ -6,7 +6,7 @@ import { toast } from '@/lib';
 import { useQueryClient } from '@tanstack/vue-query';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import ResponsePop from '../components/workspace/Respone.vue';
+import ResponsePop from '../../components/workspace/Respone.vue';
 
 const router = useRouter();
 const queryClient = useQueryClient();
