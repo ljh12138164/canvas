@@ -1,5 +1,5 @@
 import { routerCheckLogin } from '@/lib';
-import { type RouteRecordRaw, createMemoryHistory, createRouter } from 'vue-router';
+import { type RouteRecordRaw, createRouter, createWebHashHistory } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -74,6 +74,6 @@ const routes: RouteRecordRaw[] = [
 ];
 
 export const routers = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHashHistory(),
   routes,
 });
