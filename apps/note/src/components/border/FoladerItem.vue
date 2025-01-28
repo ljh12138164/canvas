@@ -3,7 +3,7 @@ import type { Files, Folders } from '@/types/board';
 import { Icon } from '@iconify/vue';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import ResponsePop from '../common/responsePop.vue';
+import ResponsePop from '../common/ResponsePop.vue';
 import CardContent from '../ui/card/CardContent.vue';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 import FileFrom from './FileFrom.vue';
@@ -36,9 +36,9 @@ watch(
           <Icon :class="{
             smallIcon: isSmall,
           }" width="15" height="15" :icon="openFloaders.find((item) => item === folder.id)
-                ? 'ion:chevron-up'
-                : 'ion:chevron-down'
-              " @click="() => {
+            ? 'ion:chevron-up'
+            : 'ion:chevron-down'
+            " @click="() => {
                 if (isLoading) return;
                 openFloaders.find((item) => item === folder.id)
                   ? openFloaders.splice(
@@ -47,7 +47,7 @@ watch(
                   )
                   : openFloaders.push(folder.id as string);
               }
-              " />
+                " />
           <!-- ion:chevron-up -->
           <span class="folder-item-title" :class="{ 'text-left': !isSmall }">
             <span :class="{
