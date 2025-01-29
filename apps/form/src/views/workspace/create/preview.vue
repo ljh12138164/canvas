@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { AutoForm } from '@/components/ui/auto-form';
+import { AutoForm, getBaseType } from '@/components/ui/auto-form';
 import Button from '@/components/ui/button/Button.vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { getZodSchema } from '@/lib/form';
+import { getFileType, getZodSchema } from '@/lib/form';
 import { getFormDataById } from '@/lib/index';
 import type { CreateFormItem } from '@/types/form';
 import { onBeforeMount, ref, watch } from 'vue';
@@ -40,9 +40,17 @@ onBeforeMount(async () => {
 });
 
 const handleSubmit = (e: any) => {
+  const newInputs = Object.entries(e).map(([key, value]) => {
+    if (key.startsWith('文件')) {
+      if (!value) return;
+      const newvalue = getFileType(value as string);
+      return [key, newvalue];
+    }
+    return [key, value];
+  });
   toast({
     title: '提交成功',
-    description: JSON.stringify(e),
+    description: JSON.stringify(newInputs),
   });
 };
 </script>
@@ -50,19 +58,10 @@ const handleSubmit = (e: any) => {
 <template>
   <ScrollArea class="h-[calc(100dvh-120px)] flex px-10 overflow-hidden entry" v-if="!loading">
     <section class="h-full px-2" v-if="formData && Object.keys(formData).length">
-      <AutoForm
-        class="w-full space-y-6"
-        @submit="handleSubmit"
-        :schema="shemas as z.ZodObject<any, any, any, any>"
-        :field-config="fieldConfig"
-      >
+      <AutoForm class="w-full space-y-6" @submit="handleSubmit" :schema="shemas as z.ZodObject<any, any, any, any>"
+        :field-config="fieldConfig">
         <div class="flex justify-end gap-2">
-          <Button
-            @click="router.back()"
-            class="w-full py-2 transition-all"
-            type="button"
-            variant="outline"
-          >
+          <Button @click="router.back()" class="w-full py-2 transition-all" type="button" variant="outline">
             返回
           </Button>
           <Button type="submit" class="w-full py-2 transition-all"> 提交 </Button>

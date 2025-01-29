@@ -34,6 +34,12 @@
       }
     }
   },
+  "css": {
+    "formatter": {
+      "enabled": true,
+      "lineWidth": 100
+    }
+  },
   "formatter": {
     "enabled": true,
     "formatWithErrors": true,

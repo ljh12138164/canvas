@@ -49,15 +49,10 @@ const handleBack = () => {
     </div>
   </section>
   <section v-else-if="data?.schema" class="p-4">
-    <div class="flex justify-between items-center mb-4">
+    <!-- <div class="flex justify-between items-center mb-4">
       <h1 class="text-xl font-semibold">{{ data.name || '表单编辑' }}</h1>
       <Button variant="outline" @click="handleBack">返回</Button>
-    </div>
-    <FormCreate
-      :schema="data.schema"
-      :id="data.id"
-      :title="data.name"
-      :description="data.description"
-    />
+    </div> -->
+    <FormCreate :schema="data.schema" :id="data.id" :title="data.name" :description="data.description" />
   </section>
 </template>

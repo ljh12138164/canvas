@@ -22,7 +22,7 @@ export const chat = new Hono()
       const [error, messages] = await to(
         getChatMessage(workspaceId, userId, Number.isNaN(+pageTo) ? 0 : +pageTo),
       );
-      if (error) return c.json(error.message, errorCheck(error));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json({ messages });
     },
   )
@@ -40,7 +40,7 @@ export const chat = new Hono()
     async (c) => {
       const { workspaceId, userId, message } = c.req.valid('json');
       const [error, data] = await to(sendChatMessage(workspaceId, userId, message));
-      if (error) return c.json(error.message, errorCheck(error));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json({ message: data });
     },
   )
@@ -60,7 +60,7 @@ export const chat = new Hono()
       const [error, data] = await to(
         uploadImage(workspaceId as string, userId as string, file as File),
       );
-      if (error) return c.json(error.message, errorCheck(error));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json({ message: data });
     },
   );

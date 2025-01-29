@@ -40,7 +40,7 @@ export const storage = new Hono()
         }),
       );
 
-      if (error) return c.json(error.message, errorCheck(error));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },
   )

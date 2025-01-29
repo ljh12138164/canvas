@@ -12,6 +12,7 @@ import {
   getInviteCodeData,
   updateBoard,
   updateBoardInviteCode,
+  updateBoardSchema,
 } from '../../../server/form/board';
 
 export const board = new Hono()
@@ -24,7 +25,7 @@ export const board = new Hono()
         userId: auth.sub,
       }),
     );
-    if (error) return c.json(error.message, errorCheck(error));
+    if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(result);
   })
   .post(
@@ -50,7 +51,7 @@ export const board = new Hono()
           schema: c.req.valid('json').schema,
         }),
       );
-      if (error) return c.json(error.message, errorCheck(error));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(result);
     },
   )
@@ -58,7 +59,7 @@ export const board = new Hono()
     const { token, auth } = getSupabaseAuth(c);
     const { id } = c.req.valid('json');
     const [error, result] = await to(deleteBoard({ token, userId: auth.sub, boardId: id }));
-    if (error) return c.json(error.message, errorCheck(error));
+    if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(result);
   })
   .patch(
@@ -85,7 +86,7 @@ export const board = new Hono()
           schema,
         }),
       );
-      if (error) return c.json(error.message, errorCheck(error));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(result);
     },
   )
@@ -94,7 +95,7 @@ export const board = new Hono()
     const { token, auth } = getSupabaseAuth(c);
     const { id } = c.req.valid('param');
     const [error, result] = await to(getBoardDetail({ token, userId: auth.sub, boardId: id }));
-    if (error) return c.json(error.message, errorCheck(error));
+    if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(result);
   })
   // 更新邀请码
@@ -104,18 +105,28 @@ export const board = new Hono()
     const [error, result] = await to(
       updateBoardInviteCode({ token, userId: auth.sub, boardId: id }),
     );
-    if (error) return c.json(error.message, errorCheck(error));
+    if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(result);
   })
   // 获取提交数据
-  .get(
-    '/submit/:inviteCode',
-    zValidator('param', z.object({ inviteCode: z.string() })),
+  .get('/submit', zValidator('query', z.object({ inviteCode: z.string() })), async (c) => {
+    const { token } = getSupabaseAuth(c);
+    const { inviteCode } = c.req.valid('query');
+    const [error, result] = await to(getInviteCodeData({ token, inviteCode }));
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+    return c.json(result);
+  })
+  // 更新表单数据
+  .patch(
+    '/shema',
+    zValidator('json', z.object({ id: z.string(), schema: z.string() })),
     async (c) => {
-      const { token } = getSupabaseAuth(c);
-      const { inviteCode } = c.req.valid('param');
-      const [error, result] = await to(getInviteCodeData({ token, inviteCode }));
-      if (error) return c.json(error.message, errorCheck(error));
+      const { token, auth } = getSupabaseAuth(c);
+      const { id, schema } = c.req.valid('json');
+      const [error, result] = await to(
+        updateBoardSchema({ token, userId: auth.sub, boardId: id, schema }),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(result);
     },
   );

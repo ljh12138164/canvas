@@ -383,3 +383,40 @@ export function getZodSchema(
   }
   return null;
 }
+
+/**
+ * 判断base数据的文件类型
+ * @param data 数据
+ * @returns 文件类型 {
+ *  type: 文件类型
+ *  fileType: 详细类型
+ * }
+ */
+export function getFileType(data: string) {
+  const baseType = data.split(';')[0];
+  // 完整类型
+  const fullType = baseType.split(':')[1];
+  // 详细类型
+  const fileTypes = baseType.split('/')[0];
+  // 文件类型
+  const fileType = baseType.split('/')[1];
+  let type = 'file';
+  switch (fileTypes) {
+    case 'data:image':
+      type = 'image';
+      break;
+    case 'data:video':
+      type = 'video';
+      break;
+    case 'data:audio':
+      type = 'audio';
+      break;
+    case 'data:application':
+      type = 'application';
+      break;
+    default:
+      type = 'file';
+      break;
+  }
+  return { type, fileType, fullType };
+}

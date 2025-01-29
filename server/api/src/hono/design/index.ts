@@ -7,7 +7,6 @@ import { show, showPublic } from './route/show';
 import tap from './route/tap';
 import { upvotes } from './route/upvote';
 import { user } from './route/user';
-import { webhooks } from './route/webhooks';
 
 export const design = new Hono()
   .route('/showPublic', showPublic)
@@ -15,7 +14,6 @@ export const design = new Hono()
   .route('/board', board)
   .route('/show', show)
   .route('/tap', tap)
-  .route('/webhook', webhooks)
   .route('/user', user)
   .route('/collection', collections)
   .route('/upvote', upvotes);

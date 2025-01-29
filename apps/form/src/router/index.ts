@@ -115,6 +115,15 @@ const router = createRouter({
           },
         },
         {
+          path: '/workspace/my-submit/:id',
+          name: 'mySubmitById',
+          beforeEnter: routerCheckLogin,
+          component: () => import('../views/workspace/my-sumbit/id.vue'),
+          meta: {
+            title: '我的提交',
+          },
+        },
+        {
           path: '/workspace/submit/:inviteCode',
           name: 'submitForm',
           beforeEnter: routerCheckLogin,

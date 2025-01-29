@@ -117,12 +117,8 @@ const inviteCode = computed(() => data.value?.inviteCode.split(''));
           <CardContent class="flex items-center justify-between gap-2">
             <PinInput id="pin-input" placeholder="○" v-model="inviteCode" disabled>
               <PinInputGroup>
-                <PinInputInput
-                  class="dark:bg-background w-full"
-                  v-for="(id, index) in data.inviteCode.length"
-                  :key="id"
-                  :index="index"
-                />
+                <PinInputInput class="dark:bg-background w-full" v-for="(id, index) in data.inviteCode.length" :key="id"
+                  :index="index" />
               </PinInputGroup>
             </PinInput>
             <Button variant="outline" size="sm" class="h-10 w-20" @click="handleCopy">
@@ -139,13 +135,8 @@ const inviteCode = computed(() => data.value?.inviteCode.split(''));
                 <Button variant="outline" size="sm" class="h-10 w-20"> 取消 </Button>
               </template>
               <template #enter>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  class="h-10 w-20"
-                  :disabled="isUpdateBoardInviteCodePending"
-                  @click="handleRefresh"
-                >
+                <Button variant="outline" size="sm" class="h-10 w-20" :disabled="isUpdateBoardInviteCodePending"
+                  @click="handleRefresh">
                   刷新
                 </Button>
               </template>
@@ -160,6 +151,7 @@ const inviteCode = computed(() => data.value?.inviteCode.split(''));
           <CardHeader>
             <CardTitle>预览表单</CardTitle>
           </CardHeader>
+
           <FormPreviwe :schema="data.schema" @submit="handleSubmit" />
         </CardContent>
       </Card>
