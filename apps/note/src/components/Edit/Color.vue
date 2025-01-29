@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Editor } from '@tiptap/vue-3';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import { watch } from 'vue';
 import { ref } from 'vue';
 import TiptopDown from '../common/TiptopDown.vue';
@@ -18,12 +18,7 @@ watch(
 );
 </script>
 <template>
-  <TiptopDown
-    title="字体颜色"
-    :editor="props.editor"
-    label="字体颜色"
-    icon="lucide:palette"
-  >
+  <TiptopDown title="字体颜色" :editor="props.editor" label="字体颜色" icon="lucide:palette">
     <template #dropdown>
       <v-color-picker v-model="color" />
     </template>

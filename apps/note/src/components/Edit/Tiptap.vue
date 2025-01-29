@@ -8,14 +8,12 @@ import useEditor from '@/store/editor';
 import useUser from '@/store/user';
 // 协作
 import { HocuspocusProvider, HocuspocusProviderWebsocket } from '@hocuspocus/provider';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 // 编辑器扩展
 import Collaboration from '@tiptap/extension-collaboration';
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor';
 import { Color } from '@tiptap/extension-color';
 import Focus from '@tiptap/extension-focus';
 import FontFamily from '@tiptap/extension-font-family';
-import Highlight from '@tiptap/extension-highlight';
 import Link from '@tiptap/extension-link';
 import ListKeymap from '@tiptap/extension-list-keymap';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -34,11 +32,7 @@ import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import { Editor, EditorContent } from '@tiptap/vue-3';
 import { BubbleMenu } from '@tiptap/vue-3';
-import css from 'highlight.js/lib/languages/css';
-import js from 'highlight.js/lib/languages/javascript';
-import ts from 'highlight.js/lib/languages/typescript';
-import html from 'highlight.js/lib/languages/xml';
-import { all, createLowlight } from 'lowlight';
+
 import ImageResize from 'tiptap-extension-resize-image';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { watch } from 'vue';
@@ -87,11 +81,7 @@ new IndexeddbPersistence(
 //   isLoading.value = false;
 // });
 // 文本编辑器
-const lowlight = createLowlight(all);
-lowlight.register('html', html);
-lowlight.register('css', css);
-lowlight.register('js', js);
-lowlight.register('ts', ts);
+
 // 创建ws
 const websocket = new HocuspocusProviderWebsocket({
   url: import.meta.env.VITE_PUBLIC_WS_RENDER,
@@ -148,9 +138,6 @@ const editor = ref<Editor>(
         },
       }),
       // theme
-      CodeBlockLowlight.configure({
-        lowlight,
-      }),
       FontFamily,
       StarterKit.configure({
         codeBlock: false,
@@ -179,7 +166,6 @@ const editor = ref<Editor>(
       }),
 
       // 标记类
-      Highlight.configure({ multicolor: true }),
       Link.configure({
         openOnClick: true,
         defaultProtocol: 'https',

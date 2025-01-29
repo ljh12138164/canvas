@@ -12,3 +12,6 @@ dist/
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+# 打包后产物
+stats.html
