@@ -1,23 +1,19 @@
 .tiptap {
-  min-height: 150px !important;
-  max-height: 500px !important;
-  padding: 0px 10px;
-  overflow-y: scroll !important;
-  scrollbar-width: none !important;
   background-color: white;
-  /* margin: 10px 0; */
-  border-right: 1.5px solid #c7c7c7;
   border-bottom: 1.5px solid #c7c7c7;
   border-left: 1.5px solid #c7c7c7;
+  border-right: 1.5px solid #c7c7c7;
   border-top: 1.5px solid #c7c7c7;
+  max-height: 500px !important;
+  min-height: 150px !important;
+  overflow-y: scroll !important;
+  padding: 0 10px;
+  scrollbar-width: none !important;
+
   &:focus-visible {
     outline: none;
   }
-}
-.bubble-menu {
-  width: 80dvw;
-}
-.tiptap {
+
   h1,
   h2,
   h3,
@@ -28,12 +24,14 @@
     margin-top: 2.5rem;
     text-wrap: pretty;
   }
+
   .mention {
     background-color: var(--purple-light);
     border-radius: 0.4rem;
     box-decoration-break: clone;
     color: var(--purple);
     padding: 0.1rem 0.3rem;
+
     &::after {
       content: "\200B";
     }
@@ -41,8 +39,8 @@
 
   h1,
   h2 {
-    margin-top: 3.5rem;
     margin-bottom: 1.5rem;
+    margin-top: 3.5rem;
   }
 
   h1 {
@@ -64,22 +62,25 @@
   }
 
   ul li {
-    margin-left: 20px;
     list-style-type: disc !important;
+    margin-left: 20px;
 
     p {
-      margin-top: 0.25em;
       margin-bottom: 0.25em;
+      margin-top: 0.25em;
     }
   }
+
   ol li {
-    margin-left: 20px;
     list-style-type: decimal;
+    margin-left: 20px;
+
     p {
-      margin-top: 0.25em;
       margin-bottom: 0.25em;
+      margin-top: 0.25em;
     }
   }
+
   ul[data-type="taskList"] {
     list-style: none;
     margin-left: 0;
@@ -138,13 +139,10 @@
       text-align: left;
     }
 
-    .selectedCell:after {
+    .selectedCell::after {
       background: var(--gray-2);
       content: "";
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
+      inset: 0;
       pointer-events: none;
       position: absolute;
       z-index: 2;
@@ -167,8 +165,9 @@
     transition: all 0.3s ease;
 
     &::-webkit-scrollbar {
-      width: 12px;
       height: 12px;
+      width: 12px;
+
       &:hover {
         cursor: pointer;
       }
@@ -180,8 +179,8 @@
 
     &::-webkit-scrollbar-thumb {
       background-color: #888;
-      border-radius: 10px;
       border: 3px solid #f1f1f1;
+      border-radius: 10px;
     }
 
     &::-webkit-scrollbar-thumb:hover {
@@ -193,6 +192,7 @@
     cursor: ew-resize;
     cursor: col-resize;
   }
+
   img {
     display: block;
     height: auto;
@@ -203,11 +203,13 @@
       outline: 3px solid var(--purple);
     }
   }
+
   blockquote {
     border-left: 3px solid var(--gray-3);
     margin: 1.5rem 0;
     padding-left: 1rem;
   }
+
   hr {
     border: none;
     border-top: 1px solid var(--gray-2);
@@ -239,6 +241,7 @@
   .hljs-quote {
     color: #616161;
   }
+
   .hljs-variable,
   .hljs-template-variable,
   .hljs-attribute,
@@ -251,6 +254,7 @@
   .hljs-selector-class {
     color: #f98181;
   }
+
   .hljs-number,
   .hljs-meta,
   .hljs-built_in,
@@ -260,22 +264,27 @@
   .hljs-params {
     color: #fbbc88;
   }
+
   .hljs-string,
   .hljs-symbol,
   .hljs-bullet {
     color: #b9f18d;
   }
+
   .hljs-title,
   .hljs-section {
     color: #faf594;
   }
+
   .hljs-keyword,
   .hljs-selector-tag {
     color: #70cff8;
   }
+
   .hljs-emphasis {
     font-style: italic;
   }
+
   .hljs-strong {
     font-weight: 700;
   }
@@ -288,7 +297,7 @@
   }
 
   code {
-    background-color: rgba(88, 5, 255, 0.05);
+    background-color: rgb(88 5 255 / 0.05);
     border-radius: 0.4rem;
     color: #000;
     font-size: 0.85rem;
@@ -300,8 +309,8 @@
     cursor: pointer;
 
     &:hover {
-      color: #1b15ca;
       border-bottom: 1px solid #1b15ca;
+      color: #1b15ca;
     }
   }
 
@@ -367,6 +376,10 @@
   }
 }
 
+.bubble-menu {
+  width: 80dvw;
+}
+
 .tiptap p.is-editor-empty:first-child::before {
   color: #adb5bd;
   content: attr(data-placeholder);
@@ -387,9 +400,11 @@
   background-color: #000;
   border: 1.5px solid #c7c7c7;
 }
+
 .tiptap.light {
   background-color: #fff;
 }
+
 /* Dropdown menu */
 .dropdown-menu {
   background: var(--white);
@@ -408,11 +423,12 @@
     background-color: transparent;
     display: flex;
     gap: 0.25rem;
-    text-align: left;
-    width: 100%;
     padding: 0.4rem;
+    text-align: left;
 
     transition: all 0.3s ease;
+    width: 100%;
+
     &:hover,
     &:hover.is-selected {
       background: var(--gray-3);

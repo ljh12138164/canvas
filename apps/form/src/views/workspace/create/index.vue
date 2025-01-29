@@ -32,13 +32,10 @@ const handleDelete = async (id: string) => {
     </section>
 
     <section class="preview-list">
-      <h2 class="text-xl font-bold mb-4">表单列表</h2>
+      <h2 class="text-xl font-bold mb-4">表单列表:(未保存)</h2>
       <div v-if="previewList.length" class="grid grid-cols-1 gap-4">
-        <div
-          v-for="item in previewList"
-          :key="item.id"
-          class="border rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer flex justify-between"
-        >
+        <div v-for="item in previewList" :key="item.id"
+          class="border rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer flex justify-between">
           <RouterLink :to="`/workspace/create/${item.id}`">
             <div class="flex items-center justify-between">
               <span class="text-lg">表单 ID: {{ item.id }}</span>

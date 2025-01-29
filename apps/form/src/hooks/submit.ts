@@ -46,3 +46,34 @@ export const useGetMySubmit = () => {
     },
   });
 };
+// type MySubmitByIdRequest = InferRequestType<(typeof client.submit)['submit']['$get']>;
+type MySubmitByIdResponse = InferResponseType<(typeof client.submit)['submit']['$get'], 200>;
+/**
+ * ### 根据id获取提交
+ * @param id 提交id
+ * @returns 提交结果
+ */
+export const useGetMySubmitById = (id: string) => {
+  return useQuery<MySubmitByIdResponse, Error, MySubmitByIdResponse>({
+    queryKey: ['mySubmitById', id],
+    enabled: !!id,
+    retry: (failureCount, error) => {
+      if (failureCount >= 3) return false;
+      if (error instanceof Error && error.message.includes('404')) return false;
+      return true;
+    },
+    queryFn: async () => {
+      const token = await getNewToken();
+      const data = await client.submit.submit.$get(
+        { query: { id } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (!data.ok) throw new Error(data.statusText);
+      return data.json();
+    },
+  });
+};

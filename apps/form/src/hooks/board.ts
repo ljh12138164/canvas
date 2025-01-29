@@ -67,6 +67,12 @@ export const useBoard = (id: string) => {
   const router = useRouter();
   return useQuery<GetBoardResponse, Error>({
     queryKey: ['board', id],
+    retry: (failureCount, error) => {
+      // 如果错误信息是 '未找到资源'，则不重试
+      if (error.message === '未找到资源') return false;
+      // 否则，重试3次
+      return failureCount < 3;
+    },
     queryFn: async () => {
       const token = await getNewToken();
       if (!token) router.push('/login');
@@ -79,11 +85,10 @@ export const useBoard = (id: string) => {
         },
       );
       if (!data.ok) {
-        // @ts-ignore
         const error = (await data.json()) as { message: string };
+        if (error.message === '未找到资源') router.back();
         throw new Error(error.message);
       }
-      if (data.status === 404) router.back();
       const json = await data.json();
       return json;
     },
@@ -108,7 +113,6 @@ export const useUpdateBoard = () => {
         },
       });
       if (!data.ok) {
-        // @ts-ignore
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
@@ -137,7 +141,6 @@ export const useDeleteBoard = () => {
         },
       });
       if (!data.ok) {
-        // @ts-ignore
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
@@ -166,7 +169,6 @@ export const useUpdateBoardInviteCode = () => {
         },
       });
       if (!data.ok) {
-        // @ts-ignore
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
@@ -176,10 +178,7 @@ export const useUpdateBoardInviteCode = () => {
   });
 };
 
-type GetInviteCodeDataResponse = InferResponseType<
-  (typeof client.board.submit)[':inviteCode']['$get'],
-  200
->;
+type GetInviteCodeDataResponse = InferResponseType<(typeof client.board.submit)['$get'], 200>;
 
 /**
  * @description 获取邀请码数据
@@ -191,8 +190,8 @@ export const useGetInviteCodeData = (inviteCode: string) => {
     queryKey: ['submit', inviteCode],
     queryFn: async () => {
       const token = await getNewToken();
-      const data = await client.board.submit[':inviteCode'].$get(
-        { param: { inviteCode } },
+      const data = await client.board.submit.$get(
+        { query: { inviteCode } },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -200,7 +199,35 @@ export const useGetInviteCodeData = (inviteCode: string) => {
         },
       );
       if (!data.ok) {
-        // @ts-ignore
+        const error = (await data.json()) as { message: string };
+        throw new Error(error.message);
+      }
+
+      const json = await data.json();
+      return json;
+    },
+  });
+};
+
+type UpdateBoardSchema = InferRequestType<typeof client.board.shema.$patch>;
+type UpdateBoardSchemaResponse = InferResponseType<typeof client.board.shema.$patch, 200>;
+/**
+ * @description 更新表单字段
+ * @param id 表单id
+ * @returns 更新结果
+ */
+export const useUpdateBoardSchema = () => {
+  const router = useRouter();
+  return useMutation<UpdateBoardSchemaResponse, Error, UpdateBoardSchema>({
+    mutationFn: async (datas) => {
+      const token = await getNewToken();
+      if (!token) router.push('/login');
+      const data = await client.board.shema.$patch(datas, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!data.ok) {
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }

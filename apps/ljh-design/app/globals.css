@@ -6,6 +6,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -21,9 +22,11 @@
   .text-balance {
     text-wrap: balance;
   }
+
   .entry {
     animation: entrys 0.35s ease-in-out;
   }
+
   .animate-draw-path {
     animation: draw-path 1.5s ease-out infinite;
   }
@@ -90,25 +93,27 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
+
 .react-picker {
   width: auto !important;
 }
 
 .chrome-picker {
-  width: auto !important;
-  box-shadow: none !important;
   border-radius: 0.5rem !important;
+  box-shadow: none !important;
   overflow: hidden !important;
+  width: auto !important;
 }
 
 .controls {
-  display: flex;
   border: 1px solid #ccc;
   border-top: 0;
+  display: flex;
   padding: 10px;
 }
 
@@ -117,18 +122,19 @@
 }
 
 .state {
-  margin: 10px 0;
   font-family: monospace;
+  margin: 10px 0;
 }
 
 .state-title {
   color: #999;
   text-transform: uppercase;
 }
+
 /* 全局滚动条样式 */
 ::-webkit-scrollbar {
-  width: 8px;
   height: 8px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -138,8 +144,8 @@
 
 ::-webkit-scrollbar-thumb {
   background-color: var(--foreground);
-  border-radius: 10px;
   border: 2px solid var(--background);
+  border-radius: 10px;
 }
 
 .dark .lower-canvas {

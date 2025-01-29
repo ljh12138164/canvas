@@ -22,6 +22,7 @@ defineProps<{
 }>();
 </script>
 <template>
+  <h3 class="text-lg font-bold">表单配置</h3>
   <div class="flex flex-col pb-20 gap-2" v-if="data">
     <section v-if="data.type === 'input'">
       <InputItem :updateList2="updateList2" :id="id" :data="data" />

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 html {
   font-size: 90%;
 }
@@ -10,21 +11,21 @@ html {
     --white: #fff;
     --black: #2e2b29;
     --black-contrast: #110f0e;
-    --gray-1: rgba(61, 37, 20, 0.05);
-    --gray-2: rgba(61, 37, 20, 0.08);
-    --gray-3: rgba(61, 37, 20, 0.12);
-    --gray-4: rgba(53, 38, 28, 0.3);
-    --gray-5: rgba(28, 25, 23, 0.6);
+    --gray-1: rgb(61 37 20 / 0.05);
+    --gray-2: rgb(61 37 20 / 0.08);
+    --gray-3: rgb(61 37 20 / 0.12);
+    --gray-4: rgb(53 38 28 / 0.3);
+    --gray-5: rgb(28 25 23 / 0.6);
     --green: #22c55e;
     --purple: #6a00f5;
     --purple-contrast: #5800cc;
-    --purple-light: rgba(88, 5, 255, 0.05);
+    --purple-light: rgb(88 5 255 / 0.05);
     --yellow-contrast: #facc15;
-    --yellow: rgba(250, 204, 21, 0.4);
+    --yellow: rgb(250 204 21 / 0.4);
     --yellow-light: #fffae5;
     --red: #ff5c33;
     --red-light: #ffebe5;
-    --shadow: 0px 12px 33px 0px rgba(0, 0, 0, 0.06), 0px 3.618px 9.949px 0px rgba(0, 0, 0, 0.04);
+    --shadow: 0 12px 33px 0 rgb(0 0 0 / 0.06), 0 3.618px 9.949px 0 rgb(0 0 0 / 0.04);
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -56,21 +57,21 @@ html {
     --white: #fff;
     --black: #2e2b29;
     --black-contrast: #110f0e;
-    --gray-1: rgba(61, 37, 20, 0.05);
-    --gray-2: rgba(61, 37, 20, 0.08);
-    --gray-3: rgba(61, 37, 20, 0.12);
-    --gray-4: rgba(53, 38, 28, 0.3);
-    --gray-5: rgba(28, 25, 23, 0.6);
+    --gray-1: rgb(61 37 20 / 0.05);
+    --gray-2: rgb(61 37 20 / 0.08);
+    --gray-3: rgb(61 37 20 / 0.12);
+    --gray-4: rgb(53 38 28 / 0.3);
+    --gray-5: rgb(28 25 23 / 0.6);
     --green: #22c55e;
     --purple: #6a00f5;
     --purple-contrast: #5800cc;
-    --purple-light: rgba(88, 5, 255, 0.05);
+    --purple-light: rgb(88 5 255 / 0.05);
     --yellow-contrast: #facc15;
-    --yellow: rgba(250, 204, 21, 0.4);
+    --yellow: rgb(250 204 21 / 0.4);
     --yellow-light: #fffae5;
     --red: #ff5c33;
     --red-light: #ffebe5;
-    --shadow: 0px 12px 33px 0px rgba(0, 0, 0, 0.06), 0px 3.618px 9.949px 0px rgba(0, 0, 0, 0.04);
+    --shadow: 0 12px 33px 0 rgb(0 0 0 / 0.06), 0 3.618px 9.949px 0 rgb(0 0 0 / 0.04);
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -102,56 +103,64 @@ html {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
+
 .cl-avatarImage {
-  width: 100% !important;
   height: 100% !important;
+  width: 100% !important;
 }
+
 .cl-avatarBox,
 .cl-userButtonBox,
 .cl-userButtonTrigger {
-  margin-left: 0.2rem;
-  height: 2.5rem !important;
-  width: 2.5rem !important;
-  display: flex !important;
   align-items: center !important;
-  justify-content: center !important;
-  border: none !important;
   background-color: transparent !important;
-}
-.cl-userButtonTrigger:focus {
-  box-shadow: none;
   border: none !important;
+  display: flex !important;
+  height: 2.5rem !important;
+  justify-content: center !important;
+  margin-left: 0.2rem;
+  width: 2.5rem !important;
+}
+
+.cl-userButtonTrigger:focus {
+  border: none !important;
+  box-shadow: none;
 }
 
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-track {
-  border: 4px solid transparent;
   background-clip: padding-box;
+  border: 4px solid transparent;
   border-radius: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background-color: transparent;
 }
+
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-track {
-  border: 4px solid transparent;
   background-clip: padding-box;
+  border: 4px solid transparent;
   border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: #0d0d0d00;
 }
+
 ::-webkit-scrollbar-corner {
   background-color: transparent;
 }
+
 ::-webkit-scrollbar {
-  width: 0.875rem;
   height: 0.875rem;
+  width: 0.875rem;
 }
 
 ::-webkit-scrollbar-button {
@@ -179,6 +188,7 @@ html {
 .rbc-mouth-row {
   @apply border-t border-x;
 }
+
 :not(.rbc-mouth-row ~ .rbc-mouth-row) .rbc-mouth-row {
   @apply rounded-t-md;
 }

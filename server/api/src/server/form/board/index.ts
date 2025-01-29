@@ -178,6 +178,31 @@ export const getInviteCodeData = async ({
     .select('*')
     .eq('inviteCode', inviteCode);
   if (error) throw new Error('服务器错误');
-  if (!data) throw new Error('未找到资源');
+  if (!data.length) throw new Error('未找到资源');
   return data[0];
+};
+
+/**
+ * ## 更新字段表单数据
+ * @param param0
+ * @returns
+ */
+export const updateBoardSchema = async ({
+  token,
+  userId,
+  boardId,
+  schema,
+}: {
+  token: string;
+  userId: string;
+  boardId: string;
+  schema: string;
+}): Promise<boolean> => {
+  const { error } = await supabaseForm(token)
+    .from('form')
+    .update([{ schema }])
+    .eq('id', boardId)
+    .eq('userId', userId);
+  if (error) throw new Error('服务器错误');
+  return true;
 };

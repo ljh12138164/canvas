@@ -219,4 +219,27 @@ export type CreateFormItem =
   | BigText
   | Slider
   | ObjectItem;
-// 可更改表单项
+
+// 提交的表单项
+export interface SubmitFormItem {
+  // 可能是数字 字符串 布尔值 数组 对象 或文件
+  SubmitValue: any;
+  // 提交的类型
+  type: CreateFormItem['type'];
+  name: string;
+  // 标签
+  label: string;
+  // 选项
+  options?: { name: string; id: string }[];
+  // 隐藏标签
+  hiddenLabel: boolean;
+  //----文件才有的----
+  // 文件
+  file?: string;
+  // 文件类型
+  inputType?: string;
+  // 文件全类型
+  fullType?: string;
+  // 文件类型
+  fileType?: string;
+}

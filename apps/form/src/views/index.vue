@@ -48,17 +48,6 @@
             <p class="text-muted-foreground">简单拖拽即可完成表单设计，所见即所得的编辑体验</p>
           </CardContent>
         </Card>
-
-        <Card>
-          <CardHeader>
-            <Palette class="h-8 w-8 mb-2" />
-            <CardTitle>主题定制</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p class="text-muted-foreground">支持自定义主题，轻松打造符合品牌调性的表单</p>
-          </CardContent>
-        </Card>
-
         <Card>
           <CardHeader>
             <Database class="h-8 w-8 mb-2" />

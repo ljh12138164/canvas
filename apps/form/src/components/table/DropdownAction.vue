@@ -86,7 +86,7 @@ const handleEdit = async () => {
       <DropdownMenuItem class="flex items-center gap-2" asChild>
         <Button variant="ghost" class="p-0 w-full cursor-pointer" @click="handlePreview">
           <Presentation />
-          <span>预览</span>
+          <span>详细</span>
         </Button>
       </DropdownMenuItem>
       <DropdownMenuItem class="flex items-center gap-2" asChild>
@@ -117,7 +117,9 @@ const handleEdit = async () => {
                 <Button ref="closeRef2"> 取消 </Button>
               </DialogClose>
               <Button variant="destructive" @click="handleEdit">
-                <p class="flex items-center gap-2"><Pencil />编辑</p>
+                <p class="flex items-center gap-2">
+                  <Pencil />编辑
+                </p>
               </Button>
             </DialogFooter>
           </DialogContent>

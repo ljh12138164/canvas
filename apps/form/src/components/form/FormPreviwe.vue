@@ -31,29 +31,17 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <ScrollArea class="max-h-[calc(100dvh-600px)] flex px-10 overflow-hidden entry" v-if="!loading">
-    <section class="h-full px-2" v-if="formData && Object.keys(formData).length">
-      <AutoForm
-        class="w-full flex flex-col gap-2"
-        :class="props.className"
-        @submit="emit('submit', $event)"
-        :schema="CreateShemas as z.ZodObject<any, any, any, any>"
-        :field-config="fieldConfig"
-      >
-        <Button
-          type="submit"
-          class="w-full py-2 transition-all"
-          variant="outline"
-          :disabled="isPending"
-        >
-          {{ isPending ? '提交中...' : '提交' }}
-        </Button>
-      </AutoForm>
-    </section>
-    <div v-else class="flex flex-col items-center justify-center max-h-[calc(100dvh-600px)]">
-      <p class="text-center text-sm text-gray-500">暂无数据</p>
-      <Button class="w-[100px] py-2 transition-all" @click="router.back()"> 返回 </Button>
-    </div>
-  </ScrollArea>
+  <section class="h-full px-2" v-if="formData && Object.keys(formData).length">
+    <AutoForm class="w-full flex flex-col gap-2" :class="props.className" @submit="emit('submit', $event)"
+      :schema="CreateShemas as z.ZodObject<any, any, any, any>" :field-config="fieldConfig">
+      <Button type="submit" class="w-full py-2 transition-all" variant="outline" :disabled="isPending">
+        {{ isPending ? '提交中...' : '提交' }}
+      </Button>
+    </AutoForm>
+  </section>
+  <div v-else class="flex flex-col items-center justify-center max-h-[calc(100dvh-600px)]">
+    <p class="text-center text-sm text-gray-500">暂无数据</p>
+    <Button class="w-[100px] py-2 transition-all" @click="router.back()"> 返回 </Button>
+  </div>
   <Skeleton v-else class="max-h-[calc(100dvh-600px)] flex px-10 overflow-hidden" />
 </template>
