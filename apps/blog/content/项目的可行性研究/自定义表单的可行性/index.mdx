@@ -5,27 +5,39 @@ export const metadata = {
 
 ### **基于zod和veevalidate的表单生成器**
 
-使用zod可以为多个字段生成类型，使用veevalidate可以为多个字段生成验证规则，可以满足大部分表单的需求。 ![alt text](./image.png)
+使用zod可以为多个字段生成类型，使用veevalidate可以为多个字段生成验证规则，可以满足大部分表单的需求。
+
+ ![alt text](./image.png)
 
 #### z.describe
 
-可以为字段添加描述，veevalidate 可以为字段添加验证规则，可以满足大部分表单的需求。 ![alt text](./image-1.png)
+可以为字段添加描述，veevalidate 可以为字段添加验证规则，可以满足大部分表单的需求。
+
+ ![alt text](./image-1.png)
 
 #### z.optional
 
-可以为字段添加可选，veevalidate 可以为字段添加验证规则，可以满足大部分表单的需求。 ![alt text](./image-2.png)
+可以为字段添加可选，veevalidate 可以为字段添加验证规则，可以满足大部分表单的需求。
+
+ ![alt text](./image-2.png)
 
 #### z.default
 
-可以为字段添加默认值，veevalidate 可以为字段添加验证规则，可以满足大部分表单的需求。 ![alt text](./image-3.png)
+可以为字段添加默认值，veevalidate 可以为字段添加验证规则，可以满足大部分表单的需求。
+
+ ![alt text](./image-3.png)
 
 #### z.enum
 
-可以为字段添加数组类型，veevalidate 可以为字段添加验证规则，可以满足大部分表单的需求。 ![alt text](./image-5.png)
+可以为字段添加数组类型，veevalidate 可以为字段添加验证规则，可以满足大部分表单的需求。
+
+ ![alt text](./image-5.png)
 
 #### z.object(z.object) 嵌套
 
-可以为字段添加子对象，veevalidate 可以为字段添加验证规则，可以满足大部分表单的需求。 ![alt text](./image-6.png)
+可以为字段添加子对象，veevalidate 可以为字段添加验证规则，可以满足大部分表单的需求。
+
+ ![alt text](./image-6.png)
 
 ---
 
@@ -33,39 +45,63 @@ export const metadata = {
 
 #### 字段配置
 
-由于 zod 不允许向模式添加其他属性，因此您可以使用fieldConfigprop 为每个字段的 UI 添加其他配置。 ![alt text](./image-7.png)
+由于 zod 不允许向模式添加其他属性，因此您可以使用fieldConfigprop 为每个字段的 UI 添加其他配置。
+
+ ![alt text](./image-7.png)
 
 #### 自定义标签
 
-如果您想通过Zod 的描述覆盖预定义的标签，您可以使用该属性来自定义标签。 ![alt text](./image-8.png)
+如果您想通过Zod 的描述覆盖预定义的标签，您可以使用该属性来自定义标签。
+
+ ![alt text](./image-8.png)
 
 #### 自定义描述
 
-您可以使用该属性来自定义描述。 ![alt text](./image-9.png)
+您可以使用该属性来自定义描述。
+
+ ![alt text](./image-9.png)
 
 #### 自定义属性
 
-您可以使用该属性来自定义属性。 ![alt text](./image-10.png)
+您可以使用该属性来自定义属性。
+
+ ![alt text](./image-10.png)
 
 #### 自定义组件
 
-您可以使用该属性来自定义组件覆盖默认组件。默认组件![alt text](./image-12.png) 。 [示例](https://www.shadcn-vue.com/docs/components/auto-form.html#component)
+您可以使用该属性来自定义组件覆盖默认组件。默认组件
+
+![alt text](./image-12.png)
+
+ [示例](https://www.shadcn-vue.com/docs/components/auto-form.html#component)
 
 #### 自定义渲染
 
-您可以使用该属性来自定义渲染。![alt text](./image-11.png)
+您可以使用该属性来自定义渲染。
+
+![alt text](./image-11.png)
 
 #### 访问表单元素
 
-提交时 ![alt text](./image-13.png)
+提交时 
+
+![alt text](./image-13.png)
 
 #### 添加到表单下方
 
-传递给AutoForm组件的所有子项都将呈现在表单下方。 ![alt text](./image-14.png)
+传递给AutoForm组件的所有子项都将呈现在表单下方。
+
+ ![alt text](./image-14.png)
 
 #### 字段依赖
 
-您可以使用该属性来自定义字段依赖。 ![alt text](./image-15.png) 支持的依赖关系![alt text](./image-16.png)
+您可以使用该属性来自定义字段依赖。
+
+ ![alt text](./image-15.png) 
+ 
+ 支持的依赖关系
+ 
+ ![alt text](./image-16.png)
 
 ### 示例
 

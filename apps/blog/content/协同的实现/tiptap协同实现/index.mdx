@@ -33,7 +33,9 @@ struct(结构)这个词。
 Hocuspocus Server 是一个 WebSocket 后端，它拥有快速启动所需的一切，可以将 Y.js 集成到您现有的基础架构中，并扩展到百万用户。提供程序是 Y.js 在不同用户之间建立通信或在浏览器中缓存更新的方式。Hocuspocus 自带提供程序，并且不再与其他 y 提供程序兼容（自 v2 起），因为我们支持多路复用以通过同一个 websocket 连接同步多个文档。
 它带有 WebSocket 消息认证、用于向控制台添加详细输出的调试模式、一些事件挂钩、不同的重新连接策略、改进的错误处理以及用于 Awareness 协议的友好 API。所有 Y.js 提供程序都可以一起使用。其中包括 Hocuspocus 提供程序和原始y-websocket
 
-#### 数据的保存（webhook实现） 可看[这里](https://github.com/ljh12138164/canvas/blob/master/server/ws/src/index.ts)
+#### 数据的保存（webhook实现） 
+
+可看[这里](https://github.com/ljh12138164/canvas/blob/master/server/ws/src/index.ts)
 
 这个是官方提供的一个扩展`@hocuspocus/extension-webhook`，可以接入现有的api
 
@@ -41,4 +43,6 @@ Hocuspocus Server 是一个 WebSocket 后端，它拥有快速启动所需的一
 
 当有文档的更新的时候，将更新后的文档保存到数据库
 
-详细的数据接口看官方的[文档](https://tiptap.dev/docs/hocuspocus/server/extensions)
+详细的数据接口看官方的文档。
+
+[文档](https://tiptap.dev/docs/hocuspocus/server/extensions)
