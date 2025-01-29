@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Editor } from '@tiptap/vue-3';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import { ref, watch } from 'vue';
 import TiptopDown from '../common/TiptopDown.vue';
 
@@ -17,13 +17,7 @@ watch(
 );
 </script>
 <template>
-  <TiptopDown
-    title="字体高亮"
-    :editor="props.editor"
-    label="字体高亮"
-    icon="ant-design:highlight-outlined"
-    :height="200"
-  >
+  <TiptopDown title="字体高亮" :editor="props.editor" label="字体高亮" icon="ant-design:highlight-outlined" :height="200">
     <template #dropdown>
       <v-color-picker v-model="color" />
     </template>
