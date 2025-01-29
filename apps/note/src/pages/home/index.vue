@@ -65,7 +65,7 @@ onBeforeMount(async () => {
         <div class="features-grid">
           <div v-for="feature in features" :key="feature.title" class="feature-card">
             <div class="feature-icon">{{ feature.icon }}</div>
-            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.title }}</p>
             <p>{{ feature.description }}</p>
           </div>
         </div>
