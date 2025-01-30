@@ -77,3 +77,34 @@ export const useGetMySubmitById = (id: string) => {
     },
   });
 };
+
+type MySubmitFormResponse = InferResponseType<(typeof client.submit)['sumbitForm']['$get'], 200>;
+/**
+ * ### 根据id获取提交
+ * @param id 提交id
+ * @returns 提交结果
+ */
+export const useGetSubmitFormById = (id: string) => {
+  return useQuery<MySubmitFormResponse, Error, MySubmitFormResponse>({
+    queryKey: ['mySubmitById', id],
+    enabled: !!id,
+    retry: (failureCount, error) => {
+      if (failureCount >= 3) return false;
+      if (error instanceof Error && error.message.includes('404')) return false;
+      return true;
+    },
+    queryFn: async () => {
+      const token = await getNewToken();
+      const data = await client.submit.sumbitForm.$get(
+        { query: { id } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (!data.ok) throw new Error(data.statusText);
+      return data.json();
+    },
+  });
+};

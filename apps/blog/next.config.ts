@@ -1,11 +1,17 @@
+import withBundleAnalyzer from '@next/bundle-analyzer';
+import type { NextConfig } from 'next';
 import nextra from 'nextra';
-
+let nextConfig: NextConfig = {
+  compress: true,
+};
 const withNextra = nextra({
   // 使用next的Image图片优化
   staticImage: true,
 });
+if (process.env.ANALYZE) {
+  nextConfig = withBundleAnalyzer({
+    enabled: true,
+  })();
+}
 
-// You can include other Next.js configuration options here, in addition to Nextra settings:
-export default withNextra({
-  // ... Other Next.js config options
-});
+export default withNextra(nextConfig);

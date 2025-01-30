@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import FileList from '@/components/common/FileList.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import type { SubmitFormItem } from '@/types/form';
+import type { FileType, SubmitFormItem } from '@/types/form';
 defineProps<{
   submit: SubmitFormItem;
 }>();
@@ -53,8 +54,13 @@ defineProps<{
         </CardContent>
     </Card>
     <Card v-else-if="submit.type === 'file'">
-        <h2>{{ submit.label }}</h2>
-        <!-- <FileLish :file="submit.file" /> -->
+        <CardHeader>
+            <CardTitle>文件: <span class="text-xl " v-if="!submit.hiddenLabel"> {{ submit.label }}</span>
+            </CardTitle>
+        </CardHeader>
+        <CardContent>
+            <FileList :sumbit="submit as FileType" />
+        </CardContent>
     </Card>
     <Card v-else-if="submit.type === 'bigText'">
         <CardHeader>

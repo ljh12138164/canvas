@@ -3,10 +3,8 @@ import Table from '@/components/table/Table.vue';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGetrBoard } from '@/hooks/board';
-import useUsers from '@/stores/user';
 import { Plus } from 'lucide-vue-next';
 import { RouterLink } from 'vue-router';
-const { userData } = useUsers();
 const { data, isLoading, error } = useGetrBoard();
 </script>
 <template>
