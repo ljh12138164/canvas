@@ -1,5 +1,5 @@
 import to from 'await-to-js';
-import type { ChatMessage, MessageType } from '../../../types/jebt/board';
+import { type ChatMessage, MessageType } from '../../../types/jebt/board';
 import { supabaseJebt } from '../../supabase/jebt';
 import { checkUser, uploadImageclound } from '../board';
 

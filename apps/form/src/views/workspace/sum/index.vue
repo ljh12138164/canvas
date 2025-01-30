@@ -17,7 +17,7 @@ const { data, isLoading } = useGetrBoard();
       <Skeleton class="w-full" />
     </section>
     <section v-else-if="data" class="flex flex-col gap-2">
-      <Card v-for="item in data" @click="router.push(`/workspace/sum${item.id}`)" class=" cursor-pointer">
+      <Card v-for="item in data" @click="router.push(`/workspace/sum/${item.id}`)" class=" cursor-pointer">
         <CardHeader>
           <CardTitle>名字：{{ item.name }}</CardTitle>
           <CardDescription>描述：{{ item.description ?? "--" }}</CardDescription>

@@ -4,7 +4,10 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGetSubmitFormById } from '@/hooks/submit';
+import { downLoad } from '@/lib';
+import { encode } from 'base64-arraybuffer';
 import ExcelJS from 'exceljs';
+// import { exportXlxs } from '@/hooks/xlxs';
 import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
@@ -29,8 +32,9 @@ const formData = computed(() => {
   if (!data.value) return;
   return data.value?.submit?.find((item) => item.id === detail.value);
 });
+// const { mutate } = exportXlxs()
 
-function exports() {
+async function exports() {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Sheet1');
   worksheet.columns = [
@@ -41,10 +45,15 @@ function exports() {
     { name: 'John', age: 30 },
     { name: 'Jane', age: 25 },
   ]);
-  const fileWork = new FileReader();
-  const file = new File(worksheet, 'myExcelFile.xlsx', {
-    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  });
+  const buffer = await workbook.xlsx.writeBuffer();
+  // data:image/png;base64,
+  const base64 = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${encode(buffer)}`;
+  // 下载文件
+  downLoad(base64, 'xlsx');
+  // const fileWork = new FileReader();
+  // const file = new File(worksheet, 'myExcelFile.xlsx', {
+  //   type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  // });
 }
 </script>
 <template>
