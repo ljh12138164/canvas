@@ -233,6 +233,9 @@ export interface SubmitFormItem {
   options?: { name: string; id: string }[];
   // 隐藏标签
   hiddenLabel: boolean;
+}
+
+export interface FileType extends SubmitFormItem {
   //----文件才有的----
   // 文件
   file?: string;

@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import type { Form, SumbitForm } from '../../../types/form';
+import type { Profiles } from '../../../types/note/workspace';
 import { supabaseForm } from '../../supabase/form';
 
 /**
@@ -70,6 +71,30 @@ export const getMySubmitById = async ({
   const { data, error } = await supabaseForm(token)
     .from('submit')
     .select('*,form(*)')
+    .eq('id', id)
+    .eq('userId', userId);
+  if (error) throw new Error('服务器错误');
+  if (data.length === 0) throw new Error('资源不存在');
+  return data[0];
+};
+
+/**
+ * ### 获取提交的表单
+ * @param param0
+ * @returns
+ */
+export const getMysumbitForm = async ({
+  token,
+  id,
+  userId,
+}: {
+  token: string;
+  id: string;
+  userId: string;
+}): Promise<Form & { submit: (SumbitForm & { profiles: Profiles })[] }> => {
+  const { data, error } = await supabaseForm(token)
+    .from('form')
+    .select('*,submit(*,profiles(*))')
     .eq('id', id)
     .eq('userId', userId);
   if (error) throw new Error('服务器错误');

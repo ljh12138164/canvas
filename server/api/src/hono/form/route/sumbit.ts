@@ -4,7 +4,12 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
-import { createSubmit, getMySubmit, getMySubmitById } from '../../../server/form/sumbit';
+import {
+  createSubmit,
+  getMySubmit,
+  getMySubmitById,
+  getMysumbitForm,
+} from '../../../server/form/sumbit';
 
 export const submit = new Hono()
   .use(checkToken(process.env.SUPABASE_FORM_JWT!))
@@ -56,6 +61,23 @@ export const submit = new Hono()
       const { token, auth } = getSupabaseAuth(c);
       const { id } = c.req.valid('query');
       const [error, result] = await to(getMySubmitById({ token, id, userId: auth.sub }));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(result);
+    },
+  )
+  //获取提交的表单
+  .get(
+    '/sumbitForm',
+    zValidator(
+      'query',
+      z.object({
+        id: z.string(),
+      }),
+    ),
+    async (c) => {
+      const { token, auth } = getSupabaseAuth(c);
+      const { id } = c.req.valid('query');
+      const [error, result] = await to(getMysumbitForm({ token, id, userId: auth.sub }));
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(result);
     },

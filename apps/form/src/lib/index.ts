@@ -2,6 +2,7 @@ import { useToast } from '@/components/ui/toast';
 import { getCurrentUser } from '@/database/supabase/user';
 import type { Updater } from '@tanstack/vue-query';
 import localforage from 'localforage';
+import { nanoid } from 'nanoid';
 import type { Ref } from 'vue';
 import type { RouteLocationNormalized } from 'vue-router';
 import useUser from '../stores/user';
@@ -145,4 +146,17 @@ export async function getIndexDB() {
  */
 export async function getFormDataById(id: string) {
   return await localforage.getItem<{ id: string; schema: string }>(id);
+}
+
+/**
+ * ### 下载文件
+ * @param string 链接
+ */
+export function downLoad(link: string, type: string) {
+  const a: HTMLAnchorElement = document.createElement('a');
+  a.href = link;
+  a.download = `${nanoid()}.${type}`;
+  a.target = '_blank';
+  a.click();
+  a.remove();
 }

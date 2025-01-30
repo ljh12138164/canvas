@@ -97,6 +97,24 @@ const router = createRouter({
           },
         },
         {
+          path: '/workspace/sum/:id',
+          name: 'selectId',
+          beforeEnter: routerCheckLogin,
+          component: () => import('../views/workspace/sum/id.vue'),
+          meta: {
+            title: '提交总结',
+          },
+        },
+        {
+          path: '/workspace/sum/:id/:detail',
+          name: 'selectDetail',
+          beforeEnter: routerCheckLogin,
+          component: () => import('../views/workspace/sum/detail.vue'),
+          meta: {
+            title: '提交总结',
+          },
+        },
+        {
           path: '/workspace/submit',
           name: 'submit',
           beforeEnter: routerCheckLogin,

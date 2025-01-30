@@ -2,7 +2,7 @@ import { decode } from 'base64-arraybuffer';
 import { nanoid } from 'nanoid';
 import { supabaseForm } from '../supabase/index';
 const imageBucket = 'DOCUMENT_IMAGE';
-const imagePath = 'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/';
+const imagePath = 'https://spvppoqewfwqyzlsmtru.supabase.co/storage/v1/object/public/';
 interface UploadImageClound {
   file: File;
 }

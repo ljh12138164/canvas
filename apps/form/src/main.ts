@@ -1,3 +1,5 @@
+import 'viewerjs/dist/viewer.css';
+import VueViewer from 'v-viewer';
 import './assets/index.css';
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
 import { VueQueryPlugin, type VueQueryPluginOptions } from '@tanstack/vue-query';
@@ -50,4 +52,5 @@ app
   .use(VueQueryPlugin, vueQueryPluginOptions)
   .use(autoAnimatePlugin)
   .use(pinia)
+  .use(VueViewer)
   .mount('#app');

@@ -33,6 +33,7 @@
     "@types/blueimp-md5": "^2.18.2",
     "await-to-js": "^3.0.0",
     "bcryptjs": "^2.4.3",
+    "@ljh/lint": "workspace:*",
     "blueimp-md5": "^2.19.0",
     "hono": "^4.6.16",
     "i18next": "^24.2.1",
