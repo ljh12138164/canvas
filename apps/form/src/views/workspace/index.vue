@@ -34,9 +34,7 @@ watch(
 </script>
 
 <template>
-  <div
-    class="grid entry transition-all min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
-  >
+  <div class="grid entry transition-all min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
     <div class="hidden border-r bg-muted/40 md:block">
       <div class="flex h-full max-h-screen flex-col gap-2">
         <Logo />
@@ -52,11 +50,7 @@ watch(
                 <ShoppingCartIcon class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton
-              title="创建表单"
-              path="/workspace/create"
-              :active="activePath === '/create'"
-            >
+            <RouteButton title="创建表单" path="/workspace/create" :active="activePath === '/create'">
               <template #icon>
                 <LucideMousePointerSquareDashed class="h-4 w-4" />
               </template>
@@ -66,20 +60,12 @@ watch(
                 <ChartBarIcon class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton
-              title="提交表单"
-              path="/workspace/submit"
-              :active="activePath === '/submit'"
-            >
+            <RouteButton title="提交表单" path="/workspace/submit" :active="activePath === '/submit'">
               <template #icon>
                 <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton
-              title="我的提交"
-              path="/workspace/my-submit"
-              :active="activePath === '/my-submit'"
-            >
+            <RouteButton title="我的提交" path="/workspace/my-submit" :active="activePath === '/my-submit'">
               <template #icon>
                 <Icon icon="material-symbols-light:commit" class="h-4 w-4" />
               </template>
@@ -93,15 +79,13 @@ watch(
               <div class="flex flex-col gap-2 text-sm text-muted-foreground">
                 <TooltipComponents :title="userData?.session.user.user_metadata.name ?? ''">
                   <p
-                    class="text-[0.75rem] text-left max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
-                  >
+                    class="text-[0.75rem] text-left max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
                     用户名：{{ userData?.session.user.user_metadata.name }}
                   </p>
                 </TooltipComponents>
                 <TooltipComponents :title="userData?.session.user.user_metadata.email ?? ''">
                   <p
-                    class="text-[0.75rem] max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
-                  >
+                    class="text-[0.75rem] max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
                     邮箱：{{ userData?.session.user.user_metadata.email }}
                   </p>
                 </TooltipComponents>
@@ -132,11 +116,7 @@ watch(
                   <ShoppingCartIcon class="h-4 w-4" />
                 </template>
               </RouteButton>
-              <RouteButton
-                title="创建表单"
-                path="/workspace/create"
-                :active="activePath === '/create'"
-              >
+              <RouteButton title="创建表单" path="/workspace/create" :active="activePath === '/create'">
                 <template #icon>
                   <LucideMousePointerSquareDashed class="h-4 w-4" />
                 </template>
@@ -146,20 +126,12 @@ watch(
                   <ChartBarIcon class="h-4 w-4" />
                 </template>
               </RouteButton>
-              <RouteButton
-                title="提交表单"
-                path="/workspace/submit"
-                :active="activePath === '/submit'"
-              >
+              <RouteButton title="提交表单" path="/workspace/submit" :active="activePath === '/submit'">
                 <template #icon>
                   <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
                 </template>
               </RouteButton>
-              <RouteButton
-                title="我的提交"
-                path="/workspace/my-submit"
-                :active="activePath === '/my-submit'"
-              >
+              <RouteButton title="我的提交" path="/workspace/my-submit" :active="activePath === '/my-submit'">
                 <template #icon>
                   <Icon icon="material-symbols-light:commit" class="h-4 w-4" />
                 </template>
@@ -172,15 +144,13 @@ watch(
                   <div class="flex flex-col gap-2 text-sm text-muted-foreground">
                     <TooltipComponents :title="userData?.session.user.user_metadata.name ?? ''">
                       <p
-                        class="text-[0.75rem] text-left max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
-                      >
+                        class="text-[0.75rem] text-left max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
                         用户名：{{ userData?.session.user.user_metadata.name }}
                       </p>
                     </TooltipComponents>
                     <TooltipComponents :title="userData?.session.user.user_metadata.email ?? ''">
                       <p
-                        class="text-[0.75rem] max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
-                      >
+                        class="text-[0.75rem] max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
                         邮箱：{{ userData?.session.user.user_metadata.email }}
                       </p>
                     </TooltipComponents>
@@ -190,18 +160,7 @@ watch(
             </div>
           </SheetContent>
         </Sheet>
-        <div class="w-full flex-1">
-          <form>
-            <div class="relative">
-              <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="搜索..."
-                class="w-full appearance-none bg-background pl-8 shadow-none transition-all md:w-2/3 lg:w-1/3 focus:w-full hover:w-full active:w-full"
-              />
-            </div>
-          </form>
-        </div>
+        <div class="w-full flex-1" />
         <div class="flex gap-2">
           <DarkButton />
           <UserButton />
