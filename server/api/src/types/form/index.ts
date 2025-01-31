@@ -10,7 +10,7 @@ export type Form = {
 };
 
 export interface SumbitForm {
-  create_at: string;
+  created_at: string;
   formId: string;
   id: string;
   userId: string;

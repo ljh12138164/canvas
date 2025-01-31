@@ -43,25 +43,44 @@ const submit = async (data: Record<string, any>) => {
     } else if (item.type === 'file') {
       // 上传文件
       const data = newData[item.name];
-      // base64;
-      const base64 = data.split('base64,')[1];
-
-      const { fullType, fileType, type } = getFileType(data);
-      toast.info('文件上传中...');
-      // 上传文件
-      const [err, uploadPath] = await to(
-        uploadCustomType({ base64, formId: boardData.value.id, fullType }),
-      );
-      if (err) return toast.error('上传失败');
-      toast.success('上传成功');
-      newData[item.name] = {
-        file: uploadPath || '',
+      if (data) {
+        // base64;
+        const base64 = data.split('base64,')[1];
+        const { fullType, fileType, type } = getFileType(data);
+        toast.info('文件上传中...');
+        // 上传文件
+        const [err, uploadPath] = await to(
+          uploadCustomType({ base64, formId: boardData.value.id, fullType }),
+        );
+        if (err) return toast.error('上传失败');
+        toast.success('上传成功');
+        newData[item.name] = {
+          file: uploadPath || '',
+          type: item.type,
+          // input属性的
+          inputType: type,
+          fullType,
+          fileType,
+          label: item.description,
+          hiddenLabel: item.hiddenLabel,
+        };
+      } else {
+        newData[item.name] = {
+          file: '',
+          type: item.type,
+          // input属性的
+          inputType: '',
+          fullType: '',
+          fileType: '',
+          label: item.description,
+          hiddenLabel: item.hiddenLabel,
+        };
+      }
+    } else if (item.type === 'slider') {
+      newData[item.defaultTypeName] = {
+        SubmitValue: newData[item.defaultTypeName],
         type: item.type,
-        // input属性的
-        inputType: type,
-        fullType,
-        fileType,
-        label: item.description,
+        label: item.defaultTypeName,
         hiddenLabel: item.hiddenLabel,
       };
     } else {
@@ -94,7 +113,6 @@ const submit = async (data: Record<string, any>) => {
       <div class="space-y-4">
         <!-- 标题骨架 -->
         <Skeleton class="h-8 w-3/4" />
-
         <!-- 表单项骨架 -->
         <div class="space-y-6">
           <div v-for="i in 3" :key="i" class="space-y-2">

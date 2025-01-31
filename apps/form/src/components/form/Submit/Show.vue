@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { SubmitFormItem } from '@/types/form';
 import ShowType from './ShowType.vue';
 
@@ -8,15 +9,19 @@ const props = defineProps<{
 }>();
 </script>
 <template>
-    <div v-for="item in Object.entries(props.submit)" :key="item[0]" class='my-2'>
+    <div v-for="item in Object.entries(props.submit)" :key="item[0]" class='my-4'>
         <!-- 子表单 -->
-        <div v-if="!item[1].type">
+        <Card v-if="!item[1].type">
             <!-- 子表单数据渲染 -->
-            <p> 子表单:</p>
-            <div v-for="child in Object.entries(item[1])" :key="child[0][0]">
-                <ShowType :submit="child[1]" />
-            </div>
-        </div>
+            <CardHeader>
+                <CardTitle>子表单:</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div v-for="child in Object.entries(item[1])" :key="child[0][0]">
+                    <ShowType :submit="child[1]" />
+                </div>
+            </CardContent>
+        </Card>
         <ShowType :submit="item[1] as SubmitFormItem" v-else />
     </div>
 </template>
