@@ -4,10 +4,6 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGetSubmitFormById } from '@/hooks/submit';
-import { downLoad } from '@/lib';
-import { encode } from 'base64-arraybuffer';
-import ExcelJS from 'exceljs';
-// import { exportXlxs } from '@/hooks/xlxs';
 import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
@@ -33,35 +29,13 @@ const formData = computed(() => {
   return data.value?.submit?.find((item) => item.id === detail.value);
 });
 // const { mutate } = exportXlxs()
-
-async function exports() {
-  const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet('Sheet1');
-  worksheet.columns = [
-    { header: 'Name', key: 'name', width: 10 },
-    { header: 'Age', key: 'age', width: 10 },
-  ];
-  worksheet.addRows([
-    { name: 'John', age: 30 },
-    { name: 'Jane', age: 25 },
-  ]);
-  const buffer = await workbook.xlsx.writeBuffer();
-  // data:image/png;base64,
-  const base64 = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${encode(buffer)}`;
-  // 下载文件
-  downLoad(base64, 'xlsx');
-  // const fileWork = new FileReader();
-  // const file = new File(worksheet, 'myExcelFile.xlsx', {
-  //   type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  // });
-}
 </script>
 <template>
   <ScrollArea class="max-h-[calc(100dvh-150px)]">
     <nav class="flex gap-2 items-center">
       <h2 class="text-xl font-bold">提交记录：</h2>
       <Button @click="router.back()">返回</Button>
-      <Button @click="exports()">导出</Button>
+
     </nav>
     <section v-if="isLoading">
       <Skeleton class="w-full h-12" />

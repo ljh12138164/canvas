@@ -312,7 +312,7 @@ const onSubmit = handleSubmit((values) => {
     createBoard(
       {
         json: {
-          id: id.value as string,
+          id: nanoid(),
           name: values.title,
           schema: JSON.stringify(list2.value),
           description: values.description,
@@ -491,7 +491,7 @@ const handleUpdateBoardSchema = () => {
               placeholder="请输入表单描述" rows="3" />
             <span v-if="errors.description" class="text-sm text-red-500">{{
               errors.description
-            }}</span>
+              }}</span>
           </div>
         </form>
       </DialogHeader>

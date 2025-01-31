@@ -59,7 +59,8 @@ defineProps<{
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <FileList :sumbit="submit as FileType" />
+            <FileList :sumbit="submit as FileType" v-if="(submit as FileType).file" />
+            <span v-else>--</span>
         </CardContent>
     </Card>
     <Card v-else-if="submit.type === 'bigText'">
