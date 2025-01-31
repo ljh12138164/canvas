@@ -5,7 +5,7 @@ import { Download as DownLoad } from 'lucide-vue-next';
 import { Badge } from '../ui/badge';
 import Button from '../ui/button/Button.vue';
 
-defineProps<{ sumbit: FileType }>();
+defineProps<{ submit: FileType }>();
 
 // 根据文件类型返回对应的图标
 const getFileIcon = (fileType: string) => {
@@ -23,19 +23,19 @@ const getFileIcon = (fileType: string) => {
 
 <template>
     <div>
-        <div v-if="sumbit.hiddenLabel"> {{ getFileIcon(sumbit.fullType!) }}</div>
-        <div class="flex flex-col  gap-2">
-            <!-- <Badge class="mr-3">{{ sumbit.fileType }}</Badge> -->
+        <div v-if="submit.hiddenLabel"> {{ getFileIcon(submit.fullType!) }}</div>
+        <div class="flex flex-col gap-2">
+            <!-- <Badge class="mr-3">{{ submit.fileType }}</Badge> -->
             <section class="flex gap-2">
-                <Badge class="max-w-24">{{ sumbit.fullType }}</Badge>
-                <Button @click="() => downLoad(sumbit.file!, sumbit.fileType!)">
+                <Badge class="max-w-24">{{ submit.fullType }}</Badge>
+                <Button @click="() => downLoad(submit.file!, submit.fileType!)">
                     下载
                     <DownLoad />
                 </Button>
             </section>
-            <div v-if="sumbit.fullType?.startsWith('image')">
-                <viewer :images="sumbit.file" class="h-20 w-20">
-                    <img v-for="src in [sumbit.file]" alt="表单图片" :key="src" :src="src">
+            <div v-if="submit.fullType?.startsWith('image')">
+                <viewer :images="[submit.file]" class="h-20 w-20">
+                    <img alt="表单图片" :key="submit.file" :src="submit.file">
                 </viewer>
             </div>
 

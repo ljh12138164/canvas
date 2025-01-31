@@ -59,7 +59,7 @@ defineProps<{
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <FileList :sumbit="submit as FileType" v-if="(submit as FileType).file" />
+            <FileList :submit="submit as FileType" v-if="(submit as FileType).file" />
             <span v-else>--</span>
         </CardContent>
     </Card>

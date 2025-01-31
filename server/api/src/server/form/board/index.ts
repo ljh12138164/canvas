@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
-import type { Form } from '../../../types/form';
+import type { Form, SumbitForm } from '../../../types/form';
+import type { Profiles } from '../../../types/note/workspace';
 import { supabaseForm } from '../../supabase/form';
 
 /**
@@ -104,7 +105,7 @@ export const updateBoard = async ({
   if (description) updateData.description = description;
   if (schema) updateData.schema = schema;
   if (Object.keys(updateData).length === 0) return true;
-  const { data, error } = await supabaseForm(token)
+  const { error } = await supabaseForm(token)
     .from('form')
     .update([updateData])
     .eq('id', boardId)
@@ -205,4 +206,24 @@ export const updateBoardSchema = async ({
     .eq('userId', userId);
   if (error) throw new Error('服务器错误');
   return true;
+};
+
+/**
+ * ## 获取仪表盘数据
+ * @param param0
+ * @returns
+ */
+export const getDashboardData = async ({
+  token,
+  userId,
+}: {
+  token: string;
+  userId: string;
+}): Promise<(Form & { submit: (SumbitForm & { profiles: Profiles })[] })[]> => {
+  const { data, error } = await supabaseForm(token)
+    .from('form')
+    .select('*,submit(*,profiles(*))')
+    .eq('userId', userId);
+  if (error) throw new Error('服务器错误');
+  return data;
 };

@@ -9,6 +9,7 @@ import {
   deleteBoard,
   getBoard,
   getBoardDetail,
+  getDashboardData,
   getInviteCodeData,
   updateBoard,
   updateBoardInviteCode,

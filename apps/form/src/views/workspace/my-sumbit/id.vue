@@ -28,13 +28,13 @@ const { data: submit, isLoading, error } = useGetMySubmitById(id.value as string
             <Card>
                 <CardHeader>
                     <CardTitle class="text-center">表单标题：{{ submit.form.name }}</CardTitle>
-                    <CardDescription class="text-center">提交时间：{{ dayjs(submit.create_at).format('YYYY年MM月DD日 HH:mm:ss')
+                    <CardDescription class="text-center">提交时间：{{ dayjs(submit.created_at).format('YYYY年MM月DD日 HH:mm:ss')
                         }}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <!-- 提交数据渲染 -->
                     <section>
-                        提交时间：{{ dayjs(submit.create_at).format('YYYY年MM月DD日 HH:mm:ss') }}
+                        提交时间：{{ dayjs(submit.created_at).format('YYYY年MM月DD日 HH:mm:ss') }}
                     </section>
                     <section>
                         <Show :submit="JSON.parse(submit.submit)" />
