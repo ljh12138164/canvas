@@ -46,7 +46,7 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 100,
-    "ignore": ["node_modules", "dist", ".next", "build"],
+    "ignore": ["node_modules", "dist", ".next", "build", "public"],
     "lineEnding": "lf"
   },
   "javascript": {

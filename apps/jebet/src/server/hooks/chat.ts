@@ -23,31 +23,43 @@ export const useGetMessage = (workspaceId: string, userId: string, isConnected: 
   } = useInfiniteQuery({
     queryKey: ['chat', workspaceId],
     queryFn: async () => {
-      // 获取当前的消息数量
-      const pageTo = queryClient.getQueryData(['chat', workspaceId]) as {
-        pageParams: number[];
-        pages: {
-          messages: {
-            data: Message[];
-            count: number;
-            pageTo: number;
-          };
-        }[];
-      };
-      // 如果当前消息数量大于0，则获取下一页数据
-      if (pageTo) {
-        const allData = pageTo.pages.flatMap((page) => page.messages.data);
+      if (isConnected) {
+        // 获取当前的消息数量
+        const pageTo = queryClient.getQueryData(['chat', workspaceId]) as {
+          pageParams: number[];
+          pages: {
+            messages: {
+              data: Message[];
+              count: number;
+              pageTo: number;
+            };
+          }[];
+        };
+        // 如果当前消息数量大于0，则获取下一页数据
+        if (pageTo) {
+          const allData = pageTo.pages.flatMap((page) => page.messages.data);
+          const data = await client.chat.message.$get({
+            query: {
+              workspaceId,
+              userId,
+              pageTo: `${allData.length}`,
+            },
+          });
+          if (!data.ok) throw new Error(data.statusText);
+          return data.json();
+        }
+        // 如果当前消息数量为0，则获取第一页数据，初始化
         const data = await client.chat.message.$get({
           query: {
             workspaceId,
             userId,
-            pageTo: `${allData.length}`,
+            pageTo: '0',
           },
         });
         if (!data.ok) throw new Error(data.statusText);
         return data.json();
       }
-      // 如果当前消息数量为0，则获取第一页数据，初始化
+      // 获取当前的消息数量
       const data = await client.chat.message.$get({
         query: {
           workspaceId,
@@ -57,6 +69,7 @@ export const useGetMessage = (workspaceId: string, userId: string, isConnected: 
       });
       if (!data.ok) throw new Error(data.statusText);
       return data.json();
+      // 如果没有websocket实例，则每秒请求一次，实现消息的实时性
     },
     // 如果没有websocket实例，则每秒请求一次，实现消息的实时性
     refetchInterval: isConnected ? false : 5000,

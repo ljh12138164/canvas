@@ -50,6 +50,7 @@ const Flow = observer(() => {
   return (
     <FlowContainer mobile={isModel}>
       <ScrollArea className="w-full h-full">
+        {/* 渲染工作流 */}
         <FlowDetail
         // workspaceId={params.workspaceId}
         // workspace={activeWorkSpace}

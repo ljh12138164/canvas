@@ -245,7 +245,7 @@ const EchartContent = ({
       </StatsGrid>
       {/* 任务数 */}
       <CardContainer>
-        <TaskCount className="bg-muted dark:bg-muted-foreground">
+        <TaskCount className="">
           <p className="text-xl text-muted-foreground font-bold">
             任务数({workspaces.tasks.length})
           </p>
