@@ -9,7 +9,6 @@
           <span class="font-bold">ljh-form</span>
         </div>
         <nav class="flex items-center gap-6">
-          <UserButton />
         </nav>
       </div>
     </header>
@@ -26,7 +25,7 @@
       </div>
       <div class="flex justify-center gap-4">
         <RouterLink to="/workspace/board">
-          <Button size="lg">免费试用</Button>
+          <Button size="lg">免费使用</Button>
         </RouterLink>
       </div>
     </section>
@@ -38,7 +37,7 @@
         <p class="text-muted-foreground">一切你需要的表单功能，都在这里</p>
       </div>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-cols-2  gap-8">
         <Card>
           <CardHeader>
             <MousePointerClick class="h-8 w-8 mb-2" />
@@ -63,7 +62,6 @@
 </template>
 
 <script setup lang="ts">
-import UserButton from '@/components/common/UserButton.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Database, MousePointerClick, Palette } from 'lucide-vue-next';
