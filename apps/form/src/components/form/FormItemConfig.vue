@@ -8,8 +8,7 @@ import InputItem from './FormItem/InputItem.vue';
 import ObjectItem from './FormItem/Object.vue';
 import OneClick from './FormItem/OneClick.vue';
 import SelectItem from './FormItem/SelectItem.vue';
-// @ts-ignore
-import Switch from './FormItem/switch.vue';
+import SwitchItem from './FormItem/SwitchItem.vue';
 
 defineProps<{
   id: string;
@@ -37,7 +36,7 @@ defineProps<{
       <BigText :updateList2="updateList2" :id="id" :data="data" />
     </section>
     <section v-if="data.type === 'slider'">
-      <Switch :updateList2="updateList2" :id="id" :data="data" />
+      <SwitchItem :updateList2="updateList2" :id="id" :data="data" />
     </section>
     <section v-if="data.type === 'file'">
       <FileItem :updateList2="updateList2" :id="id" :data="data" />

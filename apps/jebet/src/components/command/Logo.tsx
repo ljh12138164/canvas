@@ -1,6 +1,5 @@
 import logo from '@/assets/image/logo.jpg';
 import styled from 'styled-components';
-
 interface ContainerProps {
   height?: number;
 }

@@ -29,7 +29,6 @@ const ActionButton = styled(Button)`
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  color: #495057;
   font-size: 14px;
 `;
 const WorkSpace = observer(() => {
