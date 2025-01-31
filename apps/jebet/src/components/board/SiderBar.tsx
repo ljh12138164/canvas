@@ -173,7 +173,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
                 userStore.workspace
                   ? userStore.workspace?.find((item) => item.id === router.pathname.split('/')[2])
                       ?.id
-                  : ''
+                  : undefined
               }
             >
               <SelectTrigger className="w-full h-full  dark:hover:bg-slate-900 hover:bg-slate-100 transition-all duration-200">

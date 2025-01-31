@@ -29,11 +29,15 @@ export default function CustomEdge({
 }: EdgeProps) {
   // 获取路径和路径点
   const [edgePath, pathX, pathY] = getSmoothStepPath({
+    // 起始点
     sourceX,
     sourceY,
+    // 结束点
     targetX,
     targetY,
+    // 起始点位置
     sourcePosition,
+    // 结束点位置
     targetPosition,
   });
 
@@ -56,6 +60,7 @@ export default function CustomEdge({
         {/* 删除 */}
         <IconContainer pathX={pathX} pathY={pathY}>
           <Trash
+            aria-label="删除"
             className="w-6 h-6 cursor-pointer border  p-1  rounded-sm"
             onClick={() => {
               // window.console.log('删除');
