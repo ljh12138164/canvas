@@ -8,8 +8,6 @@ import InputItem from './FormItem/InputItem.vue';
 import ObjectItem from './FormItem/Object.vue';
 import OneClick from './FormItem/OneClick.vue';
 import SelectItem from './FormItem/SelectItem.vue';
-// @ts-ignore
-import Switch from './FormItem/switch.vue';
 
 const props = defineProps<{
   id: string[];
