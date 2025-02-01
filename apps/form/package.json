@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=8300",
-    "build": "vite build",
+    "build": "cd ../../server/api && pnpm run tsup && cd ../../apps/forms && tsc -b && vite build",
     "build:report": "cross-env NODE_ENV=test vite build",
     "preview": "vite preview",
     "test:unit": "vitest",
