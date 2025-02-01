@@ -262,7 +262,8 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
             <span>团队空间</span>
           </ButtonContainer>
         </RouterDiv>
-        <RouterDiv
+        {/* TODO: 工作流 */}
+        {/* <RouterDiv
           onClick={() => handleJump('flow')}
           variant="ghost"
           className={`cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${checkActive('flow') ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
@@ -272,7 +273,7 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
             <Flower />
             <span>工作流</span>
           </ButtonContainer>
-        </RouterDiv>
+        </RouterDiv> */}
 
         <Separator />
 
