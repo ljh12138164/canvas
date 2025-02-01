@@ -14,5 +14,9 @@
       "cache": true,
       "persistent": true
     }
+  },
+  "remoteCache": {
+    "enabled": true,
+    "signature": true
   }
 }
