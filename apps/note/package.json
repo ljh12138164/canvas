@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "vite build",
+    "build": "cd ../../server/api && pnpm run tsup && cd ../../apps/note && tsc -b && vite build",
     "build:report": "cross-env NODE_ENV=test vite build",
     "check": "biome check --write",
     "dev": "vite dev --port=8200",
