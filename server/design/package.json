@@ -9,29 +9,24 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@ljh/lint": "workspace:*"
   },
   "dependencies": {
     "@hocuspocus/extension-webhook": "^2.15.0",
-    "@hocuspocus/server": "^2.15.0",
-    "@hono/node-server": "1.13.7",
-    "@hono/node-ws": "^1.0.5",
-    "@ljh/lint": "workspace:*",
-    "@types/express": "^5.0.0",
-    "@types/express-ws": "^3.0.5",
-    "@types/ws": "^8.5.13",
+    "@hocuspocus/server": "^2.15.1",
+    "@hono/node-server": "1.13.8",
+    "@hono/node-ws": "^1.0.6",
+    "@types/ws": "^8.5.14",
     "await-to-js": "^3.0.0",
     "axios": "^1.7.9",
-    "bun": "^1.1.42",
-    "express": "^4.21.2",
-    "express-ws": "^5.0.2",
-    "fabric": "^6.5.4",
-    "hono": "^4.6.16",
+    "bun": "^1.2.1",
+    "hono": "^4.6.20",
     "nanoid": "^5.0.9",
     "nest": "^0.1.6",
     "socket.io": "^4.8.1",
     "y-protocols": "^1.0.6",
     "y-websocket": "^2.1.0",
-    "yjs": "^13.6.22"
+    "yjs": "^13.6.23"
   }
 }

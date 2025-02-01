@@ -2,8 +2,10 @@
 import { Button } from '@/app/_components/ui/button';
 import useUsers from '@/app/_hook/useUser';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Main = () => {
+  const router = useRouter();
   const { user, loading } = useUsers({ redirects: false });
   return (
     <main className="container mx-auto px-4 pt-24">
@@ -14,11 +16,13 @@ const Main = () => {
         </h1>
         <p className="text-xl text-gray-600 mb-8">简单易用的在线设计工具，让创意更轻松地实现</p>
         <div className="space-x-4">
-          <Link href={user ? '/board' : '/try/Edit'}>
-            <Button size="lg" disabled={loading}>
-              前往工作区
-            </Button>
-          </Link>
+          <Button
+            size="lg"
+            disabled={loading}
+            onClick={() => (user ? router.push('/board') : router.push('/try/Edit'))}
+          >
+            前往工作区
+          </Button>
           <Link href="/forum">
             <Button variant="outline" size="lg">
               浏览作品
