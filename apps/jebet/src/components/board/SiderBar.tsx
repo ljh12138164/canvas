@@ -16,7 +16,7 @@ import type { Workspace } from '@/types/workspace';
 import { SignedIn, UserButton } from '@clerk/clerk-react';
 import type { UserResource } from '@clerk/types';
 import { useMemoizedFn } from 'ahooks';
-import { File, Flower } from 'lucide-react';
+import { File } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
