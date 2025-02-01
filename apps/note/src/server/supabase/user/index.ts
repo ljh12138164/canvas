@@ -1,5 +1,4 @@
 import { DEFAULT_AVATAR, USER_IMAGE_URL } from '@/lib';
-import { createClient } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
 import { supabaseNote } from '../index';
 /**

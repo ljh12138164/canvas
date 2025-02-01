@@ -1,5 +1,5 @@
 import { Events, Webhook } from '@hocuspocus/extension-webhook';
-import { Server } from '@hocuspocus/server';
+import { type Extension, Server } from '@hocuspocus/server';
 // import { verify } from "hono/jwt";
 import { TiptapTransformer } from '@hocuspocus/transformer';
 import { Color } from '@tiptap/extension-color';
@@ -24,38 +24,38 @@ import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import { LineHeightExtension } from './extension/LineHeight';
 import { FontSizeExtension } from './extension/fontSize';
-interface Payload {
-  // 签发者
-  iss: string;
-  // 用户唯一标识
-  sub: string;
-  // 受众
-  aud: string;
-  // 过期时间
-  exp: number;
-  // 签发时间
-  iat: number;
-  // 用户信息
-  user_metadata: {
-    sub: string;
-    [key: string]: any;
-  };
-  // 角色
-  role: string;
-  // 认证方法
-  amr: [{ method: string; timestamp: number }];
-  // 会话ID
-  session_id: string;
-  // 是否匿名
-  is_anonymous: boolean;
-  // 认证级别
-  aal: string;
-  // 邮箱
-  email: string;
-  // 电话
-  phone: string;
-  // 电话验证
-}
+// interface Payload {
+//   // 签发者
+//   iss: string;
+//   // 用户唯一标识
+//   sub: string;
+//   // 受众
+//   aud: string;
+//   // 过期时间
+//   exp: number;
+//   // 签发时间
+//   iat: number;
+//   // 用户信息
+//   user_metadata: {
+//     sub: string;
+//     [key: string]: any;
+//   };
+//   // 角色
+//   role: string;
+//   // 认证方法
+//   amr: [{ method: string; timestamp: number }];
+//   // 会话ID
+//   session_id: string;
+//   // 是否匿名
+//   is_anonymous: boolean;
+//   // 认证级别
+//   aal: string;
+//   // 邮箱
+//   email: string;
+//   // 电话
+//   phone: string;
+//   // 电话验证
+// }
 const server = Server.configure({
   extensions: [
     new Webhook({
@@ -112,9 +112,8 @@ const server = Server.configure({
         Color,
       ]),
       debounceMaxWait: 10000,
-    }),
+    }) as unknown as Extension,
   ],
-  // port: 8080,
   yDocOptions: { gc: false, gcFilter: () => false },
   /**
    * 认证 hook

@@ -20,8 +20,8 @@ const Setting = lazy(() => import('../page/dashboard/setting'));
 const WorkspaceSetting = lazy(() => import('../page/dashboard/workspace/setting'));
 const Chat = lazy(() => import('../page/chat/Chat'));
 const Storage = lazy(() => import('../page/storage'));
-const Flow = lazy(() => import('../page/flow'));
-const FlowDetail = lazy(() => import('../page/flow/detail'));
+// const Flow = lazy(() => import('../page/flow'));
+// const FlowDetail = lazy(() => import('../page/flow/detail'));
 const Detail = lazy(() => import('../page/dashboard/detail'));
 const WorkContains = styled.div`
   width: calc(100dvw - 280px);
@@ -162,30 +162,30 @@ export const router = createBrowserRouter([
           </SuspensedChild>
         ),
       },
-      {
-        path: '/dashboard/:workspaceId/flow',
-        element: (
-          <SuspensedChild>
-            <WorkContains>
-              <Scroll>
-                <Flow />
-              </Scroll>
-            </WorkContains>
-          </SuspensedChild>
-        ),
-      },
-      {
-        path: '/dashboard/:workspaceId/flow/detail/:flowId',
-        element: (
-          <SuspensedChild>
-            <WorkContains>
-              <Scroll>
-                <FlowDetail />
-              </Scroll>
-            </WorkContains>
-          </SuspensedChild>
-        ),
-      },
+      // {
+      //   path: '/dashboard/:workspaceId/flow',
+      //   element: (
+      //     <SuspensedChild>
+      //       <WorkContains>
+      //         <Scroll>
+      //           <Flow />
+      //         </Scroll>
+      //       </WorkContains>
+      //     </SuspensedChild>
+      //   ),
+      // },
+      // {
+      //   path: '/dashboard/:workspaceId/flow/detail/:flowId',
+      //   element: (
+      //     <SuspensedChild>
+      //       <WorkContains>
+      //         <Scroll>
+      //           <FlowDetail />
+      //         </Scroll>
+      //       </WorkContains>
+      //     </SuspensedChild>
+      //   ),
+      // },
       {
         path: '/dashboard/:workspaceId/:projectId',
         element: (

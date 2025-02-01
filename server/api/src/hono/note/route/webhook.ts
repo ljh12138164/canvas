@@ -7,7 +7,6 @@ export const webhook = new Hono()
   .post('/save', async (c) => {
     const json = await c.req.json();
 
-    // console.log(json.event);
     if (json.event === 'change') {
       const documentName = json.payload.documentName.split('/');
       const document = JSON.stringify(json.payload.document);
