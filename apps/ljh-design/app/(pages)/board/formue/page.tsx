@@ -4,10 +4,10 @@ import { Providers } from '@/app/_provide/providers';
 
 export default async function Home() {
   return (
-    <div className={`${inter.className} ${myFont.variable}  entry`}>
+    <main className={`${inter.className} ${myFont.variable}  entry`}>
       <Providers>
         <FormueMain />
       </Providers>
-    </div>
+    </main>
   );
 }

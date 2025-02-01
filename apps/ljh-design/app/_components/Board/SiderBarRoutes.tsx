@@ -1,9 +1,8 @@
 'use client';
 import { Separator } from '@/app/_components/ui/separator';
-import { Database, Home, MessageSquare, Search, User } from 'lucide-react';
+import { Database, Home, LayoutTemplate, MessageSquare, Search, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import SiderBarItem from './SiderBarItem';
-
 const SiderBarRoutes = ({
   closeRef,
 }: {
@@ -22,6 +21,13 @@ const SiderBarRoutes = ({
             label="主页"
             Icon={Home}
             isActive={pathname === '/board'}
+            closeRef={closeRef}
+          />
+          <SiderBarItem
+            href="/board/template"
+            label="模板"
+            Icon={LayoutTemplate}
+            isActive={pathname.split('/').includes('template')}
             closeRef={closeRef}
           />
           <SiderBarItem

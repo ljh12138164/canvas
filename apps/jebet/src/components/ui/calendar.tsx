@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+// import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type * as React from 'react';
 import { DayPicker } from 'react-day-picker';
 
@@ -52,16 +52,14 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         day_hidden: 'invisible',
         ...classNames,
       }}
-      components={{
-        // @ts-ignore
-        IconLeft: ({ className, ...props }) => (
-          <ChevronLeft className={cn('h-4 w-4', className)} {...props} />
-        ),
-        // @ts-ignore
-        IconRight: ({ className, ...props }) => (
-          <ChevronRight className={cn('h-4 w-4', className)} {...props} />
-        ),
-      }}
+      // components={{
+      //   IconLeft: ({ className, ...props }) => (
+      //     <ChevronLeft className={cn('h-4 w-4', className)} {...props} />
+      //   ),
+      //   IconRight: ({ className, ...props }) => (
+      //     <ChevronRight className={cn('h-4 w-4', className)} {...props} />
+      //   ),
+      // }}
       {...props}
     />
   );

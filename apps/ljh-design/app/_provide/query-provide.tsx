@@ -4,6 +4,7 @@
 // Since QueryClientProvider relies on useContext under the hood, we have to put 'use client' on top
 import { QueryClient, QueryClientProvider, isServer } from '@tanstack/react-query';
 
+// 创建查询客户端
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
@@ -23,23 +24,19 @@ function makeQueryClient() {
 let browserQueryClient: QueryClient | undefined = undefined;
 
 function getQueryClient() {
-  if (isServer) {
-    // Server: always make a new query client
-    return makeQueryClient();
-  }
-  // Browser: make a new query client if we don't already have one
-  // This is very important, so we don't re-make a new client if React
-  // suspends during the initial render. This may not be needed if we
-  // have a suspense boundary BELOW the creation of the query client
+  // 服务端：总是创建一个新的查询客户端
+  if (isServer) return makeQueryClient();
+
+  // 浏览器：如果还没有查询客户端，则创建一个新的查询客户端
+  // 这是非常重要的，所以如果React在初始渲染期间暂停，我们不会重新创建一个新的客户端
+  // 如果我们在创建查询客户端和可能暂停的代码之间有一个 suspense 边界，这可能不是必需的
   if (!browserQueryClient) browserQueryClient = makeQueryClient();
   return browserQueryClient;
 }
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  // NOTE: Avoid useState when initializing the query client if you don't
-  //       have a suspense boundary between this and the code that may
-  //       suspend because React will throw away the client on the initial
-  //       render if it suspends and there is no boundary
+  // NOTE: 避免在初始化查询客户端时使用 useState，如果代码中没有 suspense 边界
+  //       因为 React 会在初始渲染期间抛出客户端，如果它暂停并且没有边界
   const queryClient = getQueryClient();
 
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
