@@ -109,9 +109,9 @@ const features = [
     icon: '📈',
   },
   {
-    title: '安全可靠',
-    description: '安全可靠的数据存储和备份机制',
-    icon: '🔒',
+    title: '团队空间',
+    description: '团队空间，让团队成员可以共享文件和资源',
+    icon: '🏠',
   },
 ];
 
