@@ -12,18 +12,18 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { useWorkspace } from '@/server/hooks/board';
 import userStore from '@/store/user';
+import type { Profiles } from '@/types/user';
 import type { Workspace } from '@/types/workspace';
-import { SignedIn, UserButton } from '@clerk/clerk-react';
-import type { UserResource } from '@clerk/types';
 import { useMemoizedFn } from 'ahooks';
 import { File } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { LuMessageSquare, LuSettings, LuUser } from 'react-icons/lu';
 import { TfiMenuAlt } from 'react-icons/tfi';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import UserBox from '../command/UserBox';
 import ProjectList from './ProjectList';
 
 type PathRush = 'home' | 'member' | 'setting' | 'chat' | 'storage' | 'flow';
@@ -122,18 +122,17 @@ const TitleContain = styled.section`
   justify-content: space-between;
 `;
 
-const SiderBar = observer(({ user }: { user: UserResource }) => {
+const SiderBar = observer(({ user }: { user: Profiles }) => {
   const router = useLocation();
   const navigate = useNavigate();
   const parmas = useParams();
-  const { isLoading, data, error } = useWorkspace(user.id);
-
-  useEffect(() => {
-    if (isLoading || error) return;
-    if (data) {
-      userStore.setWorkspace(data);
-    }
-  }, [data, isLoading, error]);
+  const { isLoading, data, error, isFetching } = useWorkspace(user.id);
+  // useEffect(() => {
+  //   if (isLoading || error) return;
+  //   if (data) {
+  //     userStore.setWorkspace(data);
+  //   }
+  // }, [data, isLoading, error]);
 
   // 判断是否是当前路径
   const checkActive = (path: PathRush) => {
@@ -170,9 +169,8 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
                 navigate(`/dashboard/${value}`);
               }}
               value={
-                userStore.workspace
-                  ? userStore.workspace?.find((item) => item.id === router.pathname.split('/')[2])
-                      ?.id
+                !isFetching && userStore.workspace && !isLoading
+                  ? userStore.workspace?.find((item) => item.id === parmas?.workspaceId)?.id
                   : undefined
               }
             >
@@ -278,17 +276,15 @@ const SiderBar = observer(({ user }: { user: UserResource }) => {
         <Separator />
 
         {parmas?.workspaceId && userStore.workspace && (
-          <ProjectList workspaceId={parmas?.workspaceId} userId={user.id} />
+          <ProjectList workspaceId={parmas?.workspaceId} />
         )}
       </RouterContainer>
       {/* 用户信息 */}
       <UserButtonContainer>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
+        <UserBox user={user} />
         <UserDataContainer>
-          <NameText>{user.username}</NameText>
-          <EmailText>{user.emailAddresses[0].emailAddress}</EmailText>
+          <NameText>{user.name}</NameText>
+          <EmailText>{user.email}</EmailText>
         </UserDataContainer>
       </UserButtonContainer>
     </Asider>

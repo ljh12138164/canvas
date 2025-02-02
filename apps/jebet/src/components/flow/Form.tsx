@@ -13,7 +13,6 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 
 interface FormProps {
-  userId: string;
   workspace?: Workspace & {
     member: Member[];
   };
@@ -31,7 +30,7 @@ const zodSchema = z.object({
   description: z.string().optional(),
 });
 
-const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) => {
+const Form = ({ workspace, workspaceId, type, defaultData }: FormProps) => {
   const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(zodSchema),
     defaultValues: {
@@ -52,7 +51,6 @@ const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) 
             name: data.name,
             description: data.description,
             workspaceId: workspace.id,
-            userId: userId,
           },
         },
         {
@@ -74,7 +72,6 @@ const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) 
             name: data.name,
             description: data.description || '',
             workspaceId: workspaceId,
-            userId: userId,
             id: defaultData?.id || '',
           },
         },

@@ -1,7 +1,8 @@
 import { useCreateWorkspace, useUpdateWorkspace } from '@/server/hooks/board';
 import { useProjectCreate, useProjectUpdate } from '@/server/hooks/project';
+import { DEFAULT_AVATAR } from '@/server/supabase/user';
+import type { Profiles } from '@/types/user';
 import { DEFAULT_ICON } from '@/utils/board';
-import type { UserResource } from '@clerk/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { nanoid } from 'nanoid';
@@ -78,7 +79,7 @@ const FromCard = ({
     name: string;
     file: string;
   };
-  userData: UserResource;
+  userData: Profiles;
   closeRef?: RefObject<HTMLButtonElement | null>;
 }) => {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -86,7 +87,7 @@ const FromCard = ({
   const params = useParams();
   const [file, setFile] = useState<string>(defaultFrom?.file || '');
   // 创建工作区
-  const { createWorkspace, isCreating } = useCreateWorkspace(userData.id);
+  const { createWorkspace, isCreating } = useCreateWorkspace();
   // 更新工作区
   const { updateWorkspace, isUpdating } = useUpdateWorkspace();
   // 创建project
@@ -122,10 +123,9 @@ const FromCard = ({
           {
             form: {
               ...data,
-              userId: userData.id,
-              email: userData.emailAddresses[0].emailAddress,
-              userImage: userData.imageUrl,
-              username: userData.username || `用户${nanoid(4)}`,
+              email: userData.email,
+              userImage: userData.image || DEFAULT_AVATAR,
+              username: userData.name || `用户${nanoid(4)}`,
             },
           },
           {
@@ -148,7 +148,6 @@ const FromCard = ({
               form: {
                 ...data,
                 id: editId,
-                userId: userData.id,
                 oldImageUrl: defaultFrom?.file || DEFAULT_ICON,
               },
             },
@@ -180,7 +179,6 @@ const FromCard = ({
           {
             form: {
               ...data,
-              userId: userData.id,
               workspaceId: workspace,
             },
           },
@@ -204,7 +202,6 @@ const FromCard = ({
               form: {
                 ...data,
                 projectId: editId,
-                userId: userData.id,
                 workspaceId: workspace,
                 oldImageUrl: defaultFrom?.file || DEFAULT_ICON,
               },

@@ -40,7 +40,7 @@ export default function DeleteCard({
     if (type === 'workspace') {
       if (!workspaceId) return;
       deleteWorkspace(
-        { param: { id: workspaceId }, json: { userId, imageUrl } },
+        { json: { imageUrl, id: workspaceId } },
         {
           onSuccess: () => {
             toast.success('删除成功');
@@ -56,7 +56,7 @@ export default function DeleteCard({
     } else {
       if (!projectId || !workspaceId) return;
       deleteProject(
-        { json: { userId, workspaceId, projectId, imageUrl } },
+        { json: { workspaceId, projectId, imageUrl } },
         {
           onSuccess: () => {
             toast.dismiss();

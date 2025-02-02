@@ -1,5 +1,4 @@
 import { useDeleteFlow } from '@/server/hooks/flow';
-import useUser from '@/store/user';
 import type { Flow } from '@/types/workspace';
 import { useQueryClient } from '@tanstack/react-query';
 import type { Row } from '@tanstack/react-table';
@@ -32,7 +31,7 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
   const queryClient = useQueryClient();
   const deleteRef = useRef<HTMLButtonElement>(null);
   const { deleteFlow, deleteFlowPending } = useDeleteFlow();
-  if (!workspaceId || !useUser.userData) return;
+  if (!workspaceId) return;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -61,12 +60,7 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
               <DialogHeader>
                 <DialogTitle>编辑工作流</DialogTitle>
               </DialogHeader>
-              <Form
-                type="update"
-                defaultData={row.original}
-                userId={useUser.userData.id}
-                workspaceId={workspaceId}
-              />
+              <Form type="update" defaultData={row.original} workspaceId={workspaceId} />
             </DialogContent>
           </Dialog>
         </DropdownMenuItem>
@@ -96,11 +90,9 @@ const MoreOpate = observer(({ row }: { row: Row<Flow> }) => {
                   type="button"
                   disabled={deleteFlowPending}
                   onClick={() => {
-                    if (!useUser.userData) return;
                     deleteFlow(
                       {
                         json: {
-                          userId: useUser.userData.id,
                           id: row.original.id,
                           workspaceId: workspaceId,
                         },

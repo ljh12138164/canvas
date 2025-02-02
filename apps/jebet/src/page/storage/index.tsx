@@ -71,7 +71,7 @@ const Storage = observer(() => {
           </section>
         </StoageTitle>
         <Separator className="my-2" />
-        <TableMain workspace={activeWorkSpace} userId={store.userData.id} />
+        <TableMain workspace={activeWorkSpace} />
       </ScrollArea>
     </StoageContainer>
   );

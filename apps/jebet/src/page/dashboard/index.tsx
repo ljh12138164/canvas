@@ -1,10 +1,11 @@
 import { ThemeToggle } from '@/components/command/Theme';
+import UserBox from '@/components/command/UserBox';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useTheme } from '@/components/ui/theme-provider';
+import { useUser } from '@/hooks/useUser';
 // import { ThemeToggle } from "../../components/command/Theme";
 import userStore from '@/store/user';
-import { UserButton, useUser } from '@clerk/clerk-react';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { TfiMenuAlt } from 'react-icons/tfi';
@@ -55,28 +56,26 @@ const MainHeader = styled.div`
 `;
 
 const App = observer(() => {
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isLoading, isSignedIn, user } = useUser({ type: 'board', redirect: true });
   const { theme } = useTheme();
-
   const router = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    if (router.pathname === '/dashboard') {
-      navigate('/dashboard/home');
-    }
+    if (router.pathname === '/dashboard') navigate('/dashboard/home');
   }, [router, navigate]);
   useEffect(() => {
-    if (!isLoaded || !isSignedIn || !user) return;
+    if (!isLoading || !isSignedIn || !user) return;
     userStore.setUserData(user);
-  }, [isLoaded, isSignedIn, user]);
-
-  if (!isLoaded) return null;
-
+  }, [isLoading, isSignedIn, user]);
+  if (isLoading) return <></>;
+  // 未登录
   if (!isSignedIn) return <Navigate to="/sign-in" />;
+  // 未获取到用户信息
+  if (!user) return <Navigate to="/sign-in" />;
   return (
     <Container className="bg-[#e5e7eba0] dark:bg-[#1c1c22]">
       <Media>
-        <SiderBar user={user} />
+        <SiderBar user={user!} />
       </Media>
       <Main>
         <MainContainer theme={theme}>
@@ -87,13 +86,13 @@ const App = observer(() => {
                   <TfiMenuAlt />
                 </SheetTrigger>
                 <SheetContent side="left">
-                  <SiderBar user={user} />
+                  <SiderBar user={user!} />
                 </SheetContent>
               </Sheet>
             </Mobile>
             <div className="flex flex-row w-full items-center justify-end md:justify-between">
               <ThemeToggle />
-              <UserButton />
+              <UserBox user={user!} />
             </div>
           </MainHeader>
           <Separator className="my-2" />

@@ -1,8 +1,8 @@
+import type { Profiles } from '@/types/user';
 import type { Member, Project, Workspace } from '@/types/workspace';
-import type { UserResource } from '@clerk/types';
 import { makeAutoObservable } from 'mobx';
 class UserStore {
-  userData: UserResource | null = null;
+  userData: Profiles | null = null;
   workspace: (Workspace & { member: Member[] })[] | null = null;
   project: Project[] | null = null;
   activeWorkSpace: Workspace | null = null;
@@ -13,7 +13,7 @@ class UserStore {
   setWorkspace(workspace: (Workspace & { member: Member[] })[]) {
     this.workspace = workspace;
   }
-  setUserData(userData: UserResource) {
+  setUserData(userData: Profiles) {
     this.userData = userData;
   }
   setProject(project: Project[]) {

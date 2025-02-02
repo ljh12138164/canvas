@@ -1,27 +1,19 @@
-import { ClerkProvider } from '@clerk/clerk-react';
+import { Toaster as ShaducnToast } from '@/components/ui/toaster';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactFlowProvider } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 import 'quill/dist/quill.core.css';
-import 'react-image-crop/dist/ReactCrop.css';
-import { Toaster as ShaducnToast } from '@/components/ui/toaster';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { createRoot } from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Toaster } from 'react-hot-toast';
+import 'react-photo-view/dist/react-photo-view.css';
 import { RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from './components/ui/theme-provider';
+import './index.css';
 import Index from './page/error/Index';
 import { router } from './router';
-import '@xyflow/react/dist/style.css';
-import { ReactFlowProvider } from '@xyflow/react';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'react-photo-view/dist/react-photo-view.css';
-import './index.css';
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-// const PUBLISHABLE_KEY = 'pk_test_YWRqdXN0ZWQtYmFkZ2VyLTk5LmNsZXJrLmFjY291bnRzLmRldiQ';
-
-if (!PUBLISHABLE_KEY) {
-  throw new Error('Missing Publishable Key');
-}
 
 const queryclinet = new QueryClient({
   defaultOptions: {
@@ -45,11 +37,9 @@ root.render(
     <QueryClientProvider client={queryclinet}>
       <ReactFlowProvider>
         <ReactQueryDevtools initialIsOpen={false} />
-        <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <RouterProvider router={router} />
-          </ThemeProvider>
-        </ClerkProvider>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <RouterProvider router={router} />
+        </ThemeProvider>
         <Toaster
           position="top-center"
           gutter={12}

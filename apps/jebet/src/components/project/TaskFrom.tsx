@@ -65,7 +65,6 @@ const TaskFrom = ({
   projectId,
   type,
   userData,
-  currentUserId,
   isMobile,
   defaultData,
 }: {
@@ -73,7 +72,6 @@ const TaskFrom = ({
   projectId: string;
   type: 'create' | 'edit';
   userData: Member[] | undefined;
-  currentUserId: string;
   isMobile: boolean;
   defaultData?: Task;
 }) => {
@@ -104,7 +102,6 @@ const TaskFrom = ({
             ...data,
             workspaceId,
             projectId,
-            currentUserId,
             // lastTime,
           },
         },
@@ -130,7 +127,6 @@ const TaskFrom = ({
             id: defaultData?.id || '',
             workspaceId,
             projectId,
-            currentUserId,
           },
         },
         {

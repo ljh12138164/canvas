@@ -25,7 +25,6 @@ const ButtonContainer = styled.div`
 `;
 const Home = observer(() => {
   const { userData } = useStore;
-
   if (userData == null) return null;
 
   // 未选择工作区时显示空状态

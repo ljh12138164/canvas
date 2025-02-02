@@ -1,5 +1,6 @@
 import { useJoinWorkspace, useUserJoinWorkspace } from '@/server/hooks/board';
-import type { UserResource } from '@clerk/types';
+import { DEFAULT_AVATAR } from '@/server/supabase/user';
+import type { Profiles } from '@/types/user';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
@@ -46,7 +47,7 @@ const JoinWorkspaceCard = ({
   user,
 }: {
   id: string;
-  user: UserResource;
+  user: Profiles;
 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -60,11 +61,10 @@ const JoinWorkspaceCard = ({
     joinWorkspace(
       {
         json: {
-          userId: user.id,
           id: data.id,
-          email: user.emailAddresses[0].emailAddress,
-          userImage: user.imageUrl,
-          username: user.fullName || `用户${nanoid(4)}`,
+          email: user.email,
+          userImage: user.image || DEFAULT_AVATAR,
+          username: user.name || `用户${nanoid(4)}`,
         },
       },
       {

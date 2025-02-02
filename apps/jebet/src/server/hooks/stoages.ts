@@ -1,12 +1,15 @@
 import type { StoageData } from '@/types/workspace';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono/client';
+import { useNavigate } from 'react-router-dom';
 import { client } from '..';
+import { getNewToken } from '../../lib/sign';
 
 /**
  * ## 获取文件夹信息
  */
-export const useStoages = (workspaceId: string, userId: string) => {
+export const useStoages = (workspaceId: string) => {
+  const navigate = useNavigate();
   const {
     data: stoages,
     isLoading: stoagesLoading,
@@ -14,9 +17,18 @@ export const useStoages = (workspaceId: string, userId: string) => {
   } = useQuery({
     queryKey: ['stoages', workspaceId],
     queryFn: async () => {
-      const res = await client.storage.list.$get({
-        query: { workspaceId, userId },
-      });
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.storage.list.$get(
+        {
+          query: { workspaceId },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!res.ok) throw new Error(res.statusText);
       return res.json() as Promise<StoageData[]>;
     },
@@ -32,13 +44,23 @@ type CreateResponse = InferResponseType<(typeof client.storage.create)['$post']>
  * @returns
  */
 export const useCreateStoage = () => {
+  const navigate = useNavigate();
   const {
     mutate: create,
     isPending: createPending,
     error,
   } = useMutation<CreateResponse, Error, CreateData>({
     mutationFn: async (data) => {
-      const res = await client.storage.create.$post({ form: data.form });
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.storage.create.$post(
+        { form: data.form },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!res.ok) throw new Error(res.statusText);
       return res.json();
     },
@@ -52,13 +74,20 @@ type DeleteResponse = InferResponseType<(typeof client.storage.delete)['$delete'
  * ## 删除文件
  */
 export const useDeleteStoage = () => {
+  const navigate = useNavigate();
   const {
     mutate: deleteStoage,
     isPending: deleteStoagePending,
     error,
   } = useMutation<DeleteResponse, Error, DeleteData>({
     mutationFn: async (data) => {
-      const res = await client.storage.delete.$delete(data);
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.storage.delete.$delete(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) throw new Error(res.statusText);
       return res.json();
     },
@@ -72,13 +101,20 @@ type UpdateResponse = InferResponseType<(typeof client.storage.update)['$patch']
  * ## 更新文件
  */
 export const useUpdateStoage = () => {
+  const navigate = useNavigate();
   const {
     mutate: update,
     isPending: updatePending,
     error,
   } = useMutation<UpdateResponse, Error, UpdateData>({
     mutationFn: async (data) => {
-      const res = await client.storage.update.$patch(data);
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.storage.update.$patch(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) throw new Error(res.statusText);
       return res.json();
     },

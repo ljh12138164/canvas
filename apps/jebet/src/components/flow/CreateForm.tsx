@@ -7,13 +7,11 @@ import Form from './Form';
 export const CreateForm = ({
   workspace,
   workspaceId,
-  userId,
 }: {
   workspace: Workspace & {
     member: Member[];
   };
   workspaceId: string;
-  userId: string;
 }) => {
   return (
     <div>
@@ -25,7 +23,7 @@ export const CreateForm = ({
           </Button>
         </DialogTrigger>
         <DialogContent className="h-[45dvh]">
-          <Form userId={userId} workspace={workspace} workspaceId={workspaceId} type="create" />
+          <Form workspace={workspace} workspaceId={workspaceId} type="create" />
         </DialogContent>
       </Dialog>
     </div>

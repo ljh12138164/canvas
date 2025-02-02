@@ -41,7 +41,6 @@ const ProjectOpacte = observer(
       deleteTask(
         {
           json: {
-            currentUserId: userData?.id,
             workspaceId: workspaceId,
             projectId: projectId,
             id: task.id,
@@ -91,7 +90,6 @@ const ProjectOpacte = observer(
               defaultData={task}
               type="edit"
               userData={task.workspace.member}
-              currentUserId={userData.id}
             >
               <Button
                 variant="ghost"

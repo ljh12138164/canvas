@@ -3,6 +3,7 @@ import to from 'await-to-js';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
+import { getSupabaseAuth } from '../../../libs/middle';
 import {
   createJebtWorkspace,
   deleteJebtWorkspace,
@@ -12,7 +13,11 @@ import {
   refreshJebtWorkspace,
   updateJebtWorkspace,
 } from '../../../server/jebt/board';
+
 const board = new Hono()
+  .get('/test', async (c) => {
+    return c.json({ message: 'test' });
+  })
   // 创建工作区
   .post(
     '/create',
@@ -21,7 +26,6 @@ const board = new Hono()
       z.object({
         name: z.string(),
         file: z.any(),
-        userId: z.string(),
         email: z.string(),
         userImage: z.string(),
         username: z.string(),
@@ -29,15 +33,17 @@ const board = new Hono()
     ),
     async (c) => {
       const body = await c.req.parseBody();
-      const { userId, name, file, email, userImage, username } = body;
+      const { token, auth } = getSupabaseAuth(c);
+      const { name, file, email, userImage, username } = body;
       const [error, workspace] = await to(
         createJebtWorkspace({
           name: name as string,
-          userId: userId as string,
+          userId: auth.sub,
           file,
           email: email as string,
           userImage: userImage as string,
           username: username as string,
+          token,
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
@@ -53,20 +59,21 @@ const board = new Hono()
         id: z.string(),
         name: z.string(),
         file: z.any(),
-        userId: z.string(),
         oldImageUrl: z.string(),
       }),
     ),
     async (c) => {
       const body = await c.req.parseBody();
-      const { id, name, file, userId, oldImageUrl } = body;
+      const { token, auth } = getSupabaseAuth(c);
+      const { id, name, file, oldImageUrl } = body;
       const [error, workspace] = await to(
         updateJebtWorkspace({
           id: id as string,
           name: name as string,
-          userId: userId as string,
+          userId: auth.sub as string,
           file,
           oldImageUrl: oldImageUrl as string,
+          token,
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
@@ -74,37 +81,28 @@ const board = new Hono()
     },
   )
   // 获取工作区
-  .get(
-    '/:id',
-    zValidator('param', z.object({ id: z.string().min(1, { message: 'userID不能为空' }) })),
-    async (c) => {
-      const { id } = c.req.valid('param');
-      const [error, workspace] = await to(getJebtWorkspace(id));
-      if (error) return c.json({ message: error.message }, errorCheck(error));
-      return c.json(workspace);
-    },
-  )
+  .get('/dashboard', async (c) => {
+    const { token, auth } = getSupabaseAuth(c);
+    const [error, workspace] = await to(getJebtWorkspace(auth.sub, token));
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+    return c.json(workspace);
+  })
   // 删除工作区
   .delete(
-    '/:id',
-    zValidator(
-      'param',
-      z.object({
-        id: z.string().min(1, { message: 'userID不能为空' }),
-      }),
-    ),
+    '/dashboard',
     zValidator(
       'json',
       z.object({
-        userId: z.string().min(1, { message: 'userID不能为空' }),
         imageUrl: z.string().min(1, { message: 'imageUrl不能为空' }),
+        id: z.string().min(1, { message: 'id不能为空' }),
       }),
     ),
     async (c) => {
-      const { id } = c.req.valid('param');
-      const { userId, imageUrl } = c.req.valid('json');
-
-      const [error, workspace] = await to(deleteJebtWorkspace(id, userId, imageUrl));
+      const { imageUrl, id } = c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
+      const [error, workspace] = await to(
+        deleteJebtWorkspace({ id, userId: auth.sub, token, imageUrl }),
+      );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(workspace);
     },
@@ -116,19 +114,19 @@ const board = new Hono()
       'json',
       z.object({
         id: z.string().min(1, { message: 'id不能为空' }),
-        userId: z.string().min(1, { message: 'userID不能为空' }),
       }),
     ),
     async (c) => {
-      const { id, userId } = c.req.valid('json');
-      const [error, workspace] = await to(refreshJebtWorkspace(id, userId));
+      const { id } = c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
+      const [error, workspace] = await to(refreshJebtWorkspace(id, auth.sub, token));
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(workspace);
     },
   )
   // 通过邀请码获取工作区
   .get(
-    '/dashboard/:inviteCode',
+    '/invite',
     zValidator(
       'param',
       z.object({
@@ -137,7 +135,8 @@ const board = new Hono()
     ),
     async (c) => {
       const { inviteCode } = c.req.valid('param');
-      const [error, workspace] = await to(getJebtWorkspaceByInviteCode(inviteCode));
+      const { token } = getSupabaseAuth(c);
+      const [error, workspace] = await to(getJebtWorkspaceByInviteCode(inviteCode, token));
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(workspace);
     },
@@ -148,7 +147,6 @@ const board = new Hono()
     zValidator(
       'json',
       z.object({
-        userId: z.string().min(1, { message: 'userID不能为空' }),
         id: z.string().min(1, { message: 'id不能为空' }),
         email: z.string().min(1, { message: 'email不能为空' }),
         userImage: z.string().min(1, { message: 'userImage不能为空' }),
@@ -156,9 +154,10 @@ const board = new Hono()
       }),
     ),
     async (c) => {
-      const { userId, id, email, userImage, username } = c.req.valid('json');
+      const { id, email, userImage, username } = c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
       const [error, workspace] = await to(
-        joinJebtWorkspace(userId, id, email, userImage, username),
+        joinJebtWorkspace({ id, userId: auth.sub, token, email, userImage, username }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(workspace);

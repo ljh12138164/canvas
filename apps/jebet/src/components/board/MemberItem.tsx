@@ -84,10 +84,8 @@ const MemberItem = ({
     newRoleData(
       {
         json: {
-          userId: user.userId,
           role: isAdmin ? 'member' : 'admin',
           workspaceId: user.workspaceId,
-          currentUserId: currentUserId,
         },
       },
       {
@@ -108,9 +106,7 @@ const MemberItem = ({
     deleteData(
       {
         json: {
-          userId: user.userId,
           workspaceId: user.workspaceId,
-          currentUserId: currentUserId,
         },
       },
       {

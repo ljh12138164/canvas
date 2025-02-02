@@ -1,8 +1,8 @@
 import { animate } from '@/components/project/ProjectContent';
 import { useGetJebtUserList } from '@/server/hooks/user';
+import type { Profiles } from '@/types/user';
 import type { Workspace } from '@/types/workspace';
 import { DEFAULT_ICON } from '@/utils/board';
-import type { UserResource } from '@clerk/types';
 import styled from 'styled-components';
 import { Card } from '../ui/card';
 import DeleteCard from './DeleteCard';
@@ -15,12 +15,11 @@ const WorkspceSetting = ({
   userData,
   workSpace,
 }: {
-  userData: UserResource;
+  userData: Profiles;
   workSpace: Workspace;
 }) => {
   const { data, isLoading } = useGetJebtUserList({
     workspaceId: workSpace.id,
-    userId: userData.id,
   });
   if (isLoading) return null;
   return (

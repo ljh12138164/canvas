@@ -3,6 +3,7 @@ import to from 'await-to-js';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
+import { getSupabaseAuth } from '../../../libs/middle';
 import { createFlow, deleteJebtFlow, getJebtFlow, updateJebtFlow } from '../../../server/jebt/flow';
 
 export const flow = new Hono()
@@ -14,17 +15,18 @@ export const flow = new Hono()
         name: z.string().min(1),
         description: z.string().optional(),
         workspaceId: z.string(),
-        userId: z.string(),
       }),
     ),
     async (c) => {
-      const { name, description, workspaceId, userId } = c.req.valid('form');
+      const { name, description, workspaceId } = c.req.valid('form');
+      const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
         createFlow({
           name,
           description,
           workspaceId,
-          userId,
+          userId: auth.sub,
+          token,
         }),
       );
 
@@ -32,34 +34,32 @@ export const flow = new Hono()
       return c.json(data);
     },
   )
-  .get(
-    '/list',
-    zValidator('query', z.object({ workspaceId: z.string(), userId: z.string() })),
-    async (c) => {
-      const { workspaceId, userId } = c.req.valid('query');
-      const [error, data] = await to(
-        getJebtFlow({
-          workspaceId: workspaceId,
-          userId,
-        }),
-      );
-      if (error) return c.json({ message: error.message }, errorCheck(error));
-      return c.json(data);
-    },
-  )
+  .get('/list', zValidator('query', z.object({ workspaceId: z.string() })), async (c) => {
+    const { workspaceId } = c.req.valid('query');
+    const { token, auth } = getSupabaseAuth(c);
+    const [error, data] = await to(
+      getJebtFlow({
+        workspaceId: workspaceId,
+        userId: auth.sub,
+        token,
+      }),
+    );
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+    return c.json(data);
+  })
   .delete(
     '/delete',
     zValidator(
       'json',
       z.object({
         id: z.string(),
-        userId: z.string(),
         workspaceId: z.string(),
       }),
     ),
     async (c) => {
-      const { id, userId, workspaceId } = c.req.valid('json');
-      const [error, data] = await to(deleteJebtFlow({ id, userId, workspaceId }));
+      const { id, workspaceId } = c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
+      const [error, data] = await to(deleteJebtFlow({ id, userId: auth.sub, workspaceId, token }));
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },
@@ -70,16 +70,16 @@ export const flow = new Hono()
       'json',
       z.object({
         id: z.string(),
-        userId: z.string(),
         workspaceId: z.string(),
         name: z.string(),
         description: z.string(),
       }),
     ),
     async (c) => {
-      const { id, userId, workspaceId, name, description } = c.req.valid('json');
+      const { id, workspaceId, name, description } = c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
-        updateJebtFlow({ id, userId, workspaceId, name, description }),
+        updateJebtFlow({ id, userId: auth.sub, workspaceId, name, description, token }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);

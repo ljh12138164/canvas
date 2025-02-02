@@ -30,7 +30,7 @@ const MessageContainer = styled.div`
 
 const ChatMessageList = observer(({ workspace, userId }: ChatMessageListProps) => {
   const { messageLoading, message, messageHasNextPage, fetchNextPage, isFetchingNextPage } =
-    useGetMessage(workspace.id, workspace.member[0].userId, chatStore.isConnected);
+    useGetMessage(workspace.id, chatStore.isConnected);
   const { topRef, bottomRef, messageRef } = useMessage({
     messageLoading,
     fetchNextPage,

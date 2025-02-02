@@ -46,7 +46,6 @@ export default function RefreshInviteCode({
   canEdit,
   workspaceId,
   inviteCode,
-  userId,
 }: {
   canEdit: boolean;
   workspaceId: string;
@@ -58,7 +57,7 @@ export default function RefreshInviteCode({
   const [newInviteCode, setNewInviteCode] = useState(inviteCode);
   function handleRefresh() {
     refreshWorkspace(
-      { json: { id: workspaceId, userId } },
+      { json: { id: workspaceId } },
       {
         onSuccess: (data) => {
           toast.success('刷新成功');

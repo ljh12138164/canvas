@@ -5,10 +5,9 @@ import { columns } from './data';
 
 interface TableMainProps {
   workspace: Workspace & { member: Member[] };
-  userId: string;
 }
-const TableMain = ({ workspace, userId }: TableMainProps) => {
-  const { flows, flowsLoading, error } = useFlow(workspace.id, userId);
+const TableMain = ({ workspace }: TableMainProps) => {
+  const { flows, flowsLoading, error } = useFlow(workspace.id);
   return (
     <section>
       {flowsLoading && <div>Loading...</div>}

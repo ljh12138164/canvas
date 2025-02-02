@@ -3,6 +3,7 @@ import to from 'await-to-js';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
+import { getSupabaseAuth } from '../../../libs/middle';
 import {
   createJebtProject,
   deleteJebtProject,
@@ -18,15 +19,16 @@ const project = new Hono()
       'query',
       z.object({
         workspaceId: z.string(),
-        userId: z.string(),
       }),
     ),
     async (c) => {
-      const { workspaceId, userId } = c.req.valid('query');
+      const { token, auth } = getSupabaseAuth(c);
+      const { workspaceId } = c.req.valid('query');
       const [error, data] = await to(
         getJebtProjectList({
           workspaceId: workspaceId,
-          userId,
+          userId: auth.sub,
+          token,
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
@@ -41,19 +43,20 @@ const project = new Hono()
       z.object({
         name: z.string(),
         file: z.any(),
-        userId: z.string(),
         workspaceId: z.string(),
       }),
     ),
     async (c) => {
       const body = await c.req.parseBody();
-      const { name, file, userId, workspaceId } = body;
+      const { name, file, workspaceId } = body;
+      const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
         createJebtProject({
           name: name as string,
           imageUrl: file as File | string,
-          userId: userId as string,
+          userId: auth.sub,
           workspaceId: workspaceId as string,
+          token,
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
@@ -68,7 +71,6 @@ const project = new Hono()
       z.object({
         name: z.string(),
         file: z.any(),
-        userId: z.string(),
         workspaceId: z.string(),
         projectId: z.string(),
         oldImageUrl: z.string(),
@@ -76,15 +78,17 @@ const project = new Hono()
     ),
     async (c) => {
       const body = await c.req.parseBody();
-      const { name, file, userId, workspaceId, projectId, oldImageUrl } = body;
+      const { name, file, workspaceId, projectId, oldImageUrl } = body;
+      const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
         updateJebtProject({
           name: name as string,
           projectId: projectId as string,
           imageUrl: file as File | string,
-          userId: userId as string,
+          userId: auth.sub,
           workspaceId: workspaceId as string,
           oldImageUrl: oldImageUrl as string,
+          token,
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
@@ -97,20 +101,21 @@ const project = new Hono()
     zValidator(
       'json',
       z.object({
-        userId: z.string(),
         workspaceId: z.string(),
         projectId: z.string(),
         imageUrl: z.string(),
       }),
     ),
     async (c) => {
-      const { userId, workspaceId, projectId, imageUrl } = c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
+      const { workspaceId, projectId, imageUrl } = c.req.valid('json');
       const [error, data] = await to(
         deleteJebtProject({
-          userId,
+          userId: auth.sub,
           workspaceId,
           projectId,
           imageUrl,
+          token,
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));

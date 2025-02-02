@@ -45,7 +45,8 @@
     "tsup": "^8.3.5",
     "typescript": "^5.7.3",
     "unsplash-js": "^7.0.19",
-    "zhipuai-sdk-nodejs-v4": "^0.1.12"
+    "zhipuai-sdk-nodejs-v4": "^0.1.12",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

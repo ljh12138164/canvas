@@ -4,7 +4,6 @@ import { Separator } from '@/components/ui/separator';
 import userStore from '@/store/user';
 import { Settings } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
-import { toast } from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import EchartContent from './EchartContent';
@@ -65,8 +64,8 @@ const WorkSpace = observer(() => {
       </MainWorkSpace>
     );
   }
-  toast.error('工作区不存在');
   navigator('/dashboard/home');
+  return null;
 });
 
 export default WorkSpace;

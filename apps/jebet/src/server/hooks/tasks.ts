@@ -1,6 +1,8 @@
 import { client } from '@/server';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
+import { useNavigate } from 'react-router-dom';
+import { getNewToken } from '../../lib/sign';
 
 type CreateTaskInput = InferRequestType<typeof client.task.create.$post>;
 type CreateTaskOutput = InferResponseType<typeof client.task.create.$post, 200>;
@@ -9,13 +11,20 @@ type CreateTaskOutput = InferResponseType<typeof client.task.create.$post, 200>;
  *
  */
 export const useCreateTask = () => {
+  const navigate = useNavigate();
   const { mutate: createTask, isPending: createTaskLoading } = useMutation<
     CreateTaskOutput,
     Error,
     CreateTaskInput
   >({
     mutationFn: async (data) => {
-      const res = await client.task.create.$post(data);
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.task.create.$post(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) {
         throw new Error('创建任务失败');
       }
@@ -34,26 +43,34 @@ type GetTaskListOutput = InferResponseType<typeof client.task.get.$get, 200>;
 export const useGetTaskList = ({
   workspaceId,
   projectId,
-  currentUserId,
   status,
   search,
   lastTime,
   assigneeId,
 }: GetTaskListInput) => {
+  const navigate = useNavigate();
   const { data, isLoading, isFetching } = useQuery<GetTaskListOutput, Error, GetTaskListOutput>({
     queryKey: ['taskList', workspaceId, projectId],
     queryFn: async () => {
-      const res = await client.task.get.$get({
-        query: {
-          workspaceId: workspaceId,
-          projectId: projectId,
-          currentUserId: currentUserId,
-          status: status,
-          search: search,
-          lastTime: lastTime,
-          assigneeId: assigneeId,
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.task.get.$get(
+        {
+          query: {
+            workspaceId: workspaceId,
+            projectId: projectId,
+            status: status,
+            search: search,
+            lastTime: lastTime,
+            assigneeId: assigneeId,
+          },
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!res.ok) {
         throw new Error('获取任务列表失败');
       }
@@ -69,13 +86,20 @@ type DeleteTaskOutput = InferResponseType<typeof client.task.delete.$delete, 200
  * ## 删除任务
  */
 export const useDeleteTask = () => {
+  const navigate = useNavigate();
   const { mutate: deleteTask, isPending: deleteTaskLoading } = useMutation<
     DeleteTaskOutput,
     Error,
     DeleteTaskInput
   >({
     mutationFn: async (data) => {
-      const res = await client.task.delete.$delete(data);
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.task.delete.$delete(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) {
         throw new Error('删除任务失败');
       }
@@ -91,13 +115,20 @@ type UpdateTaskOutput = InferResponseType<typeof client.task.update.$patch, 200>
  * ## 更新任务
  */
 export const useUpdateTask = () => {
+  const navigate = useNavigate();
   const { mutate: updateTask, isPending: updateTaskLoading } = useMutation<
     UpdateTaskOutput,
     Error,
     UpdateTaskInput
   >({
     mutationFn: async (data) => {
-      const res = await client.task.update.$patch(data);
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.task.update.$patch(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) {
         throw new Error('更新任务失败');
       }
@@ -111,23 +142,27 @@ type GetTaskDetailOutput = InferResponseType<typeof client.task.detail.$get, 200
 /**
  * ## 获取任务详情
  */
-export const useGetTaskDetail = (
-  workspaceId: string,
-  projectId: string,
-  currentUserId: string,
-  id: string,
-) => {
+export const useGetTaskDetail = (workspaceId: string, projectId: string, id: string) => {
+  const navigate = useNavigate();
   const { data, isLoading, isFetching } = useQuery<GetTaskDetailOutput, Error>({
     queryKey: ['taskDetail', workspaceId, projectId, id],
     queryFn: async () => {
-      const res = await client.task.detail.$get({
-        query: {
-          workspaceId: workspaceId,
-          projectId: projectId,
-          currentUserId: currentUserId,
-          id: id,
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.task.detail.$get(
+        {
+          query: {
+            workspaceId: workspaceId,
+            projectId: projectId,
+            id: id,
+          },
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!res.ok) throw new Error('获取任务详情失败');
       return res.json();
     },
@@ -141,13 +176,20 @@ type CreateTaskRemarkOutput = InferResponseType<typeof client.task.addRemark.$po
  * ### 创建任务评论
  */
 export const useCreateTaskRemark = () => {
+  const navigate = useNavigate();
   const { mutate: createTaskRemark, isPending: createTaskRemarkLoading } = useMutation<
     CreateTaskRemarkOutput,
     Error,
     CreateTaskRemarkInput
   >({
     mutationFn: async (data) => {
-      const res = await client.task.addRemark.$post(data);
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.task.addRemark.$post(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) throw new Error('创建任务评论失败');
       return res.json();
     },
@@ -161,13 +203,20 @@ type MoveTaskOutput = InferResponseType<typeof client.task.move.$post, 200>;
  * ## 移动任务
  */
 export const useMoveTask = () => {
+  const navigate = useNavigate();
   const { mutate: moveTask, isPending: moveTaskLoading } = useMutation<
     MoveTaskOutput,
     Error,
     MoveTaskInput
   >({
     mutationFn: async (data) => {
-      const res = await client.task.move.$post(data);
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.task.move.$post(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) throw new Error('移动任务失败');
       return res.json();
     },

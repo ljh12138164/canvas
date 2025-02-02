@@ -1,13 +1,13 @@
 import userStore from '@/store/user';
+import type { Profiles } from '@/types/user';
 import type { Workspace } from '@/types/workspace';
-import type { UserResource } from '@clerk/types';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const useUserAndWorkspace = () => {
+const useWorkspace = () => {
   const [isLoading, setLoading] = useState(true);
   const [activeWorkspace, setActiveWorkspace] = useState<Workspace | null>(null);
-  const [user, setUser] = useState<UserResource | null>(null);
+  const [user, setUser] = useState<Profiles | null>(null);
   const { workspaceId } = useParams();
   const navigate = useNavigate();
   const { workspace, userData } = userStore;
@@ -28,4 +28,4 @@ const useUserAndWorkspace = () => {
   return { activeWorkspace, isLoading, user };
 };
 
-export default useUserAndWorkspace;
+export default useWorkspace;

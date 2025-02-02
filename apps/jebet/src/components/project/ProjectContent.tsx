@@ -2,7 +2,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useGetTaskList } from '@/server/hooks/tasks';
 import { useGetJebtUserList } from '@/server/hooks/user';
 import { TaskStatus } from '@/types/workspace';
-import type { UserResource } from '@clerk/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { CalendarIcon, XIcon } from 'lucide-react';
@@ -98,15 +97,12 @@ const KanbanSkeleton = () => (
 const ProjectContent = ({
   workspaceId,
   projectId,
-  userData,
 }: {
   workspaceId: string;
   projectId: string;
-  userData: UserResource;
 }) => {
   const { data: memberData, isLoading } = useGetJebtUserList({
     workspaceId,
-    userId: userData?.id,
   });
   const [searchParams, setSearchParams] = useSearchParams();
   const query = useQueryClient();
@@ -125,7 +121,6 @@ const ProjectContent = ({
   } = useGetTaskList({
     workspaceId,
     projectId,
-    currentUserId: userData.id,
     lastTime: date,
     status: status === TaskStatus.ALL ? undefined : status,
     assigneeId: assigneeId === '全部' ? undefined : assigneeId,
@@ -161,7 +156,6 @@ const ProjectContent = ({
             </TabsList>
           </Tabs>
           <TaskFromCard
-            currentUserId={userData.id}
             type="create"
             workspaceId={workspaceId}
             projectId={projectId}
@@ -313,7 +307,7 @@ const ProjectContent = ({
         {!taskListLoading ? (
           selectTap === 'kanban' && (
             <div className={taskListFetching ? 'opacity-50  max-w-full' : ' max-w-full'}>
-              <Kanban taskList={taskList || []} currentUserId={userData.id} />
+              <Kanban taskList={taskList || []} />
             </div>
           )
         ) : (

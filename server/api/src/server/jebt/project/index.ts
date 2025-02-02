@@ -1,7 +1,7 @@
 import to from 'await-to-js';
 import { nanoid } from 'nanoid';
 import type { Project } from '../../../types/jebt/board';
-import { supabaseJebt } from '../../supabase/jebt';
+import { supabaseJebtToken } from '../../supabase/jebt';
 import {
   DEFAULT_ICON,
   JEBT_URL,
@@ -19,10 +19,11 @@ import {
 export const getJebtWorkspaceProject = async (
   userId: string,
   workspaceId: string,
+  token: string,
 ): Promise<Project[]> => {
   const [checkUserError] = await to(checkUser(userId, workspaceId));
   if (checkUserError) throw new Error('无权限');
-  const { data, error } = await supabaseJebt
+  const { data, error } = await supabaseJebtToken(token)
     .from('projects')
     .select('*')
     .eq('workspaceId', workspaceId);
@@ -40,25 +41,27 @@ export const createJebtProject = async ({
   imageUrl,
   name,
   userId,
+  token,
 }: {
   workspaceId: string;
   imageUrl: string | File;
   name: string;
   userId: string;
+  token: string;
 }): Promise<Project> => {
   const id = nanoid();
   const [checkUserError] = await to(checkMember(userId, workspaceId));
   if (checkUserError) throw new Error('无权限');
   if (typeof imageUrl !== 'string') {
     const path = await uploadImageclound({ file: imageUrl });
-    const { data, error } = await supabaseJebt
+    const { data, error } = await supabaseJebtToken(token)
       .from('projects')
       .insert([{ workspaceId, name, id, imageUrl: path }])
       .select('*');
     if (error) throw new Error('服务器错误');
     return data[0];
   }
-  const { data, error } = await supabaseJebt
+  const { data, error } = await supabaseJebtToken(token)
     .from('projects')
     .insert([{ workspaceId, name, id, imageUrl }])
     .select('*');
@@ -75,13 +78,15 @@ export const createJebtProject = async ({
 export const getJebtProjectList = async ({
   workspaceId,
   userId,
+  token,
 }: {
   workspaceId: string;
   userId: string;
+  token: string;
 }): Promise<Project[]> => {
   const [checkUserError] = await to(checkUser(userId, workspaceId));
   if (checkUserError) throw new Error('无权限');
-  const { data, error } = await supabaseJebt
+  const { data, error } = await supabaseJebtToken(token)
     .from('projects')
     .select('*')
     .eq('workspaceId', workspaceId);
@@ -100,6 +105,7 @@ export const updateJebtProject = async ({
   workspaceId,
   projectId,
   oldImageUrl,
+  token,
 }: {
   name: string;
   imageUrl: File | string;
@@ -107,6 +113,7 @@ export const updateJebtProject = async ({
   projectId: string;
   workspaceId: string;
   oldImageUrl: string;
+  token: string;
 }): Promise<Project> => {
   const [error, _] = await to(checkMember(userId, workspaceId));
   if (error) throw new Error(error.message);
@@ -121,7 +128,7 @@ export const updateJebtProject = async ({
     }
     // 上传图片
     const [_, imageUrls] = await Promise.all([remove, uploadImageclound({ file: imageUrl })]);
-    const { data, error } = await supabaseJebt
+    const { data, error } = await supabaseJebtToken(token)
       .from('projects')
       .update([
         {
@@ -134,7 +141,7 @@ export const updateJebtProject = async ({
     if (error) throw new Error('服务器错误');
     return data[0];
   }
-  const { data, error: projectError } = await supabaseJebt
+  const { data, error: projectError } = await supabaseJebtToken(token)
     .from('projects')
     .update([
       {
@@ -153,11 +160,13 @@ export const updateJebtProject = async ({
  * @returns
  */
 export const deleteJebtProject = async ({
+  token,
   userId,
   workspaceId,
   projectId,
   imageUrl,
 }: {
+  token: string;
   userId: string;
   workspaceId: string;
   projectId: string;
@@ -173,7 +182,7 @@ export const deleteJebtProject = async ({
   }
   const [__, projectError] = await Promise.all([
     deleteImage,
-    supabaseJebt.from('projects').delete().eq('id', projectId),
+    supabaseJebtToken(token).from('projects').delete().eq('id', projectId),
   ]);
 
   if (projectError.error) throw new Error('服务器错误');

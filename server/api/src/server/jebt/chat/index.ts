@@ -1,6 +1,6 @@
 import to from 'await-to-js';
 import { type ChatMessage, MessageType } from '../../../types/jebt/board';
-import { supabaseJebt } from '../../supabase/jebt';
+import { supabaseJebtToken } from '../../supabase/jebt';
 import { checkUser, uploadImageclound } from '../board';
 
 const PAGE_SIZE = 10;
@@ -14,6 +14,7 @@ export const getChatMessage = async (
   workspaceId: string,
   userId: string,
   pageTo: number,
+  token: string,
 ): Promise<{ data: ChatMessage[]; count: number | null; pageTo: number }> => {
   const [error] = await to(checkUser(userId, workspaceId));
   if (error) throw new Error(error.message);
@@ -22,7 +23,7 @@ export const getChatMessage = async (
     data,
     error: supabaseError,
     count,
-  } = await supabaseJebt
+  } = await supabaseJebtToken(token)
     .from('chat')
     .select('*', {
       count: 'exact',
@@ -50,11 +51,12 @@ export const sendChatMessage = async (
   workspaceId: string,
   userId: string,
   message: string,
+  token: string,
 ): Promise<ChatMessage> => {
   const [error] = await to(checkUser(userId, workspaceId));
   if (error) throw new Error(error.message);
 
-  const { data, error: supabaseError } = await supabaseJebt
+  const { data, error: supabaseError } = await supabaseJebtToken(token)
     .from('chat')
     .insert({ workspaceId, userId, message, type: MessageType.TEXT })
     .select('*');
@@ -73,12 +75,13 @@ export const uploadImage = async (
   workspaceId: string,
   userId: string,
   file: File,
+  token: string,
 ): Promise<ChatMessage> => {
   const [error] = await to(checkUser(userId, workspaceId));
   if (error) throw new Error(error.message);
   const [errors, imageUrl] = await to(uploadImageclound({ file }));
   if (errors) throw new Error(errors.message);
-  const { data, error: supabaseError } = await supabaseJebt
+  const { data, error: supabaseError } = await supabaseJebtToken(token)
     .from('chat')
     .insert({ workspaceId, userId, message: imageUrl, type: MessageType.IMAGE })
     .select('*');
