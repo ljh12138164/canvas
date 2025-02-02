@@ -16,8 +16,8 @@ import { ReactFlowProvider } from '@xyflow/react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-photo-view/dist/react-photo-view.css';
 import './index.css';
-// const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-const PUBLISHABLE_KEY = 'pk_test_YWRqdXN0ZWQtYmFkZ2VyLTk5LmNsZXJrLmFjY291bnRzLmRldiQ';
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+// const PUBLISHABLE_KEY = 'pk_test_YWRqdXN0ZWQtYmFkZ2VyLTk5LmNsZXJrLmFjY291bnRzLmRldiQ';
 
 if (!PUBLISHABLE_KEY) {
   throw new Error('Missing Publishable Key');
