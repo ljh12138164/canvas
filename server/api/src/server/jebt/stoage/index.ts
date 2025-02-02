@@ -1,6 +1,6 @@
 import to from 'await-to-js';
 import { nanoid } from 'nanoid';
-import { supabaseJebt } from '../../../server/supabase/jebt';
+import { supabaseJebtToken } from '../../../server/supabase/jebt';
 import type { StoageData } from '../../../types/jebt/board';
 import { JEBT_URL, checkUser } from '../board';
 
@@ -10,18 +10,20 @@ import { JEBT_URL, checkUser } from '../board';
  * @returns 图片路径
  */
 export const uploadImageclound = async ({
+  token,
   file,
   workspaceId,
   name,
 }: {
+  token: string;
   file: File;
   workspaceId: string;
   name: string;
 }) => {
   // 设置文件名字
   const fileName = `${workspaceId}/${nanoid()}-${name}`.replace('/', '');
-  const { data, error } = await supabaseJebt.storage
-    // 桶名字
+  const { data, error } = await supabaseJebtToken(token)
+    .storage // 桶名字
     .from('WROKSPACE')
     .upload(fileName, file);
   if (error) {
@@ -36,12 +38,14 @@ export const uploadImageclound = async ({
  * @returns 图片路径
  */
 export const deleteImageClound = async ({
+  token,
   image,
 }: {
+  token: string;
   image: string;
 }): Promise<boolean> => {
-  const { error } = await supabaseJebt.storage
-    //  桶名字
+  const { error } = await supabaseJebtToken(token)
+    .storage //  桶名字
     .from('WROKSPACE')
     // 删除图片路径
     .remove([image]);
@@ -68,6 +72,7 @@ export const createFile = async ({
   workspaceId,
   userId,
   size,
+  token,
 }: {
   file: File;
   name: string;
@@ -76,12 +81,13 @@ export const createFile = async ({
   workspaceId: string;
   userId: string;
   size: number;
+  token: string;
 }): Promise<StoageData> => {
   const [noUser] = await to(checkUser(userId, workspaceId));
   if (noUser) throw new Error('未找到用户');
-  const [uploadError, fileUrl] = await to(uploadImageclound({ file, workspaceId, name }));
+  const [uploadError, fileUrl] = await to(uploadImageclound({ file, workspaceId, name, token }));
   if (uploadError) throw new Error('上传文件失败');
-  const { error, data } = await supabaseJebt
+  const { error, data } = await supabaseJebtToken(token)
     .from('stoages')
     .insert([
       {
@@ -109,13 +115,15 @@ s*/
 export const getJebtFileList = async ({
   workspaceId,
   userId,
+  token,
 }: {
   workspaceId: string;
   userId: string;
+  token: string;
 }): Promise<StoageData[]> => {
   const [noUser] = await to(checkUser(userId, workspaceId));
   if (noUser) throw new Error('未找到用户');
-  const { data, error } = await supabaseJebt
+  const { data, error } = await supabaseJebtToken(token)
     .from('stoages')
     .select('*')
     .eq('workspaceId', workspaceId);
@@ -128,18 +136,20 @@ export const deleteJebtFile = async ({
   userId,
   workspaceId,
   file,
+  token,
 }: {
   id: string;
   userId: string;
   workspaceId: string;
   file: string;
+  token: string;
 }) => {
   const [noUser] = await to(checkUser(userId, workspaceId));
 
   if (noUser) throw new Error('未找到用户');
-  const [deleteError] = await to(deleteImageClound({ image: file }));
+  const [deleteError] = await to(deleteImageClound({ image: file, token }));
   if (deleteError) throw new Error('删除文件失败');
-  const { error } = await supabaseJebt
+  const { error } = await supabaseJebtToken(token)
     .from('stoages')
     .delete()
     .eq('id', id)
@@ -163,16 +173,18 @@ export const updateJebtFile = async ({
   workspaceId,
   name,
   description,
+  token,
 }: {
   id: string;
   userId: string;
   workspaceId: string;
   name: string;
   description: string;
+  token: string;
 }): Promise<StoageData> => {
   const [noUser] = await to(checkUser(userId, workspaceId));
   if (noUser) throw new Error('未找到用户');
-  const { error, data } = await supabaseJebt
+  const { error, data } = await supabaseJebtToken(token)
     .from('stoages')
     .update({ name, description, updated_at: new Date().toISOString() })
     .eq('id', id)

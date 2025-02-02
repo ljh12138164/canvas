@@ -2,7 +2,7 @@ import to from 'await-to-js';
 import { nanoid } from 'nanoid';
 import { generateInviteCode } from '../../../libs/utils';
 import type { Flow, Member, Project, Task, Workspace } from '../../../types/jebt/board';
-import { supabaseJebt } from '../../supabase/jebt';
+import { supabaseJebt, supabaseJebtToken } from '../../supabase/jebt';
 
 export const DEFAULT_ICON =
   'https://xllpazcrvbmwkyvnpylu.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg';
@@ -92,6 +92,7 @@ export const createJebtWorkspace = async ({
   email,
   userImage,
   username,
+  token,
 }: {
   name: string;
   userId: string;
@@ -99,10 +100,11 @@ export const createJebtWorkspace = async ({
   email: string;
   userImage: string;
   username: string;
+  token: string;
 }): Promise<Workspace> => {
   if (typeof file !== 'string') {
     const imageUrl = await uploadImageclound({ file });
-    const { data, error } = await supabaseJebt
+    const { data, error } = await supabaseJebtToken(token)
       .from('workspace')
       .insert([
         {
@@ -114,7 +116,7 @@ export const createJebtWorkspace = async ({
       ])
       .select('*');
     if (error) throw new Error('服务器错误');
-    const { error: memberError } = await supabaseJebt
+    const { error: memberError } = await supabaseJebtToken(token)
       .from('member')
       .insert([
         {
@@ -130,7 +132,7 @@ export const createJebtWorkspace = async ({
     if (memberError) throw new Error('服务器错误');
     return data[0];
   }
-  const { data, error } = await supabaseJebt
+  const { data, error } = await supabaseJebtToken(token)
     .from('workspace')
     .insert([
       {
@@ -142,7 +144,7 @@ export const createJebtWorkspace = async ({
     ])
     .select('*');
   if (error) throw new Error('服务器错误');
-  const { error: memberError } = await supabaseJebt
+  const { error: memberError } = await supabaseJebtToken(token)
     .from('member')
     .insert([
       {
@@ -166,6 +168,7 @@ export const createJebtWorkspace = async ({
  */
 export const getJebtWorkspace = async (
   userId: string,
+  token: string,
 ): Promise<
   (Workspace & {
     member: Member[];
@@ -174,7 +177,7 @@ export const getJebtWorkspace = async (
     flow: Flow[];
   })[]
 > => {
-  const { data, error } = await supabaseJebt
+  const { data, error } = await supabaseJebtToken(token)
     .from('member')
     .select('*,workspace(*,member(*),projects(*),tasks(*),flow(*))')
     .eq('userId', userId);
@@ -193,12 +196,14 @@ export const updateJebtWorkspace = async ({
   file,
   userId,
   oldImageUrl,
+  token,
 }: {
   id: string;
   name: string;
   file: File | string;
   userId: string;
   oldImageUrl: string;
+  token: string;
 }): Promise<Workspace> => {
   const [error, _] = await to(checkMember(userId, id));
   if (error) throw new Error(error.message);
@@ -212,7 +217,7 @@ export const updateJebtWorkspace = async ({
       });
     }
     const [_, imageUrl] = await Promise.all([remove, uploadImageclound({ file })]);
-    const { data, error } = await supabaseJebt
+    const { data, error } = await supabaseJebtToken(token)
       .from('workspace')
       .update([
         {
@@ -226,7 +231,7 @@ export const updateJebtWorkspace = async ({
     if (error) throw new Error('服务器错误');
     return data[0];
   }
-  const { data, error: workspaceError } = await supabaseJebt
+  const { data, error: workspaceError } = await supabaseJebtToken(token)
     .from('workspace')
     .update([
       {
@@ -247,11 +252,17 @@ export const updateJebtWorkspace = async ({
  * @param userId 用户id
  * @returns
  */
-export const deleteJebtWorkspace = async (
-  id: string,
-  userId: string,
-  imageUrl: string,
-): Promise<boolean> => {
+export const deleteJebtWorkspace = async ({
+  id,
+  userId,
+  imageUrl,
+  token,
+}: {
+  id: string;
+  userId: string;
+  imageUrl: string;
+  token: string;
+}): Promise<boolean> => {
   const [error, _] = await to(checkMember(userId, id));
   if (error) throw new Error(error.message);
   let deleteImage: Promise<boolean | null> = Promise.resolve(null);
@@ -262,7 +273,7 @@ export const deleteJebtWorkspace = async (
   }
   const [__, workspaceError] = await Promise.all([
     deleteImage,
-    supabaseJebt.from('workspace').delete().eq('id', id),
+    supabaseJebtToken(token).from('workspace').delete().eq('id', id),
   ]);
 
   if (workspaceError) throw new Error('服务器错误');
@@ -275,10 +286,14 @@ export const deleteJebtWorkspace = async (
  * @param userId 用户id
  * @returns
  */
-export const refreshJebtWorkspace = async (id: string, userId: string): Promise<Workspace> => {
+export const refreshJebtWorkspace = async (
+  id: string,
+  userId: string,
+  token: string,
+): Promise<Workspace> => {
   const [error, _] = await to(checkMember(userId, id));
   if (error) throw new Error(error.message);
-  const { data, error: workspaceError } = await supabaseJebt
+  const { data, error: workspaceError } = await supabaseJebtToken(token)
     .from('workspace')
     .update([{ inviteCode: generateInviteCode(6) }])
     .eq('id', id)
@@ -292,8 +307,11 @@ export const refreshJebtWorkspace = async (id: string, userId: string): Promise<
  * @param inviteCode 邀请码
  * @returns Workspace[]
  */
-export const getJebtWorkspaceByInviteCode = async (inviteCode: string): Promise<Workspace> => {
-  const { data, error } = await supabaseJebt
+export const getJebtWorkspaceByInviteCode = async (
+  inviteCode: string,
+  token: string,
+): Promise<Workspace> => {
+  const { data, error } = await supabaseJebtToken(token)
     .from('workspace')
     .select('*')
     .eq('inviteCode', inviteCode);
@@ -308,20 +326,28 @@ export const getJebtWorkspaceByInviteCode = async (inviteCode: string): Promise<
  * @param id 仪表盘id
  * @returns Workspace
  */
-export const joinJebtWorkspace = async (
-  userId: string,
-  id: string,
-  email: string,
-  userImage: string,
-  username: string,
-): Promise<Workspace> => {
-  const { data: memberData, error: memberError } = await supabaseJebt
+export const joinJebtWorkspace = async ({
+  userId,
+  id,
+  email,
+  userImage,
+  username,
+  token,
+}: {
+  userId: string;
+  id: string;
+  email: string;
+  userImage: string;
+  username: string;
+  token: string;
+}): Promise<Workspace> => {
+  const { data: memberData, error: memberError } = await supabaseJebtToken(token)
     .from('member')
     .select('workspaceId,role,userId')
     .eq('workspaceId', id);
   if (memberError) throw new Error('服务器错误');
   if (memberData.some((item) => item.userId === userId)) throw new Error('已加入');
-  const { data, error } = await supabaseJebt
+  const { data, error } = await supabaseJebtToken(token)
     .from('member')
     .insert([
       {

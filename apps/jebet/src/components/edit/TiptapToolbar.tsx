@@ -24,7 +24,6 @@ import TiptapButton from './TiptapButton';
 
 interface TiptapToolbar {
   editor: Editor;
-  userId: string;
   workspace: Workspace;
   tiptapToolBar: {
     key: string;
@@ -79,23 +78,14 @@ const PreviewImage = styled.img`
 //   justify-content: center;
 //   align-items: center;
 // `;
-const TiptapToolbar = observer(({ editor, userId, workspace, tiptapToolBar }: TiptapToolbar) => {
-  // 裁剪图片
-  // const [crop, setCrop] = useState<Crop>({
-  //   unit: 'px',
-  //   x: 0,
-  //   y: 0,
-  //   width: 100,
-  //   height: 100,
-  // });
-  // const [open, setOpen] = useState(false);
+const TiptapToolbar = observer(({ editor, workspace, tiptapToolBar }: TiptapToolbar) => {
   const closeRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const { messageLoading } = useGetMessage(workspace.id, userId, chatStore.isConnected);
-  const { createMessage, messagePending } = useCreateMessage(workspace.id, userId);
-  const { uploadImage, uploadImagePending } = useUploadImage(workspace.id, userId);
+  const { messageLoading } = useGetMessage(workspace.id, chatStore.isConnected);
+  const { createMessage, messagePending } = useCreateMessage(workspace.id);
+  const { uploadImage, uploadImagePending } = useUploadImage(workspace.id);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;

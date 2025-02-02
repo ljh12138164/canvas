@@ -1,17 +1,18 @@
 import type { PostgrestError } from '@supabase/supabase-js';
 import to from 'await-to-js';
 import type { Member } from '../../../types/jebt/board';
-import { supabaseJebt } from '../../supabase/jebt';
+import { supabaseJebtToken } from '../../supabase/jebt';
 import { checkMember } from '../board';
 
 /**
  * ## 获取工作区成员列表和自己的权限信息
  * @param workspaceId 工作区ID
  * @param userId 用户ID
+ * @param token 令牌
  * @returns 工作区成员列表和自己的权限信息
  */
-export const getJebtUserList = async (workspaceId: string, userId: string) => {
-  const { data, error } = (await supabaseJebt
+export const getJebtUserList = async (workspaceId: string, userId: string, token: string) => {
+  const { data, error } = (await supabaseJebtToken(token)
     .from('member')
     .select('*')
     .eq('workspaceId', workspaceId)) as {
@@ -37,16 +38,18 @@ export const updateJebtUserRole = async ({
   userId,
   role,
   currentUserId,
+  token,
 }: {
   workspaceId: string;
   userId: string;
   role: 'admin' | 'member';
   currentUserId: string;
+  token: string;
 }) => {
   // 检查用户权限
   const [error, _] = await to(checkMember(currentUserId, workspaceId));
   if (error) throw new Error(error.message);
-  const { data, error: memberError } = await supabaseJebt
+  const { data, error: memberError } = await supabaseJebtToken(token)
     .from('member')
     .update([{ role }])
     .eq('userId', userId)
@@ -68,17 +71,19 @@ export const deleteJebtUser = async ({
   userId,
   workspaceId,
   currentUserId,
+  token,
 }: {
   userId: string;
   workspaceId: string;
   currentUserId: string;
+  token: string;
 }) => {
   // 只有删除其他用户的时候，才需要检查权限
   if (currentUserId !== userId) {
     const [error, _] = await to(checkMember(currentUserId, workspaceId));
     if (error) throw new Error(error.message);
   }
-  const { error: memberError } = await supabaseJebt
+  const { error: memberError } = await supabaseJebtToken(token)
     .from('member')
     .delete()
     .eq('userId', userId)

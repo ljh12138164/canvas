@@ -56,15 +56,12 @@ const SkeletonList = styled.div`
   gap: 10px;
 `;
 
-const ProjectList = observer(({ workspaceId, userId }: { workspaceId: string; userId: string }) => {
+const ProjectList = observer(({ workspaceId }: { workspaceId: string }) => {
   const queryClient = useQueryClient();
   const { projectId } = useParams();
   const store = useStore;
   const navigate = useNavigate();
-  const { projectList, isLoadingProjectList, projectListError } = useProjectList(
-    workspaceId,
-    userId,
-  );
+  const { projectList, isLoadingProjectList, projectListError } = useProjectList(workspaceId);
   const checkActive = useMemoizedFn((id: string) => {
     return projectId === id;
   });

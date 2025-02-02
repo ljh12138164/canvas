@@ -20,7 +20,6 @@ import { TaskStatus } from '@/types/workspace';
 import { Activity, Calendar, FileText, Users } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
@@ -143,6 +142,7 @@ const InfoContainer = styled.section`
 const TaskCount = styled(Card)`
   padding: 1rem;
   justify-content: center;
+  min-height: 100px;
 `;
 const TaskItem = styled.section`
   width: 100%;
@@ -166,12 +166,12 @@ const EchartContent = ({
   id: string;
   workspaceId: string;
 }) => {
-  const { data: workspace, isLoading } = useWorkspace(id);
+  const { data: workspace, isLoading, isFetching } = useWorkspace(id);
   const [showMore, setShowMore] = useState(false);
   const [date, setDate] = useState(7);
 
   const navigator = useNavigate();
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <Container>
         <StatsGrid>
@@ -193,7 +193,6 @@ const EchartContent = ({
   }
   const workspaces = workspace?.find((item) => item.id === workspaceId);
   if (!workspaces) {
-    toast.error('工作区不存在');
     navigator('/dashboard/home');
     return null;
   }
@@ -237,7 +236,10 @@ const EchartContent = ({
           </IconWrapper>
           <StatsInfo>
             <StatsValue>
-              {((finshTask.length / workspaces.tasks.length) * 100).toFixed(2)}%
+              {Number.isNaN((finshTask.length / workspaces.tasks.length) * 100)
+                ? 0
+                : (finshTask.length / workspaces.tasks.length) * 100}
+              %
             </StatsValue>
             <StatsLabel>完成率</StatsLabel>
           </StatsInfo>
@@ -251,51 +253,58 @@ const EchartContent = ({
           </p>
           <Separator className="h-[1px] mb-2" />
           <ScrollArea className="max-h-[300px]">
-            {showMore
-              ? workspaces.tasks.map((item) => (
-                  <TaskItem
-                    key={item.id}
-                    className="bg-[#fff]  dark:bg-black cursor-pointer"
-                    onClick={() =>
-                      navigator(`/dashboard/${workspaceId}/${item.projectId}/home/${item.id}`)
-                    }
-                  >
-                    <p className="flex flex-col">
-                      <span>{item.name}</span>
-                      <span className="text-sm text-muted-foreground flex items-center gap-1">
-                        <Badge variant={item.status}>{item.status}</Badge> -
-                        <span className="flex items-center gap-1">
-                          <Calendar />
-                          <TaskDate lastTime={item.lastTime} />
-                        </span>
-                      </span>
-                    </p>
-                  </TaskItem>
-                ))
-              : workspaces.tasks.slice(0, 2).map((item) => (
-                  <TaskItem
-                    key={item.id}
-                    className="bg-[#fff]  dark:bg-black cursor-pointer"
-                    onClick={() =>
-                      navigator(`/dashboard/${workspaceId}/${item.projectId}/home/${item.id}`)
-                    }
-                  >
-                    <p className="flex flex-col">
-                      <span>{item.name}</span>
-                      <span className="text-sm text-muted-foreground flex items-center gap-1">
-                        <Badge variant={item.status}>{item.status}</Badge> -
-                        <span className="flex items-center gap-1">
-                          <Calendar />
-                          <TaskDate lastTime={item.lastTime} />
-                        </span>
-                      </span>
-                    </p>
-                  </TaskItem>
-                ))}
+            {workspaces.tasks.length > 0 && (
+              <section>
+                {showMore
+                  ? workspaces.tasks.map((item) => (
+                      <TaskItem
+                        key={item.id}
+                        className="bg-[#fff]  dark:bg-black cursor-pointer"
+                        onClick={() =>
+                          navigator(`/dashboard/${workspaceId}/${item.projectId}/home/${item.id}`)
+                        }
+                      >
+                        <p className="flex flex-col">
+                          <span>{item.name}</span>
+                          <span className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Badge variant={item.status}>{item.status}</Badge> -
+                            <span className="flex items-center gap-1">
+                              <Calendar />
+                              <TaskDate lastTime={item.lastTime} />
+                            </span>
+                          </span>
+                        </p>
+                      </TaskItem>
+                    ))
+                  : workspaces.tasks.slice(0, 2).map((item) => (
+                      <TaskItem
+                        key={item.id}
+                        className="bg-[#fff]  dark:bg-black cursor-pointer"
+                        onClick={() =>
+                          navigator(`/dashboard/${workspaceId}/${item.projectId}/home/${item.id}`)
+                        }
+                      >
+                        <p className="flex flex-col">
+                          <span>{item.name}</span>
+                          <span className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Badge variant={item.status}>{item.status}</Badge> -
+                            <span className="flex items-center gap-1">
+                              <Calendar />
+                              <TaskDate lastTime={item.lastTime} />
+                            </span>
+                          </span>
+                        </p>
+                      </TaskItem>
+                    ))}
+              </section>
+            )}
+            {workspaces.tasks.length === 0 && <p className="text-center h-full">无数据</p>}
           </ScrollArea>
-          <Button onClick={() => setShowMore(!showMore)} variant="outline" className="w-full">
-            {showMore ? '收起' : '查看更多'}
-          </Button>
+          {workspaces.tasks.length > 2 && (
+            <Button onClick={() => setShowMore(!showMore)} variant="outline" className="w-full">
+              {showMore ? '收起' : '查看更多'}
+            </Button>
+          )}
         </TaskCount>
         {/* 项目 */}
         <TaskCount className="bg-[#fff] dark:bg-black">
@@ -304,21 +313,24 @@ const EchartContent = ({
           </p>
           <Separator className="h-[1px] mb-2" />
           <ScrollArea className="max-h-[300px]">
-            <ProjectContainer>
-              {workspaces.projects.map((item) => (
-                <TaskItem
-                  key={item.id}
-                  className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center"
-                  onClick={() => navigator(`/dashboard/${workspaceId}/${item.id}`)}
-                >
-                  <Avatar>
-                    <AvatarImage src={item.imageUrl} />
-                    <AvatarFallback>{item.name.slice(0, 2)}</AvatarFallback>
-                  </Avatar>
-                  <p>{item.name}</p>
-                </TaskItem>
-              ))}
-            </ProjectContainer>
+            {workspaces.projects.length > 0 && (
+              <ProjectContainer>
+                {workspaces.projects.map((item) => (
+                  <TaskItem
+                    key={item.id}
+                    className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center"
+                    onClick={() => navigator(`/dashboard/${workspaceId}/${item.id}`)}
+                  >
+                    <Avatar>
+                      <AvatarImage src={item.imageUrl} />
+                      <AvatarFallback>{item.name.slice(0, 2)}</AvatarFallback>
+                    </Avatar>
+                    <p>{item.name}</p>
+                  </TaskItem>
+                ))}
+              </ProjectContainer>
+            )}
+            {workspaces.projects.length === 0 && <p className="text-center h-full">无数据</p>}
           </ScrollArea>
         </TaskCount>
         {/* 成员 */}
@@ -328,24 +340,26 @@ const EchartContent = ({
           </p>
           <Separator className="h-[1px] mb-2" />
           <ScrollArea className="max-h-[300px]">
-            <ProjectContainer>
-              {workspaces.member.map((item) => (
-                <TaskItem
-                  key={item.id}
-                  className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col"
-                  onClick={() => navigator(`/dashboard/${workspaceId}/${item.id}`)}
-                >
-                  <Avatar>
-                    <AvatarImage src={item.userImage} />
-                    <AvatarFallback>{item.username}</AvatarFallback>
-                  </Avatar>
-                  <InfoContainer>
-                    <p>{item.username}</p>
-                    <p>{item.email}</p>
-                  </InfoContainer>
-                </TaskItem>
-              ))}
-            </ProjectContainer>
+            {workspaces.member.length > 0 && (
+              <ProjectContainer>
+                {workspaces.member.map((item) => (
+                  <TaskItem
+                    key={item.id}
+                    className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col"
+                  >
+                    <Avatar>
+                      <AvatarImage src={item.userImage} />
+                      <AvatarFallback>{item.username}</AvatarFallback>
+                    </Avatar>
+                    <InfoContainer>
+                      <p>{item.username}</p>
+                      <p>{item.email}</p>
+                    </InfoContainer>
+                  </TaskItem>
+                ))}
+              </ProjectContainer>
+            )}
+            {workspaces.member.length === 0 && <p className="text-center h-full">无数据</p>}
           </ScrollArea>
         </TaskCount>
         {/* 工作流 */}
@@ -354,47 +368,53 @@ const EchartContent = ({
             工作流({workspaces.flow.length})
           </p>
           <Separator className="h-[1px] mb-2" />
-          <ScrollArea className="max-h-[300px]">
-            <ProjectContainer>
-              {workspaces.flow.map((item) => (
-                <TaskItem
-                  key={item.id}
-                  className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col"
-                  onClick={() => navigator(`/dashboard/${workspaceId}/flow/detail/${item.id}`)}
-                >
-                  <p>{item.name}</p>
-                  <p>{item.description}</p>
-                  <p className="flex items-center gap-2">
-                    创建人：
-                    {workspaces.member.map((members) => {
-                      if (item.userId === members.userId) return <>{members.username}</>;
-                    })}
-                  </p>
-                </TaskItem>
-              ))}
-            </ProjectContainer>
-          </ScrollArea>
+          {workspaces.flow.length > 0 && (
+            <ScrollArea className="">
+              <ProjectContainer>
+                {workspaces.flow.map((item) => (
+                  <TaskItem
+                    key={item.id}
+                    className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col"
+                    onClick={() => navigator(`/dashboard/${workspaceId}/flow/detail/${item.id}`)}
+                  >
+                    <p>{item.name}</p>
+                    <p>{item.description}</p>
+                    <p className="flex items-center gap-2">
+                      创建人：
+                      {workspaces.member.map((members) => {
+                        if (item.userId === members.userId) return <>{members.username}</>;
+                      })}
+                    </p>
+                  </TaskItem>
+                ))}
+              </ProjectContainer>
+            </ScrollArea>
+          )}
+          {workspaces.flow.length === 0 && <p className="text-center h-full">无数据</p>}
         </TaskCount>
       </CardContainer>
-
       {/* Echart */}
-      <div className="flex gap-4">
-        <div className="flex items-center gap-2">任务数</div>
-        <Select value={date.toString()} onValueChange={(value) => setDate(Number(value))}>
-          <SelectTrigger className="ml-auto w-[30%]">
-            <SelectValue placeholder="请选择" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="7">7天</SelectItem>
-            <SelectItem value="14">14天</SelectItem>
-            <SelectItem value="30">30天</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <ChartsGrid>
-        <LineEchart date={date} workspace={workspaces} types="tasks" />
-        <PieEchart date={date} workspace={workspaces} types="tasks" />
-      </ChartsGrid>
+      {workspaces && workspaces.tasks.length > 0 && (
+        <>
+          <div className="flex gap-4">
+            <div className="flex items-center gap-2">任务数</div>
+            <Select value={date.toString()} onValueChange={(value) => setDate(Number(value))}>
+              <SelectTrigger className="ml-auto w-[30%]">
+                <SelectValue placeholder="请选择" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="7">7天</SelectItem>
+                <SelectItem value="14">14天</SelectItem>
+                <SelectItem value="30">30天</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <ChartsGrid>
+            <LineEchart date={date} workspace={workspaces} types="tasks" />
+            <PieEchart date={date} workspace={workspaces} types="tasks" />
+          </ChartsGrid>
+        </>
+      )}
     </Container>
   );
 };

@@ -1,5 +1,6 @@
 import { useCreateTaskRemark, useGetTaskDetail } from '@/server/hooks/tasks';
-import type { UserResource } from '@clerk/types';
+import { DEFAULT_AVATAR } from '@/server/supabase/user';
+import type { Profiles } from '@/types/user';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -240,19 +241,14 @@ const Detail = ({
 }: {
   workspaceId: string;
   projectId: string;
-  userData: UserResource;
+  userData: Profiles;
 }) => {
   const [comment, setComment] = useState('');
   const queryClient = useQueryClient();
   const { createTaskRemark, createTaskRemarkLoading } = useCreateTaskRemark();
   const navigate = useNavigate();
   const params = useParams();
-  const { data: taskDetail, isLoading } = useGetTaskDetail(
-    workspaceId,
-    projectId,
-    userData.id,
-    params.taskId!,
-  );
+  const { data: taskDetail, isLoading } = useGetTaskDetail(workspaceId, projectId, params.taskId!);
 
   // 模拟数据
 
@@ -264,7 +260,6 @@ const Detail = ({
         json: {
           taskId: params.taskId!,
           content: comment,
-          currentUserId: userData.id,
         },
       },
       {
@@ -370,8 +365,8 @@ const Detail = ({
             <CommentSection>
               <CommentInput>
                 <Avatar>
-                  <AvatarImage src={userData.imageUrl} />
-                  <AvatarFallback>{userData.username?.[0] || 'U'}</AvatarFallback>
+                  <AvatarImage src={userData.image || DEFAULT_AVATAR} />
+                  <AvatarFallback>{userData.name?.[0] || 'U'}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 flex gap-2">
                   <Textarea

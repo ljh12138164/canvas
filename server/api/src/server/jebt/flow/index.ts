@@ -1,6 +1,6 @@
 import to from 'await-to-js';
 import { nanoid } from 'nanoid';
-import { supabaseJebt } from '../../../server/supabase/jebt';
+import { supabaseJebtToken } from '../../../server/supabase/jebt';
 import type { Flow } from '../../../types/jebt/board';
 import { checkUser } from '../board';
 
@@ -17,15 +17,17 @@ export const createFlow = async ({
   description,
   workspaceId,
   userId,
+  token,
 }: {
   name: string;
   description: string | undefined;
   workspaceId: string;
   userId: string;
+  token: string;
 }): Promise<Flow> => {
   const [noUser] = await to(checkUser(userId, workspaceId));
   if (noUser) throw new Error('未找到用户');
-  const { error, data } = await supabaseJebt
+  const { error, data } = await supabaseJebtToken(token)
     .from('flow')
     .insert([
       {
@@ -51,13 +53,15 @@ s*/
 export const getJebtFlow = async ({
   workspaceId,
   userId,
+  token,
 }: {
   workspaceId: string;
   userId: string;
+  token: string;
 }): Promise<Flow[]> => {
   const [noUser] = await to(checkUser(userId, workspaceId));
   if (noUser) throw new Error('未找到用户');
-  const { data, error } = await supabaseJebt
+  const { data, error } = await supabaseJebtToken(token)
     .from('flow')
     .select('*')
     .eq('workspaceId', workspaceId);
@@ -69,14 +73,16 @@ export const deleteJebtFlow = async ({
   id,
   userId,
   workspaceId,
+  token,
 }: {
   id: string;
   userId: string;
   workspaceId: string;
+  token: string;
 }) => {
   const [noUser] = await to(checkUser(userId, workspaceId));
   if (noUser) throw new Error('未找到用户');
-  const { error } = await supabaseJebt
+  const { error } = await supabaseJebtToken(token)
     .from('flow')
     .delete()
     .eq('id', id)
@@ -100,16 +106,18 @@ export const updateJebtFlow = async ({
   workspaceId,
   name,
   description,
+  token,
 }: {
   id: string;
   userId: string;
   workspaceId: string;
   name: string;
   description: string;
+  token: string;
 }): Promise<Flow> => {
   const [noUser] = await to(checkUser(userId, workspaceId));
   if (noUser) throw new Error('未找到用户');
-  const { error, data } = await supabaseJebt
+  const { error, data } = await supabaseJebtToken(token)
     .from('flow')
     .update({ name, description })
     .eq('id', id)

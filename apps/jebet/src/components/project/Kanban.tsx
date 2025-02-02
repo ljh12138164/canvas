@@ -95,10 +95,8 @@ const dropAnimation = {
 
 const Kanban = ({
   taskList,
-  currentUserId,
 }: {
   taskList: TaskWithWorkspace[];
-  currentUserId: string;
 }) => {
   const taskStateList = useMemo(() => {
     return {
@@ -146,7 +144,6 @@ const Kanban = ({
         {
           json: {
             taskId: activeTask.id,
-            currentUserId: currentUserId,
             workspaceId: activeTask.workspaceId,
             projectId: activeTask.projectId,
             position: 1000,

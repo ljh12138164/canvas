@@ -75,11 +75,7 @@ const Project = observer(() => {
   return (
     <ProjectContainer mobile={isModel}>
       <ProjectNav project={store.activeProject} />
-      <ProjectContent
-        userData={store.userData}
-        workspaceId={params.workspaceId}
-        projectId={store.activeProject.id}
-      />
+      <ProjectContent workspaceId={params.workspaceId} projectId={store.activeProject.id} />
     </ProjectContainer>
   );
 });

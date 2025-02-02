@@ -1,6 +1,6 @@
 import { useGetJebtUserList } from '@/server/hooks/user';
+import type { Profiles } from '@/types/user';
 import type { Workspace } from '@/types/workspace';
-import type { UserResource } from '@clerk/types';
 import styled from 'styled-components';
 import { animate } from '../project/ProjectContent';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -20,11 +20,10 @@ const MemberList = ({
   user,
 }: {
   workspace: Workspace;
-  user: UserResource;
+  user: Profiles;
 }) => {
   const { data, isLoading } = useGetJebtUserList({
     workspaceId: workspace.id,
-    userId: user.id,
   });
   if (isLoading) return;
   const userRole = data?.user.role;

@@ -32,11 +32,10 @@ const TiptapToolbarContainer = styled.div`
 
 interface TiptapProps {
   workspace: Workspace & { member: Member[] };
-  userId: string;
 }
-const Tiptap = ({ workspace, userId }: TiptapProps) => {
+const Tiptap = ({ workspace }: TiptapProps) => {
   const { theme } = useTheme();
-  const { messagePending } = useCreateMessage(workspace.id, userId);
+  const { messagePending } = useCreateMessage(workspace.id);
   const editor = useEditor({
     editorProps: {
       attributes: {
@@ -143,12 +142,7 @@ const Tiptap = ({ workspace, userId }: TiptapProps) => {
     <section className="h-full w-full">
       <TiptapToolbarContainer>
         {editor && (
-          <TiptapToolbar
-            tiptapToolBar={tiptapToolBar}
-            editor={editor}
-            userId={userId}
-            workspace={workspace}
-          />
+          <TiptapToolbar tiptapToolBar={tiptapToolBar} editor={editor} workspace={workspace} />
         )}
       </TiptapToolbarContainer>
       <ScrollArea className="h-full w-full">

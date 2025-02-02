@@ -127,7 +127,6 @@ const MoreOpate = observer(({ row }: { row: Row<StoageData> }) => {
                     deleteStoage(
                       {
                         json: {
-                          userId: useUser.userData.id,
                           id: row.original.id,
                           file: row.original.file,
                           workspaceId: workspaceId,

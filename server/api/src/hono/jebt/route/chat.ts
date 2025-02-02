@@ -3,6 +3,7 @@ import to from 'await-to-js';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
+import { getSupabaseAuth } from '../../../libs/middle';
 import { getChatMessage, sendChatMessage, uploadImage } from '../../../server/jebt/chat';
 
 export const chat = new Hono()
@@ -13,14 +14,14 @@ export const chat = new Hono()
       'query',
       z.object({
         workspaceId: z.string(),
-        userId: z.string(),
         pageTo: z.string(),
       }),
     ),
     async (c) => {
-      const { workspaceId, userId, pageTo } = c.req.valid('query');
+      const { workspaceId, pageTo } = c.req.valid('query');
+      const { token, auth } = getSupabaseAuth(c);
       const [error, messages] = await to(
-        getChatMessage(workspaceId, userId, Number.isNaN(+pageTo) ? 0 : +pageTo),
+        getChatMessage(workspaceId, auth.sub, Number.isNaN(+pageTo) ? 0 : +pageTo, token),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json({ messages });
@@ -33,13 +34,13 @@ export const chat = new Hono()
       'json',
       z.object({
         workspaceId: z.string(),
-        userId: z.string(),
         message: z.string(),
       }),
     ),
     async (c) => {
-      const { workspaceId, userId, message } = c.req.valid('json');
-      const [error, data] = await to(sendChatMessage(workspaceId, userId, message));
+      const { workspaceId, message } = c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
+      const [error, data] = await to(sendChatMessage(workspaceId, auth.sub, message, token));
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json({ message: data });
     },
@@ -50,15 +51,15 @@ export const chat = new Hono()
       'form',
       z.object({
         file: z.any(),
-        userId: z.string(),
         workspaceId: z.string(),
       }),
     ),
     async (c) => {
-      const { file, userId, workspaceId } = c.req.valid('form');
+      const { file, workspaceId } = c.req.valid('form');
       if (!file) return c.json({ message: '文件不能为空' }, 400);
+      const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
-        uploadImage(workspaceId as string, userId as string, file as File),
+        uploadImage(workspaceId as string, auth.sub, file as File, token),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json({ message: data });

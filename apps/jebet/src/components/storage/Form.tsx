@@ -36,7 +36,7 @@ const UploadButton = styled(Button)`
   height: 3rem;
   width: 100%;
 `;
-const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) => {
+const Form = ({ workspace, workspaceId, type, defaultData }: FormProps) => {
   const { register, handleSubmit, formState, reset } = useForm({
     resolver: zodResolver(zodSchema),
     defaultValues: {
@@ -64,7 +64,6 @@ const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) 
             name: data.name,
             description: data.description,
             workspaceId: workspace.id,
-            userId,
             type: file.name.split('.').pop() || '',
             file,
           },
@@ -85,12 +84,10 @@ const Form = ({ userId, workspace, workspaceId, type, defaultData }: FormProps) 
     if (type === 'update') {
       if (!workspaceId) return;
       if (defaultData?.name === data.name || defaultData?.description === data.description) {
-        // TODO:报错
         return update(
           {
             json: {
               id: defaultData?.id || '',
-              userId,
               workspaceId,
               name: data.name,
               description: data.description || '',

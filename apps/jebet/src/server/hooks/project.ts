@@ -1,7 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
+import { useNavigate } from 'react-router-dom';
 import { client } from '..';
-
+import { getNewToken } from '../../lib/sign';
 type ProjectListType = InferResponseType<typeof client.project.list.$get, 200>;
 /**
  *  获取项目列表
@@ -9,7 +10,8 @@ type ProjectListType = InferResponseType<typeof client.project.list.$get, 200>;
  * @param userId 用户ID
  * @returns
  */
-export const useProjectList = (workspaceId: string, userId: string) => {
+export const useProjectList = (workspaceId: string) => {
+  const navigate = useNavigate();
   const {
     data: projectList,
     isLoading: isLoadingProjectList,
@@ -17,9 +19,18 @@ export const useProjectList = (workspaceId: string, userId: string) => {
   } = useQuery<ProjectListType, Error, ProjectListType>({
     queryKey: ['projectList', workspaceId],
     queryFn: async () => {
-      const res = await client.project.list.$get({
-        query: { workspaceId, userId },
-      });
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.project.list.$get(
+        {
+          query: { workspaceId },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!res.ok) throw new Error(res.statusText);
       return res.json();
     },
@@ -33,15 +44,25 @@ type ProjectRequestType = InferRequestType<typeof client.project.create.$post>;
  * 创建项目信息
  */
 export const useProjectCreate = () => {
+  const navigate = useNavigate();
   const { mutate: createProject, isPending: isCreatingProject } = useMutation<
     ProjectType,
     Error,
     ProjectRequestType
   >({
     mutationFn: async (data) => {
-      const res = await client.project.create.$post({
-        form: data.form,
-      });
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.project.create.$post(
+        {
+          form: data.form,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!res.ok) throw res.ok;
       return res.json();
     },
@@ -55,15 +76,25 @@ type ProjectUpdateRequestType = InferRequestType<typeof client.project.update.$p
  * 更新项目信息
  */
 export const useProjectUpdate = () => {
+  const navigate = useNavigate();
   const { mutate: updateProject, isPending: isUpdatingProject } = useMutation<
     ProjectUpdateType,
     Error,
     ProjectUpdateRequestType
   >({
     mutationFn: async (data) => {
-      const res = await client.project.update.$patch({
-        form: data.form,
-      });
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.project.update.$patch(
+        {
+          form: data.form,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!res.ok) throw res.ok;
       return res.json();
     },
@@ -77,15 +108,25 @@ type ProjectDeleteRequestType = InferRequestType<typeof client.project.delete.$d
  * 删除项目
  */
 export const useProjectDelete = () => {
+  const navigate = useNavigate();
   const { mutate: deleteProject, isPending: isDeletingProject } = useMutation<
     ProjectDeleteType,
     Error,
     ProjectDeleteRequestType
   >({
     mutationFn: async (data) => {
-      const res = await client.project.delete.$delete({
-        json: data.json,
-      });
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.project.delete.$delete(
+        {
+          json: data.json,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!res.ok) throw res.ok;
       return res.json();
     },

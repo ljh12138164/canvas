@@ -3,13 +3,12 @@ import FromCard from '@/components/board/FromCard';
 import { Card } from '@/components/ui/card';
 import { WorkSpaceSettingCard } from '@/page/dashboard/workspace/setting';
 import { useGetJebtUserList } from '@/server/hooks/user';
+import type { Profiles } from '@/types/user';
 import type { Project, Workspace } from '@/types/workspace';
 import { DEFAULT_ICON } from '@/utils/board';
-import type { UserResource } from '@clerk/types';
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 import { animate } from './ProjectContent';
-
 const ProjectSettingContainer = styled.div`
   animation: ${animate} 0.4s ease-in-out;
 `;
@@ -21,12 +20,11 @@ const ProjectSetting = observer(
     userData,
   }: {
     workSpace: Workspace;
-    userData: UserResource;
+    userData: Profiles;
     project: Project;
   }) => {
     const { data, isLoading } = useGetJebtUserList({
       workspaceId: workSpace.id,
-      userId: userData.id,
     });
 
     return (

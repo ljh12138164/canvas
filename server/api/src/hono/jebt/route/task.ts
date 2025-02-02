@@ -3,6 +3,7 @@ import to from 'await-to-js';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
+import { getSupabaseAuth } from '../../../libs/middle';
 import {
   addJebtTaskRemark,
   createJebtTask,
@@ -13,8 +14,7 @@ import {
   updateJebtTask,
 } from '../../../server/jebt/task';
 import { TaskStatus } from '../../../types/jebt/board';
-
-const task = new Hono()
+export const task = new Hono()
   // 创建任务
   .post(
     '/create',
@@ -28,26 +28,19 @@ const task = new Hono()
         assigneeId: z.string(),
         status: z.nativeEnum(TaskStatus),
         lastTime: z.string(),
-        currentUserId: z.string(),
       }),
     ),
     async (c) => {
-      const {
-        name,
-        projectId,
-        workspaceId,
-        description,
-        assigneeId,
-        status,
-        lastTime,
-        currentUserId,
-      } = c.req.valid('json');
+      const { name, projectId, workspaceId, description, assigneeId, status, lastTime } =
+        c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
         createJebtTask({
-          currentUserId,
           name,
           projectId,
           workspaceId,
+          currentUserId: auth.sub,
+          token,
           description,
           assigneeId,
           status,
@@ -71,25 +64,16 @@ const task = new Hono()
         assigneeId: z.string(),
         status: z.nativeEnum(TaskStatus),
         lastTime: z.string(),
-        currentUserId: z.string(),
         id: z.string(),
       }),
     ),
     async (c) => {
-      const {
-        name,
-        projectId,
-        workspaceId,
-        description,
-        assigneeId,
-        status,
-        lastTime,
-        currentUserId,
-        id,
-      } = c.req.valid('json');
+      const { name, projectId, workspaceId, description, assigneeId, status, lastTime, id } =
+        c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
         updateJebtTask({
-          currentUserId,
+          currentUserId: auth.sub,
           name,
           projectId,
           workspaceId,
@@ -97,6 +81,7 @@ const task = new Hono()
           assigneeId,
           status,
           lastTime,
+          token,
           id,
         }),
       );
@@ -111,7 +96,6 @@ const task = new Hono()
       'query',
       z.object({
         workspaceId: z.string(),
-        currentUserId: z.string(),
         projectId: z.string().nullish(),
         status: z.nativeEnum(TaskStatus).nullish(),
         search: z.string().nullish(),
@@ -120,17 +104,18 @@ const task = new Hono()
       }),
     ),
     async (c) => {
-      const { workspaceId, projectId, currentUserId, status, search, lastTime, assigneeId } =
-        c.req.valid('query');
+      const { workspaceId, projectId, status, search, lastTime, assigneeId } = c.req.valid('query');
+      const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
         getJebtTask({
-          currentUserId,
+          currentUserId: auth.sub,
           workspaceId,
           projectId,
           status,
           search,
           lastTime,
           assigneeId,
+          token,
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
@@ -144,14 +129,16 @@ const task = new Hono()
       'json',
       z.object({
         id: z.string(),
-        currentUserId: z.string(),
         workspaceId: z.string(),
         projectId: z.string(),
       }),
     ),
     async (c) => {
-      const { id, currentUserId, workspaceId, projectId } = c.req.valid('json');
-      const [error, data] = await to(deleteJebtTask({ id, currentUserId, workspaceId, projectId }));
+      const { token, auth } = getSupabaseAuth(c);
+      const { id, workspaceId, projectId } = c.req.valid('json');
+      const [error, data] = await to(
+        deleteJebtTask({ id, currentUserId: auth.sub, workspaceId, projectId, token }),
+      );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },
@@ -165,13 +152,13 @@ const task = new Hono()
         id: z.string(),
         workspaceId: z.string(),
         projectId: z.string(),
-        currentUserId: z.string(),
       }),
     ),
     async (c) => {
-      const { id, workspaceId, projectId, currentUserId } = c.req.valid('query');
+      const { id, workspaceId, projectId } = c.req.valid('query');
+      const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
-        getJebtTaskDetail({ id, workspaceId, projectId, currentUserId }),
+        getJebtTaskDetail({ id, workspaceId, projectId, currentUserId: auth.sub, token }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
@@ -185,12 +172,14 @@ const task = new Hono()
       z.object({
         taskId: z.string(),
         content: z.string(),
-        currentUserId: z.string(),
       }),
     ),
     async (c) => {
-      const { taskId, content, currentUserId } = c.req.valid('json');
-      const [error, data] = await to(addJebtTaskRemark({ taskId, content, currentUserId }));
+      const { taskId, content } = c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
+      const [error, data] = await to(
+        addJebtTaskRemark({ taskId, content, currentUserId: auth.sub, token }),
+      );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },
@@ -202,7 +191,6 @@ const task = new Hono()
       'json',
       z.object({
         taskId: z.string(),
-        currentUserId: z.string(),
         workspaceId: z.string(),
         projectId: z.string(),
         position: z.number(),
@@ -210,13 +198,14 @@ const task = new Hono()
       }),
     ),
     async (c) => {
-      const { taskId, currentUserId, workspaceId, projectId, position, TaskStatus } =
-        c.req.valid('json');
+      const { taskId, workspaceId, projectId, position, TaskStatus } = c.req.valid('json');
+      const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
         moveJebtTask({
           taskId,
-          currentUserId,
+          currentUserId: auth.sub,
           workspaceId,
+          token,
           projectId,
           position,
           TaskStatus,

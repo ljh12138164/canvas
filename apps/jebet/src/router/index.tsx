@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
   {
     path: '/sign-in',
     element: (
-      <Suspensed>
+      <Suspensed type="sign">
         <SignIn />
       </Suspensed>
     ),

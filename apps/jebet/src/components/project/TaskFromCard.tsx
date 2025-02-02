@@ -11,7 +11,6 @@ const TaskFromCard = ({
   workspaceId,
   projectId,
   userData,
-  currentUserId,
   defaultData,
 }: {
   children: React.ReactNode;
@@ -19,7 +18,6 @@ const TaskFromCard = ({
   workspaceId: string;
   projectId: string;
   userData: Member[] | undefined;
-  currentUserId: string;
   defaultData?: Task;
 }) => {
   const isMobile = useIsMobile();
@@ -41,7 +39,6 @@ const TaskFromCard = ({
             isMobile={isMobile}
             type={type}
             userData={userData}
-            currentUserId={currentUserId}
             defaultData={defaultData}
           />
         </DrawerContent>
@@ -64,7 +61,6 @@ const TaskFromCard = ({
           type={type}
           userData={userData}
           isMobile={isMobile}
-          currentUserId={currentUserId}
           defaultData={defaultData}
         />
       </DialogContent>

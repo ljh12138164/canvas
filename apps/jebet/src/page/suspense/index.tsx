@@ -147,8 +147,8 @@ const ChildLoading = () => (
 /**
  * ### 布局的suspense
  */
-function Suspensed({ children }: { children: React.ReactNode }) {
-  return <Suspense fallback={<Loading />}>{children}</Suspense>;
+function Suspensed({ children, type }: { children: React.ReactNode; type?: 'sign' }) {
+  return <Suspense fallback={type === 'sign' ? <></> : <Loading />}>{children}</Suspense>;
 }
 
 /**

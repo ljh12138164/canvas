@@ -1,6 +1,8 @@
+import { getNewToken } from '@/lib/sign';
 import { client } from '@/server/index';
 import type { Message, MessageType } from '@/types/chat';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 // import { InferResponseType } from 'hono';
 
 // type getMessageRequestType = InferRequestType<typeof client.chat.message.$get>;
@@ -9,8 +11,9 @@ import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-q
 // >;
 
 const PAGE_SIZE = 10;
-export const useGetMessage = (workspaceId: string, userId: string, isConnected: boolean) => {
+export const useGetMessage = (workspaceId: string, isConnected: boolean) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const {
     data: message,
     isLoading: messageLoading,
@@ -23,6 +26,8 @@ export const useGetMessage = (workspaceId: string, userId: string, isConnected: 
   } = useInfiniteQuery({
     queryKey: ['chat', workspaceId],
     queryFn: async () => {
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
       if (isConnected) {
         // 获取当前的消息数量
         const pageTo = queryClient.getQueryData(['chat', workspaceId]) as {
@@ -38,35 +43,53 @@ export const useGetMessage = (workspaceId: string, userId: string, isConnected: 
         // 如果当前消息数量大于0，则获取下一页数据
         if (pageTo) {
           const allData = pageTo.pages.flatMap((page) => page.messages.data);
-          const data = await client.chat.message.$get({
-            query: {
-              workspaceId,
-              userId,
-              pageTo: `${allData.length}`,
+          const data = await client.chat.message.$get(
+            {
+              query: {
+                workspaceId,
+                pageTo: `${allData.length}`,
+              },
             },
-          });
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
           if (!data.ok) throw new Error(data.statusText);
           return data.json();
         }
         // 如果当前消息数量为0，则获取第一页数据，初始化
-        const data = await client.chat.message.$get({
-          query: {
-            workspaceId,
-            userId,
-            pageTo: '0',
+        const data = await client.chat.message.$get(
+          {
+            query: {
+              workspaceId,
+              pageTo: '0',
+            },
           },
-        });
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
         if (!data.ok) throw new Error(data.statusText);
         return data.json();
       }
       // 获取当前的消息数量
-      const data = await client.chat.message.$get({
-        query: {
-          workspaceId,
-          userId,
-          pageTo: '0',
+      const data = await client.chat.message.$get(
+        {
+          query: {
+            workspaceId,
+            pageTo: '0',
+          },
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!data.ok) throw new Error(data.statusText);
       return data.json();
       // 如果没有websocket实例，则每秒请求一次，实现消息的实时性
@@ -87,6 +110,8 @@ export const useGetMessage = (workspaceId: string, userId: string, isConnected: 
     queryClient.prefetchInfiniteQuery({
       queryKey: [workspaceId],
       queryFn: async () => {
+        const token = await getNewToken();
+        if (!token) navigate('/sign-in');
         const pageTo = queryClient.getQueryData(['chat', workspaceId]) as {
           pageParams: number[];
           pages: {
@@ -99,13 +124,19 @@ export const useGetMessage = (workspaceId: string, userId: string, isConnected: 
         };
         const allData = pageTo.pages.flatMap((page) => page.messages.data);
         // 获取下一条数据
-        const data = await client.chat.message.$get({
-          query: {
-            workspaceId,
-            userId,
-            pageTo: `${allData.length}`,
+        const data = await client.chat.message.$get(
+          {
+            query: {
+              workspaceId,
+              pageTo: `${allData.length}`,
+            },
           },
-        });
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
         if (!data.ok) throw new Error(data.statusText);
         return data.json();
       },
@@ -144,12 +175,22 @@ export const useGetMessage = (workspaceId: string, userId: string, isConnected: 
 /**
  * ## 创建消息
  */
-export const useCreateMessage = (workspaceId: string, userId: string) => {
+export const useCreateMessage = (workspaceId: string) => {
+  const navigate = useNavigate();
   const { mutate: createMessage, isPending: messagePending } = useMutation({
     mutationFn: async (message: string) => {
-      const data = await client.chat.send.$post({
-        json: { workspaceId, userId, message },
-      });
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const data = await client.chat.send.$post(
+        {
+          json: { workspaceId, message },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!data.ok) throw new Error(data.statusText);
       return data.json();
     },
@@ -161,16 +202,25 @@ export const useCreateMessage = (workspaceId: string, userId: string) => {
 /**
  * ## 上传图片
  */
-export const useUploadImage = (workspaceId: string, userId: string) => {
+export const useUploadImage = (workspaceId: string) => {
+  const navigate = useNavigate();
   const { mutate: uploadImage, isPending: uploadImagePending } = useMutation({
     mutationFn: async (file: File) => {
-      const data = await client.chat.file.$post({
-        form: {
-          workspaceId,
-          userId,
-          file,
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const data = await client.chat.file.$post(
+        {
+          form: {
+            workspaceId,
+            file,
+          },
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!data.ok) throw new Error(data.statusText);
       return data.json();
     },

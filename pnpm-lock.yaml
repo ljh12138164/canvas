@@ -309,12 +309,6 @@ importers:
 
   apps/jebet:
     dependencies:
-      '@clerk/clerk-react':
-        specifier: ^5.22.10
-        version: 5.22.10(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/types':
-        specifier: ^4.45.0
-        version: 4.45.0
       '@dnd-kit/core':
         specifier: ^6.3.1
         version: 6.3.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -375,6 +369,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.1.7
         version: 1.1.7(@types/react-dom@19.0.2(@types/react@19.0.4))(@types/react@19.0.4)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@supabase/supabase-js':
+        specifier: ^2.48.1
+        version: 2.48.1
       '@tanstack/react-query':
         specifier: ^5.66.0
         version: 5.66.0(react@19.0.0)
@@ -426,9 +423,9 @@ importers:
       ahooks:
         specifier: ^3.8.4
         version: 3.8.4(react@19.0.0)
-      api:
-        specifier: workspace:^
-        version: link:../../server/api
+      await-to-js:
+        specifier: ^3.0.0
+        version: 3.0.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -465,12 +462,6 @@ importers:
       input-otp:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      jose:
-        specifier: ^5.9.6
-        version: 5.9.6
-      localforage:
-        specifier: ^1.10.0
-        version: 1.10.0
       lucide-react:
         specifier: ^0.474.0
         version: 0.474.0(react@19.0.0)
@@ -513,9 +504,6 @@ importers:
       react-icons:
         specifier: ^5.4.0
         version: 5.4.0(react@19.0.0)
-      react-image-crop:
-        specifier: ^11.0.7
-        version: 11.0.7(react@19.0.0)
       react-photo-view:
         specifier: ^1.2.7
         version: 1.2.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -574,6 +562,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
         version: 4.3.4(vite@6.0.11(@types/node@22.13.0)(jiti@2.4.2)(lightningcss@1.29.1)(sass-embedded@1.83.4)(sass@1.83.4)(terser@5.37.0)(yaml@2.7.0))
+      api:
+        specifier: workspace:^
+        version: link:../../server/api
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.5.1)
@@ -1450,6 +1441,9 @@ importers:
       zhipuai-sdk-nodejs-v4:
         specifier: ^0.1.12
         version: 0.1.12
+      zod:
+        specifier: ^3.24.1
+        version: 3.24.1
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
@@ -1944,13 +1938,6 @@ packages:
   '@clerk/backend@1.23.3':
     resolution: {integrity: sha512-Fknt8/Xgzrs9qkLk1bw/fZEtJFn66BixGWAGGzZMaq6U+1Ma853DJCBwYufOMpNkU0HYEIJGCnO6nLt+PVzwfA==}
     engines: {node: '>=18.17.0'}
-
-  '@clerk/clerk-react@5.22.10':
-    resolution: {integrity: sha512-3tTUt+3w5E+4ePl+6q6ugNTgjyjQw000nouXRngCEorDC2545Lc2HTZ37n1W8WuTx2BN32Rerjf2UJDmpRqrYg==}
-    engines: {node: '>=18.17.0'}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
-      react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
 
   '@clerk/shared@2.20.18':
     resolution: {integrity: sha512-vSQLZSRFr62+YeE1KE/Xu/eWCrwYJRNA2KRyQYmb2VPleFNmOjtTNlO4xkMZ0eN6BLKxrBo9b0NVwu3L28FhKg==}
@@ -12453,11 +12440,6 @@ packages:
     peerDependencies:
       react: '*'
 
-  react-image-crop@11.0.7:
-    resolution: {integrity: sha512-ZciKWHDYzmm366JDL18CbrVyjnjH0ojufGDmScfS4ZUqLHg4nm6ATY+K62C75W4ZRNt4Ii+tX0bSjNk9LQ2xzQ==}
-    peerDependencies:
-      react: '>=16.13.1'
-
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -15873,14 +15855,6 @@ snapshots:
     transitivePeerDependencies:
       - react
       - react-dom
-
-  '@clerk/clerk-react@5.22.10(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
-    dependencies:
-      '@clerk/shared': 2.20.18(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/types': 4.45.0
-      react: 19.0.0
-      react-dom: 19.0.0(react@19.0.0)
-      tslib: 2.4.1
 
   '@clerk/shared@2.20.18(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -28709,10 +28683,6 @@ snapshots:
   react-icons@5.4.0(react@19.0.0-rc.1):
     dependencies:
       react: 19.0.0-rc.1
-
-  react-image-crop@11.0.7(react@19.0.0):
-    dependencies:
-      react: 19.0.0
 
   react-is@16.13.1: {}
 

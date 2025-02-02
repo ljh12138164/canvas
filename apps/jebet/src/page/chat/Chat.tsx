@@ -4,6 +4,7 @@ import Tiptap from '@/components/edit';
 import ChatMessageList from '@/components/edit/ChatMessageList';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
+import { DEFAULT_AVATAR } from '@/server/supabase/user';
 import chatStore from '@/store/chat';
 import useStore from '@/store/user';
 import type { ActiveUser, ChatMessage as Message, MessageType } from '@/types/chat';
@@ -72,7 +73,7 @@ const Chat = observer(() => {
     if (chatStore.socket) return;
     // 生产环境
     // const socket = io(import.meta.env.VITE_CHAT_WS_PROD, {
-    const socket = io('wss://jebetsocket.ljhboard.cn/', {
+    const socket = io('wss://jebetsocket.ljhboard.cn', {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
@@ -83,8 +84,8 @@ const Chat = observer(() => {
       chatStore.setIsConnected(true);
       socket.emit('connectChat', {
         userId: store.userData?.id,
-        username: store.userData?.username,
-        avatar: store.userData?.imageUrl,
+        username: store.userData?.name,
+        avatar: store.userData?.image || DEFAULT_AVATAR,
         workspaceId: activeWorkSpace.id,
       });
       chatStore.setSocket(socket);
@@ -229,7 +230,7 @@ const Chat = observer(() => {
         </ChatHeaderContainer>
         <ChatMessageList workspace={activeWorkSpace} userId={store.userData.id} />
         <EditContainer>
-          <Tiptap workspace={activeWorkSpace} userId={store.userData.id} />
+          <Tiptap workspace={activeWorkSpace} />
         </EditContainer>
       </Content>
     </ChatContainer>

@@ -5,10 +5,9 @@ import { columns } from './data';
 
 interface TableMainProps {
   workspace: Workspace & { member: Member[] };
-  userId: string;
 }
-const TableMain = ({ workspace, userId }: TableMainProps) => {
-  const { stoages, stoagesLoading, error } = useStoages(workspace.id, userId);
+const TableMain = ({ workspace }: TableMainProps) => {
+  const { stoages, stoagesLoading, error } = useStoages(workspace.id);
   return (
     <section>
       {stoagesLoading && <div>Loading...</div>}

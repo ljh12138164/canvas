@@ -25,9 +25,8 @@ export const inviteCollaborator = async ({
   if (workspaceError) {
     throw new Error('服务器错误');
   }
-  if (workspace.length === 0) {
-    throw new Error('工作区不存在');
-  }
+  if (workspace.length === 0) throw new Error('工作区不存在');
+
   if (workspace[0].collaborators.find((c) => c.userId === userId)) {
     throw new Error('已加入工作区');
   }
