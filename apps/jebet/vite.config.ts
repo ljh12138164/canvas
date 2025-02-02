@@ -1,13 +1,59 @@
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+// import { visualizer } from 'rollup-plugin-visualizer';
+import viteCompression from 'vite-plugin-compression';
+import viteImagemin from 'vite-plugin-imagemin';
+
+const plugins = [
+  react({
+    // fastRefresh: true,
+  }), // 打包后压缩图片
+  viteImagemin({
+    gifsicle: {
+      optimizationLevel: 7,
+      interlaced: false,
+    },
+    optipng: {
+      optimizationLevel: 7,
+    },
+    mozjpeg: {
+      quality: 20,
+    },
+    pngquant: {
+      quality: [0.8, 0.9],
+      speed: 4,
+    },
+    svgo: {
+      plugins: [
+        {
+          name: 'removeViewBox',
+        },
+        {
+          name: 'removeEmptyAttrs',
+          active: false,
+        },
+      ],
+    },
+  }),
+  // 打包后压缩
+  viteCompression(),
+  // visualizer({
+  //   open: true,
+  // }),
+];
+if (process.env.NODE_ENV === 'test') {
+  // 打包完成后自动打开浏览器，显示产物体积报告
+  plugins.push(
+    // visualizer({
+    //   open: true,
+    // }),
+  );
+}
 
 export default defineConfig({
-  plugins: [
-    react({
-      // fastRefresh: true,
-    }),
-  ],
+  plugins: plugins,
+  // 打包完成后自动打开浏览器，显示产物体积报告
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -24,6 +70,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'echarts-vendor': ['echarts'],
         },
       },
     },
