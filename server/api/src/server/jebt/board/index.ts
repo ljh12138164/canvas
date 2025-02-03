@@ -271,7 +271,7 @@ export const deleteJebtWorkspace = async ({
       image: imageUrl.slice(JEBT_URL.length + 11),
     });
   }
-  const [__, workspaceError] = await Promise.all([
+  const [__, { error: workspaceError }] = await Promise.all([
     deleteImage,
     supabaseJebtToken(token).from('workspace').delete().eq('id', id),
   ]);

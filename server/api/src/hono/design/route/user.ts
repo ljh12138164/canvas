@@ -9,6 +9,7 @@ import { getUserCollect, getUserLike } from '../../../server/design/user/index';
 
 export const user = new Hono()
   .use(checkToken(process.env.SUPABASE_DESIGN_JWT!))
+  // 更新用户信息
   .post(
     '/update',
     zValidator(
@@ -31,8 +32,7 @@ export const user = new Hono()
     const { auth } = getSupabaseAuth(c);
     const { password } = c.req.valid('json');
     const [error, data] = await to(updatePassword({ password, userId: auth.sub! }));
-    // @ts-ignore
-    if (error) return c.json(error.message, error.cause.code);
+    if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(data);
   })
   // 获取用户点赞

@@ -94,15 +94,25 @@ type UpdateResponseType = InferResponseType<typeof client.board.update.$patch>;
  * ## 更新工作区
  */
 export const useUpdateWorkspace = () => {
+  const navigate = useNavigate();
   const { mutate: updateWorkspace, isPending: isUpdating } = useMutation<
     UpdateResponseType,
     Error,
     UpdateRequestType
   >({
     mutationFn: async (data) => {
-      const res = await client.board.update.$patch({
-        form: data.form,
-      });
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.board.update.$patch(
+        {
+          form: data.form,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (!res.ok) {
         throw new Error('更新失败');
       }
@@ -118,13 +128,20 @@ type DeleteResponseType = InferResponseType<(typeof client.board.dashboard)['$de
  * ## 删除工作区
  */
 export const useDeleteWorkspace = () => {
+  const navigate = useNavigate();
   const { mutate: deleteWorkspace, isPending: isDeleting } = useMutation<
     DeleteResponseType,
     Error,
     DeleteRequestType
   >({
     mutationFn: async (data) => {
-      const res = await client.board.dashboard.$delete(data);
+      const token = await getNewToken();
+      if (!token) navigate('/sign-in');
+      const res = await client.board.dashboard.$delete(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) {
         throw new Error('删除失败');
       }

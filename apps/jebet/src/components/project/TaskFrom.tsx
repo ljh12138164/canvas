@@ -37,9 +37,11 @@ const zShema = z.object({
   lastTime: z.any({
     message: '请选择最后时间',
   }),
-  assigneeId: z.string({
-    message: '请选择指派人',
-  }),
+  assigneeId: z
+    .string({
+      message: '请选择指派人',
+    })
+    .min(1, { message: '请选择指派人' }),
   priority: z.nativeEnum(TasksPriority),
   description: z
     .string({
@@ -156,7 +158,7 @@ const TaskFrom = ({
             <Label htmlFor="status">任务状态</Label>
             <Select
               {...register('status')}
-              defaultValue={defaultData?.status}
+              defaultValue={defaultData?.status || TaskStatus.TODO}
               onValueChange={(value) => {
                 setValue('status', value as TaskStatus);
               }}
@@ -207,7 +209,7 @@ const TaskFrom = ({
           <FromItem>
             <Label htmlFor="assigneeId">指派人</Label>
             <Select
-              defaultValue={defaultData?.assigneeId}
+              defaultValue={defaultData?.assigneeId || ''}
               {...register('assigneeId')}
               onValueChange={(value) => {
                 setValue('assigneeId', value);
@@ -243,7 +245,7 @@ const TaskFrom = ({
             <Label htmlFor="priority">优先级</Label>
             <Select
               {...register('priority')}
-              defaultValue={defaultData?.priority}
+              defaultValue={defaultData?.priority || TasksPriority.GENERAL}
               onValueChange={(value) => {
                 setValue('priority', value as TasksPriority);
               }}
