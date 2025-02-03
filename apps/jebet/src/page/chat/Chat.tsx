@@ -77,7 +77,7 @@ const Chat = observer(() => {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
-      timeout: 5000,
+      timeout: 10000,
     });
     // 连接成功
     socket.on('connect', () => {

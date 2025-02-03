@@ -14,9 +14,10 @@ import { logout } from '@/database/supabase/user';
 import { DEFAULT_AVATAR } from '@/lib';
 import useUser from '@/stores/user';
 import type { PropType } from 'vue';
+import { useRouter } from 'vue-router';
 const userData = useUser().userData;
 type Side = 'end' | 'start' | 'center';
-// if (!user.value) await navigateTo('/auth');
+const router = useRouter();
 const props = defineProps({
   side: {
     type: String as PropType<Side>,
@@ -25,7 +26,7 @@ const props = defineProps({
 });
 const logoutClick = async () => {
   await logout();
-  // await navigateTo('/auth');
+  router.push('/auth');
 };
 </script>
 <template>
