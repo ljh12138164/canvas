@@ -3,6 +3,7 @@ import type { BoardResponse } from '@/app/_types/board';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type UseMutateFunction, useQueryClient } from '@tanstack/react-query';
 import { nanoid } from 'nanoid';
+import { useRouter } from 'next/navigation';
 import type { RefObject } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -59,7 +60,10 @@ interface BoardCreateFromProps {
     | undefined;
   isTemplate?: boolean;
   // 文件地址
-  templateData?: string;
+  templateData?: {
+    image: string;
+    json: string;
+  };
 }
 const BoardCreateFrom = ({
   type,
@@ -72,6 +76,7 @@ const BoardCreateFrom = ({
   isTemplate,
   templateData,
 }: BoardCreateFromProps) => {
+  const router = useRouter();
   const query = useQueryClient();
   const { register, handleSubmit, formState } = useForm<z.infer<typeof zod>>({
     resolver: zodResolver(zod),
@@ -101,16 +106,18 @@ const BoardCreateFrom = ({
           // @ts-ignore
           json: type === 'create' ? '' : defaultValues.json,
           ...(isTemplate && {
-            json: templateData,
+            image: templateData?.image,
             isTemplate: true,
+            json: templateData?.json,
           }),
         },
         {
-          onSuccess: () => {
+          onSuccess: (data) => {
             query.invalidateQueries({ queryKey: ['board'] });
             toast.dismiss();
             toast.success(type === 'create' ? '创建成功' : '更新成功');
-            return closeref?.current?.click();
+            closeref?.current?.click();
+            if (isTemplate) router.push(`/Edit/${data.id}`);
           },
           onError: (error) => {
             console.error(error);

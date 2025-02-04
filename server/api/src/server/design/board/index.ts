@@ -34,6 +34,7 @@ interface CreateBoard {
   width: number;
   height: number;
   isTemplate?: boolean;
+  image?: string;
 }
 /**
  * 创建看板

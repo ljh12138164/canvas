@@ -6,6 +6,8 @@ const DEFAULT_AVATAR =
   'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/avatar.svg';
 
 const USER_IMAGE = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/';
+const DEFAULT_TEMPLATE =
+  'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui//defaultTemplate.png';
 /**
  * ## 获取用户消息
  */

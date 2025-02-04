@@ -5,6 +5,7 @@ import { collections } from './route/collections';
 import image from './route/image';
 import { show, showPublic } from './route/show';
 import tap from './route/tap';
+import template from './route/template';
 import { upvotes } from './route/upvote';
 import { user } from './route/user';
 
@@ -16,4 +17,5 @@ export const design = new Hono()
   .route('/tap', tap)
   .route('/user', user)
   .route('/collection', collections)
-  .route('/upvote', upvotes);
+  .route('/upvote', upvotes)
+  .route('/template', template);
