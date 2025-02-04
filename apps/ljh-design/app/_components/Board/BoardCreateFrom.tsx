@@ -57,6 +57,9 @@ interface BoardCreateFromProps {
         }
       >
     | undefined;
+  isTemplate?: boolean;
+  // 文件地址
+  templateData?: string;
 }
 const BoardCreateFrom = ({
   type,
@@ -66,6 +69,8 @@ const BoardCreateFrom = ({
   userId,
   mutate,
   setChange,
+  isTemplate,
+  templateData,
 }: BoardCreateFromProps) => {
   const query = useQueryClient();
   const { register, handleSubmit, formState } = useForm<z.infer<typeof zod>>({
@@ -82,7 +87,7 @@ const BoardCreateFrom = ({
           height: '1100',
         },
   });
-  const onSubmit = (data: z.infer<typeof zod>) => {
+  const onSubmit = async (data: z.infer<typeof zod>) => {
     // 用户登录
     if (userId) {
       query.invalidateQueries({ queryKey: ['board'] });
@@ -95,6 +100,10 @@ const BoardCreateFrom = ({
           height: Number(data.height),
           // @ts-ignore
           json: type === 'create' ? '' : defaultValues.json,
+          ...(isTemplate && {
+            json: templateData,
+            isTemplate: true,
+          }),
         },
         {
           onSuccess: () => {

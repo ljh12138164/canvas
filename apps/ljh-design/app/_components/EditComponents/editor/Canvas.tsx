@@ -34,7 +34,6 @@ import {
   FONT_WEIGHT,
   type FontStyle,
   type FontWeightType,
-  JSON_KEY,
   OPACITY,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
@@ -46,6 +45,7 @@ import type { Sessions } from '@/app/_types/user';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
 import { useEffect, useRef, useState } from 'react';
+import { TemplateSiderbar } from '../asider/TemplateSiderbar';
 
 // 画布服务器
 const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
@@ -159,13 +159,13 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
   // 画布事件
   useWindowEvent();
   // 工具栏
-  const onChangeActive = (tools: Tool) => {
+  const onChangeActive = useMemoizedFn((tools: Tool) => {
     if (tools === Tool.Draw) editor()?.enableDraw();
 
     if (tool === Tool.Draw) editor()?.disableDraw();
     if (tools === tool) setTool(Tool.Select);
     setTool(tools);
-  };
+  });
   //编辑器
   const editor = () => {
     if (canvas) {
@@ -297,6 +297,7 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
           onChangeActive={onChangeActive}
         />
         <ColorSoiberbar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
+        <TemplateSiderbar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
         <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
           <Tools
             editor={editor()}

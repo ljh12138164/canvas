@@ -1,5 +1,16 @@
-import { inter, myFont } from '@/app/_lib/font';
-
-export default async function Home() {
-  return <main className={`${inter.className} ${myFont.variable} min-w-[380px] entry`}>44</main>;
+'use client';
+import TemplateMain from '@/app/_components/template/TemplateMain';
+import useUser from '@/app/_hook/useUser';
+import { redirect } from 'next/navigation';
+import { useEffect } from 'react';
+export default function TemplatePage() {
+  const { user, loading } = useUser({ redirects: true });
+  useEffect(() => {
+    if (!loading && !user) {
+      redirect('/sign-in');
+    }
+  }, [user, loading]);
+  if (loading) return;
+  if (!user) return;
+  return <TemplateMain userId={user.user.id} />;
 }

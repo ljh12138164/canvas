@@ -26,10 +26,10 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
           {/* 设计 */}
           <SiderBarItem
             icon={LuLayoutDashboard}
-            label="设计"
-            isActive={acitiveTool === Tool.Layout}
+            label="模板"
+            isActive={acitiveTool === Tool.Template}
             onClick={() => {
-              onChangeActiveTool(Tool.Layout);
+              onChangeActiveTool(Tool.Template);
             }}
           />
           {/* 图片 */}

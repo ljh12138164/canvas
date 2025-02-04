@@ -2,6 +2,7 @@
 import { useBoardQuery } from '@/app/_hook/query/useBoardQuery';
 import type { Board } from '@/app/_types/board';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { FaArrowRight, FaStar } from 'react-icons/fa6';
 import { Button } from '../ui/button';
@@ -27,6 +28,7 @@ const BoardCreate = ({
   userId?: string;
 }) => {
   const { mutate, isPending } = useBoardQuery();
+  const router = useRouter();
 
   const ref = useRef<HTMLButtonElement>(null);
   return (
@@ -40,10 +42,10 @@ const BoardCreate = ({
           </div>
         </header>
         <main className="flex flex-col justify-center gap-2">
-          <div className="text-white text-2xl ">
+          <div className=" text-2xl ">
             {data?.length ? '创建你的画布以开始使用' : '创建第一个画布'}
           </div>
-          <span>
+          <div className="flex gap-2">
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" className="w-fit flex items-center gap-2 justify-center">
@@ -77,7 +79,14 @@ const BoardCreate = ({
                 </BoardCreateFrom>
               </DialogContent>
             </Dialog>
-          </span>
+
+            <Button
+              className="w-fit flex items-center gap-2 justify-center"
+              onClick={() => router.push('/board/template')}
+            >
+              <span>选择模板开始</span>
+            </Button>
+          </div>
         </main>
       </div>
     </section>

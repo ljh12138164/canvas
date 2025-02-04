@@ -7,3 +7,5 @@ packages:
   - "cli/*"
   # 共用的lint和tsconfig
   - "package/*"
+  # taro小程序
+  - "mini/*"

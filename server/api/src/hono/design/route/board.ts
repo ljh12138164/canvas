@@ -26,10 +26,11 @@ const board = new Hono()
         json: z.string(),
         width: z.number(),
         height: z.number(),
+        isTemplate: z.boolean().optional(),
       }),
     ),
     async (c) => {
-      const { name, json, width, height } = c.req.valid('json');
+      const { name, json, width, height, isTemplate } = c.req.valid('json');
       const { auth, token } = getSupabaseAuth(c);
       const [error, board] = await to(
         createBoard(
@@ -39,6 +40,7 @@ const board = new Hono()
             json,
             width,
             height,
+            isTemplate,
           },
           token,
         ),

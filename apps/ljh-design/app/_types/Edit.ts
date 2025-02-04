@@ -511,6 +511,7 @@ export enum Tool {
   zoomOut = 25,
   FilterSetting = 26,
   Ai = 27,
+  Template = 28,
 }
 export type FontWeightType = 'normal' | 'bold';
 //返回
