@@ -33,6 +33,7 @@ interface CreateBoard {
   json?: string;
   width: number;
   height: number;
+  isTemplate?: boolean;
 }
 /**
  * 创建看板
