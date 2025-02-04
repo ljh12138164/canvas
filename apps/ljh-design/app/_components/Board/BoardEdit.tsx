@@ -52,19 +52,7 @@ const BoardEdit = ({
             // @ts-ignore
             defaultValues={data}
             userId={userId}
-            mutate={
-              mutate as UseMutateFunction<
-                BoardResponse,
-                Error,
-                {
-                  name: string;
-                  width: number;
-                  height: number;
-                  json?: string | undefined;
-                },
-                unknown
-              >
-            }
+            mutate={mutate as any}
             closeref={ref}
           >
             <DialogFooter className="mt-6 flex gap-1">

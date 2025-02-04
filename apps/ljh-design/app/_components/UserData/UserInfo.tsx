@@ -59,17 +59,17 @@ export default function UserInfo() {
       <Card>
         <CardHeader className="flex justify-between">
           <nav className="flex gap-2 justify-between ">
-            <section className="flex gap-2 bg-indigo-500 dark:bg-indigo-500/10 w-[200px] items-center justify-center p-2 text-white rounded-md">
+            <section className="flex gap-2   w-[200px] items-center justify-center p-2 rounded-md border">
               <Button
                 variant="ghost"
-                className={`flex items-center justify-center transition-all duration-300 hover:bg-indigo-500 ${collection ? 'bg-indigo-500' : ''}`}
+                className={`flex items-center justify-center transition-all duration-300  ${collection ? 'bg-slate-100' : ''}`}
                 onClick={() => setCollection(true)}
               >
                 我的点赞
               </Button>
               <Button
                 variant="ghost"
-                className={`flex items-center justify-center transition-all duration-300 hover:bg-indigo-500 ${!collection ? 'bg-indigo-500' : ''}`}
+                className={`flex items-center justify-center transition-all duration-300  ${!collection ? 'bg-slate-100' : ''}`}
                 onClick={() => setCollection(false)}
               >
                 我的收藏

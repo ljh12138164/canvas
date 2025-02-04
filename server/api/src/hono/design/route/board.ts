@@ -23,14 +23,15 @@ const board = new Hono()
       'json',
       z.object({
         name: z.string(),
-        json: z.string(),
+        json: z.any(),
         width: z.number(),
         height: z.number(),
         isTemplate: z.boolean().optional(),
+        image: z.string().optional(),
       }),
     ),
     async (c) => {
-      const { name, json, width, height, isTemplate } = c.req.valid('json');
+      const { name, json, width, height, isTemplate, image } = c.req.valid('json');
       const { auth, token } = getSupabaseAuth(c);
       const [error, board] = await to(
         createBoard(
@@ -41,6 +42,7 @@ const board = new Hono()
             width,
             height,
             isTemplate,
+            image,
           },
           token,
         ),
@@ -141,7 +143,7 @@ const board = new Hono()
     zValidator(
       'json',
       z.object({
-        json: z.string().optional(),
+        json: z.any().optional(),
         name: z.string().optional(),
         width: z.number().optional(),
         height: z.number().optional(),

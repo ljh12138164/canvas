@@ -9,6 +9,7 @@ export interface Board {
   url?: string;
   isTemplate?: boolean;
   width: number;
+  userId: string;
 }
 
 export interface BoardResponse extends Board {
