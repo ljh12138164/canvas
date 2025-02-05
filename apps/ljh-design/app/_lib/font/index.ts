@@ -1,9 +1,9 @@
-import { Inter } from 'next/font/google';
+// import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-});
+// const inter = Inter({
+//   subsets: ['latin'],
+//   weight: ['400', '500', '600', '700'],
+// });
 
 const myFont = localFont({
   src: [
@@ -30,4 +30,4 @@ const myFont = localFont({
   ],
   variable: '--font-genjyuu',
 });
-export { inter, myFont };
+export { myFont };

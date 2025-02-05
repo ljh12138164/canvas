@@ -19,7 +19,7 @@ const Main = () => {
           <Button
             size="lg"
             disabled={loading}
-            onClick={() => (user ? router.push('/board') : router.push('/try/Edit'))}
+            onClick={() => (user ? router.push('/board') : router.push('/sign-in'))}
           >
             前往工作区
           </Button>
@@ -30,7 +30,6 @@ const Main = () => {
           </Link>
         </div>
       </div>
-
       {/* 特性展示 */}
       <div className="grid md:grid-cols-3 gap-8 py-16">
         <div className="text-center p-6 rounded-lg border">

@@ -887,11 +887,11 @@ export interface Edit {
   getActiveFilterEffect: (filter: string) => Effect | null;
   cleanFilter: () => void;
   deleteImageFilter: (filter: string) => void;
-  savePng: () => void;
+  savePng: (open?: boolean) => void;
   saveSvg: () => void;
   savejpg: () => void;
   saveJson: () => void;
-  loadFromJson: (json: string) => void;
+  loadFromJson: (json: string, fn?: () => void) => void;
   pasty: () => void;
   canRedo: () => boolean;
   canUndo: () => boolean;
@@ -941,6 +941,7 @@ export interface Edit {
   setStrokeWidth: (width: number) => void;
   setStrokeColor: (color: string) => void;
   addObject: (value: AddObject) => void;
+  clear: () => void;
 }
 export const ToolItem = {
   [Tool.Fill]: '填充颜色',

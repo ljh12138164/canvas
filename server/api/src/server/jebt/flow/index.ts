@@ -25,7 +25,7 @@ export const createFlow = async ({
   userId: string;
   token: string;
 }): Promise<Flow> => {
-  const [noUser] = await to(checkUser(userId, workspaceId));
+  const [noUser] = await to(checkUser(userId, workspaceId, token));
   if (noUser) throw new Error('未找到用户');
   const { error, data } = await supabaseJebtToken(token)
     .from('flow')
@@ -59,7 +59,7 @@ export const getJebtFlow = async ({
   userId: string;
   token: string;
 }): Promise<Flow[]> => {
-  const [noUser] = await to(checkUser(userId, workspaceId));
+  const [noUser] = await to(checkUser(userId, workspaceId, token));
   if (noUser) throw new Error('未找到用户');
   const { data, error } = await supabaseJebtToken(token)
     .from('flow')
@@ -80,7 +80,7 @@ export const deleteJebtFlow = async ({
   workspaceId: string;
   token: string;
 }) => {
-  const [noUser] = await to(checkUser(userId, workspaceId));
+  const [noUser] = await to(checkUser(userId, workspaceId, token));
   if (noUser) throw new Error('未找到用户');
   const { error } = await supabaseJebtToken(token)
     .from('flow')
@@ -115,7 +115,7 @@ export const updateJebtFlow = async ({
   description: string;
   token: string;
 }): Promise<Flow> => {
-  const [noUser] = await to(checkUser(userId, workspaceId));
+  const [noUser] = await to(checkUser(userId, workspaceId, token));
   if (noUser) throw new Error('未找到用户');
   const { error, data } = await supabaseJebtToken(token)
     .from('flow')

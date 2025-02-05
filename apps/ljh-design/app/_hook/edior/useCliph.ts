@@ -9,6 +9,7 @@ export const useClipboard = ({ canvas }: UserClipboard) => {
   const clipboard = useRef<fabric.FabricObject[]>([]);
 
   const copy = async () => {
+    if (!canvas?.getActiveObjects().length) return;
     toast.dismiss();
     clipboard.current = [];
     canvas?.getActiveObjects()?.forEach(async (item, index) => {

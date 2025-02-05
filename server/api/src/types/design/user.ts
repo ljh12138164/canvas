@@ -14,6 +14,8 @@ export interface UserQuery {
 
 export interface UserImage {
   id: string;
-  imageId: string;
+  userId: string;
   url: string;
+  created_at: string;
+  star: boolean;
 }

@@ -47,7 +47,7 @@ export const updateJebtUserRole = async ({
   token: string;
 }) => {
   // 检查用户权限
-  const [error, _] = await to(checkMember(currentUserId, workspaceId));
+  const [error, _] = await to(checkMember(currentUserId, workspaceId, token));
   if (error) throw new Error(error.message);
   const { data, error: memberError } = await supabaseJebtToken(token)
     .from('member')
@@ -80,7 +80,7 @@ export const deleteJebtUser = async ({
 }) => {
   // 只有删除其他用户的时候，才需要检查权限
   if (currentUserId !== userId) {
-    const [error, _] = await to(checkMember(currentUserId, workspaceId));
+    const [error, _] = await to(checkMember(currentUserId, workspaceId, token));
     if (error) throw new Error(error.message);
   }
   const { error: memberError } = await supabaseJebtToken(token)

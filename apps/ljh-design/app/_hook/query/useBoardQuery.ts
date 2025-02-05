@@ -5,7 +5,7 @@ import type { Board } from '@/app/_types/board';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
 import { isArray } from 'lodash';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 export type ResponseType = InferResponseType<typeof client.board.$post>;
@@ -25,10 +25,11 @@ type CopyRequestType = InferRequestType<(typeof client.board)['clone']['$post']>
  * @returns
  */
 export const useBoardQuery = () => {
+  const router = useRouter();
   const { mutate, isPending, error } = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (board) => {
       const token = await getNewToken();
-      if (!token) redirect('/sign-in');
+      if (!token) router.push('/sign-in');
       const response = await client.board.$post(
         {
           json: board,
@@ -53,15 +54,16 @@ export const useBoardQuery = () => {
  * @param id
  * @returns
  */
-export const useBoardEditQuery = ({ id }: { id: string }) => {
+export const useBoardEditQuery = ({ id, type }: { id: string; type: 'template' | 'board' }) => {
+  const router = useRouter();
   const { data, isLoading, error } = useQuery<Board[], Error, Board[]>({
     queryKey: ['project', id],
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) redirect('/sign-in');
-      const response = await client.board[':id'].$get(
+      if (!token) router.push('/sign-in');
+      const response = await client.board.getBoard.$get(
         {
-          param: { id },
+          query: { id, type },
         },
         {
           headers: {
@@ -77,7 +79,7 @@ export const useBoardEditQuery = ({ id }: { id: string }) => {
       if ((isArray(data) && data.length === 0) || !isArray(data)) {
         toast.dismiss();
         toast.error('看板不存在');
-        redirect('/board');
+        router.push('/board');
       }
       return data as Board[];
     },
@@ -90,12 +92,13 @@ export const useBoardEditQuery = ({ id }: { id: string }) => {
  * @returns
  */
 export const useBoardUserQuery = ({ userId }: { userId: string }) => {
+  const router = useRouter();
   const { data, isLoading, error, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['board', userId],
       queryFn: async ({ pageParam }) => {
         const token = await getNewToken();
-        if (!token) redirect('/sign-in');
+        if (!token) router.push('/sign-in');
         const response = await client.board.getBoard.$post(
           {
             json: { pageParam: pageParam as number },
@@ -136,6 +139,7 @@ export const useBoardUserQuery = ({ userId }: { userId: string }) => {
  * @returns
  */
 export const useBoardUpdateQuery = ({ id }: { id: string }) => {
+  const router = useRouter();
   const { mutate, isPending, error } = useMutation<
     UpdateResponseType,
     Error,
@@ -147,7 +151,7 @@ export const useBoardUpdateQuery = ({ id }: { id: string }) => {
   >({
     mutationFn: async (board) => {
       const token = await getNewToken();
-      if (!token) redirect('/sign-in');
+      if (!token) router.push('/sign-in');
       const response = await client.board.editBoard.$post(
         {
           json: { id, ...board },
@@ -173,10 +177,11 @@ export const useBoardUpdateQuery = ({ id }: { id: string }) => {
  * @returns
  */
 export const useBoardDeleteQuery = () => {
+  const router = useRouter();
   const { mutate, isPending, error } = useMutation<DeleteResponseType, Error, { id: string }>({
     mutationFn: async ({ id }) => {
       const token = await getNewToken();
-      if (!token) redirect('/sign-in');
+      if (!token) router.push('/sign-in');
       const response = await client.board.deleteBoard.$post(
         {
           json: { id },
@@ -211,6 +216,7 @@ export const useBoardDeleteQuery = () => {
  * @returns
  */
 export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { mutate, isPending, error } = useMutation<
     AutoSaveResponseType,
@@ -219,7 +225,7 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
   >({
     mutationFn: async (board) => {
       const token = await getNewToken();
-      if (!token) redirect('/sign-in');
+      if (!token) router.push('/sign-in');
       const response = await client.board[':id'].$post(
         {
           param: { id },
@@ -250,10 +256,11 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
  * @returns
  */
 export const useBoardCopyQuery = () => {
+  const router = useRouter();
   const { mutate, isPending, error } = useMutation<CopyResponseType, Error, CopyRequestType>({
     mutationFn: async (board) => {
       const token = await getNewToken();
-      if (!token) redirect('/sign-in');
+      if (!token) router.push('/sign-in');
       const response = await client.board.clone.$post(
         {
           json: { ...board },
@@ -275,43 +282,17 @@ export const useBoardCopyQuery = () => {
 };
 
 /**
- * ## 获取用户图片
- * @param token
- * @returns
- */
-export const useBoardImageQuery = ({ userId }: { userId: string }) => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['image', userId],
-    enabled: !!userId,
-    queryFn: async () => {
-      const token = await getNewToken();
-      if (!token) redirect('/sign-in');
-      const response = await client.board.image.$post(undefined, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) {
-        const error = (await response.json()) as { message: string };
-        throw new Error(error.message);
-      }
-      return response.json();
-    },
-  });
-  return { data, isLoading, error };
-};
-
-/**
  * 获取用户看板列表
  * @param token
  * @returns
  */
 export const useBoardListQuery = () => {
+  const router = useRouter();
   const { data, isLoading, error, isFetching } = useQuery({
     queryKey: ['boardList'],
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) redirect('/sign-in');
+      if (!token) router.push('/sign-in');
       const response = await client.board.getBoardList.$get(undefined, {
         headers: { Authorization: `Bearer ${token}` },
       });

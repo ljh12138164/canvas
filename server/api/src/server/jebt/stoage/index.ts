@@ -83,7 +83,7 @@ export const createFile = async ({
   size: number;
   token: string;
 }): Promise<StoageData> => {
-  const [noUser] = await to(checkUser(userId, workspaceId));
+  const [noUser] = await to(checkUser(userId, workspaceId, token));
   if (noUser) throw new Error('未找到用户');
   const [uploadError, fileUrl] = await to(uploadImageclound({ file, workspaceId, name, token }));
   if (uploadError) throw new Error('上传文件失败');
@@ -121,7 +121,7 @@ export const getJebtFileList = async ({
   userId: string;
   token: string;
 }): Promise<StoageData[]> => {
-  const [noUser] = await to(checkUser(userId, workspaceId));
+  const [noUser] = await to(checkUser(userId, workspaceId, token));
   if (noUser) throw new Error('未找到用户');
   const { data, error } = await supabaseJebtToken(token)
     .from('stoages')
@@ -144,7 +144,7 @@ export const deleteJebtFile = async ({
   file: string;
   token: string;
 }) => {
-  const [noUser] = await to(checkUser(userId, workspaceId));
+  const [noUser] = await to(checkUser(userId, workspaceId, token));
 
   if (noUser) throw new Error('未找到用户');
   const [deleteError] = await to(deleteImageClound({ image: file, token }));
@@ -182,7 +182,7 @@ export const updateJebtFile = async ({
   description: string;
   token: string;
 }): Promise<StoageData> => {
-  const [noUser] = await to(checkUser(userId, workspaceId));
+  const [noUser] = await to(checkUser(userId, workspaceId, token));
   if (noUser) throw new Error('未找到用户');
   const { error, data } = await supabaseJebtToken(token)
     .from('stoages')

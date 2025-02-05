@@ -41,13 +41,14 @@ import type { Board } from '@/app/_types/board';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
 import { debounce } from 'lodash';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 export default function TryEdit({ id, data }: { id: string; data: Board }) {
   const defaultData = useRef<Board>(data);
   const defaultJson = useRef<string>(data.json);
+  const router = useRouter();
   const { init } = useCanvas({
     initHeight: defaultData.current?.height as number,
     initWidth: defaultData.current?.width as number,
@@ -59,7 +60,7 @@ export default function TryEdit({ id, data }: { id: string; data: Board }) {
       const dataed = await getTryBoardById(id);
       if (!dataed) {
         toast.error('数据不存在');
-        redirect('/try/board');
+        return router.push('/try/board');
       }
       indexDBChange({
         type: 'edit',

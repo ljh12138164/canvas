@@ -1,12 +1,13 @@
 import { useBoardQuery } from '@/app/_hook/query/useBoardQuery';
 import { useTemplate, useUserTemplate } from '@/app/_hook/query/useTemaplate';
-import { inter, myFont } from '@/app/_lib/font';
 import { PlusCircle } from 'lucide-react';
 import Image from 'next/image';
 import { useRef } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
+import { DEFAULT_TEMPLATE } from '@/app/_database/user';
 import BoardCreateFrom from '../Board/BoardCreateFrom';
+import { Response } from '../Comand/Response';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import {
@@ -25,15 +26,45 @@ const TemplateMain = ({ userId }: { userId: string }) => {
   const { dataDefault, isLoadingDefault } = useTemplate();
   const { dataUserTemplate, isLoadingUserTemplate } = useUserTemplate();
   const closeref = useRef<HTMLButtonElement>(null);
+  const responseRef = useRef<{ closeModel: () => void } | null>(null);
   return (
     <ScrollArea className="h-[calc(100vh-100px)]">
-      <main className={`${inter.className} ${myFont.variable} min-w-[380px] p-6`}>
+      <main className="min-w-[380px] p-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">模板中心</h1>
-          <Button variant="outline">
-            <PlusCircle className="mr-2 h-4 w-4" />
-            创建模板
-          </Button>
+          <Response
+            title="创建模板"
+            description="确定创建模板吗？"
+            ref={responseRef}
+            showFooter={false}
+            onConfirm={() => {
+              responseRef.current?.closeModel();
+            }}
+          >
+            <BoardCreateFrom
+              type="create"
+              isTemplate={true}
+              userId={userId}
+              mutate={mutate as any}
+              closeref={responseRef}
+              setTemplate={true}
+              templateData={{ image: DEFAULT_TEMPLATE }}
+            >
+              <DialogFooter className="flex gap-2 w-full">
+                <Button
+                  onClick={() => responseRef.current?.closeModel()}
+                  variant="outline"
+                  type="button"
+                >
+                  取消
+                </Button>
+                <Button type="submit">
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  创建模板
+                </Button>
+              </DialogFooter>
+            </BoardCreateFrom>
+          </Response>
         </div>
         <h2 className="text-lg font-bold mb-4">默认模板</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6">
@@ -133,6 +164,44 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{template.name}</h3>
+                  <div className="flex gap-2">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="default" size="sm">
+                          使用模板
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle> {template.name} </DialogTitle>
+                        </DialogHeader>
+                        <BoardCreateFrom
+                          type="create"
+                          isTemplate={true}
+                          userId={userId}
+                          mutate={mutate as any}
+                          closeref={closeref}
+                          templateData={template}
+                        >
+                          <DialogFooter className="flex gap-2 w-full">
+                            <Button onClick={() => closeref.current?.click()} variant="outline">
+                              取消
+                            </Button>
+                            <Button variant="default" type="submit" disabled={isPending}>
+                              使用模板
+                            </Button>
+                          </DialogFooter>
+                        </BoardCreateFrom>
+                      </DialogContent>
+                    </Dialog>
+                    <PhotoProvider>
+                      <PhotoView src={template.image}>
+                        <Button variant="outline" size="sm">
+                          预览
+                        </Button>
+                      </PhotoView>
+                    </PhotoProvider>
+                  </div>
                 </div>
               </Card>
             ))

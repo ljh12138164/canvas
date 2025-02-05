@@ -18,6 +18,16 @@ import {
   fonts,
 } from '@/app/_types/Edit';
 import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../../ui/dialog';
 import { AiChatSider } from './AiChatSider';
 import ColorPicker from './ColorPicker';
 import FilterSetting from './FilterSetting';
@@ -33,6 +43,7 @@ interface ColorSoiberbarProps {
 }
 
 const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarProps) => {
+  const [filterOpen, setFilterOpen] = useState(false);
   //颜色
   const value = editor?.fillColor || FILL_COLOR;
   const stokevalue = editor?.strokeColor || STROKE_COLOR;
@@ -129,7 +140,7 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
                       padding: '8px 16px',
                     }}
                     onClick={() => editor?.setFontFamily(item)}
-                    className={`w-full h-16 justify-start text-left ${editor?.fontFamily === item && 'border-blue-500 border-2'}`}
+                    className={`w-full border-1 h-16 justify-start text-left ${editor?.fontFamily === item && 'border-blue-500 border-2'}`}
                   >
                     {item}
                   </Button>
@@ -147,10 +158,7 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
                     variant="outline"
                     onClick={() => {
                       if (item === 'none' && !check(item)) {
-                        const isClear = window.confirm('是否清除滤镜');
-                        if (isClear) {
-                          editor?.cleanFilter();
-                        }
+                        setFilterOpen(true);
                       } else if (check(item) && editor?.getActiveFilter().length === 1) {
                         editor?.cleanFilter();
                       } else if (check(item)) {
@@ -272,6 +280,29 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
             </form>
           )}
         </div>
+        <Dialog open={filterOpen} onOpenChange={setFilterOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>清除滤镜</DialogTitle>
+              <DialogDescription>清除现在所有滤镜</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose>
+                <Button variant="outline">取消</Button>
+              </DialogClose>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  editor?.cleanFilter();
+                  toast.success('清除滤镜成功');
+                  setFilterOpen(false);
+                }}
+              >
+                确认
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </ScrollArea>
       <ToolSiderbarClose onClose={() => onChangeActive(Tool.Select)} />
     </aside>

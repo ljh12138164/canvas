@@ -1,6 +1,10 @@
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { uploadImageclound } from '@/app/_database/image';
-import { useImageQuery } from '@/app/_hook/query/useImageQuery';
+import {
+  useBoardImageQuery,
+  useImageQuery,
+  useUserImageQuery,
+} from '@/app/_hook/query/useImageQuery';
 import { cn } from '@/app/_lib/utils';
 import { type Edit, IMAGE_BLUSK, ImageType, Tool } from '@/app/_types/Edit';
 import { useRef, useState } from 'react';
@@ -20,6 +24,7 @@ interface ImageSiderbarProps {
 }
 const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSiderbarProps) => {
   const { getImageLoading, getImageError } = useImageQuery();
+  const { mutate, isPending } = useUserImageQuery();
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [imageList, setImageList] = useState<ImageType>(ImageType.Recommend);
   const [uploadImage, setUploadImage] = useState(false);
@@ -33,9 +38,20 @@ const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSide
             file: e.target.files?.[0],
           });
           toast.dismiss();
-          if (editor) {
-            editor.addImage(IMAGE_BLUSK + url);
-          }
+          mutate(
+            {
+              json: {
+                url: IMAGE_BLUSK + url,
+              },
+            },
+            {
+              onSuccess: () => {
+                toast.dismiss();
+                toast.success('上传成功');
+                editor?.addImage(IMAGE_BLUSK + url);
+              },
+            },
+          );
         } else {
           toast.dismiss();
           const url = URL.createObjectURL(e.target.files?.[0]);
@@ -90,7 +106,7 @@ const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSide
               if (!uploadImage) fileRef.current?.click();
             }}
             type="button"
-            disabled={uploadImage || editor?.imageLoading}
+            disabled={uploadImage || editor?.imageLoading || isPending}
             className={`flex items-center justify-center bg-blue-500 w-full h-full rounded-md  cursor-pointer ${uploadImage && ' opacity-50'}`}
           >
             <p className="text-white font-medium">上传图片</p>
@@ -105,7 +121,7 @@ const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSide
         </div>
         <div className="p-4 grid grid-cols-2 gap-4 mt-4">
           {activeTool === Tool.Image && imageList === ImageType.Recommend && (
-            <ImageBox editor={editor} />
+            <ImageBox editor={editor} userId={userId} />
           )}
           {activeTool === Tool.Image && imageList === ImageType.Cloud && userId && (
             <UserImageBox editor={editor} userId={userId} />

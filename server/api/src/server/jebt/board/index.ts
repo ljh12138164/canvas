@@ -54,8 +54,12 @@ export const deleteImageClound = async ({
  * @param workspaceId 仪表盘id
  * @returns
  */
-export const checkMember = async (userId: string, workspaceId: string): Promise<Member> => {
-  const { data, error } = await supabaseJebt
+export const checkMember = async (
+  userId: string,
+  workspaceId: string,
+  token: string,
+): Promise<Member> => {
+  const { data, error } = await supabaseJebtToken(token)
     .from('member')
     .select('*')
     .eq('workspaceId', workspaceId)
@@ -70,8 +74,8 @@ export const checkMember = async (userId: string, workspaceId: string): Promise<
  * @param workspaceId 工作区id
  * @returns void
  */
-export const checkUser = async (userId: string, workspaceId: string) => {
-  const { data, error } = await supabaseJebt
+export const checkUser = async (userId: string, workspaceId: string, token: string) => {
+  const { data, error } = await supabaseJebtToken(token)
     .from('member')
     .select('*')
     .eq('userId', userId)
@@ -205,7 +209,7 @@ export const updateJebtWorkspace = async ({
   oldImageUrl: string;
   token: string;
 }): Promise<Workspace> => {
-  const [error, _] = await to(checkMember(userId, id));
+  const [error, _] = await to(checkMember(userId, id, token));
   if (error) throw new Error(error.message);
 
   if (typeof file !== 'string') {
@@ -263,7 +267,7 @@ export const deleteJebtWorkspace = async ({
   imageUrl: string;
   token: string;
 }): Promise<boolean> => {
-  const [error, _] = await to(checkMember(userId, id));
+  const [error, _] = await to(checkMember(userId, id, token));
   if (error) throw new Error(error.message);
   let deleteImage: Promise<boolean | null> = Promise.resolve(null);
   if (imageUrl !== DEFAULT_ICON) {
@@ -291,7 +295,7 @@ export const refreshJebtWorkspace = async (
   userId: string,
   token: string,
 ): Promise<Workspace> => {
-  const [error, _] = await to(checkMember(userId, id));
+  const [error, _] = await to(checkMember(userId, id, token));
   if (error) throw new Error(error.message);
   const { data, error: workspaceError } = await supabaseJebtToken(token)
     .from('workspace')

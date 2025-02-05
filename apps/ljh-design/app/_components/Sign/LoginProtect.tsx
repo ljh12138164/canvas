@@ -1,6 +1,6 @@
 'use client';
 import { useUser } from '@/app/_store/auth';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function LoginProtect({
   children,
@@ -8,7 +8,8 @@ export default function LoginProtect({
   children: React.ReactNode;
 }) {
   const { user, loading } = useUser();
+  const router = useRouter();
   if (loading) return;
-  if (!user) redirect('/sign-in');
+  if (!user) router.push('/sign-in');
   return children;
 }

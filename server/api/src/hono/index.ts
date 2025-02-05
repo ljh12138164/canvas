@@ -1,4 +1,4 @@
-import { swaggerUI } from '@hono/swagger-ui';
+// import { swaggerUI } from '@hono/swagger-ui';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { ai } from './ai';

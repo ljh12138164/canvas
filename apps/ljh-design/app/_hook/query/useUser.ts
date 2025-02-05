@@ -2,7 +2,7 @@ import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
 import { useQuery } from '@tanstack/react-query';
 import type { InferResponseType } from 'hono';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export type UserResponseType = InferResponseType<(typeof client.user.like)['$get'], 200>;
 /**
@@ -10,6 +10,7 @@ export type UserResponseType = InferResponseType<(typeof client.user.like)['$get
  * @returns
  */
 export const useUserLike = (enabled: boolean, search: string) => {
+  const router = useRouter();
   const { data: userLike, isLoading: userLikeLoading } = useQuery<
     UserResponseType,
     Error,
@@ -19,7 +20,7 @@ export const useUserLike = (enabled: boolean, search: string) => {
     enabled,
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) redirect('/sign-in');
+      if (!token) router.push('/sign-in');
       const response = await client.user.like.$get(
         { query: { search } },
         {
@@ -48,6 +49,7 @@ export type UserCollectionResponseType = InferResponseType<
  *
  */
 export const useUserCollection = (enabled: boolean, search: string) => {
+  const router = useRouter();
   const { data: userCollection, isLoading: userCollectionLoading } = useQuery<
     UserCollectionResponseType,
     Error,
@@ -57,7 +59,7 @@ export const useUserCollection = (enabled: boolean, search: string) => {
     enabled,
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) redirect('/sign-in');
+      if (!token) router.push('/sign-in');
       const response = await client.user.collect.$get(
         { query: { search } },
         {

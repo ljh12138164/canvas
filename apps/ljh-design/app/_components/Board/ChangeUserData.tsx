@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
@@ -35,7 +36,6 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
     if (type === 'name') {
       if (name.length > 20) return toast.error('昵称不能超过20个字');
       if (!name) return toast.error('昵称不能为空');
-
       const [error] = await to(
         updateCurrentUser({
           datas: {
@@ -64,6 +64,7 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
       // 密码不能超过20个字
       if (repetPassword.length > 20) return toast.error('密码不能超过20个字');
       if (password.length < 6) return toast.error('密码不能少于6个字');
+      toast.loading('修改中...');
       changePassword(
         {
           json: {
@@ -93,6 +94,7 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
         }),
       );
       defaultData.current.image = data?.user.user_metadata.image;
+      toast.loading('修改中...');
       mutate(
         {
           json: {
@@ -111,6 +113,11 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
   return (
     <ScrollArea>
       <section className="flex flex-col gap-2">
+        <header className="flex justify-between items-center">
+          <Button variant="outline" onClick={() => router.back()}>
+            返回
+          </Button>
+        </header>
         <Card>
           <CardHeader>
             <CardTitle>用户姓名</CardTitle>
@@ -153,7 +160,21 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
                 }
               }}
             >
-              <Image
+              <Avatar>
+                <AvatarImage
+                  className="cursor-pointer aspect-[1/1] hover:scale-110 transition-all border-1 border-gray-200 rounded-full"
+                  src={
+                    image instanceof File
+                      ? URL.createObjectURL(image)
+                      : data.user.user_metadata.image
+                  }
+                  width={100}
+                  height={100}
+                  alt="用户图片"
+                />
+                <AvatarFallback> {name?.slice(0, 2)} </AvatarFallback>
+              </Avatar>
+              {/* <Image
                 src={
                   image instanceof File ? URL.createObjectURL(image) : data.user.user_metadata.image
                 }
@@ -162,7 +183,7 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
                 width={100}
                 height={100}
                 priority={true}
-              />
+              /> */}
               <input
                 accept="image/gif, image/jpeg, image/png"
                 className="hidden"

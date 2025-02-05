@@ -1,5 +1,3 @@
-import { inter, myFont } from '@/app/_lib/font';
-
 import { ShowPage } from '@/app/_components/Formue/ShowPage';
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { Providers } from '@/app/_provide/providers';
@@ -13,9 +11,7 @@ export default async function Home({
 }) {
   const { id } = await params;
   return (
-    <ScrollArea
-      className={`${inter.className} ${myFont.variable} h-[calc(100dvh-100px)] flex flex-col overflow-hidden entry gap-4`}
-    >
+    <ScrollArea className="h-[calc(100dvh-100px)] flex flex-col overflow-hidden entry gap-4">
       <Providers>
         <ShowPage id={id} />
       </Providers>

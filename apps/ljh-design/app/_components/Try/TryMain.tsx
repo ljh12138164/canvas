@@ -1,7 +1,7 @@
 'use client';
 import { getIndexDB } from '@/app/_lib/utils';
 import type { BoardData } from '@/app/_types/board';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { LuList } from 'react-icons/lu';
 import BoardCreate from '../Board/BoardCreate';
@@ -17,7 +17,7 @@ const TryMain = () => {
   const [, setChange] = useState(false);
   const [data, setData] = useState<BoardData[]>([]);
   const [list, setList] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     (async () => {
       const data = await getIndexDB();
@@ -89,7 +89,7 @@ const TryMain = () => {
                 {data?.map((item) => (
                   <TableRow
                     onClick={() => {
-                      redirect(`/try/Edit/${item.id}`);
+                      router.push(`/try/Edit/${item.id}`);
                     }}
                     key={item.id}
                     className="h-20 cursor-pointer"

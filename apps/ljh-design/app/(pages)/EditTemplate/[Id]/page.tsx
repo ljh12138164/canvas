@@ -10,7 +10,7 @@ export default async function Home({ params }: { params: Params }) {
   return (
     <section className="h-[100dvh] overflow-hidden">
       <Providers>
-        <EditMain id={Id} type="board" />
+        <EditMain id={Id} type="template" />
       </Providers>
       <Toaster
         position="top-center"

@@ -1,6 +1,6 @@
 import { getCurrentUser } from '@/app/_database/user';
 import { useUser } from '@/app/_store/auth';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 
@@ -16,6 +16,7 @@ const useUsers = ({
   type?: 'goLoading' | 'goError';
 }) => {
   const { user, loading, setUser, setLoading } = useUser();
+  const router = useRouter();
   useEffect(() => {
     (async () => {
       const user = await getCurrentUser();
@@ -23,13 +24,13 @@ const useUsers = ({
         if (redirects && type === 'goError') {
           toast.dismiss();
           toast.error('请先登录');
-          redirect('/sign-in');
+          router.push('/sign-in');
         }
       } else {
         setUser(user);
         if (redirects && type === 'goLoading') {
           toast.success('用户已登录');
-          redirect('/board');
+          router.push('/board');
         }
       }
       setLoading(false);

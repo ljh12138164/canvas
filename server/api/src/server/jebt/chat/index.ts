@@ -16,7 +16,7 @@ export const getChatMessage = async (
   pageTo: number,
   token: string,
 ): Promise<{ data: ChatMessage[]; count: number | null; pageTo: number }> => {
-  const [error] = await to(checkUser(userId, workspaceId));
+  const [error] = await to(checkUser(userId, workspaceId, token));
   if (error) throw new Error(error.message);
 
   const {
@@ -53,7 +53,7 @@ export const sendChatMessage = async (
   message: string,
   token: string,
 ): Promise<ChatMessage> => {
-  const [error] = await to(checkUser(userId, workspaceId));
+  const [error] = await to(checkUser(userId, workspaceId, token));
   if (error) throw new Error(error.message);
 
   const { data, error: supabaseError } = await supabaseJebtToken(token)
@@ -77,7 +77,7 @@ export const uploadImage = async (
   file: File,
   token: string,
 ): Promise<ChatMessage> => {
-  const [error] = await to(checkUser(userId, workspaceId));
+  const [error] = await to(checkUser(userId, workspaceId, token));
   if (error) throw new Error(error.message);
   const [errors, imageUrl] = await to(uploadImageclound({ file }));
   if (errors) throw new Error(errors.message);

@@ -1,5 +1,4 @@
 import type { Board, BoardResponse } from '../../../types/design/board';
-import type { UserImage } from '../../../types/design/user';
 import { supabaseDesign } from '../../supabase/design';
 interface GetUserImage {
   userId: string;
@@ -12,19 +11,6 @@ interface GetUserImage {
 export const getBoardData = async (token: string) => {
   const { data, error } = await supabaseDesign(token).from('board').select('*');
   return { data, error };
-};
-
-/**
- * 获取用户图片
- * @returns
- */
-export const getUserImage = async ({ userId, token }: GetUserImage): Promise<UserImage[]> => {
-  const { data, error } = await supabaseDesign(token)
-    .from('userImage')
-    .select('*')
-    .eq('id', userId);
-  if (error) throw new Error('服务器错误');
-  return data;
 };
 
 interface CreateBoard {
@@ -54,13 +40,18 @@ interface GetBoard {
   id: string;
   userid: string;
   token: string;
+  type: 'template' | 'board';
 }
 /**
  * 获取看板数据
  * @returns
  */
-export const getBoard = async ({ id, userid, token }: GetBoard): Promise<Board[]> => {
-  const { data, error } = await supabaseDesign(token).from('board').select('*').eq('id', id);
+export const getBoard = async ({ id, userid, token, type }: GetBoard): Promise<Board[]> => {
+  const { data, error } = await supabaseDesign(token)
+    .from('board')
+    .select('*')
+    .eq('id', id)
+    .eq('isTemplate', type === 'template');
   // TODO: 需要修改
   // .eq("userId", userid);
   if (error) throw new Error('服务器错误');
