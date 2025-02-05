@@ -20,19 +20,14 @@ const show = new Hono()
     zValidator(
       'json',
       z.object({
-        image: z.string().optional(),
         title: z.string(),
         content: z.string(),
         tap: z.string().optional(),
-        json: z.string(),
-        width: z.number(),
-        height: z.number(),
         relativeTheme: z.string(),
       }),
     ),
     async (c) => {
-      const { title, content, tap, json, relativeTheme, image, width, height } =
-        c.req.valid('json');
+      const { title, content, tap, relativeTheme } = c.req.valid('json');
       const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
         createShow({
@@ -41,11 +36,7 @@ const show = new Hono()
           tap: tap || '',
           token,
           userId: auth.sub,
-          json,
-          image: image || '',
           relativeTheme,
-          width,
-          height,
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));

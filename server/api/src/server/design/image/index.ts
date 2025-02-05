@@ -3,6 +3,7 @@ import type { UserImage } from '../../../types/design/user';
 import { supabaseDesign, supabaseDesignPublic } from '../../supabase/design';
 
 const USER_IMAGE = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/';
+export const IMAGE_BLUSK = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/';
 
 interface GetUserImage {
   userId: string;

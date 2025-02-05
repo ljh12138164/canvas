@@ -9,6 +9,7 @@ interface HistoryProps {
     width: number;
     image: string;
     height: number;
+    updated_at: boolean;
   }) => void;
 }
 
@@ -47,6 +48,7 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
     if (workspace) {
       // 设置画布缩放
       canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+      // base64
       const image = canvas.toDataURL({
         width,
         height,
@@ -58,10 +60,11 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
       });
       authZoom();
       debounceMutate?.({
-        json: JSON.stringify(currentState),
+        json: currentState,
         width,
         height,
         image,
+        updated_at: true,
       });
     }
   };

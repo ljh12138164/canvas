@@ -1,11 +1,13 @@
 import { useBoardQuery } from '@/app/_hook/query/useBoardQuery';
 import { useTemplate, useUserTemplate } from '@/app/_hook/query/useTemaplate';
-import { PlusCircle } from 'lucide-react';
+import { MoreHorizontal, PlusCircle } from 'lucide-react';
 import Image from 'next/image';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 import { DEFAULT_TEMPLATE } from '@/app/_database/user';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import BoardCreateFrom from '../Board/BoardCreateFrom';
 import { Response } from '../Comand/Response';
 import { Button } from '../ui/button';
@@ -18,13 +20,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import { ScrollArea } from '../ui/scroll-area';
 import { Skeleton } from '../ui/skeleton';
 
 const TemplateMain = ({ userId }: { userId: string }) => {
+  const queryClient = useQueryClient();
   const { mutate, isPending } = useBoardQuery();
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['templateUser'] });
+  }, []);
   const { dataDefault, isLoadingDefault } = useTemplate();
   const { dataUserTemplate, isLoadingUserTemplate } = useUserTemplate();
+  const router = useRouter();
   const closeref = useRef<HTMLButtonElement>(null);
   const responseRef = useRef<{ closeModel: () => void } | null>(null);
   return (
@@ -67,7 +80,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
           </Response>
         </div>
         <h2 className="text-lg font-bold mb-4">默认模板</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6">
+        <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-6">
           {isLoadingDefault ? (
             <>
               <Skeleton className="w-full h-[200px]" />
@@ -138,7 +151,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
           )}
         </div>
         <h2 className="text-lg font-bold my-4">我的模板</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-6">
           {isLoadingUserTemplate ? (
             <>
               <Skeleton className="w-full h-[200px]" />
@@ -154,7 +167,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                     <PhotoView src={template.image}>
                       <Image
                         src={template.image}
-                        alt={template.name}
+                        alt={template.name || '用户图片'}
                         fill
                         quality={80}
                         className="object-cover w-full h-full"
@@ -201,6 +214,34 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                         </Button>
                       </PhotoView>
                     </PhotoProvider>
+                    <section className="ml-auto">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline" size="sm">
+                            <MoreHorizontal className="size-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem asChild>
+                            <Button variant="ghost" size="sm" className="w-full cursor-pointer">
+                              删除
+                            </Button>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="w-full cursor-pointer"
+                              onClick={() => {
+                                router.push(`/EditTemplate/${template.id}`);
+                              }}
+                            >
+                              编辑
+                            </Button>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </section>
                   </div>
                 </div>
               </Card>

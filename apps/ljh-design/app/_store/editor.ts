@@ -70,7 +70,7 @@ export const buildEditor = ({
   canvasHeight,
   canvasColor,
   canvasHistory,
-  yMaps,
+  // yMaps,
   userId,
   pasty,
   save,
@@ -737,7 +737,7 @@ export const buildEditor = ({
       //   },
       //   "add"
       // );
-      yMaps?.set(objs.id, JSON.stringify({ ...objs, changeType: 'add', changeClientId: userId }));
+      // yMaps?.set(objs.id, JSON.stringify({ ...objs, changeType: 'add', changeClientId: userId }));
       canvas.add(objs);
       canvas.setActiveObject(objs);
     },

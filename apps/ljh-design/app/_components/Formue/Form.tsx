@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
+import { useUserTemplate } from '@/app/_hook/query/useTemaplate';
 import { useMedia } from 'react-use';
 import { z } from 'zod';
 import { Response } from '../Comand/Response';
@@ -67,7 +68,7 @@ const zod = z.object({
 const Form = ({ defaultValue, userId }: FormProps) => {
   const router = useRouter();
   // 获取模板
-  const { data, isLoading } = useBoardListQuery();
+  const { dataUserTemplate, isLoadingUserTemplate } = useUserTemplate();
   // 获取标签
   const { tapData, tapLoading } = useGetTap(userId);
 
@@ -96,8 +97,8 @@ const Form = ({ defaultValue, userId }: FormProps) => {
     defaultValues: defaultValue,
   });
   const onSubmit = (datas: z.infer<typeof zod>) => {
-    if (isLoading) return;
-    const relativeTheme = data?.find((item) => item.id === datas.relativeTheme);
+    if (isLoadingUserTemplate) return;
+    const relativeTheme = dataUserTemplate?.find((item) => item.id === datas.relativeTheme);
     if (relativeTheme) {
       return createShow(
         {
@@ -146,17 +147,19 @@ const Form = ({ defaultValue, userId }: FormProps) => {
   };
   return (
     <ScrollArea className="h-[calc(100dvh-100px)]">
+      <h2 className="text-2xl font-bold mb-2">分享模板</h2>
       <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(onSubmit)}>
         <div>
-          <Label htmlFor="title"> 标题 </Label>
+          <Label htmlFor="title" className="mb-2 font-bold">
+            标题
+          </Label>
           <Input {...form.register('title')} />
           {form.formState.errors.title && (
             <p className="text-red-500">{form.formState.errors.title.message}</p>
           )}
         </div>
-
         <div>
-          <Label htmlFor="relativeTheme" className="flex items-center gap-2">
+          <Label htmlFor="relativeTheme" className="flex items-center gap-2 font-bold mb-2">
             <span> 主题 </span>
             {preview?.image && (
               <div className="flex items-center gap-2">
@@ -168,10 +171,10 @@ const Form = ({ defaultValue, userId }: FormProps) => {
               </div>
             )}
           </Label>
-          {!isLoading ? (
+          {!isLoadingUserTemplate ? (
             <Select
               onValueChange={(value) => {
-                const fabricData = data?.find((item) => item.id === value);
+                const fabricData = dataUserTemplate?.find((item) => item.id === value);
                 form.setValue('relativeTheme', value);
                 setPreview(fabricData as Board);
               }}
@@ -180,7 +183,7 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                 <SelectValue placeholder="选择分享模板" />
               </SelectTrigger>
               <SelectContent>
-                {data?.map((item) => (
+                {dataUserTemplate?.map((item) => (
                   <SelectItem key={item.id} value={item.id}>
                     {item.name}
                   </SelectItem>
@@ -195,7 +198,9 @@ const Form = ({ defaultValue, userId }: FormProps) => {
           )}
         </div>
         <div>
-          <Label htmlFor="explanation"> 描述 </Label>
+          <Label htmlFor="explanation" className="font-bold mb-2">
+            描述
+          </Label>
           <Edit
             content={defaultValue?.explanation || ''}
             setValue={form.setValue}
@@ -203,7 +208,9 @@ const Form = ({ defaultValue, userId }: FormProps) => {
           />
         </div>
         <div>
-          <Label htmlFor="tap"> 标签 </Label>
+          <Label htmlFor="tap" className="font-bold mb-2">
+            标签
+          </Label>
           <div className="flex items-center gap-2">
             <div>已选择</div>
             <div className="flex flex-wrap gap-2">
@@ -569,11 +576,15 @@ const Form = ({ defaultValue, userId }: FormProps) => {
         {form.formState.errors.tap && (
           <p className="text-red-500">{form.formState.errors.tap.message}</p>
         )}
-        {isLoading || tapLoading ? (
+        {isLoadingUserTemplate || tapLoading ? (
           <Skeleton className="h-10 w-full" />
         ) : (
-          <Button type="submit" variant="outline" disabled={!data?.length || createShowPending}>
-            {data?.length ? '创建' : '请先创建模板'}
+          <Button
+            type="submit"
+            variant="outline"
+            disabled={!dataUserTemplate?.length || createShowPending}
+          >
+            {dataUserTemplate?.length ? '创建' : '请先创建模板'}
           </Button>
         )}
       </form>

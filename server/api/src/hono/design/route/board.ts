@@ -144,29 +144,33 @@ const board = new Hono()
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(board);
   })
+  // 自动保存
   .post(
-    '/:id',
-    zValidator('param', z.object({ id: z.string() })),
+    '/save',
     zValidator(
       'json',
       z.object({
+        id: z.string(),
         json: z.any().optional(),
-        name: z.string().optional(),
         width: z.number().optional(),
         height: z.number().optional(),
-        image: z.string().optional(),
-        isTemplate: z.boolean().optional(),
+        // base64或者url
+        image: z.string(),
+        defaultImage: z.string(),
       }),
     ),
     async (c) => {
-      const { id } = c.req.param();
-      const value = c.req.valid('json');
+      const { json, width, height, image, defaultImage, id } = c.req.valid('json');
       const { auth, token } = getSupabaseAuth(c);
 
       const [error, board] = await to(
         authSaveBoard({
           id,
-          ...value,
+          json,
+          width,
+          height,
+          image,
+          defaultImage,
           userId: auth.sub,
           token,
         }),

@@ -6,9 +6,10 @@ import Form from './Form';
 const CreateShow = () => {
   const router = useRouter();
   const { user, loading } = useUsers({ redirects: true });
-  if (loading) return;
-  if (!user) return router.push('/sign-in');
-  return <Form userId={user.user.id} />;
+  if (loading) return <></>;
+  if (!user) router.push('/sign-in');
+
+  return <Form userId={user!.user.id} />;
 };
 
 export default CreateShow;
