@@ -1,7 +1,7 @@
 'use client';
 import { getTryBoardById } from '@/app/_lib/utils';
 import { tryStore } from '@/app/_store/trystore';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 /**
@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
  * @returns
  */
 export const useTryStore = ({ id }: { id: string }) => {
+  const router = useRouter();
   const { isLoading, data, setData, setIsLoading } = tryStore();
   useEffect(() => {
     (async () => {
@@ -18,7 +19,7 @@ export const useTryStore = ({ id }: { id: string }) => {
         if (data) setData(data);
         else {
           toast.error('数据不存在');
-          redirect('/try/board');
+          router.push('/try/board');
         }
         setIsLoading(false);
       } catch {

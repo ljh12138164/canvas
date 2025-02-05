@@ -1,11 +1,26 @@
-import { useImageQuery } from '@/app/_hook/query/useImageQuery';
+import {
+  useBoardImageQuery,
+  useImageQuery,
+  useUserImageQuery,
+} from '@/app/_hook/query/useImageQuery';
 import type { Edit } from '@/app/_types/Edit';
+import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
+import { FaRegStar, FaStar } from 'react-icons/fa';
 
-export const ImageBox = ({ editor }: { editor: Edit | undefined }) => {
+export const ImageBox = ({
+  editor,
+  userId,
+}: {
+  editor: Edit | undefined;
+  userId: string | undefined;
+}) => {
+  const queryClient = useQueryClient();
   const { getImageLoading, imageData, getImageError } = useImageQuery();
-
+  const { data, isLoading, error } = useBoardImageQuery({ userId });
+  const { mutate, isPending } = useUserImageQuery();
   return (
     <>
       {imageData?.map((item) => {
@@ -35,6 +50,38 @@ export const ImageBox = ({ editor }: { editor: Edit | undefined }) => {
             >
               {item.user.name}
             </Link>
+            {userId && (
+              <button
+                type="button"
+                disabled={isPending}
+                onClick={() => {
+                  if (isLoading || error || getImageLoading) return;
+                  const isStar = data?.find((user) => user.url === item.urls.small);
+                  if (!isStar)
+                    return mutate(
+                      {
+                        json: {
+                          url: item.urls.small,
+                          star: true,
+                        },
+                      },
+                      {
+                        onSuccess: () => {
+                          queryClient.invalidateQueries({ queryKey: ['boardImage', userId] });
+                          toast.success('收藏成功');
+                        },
+                      },
+                    );
+                }}
+                className="absolute top-0 right-0 opacity-0 group-hover:opacity-100"
+              >
+                {data?.find((user) => user.url === item.urls.small) ? (
+                  <FaStar className="size-4" />
+                ) : (
+                  <FaRegStar className="size-4" />
+                )}
+              </button>
+            )}
           </button>
         );
       })}

@@ -18,6 +18,7 @@ import {
 import { getUserColor } from '@/app/_lib/utils';
 import { type Edit, Tool, type UserState } from '@/app/_types/Edit';
 import { Fragment } from 'react';
+import { useRef } from 'react';
 import { BsCloud, BsCloudCheck } from 'react-icons/bs';
 import { CiFileOn } from 'react-icons/ci';
 import {
@@ -27,12 +28,14 @@ import {
   LuFile,
   LuMousePointerClick,
   LuRedo2,
+  LuTrash,
   LuUndo2,
   LuUser,
 } from 'react-icons/lu';
 import { useFilePicker } from 'use-file-picker';
 import Logo from '../../Comand/Logo';
 import { ThemeToggle } from '../../Comand/ThemeToggle';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 interface NavBarProps {
   editor: Edit | undefined;
   activeTool: Tool;
@@ -49,6 +52,9 @@ const NavBar = ({
   userId,
   userState,
 }: NavBarProps) => {
+  const responseRef = useRef<{
+    closeModel: () => void;
+  } | null>(null);
   const { openFilePicker } = useFilePicker({
     accept: '.json',
     onFilesSelected: ({ plainFiles }) => {
@@ -100,17 +106,34 @@ const NavBar = ({
             <LuMousePointerClick size="20" />
           </Button>
         </TooltipComponents>
+        {/* 清空画布 */}
+        <TooltipComponents label="清空画布">
+          <Dialog>
+            <DialogTrigger>
+              <Button variant={'ghost'} size={'icon'}>
+                <LuTrash size="20" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>清空画布</DialogTitle>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </TooltipComponents>
+        {/* 预览 */}
         <TooltipComponents label="预览">
           <Button
             variant={'ghost'}
             size={'icon'}
             onClick={() => {
-              editor?.savePng();
+              editor?.savePng(true);
             }}
           >
             <LuEye size="20" />
           </Button>
         </TooltipComponents>
+        {/* 撤销 */}
         <TooltipComponents label="撤销">
           <Button
             disabled={!editor?.canUndo()}
@@ -124,6 +147,7 @@ const NavBar = ({
             <LuUndo2 size="20" />
           </Button>
         </TooltipComponents>
+        {/* 重做 */}
         <TooltipComponents label="重做">
           <Button
             disabled={!editor?.canRedo()}

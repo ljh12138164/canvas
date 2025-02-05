@@ -9,7 +9,7 @@ import {
 import { logout } from '@/app/_database/user';
 import useUsers from '@/app/_hook/useUser';
 import { User } from 'lucide-react';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LuLogOut } from 'react-icons/lu';
 import { Skeleton } from '../ui/skeleton';
@@ -45,7 +45,7 @@ const UserButton = () => {
               onClick={async () => {
                 await logout();
                 toast.success('登出成功');
-                redirect('/sign-in');
+                return router.push('/sign-in');
               }}
             >
               <LuLogOut className="size-4 mr-2 " />

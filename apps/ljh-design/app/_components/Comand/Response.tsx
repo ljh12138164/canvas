@@ -27,8 +27,9 @@ interface DrawerDialogProps {
   description: string;
   ref: RefObject<{ closeModel: () => void } | null>;
   onConfirm: () => void;
+  myTrigger?: ReactNode;
   disabled?: boolean;
-  children: ReactNode;
+  children?: ReactNode;
   showFooter?: boolean;
 }
 /**
@@ -61,6 +62,7 @@ export function Response({
   children,
   onConfirm,
   ref,
+  myTrigger,
   disabled = false,
   showFooter = true,
 }: DrawerDialogProps) {
@@ -75,7 +77,7 @@ export function Response({
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">{title}</Button>
+          {myTrigger ? myTrigger : <Button variant="outline">{title}</Button>}
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -88,7 +90,7 @@ export function Response({
               <DialogClose asChild>
                 <Button variant="outline">取消</Button>
               </DialogClose>
-              <Button variant="outline" onClick={onConfirm} disabled={disabled}>
+              <Button onClick={onConfirm} disabled={disabled}>
                 确定
               </Button>
             </DialogFooter>
@@ -101,22 +103,24 @@ export function Response({
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline">{title}</Button>
+        {myTrigger ? myTrigger : <Button variant="outline">{title}</Button>}
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="p-4">
         <DrawerHeader className="text-left">
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription>{description}</DrawerDescription>
         </DrawerHeader>
         {children}
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button variant="outline">取消</Button>
-          </DrawerClose>
-          <Button variant="outline" onClick={onConfirm} disabled={disabled}>
-            确定
-          </Button>
-        </DrawerFooter>
+        {showFooter && (
+          <DrawerFooter className="pt-2">
+            <DrawerClose asChild>
+              <Button variant="outline">取消</Button>
+            </DrawerClose>
+            <Button onClick={onConfirm} disabled={disabled}>
+              确定
+            </Button>
+          </DrawerFooter>
+        )}
       </DrawerContent>
     </Drawer>
   );

@@ -1,9 +1,10 @@
 'use client';
-
 import { cn } from '@/app/_lib/utils';
 import { type Edit, Tool } from '@/app/_types/Edit';
 import { useMemoizedFn } from 'ahooks';
 import { useState } from 'react';
+import DefaultTemplateList from '../../template/DefaultTemplateList';
+import UserTemplateList from '../../template/UserTemplateList';
 import { Button } from '../../ui/button';
 import { ScrollArea } from '../../ui/scroll-area';
 import ToolSiderbarClose from './ToolSiberbarClose';
@@ -47,6 +48,10 @@ export const TemplateSiderbar = ({ editor, onChangeActive, activeTool }: Templat
             我的模板
           </Button>
         </nav>
+        <section className="flex flex-col gap-y-2 p-4">
+          {template === 'default' && <DefaultTemplateList editor={editor} />}
+          {template === 'myTemplate' && <UserTemplateList editor={editor} />}
+        </section>
       </ScrollArea>
     </aside>
   );

@@ -33,7 +33,7 @@ export const createJebtTask = async ({
   token: string;
 }) => {
   const id = nanoid();
-  const [error] = await to(checkMember(currentUserId, workspaceId));
+  const [error] = await to(checkMember(currentUserId, workspaceId, token));
   if (error) throw new Error('无权限');
   const { data, error: taskError } = await supabaseJebtToken(token)
     .from('tasks')
@@ -79,7 +79,7 @@ export const getJebtTask = async ({
   lastTime: string | null | undefined;
   token: string;
 }) => {
-  const [error] = await to(checkMember(currentUserId, workspaceId));
+  const [error] = await to(checkMember(currentUserId, workspaceId, token));
   if (error) throw new Error('无权限');
   const query = supabaseJebtToken(token)
     .from('tasks')
@@ -119,7 +119,7 @@ export const deleteJebtTask = async ({
   projectId: string;
   token: string;
 }) => {
-  const [error] = await to(checkMember(currentUserId, workspaceId));
+  const [error] = await to(checkMember(currentUserId, workspaceId, token));
   if (error) throw new Error('无权限');
   const { error: taskError } = await supabaseJebtToken(token)
     .from('tasks')
@@ -159,7 +159,7 @@ export const updateJebtTask = async ({
   id: string;
   token: string;
 }) => {
-  const [error] = await to(checkUser(currentUserId, workspaceId));
+  const [error] = await to(checkUser(currentUserId, workspaceId, token));
   if (error) throw new Error('无权限');
   const { data, error: taskError } = await supabaseJebtToken(token)
     .from('tasks')
@@ -199,7 +199,7 @@ export const getJebtTaskDetail = async ({
   currentUserId: string;
   token: string;
 }): Promise<Task & { remark: Remark[] }> => {
-  const [error] = await to(checkUser(currentUserId, workspaceId));
+  const [error] = await to(checkUser(currentUserId, workspaceId, token));
   if (error) throw new Error('无权限');
   const { data, error: taskError } = await supabaseJebtToken(token)
     .from('tasks')
@@ -259,7 +259,7 @@ export const moveJebtTask = async ({
   TaskStatus: TaskStatus;
   token: string;
 }) => {
-  const [error] = await to(checkUser(currentUserId, workspaceId));
+  const [error] = await to(checkUser(currentUserId, workspaceId, token));
   if (error) throw new Error('无权限');
   const { data, error: taskError } = await supabaseJebtToken(token)
     .from('tasks')

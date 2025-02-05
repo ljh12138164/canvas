@@ -101,8 +101,6 @@ export const buildEditor = ({
   setFillColor,
   setStrokeWidth,
 }: buildEditorProps): Edit => {
-  // const addObjects = (options: NewFabicObject, type: "add" | "update") => {
-  // };
   //生成保存选项
   const genertateSaveOption = () => {
     const { width, height, left, top } = getWorkspace(canvas) as fabric.Rect;
@@ -166,17 +164,49 @@ export const buildEditor = ({
     authZoom();
   };
   //保存png
-  const savePng = () => {
+  const savePng = (open?: boolean) => {
     const option = genertateSaveOption();
+    // 设置画布缩放
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
     const dataUrl = canvas.toDataURL({ ...option, format: 'png' });
-    downloadImage(dataUrl, 'png');
+    if (open) {
+      // 创建一个临时的 blob URL
+      const blob = dataURLtoBlob(dataUrl);
+      const blobUrl = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.target = '_blank';
+      a.click();
+
+      // 清理 blob URL
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+        a.remove();
+      }, 100);
+    } else {
+      downloadImage(dataUrl, 'png');
+    }
     authZoom();
+  };
+
+  // 辅助函数：将 data URL 转换为 Blob
+  const dataURLtoBlob = (dataURL: string) => {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)?.[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
   };
 
   //保存jpg
   const savejpg = () => {
     const option = genertateSaveOption();
+    // 设置画布缩放
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
     const dataUrl = canvas.toDataURL({ ...option, format: 'png' });
     downloadImage(dataUrl, 'jpg');
@@ -191,10 +221,11 @@ export const buildEditor = ({
     authZoom();
   };
   //加载json
-  const loadFromJson = async (json: string) => {
-    const data = JSON.parse(json);
-    await canvas.loadFromJSON(data);
+  const loadFromJson = async (json: any, fn?: () => void) => {
+    if (typeof json === 'string') await canvas.loadFromJSON(JSON.parse(json));
+    else await canvas.loadFromJSON(json);
     authZoom();
+    fn?.();
   };
   //添加到画布
   const addToCanvas = (object: fabric.Object) => {
@@ -241,15 +272,29 @@ export const buildEditor = ({
     canUndo,
     undo,
     redo,
+    // 设置历史索引
     setHitoryIndex,
+    // 设置背景颜色
     setCanvasColor,
+    // 响应式
     authZoom,
+    // 清空画布
+    clear: () => {
+      canvas.getObjects().forEach((item) => {
+        if (item.name !== 'board') canvas.remove(item);
+      });
+      canvas.discardActiveObject();
+      canvas.renderAll();
+      save();
+    },
+    // 放大
     zoomIn: () => {
       let zoomRatio = canvas.getZoom();
       zoomRatio += 0.05;
       const center = canvas.getCenterPoint();
       canvas.zoomToPoint(center, zoomRatio > 1 ? 1 : zoomRatio);
     },
+    // 缩小
     zoomOut: () => {
       let zoomRatio = canvas.getZoom();
       zoomRatio -= 0.05;
@@ -257,7 +302,9 @@ export const buildEditor = ({
       //防止过小
       canvas.zoomToPoint(center, zoomRatio < 0.2 ? 0.2 : zoomRatio);
     },
+    // 获取画布
     getWorkspace: () => getWorkspace(canvas) as InitFabicObject,
+    // 改变画布大小
     changeSize: async (size: { width: number; height: number }) => {
       const workspace = getWorkspace(canvas);
       if (workspace) {
@@ -270,6 +317,7 @@ export const buildEditor = ({
       canvas.renderAll();
       save();
     },
+    // 设置背景颜色
     changeBackground: (color: string) => {
       setCanvasColor(color);
       const workspace = getWorkspace(canvas);
@@ -278,7 +326,9 @@ export const buildEditor = ({
       canvas.renderAll();
       save();
     },
+    // 复制
     copy,
+    // 启用画笔
     enableDraw: () => {
       canvas.discardActiveObject();
 
@@ -290,21 +340,25 @@ export const buildEditor = ({
         canvas.freeDrawingBrush.color = strokeColor;
       }
     },
+    // 设置画笔颜色
     setDrewColors: (color: string) => {
       if (canvas.freeDrawingBrush?.color) {
         canvas.freeDrawingBrush.color = color;
         setDrewColor(color);
       }
     },
+    // 设置画笔宽度
     setDrewWidths: (width: number) => {
       if (canvas.freeDrawingBrush?.color) {
         setDrawWidth(width);
         canvas.freeDrawingBrush.width = width;
       }
     },
+    // 禁用画笔
     disableDraw: () => {
       canvas.isDrawingMode = false;
     },
+    // 获取滤镜
     getActiveFilter: () => {
       if (canvas?.getActiveObjects()?.[0]) {
         const value = canvas?.getActiveObjects()?.[0];
@@ -314,6 +368,7 @@ export const buildEditor = ({
       }
       return [];
     },
+    // 获取滤镜索引
     getActiveFilterIndex: (filter: string) => {
       const value = canvas?.getActiveObjects()?.[0];
       if (value instanceof fabric.FabricImage) {
@@ -321,6 +376,7 @@ export const buildEditor = ({
       }
       return -1;
     },
+    // 获取滤镜效果
     getActiveFilterEffect: (filter: string) => {
       const value = canvas?.getActiveObjects()?.[0];
       if (value instanceof fabric.FabricImage) {
@@ -328,6 +384,7 @@ export const buildEditor = ({
       }
       return null;
     },
+    // 修复图片大小
     fixImageSize,
     //改变图片滤镜
     changeImageFilter: (filter: string) => {
@@ -406,15 +463,18 @@ export const buildEditor = ({
       toast.dismiss();
       toast.success('添加成功');
     },
+    // 删除
     delete: () => {
       canvas?.getActiveObjects().forEach((item) => canvas.remove(item));
       canvas.discardActiveObject();
       canvas.renderAll();
     },
+    // 获取字体大小
     getActiveFontSize: () => {
       const value = canvas?.getActiveObjects()?.[0]?.get('fontSize') || FONT_SIZE;
       return value;
     },
+    // 改变字体大小
     changeFontSize: (value: number) => {
       if (value < 0) return;
       setFontSize(value);
@@ -425,6 +485,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
+    // 改变字体对齐
     changeFontAlign: (value: fabric.Textbox['textAlign']) => {
       setFontAlign(value);
 
@@ -435,20 +496,22 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
+    // 获取字体对齐
     getActiveFontAlign: () => {
       const value = canvas?.getActiveObjects()?.[0]?.get('textAlign') || 'left';
       return value;
     },
-    //
+    // 获取字体斜体
     getActiveFontItalic: () => {
       const value = canvas?.getActiveObjects()?.[0]?.get('fontStyle') || 'normal';
       return value;
     },
+    // 获取字体下划线
     getActiveFontUnderline: () => {
       const value = canvas?.getActiveObjects()?.[0]?.get('underline') || false;
       return value;
     },
-    // 斜体
+    // 改变字体斜体
     changeFontItalic: (value: FontStyle) => {
       setFontItalics(value);
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -458,7 +521,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
-    // 下划线
+    // 改变字体下划线
     changeFontUnderline: (value: boolean) => {
       setFontUnderline(value);
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -468,7 +531,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
-    // 字体
+    // 改变字体
     setFontFamily: (value: string) => {
       setFontFamily(value);
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -478,7 +541,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
-    // 删除线
+    // 改变字体删除线
     changeFontLineThrough: (value: boolean) => {
       setFontThickness(value);
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -488,7 +551,7 @@ export const buildEditor = ({
       });
       canvas.renderAll();
     },
-    // 字体粗细
+    // 改变字体粗细
     changeFontWeight: (value: FontWeightType) => {
       setFontWeight(value);
       canvas?.getActiveObjects()?.forEach((item) => {
@@ -516,9 +579,8 @@ export const buildEditor = ({
     addText: (text, options) => {
       const id = nanoid();
       const option = {
-        ...options,
         ...TEXTBOX_OPTION,
-        type: 'Textbox',
+        ...options,
         id,
       };
       const textObj = new fabric.Textbox(text, option);

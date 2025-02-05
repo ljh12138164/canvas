@@ -1,5 +1,5 @@
 // import { useGetUserImage } from '@/hook/query/useImageQuery';
-import { useBoardImageQuery } from '@/app/_hook/query/useBoardQuery';
+import { useBoardImageQuery, useDeleteUserImageQuery } from '@/app/_hook/query/useImageQuery';
 import type { Edit } from '@/app/_types/Edit';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,14 +12,15 @@ export const UserImageBox = ({
   userId: string;
 }) => {
   const { data, isLoading, error } = useBoardImageQuery({ userId });
+  const { mutate, isPending } = useDeleteUserImageQuery();
   return (
     <div className="flex  items-center justify-center">
-      {Array.isArray(data) ? (
+      {Array.isArray(data) &&
         data.map((item, index) => {
           return (
             <button
               disabled={(isLoading || error) === true}
-              key={item.imageId}
+              key={item.id}
               onClick={() => {
                 if (!isLoading || !error) editor?.addImage(item.url);
               }}
@@ -38,21 +39,14 @@ export const UserImageBox = ({
               <Link
                 href={item.url}
                 target="_blank"
-                className="opacity-0 group-hover:opacity-100 absolute w-full left-0 bottom-0 text-[10px] bg-black/50 text-white p-1 text-left"
+                className="opacity-0 group-hover:opacity-100 absolute w-full left-0 bottom-0 text-[10px] bg-black/50 text-white p-1 text-left transition-all duration-300"
               >
                 {index + 1}
               </Link>
             </button>
           );
-        })
-      ) : (
-        <div className="text-center text-sm text-muted-foreground">获取图片失败</div>
-      )}
-      {isLoading && (
-        <div className="flex justify-center items-center h-full">
-          <LuLoader className="size-4 text-muted-foreground animate-spin" />
-        </div>
-      )}
+        })}
+      {isLoading && <LuLoader className="size-4 text-muted-foreground animate-spin" />}
       {error && !isLoading && (
         <div className="flex flex-col gap-y-4 justify-center items-center flex-1">
           <LuBadgeAlert className="size-4  text-muted-foreground" />

@@ -2,7 +2,7 @@
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/app/_components/ui/table';
 import { useBoardListQuery, useBoardUserQuery } from '@/app/_hook/query/useBoardQuery';
 import { useQueryClient } from '@tanstack/react-query';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { LuList, LuLoader } from 'react-icons/lu';
 import { Button } from '../ui/button';
@@ -14,6 +14,7 @@ import BoardItem from './BoardItem';
 import { BoardTable } from './BoardTable';
 import { columns } from './BoardTableColume';
 const BoardMain = ({ userId }: { userId: string }) => {
+  const router = useRouter();
   const footerRef = useRef<HTMLTableSectionElement>(null);
   const { data, error, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching } =
     useBoardUserQuery({ userId });
@@ -128,7 +129,7 @@ const BoardMain = ({ userId }: { userId: string }) => {
                         item.map((item) => (
                           <TableRow
                             onClick={() => {
-                              if (!isFetching) redirect(`/Edit/${item.id}`);
+                              if (!isFetching) router.push(`/Edit/${item.id}`);
                             }}
                             key={item.id}
                             className="h-20 cursor-pointer"

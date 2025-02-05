@@ -1,10 +1,9 @@
-import { inter, myFont } from '@/app/_lib/font';
 import { Providers } from '@/app/_provide/providers';
 import { Toaster } from 'react-hot-toast';
 
 export default async function Home() {
   return (
-    <section className={`${inter.className} ${myFont.variable} h-[100dvh] overflow-hidden`}>
+    <section className="h-[100dvh] overflow-hidden">
       <Providers>
         <div>10</div>
       </Providers>

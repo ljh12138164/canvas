@@ -51,13 +51,13 @@ const SiderBarRoutes = ({
             href="/board/userData"
             label="数据统计"
             Icon={Database}
-            isActive={pathname === '/board/userData'}
+            isActive={pathname.split('/').includes('userData')}
           />
           <SiderBarItem
             href="/board/user"
             label="用户"
             Icon={User}
-            isActive={pathname === '/board/user'}
+            isActive={pathname.split('/').includes('user')}
           />
         </li>
       </ul>

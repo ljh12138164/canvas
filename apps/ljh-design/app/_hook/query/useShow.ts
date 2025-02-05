@@ -2,7 +2,7 @@ import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
-import { redirect, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const LIMIT = 10;
 
@@ -12,6 +12,7 @@ type CreateRequestType = InferRequestType<(typeof client.show.create)['$post']>;
  * ### 创建评论
  */
 export const useShow = () => {
+  const router = useRouter();
   const { mutate: createShow, isPending: createShowPending } = useMutation<
     CreateResponseType,
     Error,
@@ -19,7 +20,7 @@ export const useShow = () => {
   >({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) redirect('/sign-in');
+      if (!token) router.push('/sign-in');
       const res = await client.show.create.$post(data, {
         headers: {
           Authorization: `Bearer ${token}`,

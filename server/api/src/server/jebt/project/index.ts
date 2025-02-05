@@ -21,7 +21,7 @@ export const getJebtWorkspaceProject = async (
   workspaceId: string,
   token: string,
 ): Promise<Project[]> => {
-  const [checkUserError] = await to(checkUser(userId, workspaceId));
+  const [checkUserError] = await to(checkUser(userId, workspaceId, token));
   if (checkUserError) throw new Error('无权限');
   const { data, error } = await supabaseJebtToken(token)
     .from('projects')
@@ -50,7 +50,7 @@ export const createJebtProject = async ({
   token: string;
 }): Promise<Project> => {
   const id = nanoid();
-  const [checkUserError] = await to(checkMember(userId, workspaceId));
+  const [checkUserError] = await to(checkMember(userId, workspaceId, token));
   if (checkUserError) throw new Error('无权限');
   if (typeof imageUrl !== 'string') {
     const path = await uploadImageclound({ file: imageUrl });
@@ -84,7 +84,7 @@ export const getJebtProjectList = async ({
   userId: string;
   token: string;
 }): Promise<Project[]> => {
-  const [checkUserError] = await to(checkUser(userId, workspaceId));
+  const [checkUserError] = await to(checkUser(userId, workspaceId, token));
   if (checkUserError) throw new Error('无权限');
   const { data, error } = await supabaseJebtToken(token)
     .from('projects')
@@ -115,7 +115,7 @@ export const updateJebtProject = async ({
   oldImageUrl: string;
   token: string;
 }): Promise<Project> => {
-  const [error, _] = await to(checkMember(userId, workspaceId));
+  const [error, _] = await to(checkMember(userId, workspaceId, token));
   if (error) throw new Error(error.message);
 
   if (typeof imageUrl !== 'string') {
@@ -172,7 +172,7 @@ export const deleteJebtProject = async ({
   projectId: string;
   imageUrl: string;
 }): Promise<boolean> => {
-  const [error, _] = await to(checkMember(userId, workspaceId));
+  const [error, _] = await to(checkMember(userId, workspaceId, token));
   if (error) throw new Error(error.message);
   let deleteImage: Promise<boolean | null> = Promise.resolve(null);
   if (imageUrl !== DEFAULT_ICON) {

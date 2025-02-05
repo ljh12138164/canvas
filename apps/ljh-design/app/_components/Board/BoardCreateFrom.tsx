@@ -44,7 +44,7 @@ interface BoardCreateFromProps {
   children: React.ReactNode;
   defaultValues?: Board;
   userId?: string;
-  closeref: RefObject<HTMLButtonElement | null>;
+  closeref: RefObject<HTMLButtonElement | null> | RefObject<{ closeModel: () => void } | null>;
   setChange?: (change: boolean) => void;
   mutate:
     | UseMutateFunction<
@@ -62,8 +62,9 @@ interface BoardCreateFromProps {
   // 文件地址
   templateData?: {
     image: string;
-    json: string;
+    json?: string;
   };
+  setTemplate?: boolean;
 }
 const BoardCreateFrom = ({
   type,
@@ -75,6 +76,7 @@ const BoardCreateFrom = ({
   setChange,
   isTemplate,
   templateData,
+  setTemplate,
 }: BoardCreateFromProps) => {
   const router = useRouter();
   const query = useQueryClient();
@@ -107,20 +109,26 @@ const BoardCreateFrom = ({
           json: type === 'create' ? '' : defaultValues.json,
           ...(isTemplate && {
             image: templateData?.image,
-            isTemplate: true,
+            isTemplate: !!setTemplate,
             json: templateData?.json,
           }),
         },
         {
           onSuccess: (data) => {
-            query.invalidateQueries({ queryKey: ['board'] });
+            if (!setTemplate) query.invalidateQueries({ queryKey: ['board'] });
+            if (setTemplate) query.invalidateQueries({ queryKey: ['templateUser'] });
             toast.dismiss();
             toast.success(type === 'create' ? '创建成功' : '更新成功');
-            closeref?.current?.click();
-            if (isTemplate) router.push(`/Edit/${data.id}`);
+            if (closeref.current && 'click' in closeref.current) {
+              closeref.current.click();
+            }
+            if (closeref.current && 'closeModel' in closeref.current) {
+              closeref.current.closeModel();
+            }
+            if (!setTemplate) router.push(`/Edit/${data.id}`);
+            if (setTemplate) router.push(`/EditTemplate/${data.id}`);
           },
-          onError: (error) => {
-            console.error(error);
+          onError: () => {
             toast.dismiss();
             toast.error(type === 'create' ? '创建失败' : '更新失败');
           },
@@ -145,7 +153,12 @@ const BoardCreateFrom = ({
       if (setChange) setChange(true);
       toast.dismiss();
       toast.success('创建成功');
-      return closeref?.current?.click();
+      if (closeref.current && 'click' in closeref.current) {
+        closeref.current.click();
+      }
+      if (closeref.current && 'closeModel' in closeref.current) {
+        closeref.current.closeModel();
+      }
     }
     // 编辑
     if (type === 'edit') {
@@ -162,7 +175,12 @@ const BoardCreateFrom = ({
       if (setChange) setChange(true);
       toast.dismiss();
       toast.success('修改成功');
-      return closeref?.current?.click();
+      if (closeref.current && 'click' in closeref.current) {
+        closeref.current.click();
+      }
+      if (closeref.current && 'closeModel' in closeref.current) {
+        closeref.current.closeModel();
+      }
     }
     // 复制
     if (type === 'copy') {
@@ -187,7 +205,12 @@ const BoardCreateFrom = ({
         if (setChange) setChange(true);
         toast.dismiss();
         toast.success('复制成功');
-        return closeref?.current?.click();
+        if (closeref.current && 'click' in closeref.current) {
+          closeref.current.click();
+        }
+        if (closeref.current && 'closeModel' in closeref.current) {
+          closeref.current.closeModel();
+        }
       })();
     }
   };

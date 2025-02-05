@@ -4,9 +4,9 @@ import { deleteImageClound, uploadImageclound } from '../image';
 import supabase from '../supabase';
 const DEFAULT_AVATAR =
   'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/avatar.svg';
-
+// 用户头像存储路径
 const USER_IMAGE = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/';
-const DEFAULT_TEMPLATE =
+export const DEFAULT_TEMPLATE =
   'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui//defaultTemplate.png';
 /**
  * ## 获取用户消息
@@ -52,7 +52,7 @@ export async function signup({
     email: email,
     password: password,
   });
-  if (login) return;
+  if (login.user) return;
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -83,7 +83,10 @@ export async function login({
     email: email,
     password: password,
   });
-  if (error) if (error.message === 'Invalid login credentials') throw new Error('账户或密码错误');
+  if (error) {
+    if (error.message === 'Invalid login credentials') throw new Error('账户或密码错误');
+    if (error.message === 'Email not confirmed') throw new Error('邮箱未确认');
+  }
 
   return data;
 }

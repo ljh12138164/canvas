@@ -12,12 +12,15 @@ import Canvas from './Canvas';
 export default function Edit({
   id,
   user,
+  type,
 }: {
   id: string;
   user: Sessions;
+  type: 'template' | 'board';
 }) {
   const { isLoading, error, data } = useBoardEditQuery({
     id,
+    type,
   });
   return (
     <LoginProtect>

@@ -3,7 +3,10 @@ import { getNewToken } from '@/app/_lib/sign';
 import { useQuery } from '@tanstack/react-query';
 import type { InferResponseType } from 'hono';
 import { useRouter } from 'next/navigation';
-type GetTemplateResponseType = InferResponseType<(typeof client.template.default)['$get'], 200>;
+export type GetTemplateResponseType = InferResponseType<
+  (typeof client.template.default)['$get'],
+  200
+>;
 /**
  * ### 获取默认模板
  */
@@ -26,7 +29,7 @@ export const useTemplate = () => {
   return { dataDefault, isLoadingDefault, errorDefault };
 };
 
-type GetUserTemplateResponseType = InferResponseType<
+export type GetUserTemplateResponseType = InferResponseType<
   (typeof client.template.userTemplate)['$get'],
   200
 >;
