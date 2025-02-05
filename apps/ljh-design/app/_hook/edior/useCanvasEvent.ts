@@ -1,8 +1,8 @@
-import { type DefalutUser, Tool, type UserState } from '@/app/_types/Edit';
+import { Tool, type UserState } from '@/app/_types/Edit';
 import type * as fabric from 'fabric';
-import { type RefObject, useEffect } from 'react';
-import type { WebsocketProvider } from 'y-websocket';
-import type * as Y from 'yjs';
+import { useEffect } from 'react';
+// import type { WebsocketProvider } from 'y-websocket';
+// import type * as Y from 'yjs';
 import type { Sessions } from '../../_types/user';
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
@@ -10,11 +10,11 @@ interface CanvasEventProps {
   setSelectedObject: (object: fabric.Object[]) => void;
   setTool: (tool: Tool) => void;
   save: (skip?: boolean, des?: string) => void;
-  userState: [number, UserState][];
+  // userState: [number, UserState][];
   user: Sessions | null;
-  websockets: WebsocketProvider | null;
-  userData?: RefObject<DefalutUser>;
-  yMaps?: Y.Map<string>;
+  // websockets: WebsocketProvider | null;
+  // userData?: RefObject<DefalutUser>;
+  // yMaps?: Y.Map<string>;
 }
 
 /***
@@ -27,11 +27,11 @@ const useCanvasEvent = ({
   save,
   setSelectedObject,
   setTool,
-  websockets,
+  // websockets,
   user,
-  userState,
-  yMaps,
-  userData,
+  // userState,
+  // yMaps,
+  // userData,
 }: CanvasEventProps) => {
   useEffect(() => {
     if (canvas) {
@@ -39,6 +39,7 @@ const useCanvasEvent = ({
       canvas.on('object:added', (event) => {
         // 画布 @ts-ignore
         if (event.target.name === 'board') return;
+        save();
         // 添加到ymap
         // yMaps?.set(
         //   event.target?.id,
@@ -49,7 +50,7 @@ const useCanvasEvent = ({
       canvas.on('object:removed', (element) => {
         if (!user) return;
         // 画布 @ts-ignore
-        if (element.target.name === 'board') return;
+        save();
         // yMaps?.set(element.target.id, JSON.stringify({ ...element.target, changeType: 'delete' }));
         // 从ymap中删除
         // yMaps?.delete(item.target.id);
@@ -60,6 +61,7 @@ const useCanvasEvent = ({
       });
       canvas.on('object:modified', () => {
         if (!user) return;
+        save();
         // websocket?.emit("update", [item]);
         // 更新ymap
         // yMaps?.set(item.target.id, item.target);
@@ -70,30 +72,31 @@ const useCanvasEvent = ({
       // 选择
       canvas.on('selection:created', (e) => {
         if (!user) return;
-        websockets?.awareness.setLocalStateField('select', {
-          ...userData?.current,
-          select: canvas.getActiveObjects().map((item) => item.id),
-        });
-        setSelectedObject(e.selected || []);
+        // save();
+        // websockets?.awareness.setLocalStateField('select', {
+        //   ...userData?.current,
+        //   select: canvas.getActiveObjects().map((item) => item.id),
+        // });
+        // setSelectedObject(e.selected || []);
       });
 
       // 更新选择
       canvas.on('selection:updated', (e) => {
         if (!user) return;
-        websockets?.awareness.setLocalStateField('select', {
-          ...userData?.current,
-          select: canvas.getActiveObjects().map((item) => item.id),
-        });
-        setSelectedObject(e.selected || []);
+        // websockets?.awareness.setLocalStateField('select', {
+        //   ...userData?.current,
+        //   select: canvas.getActiveObjects().map((item) => item.id),
+        // });
+        // setSelectedObject(e.selected || []);
       });
 
       // 清除选择
       canvas.on('selection:cleared', () => {
         if (!user) return;
-        websockets?.awareness.setLocalStateField('select', {
-          ...userData?.current,
-          select: canvas.getActiveObjects().map((item) => item.id),
-        });
+        // websockets?.awareness.setLocalStateField('select', {
+        //   ...userData?.current,
+        //   select: canvas.getActiveObjects().map((item) => item.id),
+        // });
 
         if (
           tool === Tool.Font ||
@@ -111,10 +114,10 @@ const useCanvasEvent = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvas]);
-  useEffect(() => {
-    // console.log(userState);
-    // console.log(websockets?.awareness.getStates());
-  }, [userState]);
+  // useEffect(() => {
+  //  console.log(userState);
+  //  console.log(websockets?.awareness.getStates());
+  // }, [userState]);
 };
 
 export default useCanvasEvent;

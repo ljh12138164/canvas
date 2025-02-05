@@ -1,5 +1,4 @@
 import TooltipComponents from '@/app/_components/shadui-Components/Tooltip';
-import { Avatar, AvatarFallback, AvatarImage } from '@/app/_components/ui/Avatar';
 import { Button } from '@/app/_components/ui/button';
 import {
   DropdownMenu,
@@ -7,18 +6,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu';
-import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { Separator } from '@/app/_components/ui/separator';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/app/_components/ui/tooltip';
-import { getUserColor } from '@/app/_lib/utils';
-import { type Edit, Tool, type UserState } from '@/app/_types/Edit';
+import { type Edit, Tool } from '@/app/_types/Edit';
 import { Fragment } from 'react';
-import { useRef } from 'react';
 import { BsCloud, BsCloudCheck } from 'react-icons/bs';
 import { CiFileOn } from 'react-icons/ci';
 import {
@@ -30,7 +20,6 @@ import {
   LuRedo2,
   LuTrash,
   LuUndo2,
-  LuUser,
 } from 'react-icons/lu';
 import { useFilePicker } from 'use-file-picker';
 import Logo from '../../Comand/Logo';
@@ -42,7 +31,7 @@ interface NavBarProps {
   onChangeTool: (tool: Tool) => void;
   isPending?: boolean;
   userId?: string;
-  userState: [number, UserState][];
+  // userState: [number, UserState][];
 }
 const NavBar = ({
   activeTool,
@@ -50,11 +39,8 @@ const NavBar = ({
   editor,
   isPending,
   userId,
-  userState,
+  // userState,
 }: NavBarProps) => {
-  const responseRef = useRef<{
-    closeModel: () => void;
-  } | null>(null);
   const { openFilePicker } = useFilePicker({
     accept: '.json',
     onFilesSelected: ({ plainFiles }) => {
@@ -176,7 +162,7 @@ const NavBar = ({
         </div>
         <div className="ml-auto flex items-center gap-x-4">
           <ThemeToggle />
-          <div className="flex items-center gap-2 text-xs">
+          {/* <div className="flex items-center gap-2 text-xs">
             <LuUser size={20} />
             <TooltipProvider>
               <Tooltip>
@@ -221,7 +207,7 @@ const NavBar = ({
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-          </div>
+          </div> */}
 
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>

@@ -5,7 +5,9 @@ import type { IconType } from 'react-icons';
 import { FaCircle, FaDiamond, FaSquare, FaSquareFull } from 'react-icons/fa6';
 import { IoIosStar } from 'react-icons/io';
 import { IoTriangle } from 'react-icons/io5';
-import type * as Y from 'yjs';
+
+export const IMAGE_BLUSK = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/';
+// import type * as Y from 'yjs';
 export type TBlendMode =
   | 'multiply'
   | 'add'
@@ -533,8 +535,6 @@ export const CANVAS_WIDTH = 800;
 export const CANVAS_HEIGHT = 1100;
 export const CANVAS_COLOR = '#ffffff';
 
-export const IMAGE_BLUSK = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/';
-
 export type FarbicType = 'Circle' | 'Rect' | 'Triangle' | 'Polygon' | 'Path' | 'Textbox';
 
 export interface DefalutFabicObject {
@@ -828,7 +828,7 @@ export interface buildEditorProps {
   canvasHistory: fabric.FabricObject[];
   userId: string;
   // 画布数据
-  yMaps: Y.Map<string>;
+  // yMaps: Y.Map<string>;
   pasty: () => void;
   save: (skip?: boolean) => void;
   canRedo: () => boolean;

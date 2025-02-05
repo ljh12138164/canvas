@@ -15,15 +15,13 @@ import useKeyBoard from '@/app/_hook/edior/useKeyBoard';
 import { useLoading } from '@/app/_hook/edior/useLoding';
 import useResponse from '@/app/_hook/edior/useResponse';
 import { useWindowEvent } from '@/app/_hook/edior/useWindowEvent';
-import { useYjs } from '@/app/_hook/edior/useYjs';
 import { useBoardAutoSaveQuery } from '@/app/_hook/query/useBoardQuery';
-import { getUserColor } from '@/app/_lib/utils';
 import { buildEditor } from '@/app/_store/editor';
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
-  type DefalutUser,
+  // type DefalutUser,
   FILL_COLOR,
   FONT_ALIGN,
   FONT_FAMILY,
@@ -44,17 +42,24 @@ import type { Board } from '@/app/_types/board';
 import type { Sessions } from '@/app/_types/user';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
-import { useEffect, useRef, useState } from 'react';
+import { debounce } from 'lodash';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { TemplateSiderbar } from '../asider/TemplateSiderbar';
 
 // 画布服务器
-const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
-  const userData = useRef<DefalutUser>({
-    id: user.user.id,
-    name: user.user.user_metadata.name,
-    color: getUserColor(user.user.id),
-    image: user.user.user_metadata.image,
-  });
+const Canvas = ({
+  user,
+  data,
+  type,
+}: { user: Sessions; data: Board; type: 'board' | 'template' }) => {
+  // 默认图片
+  const defaultImage = useRef(data.image as string);
+  // const userData = useRef<DefalutUser>({
+  //   id: user.user.id,
+  //   name: user.user.user_metadata.name,
+  //   color: getUserColor(user.user.id),
+  //   image: user.user.user_metadata.image,
+  // });
   // 画板初始数据
   const initWidth = useRef(data.width);
   const initHeight = useRef(data.height);
@@ -63,12 +68,40 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
   const containEl = useRef<HTMLDivElement>(null);
   // 画布
   const canvasEl = useRef<HTMLCanvasElement>(null);
-  const { isPending } = useBoardAutoSaveQuery({ id: data.id });
+  const { isPending, mutate } = useBoardAutoSaveQuery({ id: data.id });
 
-  const debounceMutate = useMemoizedFn(() => {});
-  // debounce((data: { json: string; width: number; height: number }) => {
-  //   mutate({ ...data });
-  // }, 1000)
+  // 保存
+  const debounceMutate = useMemo(() => {
+    return debounce(
+      (newData: {
+        json: string;
+        width: number;
+        height: number;
+        image: string;
+      }) => {
+        // 保存
+        mutate(
+          {
+            json: {
+              json: newData.json,
+              defaultImage: defaultImage.current,
+              image: newData.image,
+              width: newData.width,
+              height: newData.height,
+              id: data.id,
+            },
+          },
+          {
+            onSuccess: (data) => {
+              // 更新
+              defaultImage.current = data.image;
+            },
+          },
+        );
+      },
+      5000,
+    );
+  }, []);
 
   // 画布初始化
   const { init } = useCanvas({
@@ -126,24 +159,24 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
     setHistoryIndex: setHitoryIndex,
   });
   // 协同hooks
-  const { userState, yMaps, websockets } = useYjs({
-    data,
-    canvas,
-    user,
-    userData,
-  });
+  // const { userState, yMaps, websockets } = useYjs({
+  //   data,
+  //   canvas,
+  //   user,
+  //   userData,
+  // });
   // 画布事件
   useCanvasEvent({
+    // yMaps,
+    // userState,
     canvas,
-    yMaps,
     tool,
-    userState,
     save,
     user,
     setSelectedObject,
     setTool,
-    websockets,
-    userData,
+    // websockets,
+    // userData,
   });
   // 画布剪切板
   const { copy, pasty } = useClipboard({ canvas });
@@ -193,7 +226,7 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
         canvasColor,
         canvasHistory: canvasHistory.current,
         authZoom,
-        yMaps,
+        // yMaps,
         userId: user.user.id,
         pasty,
         save,
@@ -252,7 +285,6 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
       },
       false,
     );
-
     init({
       initCanvas: canvas,
       initContainer: containEl.current as HTMLDivElement,
@@ -284,7 +316,7 @@ const Canvas = ({ user, data }: { user: Sessions; data: Board }) => {
         editor={editor()}
         activeTool={tool}
         onChangeTool={onChangeActive}
-        userState={userState}
+        // userState={userState}
       />
       <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
         <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} />

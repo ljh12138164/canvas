@@ -39,7 +39,7 @@ export default function Edit({
           </Button>
         </div>
       )}
-      {data && <Canvas user={user} data={data[0]} />}
+      {data?.length && <Canvas user={user} data={data[0]} type={type} />}
     </LoginProtect>
   );
 }

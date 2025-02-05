@@ -21,21 +21,13 @@ export const createShow = async ({
   content,
   tap,
   userId,
-  json,
   relativeTheme,
   token,
-  image,
-  width,
-  height,
 }: {
   title: string;
   content: string;
   tap: string;
   userId: string;
-  json: string;
-  image: string;
-  width: number;
-  height: number;
   relativeTheme: string;
   token: string;
 }): Promise<Show> => {
@@ -45,13 +37,9 @@ export const createShow = async ({
       {
         explanation: content,
         userId,
-        json,
         relativeTheme,
         tags: tap,
         title,
-        image,
-        width,
-        height,
       },
     ])
     .select('*');
@@ -75,9 +63,11 @@ export const getRandomShow = async ({
   data: (Show & { profiles: Profiles; answers: Comment[]; upvotes: Upvote[] })[];
   count: number;
 }> => {
-  let supabase = supabaseDesignPublic.from('show').select('*,answers(*),profiles(*),upvotes(*)', {
-    count: 'exact',
-  });
+  let supabase = supabaseDesignPublic
+    .from('show')
+    .select('*,answers(*),profiles(*),upvotes(*),board(*)', {
+      count: 'exact',
+    });
   // 模糊查询
   if (tap) supabase = supabase.like('tags', `%${tap}%`).like('title', `%${tap}%`);
 
@@ -112,7 +102,7 @@ export const getShow = async (
   if (userId && token) {
     const { data, error } = await supabaseDesign(token)
       .from('show')
-      .select('*,answers(*,profiles(*)),profiles(*),upvotes(*),collections(*)')
+      .select('*,answers(*,profiles(*)),profiles(*),upvotes(*),collections(*),board(*)')
       .eq('id', id);
     if (error) throw new Error('服务器错误');
     // 判断是否收藏和点赞
@@ -128,7 +118,7 @@ export const getShow = async (
   }
   const { data, error } = await supabaseDesignPublic
     .from('show')
-    .select('*,answers(*),profiles(*),upvotes(*)')
+    .select('*,answers(*),profiles(*),upvotes(*),board(*)')
     .eq('id', id);
   if (error) throw new Error('服务器错误');
   return data[0];

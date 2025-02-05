@@ -1,9 +1,50 @@
+import { nanoid } from 'nanoid';
 import type { Board, BoardResponse } from '../../../types/design/board';
-import { supabaseDesign } from '../../supabase/design';
-interface GetUserImage {
-  userId: string;
-  token: string;
+import { supabaseDesign, supabaseDesignPublic } from '../../supabase/design';
+export const DEFAULT_TEMPLATE =
+  'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui//defaultTemplate.png';
+const imagePath = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/';
+/**
+ * @description 删除图片
+ * @param image 图片路径
+ * @returns 图片路径
+ */
+export const deleteImageClound = async ({
+  image,
+}: {
+  image: string;
+}): Promise<boolean> => {
+  const { data, error } = await supabaseDesignPublic.storage
+    //  桶名字
+    .from('canvas')
+    // 删除图片路径
+    .remove([image]);
+  if (error) throw new Error('服务器错误');
+  return true;
+};
+
+interface UploadCustomType {
+  base64: Blob;
+  fullType: string;
 }
+
+/**
+ * ### 上传自定义类型
+ * @description 上传自定义类型
+ * @param data 数据
+ * @returns 图片路径
+ */
+export const uploadCustomType = async ({ base64, fullType }: UploadCustomType) => {
+  // 生成随机名称
+  const name = nanoid().split('/').join('');
+  const { data, error } = await supabaseDesignPublic.storage.from('canvas').upload(name, base64, {
+    contentType: fullType,
+  });
+  if (error) throw new Error(error.message);
+
+  return imagePath + data.fullPath;
+};
+
 /**
  * 获取看板数据
  * @returns
@@ -136,22 +177,39 @@ interface AuthSaveBoard {
   userId: string;
   token: string;
   json?: string;
-  name?: string;
   width?: number;
   height?: number;
-  image?: string;
-  url?: string;
-  isTemplate?: boolean;
+  image: string;
+  defaultImage: string;
 }
+/**
+ * 自动保存看板
+ * @returns
+ */
 export const authSaveBoard = async ({
   id,
   userId,
   token,
-  ...board
+  json,
+  width,
+  height,
+  image,
+  defaultImage,
 }: AuthSaveBoard): Promise<Board> => {
+  // 删除原本的图片，如果默认图片是默认模板，则不删除
+  if (defaultImage !== DEFAULT_TEMPLATE)
+    deleteImageClound({ image: defaultImage.split('/').at(-1) as string });
+  const response = await fetch(image);
+  // 将base64转换为Blob
+  const blob = await response.blob();
+
+  // 上传图片
+  const imageUrl = await uploadCustomType({ base64: blob, fullType: 'image/webp' });
+
+  // 更新看板
   const { data, error } = await supabaseDesign(token)
     .from('board')
-    .update([board])
+    .update([{ id, userId, json, width, height, image: imageUrl }])
     .eq('id', id)
     .eq('userId', userId)
     .select('*');

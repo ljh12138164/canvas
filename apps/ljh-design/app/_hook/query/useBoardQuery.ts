@@ -15,8 +15,8 @@ type UpdateResponseType = InferResponseType<(typeof client.board)['editBoard']['
 
 type DeleteResponseType = InferResponseType<(typeof client.board)['deleteBoard']['$post']>;
 
-type AutoSaveResponseType = InferResponseType<(typeof client.board)[':id']['$post'], 200>;
-type AutoSaveRequestType = InferRequestType<(typeof client.board)[':id']['$post']>['json'];
+type AutoSaveResponseType = InferResponseType<(typeof client.board)['save']['$post'], 200>;
+type AutoSaveRequestType = InferRequestType<(typeof client.board)['save']['$post']>;
 
 type CopyResponseType = InferResponseType<(typeof client.board)['clone']['$post']>;
 type CopyRequestType = InferRequestType<(typeof client.board)['clone']['$post']>;
@@ -78,7 +78,7 @@ export const useBoardEditQuery = ({ id, type }: { id: string; type: 'template' |
       }
       if ((isArray(data) && data.length === 0) || !isArray(data)) {
         toast.dismiss();
-        toast.error('看板不存在');
+        toast.error(`${type === 'board' ? '看板' : '模板'}不存在`);
         router.push('/board');
       }
       return data as Board[];
@@ -226,17 +226,11 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
     mutationFn: async (board) => {
       const token = await getNewToken();
       if (!token) router.push('/sign-in');
-      const response = await client.board[':id'].$post(
-        {
-          param: { id },
-          json: { ...board },
+      const response = await client.board.save.$post(board, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      });
       if (!response.ok) {
         const error = (await response.json()) as { message: string };
         throw new Error(error.message);

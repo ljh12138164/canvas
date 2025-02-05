@@ -1,7 +1,5 @@
 'use client';
-import { useTheme } from 'next-themes';
 export default function Loading() {
-  const { theme } = useTheme();
   return (
     <div className="fixed inset-0 flex bg-[#fff] dark:bg-background  items-center justify-center  backdrop-blur-sm">
       <div className="flex flex-col items-center gap-4">
