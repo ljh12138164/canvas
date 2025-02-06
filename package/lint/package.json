@@ -9,10 +9,5 @@
   },
   "scripts": {
     "lint": "biome check --fix && biome lint ."
-  },
-  "dependencies": {
-    "stylelint": "^15.11.0",
-    "postcss-html": "^1.5.0",
-    "postcss-scss": "^4.0.9"
   }
 }
