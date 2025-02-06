@@ -10,7 +10,8 @@ const TryCanvas = ({ id }: { id: string }) => {
   if (!data) {
     toast.dismiss();
     toast.error('未找到面板数据');
-    return router.push('/try/board');
+    router.push('/try/board');
+    return <></>;
   }
   return <TryEdit data={data} id={id} />;
 };

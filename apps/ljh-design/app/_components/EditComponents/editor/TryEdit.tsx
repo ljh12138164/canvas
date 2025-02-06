@@ -239,14 +239,15 @@ export default function TryEdit({ id, data }: { id: string; data: Board }) {
         scrollbarWidth: 'none',
       }}
     >
+      {/* @ts-ignore */}
       <NavBar
-        userState={[]}
         isPending={isPending}
         editor={editor}
         activeTool={tool}
         onChangeTool={onChangeActive}
       />
       <div className="h-full w-full flex-1 flex  transition-all duration-100 ease-in-out">
+        {/* @ts-ignore */}
         <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} />
         <TextSidebar editor={editor} activeTool={tool} onChangeActive={onChangeActive} />
         <ShapeSidle editor={editor} activeTool={tool} onChangeActive={onChangeActive} />

@@ -1,7 +1,7 @@
 'use client';
 
 import { useBoardEditQuery } from '@/app/_hook/query/useBoardQuery';
-
+import type { EditType } from '@/app/_types/Edit';
 import type { Sessions } from '@/app/_types/user';
 import { Loader2, TriangleAlert } from 'lucide-react';
 import Link from 'next/link';
@@ -14,9 +14,9 @@ export default function Edit({
   user,
   type,
 }: {
-  id: string;
+  id: string | undefined;
   user: Sessions;
-  type: 'template' | 'board';
+  type: EditType;
 }) {
   const { isLoading, error, data } = useBoardEditQuery({
     id,
@@ -40,6 +40,7 @@ export default function Edit({
         </div>
       )}
       {data?.length && <Canvas user={user} data={data[0]} type={type} />}
+      {type === 'material' && <Canvas user={user} type={type} />}
     </LoginProtect>
   );
 }

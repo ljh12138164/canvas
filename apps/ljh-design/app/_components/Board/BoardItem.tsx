@@ -4,7 +4,7 @@ import { Copy } from 'lucide-react';
 import { CiFileOn } from 'react-icons/ci';
 import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
 import { IoMenu } from 'react-icons/io5';
-import TooltipComponents from '../shadui-Components/Tooltip';
+import TooltipComponents from '../Comand/Tooltip';
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { TableCell } from '../ui/table';

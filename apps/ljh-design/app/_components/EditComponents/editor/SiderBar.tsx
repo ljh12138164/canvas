@@ -1,5 +1,5 @@
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
-import { Tool } from '@/app/_types/Edit';
+import { type EditType, Tool } from '@/app/_types/Edit';
 import {
   LuImage,
   LuLayoutDashboard,
@@ -13,8 +13,9 @@ import SiderBarItem from '../asider/SiderBarItem';
 interface SiderBarProps {
   acitiveTool: Tool;
   onChangeActiveTool: (tool: Tool) => void;
+  type: EditType;
 }
-const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
+const SiderBar = ({ acitiveTool, onChangeActiveTool, type }: SiderBarProps) => {
   return (
     <aside
       id="editSider"
@@ -24,14 +25,16 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
       <ScrollArea>
         <ul className="flex flex-col w-[6.2rem]">
           {/* 设计 */}
-          <SiderBarItem
-            icon={LuLayoutDashboard}
-            label="模板"
-            isActive={acitiveTool === Tool.Template}
-            onClick={() => {
-              onChangeActiveTool(Tool.Template);
-            }}
-          />
+          {type !== 'material' && (
+            <SiderBarItem
+              icon={LuLayoutDashboard}
+              label="模板"
+              isActive={acitiveTool === Tool.Template}
+              onClick={() => {
+                onChangeActiveTool(Tool.Template);
+              }}
+            />
+          )}
           {/* 图片 */}
           <SiderBarItem
             icon={LuImage}
@@ -53,7 +56,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool }: SiderBarProps) => {
           {/* 图形 */}
           <SiderBarItem
             icon={LuShapes}
-            label="图形"
+            label="素材"
             isActive={acitiveTool === Tool.Shapes}
             onClick={() => {
               onChangeActiveTool(Tool.Shapes);

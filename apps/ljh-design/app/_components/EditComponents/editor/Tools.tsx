@@ -1,4 +1,4 @@
-import TooltipComponents from '@/app/_components/shadui-Components/Tooltip';
+import TooltipComponents from '@/app/_components/Comand/Tooltip';
 import { Button } from '@/app/_components/ui/button';
 import { ScrollArea, ScrollBar } from '@/app/_components/ui/scroll-area';
 import { cn, isText } from '@/app/_lib/utils';

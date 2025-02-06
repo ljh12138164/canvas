@@ -23,9 +23,14 @@ const TiptapToolbar = ({ tiptapToolBar }: TiptapToolbar) => {
                 <Button
                   key={item.key + item.title}
                   variant="ghost"
+                  type="button"
                   onClick={item.onClick}
                   disabled={!item.disabled}
-                  className={`p-0 h-8 w-12 rounded-none ${item.active ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700' : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'}`}
+                  className={`p-0 h-8 w-12 rounded-none ${
+                    item.active
+                      ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                      : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                  }`}
                 >
                   {item.icon}
                 </Button>

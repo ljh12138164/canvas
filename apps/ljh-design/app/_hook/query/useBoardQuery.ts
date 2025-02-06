@@ -1,6 +1,6 @@
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
-import { PAGE_SIZE } from '@/app/_types/Edit';
+import { type EditType, PAGE_SIZE } from '@/app/_types/Edit';
 import type { Board } from '@/app/_types/board';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
@@ -14,6 +14,7 @@ type RequestType = InferRequestType<typeof client.board.$post>['json'];
 type UpdateResponseType = InferResponseType<(typeof client.board)['editBoard']['$post']>;
 
 type DeleteResponseType = InferResponseType<(typeof client.board)['deleteBoard']['$post']>;
+type DeleteRequestType = InferRequestType<(typeof client.board)['deleteBoard']['$post']>;
 
 type AutoSaveResponseType = InferResponseType<(typeof client.board)['save']['$post'], 200>;
 type AutoSaveRequestType = InferRequestType<(typeof client.board)['save']['$post']>;
@@ -54,16 +55,18 @@ export const useBoardQuery = () => {
  * @param id
  * @returns
  */
-export const useBoardEditQuery = ({ id, type }: { id: string; type: 'template' | 'board' }) => {
+export const useBoardEditQuery = ({ id, type }: { id: string | undefined; type: EditType }) => {
   const router = useRouter();
   const { data, isLoading, error } = useQuery<Board[], Error, Board[]>({
     queryKey: ['project', id],
+    // 如果id为undefined，则不查询
+    enabled: !!id,
     queryFn: async () => {
       const token = await getNewToken();
       if (!token) router.push('/sign-in');
       const response = await client.board.getBoard.$get(
         {
-          query: { id, type },
+          query: { id: id!, type },
         },
         {
           headers: {
@@ -178,20 +181,15 @@ export const useBoardUpdateQuery = ({ id }: { id: string }) => {
  */
 export const useBoardDeleteQuery = () => {
   const router = useRouter();
-  const { mutate, isPending, error } = useMutation<DeleteResponseType, Error, { id: string }>({
-    mutationFn: async ({ id }) => {
+  const { mutate, isPending, error } = useMutation<DeleteResponseType, Error, DeleteRequestType>({
+    mutationFn: async (data) => {
       const token = await getNewToken();
       if (!token) router.push('/sign-in');
-      const response = await client.board.deleteBoard.$post(
-        {
-          json: { id },
+      const response = await client.board.deleteBoard.$post(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      });
       if (!response.ok) {
         const error = (await response.json()) as { message: string };
         throw new Error(error.message);
@@ -215,7 +213,7 @@ export const useBoardDeleteQuery = () => {
  * @param id
  * @returns
  */
-export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
+export const useBoardAutoSaveQuery = ({ id }: { id: string | undefined }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { mutate, isPending, error } = useMutation<
@@ -238,7 +236,7 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string }) => {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['project', id] });
+      if (id) queryClient.invalidateQueries({ queryKey: ['project', id] });
     },
   });
   return { mutate, isPending, error };

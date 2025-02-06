@@ -14,10 +14,9 @@ export interface Board {
   id: string;
   name: string;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
   json: string;
   height: number;
-  url: string;
   width: number;
 }
 const typeObj = {
@@ -65,6 +64,8 @@ interface BoardCreateFromProps {
     json?: string;
   };
   setTemplate?: boolean;
+  isClone?: boolean;
+  cloneType?: 'template' | 'board';
 }
 const BoardCreateFrom = ({
   type,
@@ -77,6 +78,8 @@ const BoardCreateFrom = ({
   isTemplate,
   templateData,
   setTemplate,
+  isClone,
+  cloneType,
 }: BoardCreateFromProps) => {
   const router = useRouter();
   const query = useQueryClient();
@@ -100,41 +103,45 @@ const BoardCreateFrom = ({
       query.invalidateQueries({ queryKey: ['board'] });
       toast.loading(`${typeObj[type]}中...`);
       // 创建
-      mutate?.(
-        {
-          ...data,
-          width: Number(data.width),
-          height: Number(data.height),
-          // @ts-ignore
-          json: type === 'create' ? '' : defaultValues.json,
-          ...(isTemplate && {
-            image: templateData?.image,
-            isTemplate: !!setTemplate,
-            json: templateData?.json,
-          }),
-        },
-        {
-          onSuccess: (data) => {
-            if (!setTemplate) query.invalidateQueries({ queryKey: ['board'] });
-            if (setTemplate) query.invalidateQueries({ queryKey: ['templateUser'] });
-            toast.dismiss();
-            toast.success(type === 'create' ? '创建成功' : '更新成功');
-            if (closeref.current && 'click' in closeref.current) {
-              closeref.current.click();
-            }
-            if (closeref.current && 'closeModel' in closeref.current) {
-              closeref.current.closeModel();
-            }
-            if (!setTemplate) router.push(`/Edit/${data.id}`);
-            if (setTemplate) router.push(`/EditTemplate/${data.id}`);
+      if (!isClone)
+        return mutate?.(
+          {
+            ...data,
+            width: Number(data.width),
+            height: Number(data.height),
+            // @ts-ignore
+            json: type === 'create' ? '' : defaultValues.json,
+            ...(isTemplate && {
+              image: templateData?.image,
+              isTemplate: !!setTemplate,
+              json: templateData?.json,
+            }),
           },
-          onError: () => {
-            toast.dismiss();
-            toast.error(type === 'create' ? '创建失败' : '更新失败');
+          {
+            onSuccess: (data) => {
+              if (!setTemplate) query.invalidateQueries({ queryKey: ['board'] });
+              if (setTemplate) query.invalidateQueries({ queryKey: ['templateUser'] });
+              toast.dismiss();
+              toast.success(type === 'create' ? '创建成功' : '更新成功');
+              if (closeref.current && 'click' in closeref.current) {
+                closeref.current.click();
+              }
+              if (closeref.current && 'closeModel' in closeref.current) {
+                closeref.current.closeModel();
+              }
+              if (!setTemplate) router.push(`/Edit/${data.id}`);
+              if (setTemplate) router.push(`/EditTemplate/${data.id}`);
+            },
+            onError: () => {
+              toast.dismiss();
+              toast.error(type === 'create' ? '创建失败' : '更新失败');
+            },
           },
-        },
-      );
-      return;
+        );
+      // 从论坛克隆
+      if (isClone) {
+        return;
+      }
     }
     // 创建
     if (type === 'create') {

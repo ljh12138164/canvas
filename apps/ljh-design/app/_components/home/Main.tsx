@@ -3,6 +3,24 @@ import { Button } from '@/app/_components/ui/button';
 import useUsers from '@/app/_hook/useUser';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+const features: { title: string; description: string }[] = [
+  {
+    title: '简单易用',
+    description: '直观的界面设计，零门槛上手使用',
+  },
+  {
+    title: '模板丰富',
+    description: '海量精美模板，助你快速创作',
+  },
+  {
+    title: '素材丰富',
+    description: '海量精美素材，助你快速创作',
+  },
+  {
+    title: '论坛中心',
+    description: '交流设计经验，分享设计作品',
+  },
+];
 
 const Main = () => {
   const router = useRouter();
@@ -31,19 +49,13 @@ const Main = () => {
         </div>
       </div>
       {/* 特性展示 */}
-      <div className="grid md:grid-cols-3 gap-8 py-16">
-        <div className="text-center p-6 rounded-lg border">
-          <h3 className="text-xl font-bold mb-3">简单易用</h3>
-          <p className="text-gray-600">直观的界面设计，零门槛上手使用</p>
-        </div>
-        <div className="text-center p-6 rounded-lg border">
-          <h3 className="text-xl font-bold mb-3">在线协作</h3>
-          <p className="text-gray-600">实时多人协作，提高团队工作效率</p>
-        </div>
-        <div className="text-center p-6 rounded-lg border">
-          <h3 className="text-xl font-bold mb-3">模板丰富</h3>
-          <p className="text-gray-600">海量精美模板，助你快速创作</p>
-        </div>
+      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8 py-16">
+        {features.map((feature) => (
+          <div key={feature.title} className="text-center p-6 rounded-lg border">
+            <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+            <p className="text-gray-600">{feature.description}</p>
+          </div>
+        ))}
       </div>
     </main>
   );

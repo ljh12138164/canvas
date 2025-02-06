@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 const Board = () => {
   const { user, loading } = useUser({ redirects: true });
   const router = useRouter();
-  if (loading) return;
-  if (!user) return router.push('/sign-in');
-  return <BoardMain userId={user.user.id} />;
+  if (loading) return <></>;
+  if (!user) router.push('/sign-in');
+  return <BoardMain userId={user!.user.id} />;
 };
 
 export default Board;

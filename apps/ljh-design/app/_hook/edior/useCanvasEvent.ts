@@ -77,7 +77,7 @@ const useCanvasEvent = ({
         //   ...userData?.current,
         //   select: canvas.getActiveObjects().map((item) => item.id),
         // });
-        // setSelectedObject(e.selected || []);
+        setSelectedObject(e.selected || []);
       });
 
       // 更新选择
@@ -87,7 +87,7 @@ const useCanvasEvent = ({
         //   ...userData?.current,
         //   select: canvas.getActiveObjects().map((item) => item.id),
         // });
-        // setSelectedObject(e.selected || []);
+        setSelectedObject(e.selected || []);
       });
 
       // 清除选择

@@ -68,7 +68,10 @@ const board = new Hono()
   })
   .get(
     '/getBoard',
-    zValidator('query', z.object({ id: z.string(), type: z.enum(['template', 'board']) })),
+    zValidator(
+      'query',
+      z.object({ id: z.string(), type: z.enum(['template', 'board', 'material']) }),
+    ),
     async (c) => {
       const { id, type } = c.req.valid('query');
       const { auth, token } = getSupabaseAuth(c);
@@ -115,14 +118,18 @@ const board = new Hono()
       return c.json(board);
     },
   )
-  .post('/deleteBoard', zValidator('json', z.object({ id: z.string() })), async (c) => {
-    const { id } = c.req.valid('json');
-    const { auth, token } = getSupabaseAuth(c);
+  .post(
+    '/deleteBoard',
+    zValidator('json', z.object({ id: z.string(), image: z.string() })),
+    async (c) => {
+      const { id, image } = c.req.valid('json');
+      const { auth, token } = getSupabaseAuth(c);
 
-    const [error, board] = await to(deleteBoard({ id, userid: auth.sub, token }));
-    if (error) return c.json({ message: error.message }, errorCheck(error));
-    return c.json(board);
-  })
+      const [error, board] = await to(deleteBoard({ id, userid: auth.sub, token, image }));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(board);
+    },
+  )
   .post('/clone', async (c) => {
     const { name, json, width, height } = await c.req.json();
     if (!name || !width || !height) {

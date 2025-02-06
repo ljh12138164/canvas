@@ -1,5 +1,6 @@
 import { center, getWorkspace } from '@/app/_lib/editor/editor';
 import { type Effect, createFilter, downloadImage, isText } from '@/app/_lib/utils';
+// import { loadSVGFromString } from 'fabric';
 import {
   type AddObject,
   type Edit,
@@ -40,10 +41,16 @@ declare module 'fabric' {
     changeClientId?: string;
     // 保存后将添加到数据库，初始化时将删除
     save?: boolean;
+    saveType: undefined;
+    groupArr?: fabric.Object[];
   }
   interface FabricObjectProps {
     id?: string;
     type?: string;
+  }
+  interface GroupProps {
+    saveType?: string;
+    groupArr: fabric.Object[];
   }
 }
 //
@@ -220,6 +227,15 @@ export const buildEditor = ({
     downloadImage(fileString, 'json');
     authZoom();
   };
+  // 清除画布
+  const clear = () => {
+    canvas.getObjects().forEach((item) => {
+      if (item.name !== 'board') canvas.remove(item);
+    });
+    canvas.discardActiveObject();
+    canvas.renderAll();
+    save();
+  };
   //加载json
   const loadFromJson = async (json: any, fn?: () => void) => {
     if (typeof json === 'string') await canvas.loadFromJSON(JSON.parse(json));
@@ -233,11 +249,36 @@ export const buildEditor = ({
     canvas.add(object);
     canvas.setActiveObject(object);
   };
+  // 修复图片大小
   const fixImageSize = (imageObj: fabric.FabricImage) => {
     const workspace = getWorkspace(canvas);
     imageObj.scaleToWidth(workspace?.width || 0);
     imageObj.scaleToHeight(workspace?.height || 0);
   };
+  // 加载svg
+  const loadFromSvg = async (svg: string, fn?: () => void) => {
+    const farbirArr: fabric.Object[] = [];
+    // canvas.loadSVGFromString(svg);
+    await fabric.loadSVGFromString(svg, (_, options) => {
+      if (options.name !== 'board') farbirArr.push(options);
+    });
+    // const group = new fabric.Group(farbirArr);
+    clear();
+    farbirArr.forEach((item) => {
+      canvas.add(item);
+    });
+    canvas.setActiveObject(farbirArr[0]);
+    canvas.renderAll();
+    // authZoom();
+    fn?.();
+  };
+  // 加载pdf
+  // const loadFromPdf = async (pdf: string, fn?: () => void) => {
+  //   const farbirArr: fabric.Object[] = [];
+  //   canvas.loadFromJSON(pdf);
+  //   authZoom();
+  //   fn?.();
+  // };
   //返回编辑器方法
   return {
     strokeColor,
@@ -272,6 +313,7 @@ export const buildEditor = ({
     canUndo,
     undo,
     redo,
+    loadFromSvg,
     // 设置历史索引
     setHitoryIndex,
     // 设置背景颜色
@@ -279,14 +321,7 @@ export const buildEditor = ({
     // 响应式
     authZoom,
     // 清空画布
-    clear: () => {
-      canvas.getObjects().forEach((item) => {
-        if (item.name !== 'board') canvas.remove(item);
-      });
-      canvas.discardActiveObject();
-      canvas.renderAll();
-      save();
-    },
+    clear,
     // 放大
     zoomIn: () => {
       let zoomRatio = canvas.getZoom();
@@ -740,6 +775,35 @@ export const buildEditor = ({
       // yMaps?.set(objs.id, JSON.stringify({ ...objs, changeType: 'add', changeClientId: userId }));
       canvas.add(objs);
       canvas.setActiveObject(objs);
+    },
+    // 设置为素材
+    setMaterial: (material: fabric.Object[]) => {
+      material.forEach((item) => {
+        canvas.remove(item);
+      });
+      const group = new fabric.Group(material, {
+        // 保存时设置为id
+        id: nanoid(),
+        saveType: 'material',
+        groupArr: material,
+      });
+      // 添加素材组
+      canvas.add(group);
+      // 设置为活动对象
+      canvas.setActiveObject(group);
+      canvas.renderAll();
+    },
+    addMaterial: (material) => {
+      const group = new fabric.Group(material, {
+        // 保存时设置为id
+        id: nanoid(),
+        saveType: 'material',
+        groupArr: material,
+      });
+      canvas.add(group);
+      // 设置为活动对象
+      canvas.setActiveObject(group);
+      canvas.renderAll();
     },
   };
 };

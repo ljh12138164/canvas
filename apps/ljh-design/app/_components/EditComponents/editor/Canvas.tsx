@@ -17,6 +17,7 @@ import useResponse from '@/app/_hook/edior/useResponse';
 import { useWindowEvent } from '@/app/_hook/edior/useWindowEvent';
 import { useBoardAutoSaveQuery } from '@/app/_hook/query/useBoardQuery';
 import { buildEditor } from '@/app/_store/editor';
+import { useSave } from '@/app/_store/save';
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -38,22 +39,19 @@ import {
   STROKE_WIDTH,
   Tool,
 } from '@/app/_types/Edit';
+import type { EditType } from '@/app/_types/Edit';
 import type { Board } from '@/app/_types/board';
 import type { Sessions } from '@/app/_types/user';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
-import { debounce } from 'lodash';
+// import { debounce } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TemplateSiderbar } from '../asider/TemplateSiderbar';
-
 // 画布服务器
-const Canvas = ({
-  user,
-  data,
-  type,
-}: { user: Sessions; data: Board; type: 'board' | 'template' }) => {
+const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: EditType }) => {
+  const { setCloudSave } = useSave();
   // 默认图片
-  const defaultImage = useRef(data.image as string);
+  const defaultImage = useRef(data?.image as string);
   // const userData = useRef<DefalutUser>({
   //   id: user.user.id,
   //   name: user.user.user_metadata.name,
@@ -61,46 +59,50 @@ const Canvas = ({
   //   image: user.user.user_metadata.image,
   // });
   // 画板初始数据
-  const initWidth = useRef(data.width);
-  const initHeight = useRef(data.height);
-  const initState = useRef(data.json);
+  const initWidth = useRef(data?.width);
+  const initHeight = useRef(data?.height);
+  const initState = useRef(data?.json);
   // 画布容器
   const containEl = useRef<HTMLDivElement>(null);
   // 画布
   const canvasEl = useRef<HTMLCanvasElement>(null);
-  const { isPending, mutate } = useBoardAutoSaveQuery({ id: data.id });
+  const { isPending, mutate } = useBoardAutoSaveQuery({ id: data?.id });
 
   // 保存
   const debounceMutate = useMemo(() => {
-    return debounce(
-      (newData: {
-        json: string;
-        width: number;
-        height: number;
-        image: string;
-      }) => {
-        // 保存
-        mutate(
-          {
-            json: {
-              json: newData.json,
-              defaultImage: defaultImage.current,
-              image: newData.image,
-              width: newData.width,
-              height: newData.height,
-              id: data.id,
-            },
-          },
-          {
-            onSuccess: (data) => {
-              // 更新
-              defaultImage.current = data.image;
-            },
-          },
-        );
-      },
-      5000,
-    );
+    if (type === 'material') return;
+    // return debounce(
+    //   (newData: {
+    //     json: string;
+    //     width: number;
+    //     height: number;
+    //     image: string;
+    //   }) => {
+    //     if (isPending) return;
+    //     // 保存
+    //     mutate(
+    //       {
+    //         json: {
+    //           json: newData.json,
+    //           defaultImage: defaultImage.current,
+    //           image: newData.image,
+    //           width: newData.width,
+    //           height: newData.height,
+    //           id: data.id,
+    //         },
+    //       },
+    //       {
+    //         onSuccess: (data) => {
+    //           // 更新
+    //           defaultImage.current = data.image;
+    //           setCloudSave(true);
+    //         },
+    //       },
+    //     );
+    //   },
+    //   5000,
+    // );
+    return () => {};
   }, []);
 
   // 画布初始化
@@ -139,8 +141,8 @@ const Canvas = ({
   const [drewColor, setDrewColor] = useState<string>(STROKE_COLOR);
   const [drawWidth, setDrawWidth] = useState<number>(STROKE_WIDTH);
   //画布大小
-  const [canvasWidth, setCanvasWidth] = useState<number>(+data.width || CANVAS_WIDTH);
-  const [canvasHeight, setCanvasHeight] = useState<number>(+data.height || CANVAS_HEIGHT);
+  const [canvasWidth, setCanvasWidth] = useState<number>(Number(data?.width) || CANVAS_WIDTH);
+  const [canvasHeight, setCanvasHeight] = useState<number>(Number(data?.height) || CANVAS_HEIGHT);
   //画布颜色
   const [canvasColor, setCanvasColor] = useState<string>(CANVAS_COLOR);
   const { authZoom } = useResponse({ canvas, contain }) as { authZoom: any };
@@ -315,11 +317,12 @@ const Canvas = ({
         isPending={isPending}
         editor={editor()}
         activeTool={tool}
+        type={type}
         onChangeTool={onChangeActive}
         // userState={userState}
       />
       <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
-        <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} />
+        <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} type={type} />
         <TextSidebar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
         <ShapeSidle editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
         <ImageSiderbar
@@ -329,7 +332,9 @@ const Canvas = ({
           onChangeActive={onChangeActive}
         />
         <ColorSoiberbar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
-        <TemplateSiderbar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
+        {type !== 'material' && (
+          <TemplateSiderbar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
+        )}
         <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
           <Tools
             editor={editor()}

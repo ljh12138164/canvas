@@ -7,7 +7,7 @@ export function ShowFooter({
 }: { showData: GetShowResponseType; ref: React.RefObject<HTMLDivElement | null> }) {
   return (
     <div ref={ref}>
-      <ReactQuill />
+      <ReactQuill showData={showData} />
     </div>
   );
 }

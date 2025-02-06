@@ -1,6 +1,6 @@
 'use client';
 import { Separator } from '@/app/_components/ui/separator';
-import { Database, Home, LayoutTemplate, MessageSquare, Search, User } from 'lucide-react';
+import { Database, Home, Image, LayoutTemplate, MessageSquare, Search, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import SiderBarItem from './SiderBarItem';
 const SiderBarRoutes = ({
@@ -15,7 +15,7 @@ const SiderBarRoutes = ({
         <Separator />
       </div>
       <ul className="flex flex-col h-full">
-        <li className="flex-1 p-4 flex flex-col gap-4">
+        <li className="flex-1 p-4 flex flex-col gap-6">
           <SiderBarItem
             href="/board"
             label="主页"
@@ -25,23 +25,23 @@ const SiderBarRoutes = ({
           />
           <SiderBarItem
             href="/board/template"
-            label="模板"
+            label="模板中心"
             Icon={LayoutTemplate}
             isActive={pathname.split('/').includes('template')}
             closeRef={closeRef}
           />
           <SiderBarItem
-            href="/board/formue"
-            label="论坛"
-            Icon={MessageSquare}
-            isActive={pathname.split('/').includes('formue')}
+            href="/board/material"
+            label="素材中心"
+            Icon={Image}
+            isActive={pathname.split('/').includes('material')}
             closeRef={closeRef}
           />
           <SiderBarItem
-            href="/board/search"
-            label="搜索"
-            Icon={Search}
-            isActive={pathname.split('/').includes('search')}
+            href="/board/formue"
+            label="模板中心"
+            Icon={MessageSquare}
+            isActive={pathname.split('/').includes('formue')}
             closeRef={closeRef}
           />
         </li>
@@ -55,7 +55,7 @@ const SiderBarRoutes = ({
           />
           <SiderBarItem
             href="/board/user"
-            label="用户"
+            label="用户中心"
             Icon={User}
             isActive={pathname.split('/').includes('user')}
           />

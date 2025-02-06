@@ -1,8 +1,8 @@
 'use client';
 import { Badge } from '@/app/_components/ui/badge';
-import { useBoardListQuery } from '@/app/_hook/query/useBoardQuery';
 import { useShow } from '@/app/_hook/query/useShow';
 import { useCreateTap, useDeleteTap, useEditTap, useGetTap } from '@/app/_hook/query/useTap';
+import { useUserTemplate } from '@/app/_hook/query/useTemaplate';
 import type { Board } from '@/app/_types/board';
 import type { Show } from '@/app/_types/show';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,8 +13,6 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-import 'react-photo-view/dist/react-photo-view.css';
-import { useUserTemplate } from '@/app/_hook/query/useTemaplate';
 import { useMedia } from 'react-use';
 import { z } from 'zod';
 import { Response } from '../Comand/Response';
@@ -106,11 +104,7 @@ const Form = ({ defaultValue, userId }: FormProps) => {
             content: datas.explanation,
             tap: datas.tap?.join(',') || '',
             relativeTheme: datas.relativeTheme,
-            json: relativeTheme.json,
-            image: relativeTheme.image,
             title: datas.title,
-            width: relativeTheme.width,
-            height: relativeTheme.height,
           },
         },
         {

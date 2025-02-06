@@ -58,6 +58,7 @@ export const getUserState = (
 export const findFabicObject = (canvas: fabric.Canvas, obj: AddFabicObject) => {
   return canvas.getObjects().find((item) => item.id === obj.id);
 };
+
 /**
  * ### 协同的添加
  * @description 根据类型进行活动
@@ -98,7 +99,6 @@ export const genType = (obj: AddFabicObject, fabircType: string) => {
       return null;
   }
 };
-
 /**
  * ### 根据类型进行活动
  * @param type 类型

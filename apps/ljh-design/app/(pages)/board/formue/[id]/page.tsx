@@ -1,6 +1,5 @@
 import { ShowPage } from '@/app/_components/Formue/ShowPage';
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
-import { Providers } from '@/app/_provide/providers';
 
 export default async function Home({
   params,
@@ -11,10 +10,10 @@ export default async function Home({
 }) {
   const { id } = await params;
   return (
-    <ScrollArea className="h-[calc(100dvh-100px)] flex flex-col overflow-hidden entry gap-4">
-      <Providers>
+    <section className="h-[calc(100dvh-100px)] overflow-y-auto ">
+      <ScrollArea className="h-full p-4">
         <ShowPage id={id} />
-      </Providers>
-    </ScrollArea>
+      </ScrollArea>
+    </section>
   );
 }

@@ -10,7 +10,7 @@ export default function UserProfilePage() {
   if (loading) return;
   if (!user) return router.push('/sign-in');
   return (
-    <ScrollArea className=" p-6 h-[calc(100dvh-150px)]">
+    <ScrollArea className="p-6">
       <UserInfo />
     </ScrollArea>
   );

@@ -6,3 +6,10 @@ export interface Template {
   name: string;
   description: string;
 }
+
+export interface Material {
+  id: string;
+  created_at: string;
+  options: string;
+  userId: string;
+}
