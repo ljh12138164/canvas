@@ -12,7 +12,8 @@ const TryBoard = () => {
 
   if (!user) return <TryMain />;
 
-  return router.push('/board');
+  router.push('/board');
+  return <></>;
 };
 
 export default TryBoard;

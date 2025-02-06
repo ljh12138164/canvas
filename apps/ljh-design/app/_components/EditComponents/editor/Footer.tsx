@@ -1,4 +1,4 @@
-import TooltipComponents from '@/app/_components/shadui-Components/Tooltip';
+import TooltipComponents from '@/app/_components/Comand/Tooltip';
 import { Button } from '@/app/_components/ui/button';
 import { Tool } from '@/app/_types/Edit';
 import type { Edit } from '@/app/_types/Edit';

@@ -7,6 +7,7 @@ import { form } from './form';
 import { jebt } from './jebt';
 import { storage } from './jebt/route/stoage';
 import { note } from './note';
+// import { compress } from 'hono/compress';
 
 // 跨域
 const app = new Hono()
@@ -16,6 +17,11 @@ const app = new Hono()
       credentials: true,
     }),
   )
+  // .use(
+  //   compress({
+  //     encoding: 'gzip',
+  //   })
+  // )
   .basePath('/api')
   .route('/design', design)
   .route('/jebt', jebt)

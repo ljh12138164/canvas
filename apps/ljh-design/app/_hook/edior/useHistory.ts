@@ -9,7 +9,7 @@ interface HistoryProps {
     width: number;
     image: string;
     height: number;
-    updated_at: boolean;
+    updated_at: Date;
   }) => void;
 }
 
@@ -64,7 +64,7 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
         width,
         height,
         image,
-        updated_at: true,
+        updated_at: new Date(),
       });
     }
   };

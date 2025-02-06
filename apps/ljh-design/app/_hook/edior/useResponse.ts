@@ -15,8 +15,10 @@ const useResponse = ({ canvas, contain }: ResponseProps) => {
     if (!canvas || !contain) return;
     const width = contain.offsetWidth;
     const height = contain.offsetHeight;
-    canvas.setWidth(width);
-    canvas.setHeight(height);
+    canvas.setDimensions({
+      width,
+      height,
+    });
     // 获取画布中心
     const center = canvas.getCenterPoint();
     //缩放比例

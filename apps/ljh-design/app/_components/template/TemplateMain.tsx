@@ -1,13 +1,13 @@
-import { useBoardQuery } from '@/app/_hook/query/useBoardQuery';
-import { useTemplate, useUserTemplate } from '@/app/_hook/query/useTemaplate';
-import { MoreHorizontal, PlusCircle } from 'lucide-react';
-import Image from 'next/image';
-import { useEffect, useRef } from 'react';
-import { PhotoProvider, PhotoView } from 'react-photo-view';
-import 'react-photo-view/dist/react-photo-view.css';
 import { DEFAULT_TEMPLATE } from '@/app/_database/user';
+import { useBoardDeleteQuery, useBoardQuery } from '@/app/_hook/query/useBoardQuery';
+import { useTemplate, useUserTemplate } from '@/app/_hook/query/useTemaplate';
 import { useQueryClient } from '@tanstack/react-query';
+import { MoreHorizontal, Pencil, PlusCircle, Trash } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import toast from 'react-hot-toast';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 import BoardCreateFrom from '../Board/BoardCreateFrom';
 import { Response } from '../Comand/Response';
 import { Button } from '../ui/button';
@@ -31,6 +31,7 @@ import { Skeleton } from '../ui/skeleton';
 
 const TemplateMain = ({ userId }: { userId: string }) => {
   const queryClient = useQueryClient();
+  const { mutate: deleteBoard, isPending: deleteBoardPending } = useBoardDeleteQuery();
   const { mutate, isPending } = useBoardQuery();
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ['templateUser'] });
@@ -79,7 +80,10 @@ const TemplateMain = ({ userId }: { userId: string }) => {
             </BoardCreateFrom>
           </Response>
         </div>
-        <h2 className="text-lg font-bold mb-4">默认模板</h2>
+        <h2 className="text-sm text-muted-foreground mb-4">
+          模板是预设的画布，可以用于快速创建画布。
+        </h2>
+        <h3 className="text-lg font-bold mb-4">默认模板</h3>
         <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-6">
           {isLoadingDefault ? (
             <>
@@ -222,22 +226,42 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="w-full cursor-pointer"
+                            onClick={() => {
+                              router.push(`/EditTemplate/${template.id}`);
+                            }}
+                          >
+                            <Pencil className="size-4" /> 编辑
+                          </Button>
                           <DropdownMenuItem asChild>
-                            <Button variant="ghost" size="sm" className="w-full cursor-pointer">
-                              删除
-                            </Button>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="w-full cursor-pointer"
-                              onClick={() => {
-                                router.push(`/EditTemplate/${template.id}`);
+                            <Response
+                              title="确定删除模板吗？"
+                              description="删除后无法恢复"
+                              variant="destructive"
+                              disabled={deleteBoardPending}
+                              ref={responseRef}
+                              myTrigger={
+                                <Button variant="ghost" size="sm" className="w-full">
+                                  <Trash className="size-4" />
+                                  删除
+                                </Button>
+                              }
+                              onConfirm={() => {
+                                deleteBoard(
+                                  { json: { id: template.id, image: template.image } },
+                                  {
+                                    onSuccess: () => {
+                                      queryClient.invalidateQueries({
+                                        queryKey: ['templateUser'],
+                                      });
+                                    },
+                                  },
+                                );
                               }}
-                            >
-                              编辑
-                            </Button>
+                            />
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

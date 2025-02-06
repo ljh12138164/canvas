@@ -4,27 +4,20 @@
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun run --hot ./src/index.ts",
+    "dev:test": "bun run --hot ./src/index.ts",
     "lint": " biome check --fix --unsafe --no-errors-on-unmatched   && biome check --write --no-errors-on-unmatched && biome check --write --organize-imports-enabled=false --no-errors-on-unmatched && biome check --write --unsafe --no-errors-on-unmatched && biome check --files-ignore-unknown=true&& biome lint --write --no-errors-on-unmatched"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/bun": "latest",
-    "@ljh/lint": "workspace:*"
+    "@ljh/lint": "workspace:*",
+    "@types/ws": "^8.5.14"
   },
   "dependencies": {
-    "@hocuspocus/extension-webhook": "^2.15.0",
-    "@hocuspocus/server": "^2.15.1",
-    "@hono/node-server": "1.13.8",
-    "@hono/node-ws": "^1.0.6",
-    "@types/ws": "^8.5.14",
     "await-to-js": "^3.0.0",
-    "axios": "^1.7.9",
     "bun": "^1.2.1",
     "hono": "^4.6.20",
     "nanoid": "^5.0.9",
-    "nest": "^0.1.6",
-    "socket.io": "^4.8.1",
     "y-protocols": "^1.0.6",
     "y-websocket": "^2.1.0",
     "yjs": "^13.6.23"

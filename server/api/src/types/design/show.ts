@@ -40,6 +40,7 @@ export interface Tag {
 
 // 评论
 export interface Comment {
+  id: string;
   showId: string;
   userId: string;
   answer: string;

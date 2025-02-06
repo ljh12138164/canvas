@@ -45,10 +45,6 @@
     "@tiptap/extension-underline": "^2.11.0",
     "@tiptap/starter-kit": "^2.11.0",
     "bun": "^1.2.1",
-    "nanoid": "^5.0.9",
-    "socket.io": "^4.8.1",
-    "y-protocols": "^1.0.6",
-    "y-websocket": "^2.1.0",
-    "yjs": "^13.6.23"
+    "nanoid": "^5.0.9"
   }
 }

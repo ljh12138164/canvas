@@ -4,17 +4,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu';
 import { useUser } from '@/app/_store/auth';
 import type { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import { MoreHorizontal } from 'lucide-react';
-import { useRef } from 'react';
 import type { BoardData } from '../../_types/board';
-import { Response } from '../Comand/Response';
 import { BoardCopy } from './BoardCopy';
 import BoardDelete from './BoardDelete';
 import BoardEdit from './BoardEdit';
@@ -33,7 +29,7 @@ export const columns: ColumnDef<BoardData>[] = [
     },
     cell: ({ row }) => {
       const payment = row.original;
-      return <p>{dayjs(payment.created_at).format('YYYY年MM月DD日 HH:mm:ss')}</p>;
+      return <p>{dayjs(payment.created_at).format('MM月DD日 HH:mm:ss')}</p>;
     },
   },
   {
@@ -43,7 +39,7 @@ export const columns: ColumnDef<BoardData>[] = [
     },
     cell: ({ row }) => {
       const payment = row.original;
-      return <p>{dayjs(payment.updated_at).format('YYYY年MM月DD日 HH:mm:ss')}</p>;
+      return <p>{dayjs(payment.updated_at).format('MM月DD日 HH:mm:ss')}</p>;
     },
   },
   {
@@ -58,7 +54,13 @@ export const columns: ColumnDef<BoardData>[] = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button
+              variant="ghost"
+              className="h-8 w-8 p-0"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
               <span className="sr-only">打开菜单</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>

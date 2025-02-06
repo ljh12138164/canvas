@@ -8,6 +8,9 @@ interface UserState {
   setLoading: (loading: boolean) => void;
 }
 
+/**
+ * ### 用户信息
+ */
 export const useUser = create<UserState>((set) => ({
   loading: true,
   user: null,

@@ -1,3 +1,4 @@
+import type { Board } from '../../../types/design/board';
 import type { Collections, Comment, Show, Upvote } from '../../../types/design/show';
 import type { Profiles } from '../../../types/note/workspace';
 import { supabaseDesign, supabaseDesignPublic } from '../../supabase/design';
@@ -60,7 +61,7 @@ export const getRandomShow = async ({
   tap: string;
   page: number;
 }): Promise<{
-  data: (Show & { profiles: Profiles; answers: Comment[]; upvotes: Upvote[] })[];
+  data: (Show & { profiles: Profiles; answers: Comment[]; upvotes: Upvote[]; board: Board })[];
   count: number;
 }> => {
   let supabase = supabaseDesignPublic
@@ -93,6 +94,7 @@ export const getShow = async (
   Show & {
     profiles: Profiles;
     answers: Comment & { profiles: Profiles }[];
+    board: Board;
     upvotes: null;
     collections: null;
     isUpvote: boolean;

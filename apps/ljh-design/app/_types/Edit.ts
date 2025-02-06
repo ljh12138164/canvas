@@ -19,6 +19,7 @@ export type TBlendMode =
   | 'overlay'
   | 'exclusion'
   | 'tint';
+
 export type TResizeType = 'bilinear' | 'hermite' | 'sliceHack' | 'lanczos';
 export type TGrayscaleMode = 'average' | 'lightness' | 'luminosity';
 export type ResizeOwnProps = {
@@ -859,7 +860,7 @@ export interface buildEditorProps {
   setStrokeWidth: (width: number) => void;
 }
 export interface Edit {
-  selectedObject: fabric.Object[] | null;
+  selectedObject: (fabric.Object | fabric.Group)[] | null;
   strokeColor: string;
   strokeWidth: number;
   fillColor: string;
@@ -881,6 +882,8 @@ export interface Edit {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
+  setMaterial: (material: fabric.Object[]) => void;
+  addMaterial: (material: fabric.Object[]) => void;
   getActiveFilterIndex: (filter: string) => number;
   fixImageSize: (imageObj: fabric.FabricImage) => void;
   changeImageFilterSetting: (filter: string, value: Effect | null) => void;
@@ -892,6 +895,7 @@ export interface Edit {
   savejpg: () => void;
   saveJson: () => void;
   loadFromJson: (json: string, fn?: () => void) => void;
+  loadFromSvg: (svg: string, fn?: () => void) => Promise<void>;
   pasty: () => void;
   canRedo: () => boolean;
   canUndo: () => boolean;
@@ -1002,3 +1006,6 @@ export interface UserState {
 
 export type YjsObject = 'add' | 'change' | 'delete';
 // 高级图形构造示例
+
+// 编辑器类型
+export type EditType = 'template' | 'board' | 'material';

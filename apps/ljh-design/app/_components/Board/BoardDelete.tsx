@@ -54,7 +54,7 @@ const BoardDelete = ({
                 e.stopPropagation();
                 if (userId) {
                   mutate(
-                    { id },
+                    { json: { id, image: board.image as string } },
                     {
                       onSuccess: () => {
                         closeRef.current?.click();

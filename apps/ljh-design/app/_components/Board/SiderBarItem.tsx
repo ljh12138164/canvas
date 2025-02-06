@@ -18,7 +18,7 @@ const SiderBarItem = ({ label, Icon, href, isActive, closeRef, onClick }: SiderB
       }}
       href={href}
       className={cn(
-        'flex items-center px-3 py-3 rounded-xl bg-transparent dark:bg-[#312e812b] hover:bg-indigo-100 dark:hover:bg-[#000] duration-300 transition',
+        'flex items-center py-4 px-4 rounded-xl bg-transparent dark:bg-[#312e812b] hover:bg-indigo-100 dark:hover:bg-[#000] duration-300 transition',
         isActive ? 'text-blue-500 border-l-[3px] border-blue-500 bg-indigo-100 dark:bg-[#000]' : '',
       )}
     >

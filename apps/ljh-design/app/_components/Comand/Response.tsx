@@ -26,11 +26,12 @@ interface DrawerDialogProps {
   title: string;
   description: string;
   ref: RefObject<{ closeModel: () => void } | null>;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   myTrigger?: ReactNode;
   disabled?: boolean;
   children?: ReactNode;
   showFooter?: boolean;
+  variant?: 'default' | 'destructive';
 }
 /**
  * 弹窗组件
@@ -62,6 +63,7 @@ export function Response({
   children,
   onConfirm,
   ref,
+  variant = 'default',
   myTrigger,
   disabled = false,
   showFooter = true,
@@ -77,12 +79,22 @@ export function Response({
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          {myTrigger ? myTrigger : <Button variant="outline">{title}</Button>}
+          {myTrigger ? (
+            myTrigger
+          ) : (
+            <Button variant="outline" disabled={disabled}>
+              {title}
+            </Button>
+          )}
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            <DialogDescription
+              className={variant === 'destructive' ? 'text-destructive font-bold' : ''}
+            >
+              {description}
+            </DialogDescription>
           </DialogHeader>
           {children}
           {showFooter && (

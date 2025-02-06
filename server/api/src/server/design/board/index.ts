@@ -14,7 +14,7 @@ export const deleteImageClound = async ({
 }: {
   image: string;
 }): Promise<boolean> => {
-  const { data, error } = await supabaseDesignPublic.storage
+  const { error } = await supabaseDesignPublic.storage
     //  桶名字
     .from('canvas')
     // 删除图片路径
@@ -81,20 +81,27 @@ interface GetBoard {
   id: string;
   userid: string;
   token: string;
-  type: 'template' | 'board';
+  type: 'template' | 'board' | 'material';
 }
 /**
  * 获取看板数据
  * @returns
  */
 export const getBoard = async ({ id, userid, token, type }: GetBoard): Promise<Board[]> => {
+  if (type !== 'material') {
+    const { data, error } = await supabaseDesign(token)
+      .from('board')
+      .select('*')
+      .eq('id', id)
+      .eq('isTemplate', type === 'template')
+      .eq('userId', userid);
+    if (error) throw new Error('服务器错误');
+    return data;
+  }
   const { data, error } = await supabaseDesign(token)
-    .from('board')
+    .from('material')
     .select('*')
-    .eq('id', id)
-    .eq('isTemplate', type === 'template');
-  // TODO: 需要修改
-  // .eq("userId", userid);
+    .eq('userId', userid);
   if (error) throw new Error('服务器错误');
   return data;
 };
@@ -154,11 +161,14 @@ export const deleteBoard = async ({
   id,
   userid,
   token,
+  image,
 }: {
   id: string;
   userid: string;
   token: string;
+  image: string;
 }) => {
+  if (image !== DEFAULT_TEMPLATE) deleteImageClound({ image: image.split('/').at(-1) as string });
   const { error } = await supabaseDesign(token)
     .from('board')
     .delete()

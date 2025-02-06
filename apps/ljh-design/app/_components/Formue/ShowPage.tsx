@@ -8,7 +8,6 @@ import { useGetShow } from '@/app/_hook/query/useShow';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { Button } from '../ui/button';
-import { ScrollArea } from '../ui/scroll-area';
 import { Separator } from '../ui/separator';
 
 export function ShowPage({ id }: { id: string }) {
@@ -52,10 +51,14 @@ export function ShowPage({ id }: { id: string }) {
       </section>
     );
   return (
-    <ScrollArea className=" flex flex-col gap-4 py-6">
+    <main className="flex flex-col gap-4">
+      <nav className="flex">
+        <Button onClick={() => router.back()} variant="outline">
+          返回
+        </Button>
+      </nav>
       {/* 头部 */}
       <ShowHead showData={showData} remarkRef={remark} />
-      <Separator className="w-full my-2" />
       {/* 主体 */}
       <ShowMain showData={showData} />
       <Separator className="w-full my-2" />
@@ -63,6 +66,6 @@ export function ShowPage({ id }: { id: string }) {
       <ShowOption showData={showData} id={id} />
       {/* 底部 */}
       <ShowFooter showData={showData} ref={remark} />
-    </ScrollArea>
+    </main>
   );
 }

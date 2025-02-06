@@ -1,8 +1,19 @@
 import { STROKE_COLOR, STROKE_WIDTH } from '@/app/_types/Edit';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
+import { initAligningGuidelines } from 'fabric/extensions';
 import { useTheme } from 'next-themes';
 import type { RefObject } from 'react';
+
+const config = {
+  /** At what distance from the shape does alignment begin? */
+  margin: 4,
+  /** Aligning line dimensions */
+  width: 1,
+  /** Aligning line color */
+  color: 'rgb(255,0,0,0.9)',
+};
+const deactivate = (canvas: fabric.Canvas) => initAligningGuidelines(canvas, config);
 
 interface CanvasProps {
   initWidth?: RefObject<number> | number;
@@ -31,6 +42,8 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       initCanvas.freeDrawingBrush = new fabric.PencilBrush(initCanvas);
       initCanvas.freeDrawingBrush.width = STROKE_WIDTH;
       initCanvas.freeDrawingBrush.color = STROKE_COLOR;
+
+      deactivate(initCanvas);
       //画布
       const initRect = new fabric.Rect({
         width: typeof initWidth === 'number' ? initWidth : initWidth?.current || 800,
@@ -46,12 +59,14 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       });
       //添加滤镜数组
       fabric.FabricImage.prototype.filtersArray = [];
-
+      // initAligningGuidelines
       initCanvas.add(initRect);
       initCanvas.centerObject(initRect);
       // 设置画布尺寸
-      initCanvas.setWidth(initContainer.offsetWidth);
-      initCanvas.setHeight(initContainer.offsetHeight);
+      initCanvas.setDimensions({
+        width: initContainer.offsetWidth,
+        height: initContainer.offsetHeight,
+      });
       // 设置画布背景颜色
       //溢出不显示
       initCanvas.clipPath = initRect;

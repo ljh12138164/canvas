@@ -16,16 +16,11 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning>
       <body>
         <Providers>
-          <div className="bg-muted h-[100vh] ">
+          <div className="bg-muted h-[100dvh] ">
             <SiderBar />
             <div className="lg:pl-[300px] flex flex-col h-full">
               <NavBar />
-              <main
-                className="px-2 py-4 bg-[#fff] dark:bg-[#121212] flex-1 min-w-[380px] overflow-hidden"
-                style={{
-                  scrollbarWidth: 'none',
-                }}
-              >
+              <main className="px-2 py-4 bg-[#fff] dark:bg-[#121212] flex-1 min-w-[380px] overflow-hidden">
                 {children}
               </main>
             </div>

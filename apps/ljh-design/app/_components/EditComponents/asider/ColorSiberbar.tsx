@@ -157,15 +157,14 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
                     key={item}
                     variant="outline"
                     onClick={() => {
-                      if (item === 'none' && !check(item)) {
-                        setFilterOpen(true);
-                      } else if (check(item) && editor?.getActiveFilter().length === 1) {
+                      if (item === 'none' && !check(item)) setFilterOpen(true);
+                      // 清除滤镜
+                      if (check(item) && editor?.getActiveFilter().length === 1)
                         editor?.cleanFilter();
-                      } else if (check(item)) {
-                        editor?.deleteImageFilter(item);
-                      } else {
-                        editor?.changeImageFilter(item);
-                      }
+                      // 删除滤镜
+                      else if (check(item)) editor?.deleteImageFilter(item);
+                      // 更改滤镜
+                      else editor?.changeImageFilter(item);
                     }}
                     className={`w-full h-16 relative  justify-start text-left ${check(item) && 'border-blue-500 border-2'}`}
                   >

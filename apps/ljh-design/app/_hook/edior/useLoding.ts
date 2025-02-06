@@ -6,7 +6,7 @@ import { type RefObject, useEffect, useRef, useState } from 'react';
 type UseLoadingStateProps = {
   authZoom: () => void;
   canvas: Canvas | null;
-  initState: RefObject<string>;
+  initState: RefObject<string | undefined>;
   canvasHistory: RefObject<object[]>;
   setHistoryIndex: (value: number) => void;
 };
@@ -37,12 +37,7 @@ export const useLoading = ({
         setHistoryIndex(0);
       });
       inititaized.current = true;
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 5000);
-      return () => {
-        clearTimeout(timer);
-      };
+      setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvas, authZoom]);
