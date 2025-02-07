@@ -1,3 +1,22 @@
+'use client';
+
+import { ScrollArea } from '@/app/_components/ui/scroll-area';
+import useUser from '@/app/_hook/useUser';
+import { useRouter } from 'next/navigation';
+import DataShow from './DataShow';
+// import { AreaChart } from '@/app/_components/Echarts/AreaChart';
+
 export default function UserDataMain() {
-  return <div>15265165</div>;
+  const router = useRouter();
+  const { user, loading } = useUser({ redirects: true });
+  if (loading) return <></>;
+  if (!user) router.push('/sign-in');
+
+  return (
+    <section className="w-full h-full">
+      <ScrollArea className="h-full w-full flex flex-col gap-4 space-y-4">
+        <DataShow />
+      </ScrollArea>
+    </section>
+  );
 }

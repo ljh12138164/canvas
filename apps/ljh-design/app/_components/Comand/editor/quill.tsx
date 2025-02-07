@@ -73,6 +73,7 @@ const ReactQuillEditor = ({ showData }: { showData: GetShowResponseType }) => {
         <div className="quill-editor-wrap" id="quill-editor-wrap" ref={quillRef} />
         <h2 className="text-xl font-bold my-2">全部评论</h2>
         <Separator className="my-2" />
+        {data?.length === 0 && <p className="text-center text-gray-500">暂无评论</p>}
         <section className="flex flex-col gap-2">
           {isLoading ? (
             <Skeleton className="h-10 w-24" />

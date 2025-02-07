@@ -19,7 +19,7 @@ export default function FormueList() {
 
   // 渲染数据列表
   return (
-    <ScrollArea className="h-[calc(100dvh-200px)] w-full flex flex-col gap-4 space-y-4">
+    <ScrollArea className="h-[calc(100dvh-240px)] w-full flex flex-col gap-4 space-y-4">
       <div className="flex flex-col gap-4">
         {formueData.pages.map((item) =>
           item.data.map((item) => <FormueItem key={item.id} item={item} />),

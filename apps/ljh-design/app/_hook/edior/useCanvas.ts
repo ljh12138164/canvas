@@ -42,7 +42,7 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       initCanvas.freeDrawingBrush = new fabric.PencilBrush(initCanvas);
       initCanvas.freeDrawingBrush.width = STROKE_WIDTH;
       initCanvas.freeDrawingBrush.color = STROKE_COLOR;
-
+      // 初始化对齐线
       deactivate(initCanvas);
       //画布
       const initRect = new fabric.Rect({

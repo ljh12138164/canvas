@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu';
 import { Separator } from '@/app/_components/ui/separator';
-import { useMaterial } from '@/app/_hook/query/useMaterial';
+import { useCreateMaterial, useMaterial } from '@/app/_hook/query/useMaterial';
 import { useMediaQuery } from '@/app/_hook/useMediaQuery';
 import { useSave } from '@/app/_store/save';
 import { type Edit, type EditType, Tool } from '@/app/_types/Edit';
@@ -68,7 +68,8 @@ const NavBar = ({
   // userState,
 }: NavBarProps) => {
   const router = useRouter();
-  const { data: material, isLoading, isFetching } = useMaterial();
+  const { data: material, isLoading } = useMaterial();
+  const { isPending: materialPending } = useCreateMaterial();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { cloudSave } = useSave();
   const saveCloseRef = useRef<{
@@ -104,11 +105,16 @@ const NavBar = ({
     },
   });
   const isGroup = useMemo(() => {
+    // 如果未选择对象，则不保存
+    if (!editor?.selectedObject) return false;
+    // 如果选择的对象数量为1，且对象为素材，则不保存
     if (editor?.selectedObject?.length === 1 && editor?.selectedObject?.[0]?.saveType) return false;
-    const isGroup = editor?.selectedObject?.some((item) => {
+    // 如果选择的对象数量小于等于1，则不保存
+    if (editor?.selectedObject?.length <= 1) return false;
+    // 如果选择的对象数量大于1，且对象为素材，则不保存
+    const isGroup = editor?.selectedObject?.every((item) => {
       // 如果为group
       if (item.saveType) return false;
-
       return true;
     });
     return isGroup;
@@ -263,12 +269,14 @@ const NavBar = ({
                 showFooter={false}
                 description="保存为素材后，可以随时使用"
                 ref={saveCloseRef}
-                // onConfirm={() => {
-                //   saveCloseRef.current?.closeModel();
-                //   // editor?.setMaterial(editor?.selectedObject || []);
-                // }}
               >
-                <Form selectedObject={editor?.selectedObject?.[0] as Fabric.Group} editor={editor}>
+                <Form
+                  selectedObject={editor?.selectedObject?.[0] as Fabric.Group}
+                  // editor={editor}
+                  onSuccess={() => {
+                    saveCloseRef.current?.closeModel();
+                  }}
+                >
                   <div className="flex justify-end my-2 gap-2">
                     <Button
                       variant="outline"
@@ -277,7 +285,7 @@ const NavBar = ({
                     >
                       取消
                     </Button>
-                    <Button type="submit" size="sm">
+                    <Button type="submit" size="sm" disabled={materialPending}>
                       保存
                     </Button>
                   </div>

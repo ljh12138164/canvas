@@ -77,3 +77,45 @@ export const useUserCollection = (enabled: boolean, search: string) => {
   });
   return { userCollection, userCollectionLoading };
 };
+
+export type UserDataResponseType = InferResponseType<(typeof client.user.data)['$get'], 200>;
+
+/**
+ * ### 获取用户的所有数据进行统计和图标显示
+ * @param param0
+ * @returns
+ */
+export const useUserData = (enabled: boolean, startTime?: Date, endTime?: Date) => {
+  const router = useRouter();
+  const { data: userData, isLoading: userDataLoading } = useQuery<
+    UserDataResponseType,
+    Error,
+    UserDataResponseType
+  >({
+    queryKey: ['userData', startTime, endTime],
+    enabled,
+    queryFn: async () => {
+      const token = await getNewToken();
+      if (!token) router.push('/sign-in');
+      const response = await client.user.data.$get(
+        {
+          query: {
+            startTime: startTime?.toISOString() ?? undefined,
+            endTime: endTime?.toISOString() ?? undefined,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return await response.json();
+    },
+  });
+  return { userData, userDataLoading };
+};

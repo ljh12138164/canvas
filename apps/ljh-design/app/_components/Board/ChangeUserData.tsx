@@ -1,14 +1,20 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/app/_components/ui/card';
 import { logout, updateCurrentUser } from '@/app/_database/user';
 import { useUserChange, useUserChangePassword } from '@/app/_hook/query/useUserChange';
 import type { Sessions } from '@/app/_types/user';
 import { to } from 'await-to-js';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { ScrollArea } from '../ui/scroll-area';

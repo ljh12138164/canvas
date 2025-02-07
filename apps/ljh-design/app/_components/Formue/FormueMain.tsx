@@ -1,5 +1,13 @@
 'use client';
 import { Button } from '@/app/_components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/app/_components/ui/card';
 import { Skeleton } from '@/app/_components/ui/skeleton';
 import { useGetFormue } from '@/app/_hook/query/useShow';
 import { useMemoizedFn } from 'ahooks';
@@ -9,7 +17,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import FormueList from './FormueList';
 
@@ -32,7 +39,7 @@ export default function FormueMain() {
   return (
     <section className="p-4 flex flex-col gap-4">
       <nav className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">设计</h1>
+        <h1 className="text-2xl font-bold">分享你的模板和素材</h1>
         <Link href="/board/formue/create">
           <Button>发布新帖</Button>
         </Link>

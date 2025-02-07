@@ -42,7 +42,7 @@ declare module 'fabric' {
     // 保存后将添加到数据库，初始化时将删除
     save?: boolean;
     saveType: undefined;
-    groupArr?: fabric.Object[];
+    groupArr?: fabric.FabricObject[];
   }
   interface FabricObjectProps {
     id?: string;
@@ -50,7 +50,7 @@ declare module 'fabric' {
   }
   interface GroupProps {
     saveType?: string;
-    groupArr: fabric.Object[];
+    groupArr: fabric.FabricObject[];
   }
 }
 //
@@ -244,7 +244,7 @@ export const buildEditor = ({
     fn?.();
   };
   //添加到画布
-  const addToCanvas = (object: fabric.Object) => {
+  const addToCanvas = (object: fabric.FabricObject) => {
     center(object, canvas);
     canvas.add(object);
     canvas.setActiveObject(object);
@@ -257,7 +257,7 @@ export const buildEditor = ({
   };
   // 加载svg
   const loadFromSvg = async (svg: string, fn?: () => void) => {
-    const farbirArr: fabric.Object[] = [];
+    const farbirArr: fabric.FabricObject[] = [];
     // canvas.loadSVGFromString(svg);
     await fabric.loadSVGFromString(svg, (_, options) => {
       if (options.name !== 'board') farbirArr.push(options);
@@ -274,7 +274,7 @@ export const buildEditor = ({
   };
   // 加载pdf
   // const loadFromPdf = async (pdf: string, fn?: () => void) => {
-  //   const farbirArr: fabric.Object[] = [];
+  //   const farbirArr: fabric.FabricObject[] = [];
   //   canvas.loadFromJSON(pdf);
   //   authZoom();
   //   fn?.();
@@ -777,7 +777,7 @@ export const buildEditor = ({
       canvas.setActiveObject(objs);
     },
     // 设置为素材
-    setMaterial: (material: fabric.Object[]) => {
+    setMaterial: (material: fabric.FabricObject[]) => {
       material.forEach((item) => {
         canvas.remove(item);
       });
@@ -793,17 +793,19 @@ export const buildEditor = ({
       canvas.setActiveObject(group);
       canvas.renderAll();
     },
-    addMaterial: (material) => {
-      const group = new fabric.Group(material, {
-        // 保存时设置为id
-        id: nanoid(),
-        saveType: 'material',
-        groupArr: material,
-      });
-      canvas.add(group);
-      // 设置为活动对象
-      canvas.setActiveObject(group);
+    // 加载素材
+    addMaterial: async (material) => {
+      if (!canvas) return;
+      // 解析 JSON
+      const group = await fabric.util.enlivenObjects([material]);
+      // 将素材添加到画布中心
+      canvas.add(group[0] as fabric.Group);
+      canvas.setActiveObject(group[0] as fabric.Group);
+      canvas._centerObject(group[0] as fabric.Group, canvas.getCenterPoint());
       canvas.renderAll();
+
+      // 保存历史记录
+      save();
     },
   };
 };

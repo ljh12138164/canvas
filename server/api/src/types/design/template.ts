@@ -12,4 +12,5 @@ export interface Material {
   created_at: string;
   options: string;
   userId: string;
+  name: string;
 }

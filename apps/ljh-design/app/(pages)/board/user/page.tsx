@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 export default function UserProfilePage() {
   const router = useRouter();
   const { user, loading } = useUser({ redirects: true });
-  if (loading) return;
+  if (loading) return <></>;
   if (!user) return router.push('/sign-in');
   return (
     <ScrollArea className="p-6">

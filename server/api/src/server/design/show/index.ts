@@ -1,5 +1,6 @@
 import type { Board } from '../../../types/design/board';
 import type { Collections, Comment, Show, Upvote } from '../../../types/design/show';
+import type { Material } from '../../../types/design/template';
 import type { Profiles } from '../../../types/note/workspace';
 import { supabaseDesign, supabaseDesignPublic } from '../../supabase/design';
 const LIMIT = 10;
@@ -23,29 +24,48 @@ export const createShow = async ({
   tap,
   userId,
   relativeTheme,
+  type,
+  relativeMaterial,
   token,
 }: {
   title: string;
   content: string;
   tap: string;
   userId: string;
-  relativeTheme: string;
   token: string;
+  relativeTheme: string | undefined;
+  type: 'template' | 'material';
+  relativeMaterial: string | undefined;
 }): Promise<Show> => {
-  const { data, error } = await supabaseDesign(token)
-    .from('show')
-    .insert([
-      {
-        explanation: content,
-        userId,
-        relativeTheme,
-        tags: tap,
-        title,
-      },
-    ])
-    .select('*');
-  if (error) throw new Error('服务器错误');
-  return data[0];
+  if (type === 'template') {
+    if (!relativeTheme) throw new Error('主题不能为空');
+    const { data, error } = await supabaseDesign(token)
+      .from('show')
+      .insert([
+        {
+          explanation: content,
+          userId,
+          relativeTheme,
+          tags: tap,
+          title,
+          type,
+        },
+      ])
+      .select('*');
+
+    if (error) throw new Error('服务器错误');
+    return data[0];
+  }
+  if (type === 'material') {
+    if (!relativeMaterial) throw new Error('素材不能为空');
+    const { data, error } = await supabaseDesign(token)
+      .from('show')
+      .insert([{ title, explanation: content, userId, relativeMaterial, tags: tap, type }])
+      .select('*');
+    if (error) throw new Error('服务器错误');
+    return data[0];
+  }
+  throw new Error('类型错误');
 };
 
 /**
@@ -61,16 +81,22 @@ export const getRandomShow = async ({
   tap: string;
   page: number;
 }): Promise<{
-  data: (Show & { profiles: Profiles; answers: Comment[]; upvotes: Upvote[]; board: Board })[];
+  data: (Show & {
+    profiles: Profiles;
+    answers: Comment[];
+    upvotes: Upvote[];
+    board: Board;
+    material: Material;
+  })[];
   count: number;
 }> => {
   let supabase = supabaseDesignPublic
     .from('show')
-    .select('*,answers(*),profiles(*),upvotes(*),board(*)', {
+    .select('*,answers(*),profiles(*),upvotes(*),board(*),material(*)', {
       count: 'exact',
     });
   // 模糊查询
-  if (tap) supabase = supabase.like('tags', `%${tap}%`).like('title', `%${tap}%`);
+  if (tap) supabase = supabase.or(`tags.like.%${tap}%,title.like.%${tap}%`);
 
   // 随机获取10条
   const { data, error, count } = await supabase

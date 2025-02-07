@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 import { verify } from 'hono/jwt';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
-import { Payload, checkToken, getSupabaseAuth } from '../../../libs/middle';
+import { checkToken, getSupabaseAuth } from '../../../libs/middle';
 import { createShow, getRandomShow, getShow } from '../../../server/design/show/index';
 
 const show = new Hono()
@@ -23,11 +23,13 @@ const show = new Hono()
         title: z.string(),
         content: z.string(),
         tap: z.string().optional(),
-        relativeTheme: z.string(),
+        relativeTheme: z.string().optional(),
+        type: z.enum(['template', 'material']),
+        relativeMaterial: z.string().optional(),
       }),
     ),
     async (c) => {
-      const { title, content, tap, relativeTheme } = c.req.valid('json');
+      const { title, content, tap, relativeTheme, type, relativeMaterial } = c.req.valid('json');
       const { token, auth } = getSupabaseAuth(c);
       const [error, data] = await to(
         createShow({
@@ -37,6 +39,8 @@ const show = new Hono()
           token,
           userId: auth.sub,
           relativeTheme,
+          type,
+          relativeMaterial,
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));

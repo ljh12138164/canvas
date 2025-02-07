@@ -13,5 +13,5 @@ export default function MaterialPage() {
   }, [user, loading]);
   if (loading) return;
   if (!user) return;
-  return <MaterialMain userId={user.user.id} />;
+  return <MaterialMain />;
 }

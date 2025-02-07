@@ -31,7 +31,7 @@ export const useGetTap = (userId: string) => {
   return { tapData, tapLoading, tapError };
 };
 
-type CreateResponseType = InferResponseType<(typeof client.tap)['create']['$post']>;
+type CreateResponseType = InferResponseType<(typeof client.tap)['create']['$post'], 200>;
 type CreateRequestType = InferRequestType<(typeof client.tap)['create']['$post']>;
 /**
  * ### 创建标签

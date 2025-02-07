@@ -8,8 +8,8 @@ export interface Show {
   explanation: string;
   relativeTheme: string;
   tags: string;
-  image: string;
-  json: string;
+  type: 'template' | 'material';
+  relativeMaterial: string;
   clone: number;
 }
 // 收藏模板

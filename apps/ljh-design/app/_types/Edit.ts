@@ -1,5 +1,6 @@
 import type { Effect } from '@/app/_lib/utils';
 import * as fabric from 'fabric';
+import { SerializedGroupProps } from 'fabric';
 import material from 'material-colors';
 import type { IconType } from 'react-icons';
 import { FaCircle, FaDiamond, FaSquare, FaSquareFull } from 'react-icons/fa6';
@@ -28,7 +29,7 @@ export type ResizeOwnProps = {
   scaleY: number;
   lanczosLobes: number;
 };
-export interface InitFabicObject extends fabric.Object {
+export interface InitFabicObject extends fabric.FabricObject {
   name: string;
 }
 export interface ColorFilterProps {
@@ -659,14 +660,14 @@ export const addObject: AddObject[] = [
     title: '添加矩形',
     option: RECTANGLE_OPTION,
     addType: 'Rect',
-    icon: FaSquare,
+    icon: FaSquareFull,
   },
   {
     key: 'softRect',
     title: '添加圆角矩形',
     option: RECTANGLE_OPTION,
     addType: 'Rect',
-    icon: FaSquareFull,
+    icon: FaSquare,
     otherOption: {
       rx: 10,
       ry: 10,
@@ -810,7 +811,7 @@ export interface buildEditorProps {
   strokeColor: string;
   strokeWidth: number;
   strokeDashArray: number[];
-  selectedObject: fabric.Object[] | null;
+  selectedObject: fabric.FabricObject[] | null;
   opacity: number;
   fontFamily: string;
   fontWeight: FontWeightType;
@@ -860,7 +861,7 @@ export interface buildEditorProps {
   setStrokeWidth: (width: number) => void;
 }
 export interface Edit {
-  selectedObject: (fabric.Object | fabric.Group)[] | null;
+  selectedObject: (fabric.FabricObject | fabric.Group)[] | null;
   strokeColor: string;
   strokeWidth: number;
   fillColor: string;
@@ -882,8 +883,17 @@ export interface Edit {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
-  setMaterial: (material: fabric.Object[]) => void;
-  addMaterial: (material: fabric.Object[]) => void;
+  setMaterial: (material: fabric.FabricObject[]) => void;
+  addMaterial: (
+    material: Pick<
+      Omit<
+        fabric.GroupProps & fabric.TClassProperties<fabric.Group>,
+        keyof fabric.SerializedGroupProps
+      >,
+      'id'
+    > &
+      fabric.SerializedGroupProps,
+  ) => void;
   getActiveFilterIndex: (filter: string) => number;
   fixImageSize: (imageObj: fabric.FabricImage) => void;
   changeImageFilterSetting: (filter: string, value: Effect | null) => void;
