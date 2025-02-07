@@ -78,7 +78,7 @@ export default function TryEdit({ id, data }: { id: string; data: Board }) {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [contain, setContain] = useState<HTMLDivElement | null>(null);
   //选择的对象
-  const [selectedObject] = useState<fabric.Object[] | null>(null);
+  const [selectedObject] = useState<fabric.FabricObject[] | null>(null);
   //颜色形状初始化
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);
   const [strokeColor, setStrokeColor] = useState<string>(STROKE_COLOR);

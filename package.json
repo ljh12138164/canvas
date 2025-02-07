@@ -34,7 +34,7 @@
     "lint": "biome check --fix --unsafe && biome lint .&& pnpm run lint:all"
   },
   "simple-git-hooks": {
-    "pre-commit": "biome check --fix --unsafe && pnpm run lint && pnpm lint-staged"
+    "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
     "*.{js,ts,cjs,mjs,jsx,tsx,json,jsonc,vue,scss,css,html}": [

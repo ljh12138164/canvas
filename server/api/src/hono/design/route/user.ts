@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
-import { updatePassword, updateUser } from '../../../server/design/user/index';
+import { getUserData, updatePassword, updateUser } from '../../../server/design/user/index';
 import { getUserCollect, getUserLike } from '../../../server/design/user/index';
 
 export const user = new Hono()
@@ -52,4 +52,18 @@ export const user = new Hono()
     );
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(data);
-  });
+  })
+  .get(
+    '/data',
+    zValidator(
+      'query',
+      z.object({ startTime: z.coerce.date().optional(), endTime: z.coerce.date().optional() }),
+    ),
+    async (c) => {
+      const { auth, token } = getSupabaseAuth(c);
+      const { startTime, endTime } = c.req.valid('query');
+      const [error, data] = await to(getUserData({ token, userId: auth.sub!, startTime, endTime }));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    },
+  );

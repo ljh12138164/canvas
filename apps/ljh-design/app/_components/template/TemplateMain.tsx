@@ -1,3 +1,4 @@
+import { Card } from '@/app/_components/ui/card';
 import { DEFAULT_TEMPLATE } from '@/app/_database/user';
 import { useBoardDeleteQuery, useBoardQuery } from '@/app/_hook/query/useBoardQuery';
 import { useTemplate, useUserTemplate } from '@/app/_hook/query/useTemaplate';
@@ -6,12 +7,10 @@ import { MoreHorizontal, Pencil, PlusCircle, Trash } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import toast from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import BoardCreateFrom from '../Board/BoardCreateFrom';
 import { Response } from '../Comand/Response';
 import { Button } from '../ui/button';
-import { Card } from '../ui/card';
 import {
   Dialog,
   DialogContent,

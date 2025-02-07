@@ -7,7 +7,7 @@ import type { Sessions } from '../../_types/user';
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
   tool: Tool;
-  setSelectedObject: (object: fabric.Object[]) => void;
+  setSelectedObject: (object: fabric.FabricObject[]) => void;
   setTool: (tool: Tool) => void;
   save: (skip?: boolean, des?: string) => void;
   // userState: [number, UserState][];

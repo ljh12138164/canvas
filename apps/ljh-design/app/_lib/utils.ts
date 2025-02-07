@@ -1,12 +1,12 @@
 import type { Board, BoardData } from '@/app/_types/board';
 import { type ClassValue, clsx } from 'clsx';
+import dayjs from 'dayjs';
 import * as fabric from 'fabric';
 import localforage from 'localforage';
 import { nanoid } from 'nanoid';
 import type { RGBColor } from 'react-color';
 import { twMerge } from 'tailwind-merge';
 import type { InitFabicObject } from '../_types/Edit';
-
 // declare module 'yjs' {
 //   interface AbstractStruct {
 //     content: {
@@ -350,4 +350,32 @@ export const getUserColor = (id: string) => {
     ?.split('')
     .map((item) => item.charCodeAt(0));
   return HIGHLIGHT_COLORS[colorsNum.reduce((a, b) => a + b, 0) % HIGHLIGHT_COLORS.length];
+};
+
+/**
+ * ### 获取开始到结束时间每天的数量,默认3个月
+ * @param startTime 开始时间
+ * @param endTime 结束时间
+ * @returns 每天的数量
+ */
+export const getDateNum = (startTime?: Date, endTime?: Date) => {
+  let start: Date | number | undefined = startTime;
+  let end: Date | number | undefined = endTime;
+  // 如果没设置开始时间，设置为3个月前
+  if (!startTime && !endTime) start = dayjs().toDate().getTime() - 1000 * 60 * 60 * 24 * 30 * 3;
+  // 如果没设置结束时间，设置为今天
+  if (!endTime) end = dayjs().toDate();
+  // 如果设置了结束时间，没有设置开始时间，设置为3个月前
+  if (endTime && !startTime) {
+    start = dayjs(endTime).subtract(3, 'month').toDate();
+  }
+  const date: string[] = [];
+  let currentDate = dayjs(start);
+  const endDate = dayjs(end);
+  while (currentDate.isBefore(endDate) || currentDate.isSame(endDate, 'day')) {
+    date.push(currentDate.format('YYYY-MM-DD'));
+    currentDate = currentDate.add(1, 'day'); // 将结果赋值给 currentDate
+  }
+
+  return date;
 };

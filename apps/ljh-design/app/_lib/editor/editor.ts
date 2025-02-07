@@ -13,7 +13,7 @@ export const getWorkspace = (canvas: fabric.Canvas) =>
 /**
  * ### 居中对象
  */
-export const center = (object: fabric.Object, canvas: fabric.Canvas) => {
+export const center = (object: fabric.FabricObject, canvas: fabric.Canvas) => {
   const workspace = getWorkspace(canvas);
   //居中
   const centers = workspace?.getCenterPoint();
@@ -57,6 +57,90 @@ export const getUserState = (
  */
 export const findFabicObject = (canvas: fabric.Canvas, obj: AddFabicObject) => {
   return canvas.getObjects().find((item) => item.id === obj.id);
+};
+
+// 保存单个 Group 素材
+export const saveMaterial = (group: fabric.Group) => {
+  // 将 group 转换为 JSON 数据
+  const groupJSON = group.toObject(['id']);
+
+  // 生成预览图
+  // const clonedCanvas = new fabric.Canvas(null, {
+  //   width: group.width,
+  //   height: group.height
+  // });
+  // clonedCanvas.add(fabric.util.object.clone(group));
+  // const preview = group.toDataURL();
+  // 保存到数据库的数据结构
+  const materialData = {
+    json: groupJSON,
+    // preview: preview,
+    width: group.width,
+    height: group.height,
+    // 其他需要的元数据
+  };
+
+  return { json: materialData, id: groupJSON.id };
+};
+/**
+ * ### 生成素材缩略图
+ * @param canvas
+ * @param group
+ * @returns
+ */
+export const genMaterialPreview = async (options: any, width: number, height: number) => {
+  // 创建一个带有固定尺寸的 canvas 元素
+  const canvasContainer = document.createElement('canvas');
+  canvasContainer.style.width = `${width}px`;
+  canvasContainer.style.height = `${height}px`;
+  canvasContainer.style.backgroundColor = 'white';
+  canvasContainer.style.display = 'none';
+  // 将 canvas 临时添加到 DOM 中
+  const canvas = new fabric.Canvas(canvasContainer, {
+    controlsAboveOverlay: false,
+    selectable: false,
+    hasControls: false,
+    selection: false, // 禁止多选
+    hoverCursor: 'pointer', // 鼠标悬停时显示点击手型
+    renderOnAddRemove: true,
+    interactive: true, // 禁止所有交互
+  });
+  canvas.setDimensions({
+    width,
+    height,
+  });
+  const group = (await fabric.util.enlivenObjects([options])) as fabric.Group[];
+  const groupElement = group[0];
+  groupElement.set({
+    selectable: false,
+    evented: true,
+    hasControls: false,
+    hasBorders: false,
+    lockMovementX: true,
+    lockMovementY: true,
+  });
+  // 获取容器尺寸
+  const containerWidth = width;
+  const containerHeight = height;
+  // 计算缩放比例
+  const scaleX = containerWidth / groupElement.width!;
+  const scaleY = containerHeight / groupElement.height!;
+  const scale = Math.min(scaleX, scaleY) * 0.9;
+
+  // 设置group的缩放和位置
+  groupElement.scale(scale);
+
+  canvas.add(groupElement);
+  canvas._centerObject(groupElement, canvas.getCenterPoint());
+  canvas.renderAll();
+  // 获取图片数据
+  const dataURL = canvasContainer.toDataURL();
+
+  // 清理：移除临时 canvas 元素
+  canvas.dispose();
+  canvasContainer.remove();
+
+  return dataURL;
 };
 
 /**

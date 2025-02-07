@@ -40,6 +40,9 @@ export const error400 = (c: Context, message: string) => {
  * @returns
  */
 export const errorCheck = (error: Error) => {
+  if (error.message === '类型错误') return 400;
+  if (error.message === '主题不能为空') return 400;
+  if (error.message === '素材不能为空') return 400;
   if (error.message === '未找到工作区') return 404;
   if (error.message === '工作区不存在') return 404;
   if (error.message === '未找到用户') return 404;

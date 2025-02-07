@@ -20,7 +20,6 @@ import {
 import './tiptap.css';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-import type { UseFormSetError, UseFormSetValue } from 'react-hook-form';
 import TiptapToolbar from './TiptapToolbar';
 
 const Tiptap = ({
@@ -30,23 +29,12 @@ const Tiptap = ({
   setError,
 }: {
   content: string;
-  setValue: UseFormSetValue<{
-    explanation: string;
-    title: string;
-    relativeTheme: string;
-    tap?: string[];
-  }>;
+  setValue: any;
   editorab?: boolean;
-  setError: UseFormSetError<{
-    explanation: string;
-    title: string;
-    tap?: string[];
-    relativeTheme: string;
-  }>;
+  setError: any;
 }) => {
   const { theme } = useTheme();
   const [editor, setEditor] = useState<Editor | null>(null);
-  // @ts-ignore
   useEffect(() => {
     let activeTheme = theme;
     if (theme === 'system') {

@@ -3,7 +3,7 @@ import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 interface SiderBarItemProps {
   label: string;
-  Icon: LucideIcon;
+  Icon: LucideIcon | React.ElementType;
   href: string;
   isActive?: boolean;
   closeRef?: React.RefObject<HTMLButtonElement | null>;
