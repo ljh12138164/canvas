@@ -1,5 +1,6 @@
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
+import { useUser } from '@/app/_store/auth';
 import { useQuery } from '@tanstack/react-query';
 import type { InferResponseType } from 'hono';
 import { useRouter } from 'next/navigation';
@@ -11,12 +12,13 @@ export type UserResponseType = InferResponseType<(typeof client.user.like)['$get
  */
 export const useUserLike = (enabled: boolean, search: string) => {
   const router = useRouter();
+  const { user } = useUser();
   const { data: userLike, isLoading: userLikeLoading } = useQuery<
     UserResponseType,
     Error,
     UserResponseType
   >({
-    queryKey: ['like', search],
+    queryKey: ['like', search, user?.user.user_metadata.sub],
     enabled,
     queryFn: async () => {
       const token = await getNewToken();
@@ -50,12 +52,13 @@ export type UserCollectionResponseType = InferResponseType<
  */
 export const useUserCollection = (enabled: boolean, search: string) => {
   const router = useRouter();
+  const { user } = useUser();
   const { data: userCollection, isLoading: userCollectionLoading } = useQuery<
     UserCollectionResponseType,
     Error,
     UserCollectionResponseType
   >({
-    queryKey: ['collection', search],
+    queryKey: ['collection', search, user?.user.user_metadata.sub],
     enabled,
     queryFn: async () => {
       const token = await getNewToken();
@@ -87,12 +90,13 @@ export type UserDataResponseType = InferResponseType<(typeof client.user.data)['
  */
 export const useUserData = (enabled: boolean, startTime?: Date, endTime?: Date) => {
   const router = useRouter();
+  const { user } = useUser();
   const { data: userData, isLoading: userDataLoading } = useQuery<
     UserDataResponseType,
     Error,
     UserDataResponseType
   >({
-    queryKey: ['userData', startTime, endTime],
+    queryKey: ['userData', user?.user.user_metadata.sub, startTime, endTime],
     enabled,
     queryFn: async () => {
       const token = await getNewToken();

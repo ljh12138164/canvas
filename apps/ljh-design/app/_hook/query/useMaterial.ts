@@ -1,5 +1,6 @@
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
+import { useUser } from '@/app/_store/auth';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
 import { useRouter } from 'next/navigation';
@@ -10,14 +11,17 @@ export type MaterialResponseType = InferResponseType<typeof client.material.mate
  * @returns
  */
 export const useMaterial = () => {
+  const router = useRouter();
+  const { user } = useUser();
   const { data, isLoading, isFetching } = useQuery<
     MaterialResponseType,
     Error,
     MaterialResponseType
   >({
-    queryKey: ['material'],
+    queryKey: ['material', user?.user.user_metadata.sub],
     queryFn: async () => {
       const token = await getNewToken();
+      if (!token) router.push('/sign-in');
       const response = await client.material.material.$get(undefined, {
         headers: {
           Authorization: `Bearer ${token}`,

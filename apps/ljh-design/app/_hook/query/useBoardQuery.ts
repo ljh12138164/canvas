@@ -1,5 +1,6 @@
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
+import { useUser } from '@/app/_store/auth';
 import { type EditType, PAGE_SIZE } from '@/app/_types/Edit';
 import type { Board } from '@/app/_types/board';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -57,8 +58,9 @@ export const useBoardQuery = () => {
  */
 export const useBoardEditQuery = ({ id, type }: { id: string | undefined; type: EditType }) => {
   const router = useRouter();
+  const { user } = useUser();
   const { data, isLoading, error } = useQuery<Board[], Error, Board[]>({
-    queryKey: ['project', id],
+    queryKey: ['project', id, user?.user.user_metadata.sub],
     // 如果id为undefined，则不查询
     enabled: !!id,
     queryFn: async () => {
@@ -96,9 +98,10 @@ export const useBoardEditQuery = ({ id, type }: { id: string | undefined; type: 
  */
 export const useBoardUserQuery = ({ userId }: { userId: string }) => {
   const router = useRouter();
+  const { user } = useUser();
   const { data, isLoading, error, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['board', userId],
+      queryKey: ['board', userId, user?.user.user_metadata.sub],
       queryFn: async ({ pageParam }) => {
         const token = await getNewToken();
         if (!token) router.push('/sign-in');
@@ -280,8 +283,9 @@ export const useBoardCopyQuery = () => {
  */
 export const useBoardListQuery = () => {
   const router = useRouter();
+  const { user } = useUser();
   const { data, isLoading, error, isFetching } = useQuery({
-    queryKey: ['boardList'],
+    queryKey: ['boardList', user?.user.user_metadata.sub],
     queryFn: async () => {
       const token = await getNewToken();
       if (!token) router.push('/sign-in');

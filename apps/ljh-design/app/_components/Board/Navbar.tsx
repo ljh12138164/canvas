@@ -42,8 +42,10 @@ const NavBar = () => {
                 <span className="text-sm text-muted-foreground hidden">侧边栏</span>
               </SheetDescription>
             </SheetHeader>
-            <SheetClose ref={closeRef} />
-            <SiderBar hide={isMobile} closeRef={closeRef} />
+            <section>
+              <SheetClose ref={closeRef} />
+              <SiderBar hide={isMobile} closeRef={closeRef} />
+            </section>
           </SheetContent>
         </Sheet>
       )}

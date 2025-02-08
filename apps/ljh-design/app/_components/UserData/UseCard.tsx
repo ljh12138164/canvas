@@ -1,6 +1,9 @@
 import type { UserDataResponseType } from '@/app/_hook/query/useUser';
 import { useMemo } from 'react';
 import { AreaChart, type AreaChartType } from '../Echarts/AreaChart';
+import { LegendChart } from '../Echarts/LegendChart';
+import { LineCharts } from '../Echarts/LineCharts';
+import { PicChart } from '../Echarts/PicChart';
 import HeadCard from './HeadCard';
 interface UseCardProps {
   userData: UserDataResponseType;
@@ -22,6 +25,13 @@ export default function UseCard({ userData, startTime, endTime, genData }: UseCa
     return userData.board.filter((item) => !item.isTemplate).length ?? 0;
   }, [userData]);
 
+  const picGenData = useMemo(() => {
+    return [
+      { label: '画板', type: 'board', visitors: totalBoard, fill: 'hsl(var(--chart-1))' },
+      { label: '模板', type: 'templates', visitors: totalTemplate, fill: 'hsl(var(--chart-2))' },
+      { label: '素材', type: 'material', visitors: totalCreate, fill: 'hsl(var(--chart-3))' },
+    ];
+  }, [totalBoard, totalTemplate, totalCreate]);
   return (
     <>
       <HeadCard
@@ -38,6 +48,41 @@ export default function UseCard({ userData, startTime, endTime, genData }: UseCa
         endTime={endTime}
         selectedType={['templates', 'material', 'board']}
       />
+      <LineCharts
+        startTime={startTime}
+        endTime={endTime}
+        selectedType={['templates', 'material', 'board']}
+        genData={genData}
+      />
+      <LegendChart
+        startTime={startTime}
+        endTime={endTime}
+        genData={genData}
+        selectedType={[
+          {
+            dataKey: 'templates',
+            type: 'natural',
+            fill: 'hsl(var(--chart-1))',
+            stroke: 'hsl(var(--chart-1))',
+            stackId: 'a',
+          },
+          {
+            dataKey: 'material',
+            type: 'natural',
+            fill: 'hsl(var(--chart-2))',
+            stroke: 'hsl(var(--chart-2))',
+            stackId: 'a',
+          },
+          {
+            dataKey: 'board',
+            type: 'natural',
+            fill: 'hsl(var(--chart-3))',
+            stroke: 'hsl(var(--chart-3))',
+            stackId: 'a',
+          },
+        ]}
+      />
+      <PicChart startTime={startTime} endTime={endTime} genData={picGenData} type="user" />
     </>
   );
 }

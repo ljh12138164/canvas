@@ -1,5 +1,6 @@
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
+import { useUser } from '@/app/_store/auth';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -46,6 +47,7 @@ export type GetFormueResponseType = InferResponseType<
  * @returns 设计论坛
  */
 export const useGetFormue = () => {
+  const { user } = useUser();
   const searchParams = useSearchParams();
   const search = searchParams.get('search');
   const {
@@ -55,7 +57,7 @@ export const useGetFormue = () => {
     isFetchingNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: ['formue', search ?? ''],
+    queryKey: ['formue', search ?? '', user?.user.user_metadata.sub],
     queryFn: async ({ pageParam }) => {
       const res = await client.showPublic.getRandom.$get({
         // @ts-ignore
@@ -82,12 +84,13 @@ export type GetShowResponseType = InferResponseType<(typeof client.showPublic.ge
  * @returns 展示
  */
 export const useGetShow = (id: string) => {
+  const { user } = useUser();
   const {
     data: showData,
     isLoading: showLoading,
     isFetching: showFetching,
   } = useQuery<GetShowResponseType, Error, GetShowResponseType>({
-    queryKey: ['show', id],
+    queryKey: ['show', id, user?.user.user_metadata.sub],
     queryFn: async () => {
       const token = await getNewToken();
       const res = await client.showPublic.get.$get(

@@ -10,7 +10,9 @@ const SiderBar = ({
 }) => {
   return (
     <aside
-      className={`bg-muted transition-all ${!hide ? 'hidden' : 'flex'}  duration-300s fixed flex-col w-[300px] left-0 shrink-0 h-full lg:flex`}
+      className={`bg-muted transition-all ${!hide ? 'hidden' : 'flex'}  duration-300s fixed flex-col w-[300px] left-0 shrink-0 ${
+        !hide ? 'h-full' : 'h-[calc(100vh-100px)]'
+      } lg:flex`}
     >
       {!hide && (
         <div className="m-2 flex items-center gap-x-4">

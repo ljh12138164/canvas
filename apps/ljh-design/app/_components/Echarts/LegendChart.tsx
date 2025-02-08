@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Card,
   CardContent,
@@ -9,12 +10,15 @@ import {
 import {
   type ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/app/_components/ui/chart';
 import dayjs from 'dayjs';
-import { useMemo, useState } from 'react';
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
+import { useMemo } from 'react';
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
+import type { CurveType } from 'recharts/types/shape/Curve';
 
 const chartConfig = {
   templates: {
@@ -47,24 +51,18 @@ export type AreaChartType = keyof typeof chartConfig;
 interface AreaChartProps {
   startTime: Date | undefined;
   endTime: Date | undefined;
-  selectedType: AreaChartType[];
+
+  selectedType: {
+    dataKey: AreaChartType;
+    type: CurveType;
+    fill: string;
+    stroke: string;
+    stackId: string;
+  }[];
   genData: Record<AreaChartType | 'date', number | string>[];
 }
 
-export function AreaChart({ startTime, endTime, selectedType, genData }: AreaChartProps) {
-  const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>(selectedType[0]);
-
-  const total = useMemo(
-    () => ({
-      board: genData.reduce((acc, curr) => acc + Number(curr.board), 0),
-      templates: genData.reduce((acc, curr) => acc + Number(curr.templates), 0),
-      material: genData.reduce((acc, curr) => acc + Number(curr.material), 0),
-      upvotes: genData.reduce((acc, curr) => acc + Number(curr.upvotes), 0),
-      collections: genData.reduce((acc, curr) => acc + Number(curr.collections), 0),
-      show: genData.reduce((acc, curr) => acc + Number(curr.show), 0),
-    }),
-    [genData],
-  );
+export function LegendChart({ startTime, endTime, selectedType, genData }: AreaChartProps) {
   const showTiile = useMemo(() => {
     if (startTime && !endTime) return `${dayjs(startTime).format('YYYY年MM月DD日')}之后的数据`;
     if (startTime && endTime)
@@ -78,7 +76,7 @@ export function AreaChart({ startTime, endTime, selectedType, genData }: AreaCha
       <Card>
         <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
           <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-            <CardTitle>使用统计柱状图</CardTitle>
+            <CardTitle>堆叠面积图</CardTitle>
             <CardDescription>显示{showTiile}</CardDescription>
           </div>
         </CardHeader>
@@ -89,45 +87,30 @@ export function AreaChart({ startTime, endTime, selectedType, genData }: AreaCha
     );
   return (
     <Card>
-      <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>使用统计柱状图</CardTitle>
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+        <div className="grid flex-1 gap-1 text-center sm:text-left">
+          <CardTitle>堆叠面积图</CardTitle>
           <CardDescription>显示{showTiile}</CardDescription>
         </div>
-        <div className="flex">
-          {selectedType.map((key) => {
-            const chart = key as keyof typeof chartConfig;
-            return (
-              <button
-                type="button"
-                key={chart}
-                data-active={activeChart === chart}
-                className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
-                onClick={() => setActiveChart(chart)}
-              >
-                <span className="text-xs text-muted-foreground">{chartConfig[chart].label}</span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
-                </span>
-              </button>
-            );
-          })}
-        </div>
       </CardHeader>
-      <CardContent className="px-2 sm:p-6">
+      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
-          {/* 图表 */}
-          <BarChart
-            accessibilityLayer
-            data={genData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            {/* 网格线 */}
+          <AreaChart data={genData}>
+            <defs>
+              <linearGradient id="fillChart1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0.1} />
+              </linearGradient>
+              <linearGradient id="fillChart2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0.1} />
+              </linearGradient>
+              <linearGradient id="fillChart3" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--chart-3)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--chart-3)" stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
             <CartesianGrid vertical={false} />
-            {/* X轴 */}
             <XAxis
               dataKey="date"
               tickLine={false}
@@ -142,27 +125,32 @@ export function AreaChart({ startTime, endTime, selectedType, genData }: AreaCha
                 });
               }}
             />
-            {/* 工具提示 */}
             <ChartTooltip
+              cursor={false}
               content={
                 <ChartTooltipContent
-                  className="w-[150px]"
-                  // nameKey="label"
-                  // labelKey={chartConfig[activeChart].label}
-                  // label={chartConfig[activeChart].label}
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString('zh-CN', {
                       month: 'short',
                       day: 'numeric',
-                      year: 'numeric',
                     });
                   }}
+                  indicator="dot"
                 />
               }
             />
-            {/* 柱状图 */}
-            <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
-          </BarChart>
+            {selectedType.map((item) => (
+              <Area
+                key={item.dataKey}
+                dataKey={item.dataKey}
+                type={item.type}
+                fill={item.fill}
+                stroke={item.stroke}
+                stackId={item.stackId}
+              />
+            ))}
+            <ChartLegend content={<ChartLegendContent />} />
+          </AreaChart>
         </ChartContainer>
       </CardContent>
     </Card>

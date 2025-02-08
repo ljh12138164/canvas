@@ -18,6 +18,16 @@
   }
 }
 
+/* 写个回到底部的显示“回到底部”的弹出动画 */
+@keyframes scroll-to-bottom {
+  to {
+    transform: translateY(-50%);
+  }
+  from {
+    transform: translateY(0);
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -29,6 +39,10 @@
 
   .animate-draw-path {
     animation: draw-path 1.5s ease-out infinite;
+  }
+
+  .animate-scroll-to-bottom {
+    animation: scroll-to-bottom 0.35s ease-in-out;
   }
 }
 
@@ -54,9 +68,9 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
+    --chart-1: 173 58% 39%;
+    --chart-2: 12 76% 61%;
+    --chart-3: 197 37% 44%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
   }
@@ -82,29 +96,13 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
     --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
+    --chart-5: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --chart-2: 340 75% 55%;
   }
 }
-@layer base {
-  :root {
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-  }
 
-  .dark {
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-}
 @layer base {
   * {
     @apply border-border;

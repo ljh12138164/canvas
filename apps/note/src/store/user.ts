@@ -7,9 +7,9 @@ const useUser = defineStore('user', () => {
   const setIsLoading = (value: boolean) => (isLoading.value = value);
   // 为了完整类型推理，推荐使用箭头函数
   const user = ref<{
-    session: Sessions;
+    session: Sessions['session'];
   } | null>(null);
-  const setUserData = (data: { session: Sessions }) => (user.value = data);
+  const setUserData = (data: { session: Sessions['session'] }) => (user.value = data);
 
   const userData = computed(() => user.value);
   const initLoading = computed(() => isLoading.value);

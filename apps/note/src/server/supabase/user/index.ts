@@ -1,4 +1,6 @@
 import { DEFAULT_AVATAR, USER_IMAGE_URL } from '@/lib';
+import type { Sessions } from '@/types/user';
+import { to } from 'await-to-js';
 import { nanoid } from 'nanoid';
 import { supabaseNote } from '../index';
 /**
@@ -39,19 +41,33 @@ export const deleteImageClound = async ({
 /**
  * ## 获取用户消息
  */
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<Sessions | null> {
+  let data = null;
   // 获取用户信息
-  try {
-    const { data: session } = await supabaseNote.auth.getSession();
-    if (!session?.session) throw new Error('未登录');
-    //获取用户权限
-    const { data, error } = await supabaseNote.auth.getUser();
-
-    if (error) throw new Error('未登录');
-    return { user: data?.user, session: session.session };
-  } catch {
-    throw new Error('未登录');
+  const [error, sessions] = await to(supabaseNote.auth.getSession());
+  if (error) return null;
+  if (!sessions) return null;
+  let postSession = sessions.data.session;
+  // 如果session过期前5分钟，则更新session
+  if (
+    postSession?.expires_at &&
+    postSession.expires_at < +new Date().getTime().toString().slice(0, 10) + 5 * 60
+  ) {
+    // 更新session
+    const [error, data] = await to(supabaseNote.auth.getUser());
+    if (error) return null;
+    if (!data) return null;
+    // 更新token成功获取session
+    const [errors, sessions] = await to(supabaseNote.auth.getSession());
+    if (errors) return null;
+    if (!sessions) return null;
+    postSession = sessions.data.session;
   }
+  // 如果更新token失败，则返回null
+  if (!postSession) return null;
+  data = { user: postSession.user, session: postSession } as Sessions;
+  //获取用户权限
+  return data;
 }
 /**
  * ## 登出

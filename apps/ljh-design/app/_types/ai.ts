@@ -18,3 +18,17 @@ export interface Ai {
   // 会话列表
   messages: Message[];
 }
+
+export type AiBoard = {
+  id: string;
+  name: string;
+  userId: string;
+  created_at: string;
+  updated_at: string;
+  history:
+    | {
+        role: 'user' | 'model';
+        parts: { text: string }[];
+      }[]
+    | null;
+};
