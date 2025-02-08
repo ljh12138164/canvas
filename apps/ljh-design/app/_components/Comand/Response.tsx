@@ -19,6 +19,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/app/_components/ui/drawer';
+import { cn } from '@/app/_lib/utils';
 import { type ReactNode, type RefObject, useImperativeHandle, useState } from 'react';
 import { useMediaQuery } from '../../_hook/useMediaQuery';
 
@@ -28,8 +29,10 @@ interface DrawerDialogProps {
   ref: RefObject<{ closeModel: () => void } | null>;
   onConfirm?: () => void;
   myTrigger?: ReactNode;
+  className?: string;
   disabled?: boolean;
   children?: ReactNode;
+  showDescription?: boolean;
   showFooter?: boolean;
   variant?: 'default' | 'destructive';
 }
@@ -65,6 +68,8 @@ export function Response({
   ref,
   variant = 'default',
   myTrigger,
+  className,
+  showDescription,
   disabled = false,
   showFooter = true,
 }: DrawerDialogProps) {
@@ -78,7 +83,12 @@ export function Response({
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
+        <DialogTrigger
+          asChild
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           {myTrigger ? (
             myTrigger
           ) : (
@@ -87,11 +97,14 @@ export function Response({
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className={cn(isDesktop ? 'sm:max-w-[425px]' : '')}>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription
-              className={variant === 'destructive' ? 'text-destructive font-bold' : ''}
+              className={cn(
+                variant === 'destructive' ? 'text-destructive font-bold' : '',
+                !showDescription ? 'hidden' : '',
+              )}
             >
               {description}
             </DialogDescription>
@@ -120,7 +133,14 @@ export function Response({
       <DrawerContent className="p-4">
         <DrawerHeader className="text-left">
           <DrawerTitle>{title}</DrawerTitle>
-          <DrawerDescription>{description}</DrawerDescription>
+          <DrawerDescription
+            className={cn(
+              variant === 'destructive' ? 'text-destructive font-bold' : '',
+              !showDescription ? 'hidden' : '',
+            )}
+          >
+            {description}
+          </DrawerDescription>
         </DrawerHeader>
         {children}
         {showFooter && (

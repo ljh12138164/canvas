@@ -1,5 +1,6 @@
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
+import { useUser } from '@/app/_store/auth';
 import { useQuery } from '@tanstack/react-query';
 import type { InferResponseType } from 'hono';
 import { useRouter } from 'next/navigation';
@@ -38,12 +39,13 @@ export type GetUserTemplateResponseType = InferResponseType<
  */
 export const useUserTemplate = () => {
   const router = useRouter();
+  const { user } = useUser();
   const {
     data: dataUserTemplate,
     isLoading: isLoadingUserTemplate,
     error: errorUserTemplate,
   } = useQuery<GetUserTemplateResponseType, Error>({
-    queryKey: ['templateUser'],
+    queryKey: ['templateUser', user?.user.user_metadata.sub],
     queryFn: async () => {
       const token = await getNewToken();
       if (!token) router.push('/sign-in');

@@ -3,7 +3,7 @@ import { type UserDataResponseType, useUserData } from '@/app/_hook/query/useUse
 import { getDateNum } from '@/app/_lib/utils';
 import { useMemoizedFn } from 'ahooks';
 import dayjs from 'dayjs';
-import { BarChart, User } from 'lucide-react';
+import { BarChart, User, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { zhCN } from 'react-day-picker/locale';
@@ -111,6 +111,11 @@ export default function DataShow() {
       const date = getDateNum(startTime, endTime);
       return genDataFn(date, userData);
     }
+    // 如果设置了开始时间和结束时间
+    if (startTime && endTime) {
+      const date = getDateNum(startTime, endTime);
+      return genDataFn(date, userData);
+    }
     return [];
   }, [userData]);
 
@@ -141,8 +146,16 @@ export default function DataShow() {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline">
-                开始时间
-                {startTime ? `: ${startTime.toLocaleDateString()}` : ''}
+                <span>开始时间</span>
+                {startTime ? `: ${dayjs(startTime).format('YYYY-MM-DD')}` : ''}
+                {startTime && (
+                  <div
+                    className="text-xs text-muted-foreground"
+                    onClick={() => setStartTime(undefined)}
+                  >
+                    <X />
+                  </div>
+                )}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[20rem]">
@@ -151,7 +164,14 @@ export default function DataShow() {
                 locale={zhCN}
                 selected={startTime}
                 onSelect={handleStartSelect}
-                footer={endTime ? `已选结束时间: ${dayjs(endTime).format('YYYY-MM-DD')}` : ''}
+                footer={
+                  <div className="mt-2">
+                    <div>
+                      开始时间: {startTime ? dayjs(startTime).format('YYYY-MM-DD') : '未选择'}
+                    </div>
+                    <div>结束时间: {endTime ? dayjs(endTime).format('YYYY-MM-DD') : '未选择'}</div>
+                  </div>
+                }
               />
             </PopoverContent>
           </Popover>
@@ -160,8 +180,16 @@ export default function DataShow() {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline">
-                结束时间
-                {endTime ? `: ${endTime.toLocaleDateString()}` : ''}
+                <span>结束时间</span>
+                {endTime ? `: ${dayjs(endTime).format('YYYY-MM-DD')}` : ''}
+                {endTime && (
+                  <div
+                    className="text-xs text-muted-foreground"
+                    onClick={() => setEndTime(undefined)}
+                  >
+                    <X />
+                  </div>
+                )}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[20rem]">
@@ -170,7 +198,14 @@ export default function DataShow() {
                 locale={zhCN}
                 selected={endTime}
                 onSelect={handleEndSelect}
-                footer={startTime ? `已选开始时间: ${dayjs(startTime).format('YYYY-MM-DD')}` : ''}
+                footer={
+                  <div className="mt-2">
+                    <div>
+                      开始时间: {startTime ? dayjs(startTime).format('YYYY-MM-DD') : '未选择'}
+                    </div>
+                    <div>结束时间: {endTime ? dayjs(endTime).format('YYYY-MM-DD') : '未选择'}</div>
+                  </div>
+                }
               />
             </PopoverContent>
           </Popover>

@@ -8,11 +8,6 @@ export interface UserMeta {
   phone_verified: boolean;
   sub: string;
 }
-export type Sessions = {
-  user: User & {
-    user_metadata: UserMeta;
-  };
-} & Session;
 
 export interface Profiles {
   id: string;
@@ -20,3 +15,10 @@ export interface Profiles {
   image: string;
   email: string;
 }
+
+export type Sessions = {
+  user: User & {
+    user_metadata: UserMeta & Profiles;
+  };
+  session: Session;
+};

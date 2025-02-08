@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { ai } from './route/ai';
 import { answers } from './route/answers';
 import board from './route/board';
 import { collections } from './route/collections';
@@ -10,7 +11,6 @@ import tap from './route/tap';
 import template from './route/template';
 import { upvotes } from './route/upvote';
 import { user } from './route/user';
-
 export const design = new Hono()
   .route('/showPublic', showPublic)
   .route('/image', image)
@@ -22,4 +22,5 @@ export const design = new Hono()
   .route('/upvote', upvotes)
   .route('/template', template)
   .route('/answers', answers)
-  .route('/material', material);
+  .route('/material', material)
+  .route('/ai', ai);

@@ -10,7 +10,7 @@ const SiderBarRoutes = ({
 }) => {
   const pathname = usePathname();
   return (
-    <section className="flex flex-col gap-y-4 flex-1">
+    <section className="flex flex-col gap-y-4 flex-1 h-full">
       <div className="px-4">
         <Separator />
       </div>

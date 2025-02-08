@@ -13,8 +13,8 @@ export default function UserDataMain() {
   if (!user) router.push('/sign-in');
 
   return (
-    <section className="w-full h-full">
-      <ScrollArea className="h-full w-full flex flex-col gap-4 space-y-4">
+    <section className="w-full h-full p-2">
+      <ScrollArea className="h-full w-full flex flex-col gap-4 space-y-4 p-4">
         <DataShow />
       </ScrollArea>
     </section>

@@ -63,7 +63,7 @@ export async function routerCheckLogin(
     } else {
       // 用户已登录
       if (data?.session) {
-        setUserData({ session: data?.session as Sessions });
+        setUserData({ session: (data as Sessions).session });
       }
       // 已登录用户访问登录页时重定向到首页
       if (to.path === '/login') return next('/');
