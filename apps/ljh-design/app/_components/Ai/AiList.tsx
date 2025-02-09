@@ -2,6 +2,7 @@ import { Button } from '@/app/_components/ui/button';
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { Skeleton } from '@/app/_components/ui/skeleton';
 import { useAiSessionDelete, useAiSessionList } from '@/app/_hook/query/useAi';
+import { cn } from '@/app/_lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Trash } from 'lucide-react';
@@ -11,7 +12,13 @@ import { useRef } from 'react';
 import { Response } from '../Comand/Response';
 import { Card } from '../ui/card';
 
-export default function AiList() {
+export default function AiList({
+  type = 'board',
+  onClick,
+}: {
+  type?: 'board' | 'sider';
+  onClick?: (id: string) => void;
+}) {
   const router = useRouter();
   const responseRef = useRef<{ closeModel: () => void }>(null);
   const queryClient = useQueryClient();
@@ -41,12 +48,16 @@ export default function AiList() {
   }
 
   return (
-    <ScrollArea className="h-screen">
+    <ScrollArea className={cn('h-screen', type === 'sider' && 'h-full')}>
       <div className="space-y-2 p-4">
         {getAiSessionList?.map((chat) => (
           <Card
             onClick={() => {
-              router.push(`/board/ai/${chat.id}`);
+              if (type === 'board') {
+                router.push(`/board/ai/${chat.id}`);
+              } else {
+                onClick?.(chat.id);
+              }
             }}
             key={chat.id}
             className="flex items-center justify-between rounded-lg border p-3 hover:bg-gray-100 cursor-pointer"

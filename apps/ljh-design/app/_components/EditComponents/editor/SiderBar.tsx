@@ -14,8 +14,9 @@ interface SiderBarProps {
   acitiveTool: Tool;
   onChangeActiveTool: (tool: Tool) => void;
   type: EditType;
+  login?: boolean;
 }
-const SiderBar = ({ acitiveTool, onChangeActiveTool, type }: SiderBarProps) => {
+const SiderBar = ({ acitiveTool, onChangeActiveTool, type, login = true }: SiderBarProps) => {
   return (
     <aside
       id="editSider"
@@ -72,14 +73,16 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool, type }: SiderBarProps) => {
             }}
           />
           {/* ai */}
-          <SiderBarItem
-            icon={LuMessageSquare}
-            label="AI"
-            isActive={acitiveTool === Tool.Ai}
-            onClick={() => {
-              onChangeActiveTool(Tool.Ai);
-            }}
-          />
+          {login && (
+            <SiderBarItem
+              icon={LuMessageSquare}
+              label="AI"
+              isActive={acitiveTool === Tool.Ai}
+              onClick={() => {
+                onChangeActiveTool(Tool.Ai);
+              }}
+            />
+          )}
           {/* 设置 */}
           <SiderBarItem
             icon={LuSettings}

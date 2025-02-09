@@ -125,12 +125,13 @@ export const getShow = async (
     collections: null;
     isUpvote: boolean;
     isCollect: boolean;
+    material: Material;
   }
 > => {
   if (userId && token) {
     const { data, error } = await supabaseDesign(token)
       .from('show')
-      .select('*,answers(*,profiles(*)),profiles(*),upvotes(*),collections(*),board(*)')
+      .select('*,answers(*,profiles(*)),profiles(*),upvotes(*),collections(*),board(*),material(*)')
       .eq('id', id);
     if (error) throw new Error('服务器错误');
     // 判断是否收藏和点赞
@@ -146,7 +147,7 @@ export const getShow = async (
   }
   const { data, error } = await supabaseDesignPublic
     .from('show')
-    .select('*,answers(*),profiles(*),upvotes(*),board(*)')
+    .select('*,answers(*),profiles(*),upvotes(*),board(*),material(*)')
     .eq('id', id);
   if (error) throw new Error('服务器错误');
   return data[0];

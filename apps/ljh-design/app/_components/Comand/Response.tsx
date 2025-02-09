@@ -27,9 +27,8 @@ interface DrawerDialogProps {
   title: string;
   description: string;
   ref: RefObject<{ closeModel: () => void } | null>;
-  onConfirm?: () => void;
+  onConfirm?: () => void | Promise<void>;
   myTrigger?: ReactNode;
-  className?: string;
   disabled?: boolean;
   children?: ReactNode;
   showDescription?: boolean;
@@ -68,7 +67,6 @@ export function Response({
   ref,
   variant = 'default',
   myTrigger,
-  className,
   showDescription,
   disabled = false,
   showFooter = true,

@@ -49,6 +49,7 @@ export const errorCheck = (error: Error) => {
   if (error.message === '未找到资源') return 404;
   if (error.message === '无权限') return 403;
   if (error.message === '服务器错误') return 500;
+  if (error.message === '用户名或密码错误') return 401;
   if (error.message === '已加入' || error.message === '已加入工作区') return 400;
 
   return 400;

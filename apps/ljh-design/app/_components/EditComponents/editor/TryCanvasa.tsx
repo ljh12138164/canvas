@@ -15,9 +15,8 @@ import useKeyBoard from '@/app/_hook/edior/useKeyBoard';
 import { useLoading } from '@/app/_hook/edior/useLoding';
 import useResponse from '@/app/_hook/edior/useResponse';
 import { useWindowEvent } from '@/app/_hook/edior/useWindowEvent';
-import { useBoardAutoSaveQuery } from '@/app/_hook/query/useBoardQuery';
 import { buildEditor } from '@/app/_store/editor';
-import { useSave } from '@/app/_store/save';
+import type { Edit } from '@/app/_types/Edit';
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -39,28 +38,16 @@ import {
   STROKE_WIDTH,
   Tool,
 } from '@/app/_types/Edit';
-import type { Edit, EditType } from '@/app/_types/Edit';
 import type { Board } from '@/app/_types/board';
-import type { Sessions } from '@/app/_types/user';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
-import { debounce } from 'lodash';
 // import { debounce } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TemplateSiderbar } from '../asider/TemplateSiderbar';
 // 画布服务器
-const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: EditType }) => {
-  const { setCloudSave } = useSave();
+const TrtCanvas = ({ data }: { data?: Board }) => {
   // 初始化
   const [isLoading, setLoading] = useState<boolean>(true);
-  // 默认图片
-  const defaultImage = useRef(data?.image as string);
-  // const userData = useRef<DefalutUser>({
-  //   id: user.user.id,
-  //   name: user.user.user_metadata.name,
-  //   color: getUserColor(user.user.id),
-  //   image: user.user.user_metadata.image,
-  // });
   // 画板初始数据
   const initWidth = useRef(data?.width);
   const initHeight = useRef(data?.height);
@@ -69,44 +56,9 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
   const containEl = useRef<HTMLDivElement>(null);
   // 画布
   const canvasEl = useRef<HTMLCanvasElement>(null);
-  const { isPending, mutate } = useBoardAutoSaveQuery({ id: data?.id });
 
   // 保存
-  const debounceMutate = useMemo(() => {
-    if (type === 'material') return;
-    if (!data?.id) return;
-    return debounce(
-      (newData: {
-        json: string;
-        width: number;
-        height: number;
-        image: string;
-      }) => {
-        if (isPending) return;
-        // 保存
-        mutate(
-          {
-            json: {
-              json: newData.json,
-              defaultImage: defaultImage.current,
-              image: newData.image,
-              width: newData.width,
-              height: newData.height,
-              id: data.id,
-            },
-          },
-          {
-            onSuccess: (data) => {
-              // 更新
-              defaultImage.current = data.image;
-              setCloudSave(true);
-            },
-          },
-        );
-      },
-      5000,
-    );
-  }, []);
+  // const debounceMutate = useMemo(() => {}, []);
 
   // 画布初始化
   const { init } = useCanvas({
@@ -153,7 +105,6 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
   const { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory } = useHistoty({
     canvas,
     authZoom,
-    debounceMutate,
   });
   // 初始化
   useLoading({
@@ -180,7 +131,7 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
     isLoading,
     tool,
     save,
-    user,
+    user: undefined,
     setSelectedObject,
     setTool,
     // websockets,
@@ -196,7 +147,6 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
     save,
     copy,
     pasty,
-    isPending,
   });
 
   // 工具栏
@@ -235,7 +185,7 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
         canvasHistory: canvasHistory.current,
         authZoom,
         // yMaps,
-        userId: user.user.id,
+        userId: undefined,
         pasty,
         save,
         canRedo,
@@ -320,28 +270,40 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
       }}
     >
       <NavBar
-        userId={user.user.id}
-        isPending={isPending}
+        userId={undefined}
         editor={editor()}
         activeTool={tool}
-        type={type}
+        type={'board'}
         onChangeTool={onChangeActive}
         // userState={userState}
       />
       <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
-        <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} type={type} />
+        <SiderBar
+          acitiveTool={tool}
+          onChangeActiveTool={onChangeActive}
+          type={'board'}
+          login={false}
+        />
         <TextSidebar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
-        <ShapeSidle editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
+        <ShapeSidle
+          editor={editor()}
+          activeTool={tool}
+          onChangeActive={onChangeActive}
+          userId={undefined}
+        />
         <ImageSiderbar
-          userId={user.user.id}
+          userId={undefined}
           editor={editor()}
           activeTool={tool}
           onChangeActive={onChangeActive}
         />
         <ColorSoiberbar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
-        {type !== 'material' && (
-          <TemplateSiderbar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
-        )}
+        <TemplateSiderbar
+          editor={editor()}
+          activeTool={tool}
+          onChangeActive={onChangeActive}
+          login={false}
+        />
         <main className="flex-1 h-full w-full flex flex-col overflow-hidden">
           <Tools
             editor={editor()}
@@ -359,4 +321,4 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
   );
 };
 
-export default Canvas;
+export default TrtCanvas;

@@ -5,7 +5,9 @@ import { Input } from '@/app/_components/ui/input';
 import { Separator } from '@/app/_components/ui/separator';
 import { login as loginServer, signup as signUpServer } from '@/app/_database/user';
 import useUsers from '@/app/_hook/useUser';
+import { indexDBChange } from '@/app/_lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -26,13 +28,28 @@ const SignIn = () => {
     redirects: true,
     type: 'goLoading',
   });
+  const router = useRouter();
+  const addTryToIndexDB = async () => {
+    const id = nanoid();
+    indexDBChange({
+      type: 'add',
+      data: {
+        id,
+        name: '试用',
+        image: '',
+        json: '',
+        width: 1000,
+        height: 1000,
+      },
+    });
+    router.push(`/try/Edit/${id}`);
+  };
   const [login, setLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, formState, setError } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const router = useRouter();
   const onSubmit = async (data: z.infer<typeof schema>) => {
     setLoading(true);
     if (login) {
@@ -132,9 +149,13 @@ const SignIn = () => {
             </Button>
           </form>
           <Separator className="mt-6" />
-          <Link href="/try/board" className="text-sm text-center text-blue-500 cursor-pointer">
+          <Button
+            className="text-sm text-center text-blue-500 cursor-pointer"
+            onClick={addTryToIndexDB}
+            variant="link"
+          >
             前往试用
-          </Link>
+          </Button>
           <p
             className="cursor-pointer text-gray-500 text-sm text-center"
             onClick={() => setLogin(!login)}

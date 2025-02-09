@@ -1,7 +1,9 @@
 // import { getCurrentUser } from "../../server/design";
 // import { Context } from "hono";
 // import { JWTPayload, SignJWT, jwtVerify } from "jose";
+import to from 'await-to-js';
 import { verify } from 'hono/jwt';
+import type { JWTPayload } from 'hono/utils/jwt/types';
 // /**
 //  * 生成jwt
 //  * @param payload
@@ -23,14 +25,11 @@ import { verify } from 'hono/jwt';
  * @param token
  * @returns
  */
-export async function jwtDecode(token: string) {
+export async function jwtDecode(token: string): Promise<JWTPayload | null> {
   const JWT_SECRET = process.env.JWT_SECRET!;
-  try {
-    const { payload } = await verify(token, JWT_SECRET);
-    return payload;
-  } catch {
-    return null;
-  }
+  const [error, data] = await to(verify(token, JWT_SECRET));
+  if (error) return null;
+  return data as JWTPayload;
 }
 
 // /**

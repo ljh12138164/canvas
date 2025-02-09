@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import type { Board, BoardResponse } from '../../../types/design/board';
 import { supabaseDesign, supabaseDesignPublic } from '../../supabase/design';
 export const DEFAULT_TEMPLATE =
@@ -26,6 +25,7 @@ export const deleteImageClound = async ({
 interface UploadCustomType {
   base64: Blob;
   fullType: string;
+  imageName: string;
 }
 
 /**
@@ -34,12 +34,14 @@ interface UploadCustomType {
  * @param data 数据
  * @returns 图片路径
  */
-export const uploadCustomType = async ({ base64, fullType }: UploadCustomType) => {
+export const uploadCustomType = async ({ base64, fullType, imageName }: UploadCustomType) => {
   // 生成随机名称
-  const name = nanoid().split('/').join('');
-  const { data, error } = await supabaseDesignPublic.storage.from('canvas').upload(name, base64, {
-    contentType: fullType,
-  });
+  const { data, error } = await supabaseDesignPublic.storage
+    .from('canvas')
+    .upload(imageName, base64, {
+      contentType: fullType,
+      upsert: true,
+    });
   if (error) throw new Error(error.message);
 
   return imagePath + data.fullPath;
@@ -206,15 +208,20 @@ export const authSaveBoard = async ({
   image,
   defaultImage,
 }: AuthSaveBoard): Promise<Board> => {
-  // 删除原本的图片，如果默认图片是默认模板，则不删除
-  if (defaultImage !== DEFAULT_TEMPLATE)
-    deleteImageClound({ image: defaultImage.split('/').at(-1) as string });
-  const response = await fetch(image);
-  // 将base64转换为Blob
-  const blob = await response.blob();
+  let imageUrl = '';
+  // 删除原本的图片，如果默认图片是默认模板，则不
+  if (defaultImage !== DEFAULT_TEMPLATE) {
+    const response = await fetch(image);
+    // 将base64转换为Blob
+    const blob = await response.blob();
 
-  // 上传图片
-  const imageUrl = await uploadCustomType({ base64: blob, fullType: 'image/webp' });
+    // 上传图片
+    imageUrl = await uploadCustomType({
+      base64: blob,
+      fullType: 'image/webp',
+      imageName: id,
+    });
+  }
 
   // 更新看板
   const { data, error } = await supabaseDesign(token)

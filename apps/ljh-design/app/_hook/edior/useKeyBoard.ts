@@ -8,8 +8,9 @@ interface UseKeyBoardProps {
   save: (skip?: boolean) => void;
   copy: () => Promise<void>;
   pasty: () => void;
+  isPending?: boolean;
 }
-const useKeyBoard = ({ canvas, undo, redo, save, copy, pasty }: UseKeyBoardProps) => {
+const useKeyBoard = ({ canvas, undo, redo, save, copy, pasty, isPending }: UseKeyBoardProps) => {
   useEvent('keydown', (e) => {
     const isCtrl = e.ctrlKey || e.metaKey;
     const isBackspace = e.key === 'Backspace';
@@ -32,6 +33,7 @@ const useKeyBoard = ({ canvas, undo, redo, save, copy, pasty }: UseKeyBoardProps
         redo();
       }
       if (e.key === 's') {
+        if (isPending) return;
         save(true);
       }
       if (e.key === 'c') {

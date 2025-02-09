@@ -1,6 +1,5 @@
-import TryCanvas from '@/app/_components/Try/TryCanvas';
+import TryEdit from '@/app/_components/EditComponents/editor/TryEdit';
 import { Providers } from '@/app/_provide/providers';
-
 type Params = Promise<{
   id: string;
 }>;
@@ -9,7 +8,7 @@ export default async function Home({ params }: { params: Params }) {
   return (
     <section className="h-[100dvh] overflow-hidden">
       <Providers>
-        <TryCanvas id={id} />
+        <TryEdit id={id} />
       </Providers>
     </section>
   );

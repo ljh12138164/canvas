@@ -408,44 +408,51 @@ export const Font: {
   fontSize: string;
   title: string;
   fontWeight: string;
+  fontFamily: string;
 }[] = [
   {
     name: 'h1',
     fontSize: '32px',
     fontWeight: 'bold',
+    fontFamily: '宋体',
     title: '添加一级标题',
   },
   {
     name: 'h2',
     fontWeight: 'bold',
     fontSize: '24px',
+    fontFamily: '宋体',
     title: '添加二级标题',
   },
   {
     name: 'h3',
     fontWeight: 'bold',
     fontSize: '18px',
+    fontFamily: '宋体',
     title: '添加三级标题',
   },
   {
     name: 'h4',
     fontSize: '16px',
     fontWeight: 'bold',
+    fontFamily: '宋体',
     title: '添加四级标题',
   },
   {
     name: 'h5',
     fontSize: '13.8px',
     fontWeight: 'bold',
+    fontFamily: '宋体',
     title: '添加五级标题',
   },
   {
     name: 'h6',
     fontSize: '12px',
     fontWeight: 'bold',
+    fontFamily: '宋体',
     title: '添加六级标题',
   },
-  { name: 'p', fontSize: '16px', fontWeight: 'normal', title: '添加段落' },
+  { name: 'p', fontSize: '16px', fontWeight: 'normal', fontFamily: '宋体', title: '添加段落' },
 ];
 
 //颜色预设
@@ -526,7 +533,7 @@ export const DIAMOD_HEGHT = 300;
 export const STROKE_WIDTH = 1;
 export const STROKE_DASH_ARRAY = [];
 export const OPACITY = 0;
-export const FONT_FAMILY = 'Arial';
+export const FONT_FAMILY = '宋体';
 export const FONT_SIZE = 32;
 export const FONT_WEIGHT = 'normal';
 export const FONT_THOUGHT = false;
@@ -734,6 +741,7 @@ export const addObject: AddObject[] = [
 ];
 
 export type FontStyle = 'normal' | 'italic';
+// 字体
 export const fonts = [
   'Arial',
   'Arial Black',
@@ -754,6 +762,38 @@ export const fonts = [
   'Geneva',
   'Lucida Grande',
 ];
+export const chineseFonts = [
+  // 中文字体对应的英文名称（用于跨平台兼容）
+  'Microsoft YaHei',
+  'SimSun',
+  'SimHei',
+  'KaiTi',
+  'FangSong',
+  'STXihei',
+  'STKaiti',
+  'STSong',
+];
+export const chineseObj: Record<string, string> = {
+  'Microsoft YaHei': '微软雅黑',
+  SimSun: '宋体',
+  SimHei: '黑体',
+  KaiTi: '楷体',
+  FangSong: '仿宋',
+  STXihei: '新細明體',
+  STKaiti: '新細明體',
+  STSong: '新細明體',
+};
+
+// 常见的边框虚线类型
+export const DASH_TYPES: Record<string, number[]> = {
+  实线: [],
+  虚线: [6, 6],
+  点线: [2, 6],
+  点划线: [6, 3, 2, 3],
+  双虚线: [12, 3, 3, 3],
+  长虚线: [16, 6],
+  密集虚线: [3, 3],
+};
 // 滤镜
 export type Filter =
   | 'none'
@@ -828,8 +868,8 @@ export interface buildEditorProps {
   canvasHeight: number;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
-  userId: string;
   // 画布数据
+  userId: string | undefined;
   // yMaps: Y.Map<string>;
   pasty: () => void;
   save: (skip?: boolean) => void;
@@ -904,7 +944,7 @@ export interface Edit {
   saveSvg: () => void;
   savejpg: () => void;
   saveJson: () => void;
-  loadFromJson: (json: string, fn?: () => void) => void;
+  loadFromJson: (json: string, fn?: () => void) => Promise<void>;
   loadFromSvg: (svg: string, fn?: () => void) => Promise<void>;
   pasty: () => void;
   canRedo: () => boolean;
@@ -950,7 +990,7 @@ export interface Edit {
   getActiveStrokeWeight: () => number | string;
   getActiveStokeColor: () => string;
   getActiveStokeDashArray: () => number[];
-  setFontFamily: (fontFamily: string) => void;
+  setFontFamily: (fontFamily: string, type?: 'chinese' | 'english') => void;
   setFillColor: (color: string) => void;
   setStrokeWidth: (width: number) => void;
   setStrokeColor: (color: string) => void;

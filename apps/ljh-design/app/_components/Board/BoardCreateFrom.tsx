@@ -65,7 +65,6 @@ interface BoardCreateFromProps {
   };
   setTemplate?: boolean;
   isClone?: boolean;
-  cloneType?: 'template' | 'board';
 }
 const BoardCreateFrom = ({
   type,
@@ -79,7 +78,6 @@ const BoardCreateFrom = ({
   templateData,
   setTemplate,
   isClone,
-  cloneType,
 }: BoardCreateFromProps) => {
   const router = useRouter();
   const query = useQueryClient();
@@ -140,6 +138,11 @@ const BoardCreateFrom = ({
         );
       // 从论坛克隆
       if (isClone) {
+        mutate?.({
+          ...data,
+          width: Number(data.width),
+          height: Number(data.height),
+        });
         return;
       }
     }
@@ -159,7 +162,7 @@ const BoardCreateFrom = ({
       });
       if (setChange) setChange(true);
       toast.dismiss();
-      toast.success('创建成功');
+      toast.success(' ');
       if (closeref.current && 'click' in closeref.current) {
         closeref.current.click();
       }

@@ -3,6 +3,7 @@ import { Button } from '@/app/_components/ui/button';
 import { Input } from '@/app/_components/ui/input';
 import { uploadImageclound } from '@/app/_database/image';
 import {
+  type AiSessionDetailType,
   useAiChat,
   useAiImage,
   useAiSessionDetail,
@@ -15,11 +16,12 @@ import { IMAGE_BLUSK } from '@/app/_types/Edit';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemoizedFn } from 'ahooks';
 import to from 'await-to-js';
+import { throttle } from 'lodash-es';
 import { ArrowDown, ArrowLeft, Loader2, Plus, Upload, X } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import Markdown from 'react-markdown';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
@@ -33,7 +35,17 @@ import { Badge } from '../ui/badge';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import { Skeleton } from '../ui/skeleton';
 import CreatePop from './CreatePop';
-const AI = ({ id }: { id: string }) => {
+
+// 添加一个新的类型
+type MessageWithTyping = AiSessionDetailType['history'][0] & {
+  isTyping?: boolean;
+};
+
+const AI = ({
+  id,
+  type = 'board',
+  onClick,
+}: { id: string; type?: 'board' | 'sider'; onClick?: () => void }) => {
   const responseRef = useRef<{ closeModel: () => void }>(null);
   const { user } = useUser();
   const router = useRouter();
@@ -52,13 +64,7 @@ const AI = ({ id }: { id: string }) => {
   const { mutate, isPending } = useUserImageQuery();
   const queryClient = useQueryClient();
   const [isScrollToBottom, setIsScrollToBottom] = useState(false);
-  const [messages, setMessages] = useState<
-    {
-      role: 'user' | 'model';
-      type: 'text' | 'image';
-      parts: { text: string }[];
-    }[]
-  >([]);
+  const [messages, setMessages] = useState<MessageWithTyping[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -67,7 +73,7 @@ const AI = ({ id }: { id: string }) => {
     // 初始化后，滚动到最底部
     if (getAiSessionDetail) {
       // 类型断言
-      setMessages(getAiSessionDetail.history ?? ([] as any));
+      setMessages(getAiSessionDetail.history ?? []);
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [getAiSessionDetail]);
@@ -91,23 +97,19 @@ const AI = ({ id }: { id: string }) => {
   useEffect(() => {
     if (messagesEndRef.current) setIsScrollToBottom(true);
   }, [messagesEndRef.current]);
+  // const underLine = useMemo(
+  //   () =>
+  //     throttle(() => {
+  //       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  //     }, 2000),
+  //   [],
+  // );
 
   const genData = useMemoizedFn(
-    (
-      data: ReadableStream<Buffer>,
-      newMessages: Array<{
-        history: {
-          type: 'text' | 'image';
-          role: 'user' | 'model';
-          parts: {
-            text: string;
-          }[];
-        }[];
-      }>,
-    ) => {
+    (data: ReadableStream<Buffer>, newMessages: MessageWithTyping[]) => {
       const reader = data.getReader();
-      // 读取流
       let aiResponse = '';
+
       reader.read().then(async function processText({ done, value }) {
         if (done) {
           const text = new TextDecoder('utf-8').decode(value);
@@ -115,9 +117,10 @@ const AI = ({ id }: { id: string }) => {
           // 保存消息
           newMessages.pop();
           newMessages.push({
-            history: [{ role: 'model', parts: [{ text: aiResponse }] }],
+            role: 'model',
             type: image ? 'image' : 'text',
-            imagePrompt: input,
+            parts: [{ text: aiResponse }],
+            isTyping: false,
           });
           setMessages(newMessages);
           getAiSessionUpdate({
@@ -132,18 +135,18 @@ const AI = ({ id }: { id: string }) => {
           setLoading(false);
           return;
         }
+
         const text = new TextDecoder('utf-8').decode(value);
         aiResponse += text;
         newMessages.pop();
         newMessages.push({
-          history: [{ role: 'model', parts: [{ text: aiResponse }] }],
+          role: 'model',
           type: image ? 'image' : 'text',
-          imagePrompt: input,
+          parts: [{ text: aiResponse }],
+          isTyping: true,
         });
         setMessages(newMessages);
-        setTimeout(() => {
-          messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        // underLine();
         reader.read().then(processText);
       });
     },
@@ -158,18 +161,17 @@ const AI = ({ id }: { id: string }) => {
     }
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     setLoading(true);
-    const newMessages: Array<{
-      history: { role: 'user' | 'model'; parts: { text: string }[] }[];
-      type: 'text' | 'image';
-      imagePrompt?: string;
-    }> = [
+    const newMessages: MessageWithTyping[] = [
       ...messages,
       {
-        history: image ? [{ role: 'user', parts: [{ text: input }] }] : [],
+        role: 'user',
+        parts: [{ text: image ? image : input }],
         type: image ? 'image' : 'text',
         imagePrompt: input,
+        isTyping: false,
       },
-      { history: [{ role: 'model', parts: [{ text: '' }] }], type: 'text' },
+      // 回答
+      { role: 'model', type: image ? 'image' : 'text', parts: [{ text: '' }] },
     ];
     // 添加用户消息
     setMessages(newMessages);
@@ -211,7 +213,12 @@ const AI = ({ id }: { id: string }) => {
 
   if (getAiSessionDetailLoading || userDataLoading)
     return (
-      <main className="flex  flex-col h-[calc(100dvh-100px)]">
+      <main
+        className={cn(
+          'flex  flex-col h-[calc(100dvh-100px)]',
+          type === 'sider' && 'h-[calc(100dvh-195px)]',
+        )}
+      >
         <header className="h-16">
           <Skeleton className="w-full h-full" />
         </header>
@@ -225,17 +232,33 @@ const AI = ({ id }: { id: string }) => {
     );
 
   return (
-    <section className="flex flex-col justify-between h-full p-4">
+    <section
+      className={cn(
+        'flex flex-col justify-between h-full p-4',
+        type === 'sider' && 'h-[calc(100dvh-195px)] p-2',
+      )}
+    >
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={() => router.back()}>
+          <Button
+            variant="outline"
+            onClick={() => {
+              if (type === 'board') {
+                router.back();
+              } else {
+                onClick?.();
+              }
+            }}
+          >
             <ArrowLeft />
             返回
           </Button>
-          <h1 className="text-2xl font-bold flex flex-col">
-            <span>{getAiSessionDetail?.name}</span>
-            <span className="text-sm text-muted-foreground">聊天只保存最后20条</span>
-          </h1>
+          {type === 'board' && (
+            <h1 className="text-2xl font-bold flex flex-col">
+              <span>{getAiSessionDetail?.name}</span>
+              <span className="text-sm text-muted-foreground">聊天只保存最后20条</span>
+            </h1>
+          )}
         </div>
         <CreatePop />
       </header>
@@ -258,13 +281,12 @@ const AI = ({ id }: { id: string }) => {
                       : 'bg-muted max-w-full',
                   )}
                 >
-                  {message.type === 'text' ? (
+                  {message.type === 'text' || message.role === 'model' ? (
                     message.parts.map((part) => (
                       <ScrollArea key={nanoid()} className="w-full overflow-x-auto p-2">
                         <Markdown
                           remarkPlugins={[remarkGfm]}
                           components={{
-                            // 代码高亮
                             code(props) {
                               const { children, className, node, ref, ...rest } = props;
                               const match = /language-(\w+)/.exec(className || '');
@@ -284,6 +306,12 @@ const AI = ({ id }: { id: string }) => {
                                 </code>
                               );
                             },
+                            p: ({ children }) => {
+                              if (message.isTyping) {
+                                return <TypewriterEffect text={String(children)} />;
+                              }
+                              return <p>{children}</p>;
+                            },
                           }}
                         >
                           {part.text}
@@ -292,14 +320,18 @@ const AI = ({ id }: { id: string }) => {
                       </ScrollArea>
                     ))
                   ) : (
-                    <section className="w-full h-full flex items-center justify-center">
-                      <Image
-                        src={message.parts?.[0].text}
-                        alt="图片"
-                        width={100}
-                        height={100}
-                        className="rounded-md object-cover"
-                      />
+                    <section className="w-full h-full flex flex-col gap-2 items-center justify-center">
+                      <PhotoProvider>
+                        <PhotoView src={message.parts?.[0].text}>
+                          <Image
+                            src={message.parts?.[0].text}
+                            alt="图片"
+                            width={100}
+                            height={100}
+                            className="rounded-md object-cover"
+                          />
+                        </PhotoView>
+                      </PhotoProvider>
                       <span className="text-sm text-muted-foreground">{message.imagePrompt}</span>
                     </section>
                   )}
@@ -322,6 +354,7 @@ const AI = ({ id }: { id: string }) => {
           </section>
         )}
       </ScrollArea>
+      {/* 底部 */}
       <div className="flex gap-2 mt-auto h-12">
         <section className="flex flex-col gap-2 w-full">
           <div className="w-full h-[30px]">
@@ -457,6 +490,30 @@ const AI = ({ id }: { id: string }) => {
       </div>
     </section>
   );
+};
+
+// 添加打字机效果组件
+const TypewriterEffect = ({ text }: { text: string }) => {
+  const [displayText, setDisplayText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setDisplayText((prev) => prev + text[currentIndex]);
+        setCurrentIndex((prev) => prev + 1);
+      }, 50); // 可以调整这个数值来改变打字速度
+
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, text]);
+
+  useEffect(() => {
+    setDisplayText('');
+    setCurrentIndex(0);
+  }, [text]);
+
+  return <p>{displayText}</p>;
 };
 
 export default AI;

@@ -12,8 +12,9 @@ interface ShapeSidleProps {
   editor: Edit | undefined;
   activeTool: Tool;
   onChangeActive: (tool: Tool) => void;
+  userId?: string;
 }
-const ShapeSidle = ({ activeTool, onChangeActive, editor }: ShapeSidleProps) => {
+const ShapeSidle = ({ activeTool, onChangeActive, editor, userId }: ShapeSidleProps) => {
   const [upload, setUpload] = useState<'default' | 'my'>('default');
   return (
     <aside
@@ -25,22 +26,24 @@ const ShapeSidle = ({ activeTool, onChangeActive, editor }: ShapeSidleProps) => 
     >
       <ToolSiderbar title="素材" description="选择素材添加到画布" />
       <ScrollArea>
-        <nav className="flex gap-2 px-4 my-4">
-          <Button
-            variant={upload !== 'default' ? 'outline' : undefined}
-            className="w-full"
-            onClick={() => setUpload('default')}
-          >
-            默认素材
-          </Button>
-          <Button
-            variant={upload !== 'my' ? 'outline' : undefined}
-            className="w-full"
-            onClick={() => setUpload('my')}
-          >
-            我的素材
-          </Button>
-        </nav>
+        {userId && (
+          <nav className="flex gap-2 px-4 my-4">
+            <Button
+              variant={upload !== 'default' ? 'outline' : undefined}
+              className="w-full"
+              onClick={() => setUpload('default')}
+            >
+              默认素材
+            </Button>
+            <Button
+              variant={upload !== 'my' ? 'outline' : undefined}
+              className="w-full"
+              onClick={() => setUpload('my')}
+            >
+              我的素材
+            </Button>
+          </nav>
+        )}
         <div className="grid grid-cols-3 gap-4 px-4">
           {upload === 'default' &&
             addObject.map((item) => (
@@ -54,7 +57,7 @@ const ShapeSidle = ({ activeTool, onChangeActive, editor }: ShapeSidleProps) => 
             ))}
         </div>
         <div className="grid grid-cols-2 gap-4 px-4">
-          {upload === 'my' && <MyMaterialList editor={editor} />}
+          {upload === 'my' && userId && <MyMaterialList editor={editor} userId={userId} />}
         </div>
       </ScrollArea>
       <ToolSiderbarClose onClose={() => onChangeActive(Tool.Select)} />

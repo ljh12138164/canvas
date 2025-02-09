@@ -211,9 +211,9 @@ export function downloadImage(file: string, type: string) {
 // }
 interface IndexDBChanagePros {
   type: 'add' | 'delete' | 'edit';
-  data?: Board;
+  data?: Partial<Board>;
   deletItem?: string;
-  editData?: BoardData;
+  editData?: Partial<Board>;
 }
 /**
  * 更新indexDB
@@ -228,11 +228,11 @@ export function indexDBChange({ type, data, deletItem, editData }: IndexDBChanag
     return localforage.removeItem(deletItem);
   }
   if (type === 'add' && data) {
-    return localforage.setItem(data.id, data);
+    return localforage.setItem(data.id!, data);
   }
   if (type === 'edit' && editData) {
-    localforage.removeItem(editData.id);
-    return localforage.setItem(editData.id, editData);
+    localforage.removeItem(editData.id!);
+    return localforage.setItem(editData.id!, editData);
   }
 }
 /**
