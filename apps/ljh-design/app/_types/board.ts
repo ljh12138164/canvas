@@ -21,6 +21,7 @@ export interface BoardData {
   updated_at: string;
   json: string;
   width: number;
+  image: string;
   height: number;
   url?: string;
   isTemplate?: boolean;

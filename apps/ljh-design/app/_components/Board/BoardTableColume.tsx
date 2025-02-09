@@ -10,12 +10,37 @@ import { useUser } from '@/app/_store/auth';
 import type { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import { MoreHorizontal } from 'lucide-react';
+import Image from 'next/image';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 import type { BoardData } from '../../_types/board';
 import { BoardCopy } from './BoardCopy';
 import BoardDelete from './BoardDelete';
 import BoardEdit from './BoardEdit';
 import { DataTableColumnHeader } from './BoardTableColumnHeader';
 export const columns: ColumnDef<BoardData>[] = [
+  {
+    accessorKey: 'image',
+    header: ({ column }) => {
+      return <DataTableColumnHeader title="图片" column={column} />;
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="flex items-center " onClick={(e) => e.stopPropagation()}>
+          <PhotoProvider>
+            <PhotoView src={row.original.image || ''}>
+              <Image
+                src={row.original.image || ''}
+                alt={row.original.name || ''}
+                width={50}
+                height={50}
+                className="rounded-md border-2 border-gray-600"
+              />
+            </PhotoView>
+          </PhotoProvider>
+        </p>
+      );
+    },
+  },
   {
     accessorKey: 'name',
     header: ({ column }) => {

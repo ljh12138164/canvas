@@ -331,7 +331,12 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
       <div className="h-full w-full  flex-1 flex  transition-all duration-100 ease-in-out">
         <SiderBar acitiveTool={tool} onChangeActiveTool={onChangeActive} type={type} />
         <TextSidebar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
-        <ShapeSidle editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
+        <ShapeSidle
+          editor={editor()}
+          activeTool={tool}
+          onChangeActive={onChangeActive}
+          userId={user.user.id}
+        />
         <ImageSiderbar
           userId={user.user.id}
           editor={editor()}

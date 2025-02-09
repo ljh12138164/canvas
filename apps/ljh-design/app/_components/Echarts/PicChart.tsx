@@ -36,18 +36,21 @@ const chartConfig = {
 const chartConfigOf = {
   upvotes: {
     label: '点赞',
-    color: 'hsl(var(--chart-1))',
+    color: 'hsl(var(--chart-4))',
   },
   collections: {
     label: '收藏',
-    color: 'hsl(var(--chart-2))',
+    color: 'hsl(var(--chart-5))',
   },
   show: {
     label: '发布',
-    color: 'hsl(var(--chart-3))',
+    color: 'hsl(var(--chart-6))',
   },
 };
-
+const anyConfig = {
+  ...chartConfig,
+  ...chartConfigOf,
+};
 interface PicChartProps {
   startTime: Date | undefined;
   endTime: Date | undefined;
@@ -58,7 +61,7 @@ interface PicChartProps {
     visitors: number;
     fill: string;
   }[];
-  type: 'user' | 'design';
+  type: 'user' | 'design' | 'any';
 }
 
 export function PicChart({ startTime, endTime, genData, type }: PicChartProps) {
@@ -80,6 +83,18 @@ export function PicChart({ startTime, endTime, genData, type }: PicChartProps) {
         <CardContent className="h-12">无数据</CardContent>
       </Card>
     );
+  const config = useMemo(() => {
+    if (type === 'any') {
+      return anyConfig;
+    }
+    return type === 'user' ? chartConfig : chartConfigOf;
+  }, [type]);
+  const formatter = useMemo(() => {
+    if (type === 'any') {
+      return anyConfig;
+    }
+    return type === 'user' ? chartConfig : chartConfigOf;
+  }, [type]);
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -87,10 +102,7 @@ export function PicChart({ startTime, endTime, genData, type }: PicChartProps) {
         <CardDescription>显示{showTiile}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={type === 'user' ? chartConfig : chartConfigOf}
-          className="mx-auto aspect-square max-h-[300px]"
-        >
+        <ChartContainer config={config} className="mx-auto aspect-square max-h-[300px]">
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent nameKey="visitors" hideLabel />} />
             <Pie data={genData} dataKey="visitors" nameKey="label">
@@ -99,11 +111,12 @@ export function PicChart({ startTime, endTime, genData, type }: PicChartProps) {
                 className="fill-background"
                 stroke="none"
                 fontSize={12}
-                formatter={(value: keyof typeof chartConfig | keyof typeof chartConfigOf) =>
-                  type === 'user'
-                    ? chartConfig[value as keyof typeof chartConfig]?.label
-                    : chartConfigOf[value as keyof typeof chartConfigOf]?.label
-                }
+                formatter={(
+                  value:
+                    | (keyof typeof chartConfig | keyof typeof chartConfigOf)
+                    | keyof typeof anyConfig,
+                  // @ts-ignore
+                ) => formatter[value as keyof typeof formatter]?.label}
               />
             </Pie>
             <ChartLegend

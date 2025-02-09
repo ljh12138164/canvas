@@ -899,6 +899,7 @@ export const buildEditor = ({
       if (!canvas) return;
       // 解析 JSON
       const group = await fabric.util.enlivenObjects([material]);
+
       // 将素材添加到画布中心
       canvas.add(group[0] as fabric.Group);
       canvas.setActiveObject(group[0] as fabric.Group);

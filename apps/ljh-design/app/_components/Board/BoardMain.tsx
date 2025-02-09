@@ -118,6 +118,7 @@ const BoardMain = ({ userId }: { userId: string }) => {
                   <Table className={isFetching ? 'opacity-50' : ''}>
                     <TableHeader>
                       <TableRow>
+                        <TableHead className="w-[50px]">图片</TableHead>
                         <TableHead className="w-[50px]">名称</TableHead>
                         <TableHead className="w-[100px]">尺寸</TableHead>
                         <TableHead className="w-[100px]">创建时间</TableHead>

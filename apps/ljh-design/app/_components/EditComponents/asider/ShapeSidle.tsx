@@ -57,7 +57,7 @@ const ShapeSidle = ({ activeTool, onChangeActive, editor, userId }: ShapeSidlePr
             ))}
         </div>
         <div className="grid grid-cols-2 gap-4 px-4">
-          {upload === 'my' && userId && <MyMaterialList editor={editor} userId={userId} />}
+          {upload === 'my' && userId && <MyMaterialList editor={editor} />}
         </div>
       </ScrollArea>
       <ToolSiderbarClose onClose={() => onChangeActive(Tool.Select)} />

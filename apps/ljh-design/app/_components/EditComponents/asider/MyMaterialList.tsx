@@ -3,8 +3,8 @@ import type { Edit } from '@/app/_types/Edit';
 import { Skeleton } from '../../ui/skeleton';
 import { MeterialList } from './MeterialList';
 
-const MyMaterialList = ({ editor, userId }: { editor: Edit | undefined; userId?: string }) => {
-  const { data, isLoading } = useMaterial({ userId });
+const MyMaterialList = ({ editor }: { editor: Edit | undefined }) => {
+  const { data, isLoading } = useMaterial();
   if (isLoading)
     return (
       <>

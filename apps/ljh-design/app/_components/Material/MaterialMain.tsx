@@ -1,12 +1,13 @@
 'use client';
 import { useEditMaterial, useMaterial } from '@/app/_hook/query/useMaterial';
-import { PlusCircle } from 'lucide-react';
+import { Image, PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { type ElementType, useRef } from 'react';
 import type { IconBaseProps } from 'react-icons';
 import { FaCircle, FaDiamond, FaSquare, FaSquareFull } from 'react-icons/fa6';
 import { IoIosStar } from 'react-icons/io';
 import { IoTriangle } from 'react-icons/io5';
+import ColorCard from '../Comand/ColorCard';
 import { Response } from '../Comand/Response';
 import { MeterialList } from '../EditComponents/asider/MeterialList';
 import { Button } from '../ui/button';
@@ -36,16 +37,18 @@ const MaterialMain = () => {
   return (
     <ScrollArea className="h-[calc(100vh-100px)]">
       <main className="min-w-[380px] p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">素材中心</h1>
-          <Button variant="outline" onClick={() => router.push('/EditMaterial')}>
-            <PlusCircle />
-            添加素材
-          </Button>
-        </div>
-        <h2 className="text-sm text-muted-foreground ">
-          素材是预设的一组组件，可以用于直接加入画布中开发。
-        </h2>
+        <ColorCard
+          title="素材中心来开始构建你的画布"
+          icon={<Image className="text-blue-500 text-[2rem] animate-pulse hover:animate-spin" />}
+          className="bg-gradient-to-r from-pink-600 via-orange-500 to-yellow-400 border-none shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <div className="flex flex-col items-center mb-6">
+            <Button variant="outline" onClick={() => router.push('/EditMaterial')}>
+              <PlusCircle />
+              添加素材
+            </Button>
+          </div>
+        </ColorCard>
       </main>
       <h2 className="text-xl font-bold mb-4 px-6">默认素材</h2>
       <section className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4 px-6 mb-2">
@@ -56,7 +59,7 @@ const MaterialMain = () => {
         ))}
       </section>
       <h2 className="text-xl font-bold my-4 px-6">我的素材</h2>
-      <section className="flex flex-wrap gap-4 px-6">
+      <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-6">
         {isLoading && (
           <>
             <Skeleton className="h-full w-full" />

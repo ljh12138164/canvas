@@ -3,12 +3,13 @@ import { DEFAULT_TEMPLATE } from '@/app/_database/user';
 import { useBoardDeleteQuery, useBoardQuery } from '@/app/_hook/query/useBoardQuery';
 import { useTemplate, useUserTemplate } from '@/app/_hook/query/useTemaplate';
 import { useQueryClient } from '@tanstack/react-query';
-import { MoreHorizontal, Pencil, PlusCircle, Trash } from 'lucide-react';
+import { LayoutTemplate, MoreHorizontal, Pencil, PlusCircle, Trash } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import BoardCreateFrom from '../Board/BoardCreateFrom';
+import ColorCard from '../Comand/ColorCard';
 import { Response } from '../Comand/Response';
 import { Button } from '../ui/button';
 import {
@@ -43,45 +44,50 @@ const TemplateMain = ({ userId }: { userId: string }) => {
   return (
     <ScrollArea className="h-[calc(100vh-100px)]">
       <main className="min-w-[380px] p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">模板中心</h1>
-          <Response
-            title="创建模板"
-            description="确定创建模板吗？"
-            ref={responseRef}
-            showFooter={false}
-            onConfirm={() => {
-              responseRef.current?.closeModel();
-            }}
-          >
-            <BoardCreateFrom
-              type="create"
-              isTemplate={true}
-              userId={userId}
-              mutate={mutate as any}
-              closeref={responseRef}
-              setTemplate={true}
-              templateData={{ image: DEFAULT_TEMPLATE }}
+        <ColorCard
+          title="模板是预设的画布，可以用于快速创建画布。"
+          icon={
+            <LayoutTemplate className="text-blue-500 text-[2rem] animate-pulse hover:animate-spin" />
+          }
+          className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 border-none shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <div className="flex justify-between items-center mb-6">
+            <Response
+              title="创建模板"
+              description="确定创建模板吗？"
+              ref={responseRef}
+              showFooter={false}
+              onConfirm={() => {
+                responseRef.current?.closeModel();
+              }}
             >
-              <DialogFooter className="flex gap-2 w-full">
-                <Button
-                  onClick={() => responseRef.current?.closeModel()}
-                  variant="outline"
-                  type="button"
-                >
-                  取消
-                </Button>
-                <Button type="submit">
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  创建模板
-                </Button>
-              </DialogFooter>
-            </BoardCreateFrom>
-          </Response>
-        </div>
-        <h2 className="text-sm text-muted-foreground mb-4">
-          模板是预设的画布，可以用于快速创建画布。
-        </h2>
+              <BoardCreateFrom
+                type="create"
+                isTemplate={true}
+                userId={userId}
+                mutate={mutate as any}
+                closeref={responseRef}
+                setTemplate={true}
+                templateData={{ image: DEFAULT_TEMPLATE }}
+              >
+                <DialogFooter className="flex gap-2 w-full">
+                  <Button
+                    onClick={() => responseRef.current?.closeModel()}
+                    variant="outline"
+                    type="button"
+                  >
+                    取消
+                  </Button>
+                  <Button type="submit">
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    创建模板
+                  </Button>
+                </DialogFooter>
+              </BoardCreateFrom>
+            </Response>
+          </div>
+        </ColorCard>
+
         <h3 className="text-lg font-bold mb-4">默认模板</h3>
         <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-6">
           {isLoadingDefault ? (

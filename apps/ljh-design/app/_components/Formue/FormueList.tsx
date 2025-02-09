@@ -19,7 +19,7 @@ export default function FormueList() {
 
   // 渲染数据列表
   return (
-    <ScrollArea className="h-[calc(100dvh-240px)] w-full flex flex-col gap-4 space-y-4">
+    <>
       <div className="flex flex-col gap-4">
         {formueData.pages.map((item) =>
           item.data.map((item) => <FormueItem key={item.id} item={item} />),
@@ -33,6 +33,6 @@ export default function FormueList() {
       {!hasNextPage && (
         <div className="text-center text-sm text-foreground h-full w-full mt-2">已加载全部</div>
       )}
-    </ScrollArea>
+    </>
   );
 }

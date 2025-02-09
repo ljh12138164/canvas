@@ -3,7 +3,7 @@
 import { Button } from '@/app/_components/ui/button';
 import { Input } from '@/app/_components/ui/input';
 import { Separator } from '@/app/_components/ui/separator';
-import { Sheet, SheetContent } from '@/app/_components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/app/_components/ui/sheet';
 import { Skeleton } from '@/app/_components/ui/skeleton';
 import {
   Tooltip,
@@ -189,6 +189,8 @@ const Sidebar = React.forwardRef<
     if (isMobile) {
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+          <SheetTitle className="hidden">切换侧边栏</SheetTitle>
+          <SheetDescription className="hidden">移动端切换侧边栏</SheetDescription>
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
@@ -273,7 +275,7 @@ const SidebarTrigger = React.forwardRef<
       {...props}
     >
       <ViewVerticalIcon />
-      <span className="sr-only">Toggle Sidebar</span>
+      <span className="sr-only">切换侧边栏</span>
     </Button>
   );
 });
