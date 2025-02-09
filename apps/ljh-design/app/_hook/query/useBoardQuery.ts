@@ -98,10 +98,9 @@ export const useBoardEditQuery = ({ id, type }: { id: string | undefined; type: 
  */
 export const useBoardUserQuery = ({ userId }: { userId: string }) => {
   const router = useRouter();
-  const { user } = useUser();
   const { data, isLoading, error, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['board', userId, user?.user.user_metadata.sub],
+      queryKey: ['board', userId],
       queryFn: async ({ pageParam }) => {
         const token = await getNewToken();
         if (!token) router.push('/sign-in');

@@ -1,10 +1,9 @@
 import { Card } from '@/app/_components/ui/card';
 import { type UserDataResponseType, useUserData } from '@/app/_hook/query/useUser';
-import { getDateNum } from '@/app/_lib/utils';
 import { useMemoizedFn } from 'ahooks';
 import dayjs from 'dayjs';
 import { BarChart, User, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { zhCN } from 'react-day-picker/locale';
 import toast from 'react-hot-toast';
@@ -15,6 +14,9 @@ import DesignCard from './DesignCard';
 import UseCard from './UseCard';
 
 export default function DataShow() {
+  const [dateWorker, setDateWorker] = useState<Worker>();
+  const [dates, setDates] = useState<string[]>([]);
+
   const [type, setType] = useState<'use' | 'design'>('use');
   const [startTime, setStartTime] = useState<Date | undefined>(undefined);
   const [endTime, setEndTime] = useState<Date | undefined>(undefined);
@@ -34,22 +36,25 @@ export default function DataShow() {
       }
     }
   };
-  const handleEndSelect = (date: Date | undefined) => {
-    toast.dismiss();
+  useEffect(() => {
+    const worker = new Worker(new URL('@/app/_worker/getDateNum.ts', import.meta.url));
+    setDateWorker(worker);
+    worker.onmessage = (e: MessageEvent<string[]>) => {
+      setDates(e.data);
+    };
 
-    if (!date) setEndTime(undefined);
-    else {
-      if (startTime && dayjs(date).isBefore(dayjs(startTime))) {
-        toast.error('结束时间不能小于开始时间');
-        setEndTime(startTime);
-      } else if (date.getTime() > new Date().getTime()) {
-        toast.error('开始时间不能大于当前时间');
-        setStartTime(new Date());
-      } else {
-        setEndTime(date);
-      }
+    return () => {
+      worker.terminate();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (dateWorker) {
+      // 发送开始和结束时间,获取日期数组
+      dateWorker.postMessage({ startTime, endTime });
     }
-  };
+  }, [startTime, endTime, dateWorker]);
+
   const genDataFn = useMemoizedFn((data: string[], userData: UserDataResponseType) => {
     return data.map((item) => {
       const show = userData.show.filter(
@@ -85,6 +90,29 @@ export default function DataShow() {
       };
     });
   });
+
+  // const genDatas = useMemo(() => {
+  //   if (!userData) return [];
+  //   return genDataFn(dates, userData);
+  // }, [userData, dates, genDataFn]);
+
+  const handleEndSelect = (date: Date | undefined) => {
+    toast.dismiss();
+
+    if (!date) setEndTime(undefined);
+    else {
+      if (startTime && dayjs(date).isBefore(dayjs(startTime))) {
+        toast.error('结束时间不能小于开始时间');
+        setEndTime(startTime);
+      } else if (date.getTime() > new Date().getTime()) {
+        toast.error('开始时间不能大于当前时间');
+        setStartTime(new Date());
+      } else {
+        setEndTime(date);
+      }
+    }
+  };
+
   // const chartData = [
   //   { date: '2024-04-01', desktop: 222, mobile: 150 },
   //   { date: '2024-04-02', desktop: 97, mobile: 180 },
@@ -94,30 +122,27 @@ export default function DataShow() {
     'templates' | 'material' | 'board' | 'upvotes' | 'collections' | 'show' | 'date',
     number | string
   >[] = useMemo(() => {
+    if (dates.length === 0) return [];
     if (!userData) return [];
     // 如果没设置开始时间和结束时间设置3个月
     if (!startTime && !endTime) {
       // 设置时间数组
-      const date = getDateNum(startTime, endTime);
-      return genDataFn(date, userData);
+      return genDataFn(dates, userData);
     }
     // 如果没有开始时间
     if (!startTime && endTime) {
-      const date = getDateNum(startTime, endTime);
-      return genDataFn(date, userData);
+      return genDataFn(dates, userData);
     }
     // 如果没有结束时间
     if (!endTime && startTime) {
-      const date = getDateNum(startTime, endTime);
-      return genDataFn(date, userData);
+      return genDataFn(dates, userData);
     }
     // 如果设置了开始时间和结束时间
     if (startTime && endTime) {
-      const date = getDateNum(startTime, endTime);
-      return genDataFn(date, userData);
+      return genDataFn(dates, userData);
     }
     return [];
-  }, [userData]);
+  }, [userData, dates]);
 
   return (
     <main className="w-full h-full flex flex-col gap-4">

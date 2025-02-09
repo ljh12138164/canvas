@@ -26,9 +26,9 @@ import type { JWTPayload } from 'hono/utils/jwt/types';
  * @returns
  */
 export async function jwtDecode(token: string): Promise<JWTPayload | null> {
-  const JWT_SECRET = process.env.JWT_SECRET!;
+  const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET!;
   const [error, data] = await to(verify(token, JWT_SECRET));
-  if (error) return null;
+  if (error) throw new Error('jwt解码失败');
   return data as JWTPayload;
 }
 

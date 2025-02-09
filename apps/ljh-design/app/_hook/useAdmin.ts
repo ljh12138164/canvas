@@ -1,4 +1,5 @@
 'use client';
+import { verify } from 'hono/jwt';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -8,18 +9,30 @@ export const useIsAdmin = ({ type }: { type: 'login' | 'logout' }) => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const router = useRouter();
   useEffect(() => {
+    const token = localStorage.getItem('ljh-admin-token');
+    toast.dismiss();
     // 检测token是否存在
     if (type === 'login') {
-      const token = localStorage.getItem('ljh-admin-token');
       if (!token) {
         setLoading(false);
       } else {
+        // 检测token是否过期
+        verify(token, process.env.NEXT_PUBLIC_JWT_SECRET!)
+          .then(() => {
+            router.push('/admin/home');
+            toast.success('已登录');
+            setLoading(false);
+          })
+          .catch(() => {
+            localStorage.removeItem('ljh-admin-token');
+            setLoading(false);
+          });
         // 检测token是否过期
         jwtDecode(token)
           // 未过期
           .then(() => {
             toast.success('已登录');
-            router.push('/admin/home');
+            router.push('/admin');
             setLoading(false);
           })
           // 解码失败
@@ -30,19 +43,18 @@ export const useIsAdmin = ({ type }: { type: 'login' | 'logout' }) => {
       }
       return;
     }
-    const token = localStorage.getItem('ljh-admin-token');
     if (!token) {
       setLoading(false);
       router.push('/admin/login');
       return;
     }
     jwtDecode(token)
-      .then((data) => {
+      .then(() => {
         setLoading(false);
       })
       // 解码失败
       .catch(() => {
-        localStorage.removeItem('ljh-admin-token');
+        // localStorage.removeItem('ljh-admin-token');
         router.push('/admin/login');
       });
   }, [type]);

@@ -49,6 +49,7 @@ export default function AiList({
 
   return (
     <ScrollArea className={cn('h-screen', type === 'sider' && 'h-full')}>
+      <h2 className="text-2xl font-bold">历史对话</h2>
       <div className="space-y-2 p-4">
         {getAiSessionList?.map((chat) => (
           <Card

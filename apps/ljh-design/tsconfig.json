@@ -28,7 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "components/Try/a"
+    "components/Try/a",
+    "app/_worker/getDateNum.js"
   ],
   "exclude": ["node_modules"]
 }

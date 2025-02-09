@@ -47,15 +47,6 @@ export const uploadCustomType = async ({ base64, fullType, imageName }: UploadCu
   return imagePath + data.fullPath;
 };
 
-/**
- * 获取看板数据
- * @returns
- */
-export const getBoardData = async (token: string) => {
-  const { data, error } = await supabaseDesign(token).from('board').select('*');
-  return { data, error };
-};
-
 interface CreateBoard {
   userId?: string;
   name: string;
@@ -130,6 +121,7 @@ export const getUserBoard = async ({
       count: 'exact',
     })
     .eq('userId', userid)
+    .eq('isTemplate', false)
     .order('created_at', { ascending: false })
     .range(start, end);
   if (error) throw new Error('服务器错误');
@@ -268,21 +260,8 @@ export const getUserBoardList = async ({
   const { data, error } = await supabaseDesign(token)
     .from('board')
     .select('*')
-    .eq('userId', userid);
+    .eq('userId', userid)
+    .eq('isTemplate', false);
   if (error) throw new Error('服务器错误');
   return data;
 };
-
-/**
- * 克隆看板
- * @returns
- */
-export const cloneBoard = async ({
-  userId,
-  board,
-  token,
-}: {
-  board: CreateBoard;
-  userId: string;
-  token: string;
-}) => {};

@@ -1,9 +1,11 @@
 import type { Board } from '@/app/_types/board';
 import dayjs from 'dayjs';
 import { Copy } from 'lucide-react';
+import Image from 'next/image';
 import { CiFileOn } from 'react-icons/ci';
 import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
 import { IoMenu } from 'react-icons/io5';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 import TooltipComponents from '../Comand/Tooltip';
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu';
@@ -22,6 +24,27 @@ const BoardItem = ({
 }) => {
   return (
     <>
+      <TableCell
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <div className="flex items-center gap-1 max-w-[100px] text-ellipsis ">
+          <TooltipComponents label={board.name || ''}>
+            <PhotoProvider>
+              <PhotoView src={board.image || ''}>
+                <Image
+                  src={board.image || ''}
+                  alt={board.name || ''}
+                  width={50}
+                  height={50}
+                  className="w-10 h-10 rounded-md border-2 border-gray-600"
+                />
+              </PhotoView>
+            </PhotoProvider>
+          </TooltipComponents>
+        </div>
+      </TableCell>
       <TableCell>
         <div className="flex items-center gap-1 max-w-[100px] text-ellipsis ">
           <CiFileOn className="size-8 min-w-[2rem]" />
