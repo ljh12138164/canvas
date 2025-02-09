@@ -234,7 +234,7 @@ export const buildEditor = ({
     });
     canvas.discardActiveObject();
     canvas.renderAll();
-    save();
+    if (userId) save();
   };
   //加载json
   const loadFromJson = async (json: any, fn?: () => void) => {
@@ -350,7 +350,7 @@ export const buildEditor = ({
       }
       await authZoom();
       canvas.renderAll();
-      save();
+      if (userId) save();
     },
     // 设置背景颜色
     changeBackground: (color: string) => {
@@ -359,7 +359,7 @@ export const buildEditor = ({
       if (workspace) workspace.fill = color;
 
       canvas.renderAll();
-      save();
+      if (userId) save();
     },
     // 复制
     copy,
@@ -395,6 +395,11 @@ export const buildEditor = ({
     },
     // 获取滤镜
     getActiveFilter: () => {
+      if (canvas?.getActiveObjects()?.[0]?.type === 'group') {
+        const value =
+          (canvas?.getActiveObjects()?.[0] as fabric.Group).getObjects()[0]?.get('filters') || [];
+        return value.map((item: FilterArrayEffect) => item.name);
+      }
       if (canvas?.getActiveObjects()?.[0]) {
         const value = canvas?.getActiveObjects()?.[0];
         if (value instanceof fabric.FabricImage) {
@@ -405,6 +410,11 @@ export const buildEditor = ({
     },
     // 获取滤镜索引
     getActiveFilterIndex: (filter: string) => {
+      if (canvas?.getActiveObjects()?.[0]?.type === 'group') {
+        const value =
+          (canvas?.getActiveObjects()?.[0] as fabric.Group).getObjects()[0]?.get('filters') || [];
+        return value.findIndex((item: FilterArrayEffect) => item.name === filter);
+      }
       const value = canvas?.getActiveObjects()?.[0];
       if (value instanceof fabric.FabricImage) {
         return value.filtersArray.findIndex((item) => item.name === filter);
@@ -413,6 +423,11 @@ export const buildEditor = ({
     },
     // 获取滤镜效果
     getActiveFilterEffect: (filter: string) => {
+      if (canvas?.getActiveObjects()?.[0]?.type === 'group') {
+        const value =
+          (canvas?.getActiveObjects()?.[0] as fabric.Group).getObjects()[0]?.get('filters') || [];
+        return value.find((item: FilterArrayEffect) => item.name === filter)?.effect || null;
+      }
       const value = canvas?.getActiveObjects()?.[0];
       if (value instanceof fabric.FabricImage) {
         return value.filtersArray.find((item) => item.name === filter)?.effect || null;
@@ -436,7 +451,7 @@ export const buildEditor = ({
             : [];
           fixImageSize(imageObj);
 
-          save();
+          if (userId) save();
           // 多种滤镜
           imageObj.applyFilters();
           canvas.renderAll();
@@ -506,6 +521,12 @@ export const buildEditor = ({
     },
     // 获取字体大小
     getActiveFontSize: () => {
+      if (canvas?.getActiveObjects()?.[0]?.type === 'group') {
+        const value =
+          (canvas?.getActiveObjects()?.[0] as fabric.Group).getObjects()[0]?.get('fontSize') ||
+          FONT_SIZE;
+        return value;
+      }
       const value = canvas?.getActiveObjects()?.[0]?.get('fontSize') || FONT_SIZE;
       return value;
     },
@@ -533,16 +554,34 @@ export const buildEditor = ({
     },
     // 获取字体对齐
     getActiveFontAlign: () => {
+      if (canvas?.getActiveObjects()?.[0]?.type === 'group') {
+        const value =
+          (canvas?.getActiveObjects()?.[0] as fabric.Group).getObjects()[0]?.get('textAlign') ||
+          'left';
+        return value;
+      }
       const value = canvas?.getActiveObjects()?.[0]?.get('textAlign') || 'left';
       return value;
     },
     // 获取字体斜体
     getActiveFontItalic: () => {
+      if (canvas?.getActiveObjects()?.[0]?.type === 'group') {
+        const value =
+          (canvas?.getActiveObjects()?.[0] as fabric.Group).getObjects()[0]?.get('fontStyle') ||
+          'normal';
+        return value;
+      }
       const value = canvas?.getActiveObjects()?.[0]?.get('fontStyle') || 'normal';
       return value;
     },
     // 获取字体下划线
     getActiveFontUnderline: () => {
+      if (canvas?.getActiveObjects()?.[0]?.type === 'group') {
+        const value =
+          (canvas?.getActiveObjects()?.[0] as fabric.Group).getObjects()[0]?.get('underline') ||
+          false;
+        return value;
+      }
       const value = canvas?.getActiveObjects()?.[0]?.get('underline') || false;
       return value;
     },
@@ -567,7 +606,7 @@ export const buildEditor = ({
       canvas.renderAll();
     },
     // 改变字体
-    setFontFamily: (value: string) => {
+    setFontFamily: (value: string, type: 'chinese' | 'english' = 'english') => {
       setFontFamily(value);
       canvas?.getActiveObjects()?.forEach((item) => {
         if (isText(item)) {
@@ -598,16 +637,34 @@ export const buildEditor = ({
     },
     // 获取删除线
     getActiveFontLineThrough: () => {
+      if (canvas?.getActiveObjects()?.[0]?.type === 'group') {
+        const value =
+          (canvas?.getActiveObjects()?.[0] as fabric.Group).getObjects()[0]?.get('linethrough') ||
+          false;
+        return value;
+      }
       const value = canvas?.getActiveObjects()?.[0]?.get('linethrough') || false;
       return value;
     },
     // 获取线条宽度
     getActiveStrokeWeight: () => {
+      if (canvas?.getActiveObjects()?.[0]?.type === 'group') {
+        const value =
+          (canvas?.getActiveObjects()?.[0] as fabric.Group).getObjects()[0]?.get('strokeWidth') ||
+          STROKE_WIDTH;
+        return value;
+      }
       const value = canvas?.getActiveObjects()?.[0]?.get('fontWeight') || FONT_WEIGHT;
       return value;
     },
     // 获取字体
     getActiveFontFamily: () => {
+      if (canvas?.getActiveObjects()?.[0]?.type === 'group') {
+        const value =
+          (canvas?.getActiveObjects()?.[0] as fabric.Group).getObjects()[0]?.get('fontFamily') ||
+          FONT_FAMILY;
+        return value;
+      }
       return canvas?.getActiveObjects()?.[0]?.get('fontFamily') || FONT_FAMILY;
     },
     // 添加文本
@@ -673,7 +730,13 @@ export const buildEditor = ({
     changeStokeDashArray: (type) => {
       setStrokeDashArray(type);
       canvas.getActiveObjects().forEach((obj) => {
-        obj.set('strokeDashArray', type);
+        if (obj.type === 'group') {
+          (obj as fabric.Group).getObjects().forEach((item) => {
+            item.set('strokeDashArray', type);
+          });
+        } else {
+          obj.set('strokeDashArray', type);
+        }
       });
       canvas.renderAll();
     },
@@ -683,11 +746,22 @@ export const buildEditor = ({
       if (!selectedObj) {
         return STROKE_DASH_ARRAY;
       }
+      if (selectedObj?.type === 'group') {
+        const value =
+          (selectedObj as fabric.Group).getObjects()[0]?.get('strokeDashArray') ||
+          STROKE_DASH_ARRAY;
+        return value;
+      }
       return selectedObj.get('strokeDashArray') || STROKE_DASH_ARRAY;
     },
     // 获取线条宽度
     getActiveStrokeWidth: () => {
       const selectedObj = selectedObject?.[0];
+      if (selectedObj?.type === 'group') {
+        const value =
+          (selectedObj as fabric.Group).getObjects()[0]?.get('strokeWidth') || STROKE_WIDTH;
+        return value;
+      }
       if (!selectedObj) {
         return STROKE_WIDTH;
       }
@@ -699,13 +773,23 @@ export const buildEditor = ({
       if (!selectedObj) {
         return fillColor;
       }
+      if (selectedObj?.type === 'group') {
+        const value = (selectedObj as fabric.Group).getObjects()[0]?.get('stroke') || strokeColor;
+        return value;
+      }
       return selectedObj.get('stroke') || strokeColor;
     },
     //颜色
     setFillColor: (color: string) => {
       setFillColor(color);
       canvas.getActiveObjects()?.forEach((obj) => {
-        obj.set({ fill: color });
+        if (obj.type === 'group') {
+          (obj as fabric.Group).getObjects().forEach((item) => {
+            item.set({ fill: color });
+          });
+        } else {
+          obj.set({ fill: color });
+        }
       });
       canvas.renderAll();
     },
@@ -713,20 +797,37 @@ export const buildEditor = ({
     setStrokeWidth: (width: number) => {
       setStrokeWidth(width);
       canvas.getActiveObjects()?.forEach((obj) => {
-        obj.set({ strokeWidth: width });
+        if (obj.type === 'group') {
+          (obj as fabric.Group).getObjects().forEach((item) => {
+            item.set({ strokeWidth: width });
+          });
+        } else {
+          obj.set({ strokeWidth: width });
+        }
       });
       canvas.renderAll();
     },
-    //
+    // 线条颜色
     setStrokeColor: (color: string) => {
       setStrokeColor(color);
       canvas.getActiveObjects()?.forEach((obj) => {
-        //如果是文本
-        if (obj.type === 'text' || obj.type === 'i-text' || obj.type === 'textbox') {
-          obj.set({ fill: color });
-          return;
+        if (obj.type === 'group') {
+          (obj as fabric.Group).getObjects().forEach((item) => {
+            //如果是文本
+            if (obj.type === 'text' || obj.type === 'i-text' || obj.type === 'textbox') {
+              obj.set({ fill: color });
+              return;
+            }
+            obj.set({ stroke: color });
+          });
+        } else {
+          //如果是文本
+          if (obj.type === 'text' || obj.type === 'i-text' || obj.type === 'textbox') {
+            obj.set({ fill: color });
+            return;
+          }
+          obj.set({ stroke: color });
         }
-        obj.set({ stroke: color });
       });
       canvas.renderAll();
     },
@@ -805,7 +906,7 @@ export const buildEditor = ({
       canvas.renderAll();
 
       // 保存历史记录
-      save();
+      if (userId) save();
     },
   };
 };

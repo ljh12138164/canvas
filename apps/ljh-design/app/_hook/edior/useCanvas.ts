@@ -3,17 +3,7 @@ import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
 import { initAligningGuidelines } from 'fabric/extensions';
 import { useTheme } from 'next-themes';
-import type { RefObject } from 'react';
-
-const config = {
-  /** At what distance from the shape does alignment begin? */
-  margin: 4,
-  /** Aligning line dimensions */
-  width: 1,
-  /** Aligning line color */
-  color: 'rgb(255,0,0,0.9)',
-};
-const deactivate = (canvas: fabric.Canvas) => initAligningGuidelines(canvas, config);
+import { type RefObject, useMemo } from 'react';
 
 interface CanvasProps {
   initWidth?: RefObject<number> | number;
@@ -21,6 +11,21 @@ interface CanvasProps {
 }
 const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
   const { theme } = useTheme();
+  const config = useMemo(
+    () => ({
+      /** At what distance from the shape does alignment begin? */
+      margin: 4,
+      /** Aligning line dimensions */
+      width: 1,
+      /** Aligning line color */
+      color: theme !== 'dark' ? '#071689' : '#051ed9',
+    }),
+    [theme],
+  );
+  const deactivate = useMemoizedFn((canvas: fabric.Canvas) =>
+    initAligningGuidelines(canvas, config),
+  );
+
   const init = useMemoizedFn(
     ({
       initCanvas,

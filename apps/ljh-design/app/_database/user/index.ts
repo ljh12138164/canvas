@@ -24,7 +24,7 @@ export async function getCurrentUser(): Promise<Sessions | null> {
     postSession.expires_at < +new Date().getTime().toString().slice(0, 10) + 5 * 60
   ) {
     // 更新session
-    const [error, data] = await to(supabase.auth.getUser());
+    const [error, data] = await to(supabase.auth.refreshSession());
     if (error) return null;
     if (!data) return null;
     // 更新token成功获取session

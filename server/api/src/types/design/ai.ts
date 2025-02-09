@@ -6,6 +6,7 @@ export type Ai = {
   updated_at: string;
   history: {
     role: 'user' | 'model';
+    imagePrompt?: string;
     parts: { text: string }[];
     type: 'text' | 'image';
   }[];

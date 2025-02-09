@@ -182,7 +182,7 @@ export const useAiSessionDelete = () => {
   return { getAiSessionDelete, getAiSessionDeletePending };
 };
 
-type AiSessionDetailType = InferResponseType<typeof client.ai.history.$get, 200>;
+export type AiSessionDetailType = InferResponseType<typeof client.ai.history.$get, 200>;
 /**
  * ### 获取AI会话详情
  */
@@ -216,8 +216,8 @@ export const useAiSessionDetail = (id: string) => {
   return { getAiSessionDetail, getAiSessionDetailLoading };
 };
 
-type AiSessionUpdateType = InferResponseType<typeof client.ai.save.$patch>;
-type AiSessionUpdateRequestType = InferRequestType<typeof client.ai.save.$patch>;
+type AiSessionUpdateType = InferResponseType<typeof client.ai.save.$post>;
+type AiSessionUpdateRequestType = InferRequestType<typeof client.ai.save.$post>;
 /**
  * ### 更新AI会话
  */
@@ -231,7 +231,7 @@ export const useAiSessionUpdate = () => {
     mutationFn: async (datas) => {
       const token = await getNewToken();
       if (!token) router.push('/sign-in');
-      const response = await client.ai.save.$patch(datas, {
+      const response = await client.ai.save.$post(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

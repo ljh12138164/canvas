@@ -17,12 +17,20 @@ export const material = new Hono()
   // 创建素材
   .post(
     '/material',
-    zValidator('json', z.object({ material: z.any(), name: z.string(), id: z.string() })),
+    zValidator(
+      'json',
+      z.object({
+        material: z.any(),
+        name: z.string(),
+        id: z.string(),
+        cloneId: z.string().optional(),
+      }),
+    ),
     async (c) => {
       const { auth, token } = getSupabaseAuth(c);
-      const { material, name, id } = await c.req.json();
+      const { material, name, id, cloneId } = await c.req.json();
       const [error, data] = await to(
-        createMaterial({ userId: auth.sub, token, material, name, id }),
+        createMaterial({ userId: auth.sub, token, material, name, id, cloneId }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);

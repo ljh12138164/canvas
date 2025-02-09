@@ -14,6 +14,7 @@ import {
   getUserBoardList,
   updateBoard,
 } from '../../../server/design/board';
+import { cloneBoardOrTemplate } from '../../../server/design/clone';
 const board = new Hono()
   .use(checkToken(process.env.SUPABASE_DESIGN_JWT!))
   .post(
@@ -55,6 +56,38 @@ const board = new Hono()
           },
           token,
         ),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(board);
+    },
+  )
+  .post(
+    '/showClone',
+    zValidator(
+      'json',
+      z.object({
+        id: z.string(),
+        json: z.any(),
+        type: z.enum(['template', 'board']),
+        cloneId: z.string(),
+        name: z.string(),
+        image: z.string(),
+      }),
+    ),
+    async (c) => {
+      const { id, json, cloneId, name, image, type } = c.req.valid('json');
+      const { auth, token } = getSupabaseAuth(c);
+      const [error, board] = await to(
+        cloneBoardOrTemplate({
+          id,
+          userId: auth.sub,
+          token,
+          type,
+          json,
+          cloneId,
+          name,
+          image,
+        }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(board);

@@ -14,6 +14,8 @@ import {
   Tool,
   ToolItem,
   canfilterArr,
+  chineseFonts,
+  chineseObj,
   filters,
   fonts,
 } from '@/app/_types/Edit';
@@ -43,6 +45,8 @@ interface ColorSoiberbarProps {
 }
 
 const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarProps) => {
+  const [fontType, setFontType] = useState<'chinese' | 'english'>('chinese');
+
   const [filterOpen, setFilterOpen] = useState(false);
   //颜色
   const value = editor?.fillColor || FILL_COLOR;
@@ -97,7 +101,7 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
         }
       />
       <ScrollArea className="z-[601] h-[calc(100vh-10rem)] dark:bg-background">
-        <div className="p-4 space-y-4 ">
+        <div className={cn('p-4 space-y-4 ', onShow() === Tool.Ai && 'p-0')}>
           {onShow() === Tool.Fill && (
             <ColorPicker
               value={value}
@@ -127,26 +131,64 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
               onValueChange={(value) => editor?.changeOpacty(value[0])}
             />
           )}
+          {/* 字体 */}
           {onShow() === Tool.FontFamily && (
-            <section className="space-y-2 pb-[5rem]">
-              {fonts.map((item: string) => {
-                return (
-                  <Button
-                    key={item}
-                    variant="ghost"
-                    style={{
-                      fontFamily: item,
-                      fontSize: '16px',
-                      padding: '8px 16px',
-                    }}
-                    onClick={() => editor?.setFontFamily(item)}
-                    className={`w-full border-1 h-16 justify-start text-left ${editor?.fontFamily === item && 'border-blue-500 border-2'}`}
-                  >
-                    {item}
-                  </Button>
-                );
-              })}
-            </section>
+            <>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant={fontType === 'chinese' ? 'outline' : 'ghost'}
+                  className={`w-full border-1 h-16 justify-start text-left ${fontType === 'chinese' && 'border-blue-500 border-2'}`}
+                  onClick={() => setFontType('chinese')}
+                >
+                  中文
+                </Button>
+                <Button
+                  variant={fontType === 'english' ? 'outline' : 'ghost'}
+                  className={`w-full border-1 h-16 justify-start text-left ${fontType === 'english' && 'border-blue-500 border-2'}`}
+                  onClick={() => setFontType('english')}
+                >
+                  英文
+                </Button>
+              </div>
+              <section className="space-y-2 pb-[1rem]">
+                {fontType === 'english' &&
+                  fonts.map((item: string) => {
+                    return (
+                      <Button
+                        key={item}
+                        variant="ghost"
+                        style={{
+                          fontFamily: item,
+                          fontSize: '16px',
+                          padding: '8px 16px',
+                        }}
+                        onClick={() => editor?.setFontFamily(item, 'english')}
+                        className={`w-full border-1 h-16 justify-start text-left ${editor?.fontFamily === item && 'border-blue-500 border-2'}`}
+                      >
+                        {item}
+                      </Button>
+                    );
+                  })}
+                {fontType === 'chinese' &&
+                  chineseFonts.map((item: string) => {
+                    return (
+                      <Button
+                        key={item}
+                        variant="ghost"
+                        style={{
+                          fontFamily: item,
+                          fontSize: '16px',
+                          padding: '8px 16px',
+                        }}
+                        onClick={() => editor?.setFontFamily(item, 'chinese')}
+                        className={`w-full border-1 h-16 justify-start text-left ${editor?.fontFamily === item && 'border-blue-500 border-2'}`}
+                      >
+                        {chineseObj[item]}
+                      </Button>
+                    );
+                  })}
+              </section>
+            </>
           )}
           {/* 滤镜 */}
           {onShow() === Tool.Filter && (

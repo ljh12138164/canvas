@@ -90,20 +90,6 @@ const NavBar = ({
     },
   });
 
-  // 读取svg文件
-  const { openFilePicker: openSvgPicker } = useFilePicker({
-    accept: '.svg',
-    onFilesSelected: ({ plainFiles }) => {
-      const file = plainFiles[0];
-      const reader = new FileReader();
-      reader.readAsText(file, 'UTF-8');
-      reader.onload = async () => {
-        const svg = reader.result;
-        await editor?.loadFromSvg(svg as string);
-        toast.success('加载成功');
-      };
-    },
-  });
   const isGroup = useMemo(() => {
     // 如果未选择对象，则不保存
     if (!editor?.selectedObject) return false;
@@ -132,16 +118,32 @@ const NavBar = ({
   }, [editor?.selectedObject]);
   return (
     <nav className="w-full text-xl font-medium h-[4rem] bg-[#fff] dark:bg-background flex items-center px-4 border-b  justify-center  xl:justify-start">
-      {!isMobile && <Logo to={userId ? '/board' : '/try/board'} />}
+      {!isMobile && <Logo to={userId ? '/board' : '/sign-in'} />}
       <div className="ml-4 w-full flex gap-4 h-[4rem] items-center ">
         {isMobile && (
           <TooltipComponents label="返回">
-            <Button variant={'ghost'} size={'icon'} onClick={() => router.back()}>
+            <Button
+              variant={'ghost'}
+              size={'icon'}
+              onClick={() => {
+                if (!userId) {
+                  router.push('/sign-in');
+                } else {
+                  router.push('/board');
+                }
+              }}
+            >
               <LuArrowLeft size="20" />
             </Button>
           </TooltipComponents>
         )}
-        {!isMobile && <h1 className="text-2xl font-bold line-clamp-1">{titles[type]}</h1>}
+        {!isMobile && (
+          <h1 className="text-2xl font-bold line-clamp-1">
+            <TooltipComponents label={titles[type]}>
+              <h1 className="text-2xl font-bold line-clamp-1">{titles[type]}</h1>
+            </TooltipComponents>
+          </h1>
+        )}
 
         <Separator orientation="vertical" className="mx-2 h-[60%]" />
         <TooltipComponents label="选择">
@@ -225,23 +227,28 @@ const NavBar = ({
           </Button>
         </TooltipComponents>
         <Separator orientation="vertical" className="mx-2 h-[60%]" />
-        <div className="flex items-center gap-2 opacity-70">
-          {type !== 'material' && (
+        <div className="flex items-center gap-2 opacity-70 ">
+          {/* 只有用户登录后才显示 */}
+          {type !== 'material' && userId && (
             <Fragment>
-              {isPending ? (
+              {!cloudSave ? (
                 <Fragment>
                   <BsCloud size={20} />
-                  <p className="text-xs text-muted-foreground">
-                    {type !== 'board' ? '模板保存中' : '画布保存中'}
+                  <p className="text-xs w-[100px]  text-muted-foreground line-clamp-1">未保存</p>
+                </Fragment>
+              ) : isPending ? (
+                <Fragment>
+                  <BsCloud size={20} />
+                  <p className="text-xs w-[100px] text-muted-foreground line-clamp-1">
+                    {type === 'board' ? '画布保存中' : '模板保存中'}
                   </p>
                 </Fragment>
               ) : (
                 <Fragment>
                   <BsCloudCheck size={20} />
-                  <div className="text-xs text-muted-foreground">
-                    {type !== 'board' && cloudSave ? '模板保存成功' : '画布保存成功'}
-                    {!cloudSave && '未保存'}
-                  </div>
+                  <p className="text-xs w-[100px] text-muted-foreground line-clamp-1">
+                    {type === 'board' ? '画布保存成功' : '模板保存成功'}
+                  </p>
                 </Fragment>
               )}
             </Fragment>
@@ -366,7 +373,7 @@ const NavBar = ({
                     <p className="text-xs  opacity-45">请选择json文件</p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem
+                {/* <DropdownMenuItem
                   onClick={() => {
                     openSvgPicker();
                   }}
@@ -377,11 +384,11 @@ const NavBar = ({
                     <p>打开</p>
                     <p className="text-xs  opacity-45">请选择svg文件</p>
                   </div>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
             <ThemeToggle />
-            <UserButton />
+            {userId && <UserButton />}
           </section>
         </div>
       </div>

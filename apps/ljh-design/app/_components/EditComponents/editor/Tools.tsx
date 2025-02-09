@@ -3,6 +3,7 @@ import { Button } from '@/app/_components/ui/button';
 import { ScrollArea, ScrollBar } from '@/app/_components/ui/scroll-area';
 import { cn, isText } from '@/app/_lib/utils';
 import { type Edit, Tool } from '@/app/_types/Edit';
+import type * as fabric from 'fabric';
 import { BsBorderWidth, BsTransparency } from 'react-icons/bs';
 import {
   FaAlignCenter,
@@ -28,6 +29,9 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
   //获取属性
   const getProperty = (property: string) => {
     if (!selectedObject) return null;
+    if (selectedObject.type === 'group') {
+      return (selectedObject as fabric.Group).getObjects()[0]?.get(property);
+    }
     return selectedObject.get(property);
   };
   //获取颜色和

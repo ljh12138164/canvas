@@ -1,3 +1,4 @@
+import { useSave } from '@/app/_store/save';
 import { Tool, type UserState } from '@/app/_types/Edit';
 import type * as fabric from 'fabric';
 import { useEffect } from 'react';
@@ -10,8 +11,8 @@ interface CanvasEventProps {
   setSelectedObject: (object: fabric.FabricObject[]) => void;
   setTool: (tool: Tool) => void;
   save: (skip?: boolean, des?: string) => void;
-  // userState: [number, UserState][];
-  user: Sessions | null;
+  isLoading: boolean;
+  user: Sessions | undefined;
   // websockets: WebsocketProvider | null;
   // userData?: RefObject<DefalutUser>;
   // yMaps?: Y.Map<string>;
@@ -27,19 +28,19 @@ const useCanvasEvent = ({
   save,
   setSelectedObject,
   setTool,
-  // websockets,
+  isLoading,
   user,
-  // userState,
-  // yMaps,
-  // userData,
 }: CanvasEventProps) => {
+  const { setCloudSave } = useSave();
   useEffect(() => {
     if (canvas) {
       // 不能用添加对象，因为初始化添加对象时，
       canvas.on('object:added', (event) => {
         // 画布 @ts-ignore
         if (event.target.name === 'board') return;
-        save();
+        if (isLoading) return;
+        if (user) save();
+        setCloudSave(false);
         // 添加到ymap
         // yMaps?.set(
         //   event.target?.id,
@@ -47,10 +48,10 @@ const useCanvasEvent = ({
         // );
         // save();
       });
-      canvas.on('object:removed', (element) => {
-        if (!user) return;
-        // 画布 @ts-ignore
-        save();
+      canvas.on('object:removed', () => {
+        if (isLoading) return;
+        if (user) save();
+        setCloudSave(false);
         // yMaps?.set(element.target.id, JSON.stringify({ ...element.target, changeType: 'delete' }));
         // 从ymap中删除
         // yMaps?.delete(item.target.id);
@@ -60,8 +61,9 @@ const useCanvasEvent = ({
         // save();
       });
       canvas.on('object:modified', () => {
-        if (!user) return;
-        save();
+        if (isLoading) return;
+        if (user) save();
+        setCloudSave(false);
         // websocket?.emit("update", [item]);
         // 更新ymap
         // yMaps?.set(item.target.id, item.target);
@@ -71,8 +73,7 @@ const useCanvasEvent = ({
       });
       // 选择
       canvas.on('selection:created', (e) => {
-        if (!user) return;
-        // save();
+        if (isLoading) return;
         // websockets?.awareness.setLocalStateField('select', {
         //   ...userData?.current,
         //   select: canvas.getActiveObjects().map((item) => item.id),
@@ -82,7 +83,6 @@ const useCanvasEvent = ({
 
       // 更新选择
       canvas.on('selection:updated', (e) => {
-        if (!user) return;
         // websockets?.awareness.setLocalStateField('select', {
         //   ...userData?.current,
         //   select: canvas.getActiveObjects().map((item) => item.id),
@@ -92,7 +92,6 @@ const useCanvasEvent = ({
 
       // 清除选择
       canvas.on('selection:cleared', () => {
-        if (!user) return;
         // websockets?.awareness.setLocalStateField('select', {
         //   ...userData?.current,
         //   select: canvas.getActiveObjects().map((item) => item.id),
@@ -113,7 +112,7 @@ const useCanvasEvent = ({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvas]);
+  }, [canvas, isLoading]);
   // useEffect(() => {
   //  console.log(userState);
   //  console.log(websockets?.awareness.getStates());

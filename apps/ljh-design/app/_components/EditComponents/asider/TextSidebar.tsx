@@ -30,6 +30,7 @@ const TextSidebar = ({ activeTool, onChangeActive, editor }: TextSidebarProps) =
                 height: `${+item.fontSize.slice(0, 2) + 30}px`,
                 fontSize: item.fontSize,
                 fontWeight: item.fontWeight,
+                fontFamily: item.fontFamily,
               }}
               type="button"
               variant="outline"
@@ -37,6 +38,7 @@ const TextSidebar = ({ activeTool, onChangeActive, editor }: TextSidebarProps) =
                 editor?.addText(item.name, {
                   fontSize: +item.fontSize.slice(0, 2),
                   fontWeight: item.fontWeight,
+                  fontFamily: item.fontFamily,
                 });
               }}
             >

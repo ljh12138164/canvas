@@ -12,9 +12,15 @@ interface TemplateSiderbarProps {
   editor: Edit | undefined;
   onChangeActive: (tool: Tool) => void;
   activeTool: Tool;
+  login?: boolean;
 }
 type TemplateBtn = 'default' | 'myTemplate';
-export const TemplateSiderbar = ({ editor, onChangeActive, activeTool }: TemplateSiderbarProps) => {
+export const TemplateSiderbar = ({
+  editor,
+  onChangeActive,
+  activeTool,
+  login = true,
+}: TemplateSiderbarProps) => {
   const onShow = useMemoizedFn(() => activeTool === Tool.Template);
   const onClose = useMemoizedFn(() => onChangeActive(Tool.Select));
   const [template, setTemplate] = useState<TemplateBtn>(
@@ -32,25 +38,27 @@ export const TemplateSiderbar = ({ editor, onChangeActive, activeTool }: Templat
         <div className="p-4">
           <h2 className="text-lg font-medium">模板</h2>
         </div>
-        <nav className="flex w-full px-2 gap-2">
-          <Button
-            variant={template !== 'default' ? 'outline' : undefined}
-            className="w-full"
-            onClick={() => setTemplate('default')}
-          >
-            默认模板
-          </Button>
-          <Button
-            variant={template !== 'myTemplate' ? 'outline' : undefined}
-            className="w-full"
-            onClick={() => setTemplate('myTemplate')}
-          >
-            我的模板
-          </Button>
-        </nav>
+        {login && (
+          <nav className="flex w-full px-2 gap-2">
+            <Button
+              variant={template !== 'default' ? 'outline' : undefined}
+              className="w-full"
+              onClick={() => setTemplate('default')}
+            >
+              默认模板
+            </Button>
+            <Button
+              variant={template !== 'myTemplate' ? 'outline' : undefined}
+              className="w-full"
+              onClick={() => setTemplate('myTemplate')}
+            >
+              我的模板
+            </Button>
+          </nav>
+        )}
         <section className="flex flex-col gap-y-2 p-4">
           {template === 'default' && <DefaultTemplateList editor={editor} />}
-          {template === 'myTemplate' && <UserTemplateList editor={editor} />}
+          {template === 'myTemplate' && login && <UserTemplateList editor={editor} />}
         </section>
       </ScrollArea>
     </aside>

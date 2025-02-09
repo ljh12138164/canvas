@@ -19,6 +19,7 @@ export const useMaterial = () => {
     MaterialResponseType
   >({
     queryKey: ['material', user?.user.user_metadata.sub],
+    enabled: !!user?.user.user_metadata.sub,
     queryFn: async () => {
       const token = await getNewToken();
       if (!token) router.push('/sign-in');

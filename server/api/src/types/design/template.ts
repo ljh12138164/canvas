@@ -13,4 +13,5 @@ export interface Material {
   options: string;
   userId: string;
   name: string;
+  clone: boolean;
 }

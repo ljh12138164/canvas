@@ -7,6 +7,7 @@ import type {
 import type { Edit } from '@/app/_types/Edit';
 import Image from 'next/image';
 import { useRef } from 'react';
+import toast from 'react-hot-toast';
 import { Response } from '../Comand/Response';
 
 export const myTrigger = (
@@ -42,12 +43,16 @@ export default function DefaultTemplateList({ editor }: { editor: Edit | undefin
           <Response
             myTrigger={myTrigger(item)}
             title="选择模板"
+            showDescription={true}
+            variant="destructive"
             description="选择模板将清空当前画布"
             ref={responseRef}
-            onConfirm={() => {
-              editor?.loadFromJson(item.json, () => {
-                responseRef.current?.closeModel();
-              });
+            onConfirm={async () => {
+              toast.loading('加载中...');
+              await editor?.loadFromJson(item.json);
+              responseRef.current?.closeModel();
+              toast.dismiss();
+              toast.success('加载成功');
             }}
           />
         </section>
