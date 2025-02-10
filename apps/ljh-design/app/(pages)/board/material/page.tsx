@@ -9,6 +9,7 @@ export default function MaterialPage() {
   useEffect(() => {
     if (!loading && !user) {
       router.push('/sign-in');
+      return;
     }
   }, [user, loading]);
   if (loading) return;

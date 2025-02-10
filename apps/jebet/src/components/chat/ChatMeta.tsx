@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Badge } from '../ui/badge';
 const HeaderContainer = styled.div`
   display: grid;
-  grid-template-columns: 50px 1fr 100px;
+  grid-template-columns: 50px 1fr 60px;
   border-bottom: 1px solid #e2e8f0;
 `;
 const ConnectedContent = styled.section`

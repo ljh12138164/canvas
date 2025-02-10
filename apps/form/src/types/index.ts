@@ -30,6 +30,7 @@ export interface Form {
   created_at: string;
   update_at: string;
   schema: string;
+  inviteCode: string;
 }
 
 export interface SumbitForm {

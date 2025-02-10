@@ -8,6 +8,7 @@ import {
 } from '@/app/_components/ui/card';
 import { logout, updateCurrentUser } from '@/app/_database/user';
 import { useUserChange, useUserChangePassword } from '@/app/_hook/query/useUserChange';
+import { useUser } from '@/app/_store/auth';
 import type { Sessions } from '@/app/_types/user';
 import { to } from 'await-to-js';
 import { useRouter } from 'next/navigation';
@@ -20,6 +21,7 @@ import { Label } from '../ui/label';
 import { ScrollArea } from '../ui/scroll-area';
 
 const ChangeUserData = ({ data }: { data: Sessions }) => {
+  const { setUser } = useUser();
   const defaultData = useRef(data.user.user_metadata);
   const router = useRouter();
   const ImageRef = useRef<HTMLInputElement>(null);
@@ -81,10 +83,14 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
           onSuccess: async () => {
             toast.success('更新成功,请重新登录');
             await logout();
+            setUser(null);
             router.push('/sign-in');
           },
           onError: (error) => {
             toast.error(error.message);
+          },
+          onSettled: () => {
+            toast.dismiss();
           },
         },
       );

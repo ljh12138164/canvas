@@ -1,3 +1,13 @@
+import {
+  Calendar,
+  ChevronDown,
+  FileText,
+  FolderTree,
+  Radio as RadioIcon,
+  SlidersHorizontal,
+  TextCursorInput,
+  TextQuote,
+} from 'lucide-vue-next';
 import { nanoid } from 'nanoid';
 
 export type Type =
@@ -42,6 +52,7 @@ export const formItemList = [
     // 拖拽的名称
     name: '输入框',
     inputType: 'text',
+    icon: TextCursorInput,
     // 表单的名称用于默认名字
     defaultTypeName: '输入框',
     label: '输入框',
@@ -57,6 +68,7 @@ export const formItemList = [
     name: '单选框',
     id: '2',
     type: 'radio',
+    icon: RadioIcon,
     defaultTypeName: '单选框',
     hiddenLabel: false,
     label: '单选框',
@@ -77,6 +89,7 @@ export const formItemList = [
     description: '',
     placeholder: '请选择文件',
     defaultValue: '',
+    icon: FileText,
   },
   {
     name: '下拉框',
@@ -90,6 +103,7 @@ export const formItemList = [
     placeholder: '请选择',
     defaultValue: '',
     options: selectDefaultValue,
+    icon: ChevronDown,
   },
   {
     name: '日期选择器',
@@ -102,6 +116,7 @@ export const formItemList = [
     description: '',
     placeholder: '请选择',
     defaultValue: '',
+    icon: Calendar,
   },
   {
     name: '大文本',
@@ -114,6 +129,7 @@ export const formItemList = [
     description: '',
     placeholder: '请输入',
     defaultValue: '',
+    icon: TextQuote,
   },
   {
     name: '滑动按钮',
@@ -126,6 +142,7 @@ export const formItemList = [
     description: '',
     placeholder: '请输入',
     defaultValue: '',
+    icon: SlidersHorizontal,
   },
   {
     name: '子表单',
@@ -139,6 +156,7 @@ export const formItemList = [
     placeholder: '请输入',
     defaultValue: '',
     children: [],
+    icon: FolderTree,
   },
 ];
 
@@ -162,6 +180,7 @@ export interface FormItem {
   name: string;
   label: string;
   description: string;
+  icon: string;
   // default: z.ZodType<any>
   isRequired: boolean;
   hiddenLabel: boolean;

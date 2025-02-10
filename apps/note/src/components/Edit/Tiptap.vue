@@ -84,7 +84,7 @@ new IndexeddbPersistence(
 
 // 创建ws
 const websocket = new HocuspocusProviderWebsocket({
-  url: import.meta.env.VITE_PUBLIC_WS_RENDER,
+  url: import.meta.env?.VITE_PUBLIC_WS_RENDER || 'wss://socket.ljhboard.cn',
 });
 // 协同
 const hocuspocusConnections = new HocuspocusProvider({
@@ -208,7 +208,12 @@ onBeforeUnmount(() => {
 
 <template>
   <main class="flex flex-col max-h-[calc(100dvh-250px)]" v-if="!isLoading">
-    <BubbleMenu :editor="editor as Editor" :tippy-options="{ duration: 100 }" class="bubble-menu" v-if="editor">
+    <BubbleMenu
+      :editor="editor as Editor"
+      :tippy-options="{ duration: 100 }"
+      class="bubble-menu"
+      v-if="editor"
+    >
       <StarterKitComponent :editor="editor as Editor" />
     </BubbleMenu>
     <!-- <StarterKitComponent :editor="editor as Editor" /> -->
@@ -305,7 +310,7 @@ onBeforeUnmount(() => {
   }
 
   // 任务列表
-  ul[data-type="taskList"] {
+  ul[data-type='taskList'] {
     list-style: none;
     margin-left: 0;
     padding: 0;
@@ -314,22 +319,22 @@ onBeforeUnmount(() => {
       align-items: flex-start;
       display: flex;
 
-      >label {
+      > label {
         flex: 0 0 auto;
         margin-right: 0.5rem;
         user-select: none;
       }
 
-      >div {
+      > div {
         flex: 1 1 auto;
       }
     }
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       cursor: pointer;
     }
 
-    ul[data-type="taskList"] {
+    ul[data-type='taskList'] {
       margin: 0;
     }
   }
@@ -351,7 +356,7 @@ onBeforeUnmount(() => {
       position: relative;
       vertical-align: top;
 
-      >* {
+      > * {
         margin-bottom: 0;
       }
     }
@@ -364,7 +369,7 @@ onBeforeUnmount(() => {
 
     .selectedCell:after {
       background: var(--gray-2);
-      content: "";
+      content: '';
       left: 0;
       right: 0;
       top: 0;
@@ -454,7 +459,7 @@ onBeforeUnmount(() => {
     background: var(--black);
     border-radius: 0.5rem;
     color: var(--white);
-    font-family: "JetBrainsMono", monospace;
+    font-family: 'JetBrainsMono', monospace;
     margin: 1.5rem 0;
     padding: 0.75rem 1rem;
 
@@ -630,7 +635,6 @@ onBeforeUnmount(() => {
 
   // 表格样式
   table {
-
     td,
     th {
       border-color: #374151;

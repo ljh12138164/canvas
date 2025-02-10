@@ -31,7 +31,11 @@ export const useBoardQuery = () => {
   const { mutate, isPending, error } = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (board) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.board.$post(
         {
           json: board,
@@ -65,7 +69,11 @@ export const useBoardEditQuery = ({ id, type }: { id: string | undefined; type: 
     enabled: !!id,
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.board.getBoard.$get(
         {
           query: { id: id!, type },
@@ -103,7 +111,11 @@ export const useBoardUserQuery = ({ userId }: { userId: string }) => {
       queryKey: ['board', userId],
       queryFn: async ({ pageParam }) => {
         const token = await getNewToken();
-        if (!token) router.push('/sign-in');
+        if (!token) {
+          router.push('/sign-in');
+          throw new Error('请先登录');
+        }
+
         const response = await client.board.getBoard.$post(
           {
             json: { pageParam: pageParam as number },
@@ -156,7 +168,11 @@ export const useBoardUpdateQuery = ({ id }: { id: string }) => {
   >({
     mutationFn: async (board) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.board.editBoard.$post(
         {
           json: { id, ...board },
@@ -186,7 +202,11 @@ export const useBoardDeleteQuery = () => {
   const { mutate, isPending, error } = useMutation<DeleteResponseType, Error, DeleteRequestType>({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.board.deleteBoard.$post(data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -225,7 +245,11 @@ export const useBoardAutoSaveQuery = ({ id }: { id: string | undefined }) => {
   >({
     mutationFn: async (board) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.board.save.$post(board, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -254,7 +278,11 @@ export const useBoardCopyQuery = () => {
   const { mutate, isPending, error } = useMutation<CopyResponseType, Error, CopyRequestType>({
     mutationFn: async (board) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.board.clone.$post(
         {
           json: { ...board },
@@ -287,7 +315,11 @@ export const useBoardListQuery = () => {
     queryKey: ['boardList', user?.user.user_metadata.sub],
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.board.getBoardList.$get(undefined, {
         headers: { Authorization: `Bearer ${token}` },
       });

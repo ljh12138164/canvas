@@ -93,7 +93,7 @@ export async function login({
   email: string;
   password: string;
 }) {
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { error } = await supabase.auth.signInWithPassword({
     email: email,
     password: password,
   });
@@ -101,8 +101,9 @@ export async function login({
     if (error.message === 'Invalid login credentials') throw new Error('账户或密码错误');
     if (error.message === 'Email not confirmed') throw new Error('邮箱未确认');
   }
-
-  return data;
+  const session = await getCurrentUser();
+  if (!session) throw new Error('登录失败');
+  return session;
 }
 
 /**

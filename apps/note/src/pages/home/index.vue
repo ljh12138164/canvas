@@ -32,8 +32,12 @@ const features = ref([
 ]);
 onBeforeMount(async () => {
   const users = await getCurrentUser();
+  if (!users) {
+    loading.value = false;
+    return;
+  }
+  user.value = users;
   loading.value = false;
-  if (users) user.value = users.session as Sessions;
 });
 </script>
 
@@ -63,7 +67,11 @@ onBeforeMount(async () => {
 
       <section class="features">
         <div class="features-grid">
-          <div v-for="feature in features" :key="feature.title" class="feature-card">
+          <div
+            v-for="feature in features"
+            :key="feature.title"
+            class="feature-card"
+          >
             <div class="feature-icon">{{ feature.icon }}</div>
             <p>{{ feature.title }}</p>
             <p>{{ feature.description }}</p>

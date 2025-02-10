@@ -14,7 +14,10 @@ export const useUserChange = () => {
   const { mutate, isPending } = useMutation<UserChangeResponseType, Error, UserChangeRequestType>({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.user.update.$post(data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -44,7 +47,10 @@ export const useUserChangePassword = () => {
   >({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.user.password.$post(data, {
         headers: {
           Authorization: `Bearer ${token}`,

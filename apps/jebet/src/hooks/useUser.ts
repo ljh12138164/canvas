@@ -14,6 +14,7 @@ export const useUser = ({ redirect, type }: { redirect: boolean; type: 'sign' | 
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState<Profiles | null>(null);
   useEffect(() => {
+    toast.dismiss();
     (async () => {
       const [error, data] = await to(getCurrentUser());
       if (type === 'sign') {

@@ -1,8 +1,11 @@
 // import { useGetUserImage } from '@/hook/query/useImageQuery';
 import { useBoardImageQuery, useDeleteUserImageQuery } from '@/app/_hook/query/useImageQuery';
 import type { Edit } from '@/app/_types/Edit';
+import { useQueryClient } from '@tanstack/react-query';
+import { X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 import { LuBadgeAlert, LuLoader } from 'react-icons/lu';
 export const UserImageBox = ({
   editor,
@@ -11,10 +14,11 @@ export const UserImageBox = ({
   editor: Edit | undefined;
   userId: string;
 }) => {
+  const queryClient = useQueryClient();
   const { data, isLoading, error } = useBoardImageQuery({ userId });
   const { mutate, isPending } = useDeleteUserImageQuery();
   return (
-    <div className="flex  items-center justify-center">
+    <>
       {Array.isArray(data) &&
         data.map((item, index) => {
           return (
@@ -25,7 +29,7 @@ export const UserImageBox = ({
                 if (!isLoading || !error) editor?.addImage(item.url);
               }}
               type="button"
-              className="relative w-full  h-[100px]  hover:opacity-75 transition bg-muted rounded-sm overflow-hidden group border"
+              className="relative w-full  h-[100px] group  hover:opacity-75 transition bg-muted rounded-sm overflow-hidden group border"
             >
               <Image
                 src={item.url}
@@ -35,6 +39,25 @@ export const UserImageBox = ({
                 sizes="100%"
                 alt="用户图片"
                 className="object-cover"
+              />
+              <X
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (isPending) return;
+                  toast.loading('删除中...');
+                  mutate(
+                    { json: { id: item.id, url: item.url } },
+                    {
+                      onSuccess: () => {
+                        toast.dismiss();
+                        toast.success('删除成功');
+                        queryClient.invalidateQueries({ queryKey: ['boardImage'] });
+                      },
+                    },
+                  );
+                }}
+                type="button"
+                className="absolute opacity-0 group-hover:opacity-100 top-2 right-2 size-4 text-muted-foreground transition-all duration-300"
               />
               <Link
                 href={item.url}
@@ -58,6 +81,6 @@ export const UserImageBox = ({
           用户无上传图片
         </div>
       )}
-    </div>
+    </>
   );
 };

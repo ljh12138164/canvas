@@ -46,7 +46,10 @@ export const useBoardImageQuery = ({ userId }: { userId: string | undefined }) =
     enabled: !!userId,
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.image.userImage.$get(undefined, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -74,7 +77,10 @@ export const useUserImageQuery = () => {
   const { mutate, isPending, error } = useMutation<CreateResponseType, Error, CreateRequestType>({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.image.userImage.$post(data, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -100,7 +106,10 @@ export const useDeleteUserImageQuery = () => {
   const { mutate, isPending, error } = useMutation<DeleteResponseType, Error, DeleteRequestType>({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.image.userImage.$delete(data, {
         headers: { Authorization: `Bearer ${token}` },
       });

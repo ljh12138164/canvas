@@ -20,7 +20,10 @@ export const useVote = () => {
   >({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.upvote.upvote.$post(data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -52,7 +55,10 @@ export const useCancelVote = () => {
   >({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.upvote.cancel.$delete(data, {
         headers: {
           Authorization: `Bearer ${token}`,

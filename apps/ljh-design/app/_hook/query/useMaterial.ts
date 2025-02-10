@@ -22,7 +22,10 @@ export const useMaterial = () => {
     enabled: !!user?.user.user_metadata.sub,
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.material.material.$get(undefined, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,7 +52,10 @@ export const useCreateMaterial = () => {
   const { mutate, isPending } = useMutation<MaterialResponType, Error, MaterialRequestType>({
     mutationFn: async (material) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.material.material.$post(material, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,7 +86,10 @@ export const useEditMaterial = () => {
   >({
     mutationFn: async (material) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.material.material.$patch(material, {
         headers: {
           Authorization: `Bearer ${token}`,

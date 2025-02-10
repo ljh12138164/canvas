@@ -76,6 +76,22 @@ const columns = [
         class: 'capitalize',
       }),
   }),
+  columnHelper.accessor('inviteCode', {
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          class: 'flex items-center justify-center  max-w-40',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+        },
+        () => ['邀请码', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })],
+      );
+    },
+    cell: ({ row }) => {
+      return h(TooltipComponent, { content: row.getValue('inviteCode') as string });
+    },
+  }),
   columnHelper.accessor('description', {
     header: ({ column }) => {
       return h(
@@ -116,6 +132,7 @@ const columns = [
       return h('div', { class: 'text-right' }, h(TooltipComponent, { content: formatted }));
     },
   }),
+
   columnHelper.accessor('created_at', {
     header: ({ column }) => {
       return h(
@@ -217,12 +234,12 @@ const keyof = {
           <DropdownMenuCheckboxItem
             v-for="column in table
               .getAllColumns()
-              .filter((column) => column.getCanHide())"
+              .filter(column => column.getCanHide())"
             :key="column.id"
             class="capitalize"
             :checked="column.getIsVisible()"
             @update:checked="
-              (value) => {
+              value => {
                 column.toggleVisibility(!!value);
               }
             "

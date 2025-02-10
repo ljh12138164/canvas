@@ -75,18 +75,23 @@ watch(workspace, () => {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg"
-              class="data-[state=open]:bg-background border data-[state=open]:text-sidebar-accent-foreground">
+            <SidebarMenuButton
+              size="lg"
+              class="data-[state=open]:bg-background border data-[state=open]:text-sidebar-accent-foreground"
+            >
               <div
-                class="flex border px-4 aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                class="flex border px-4 aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
+              >
                 <span v-if="!workspaceIsLoading" class="text-xl">{{
                   workspace?.inconId
                 }}</span>
                 <Skeleton v-else class="size-4" />
               </div>
               <div class="grid flex-1 text-left text-sm leading-tight">
-                <span class="truncate font-semibold flex flex-col" v-if="!workspaceIsLoading"><span
-                    class="text-ellipsis">
+                <span
+                  class="truncate font-semibold flex flex-col"
+                  v-if="!workspaceIsLoading"
+                  ><span class="text-ellipsis">
                     {{ workspace?.title }}
                   </span>
                   <span class="text-xs font-normal">
@@ -109,24 +114,35 @@ watch(workspace, () => {
         <SidebarGroup>
           <Collapsible as-child class="group/collapsible">
             <aside class="asider">
-              <SidebarGroupLabel class="font-semibold text-sm">工作区</SidebarGroupLabel>
+              <SidebarGroupLabel class="font-semibold text-sm"
+                >工作区</SidebarGroupLabel
+              >
               <SidebarMenuButton>
                 <template #default>
-                  <div @click="router.push(`/workspace/${routerParams}/edit/home`)"
-                    class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 transition-all hover:bg-zinc-100">
+                  <div
+                    @click="router.push(`/workspace/${routerParams}/edit/home`)"
+                    class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
+                  >
                     <Settings />
-                    <span class="group-data-[collapsible=icon]:hidden">工作区设置</span>
+                    <span class="group-data-[collapsible=icon]:hidden"
+                      >工作区设置</span
+                    >
                   </div>
                 </template>
               </SidebarMenuButton>
-              <SidebarMenuButton class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100">
+              <SidebarMenuButton
+                class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
+              >
                 <template #default>
                   <ResponsePop title="创建文档">
                     <template #trigger>
                       <div
-                        class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 transition-all hover:bg-zinc-100">
+                        class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
+                      >
                         <Plus />
-                        <span class="group-data-[collapsible=icon]:hidden">创建文档</span>
+                        <span class="group-data-[collapsible=icon]:hidden"
+                          >创建文档</span
+                        >
                       </div>
                     </template>
                     <template #content>
@@ -137,13 +153,19 @@ watch(workspace, () => {
                   </ResponsePop>
                 </template>
               </SidebarMenuButton>
-              <SidebarMenuButton class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100">
+              <SidebarMenuButton
+                class="dark:hover:bg-slate-900 transition-all hover:bg-zinc-100"
+              >
                 <template #default>
                   <ResponsePop title="回收站">
                     <template #trigger>
-                      <div class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 hover:bg-zinc-100">
+                      <div
+                        class="w-full h-full flex items-center gap-2 dark:hover:bg-slate-900 hover:bg-zinc-100"
+                      >
                         <Trash />
-                        <span class="group-data-[collapsible=icon]:hidden">回收站</span>
+                        <span class="group-data-[collapsible=icon]:hidden"
+                          >回收站</span
+                        >
                       </div>
                     </template>
                     <template #content>
@@ -165,11 +187,16 @@ watch(workspace, () => {
       </SidebarContent>
     </Sidebar>
     <SidebarInset>
-      <NavHeader :folders="workspace?.folders" :isLoading="workspaceIsLoading" :foldersError="workspaceError" />
-
-      <keep-alive>
-        <RouterView />
-      </keep-alive>
+      <main class="dark:bg-zinc-900 h-[100dvh]">
+        <NavHeader
+          :folders="workspace?.folders"
+          :isLoading="workspaceIsLoading"
+          :foldersError="workspaceError"
+        />
+        <keep-alive>
+          <RouterView />
+        </keep-alive>
+      </main>
     </SidebarInset>
   </SidebarProvider>
 </template>

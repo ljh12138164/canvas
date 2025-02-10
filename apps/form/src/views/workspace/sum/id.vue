@@ -51,14 +51,15 @@ async function exports() {
     // 设置表头
     for (const [key, value] of Object.entries(sumbitForm)) {
       if (!value.type) {
-        const [label, values] = Object.entries(value)[0];
-        if (value.type === 'file') {
-          columns.push({ header: value.label, key, width: 20 });
-          rows[0] = { ...rows[0], [key]: values.file };
-        } else {
-          columns.push({ header: label, key: key, width: 20 });
-          rows[0] = { ...rows[0], [key]: values.SubmitValue };
-        }
+        Object.entries(value).forEach(([label, values]) => {
+          if (value.type === 'file') {
+            columns.push({ header: value.label, key: `key-${label}`, width: 20 });
+            rows[0] = { ...rows[0], [`key-${label}`]: values.file };
+          } else {
+            columns.push({ header: label, key: `key-${label}`, width: 20 });
+            rows[0] = { ...rows[0], [`key-${label}`]: values.SubmitValue };
+          }
+        });
         // 递归
       } else if (value.type === 'file') {
         columns.push({ header: value.label, key, width: 20 });
@@ -83,7 +84,7 @@ async function exports() {
     <nav class="flex gap-2 items-center">
       <h2 class="text-xl font-bold">提交记录：</h2>
       <Button @click="router.back()">返回</Button>
-      <Button @click="exports()" :disabled="!data?.submit.length" variant="outline" class="ml-auto">
+      <Button @click="exports" :disabled="!data?.submit.length" variant="outline" class="ml-auto">
         <LucideDownload :size="18" />
         导出为Excel
       </Button>

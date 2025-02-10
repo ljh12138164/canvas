@@ -106,7 +106,11 @@ export const useAiSession = () => {
   >({
     mutationFn: async (datas) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.ai.create.$post(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -137,7 +141,11 @@ export const useAiSessionList = () => {
     queryKey: ['aiSessionList', user?.user.id],
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.ai.chat.$get(undefined, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -166,7 +174,11 @@ export const useAiSessionDelete = () => {
   >({
     mutationFn: async (datas) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.ai.chat.$delete(datas, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -197,7 +209,11 @@ export const useAiSessionDetail = (id: string) => {
     // 1小时后过期
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.ai.history.$get(
         { query: { id } },
         {
@@ -230,7 +246,11 @@ export const useAiSessionUpdate = () => {
   >({
     mutationFn: async (datas) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const response = await client.ai.save.$post(datas, {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -11,7 +11,11 @@ export const useClone = () => {
   const { mutate } = useMutation<CopyResponseType, Error, CopyRequestType>({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+
       const res = await client.board.showClone.$post(data, {
         headers: {
           Authorization: `Bearer ${token}`,

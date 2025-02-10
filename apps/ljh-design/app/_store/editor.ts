@@ -78,7 +78,7 @@ export const buildEditor = ({
   canvasColor,
   canvasHistory,
   // yMaps,
-  userId,
+  // userId,
   pasty,
   save,
   canRedo,
@@ -234,7 +234,7 @@ export const buildEditor = ({
     });
     canvas.discardActiveObject();
     canvas.renderAll();
-    if (userId) save();
+    save();
   };
   //加载json
   const loadFromJson = async (json: any, fn?: () => void) => {
@@ -350,7 +350,7 @@ export const buildEditor = ({
       }
       await authZoom();
       canvas.renderAll();
-      if (userId) save();
+      save();
     },
     // 设置背景颜色
     changeBackground: (color: string) => {
@@ -359,7 +359,7 @@ export const buildEditor = ({
       if (workspace) workspace.fill = color;
 
       canvas.renderAll();
-      if (userId) save();
+      save();
     },
     // 复制
     copy,
@@ -451,7 +451,7 @@ export const buildEditor = ({
             : [];
           fixImageSize(imageObj);
 
-          if (userId) save();
+          save();
           // 多种滤镜
           imageObj.applyFilters();
           canvas.renderAll();
@@ -907,7 +907,7 @@ export const buildEditor = ({
       canvas.renderAll();
 
       // 保存历史记录
-      if (userId) save();
+      save();
     },
   };
 };

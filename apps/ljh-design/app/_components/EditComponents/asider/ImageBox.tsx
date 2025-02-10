@@ -1,5 +1,6 @@
 import {
   useBoardImageQuery,
+  useDeleteUserImageQuery,
   useImageQuery,
   useUserImageQuery,
 } from '@/app/_hook/query/useImageQuery';
@@ -21,6 +22,8 @@ export const ImageBox = ({
   const { getImageLoading, imageData, getImageError } = useImageQuery();
   const { data, isLoading, error } = useBoardImageQuery({ userId });
   const { mutate, isPending } = useUserImageQuery();
+  // const { }=use
+  const { mutate: deleMutate, isPending: deleteLoading } = useDeleteUserImageQuery();
   return (
     <>
       {imageData?.map((item) => {
@@ -54,7 +57,8 @@ export const ImageBox = ({
               <button
                 type="button"
                 disabled={isPending}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   if (isLoading || error || getImageLoading) return;
                   const isStar = data?.find((user) => user.url === item.urls.small);
                   if (!isStar)
@@ -72,6 +76,7 @@ export const ImageBox = ({
                         },
                       },
                     );
+                  // deleMutate({json:{id:item.url}})
                 }}
                 className="absolute top-0 right-0 opacity-0 group-hover:opacity-100"
               >

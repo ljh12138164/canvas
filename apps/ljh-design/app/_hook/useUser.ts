@@ -37,7 +37,7 @@ const useUsers = ({
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return { user, loading };
+  return { user, loading, setUser, setLoading };
 };
 
 export default useUsers;

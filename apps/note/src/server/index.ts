@@ -4,4 +4,4 @@ import { hc } from 'hono/client';
 export const client = hc<App>('https://www.ljhboard.cn/').api.note;
 // export const client = hc<App>('http://localhost:8000/').api.note;
 
-export const ws = import.meta.env.VITE_PUBLIC_WS;
+export const ws = import.meta.env?.VITE_PUBLIC_WS || 'wss://socket.ljhboard.cn';

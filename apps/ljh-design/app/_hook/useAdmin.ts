@@ -17,17 +17,6 @@ export const useIsAdmin = ({ type }: { type: 'login' | 'logout' }) => {
         setLoading(false);
       } else {
         // 检测token是否过期
-        verify(token, process.env.NEXT_PUBLIC_JWT_SECRET!)
-          .then(() => {
-            router.push('/admin/home');
-            toast.success('已登录');
-            setLoading(false);
-          })
-          .catch(() => {
-            localStorage.removeItem('ljh-admin-token');
-            setLoading(false);
-          });
-        // 检测token是否过期
         jwtDecode(token)
           // 未过期
           .then(() => {

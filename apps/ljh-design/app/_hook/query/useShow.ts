@@ -21,7 +21,10 @@ export const useShow = () => {
   >({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const res = await client.show.create.$post(data, {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -236,7 +236,7 @@ const FromCard = ({
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-2">
       <CardHeader className="flex flex-row gap-4 items-center">
         {Back && (
           <Button className="w-16 h-full" variant="outline" onClick={() => navigator(-1)}>

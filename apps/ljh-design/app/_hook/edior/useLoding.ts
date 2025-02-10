@@ -37,10 +37,10 @@ export const useLoading = ({
         // 初始化成功后
         const currentState = canvas.toObject(JSON_KEY) as Canvas;
         canvasHistory.current = [currentState];
+        setHistoryIndex(0);
         // 设置画布背景颜色
         canvas.backgroundColor = theme === 'dark' ? '#000' : '#fff';
         // 设置历史
-        setHistoryIndex(0);
         inititaized.current = true;
         setLoading(false);
         setCloudSave(true);

@@ -46,11 +46,11 @@ const chartConfigOf = {
     label: '发布',
     color: 'hsl(var(--chart-6))',
   },
-};
+} satisfies ChartConfig;
 const anyConfig = {
   ...chartConfig,
   ...chartConfigOf,
-};
+} satisfies ChartConfig;
 interface PicChartProps {
   startTime: Date | undefined;
   endTime: Date | undefined;
@@ -71,11 +71,11 @@ export function PicChart({ startTime, endTime, genData, type }: PicChartProps) {
       return `从${dayjs(startTime).format('YYYY年MM月DD日')}到${dayjs(endTime).format('YYYY年MM月DD日')}的数据`;
     if (!startTime && endTime)
       return `从${dayjs(endTime).format('YYYY年MM月DD日')}到${dayjs(endTime).format('YYYY年MM月DD日')}的数据`;
-    if (!startTime && !endTime) return '3个月的数据';
+    if (!startTime && !endTime) return '1个月的数据';
   }, [startTime, endTime]);
   if (genData.reduce((acc, curr) => acc + curr.visitors, 0) === 0)
     return (
-      <Card className="flex flex-col">
+      <Card className="flex flex-col w-full">
         <CardHeader className="items-center pb-0">
           <CardTitle>分项统计</CardTitle>
           <CardDescription>显示{showTiile}</CardDescription>
@@ -96,7 +96,7 @@ export function PicChart({ startTime, endTime, genData, type }: PicChartProps) {
     return type === 'user' ? chartConfig : chartConfigOf;
   }, [type]);
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col w-full">
       <CardHeader className="items-center pb-0">
         <CardTitle>分项统计</CardTitle>
         <CardDescription>显示{showTiile}</CardDescription>

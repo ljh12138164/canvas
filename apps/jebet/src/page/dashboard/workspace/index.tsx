@@ -59,7 +59,7 @@ const WorkSpace = observer(() => {
             </ActionButton>
           </div>
         </NavWorkSpace>
-        <Separator className="h-1" />
+        <Separator className="my-2" />
         <EchartContent id={userData.id} workspaceId={activeWorkSpace.id} />
       </MainWorkSpace>
     );

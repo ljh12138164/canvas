@@ -21,37 +21,11 @@ const { workspace, workspaceIsLoading, workspaceIsFetching } = useGetWorkspaceBy
 const { data, isLoading, isFetching } = useGetDoc();
 </script>
 <template>
-  <div v-if="workspaceIsLoading || workspaceIsFetching || isFetching || isLoading" class="h-full p-6 space-y-6">
-    <!-- 头部骨架 -->
-    <div class="flex items-center justify-between">
-      <Skeleton class="h-8 w-[200px]" />
-      <div class="flex gap-4">
-        <Skeleton class="h-8 w-8 rounded-full" />
-        <Skeleton class="h-8 w-8 rounded-full" />
-      </div>
-    </div>
-
-    <!-- 内容区域骨架 -->
-    <div class="space-y-4">
-      <Skeleton class="h-8 w-[300px]" />
-      <Skeleton class="h-4 w-[80%]" />
-      <Skeleton class="h-4 w-[60%]" />
-      <Skeleton class="h-4 w-[70%]" />
-    </div>
-
-    <!-- 编辑器工具栏骨架 -->
-    <div class="flex gap-2">
-      <Skeleton class="h-8 w-8" />
-      <Skeleton class="h-8 w-8" />
-      <Skeleton class="h-8 w-8" />
-      <Skeleton class="h-8 w-8" />
-      <Skeleton class="h-8 w-8" />
-    </div>
-
-    <!-- 主要内容区域骨架 -->
-    <div class="space-y-4 mt-8">
-      <Skeleton v-for="index in 8" :key="index" class="h-4 w-full" />
-    </div>
+  <div
+    v-if="workspaceIsLoading || workspaceIsFetching || isFetching || isLoading"
+    class="h-full p-6 space-y-6"
+  >
+    <Skeleton class="h-full w-full" />
   </div>
   <div v-else class="h-full">
     <Edit :workspace="workspace" :doc="data" />

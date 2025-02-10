@@ -3,10 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useUser } from '@/hooks/useUser';
+import { cn } from '@/lib/utils';
 import { login, signup } from '@/server/supabase/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import to from 'await-to-js';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -17,7 +18,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f9fafb;
   padding: 1rem;
 `;
 
@@ -35,17 +35,7 @@ const ButtonContainer = styled.div`
 
 const TabButton = styled(Button)<{ $active?: boolean }>`
   transition: all 0.2s ease;
-  &:hover {
-    background-color: ${(props) => (props.$active ? '' : 'rgba(0,0,0,0.05)')};
-  }
-  ${(props) =>
-    props.$active &&
-    `
-    background-color: rgb(228 228 231);
-    &:hover {
-      background-color: rgb(228 228 231);
-    }
-  `}
+
 `;
 
 const FormContainer = styled.form`
@@ -77,10 +67,28 @@ const schema = z.object({
 export default function SignIn() {
   const navigate = useNavigate();
   const [sign, setSign] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+  const turnstileContainer = useRef<HTMLDivElement>(null);
   const { isLoading, isSignedIn } = useUser({ redirect: false, type: 'sign' });
   const { register, handleSubmit, formState } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
+  useEffect(() => {
+    if (!turnstileContainer.current) return;
+    // @ts-ignore
+    turnstile.render(turnstileContainer.current, {
+      // sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
+      sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
+      callback: (token: string) => {
+        setToken(token);
+      },
+    });
+    return () => {
+      // @ts-ignore
+      turnstile.reset();
+    };
+  }, []);
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -91,10 +99,18 @@ export default function SignIn() {
 
   if (isSignedIn) return <Navigate to="/dashboard" />;
   const onSubmit = async (data: z.infer<typeof schema>) => {
+    setLoading(true);
+    if (!token) {
+      toast.dismiss();
+      toast.error('请完成验证');
+      setLoading(false);
+      return;
+    }
     if (sign) {
       if (!data.username) {
         toast.dismiss();
         toast.error('请输入用户名');
+        setLoading(false);
         return;
       }
       // 注册
@@ -104,6 +120,7 @@ export default function SignIn() {
       if (error) {
         toast.dismiss();
         toast.error('注册失败');
+        setLoading(false);
         return;
       }
       toast.dismiss();
@@ -114,15 +131,17 @@ export default function SignIn() {
       if (error) {
         toast.dismiss();
         toast.error('登录失败');
+        setLoading(false);
         return;
       }
       toast.dismiss();
       toast.success('登录成功');
       navigate('/dashboard');
     }
+    setLoading(false);
   };
   return (
-    <Container>
+    <Container className="dark:bg-zinc-700">
       <LoginCard>
         <CardHeader className="space-y-2">
           <CardTitle className="text-2xl font-bold text-center">登录 Jebet</CardTitle>
@@ -130,10 +149,20 @@ export default function SignIn() {
         <CardContent>
           <ButtonContainer>
             <div className="grid grid-cols-2 gap-2">
-              <TabButton variant="outline" $active={!sign} onClick={() => setSign(false)}>
+              <TabButton
+                variant="outline"
+                $active={!sign}
+                onClick={() => setSign(false)}
+                className={cn('dark:bg-zinc-600', sign && 'dark:bg-zinc-800')}
+              >
                 登录
               </TabButton>
-              <TabButton variant="outline" $active={sign} onClick={() => setSign(true)}>
+              <TabButton
+                variant="outline"
+                $active={sign}
+                onClick={() => setSign(true)}
+                className={cn('dark:bg-zinc-600', !sign && ' dark:bg-zinc-800')}
+              >
                 注册
               </TabButton>
             </div>
@@ -178,8 +207,9 @@ export default function SignIn() {
                   <p className="text-red-500 text-sm">{formState.errors.password.message}</p>
                 )}
               </InputGroup>
-              <Button type="submit" className="w-full h-10 mt-2">
-                {sign ? '登录' : '注册'}
+              <div id="turnstile-container" ref={turnstileContainer} />
+              <Button type="submit" className="w-full h-10 mt-2" disabled={loading || !token}>
+                {sign ? '注册' : '登录'}
               </Button>
             </FormContainer>
           </ButtonContainer>

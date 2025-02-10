@@ -52,8 +52,7 @@ export const useCreateBoard = () => {
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
-      const json = await data.json();
-      return json;
+      return data.json();
     },
   });
 };
@@ -116,8 +115,7 @@ export const useUpdateBoard = () => {
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
-      const json = await data.json();
-      return json;
+      return data.json();
     },
   });
 };
@@ -144,8 +142,7 @@ export const useDeleteBoard = () => {
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
-      const json = await data.json();
-      return json;
+      return data.json();
     },
   });
 };
@@ -172,8 +169,7 @@ export const useUpdateBoardInviteCode = () => {
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
-      const json = await data.json();
-      return json;
+      return data.json();
     },
   });
 };
@@ -203,8 +199,7 @@ export const useGetInviteCodeData = (inviteCode: string) => {
         throw new Error(error.message);
       }
 
-      const json = await data.json();
-      return json;
+      return data.json();
     },
   });
 };
@@ -231,8 +226,7 @@ export const useUpdateBoardSchema = () => {
         const error = (await data.json()) as { message: string };
         throw new Error(error.message);
       }
-      const json = await data.json();
-      return json;
+      return data.json();
     },
   });
 };
