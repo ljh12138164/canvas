@@ -12,7 +12,7 @@ const props = defineProps<{
 </script>
 <template>
   <div class="editor-wrapper" v-if="props.workspace">
-    <ScrollArea class="h-full w-full bg-[#fff] dark:bg-transparent">
+    <ScrollArea class="h-full w-full  dark:bg-transparent">
       <Editor :workspace="props.workspace" :doc="props.doc" />
     </ScrollArea>
   </div>

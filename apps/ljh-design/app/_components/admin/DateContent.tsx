@@ -1,7 +1,7 @@
 import { useDatePicker } from '@/app/_store/datePicker';
 import dayjs from 'dayjs';
 import { X } from 'lucide-react';
-import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { zhCN } from 'react-day-picker/locale';
 import toast from 'react-hot-toast';
@@ -21,7 +21,6 @@ export default function DateContent({
   // web worker
   const [dateWorker, setDateWorker] = useState<Worker>();
   // 自定义ref
-
   const handleStartSelect = (date: Date | undefined) => {
     toast.dismiss();
     if (!date) setStartTime(undefined);

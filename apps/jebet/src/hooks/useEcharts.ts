@@ -31,6 +31,7 @@ export const useEchart = ({ options }: { options: echarts.EChartsOption }) => {
     return () => {
       if (!charts.current) return;
       echartsArr.delete(charts.current);
+      charts.current.dispose(); // 清理實例
     };
   }, [echartspush, options]);
   // 返回echarts 实例

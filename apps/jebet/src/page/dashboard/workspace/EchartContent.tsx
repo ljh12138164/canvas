@@ -34,13 +34,13 @@ const Container = styled.div`
 
 const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
 `;
 const CardContainer = styled.section`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
   @media (width < 1100px) {
     grid-template-columns: 1fr;
   }
@@ -140,23 +140,38 @@ const InfoContainer = styled.section`
 `;
 
 const TaskCount = styled(Card)`
-  padding: 1rem;
+  padding: 1.5rem;
   justify-content: center;
-  min-height: 100px;
+  min-height: 120px;
+  height: 100%;
+  background: var(--background);
+  border: 1px solid var(--border);
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
 `;
 const TaskItem = styled.section`
   width: 100%;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  margin-bottom: 0.5rem;
-  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--border);
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    background: var(--accent);
+    transform: translateX(4px);
+  }
 `;
 const ProjectContainer = styled.section`
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.75rem;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
 `;
 
 const EchartContent = ({
@@ -247,7 +262,7 @@ const EchartContent = ({
       </StatsGrid>
       {/* 任务数 */}
       <CardContainer>
-        <TaskCount className="">
+        <TaskCount className="col-span-2">
           <p className="text-xl text-muted-foreground font-bold">
             任务数({workspaces.tasks.length})
           </p>
@@ -363,7 +378,7 @@ const EchartContent = ({
           </ScrollArea>
         </TaskCount>
         {/* 工作流 */}
-        <TaskCount className="bg-[#fff] dark:bg-black">
+        {/* <TaskCount className="bg-[#fff] dark:bg-black">
           <p className="text-xl text-muted-foreground font-bold">
             工作流({workspaces.flow.length})
           </p>
@@ -391,7 +406,7 @@ const EchartContent = ({
             </ScrollArea>
           )}
           {workspaces.flow.length === 0 && <p className="text-center h-full">无数据</p>}
-        </TaskCount>
+        </TaskCount> */}
       </CardContainer>
       {/* Echart */}
       {workspaces && workspaces.tasks.length > 0 && (

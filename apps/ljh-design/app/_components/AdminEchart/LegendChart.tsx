@@ -40,7 +40,7 @@ export function LegendChart({ startTime, endTime, genData }: AreaChartProps) {
       return `从${dayjs(startTime).format('YYYY年MM月DD日')}到${dayjs(endTime).format('YYYY年MM月DD日')}的数据`;
     if (!startTime && endTime)
       return `从${dayjs(endTime).format('YYYY年MM月DD日')}到${dayjs(endTime).format('YYYY年MM月DD日')}的数据`;
-    if (!startTime && !endTime) return '3个月的数据';
+    if (!startTime && !endTime) return '1个月的数据';
   }, [startTime, endTime]);
   if (genData.length === 0)
     return (

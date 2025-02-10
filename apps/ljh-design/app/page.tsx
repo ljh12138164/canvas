@@ -1,16 +1,18 @@
 import { Providers } from '@/app/_provide/providers';
 import Main from './_components/home/Main';
 import NavBar from './_components/home/Navbar';
+import { ScrollArea } from './_components/ui/scroll-area';
 
 export default async function Home() {
+  // asd;
   return (
     <Providers>
-      <div className="min-h-[100dvh]">
+      <ScrollArea className="h-[100dvh]">
         {/* 导航栏 */}
         <NavBar />
         {/* 主要内容区 */}
         <Main />
-      </div>
+      </ScrollArea>
     </Providers>
   );
 }

@@ -3,9 +3,13 @@ import Table from '@/components/table/Table.vue';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGetrBoard } from '@/hooks/board';
-import { Plus } from 'lucide-vue-next';
+import { Plus, RefreshCw } from 'lucide-vue-next';
 import { RouterLink } from 'vue-router';
 const { data, isLoading, error } = useGetrBoard();
+const handleRefresh = () => {
+  window.location.reload();
+  // queryClient.invalidateQueries({ queryKey: ["board"] });
+};
 </script>
 <template>
   <section v-if="isLoading">
@@ -19,7 +23,17 @@ const { data, isLoading, error } = useGetrBoard();
   </section>
   <section v-else-if="Array.isArray(data)" class="entry">
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold">表单列表</h1>
+      <section class="flex gap-2">
+        <h1 class="text-2xl font-bold">表单列表</h1>
+        <Button
+          variant="outline"
+          class="flex items-center gap-2"
+          @click="handleRefresh"
+        >
+          <RefreshCw />
+          <span>刷新</span>
+        </Button>
+      </section>
       <RouterLink to="/workspace/create">
         <Button variant="outline" class="flex items-center gap-2">
           <Plus />

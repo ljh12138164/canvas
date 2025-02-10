@@ -21,21 +21,37 @@ import {
   CalendarPrevButton,
 } from '.';
 
+// 添加中文星期配置
+const weekDayLabels = ['日', '一', '二', '三', '四', '五', '六'];
+
 const props = defineProps<CalendarRootProps & { class?: HTMLAttributes['class'] }>();
 
 const emits = defineEmits<CalendarRootEmits>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;
-
-  return delegated;
+  return {
+    ...delegated,
+    locale: 'zh-CN',
+    weekDayFormat: (day: string) => weekDayLabels[new Date(day).getDay()],
+    monthFormat: (month: Date) => {
+      return new Intl.DateTimeFormat('zh-CN', {
+        year: 'numeric',
+        month: 'long',
+      }).format(month);
+    },
+  };
 });
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
 
 <template>
-  <CalendarRoot v-slot="{ grid, weekDays }" :class="cn('p-3', props.class)" v-bind="forwarded">
+  <CalendarRoot
+    v-slot="{ grid, weekDays }"
+    :class="cn('p-3', props.class)"
+    v-bind="forwarded"
+  >
     <CalendarHeader>
       <CalendarPrevButton />
       <CalendarHeading />
@@ -57,7 +73,11 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
             :key="`weekDate-${index}`"
             class="mt-2 w-full"
           >
-            <CalendarCell v-for="weekDate in weekDates" :key="weekDate.toString()" :date="weekDate">
+            <CalendarCell
+              v-for="weekDate in weekDates"
+              :key="weekDate.toString()"
+              :date="weekDate"
+            >
               <CalendarCellTrigger :day="weekDate" :month="month.value" />
             </CalendarCell>
           </CalendarGridRow>

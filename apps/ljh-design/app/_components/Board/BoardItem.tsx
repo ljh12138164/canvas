@@ -31,17 +31,20 @@ const BoardItem = ({
       >
         <div className="flex items-center gap-1 max-w-[100px] text-ellipsis ">
           <TooltipComponents label={board.name || ''}>
-            <PhotoProvider>
-              <PhotoView src={board.image || ''}>
-                <Image
-                  src={board.image || ''}
-                  alt={board.name || ''}
-                  width={50}
-                  height={50}
-                  className="w-10 h-10 rounded-md border-2 border-gray-600"
-                />
-              </PhotoView>
-            </PhotoProvider>
+            <div className=" rounded-md border-2 border-gray-600">
+              <PhotoProvider>
+                <PhotoView src={board.image || ''}>
+                  <Image
+                    src={board.image || ''}
+                    alt={board.name || ''}
+                    // fill
+                    width={50}
+                    height={50}
+                    className=" rounded-md border-2 border-gray-600"
+                  />
+                </PhotoView>
+              </PhotoProvider>
+            </div>
           </TooltipComponents>
         </div>
       </TableCell>

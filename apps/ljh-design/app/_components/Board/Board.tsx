@@ -6,7 +6,10 @@ const Board = () => {
   const { user, loading } = useUser({ redirects: true });
   const router = useRouter();
   if (loading) return <></>;
-  if (!user) router.push('/sign-in');
+  if (!user) {
+    router.push('/sign-in');
+    return <></>;
+  }
   return <BoardMain userId={user!.user.id} />;
 };
 

@@ -34,38 +34,67 @@ watch(
 </script>
 
 <template>
-  <div class="grid entry transition-all min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+  <div
+    class="grid entry transition-all h-full w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
+  >
     <div class="hidden border-r bg-muted/40 md:block">
-      <div class="flex h-full max-h-screen flex-col gap-2">
+      <div class="flex h-full  flex-col gap-2">
         <Logo />
         <div class="flex-1">
           <nav class="grid items-start px-2 text-sm font-medium lg:px-4">
-            <RouteButton title="仪表板" path="/workspace/board" :active="activePath === '/board'">
+            <RouteButton
+              title="仪表板"
+              path="/workspace/board"
+              :active="activePath === '/board'"
+            >
               <template #icon>
                 <HomeIcon class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton title="表单" path="/workspace/form" :active="activePath === '/form'">
+            <RouteButton
+              title="表单"
+              path="/workspace/form"
+              :active="activePath === '/form'"
+            >
               <template #icon>
                 <ShoppingCartIcon class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton title="创建表单" path="/workspace/create" :active="activePath === '/create'">
+            <RouteButton
+              title="创建表单"
+              path="/workspace/create"
+              :active="activePath === '/create'"
+            >
               <template #icon>
                 <LucideMousePointerSquareDashed class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton title="提交总结" path="/workspace/sum" :active="activePath === '/sum'">
+            <RouteButton
+              title="提交总结"
+              path="/workspace/sum"
+              :active="activePath === '/sum'"
+            >
               <template #icon>
                 <ChartBarIcon class="h-4 w-4" />
               </template>
             </RouteButton>
-            <RouteButton title="提交表单" path="/workspace/submit" :active="activePath === '/submit'">
+            <RouteButton
+              title="提交表单"
+              path="/workspace/submit"
+              :active="activePath === '/submit'"
+            >
               <template #icon>
-                <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
+                <Icon
+                  icon="material-symbols:create-new-folder-outline"
+                  class="h-4 w-4"
+                />
               </template>
             </RouteButton>
-            <RouteButton title="我的提交" path="/workspace/my-submit" :active="activePath === '/my-submit'">
+            <RouteButton
+              title="我的提交"
+              path="/workspace/my-submit"
+              :active="activePath === '/my-submit'"
+            >
               <template #icon>
                 <Icon icon="material-symbols-light:commit" class="h-4 w-4" />
               </template>
@@ -77,15 +106,21 @@ watch(
             <CardContent class="p-2 flex justify-around items-center">
               <!-- <UserButton /> -->
               <div class="flex flex-col gap-2 text-sm text-muted-foreground">
-                <TooltipComponents :title="userData?.session.user.user_metadata.name ?? ''">
+                <TooltipComponents
+                  :title="userData?.session.user.user_metadata.name ?? ''"
+                >
                   <p
-                    class="text-[0.75rem] text-left max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
+                    class="text-[0.75rem] text-left max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
+                  >
                     用户名：{{ userData?.session.user.user_metadata.name }}
                   </p>
                 </TooltipComponents>
-                <TooltipComponents :title="userData?.session.user.user_metadata.email ?? ''">
+                <TooltipComponents
+                  :title="userData?.session.user.user_metadata.email ?? ''"
+                >
                   <p
-                    class="text-[0.75rem] max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
+                    class="text-[0.75rem] max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
+                  >
                     邮箱：{{ userData?.session.user.user_metadata.email }}
                   </p>
                 </TooltipComponents>
@@ -96,7 +131,9 @@ watch(
       </div>
     </div>
     <div class="flex flex-col">
-      <header class="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+      <header
+        class="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6"
+      >
         <Sheet>
           <SheetTrigger as-child>
             <Button variant="outline" size="icon" class="shrink-0 md:hidden">
@@ -106,32 +143,59 @@ watch(
           </SheetTrigger>
           <SheetContent side="left" class="flex flex-col">
             <nav class="grid gap-2 text-lg font-medium">
-              <RouteButton title="仪表板" path="/workspace/board" :active="activePath === '/board'">
+              <RouteButton
+                title="仪表板"
+                path="/workspace/board"
+                :active="activePath === '/board'"
+              >
                 <template #icon>
                   <HomeIcon class="h-4 w-4" />
                 </template>
               </RouteButton>
-              <RouteButton title="表单" path="/workspace/form" :active="activePath === '/form'">
+              <RouteButton
+                title="表单"
+                path="/workspace/form"
+                :active="activePath === '/form'"
+              >
                 <template #icon>
                   <ShoppingCartIcon class="h-4 w-4" />
                 </template>
               </RouteButton>
-              <RouteButton title="创建表单" path="/workspace/create" :active="activePath === '/create'">
+              <RouteButton
+                title="创建表单"
+                path="/workspace/create"
+                :active="activePath === '/create'"
+              >
                 <template #icon>
                   <LucideMousePointerSquareDashed class="h-4 w-4" />
                 </template>
               </RouteButton>
-              <RouteButton title="提交总结" path="/workspace/sum" :active="activePath === '/sum'">
+              <RouteButton
+                title="提交总结"
+                path="/workspace/sum"
+                :active="activePath === '/sum'"
+              >
                 <template #icon>
                   <ChartBarIcon class="h-4 w-4" />
                 </template>
               </RouteButton>
-              <RouteButton title="提交表单" path="/workspace/submit" :active="activePath === '/submit'">
+              <RouteButton
+                title="提交表单"
+                path="/workspace/submit"
+                :active="activePath === '/submit'"
+              >
                 <template #icon>
-                  <Icon icon="material-symbols:create-new-folder-outline" class="h-4 w-4" />
+                  <Icon
+                    icon="material-symbols:create-new-folder-outline"
+                    class="h-4 w-4"
+                  />
                 </template>
               </RouteButton>
-              <RouteButton title="我的提交" path="/workspace/my-submit" :active="activePath === '/my-submit'">
+              <RouteButton
+                title="我的提交"
+                path="/workspace/my-submit"
+                :active="activePath === '/my-submit'"
+              >
                 <template #icon>
                   <Icon icon="material-symbols-light:commit" class="h-4 w-4" />
                 </template>
@@ -141,16 +205,24 @@ watch(
               <Card>
                 <CardContent class="p-2 flex justify-around items-center">
                   <UserButton />
-                  <div class="flex flex-col gap-2 text-sm text-muted-foreground">
-                    <TooltipComponents :title="userData?.session.user.user_metadata.name ?? ''">
+                  <div
+                    class="flex flex-col gap-2 text-sm text-muted-foreground"
+                  >
+                    <TooltipComponents
+                      :title="userData?.session.user.user_metadata.name ?? ''"
+                    >
                       <p
-                        class="text-[0.75rem] text-left max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
+                        class="text-[0.75rem] text-left max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
+                      >
                         用户名：{{ userData?.session.user.user_metadata.name }}
                       </p>
                     </TooltipComponents>
-                    <TooltipComponents :title="userData?.session.user.user_metadata.email ?? ''">
+                    <TooltipComponents
+                      :title="userData?.session.user.user_metadata.email ?? ''"
+                    >
                       <p
-                        class="text-[0.75rem] max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
+                        class="text-[0.75rem] max-w-[100px] lg:max-w-[160px] text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis"
+                      >
                         邮箱：{{ userData?.session.user.user_metadata.email }}
                       </p>
                     </TooltipComponents>

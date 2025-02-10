@@ -13,7 +13,7 @@ import { note } from './note';
 const app = new Hono()
   .use(
     cors({
-      origin: '*',
+      origin: 'http://ljhboard.cn',
       credentials: true,
     }),
   )

@@ -21,19 +21,17 @@ export const PieEchart = ({
         value: 0,
       };
     });
-  }, []);
+  }, [date, workspace]);
   (workspace[types] as Task[] | Member[]).forEach((item) => {
     const time = new Date().getTime() - new Date(item.created_at).getTime();
+    // 判断是否在日期范围内
     if (time < new Date(date * 24 * 60 * 60 * 1000).getTime()) {
       if (types === 'tasks') {
         const find = Workspacedata?.find((items) => items?.name === (item as Task).status);
-        if (find) {
-          find.value++;
-        }
+        if (find) find.value++;
       }
     }
   });
-
   const options: EChartsOption = useMemo(() => {
     return {
       // 提示框
@@ -45,13 +43,7 @@ export const PieEchart = ({
       legend: {
         bottom: 10,
         left: 'center',
-        data: [
-          TaskStatus.BACKLOG,
-          TaskStatus.TODO,
-          TaskStatus.IN_PROGRESS,
-          TaskStatus.DONE,
-          TaskStatus.IN_REVIEW,
-        ],
+        data: Workspacedata.filter((item) => item.value > 0).map((item) => item.name),
       },
       // 数据
       series: [
@@ -72,7 +64,12 @@ export const PieEchart = ({
         },
       ],
     };
-  }, [Workspacedata]);
+  }, [Workspacedata, date]);
   const { echartRef } = useEchart({ options });
+  if (Workspacedata.filter((item) => item.value > 0).length === 0) {
+    return (
+      <div className="w-full h-full min-h-[300px] flex items-center justify-center">无数据</div>
+    );
+  }
   return <div ref={echartRef} className="w-full h-full min-h-[300px]" />;
 };

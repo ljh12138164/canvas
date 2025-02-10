@@ -458,6 +458,7 @@ export const Font: {
 //颜色预设
 export const JSON_KEY = [
   'name',
+  'id',
   'gradientAngle',
   'selectable',
   'hasControls',

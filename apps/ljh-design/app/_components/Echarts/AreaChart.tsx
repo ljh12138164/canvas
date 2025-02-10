@@ -71,7 +71,7 @@ export function AreaChart({ startTime, endTime, selectedType, genData }: AreaCha
       return `从${dayjs(startTime).format('YYYY年MM月DD日')}到${dayjs(endTime).format('YYYY年MM月DD日')}的数据`;
     if (!startTime && endTime)
       return `从${dayjs(endTime).format('YYYY年MM月DD日')}到${dayjs(endTime).format('YYYY年MM月DD日')}的数据`;
-    if (!startTime && !endTime) return '3个月的数据';
+    if (!startTime && !endTime) return '1个月的数据';
   }, [startTime, endTime]);
   if (genData.length === 0)
     return (

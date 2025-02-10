@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@ljh/lint": "workspace:*",
-    "tsup": "^8.3.6"
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3"
   }
 }

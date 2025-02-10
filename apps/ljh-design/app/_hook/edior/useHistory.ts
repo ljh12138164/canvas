@@ -1,6 +1,7 @@
 import { type InitFabicObject, JSON_KEY } from '@/app/_types/Edit';
+import { useMemoizedFn } from 'ahooks';
 import type * as farbir from 'fabric';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 interface HistoryProps {
   canvas: farbir.Canvas | null;
   authZoom: () => Promise<void>;
@@ -30,7 +31,7 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
   const canRedo = () => {
     return historyIndex < canvasHistory.current.length - 1;
   };
-  const save = (skip = false) => {
+  const save = useMemoizedFn((skip = false) => {
     if (!canvas) return;
     const currentState = canvas.toObject(JSON_KEY);
     //
@@ -67,32 +68,31 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
         updated_at: new Date(),
       });
     }
-  };
+  });
   //撤销
-  const undo = async () => {
+  const undo = useMemoizedFn(async () => {
     if (canUndo()) {
       skipSave.current = true;
       //清空
-      canvas?.clear();
-      canvas?.renderAll();
+      // canvas?.clear();
+      // canvas?.renderAll();
       const previousIndex = historyIndex - 1;
       //获取上一部的json
       const previousState = canvasHistory.current[previousIndex];
-
       await canvas?.loadFromJSON(previousState);
       canvas?.renderAll();
       await authZoom();
       setHitoryIndex((prev) => prev - 1);
       skipSave.current = false;
     }
-  };
+  });
   //重做
-  const redo = async () => {
+  const redo = useMemoizedFn(async () => {
     if (canRedo()) {
       skipSave.current = true;
       //清空
-      canvas?.clear();
-      canvas?.renderAll();
+      // canvas?.clear();
+      // canvas?.renderAll();
       const nextIndex = historyIndex + 1;
       //获取上一部的json
       const nextState = canvasHistory.current[nextIndex];
@@ -103,7 +103,7 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
       setHitoryIndex((prev) => prev + 1);
       skipSave.current = false;
     }
-  };
+  });
   return { save, canRedo, canUndo, undo, redo, setHitoryIndex, canvasHistory };
 };
 

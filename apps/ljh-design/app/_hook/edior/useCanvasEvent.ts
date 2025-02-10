@@ -39,7 +39,7 @@ const useCanvasEvent = ({
         // 画布 @ts-ignore
         if (event.target.name === 'board') return;
         if (isLoading) return;
-        if (user) save();
+        save();
         setCloudSave(false);
         // 添加到ymap
         // yMaps?.set(
@@ -50,7 +50,7 @@ const useCanvasEvent = ({
       });
       canvas.on('object:removed', () => {
         if (isLoading) return;
-        if (user) save();
+        save();
         setCloudSave(false);
         // yMaps?.set(element.target.id, JSON.stringify({ ...element.target, changeType: 'delete' }));
         // 从ymap中删除
@@ -62,7 +62,7 @@ const useCanvasEvent = ({
       });
       canvas.on('object:modified', () => {
         if (isLoading) return;
-        if (user) save();
+        save();
         setCloudSave(false);
         // websocket?.emit("update", [item]);
         // 更新ymap

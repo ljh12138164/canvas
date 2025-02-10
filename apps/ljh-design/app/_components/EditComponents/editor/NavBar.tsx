@@ -301,6 +301,11 @@ const NavBar = ({
             )}
           </section>
           <section className="flex items-center gap-2">
+            {type !== 'material' && !cloudSave && (
+              <Button variant="ghost" size="sm" disabled={isPending}>
+                保存
+              </Button>
+            )}
             {/* 导出 */}
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>

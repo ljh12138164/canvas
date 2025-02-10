@@ -88,17 +88,14 @@ const BoardMain = ({ userId }: { userId: string }) => {
                     setList(value === 'list');
                     localStorage.setItem('showList', value);
                   }}
+                  defaultValue="grid"
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder={list ? '列表' : '网格'} className="text-sm " />
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={list ? '列表' : '网格'} />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem disabled={list || isLoading} value="list">
-                      列表
-                    </SelectItem>
-                    <SelectItem disabled={!list || isLoading} value="grid">
-                      网格
-                    </SelectItem>
+                  <SelectContent position="popper">
+                    <SelectItem value="list">列表</SelectItem>
+                    <SelectItem value="grid">网格</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -6,11 +6,11 @@ import { Separator } from '@/app/_components/ui/separator';
 import { login as loginServer, signup as signUpServer } from '@/app/_database/user';
 import useUsers from '@/app/_hook/useUser';
 import { indexDBChange } from '@/app/_lib/utils';
+import { useUser } from '@/app/_store/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { nanoid } from 'nanoid';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
@@ -24,10 +24,12 @@ const schema = z.object({
 });
 
 const SignIn = () => {
-  const { loading: UserLoading } = useUsers({
+  const { loading: UserLoading, setUser } = useUsers({
     redirects: true,
     type: 'goLoading',
   });
+  const [token, setToken] = useState<string>('');
+  const turnstileContainer = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const addTryToIndexDB = async () => {
     const id = nanoid();
@@ -44,6 +46,22 @@ const SignIn = () => {
     });
     router.push(`/try/Edit/${id}`);
   };
+
+  useEffect(() => {
+    if (!turnstileContainer.current) return;
+    // @ts-ignore
+    turnstile.render(turnstileContainer.current, {
+      // sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
+      sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
+      callback: (token: string) => {
+        setToken(token);
+      },
+    });
+    return () => {
+      // @ts-ignore
+      turnstile.reset();
+    };
+  }, []);
   const [login, setLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -51,6 +69,10 @@ const SignIn = () => {
     resolver: zodResolver(schema),
   });
   const onSubmit = async (data: z.infer<typeof schema>) => {
+    toast.dismiss();
+    if (!token) {
+      toast.error('提交失败');
+    }
     setLoading(true);
     if (login) {
       toast.loading('登录中...');
@@ -58,7 +80,8 @@ const SignIn = () => {
         email: data.accoute,
         password: data.password,
       })
-        .then(() => {
+        .then((data) => {
+          setUser(data);
           toast.dismiss();
           toast.success('登录成功');
           router.push('/board');
@@ -144,6 +167,7 @@ const SignIn = () => {
                 <span className="text-red-500 text-sm">{formState.errors.password.message}</span>
               )}
             </div>
+            <div id="turnstile-container" ref={turnstileContainer} />
             <Button type="submit" className="w-full mt-2.5" disabled={loading}>
               {login ? `登录${loading ? '中...' : ''}` : `注册${loading ? '中...' : ''}`}
             </Button>

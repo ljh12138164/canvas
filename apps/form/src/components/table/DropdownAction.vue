@@ -17,18 +17,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/toast';
 import { useDeleteBoard, useUpdateBoard } from '@/hooks/board';
-import useUser from '@/stores/user';
+import { toast } from '@/lib';
 import type { Form } from '@/types';
 import { useQueryClient } from '@tanstack/vue-query';
 import { MoreVertical, Pencil, Presentation, Trash2 } from 'lucide-vue-next';
 import { FormInputIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-const { toast } = useToast();
 
-const { userData } = useUser();
 const queryClient = useQueryClient();
 const closeRef = ref<HTMLButtonElement>();
 const closeRef2 = ref<HTMLButtonElement>();
@@ -46,21 +43,23 @@ const handlePreview = async () => {
 };
 const input = ref(props.payment.name);
 const description = ref(props.payment.description);
-const handleDelete = async () => {
+const handleDelete = () => {
   deleteBoard(
     { json: { id: props.payment.id } },
     {
       onSuccess: () => {
+        toast.success('删除成功');
         closeRef.value?.click();
+      },
+      onSettled: () => {
         queryClient.invalidateQueries({ queryKey: ['board'] });
-        toast({ title: '删除成功' });
       },
     },
   );
 };
 const handleEdit = async () => {
   if (!input.value) {
-    toast({ title: '请输入表单名称', variant: 'destructive' });
+    toast.error('请输入表单名称');
     return;
   }
   updateBoard(
@@ -69,7 +68,7 @@ const handleEdit = async () => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['board'] });
         closeRef2.value?.click();
-        toast({ title: '编辑成功' });
+        toast.success('编辑成功');
       },
     },
   );
@@ -84,13 +83,21 @@ const handleEdit = async () => {
     </DropdownMenuTrigger>
     <DropdownMenuContent>
       <DropdownMenuItem class="flex items-center gap-2" asChild>
-        <Button variant="ghost" class="p-0 w-full cursor-pointer" @click="handlePreview">
+        <Button
+          variant="ghost"
+          class="p-0 w-full cursor-pointer"
+          @click="handlePreview"
+        >
           <Presentation />
           <span>详细</span>
         </Button>
       </DropdownMenuItem>
       <DropdownMenuItem class="flex items-center gap-2" asChild>
-        <Button variant="ghost" class="p-0 w-full cursor-pointer" @click="handleUpdateFomr">
+        <Button
+          variant="ghost"
+          class="p-0 w-full cursor-pointer"
+          @click="handleUpdateFomr"
+        >
           <FormInputIcon />
           <span>表单编辑</span>
         </Button>
@@ -117,9 +124,7 @@ const handleEdit = async () => {
                 <Button ref="closeRef2"> 取消 </Button>
               </DialogClose>
               <Button variant="destructive" @click="handleEdit">
-                <p class="flex items-center gap-2">
-                  <Pencil />编辑
-                </p>
+                <p class="flex items-center gap-2"><Pencil />编辑</p>
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -144,7 +149,9 @@ const handleEdit = async () => {
               <DialogClose>
                 <Button ref="closeRef"> 取消 </Button>
               </DialogClose>
-              <Button variant="destructive" @click="handleDelete"> 删除 </Button>
+              <Button variant="destructive" @click="handleDelete">
+                删除
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

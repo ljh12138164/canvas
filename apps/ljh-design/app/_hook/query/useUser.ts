@@ -22,7 +22,10 @@ export const useUserLike = (enabled: boolean, search: string) => {
     enabled,
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.user.like.$get(
         { query: { search } },
         {
@@ -62,7 +65,10 @@ export const useUserCollection = (enabled: boolean, search: string) => {
     enabled,
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.user.collect.$get(
         { query: { search } },
         {
@@ -100,7 +106,10 @@ export const useUserData = (enabled: boolean, startTime?: Date, endTime?: Date) 
     enabled,
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.user.data.$get(
         {
           query: {

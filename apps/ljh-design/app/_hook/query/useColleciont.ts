@@ -24,7 +24,10 @@ export const useCollection = () => {
   >({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const res = await client.collection.collection.$post(data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -58,7 +61,10 @@ export const useCancelCollection = () => {
   >({
     mutationFn: async (data) => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const res = await client.collection.delte.$delete(data, {
         headers: {
           Authorization: `Bearer ${token}`,

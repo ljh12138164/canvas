@@ -72,12 +72,13 @@ const Chat = observer(() => {
     if (!activeWorkSpace) return;
     if (chatStore.socket) return;
     // 生产环境
-    // const socket = io(import.meta.env.VITE_CHAT_WS_PROD, {
     const socket = io('wss://jebetsocket.ljhboard.cn', {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
       timeout: 10000,
+      // 使用websocket连接
+      transports: ['websocket'],
     });
     // 连接成功
     socket.on('connect', () => {

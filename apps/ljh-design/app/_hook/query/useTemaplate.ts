@@ -48,7 +48,10 @@ export const useUserTemplate = () => {
     queryKey: ['templateUser', user?.user.user_metadata.sub],
     queryFn: async () => {
       const token = await getNewToken();
-      if (!token) router.push('/sign-in');
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const response = await client.template.userTemplate.$get(undefined, {
         headers: {
           Authorization: `Bearer ${token}`,
