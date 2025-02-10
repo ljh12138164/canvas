@@ -6,8 +6,9 @@ import { useUser } from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
 import { login, signup } from '@/server/supabase/user';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Turnstile } from '@marsidev/react-turnstile';
 import to from 'await-to-js';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -69,26 +70,30 @@ export default function SignIn() {
   const [sign, setSign] = useState(false);
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState<string | null>(null);
-  const turnstileContainer = useRef<HTMLDivElement>(null);
+  // const turnstileContainer = useRef<HTMLDivElement>(null);
+  const handleSuccess = (token: string) => {
+    setToken(token);
+    // 在这里处理验证成功后的逻辑
+  };
+
   const { isLoading, isSignedIn } = useUser({ redirect: false, type: 'sign' });
   const { register, handleSubmit, formState } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  useEffect(() => {
-    if (!turnstileContainer.current) return;
-    // @ts-ignore
-    turnstile.render(turnstileContainer.current, {
-      // sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
-      sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
-      callback: (token: string) => {
-        setToken(token);
-      },
-    });
-    return () => {
-      // @ts-ignore
-      turnstile.reset();
-    };
-  }, []);
+  // useEffect(() => {
+  //   if (!turnstileContainer.current) return;
+  //   turnstile.render(turnstileContainer.current, {
+  //     // sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
+  //     sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
+  //     callback: (token: string) => {
+  //       setToken(token);
+  //     },
+  //   });
+  //   return () => {
+  //     // @ts-ignore
+  //     turnstile.reset();
+  //   };
+  // }, []);
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -207,7 +212,15 @@ export default function SignIn() {
                   <p className="text-red-500 text-sm">{formState.errors.password.message}</p>
                 )}
               </InputGroup>
-              <div id="turnstile-container" ref={turnstileContainer} />
+              <Turnstile
+                siteKey="0x4AAAAAAA8NncDcOl1Duk3E" // 替换成你的 site key
+                onSuccess={handleSuccess}
+                options={{
+                  theme: 'light', // 或 'dark'
+                  language: 'zh-CN',
+                }}
+              />
+              {/* <div id="turnstile-container" ref={turnstileContainer} /> */}
               <Button type="submit" className="w-full h-10 mt-2" disabled={loading || !token}>
                 {sign ? '注册' : '登录'}
               </Button>
