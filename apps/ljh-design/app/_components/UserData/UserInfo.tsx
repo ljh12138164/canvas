@@ -5,7 +5,7 @@ import { Button } from '@/app/_components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/app/_components/ui/card';
 import { useUserCollection, useUserLike } from '@/app/_hook/query/useUser';
 import { useUser } from '@/app/_store/auth';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import { PencilIcon, UserIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';

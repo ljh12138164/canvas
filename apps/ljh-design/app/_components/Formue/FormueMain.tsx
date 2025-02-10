@@ -11,7 +11,7 @@ import {
 import { Skeleton } from '@/app/_components/ui/skeleton';
 import { useGetFormue } from '@/app/_hook/query/useShow';
 import { useMemoizedFn } from 'ahooks';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import { MessageSquare } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import Link from 'next/link';

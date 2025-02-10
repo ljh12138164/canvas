@@ -5,7 +5,7 @@ import { type EditType, PAGE_SIZE } from '@/app/_types/Edit';
 import type { Board } from '@/app/_types/board';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 

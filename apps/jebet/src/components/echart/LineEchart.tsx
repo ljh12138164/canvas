@@ -1,8 +1,7 @@
-import { useEchart } from '@/hooks/useEcharts';
+import { type ECOption, useEchart } from '@/hooks/useEcharts';
 import { getData } from '@/lib/echart';
 import type { WorkspaceResponseType } from '@/server/hooks/board';
 import type { Member, Task } from '@/types/workspace';
-import type { EChartsOption } from 'echarts';
 import { useMemo } from 'react';
 /**
  *  ### 折线图---时间轴----数量
@@ -36,7 +35,7 @@ export const LineEchart = ({
       Workspacedata[dates].value++;
     }
   });
-  const options: EChartsOption = useMemo(() => {
+  const options: ECOption = useMemo(() => {
     return {
       // 横轴
       xAxis: {

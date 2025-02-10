@@ -1,39 +1,75 @@
 import { useMemoizedFn } from 'ahooks';
-import type { ECharts } from 'echarts';
-import * as echarts from 'echarts';
+import type { LineSeriesOption, PieSeriesOption } from 'echarts/charts';
+import { LineChart, PieChart } from 'echarts/charts';
+import type {
+  GridComponentOption,
+  LegendComponentOption,
+  TooltipComponentOption,
+} from 'echarts/components';
+import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
+import * as echarts from 'echarts/core';
+import { UniversalTransition } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
 import { useEffect, useRef } from 'react';
 
-const echartsArr = new Set<ECharts>();
-/**
- *
- * @param 自动调整echarts大小
- */
+// 定义图表配置类型
+export type ECOption = echarts.ComposeOption<
+  | TooltipComponentOption
+  | LegendComponentOption
+  | GridComponentOption
+  | LineSeriesOption
+  | PieSeriesOption
+>;
+
+// 注册必需的组件
+echarts.use([
+  TooltipComponent,
+  LegendComponent,
+  GridComponent,
+  LineChart,
+  PieChart,
+  CanvasRenderer,
+  UniversalTransition,
+]);
+
+const echartsArr = new Set<echarts.ECharts>();
+
+// 窗口大小改变时自动调整图表大小
 window.addEventListener('resize', () => {
-  [...echartsArr].forEach((item) => {
-    item.resize();
+  [...echartsArr].forEach((chart) => {
+    chart.resize();
   });
 });
 
+interface UseEchartProps {
+  // @ts-ignore
+  options: ECOption;
+}
+
 /**
- * ### 使用echarts
- * @returns
+ * ECharts Hook
  */
-export const useEchart = ({ options }: { options: echarts.EChartsOption }) => {
-  const echartspush = useMemoizedFn((echarts: ECharts) => echartsArr.add(echarts));
+export const useEchart = ({ options }: UseEchartProps) => {
+  const echartspush = useMemoizedFn((chart: echarts.ECharts) => echartsArr.add(chart));
   const echartRef = useRef<HTMLDivElement | null>(null);
-  const charts = useRef<ECharts | null>(null);
+  const chartInstance = useRef<echarts.ECharts | null>(null);
+
   useEffect(() => {
     if (!echartRef.current) return;
-    charts.current = echarts.init(echartRef.current);
-    charts.current.setOption(options);
-    // 添加到echartsArr
-    echartspush(charts.current);
+
+    // 初始化图表
+    chartInstance.current = echarts.init(echartRef.current);
+    chartInstance.current.setOption(options);
+    echartspush(chartInstance.current);
+
     return () => {
-      if (!charts.current) return;
-      echartsArr.delete(charts.current);
-      charts.current.dispose(); // 清理實例
+      if (chartInstance.current) {
+        echartsArr.delete(chartInstance.current);
+        chartInstance.current.dispose();
+        chartInstance.current = null;
+      }
     };
   }, [echartspush, options]);
-  // 返回echarts 实例
-  return { echartRef, charts };
+
+  return { echartRef, chartInstance };
 };
