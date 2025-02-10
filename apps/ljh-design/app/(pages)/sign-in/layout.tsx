@@ -12,9 +12,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <header>
-        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
-      </header>
       <body>
         <Providers>{children}</Providers>
       </body>

@@ -25,7 +25,6 @@ onMounted(() => {
   // @ts-ignore
   turnstile.render('#turnstile-container', {
     // sitekey: "0x4AAAAAAA8NncDcOl1Duk3E",
-    // TODO:
     sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
     // 設置回調
     callback: (turnstileToken: string) => {

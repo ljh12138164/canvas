@@ -6,11 +6,12 @@ import { Separator } from '@/app/_components/ui/separator';
 import { login as loginServer, signup as signUpServer } from '@/app/_database/user';
 import useUsers from '@/app/_hook/useUser';
 import { indexDBChange } from '@/app/_lib/utils';
-import { useUser } from '@/app/_store/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
+// import { useUser } from '@/app/_store/auth';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
@@ -29,7 +30,7 @@ const SignIn = () => {
     type: 'goLoading',
   });
   const [token, setToken] = useState<string>('');
-  const turnstileContainer = useRef<HTMLDivElement>(null);
+  // const turnstileContainer = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const addTryToIndexDB = async () => {
     const id = nanoid();
@@ -46,22 +47,10 @@ const SignIn = () => {
     });
     router.push(`/try/Edit/${id}`);
   };
+  const handleSuccess = (token: string) => {
+    setToken(token);
+  };
 
-  useEffect(() => {
-    if (!turnstileContainer.current) return;
-    // @ts-ignore
-    turnstile.render(turnstileContainer.current, {
-      // sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
-      sitekey: '0x4AAAAAAA8NncDcOl1Duk3E',
-      callback: (token: string) => {
-        setToken(token);
-      },
-    });
-    return () => {
-      // @ts-ignore
-      turnstile.reset();
-    };
-  }, []);
   const [login, setLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -167,7 +156,14 @@ const SignIn = () => {
                 <span className="text-red-500 text-sm">{formState.errors.password.message}</span>
               )}
             </div>
-            <div id="turnstile-container" ref={turnstileContainer} />
+            <Turnstile
+              siteKey="0x4AAAAAAA8NncDcOl1Duk3E" // 替换成你的 site key
+              onSuccess={handleSuccess}
+              options={{
+                theme: 'light', // 或 'dark'
+                language: 'zh-CN',
+              }}
+            />
             <Button type="submit" className="w-full mt-2.5" disabled={loading}>
               {login ? `登录${loading ? '中...' : ''}` : `注册${loading ? '中...' : ''}`}
             </Button>

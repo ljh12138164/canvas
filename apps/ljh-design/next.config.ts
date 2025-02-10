@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
         hostname: 'osdawghfaoyysblfsexp.supabase.co',
       },
     ],
+    domains: ['challenges.cloudflare.com'],
     minimumCacheTTL: 60,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -80,22 +81,6 @@ const nextConfig: NextConfig = {
             priority: 10,
             chunks: 'all',
             reuseExistingChunk: true,
-          },
-
-          // 管理后台相关
-          admin: {
-            test: /[\\/]app[\\/]\(pages\)[\\/]admin/,
-            name: 'admin',
-            priority: 25,
-            chunks: 'all',
-          },
-
-          // 画板相关
-          board: {
-            test: /[\\/]app[\\/]\(pages\)[\\/]board/,
-            name: 'board',
-            priority: 25,
-            chunks: 'all',
           },
         },
       };
