@@ -37,7 +37,6 @@
     "cookie": "^1.0.2",
     "dayjs": "^1.11.13",
     "embla-carousel-vue": "^8.5.2",
-    "exceljs": "^4.4.0",
     "hono": "^4.6.20",
     "i18next": "^24.2.2",
     "localforage": "^1.10.0",
@@ -66,7 +65,6 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@ljh/lint": "workspace:*",
-    "api": "workspace:*",
     "@tailwindcss/vite": "^4.0.2",
     "@tanstack/vue-query-devtools": "^5.64.2",
     "@tsconfig/node22": "^22.0.0",
@@ -75,6 +73,7 @@
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",
     "@vue/tsconfig": "^0.7.0",
+    "api": "workspace:*",
     "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",
     "rollup-plugin-external-globals": "^0.13.0",
@@ -83,6 +82,7 @@
     "tailwindcss": "^3.4.17",
     "typescript": "~5.7.3",
     "vite": "^6.0.11",
-    "vite-plugin-compression": "^0.5.1"
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-imagemin": "^0.6.1"
   }
 }

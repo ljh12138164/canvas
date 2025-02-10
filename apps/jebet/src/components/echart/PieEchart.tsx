@@ -1,8 +1,7 @@
-import { useEchart } from '@/hooks/useEcharts';
+import { type ECOption, useEchart } from '@/hooks/useEcharts';
 import type { WorkspaceResponseType } from '@/server/hooks/board';
 import { TaskStatus } from '@/types/workspace';
 import type { Member, Task } from '@/types/workspace';
-import type { EChartsOption } from 'echarts';
 import { useMemo } from 'react';
 
 export const PieEchart = ({
@@ -32,7 +31,7 @@ export const PieEchart = ({
       }
     }
   });
-  const options: EChartsOption = useMemo(() => {
+  const options: ECOption = useMemo(() => {
     return {
       // 提示框
       tooltip: {

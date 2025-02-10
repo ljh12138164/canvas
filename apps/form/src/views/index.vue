@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-background entry">
+  <ScrollArea class="h-[100dvh] bg-background entry">
     <!-- 导航栏 -->
     <header class="border-b">
       <div class="container flex h-16 items-center justify-between">
@@ -58,12 +58,13 @@
         </Card>
       </div>
     </section>
-  </div>
+  </ScrollArea>
 </template>
 
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Database, MousePointerClick, Palette } from 'lucide-vue-next';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Database, MousePointerClick } from 'lucide-vue-next';
 import { RouterLink } from 'vue-router';
 </script>

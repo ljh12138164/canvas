@@ -41,3 +41,6 @@ yarn-error.log*
 Dockerfile
 docker-compose.yml
 .VSCodeCounter
+
+.vercel
+.env*.local

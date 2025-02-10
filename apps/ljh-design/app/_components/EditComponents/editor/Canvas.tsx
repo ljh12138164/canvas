@@ -44,7 +44,7 @@ import type { Board } from '@/app/_types/board';
 import type { Sessions } from '@/app/_types/user';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 // import { debounce } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TemplateSiderbar } from '../asider/TemplateSiderbar';

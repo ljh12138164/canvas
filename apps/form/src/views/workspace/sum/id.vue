@@ -31,7 +31,7 @@ const { data, isLoading } = useGetSubmitFormById(id.value);
 async function exports() {
   if (!data.value) return;
   // 动态导入
-  const ExcelJS = (await import('exceljs')).default;
+  // @ts-ignore
   const workbook = new ExcelJS.Workbook();
   for (const item of data.value.submit) {
     // 创建工作表
