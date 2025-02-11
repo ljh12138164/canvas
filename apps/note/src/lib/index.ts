@@ -123,3 +123,8 @@ export const HIGHLIGHT_COLORS = [
 export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref) {
   ref.value = typeof updaterOrValue === 'function' ? updaterOrValue(ref.value) : updaterOrValue;
 }
+
+export const LOGO_URL =
+  'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/ohter/note/logo.webp';
+export const LOGO_IMAGE_URL =
+  'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/ohter/note/logoImage.webp';

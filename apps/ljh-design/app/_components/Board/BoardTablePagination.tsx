@@ -27,12 +27,12 @@ export function BoardTablePagination<TData>({ table }: BoardTablePaginationProps
               table.setPageSize(Number(value));
             }}
           >
-            <SelectTrigger className="h-8 w-[70px]">
+            <SelectTrigger className="h-8 w-[70px]" aria-label="每页条数">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
               {[10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
+                <SelectItem key={pageSize} value={`${pageSize}`} aria-label={`每页${pageSize}条`}>
                   {pageSize}
                 </SelectItem>
               ))}

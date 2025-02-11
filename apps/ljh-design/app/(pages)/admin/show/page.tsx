@@ -1,34 +1,12 @@
-'use client';
-import AdminPeding from '@/app/_components/admin/AdminPeding';
-import DateContent from '@/app/_components/admin/DateContent';
-import EchartContent from '@/app/_components/admin/EchartContent';
-import { ScrollArea } from '@/app/_components/ui/scroll-area';
-import { useShowList } from '@/app/_hook/query/useAdmin';
-import { useIsAdmin } from '@/app/_hook/useAdmin';
-import { useDatePicker } from '@/app/_store/datePicker';
-import dayjs from 'dayjs';
-import { useMemo } from 'react';
-
+import ShowPage from '@/app/_components/admin/ShowPage';
+import type { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: '话题统计/ljh-design',
+  description: 'ljh-design话题统计',
+  keywords: ['ljh-design', '话题统计', '话题'],
+};
 const Page = () => {
-  const { isLoading } = useIsAdmin({ type: 'logout' });
-  const { startTime, endTime, dates } = useDatePicker();
-  const { data, isPending } = useShowList(startTime, endTime);
-
-  const genData: Record<'datas' | 'date', number | string>[] = useMemo(() => {
-    if (!data) return [];
-    return dates.map((date) => ({
-      datas: data.filter((item) => dayjs(item.created_at).isSame(date, 'day')).length,
-      date,
-    }));
-  }, [dates, data]);
-  if (isPending || isLoading) return <AdminPeding title="话题统计" />;
-  return (
-    <DateContent title="话题统计">
-      <ScrollArea className="w-full h-[calc(100dvh-30px)] flex flex-col gap-4 px-4 pb-[7rem]">
-        <EchartContent startTime={startTime} endTime={endTime} genData={genData} label="话题统计" />
-      </ScrollArea>
-    </DateContent>
-  );
+  return <ShowPage />;
 };
 
 export default Page;

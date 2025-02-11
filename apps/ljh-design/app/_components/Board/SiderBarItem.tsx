@@ -18,13 +18,15 @@ const SiderBarItem = ({ label, Icon, href, isActive, closeRef, onClick }: SiderB
       }}
       href={href}
       className={cn(
-        'flex items-center py-4 px-4 rounded-xl bg-transparent dark:bg-[#312e812b] hover:bg-indigo-100 dark:hover:bg-[#000] duration-300 transition',
-        isActive ? 'text-blue-500 border-l-[3px] border-blue-500 bg-indigo-100 dark:bg-[#000]' : '',
+        'flex items-center font-medium py-4 px-4 rounded-xl bg-transparent dark:bg-[#1a1a1a] hover:bg-indigo-100/90 dark:hover:bg-[#2a2a2a] duration-300 transition text-gray-700 dark:text-gray-200',
+        isActive
+          ? 'text-blue-600 dark:text-blue-400 border-l-[3px] font-bold border-blue-500 bg-indigo-100 dark:bg-[#2a2a2a]'
+          : '',
       )}
     >
-      <section className="flex items-center gap-x-2">
+      <section className="flex items-center gap-x-2 ">
         <Icon className="size-6" />
-        <span className="test-sm font-medium">{label}</span>
+        <span className="test-sm ">{label}</span>
       </section>
     </Link>
   );

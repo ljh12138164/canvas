@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: '编辑器',
-  description: '编辑器',
+  title: '模板编辑器/ljh-design',
+  description: 'ljh-design模板编辑器',
 };
 
 export default function RootLayout({

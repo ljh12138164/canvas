@@ -52,7 +52,7 @@ const Main = () => {
       <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8 py-16">
         {features.map((feature) => (
           <div key={feature.title} className="text-center p-6 rounded-lg border">
-            <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+            <h2 className="text-xl font-bold mb-3">{feature.title}</h2>
             <p className="text-gray-600">{feature.description}</p>
           </div>
         ))}

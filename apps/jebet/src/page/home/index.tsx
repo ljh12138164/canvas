@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
+import { LOGO_URL } from '@/lib/echart';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import logo from '../../assets/image/logo.jpg';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -121,7 +121,7 @@ export default function Home() {
     <Container>
       <Nav>
         <NavLeft>
-          <Logo src={logo} alt="Logo" />
+          <Logo src={LOGO_URL} alt="Logo" />
           <Brand>ljh-jebet</Brand>
         </NavLeft>
       </Nav>

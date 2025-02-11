@@ -160,3 +160,8 @@ export function downLoad(link: string, type: string) {
   a.click();
   a.remove();
 }
+
+export const LOGO_URL =
+  'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/ohter/form/logo.webp';
+export const LOGO_IMAGE_URL =
+  'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/ohter/form/logoImage.webp';

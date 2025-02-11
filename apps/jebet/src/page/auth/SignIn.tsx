@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTheme } from '@/components/ui/theme-provider';
 import { useUser } from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
 import { login, signup } from '@/server/supabase/user';
@@ -66,6 +67,7 @@ const schema = z.object({
 });
 
 export default function SignIn() {
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const [sign, setSign] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -213,11 +215,12 @@ export default function SignIn() {
                 )}
               </InputGroup>
               <Turnstile
+                // siteKey="1x00000000000000000000AA"
                 siteKey="0x4AAAAAAA8NncDcOl1Duk3E" // 替换成你的 site key
                 onSuccess={handleSuccess}
                 options={{
-                  theme: 'light', // 或 'dark'
-                  language: 'zh-CN',
+                  theme: theme === 'dark' ? 'dark' : 'light', // 或 'dark'
+                  language: 'zh-cn',
                 }}
               />
               {/* <div id="turnstile-container" ref={turnstileContainer} /> */}

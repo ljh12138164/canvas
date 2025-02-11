@@ -31,7 +31,7 @@ const Login = () => {
         onSuccess: (data) => {
           if (data.token) {
             localStorage.setItem('ljh-admin-token', data.token);
-            router.push('/admin/home');
+            router.push('/admin');
           }
         },
         onError: (error) => {

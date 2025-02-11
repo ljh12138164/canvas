@@ -29,6 +29,7 @@ export const columns: ColumnDef<BoardData>[] = [
           <PhotoProvider>
             <PhotoView src={row.original.image || ''}>
               <Image
+                priority
                 src={row.original.image || ''}
                 alt={row.original.name || ''}
                 width={50}

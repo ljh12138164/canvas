@@ -29,7 +29,10 @@ export default function UserInfo() {
         <CardContent className="pt-6">
           <div className="flex items-start space-x-8">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={user?.user.user_metadata.image} />
+              <AvatarImage
+                src={user?.user.user_metadata.image}
+                alt={user?.user.user_metadata.name || '用户'}
+              />
               <AvatarFallback>
                 <UserIcon className="h-10 w-10" />
               </AvatarFallback>

@@ -52,7 +52,7 @@ const SiderBarRoutes = ({
             closeRef={closeRef}
           />
         </li>
-        <Separator />
+        {/* <li></li><Separator /> */}
         <li className="p-4 flex flex-col gap-4">
           <SiderBarItem
             href="/board/userData"

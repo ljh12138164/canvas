@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 // import { useUser } from '@/app/_store/auth';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { nanoid } from 'nanoid';
+import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,6 +26,7 @@ const schema = z.object({
 });
 
 const SignIn = () => {
+  const { theme } = useTheme();
   const { loading: UserLoading, setUser } = useUsers({
     redirects: true,
     type: 'goLoading',
@@ -61,6 +63,7 @@ const SignIn = () => {
     toast.dismiss();
     if (!token) {
       toast.error('提交失败');
+      return;
     }
     setLoading(true);
     if (login) {
@@ -160,8 +163,8 @@ const SignIn = () => {
               siteKey="0x4AAAAAAA8NncDcOl1Duk3E" // 替换成你的 site key
               onSuccess={handleSuccess}
               options={{
-                theme: 'light', // 或 'dark'
-                language: 'zh-CN',
+                theme: theme === 'dark' ? 'dark' : 'light', // 或 'dark'
+                language: 'zh-cn',
               }}
             />
             <Button type="submit" className="w-full mt-2.5" disabled={loading}>

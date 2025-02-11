@@ -90,12 +90,16 @@ const BoardMain = ({ userId }: { userId: string }) => {
                   }}
                   defaultValue="grid"
                 >
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full" aria-label="列表或网格">
                     <SelectValue placeholder={list ? '列表' : '网格'} />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="list">列表</SelectItem>
-                    <SelectItem value="grid">网格</SelectItem>
+                    <SelectItem value="list" aria-label="列表">
+                      列表
+                    </SelectItem>
+                    <SelectItem value="grid" aria-label="网格">
+                      网格
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>

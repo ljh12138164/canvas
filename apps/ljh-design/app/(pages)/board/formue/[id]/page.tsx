@@ -1,5 +1,12 @@
 import { ShowPage } from '@/app/_components/Formue/ShowPage';
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: '设计详情/ljh-design',
+  description: 'ljh-design设计详情',
+  keywords: ['ljh-design', '设计详情', '设计'],
+};
 
 export default async function Home({
   params,
