@@ -12,3 +12,8 @@ export const getData = <T extends number>(type: T) => {
   });
   return arr;
 };
+
+export const LOGO_URL =
+  'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/ohter/jebet/logo.webp';
+export const LOGO_IMAGE_URL =
+  'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/ljh-design-ui/ohter/jebet/logoImage.webp';

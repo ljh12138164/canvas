@@ -47,7 +47,7 @@ export default function FormueMain() {
           icon={
             <MessageSquare className="text-yellow-500 text-[2rem] animate-pulse hover:animate-spin" />
           }
-          title="分享你的模板和素材来"
+          title="分享你的模板和素材"
           className="from-purple-600 via-pink-500 to-orange-400"
         >
           <Button

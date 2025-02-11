@@ -3,8 +3,9 @@ import 'react-photo-view/dist/react-photo-view.css';
 import 'react-day-picker/style.css';
 import './globals.css';
 export const metadata: Metadata = {
-  title: 'LJH-DESIGN',
-  description: 'LJH-DESIGN',
+  title: 'LJH-DESIGN 设计工具',
+  description: 'LJH-DESIGN 设计工具',
+  keywords: 'LJH-DESIGN 设计工具',
 };
 
 export default function RootLayout({

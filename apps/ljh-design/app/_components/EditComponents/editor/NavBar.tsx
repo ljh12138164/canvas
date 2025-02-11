@@ -148,6 +148,7 @@ const NavBar = ({
         <Separator orientation="vertical" className="mx-2 h-[60%]" />
         <TooltipComponents label="选择">
           <Button
+            aria-label="选择"
             variant={'ghost'}
             size={'icon'}
             onClick={() => {
@@ -162,7 +163,7 @@ const NavBar = ({
         <TooltipComponents label="清空画布">
           <Dialog>
             <DialogTrigger>
-              <Button variant={'ghost'} size={'icon'}>
+              <Button variant={'ghost'} size={'icon'} aria-label="清空画布">
                 <LuTrash size="20" />
               </Button>
             </DialogTrigger>
@@ -193,6 +194,7 @@ const NavBar = ({
         {/* 预览 */}
         <TooltipComponents label="预览">
           <Button
+            aria-label="预览"
             variant={'ghost'}
             size={'icon'}
             onClick={() => {
@@ -211,6 +213,7 @@ const NavBar = ({
             onClick={() => {
               editor?.undo();
             }}
+            aria-label="撤销"
           >
             <LuUndo2 size="20" />
           </Button>
@@ -222,6 +225,7 @@ const NavBar = ({
             variant={'ghost'}
             size={'icon'}
             onClick={() => editor?.redo()}
+            aria-label="重做"
           >
             <LuRedo2 size="20" />
           </Button>

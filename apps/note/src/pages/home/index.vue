@@ -2,6 +2,7 @@
 import ThemeChange from '@/components/common/ThemeChange.vue';
 import UserButton from '@/components/common/UserButton.vue';
 import { Button } from '@/components/ui/button';
+import { LOGO_IMAGE_URL } from '@/lib';
 import { getCurrentUser } from '@/server/supabase/user';
 import type { Sessions } from '@/types/user';
 import { onBeforeMount, ref } from 'vue';
@@ -45,7 +46,7 @@ onBeforeMount(async () => {
   <div class="home-container">
     <nav class="nav">
       <div class="nav-left">
-        <img src="../../assets/image/logoImage.jpg" alt="Logo" class="logo" />
+        <img :src="LOGO_IMAGE_URL" alt="Logo" class="logo" />
         <span class="brand">ljh-note</span>
       </div>
       <div class="nav-right">

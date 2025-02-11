@@ -35,6 +35,7 @@ export const FormueItem = ({ item }: FormueItemProps) => {
                 onClick={(e) => e.stopPropagation()}
                 src={item.board.image}
                 alt={item.title}
+                priority
                 width={100}
                 height={125}
                 className="object-cover"
@@ -68,7 +69,7 @@ export const FormueItem = ({ item }: FormueItemProps) => {
             <div className="flex items-center gap-2 mt-auto">
               <p className="text-sm text-gray-500">发布者:</p>
               <Avatar>
-                <AvatarImage src={item.profiles.image} />
+                <AvatarImage src={item.profiles.image} alt={item.profiles.name || '用户'} />
                 <AvatarFallback>{item.profiles.name}</AvatarFallback>
               </Avatar>
               <p className="text-sm text-gray-500">{item.profiles.name}</p>
@@ -126,7 +127,7 @@ export const FormueItem = ({ item }: FormueItemProps) => {
           <div className="flex items-center gap-2 mt-auto">
             <p className="text-sm text-gray-500">发布者:</p>
             <Avatar>
-              <AvatarImage src={item.profiles.image} />
+              <AvatarImage src={item.profiles.image} alt={item.profiles.name || '用户'} />
               <AvatarFallback>{item.profiles.name}</AvatarFallback>
             </Avatar>
             <p className="text-sm text-gray-500">{item.profiles.name}</p>

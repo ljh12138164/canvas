@@ -5,7 +5,7 @@
       <div class="container flex h-16 items-center justify-between">
         <div class="flex items-center gap-2">
           <!-- <FormInput class="h-6 w-6" /> -->
-          <img src="@/assets/image/logo.jpg" alt="logo" class="h-6 w-6" />
+          <img :src="LOGO_URL" alt="logo" class="h-6 w-6" />
           <span class="font-bold">ljh-form</span>
         </div>
         <nav class="flex items-center gap-6">
@@ -65,6 +65,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { LOGO_URL } from '@/lib';
 import { Database, MousePointerClick } from 'lucide-vue-next';
 import { RouterLink } from 'vue-router';
 </script>

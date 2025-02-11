@@ -75,7 +75,7 @@ export default function AiList({
               showDescription={false}
               myTrigger={
                 <Button variant="outline" onClick={(e) => e.stopPropagation()}>
-                  <Trash className="h-4 w-4" />
+                  <Trash className="h-4 w-4" type="button" aria-label="删除对话" />
                 </Button>
               }
               ref={responseRef}

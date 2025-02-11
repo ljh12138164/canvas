@@ -88,7 +88,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
           </div>
         </ColorCard>
 
-        <h3 className="text-lg font-bold mb-4">默认模板</h3>
+        <h1 className="text-lg font-bold mb-4">默认模板</h1>
         <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-6">
           {isLoadingDefault ? (
             <>
@@ -107,6 +107,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                         src={template.image}
                         alt={template.name}
                         fill
+                        priority
                         quality={80}
                         className="object-cover w-full h-full"
                       />
@@ -114,7 +115,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                   </PhotoProvider>
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{template.name}</h3>
+                  <h2 className="text-lg font-semibold mb-2">{template.name}</h2>
                   <p className="text-sm text-gray-500 mb-4">{template.description}</p>
                   <div className="flex gap-2">
                     <Dialog>
@@ -159,7 +160,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
             ))
           )}
         </div>
-        <h2 className="text-lg font-bold my-4">我的模板</h2>
+        <h1 className="text-lg font-bold my-4">我的模板</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-6">
           {isLoadingUserTemplate ? (
             <>
@@ -169,7 +170,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
               <Skeleton className="w-full h-[200px]" />
             </>
           ) : (
-            dataUserTemplate?.map((template) => (
+            dataUserTemplate?.map((template, index) => (
               <Card key={template.id} className="overflow-hidden">
                 <div className="aspect-video relative border">
                   <PhotoProvider>
@@ -178,6 +179,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                         src={template.image}
                         alt={template.name || '用户图片'}
                         fill
+                        priority={index < 4}
                         quality={80}
                         className="object-cover w-full h-full"
                       />
@@ -185,7 +187,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                   </PhotoProvider>
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{template.name}</h3>
+                  <h2 className="text-lg font-semibold mb-2">{template.name}</h2>
                   <div className="flex gap-2">
                     <Dialog>
                       <DialogTrigger asChild>

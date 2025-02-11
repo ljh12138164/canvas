@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import logoImage from '@/assets/image/logoImage.jpg';
 import Button from '@/components/ui/button/Button.vue';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { LOGO_IMAGE_URL } from '@/lib';
 import { toast } from '@/lib';
 import { login, signup } from '@/server/supabase/user';
 import { Icon } from '@iconify/vue';
@@ -53,6 +53,10 @@ onMounted(() => {
 });
 
 async function onSubmit(values: any) {
+  if (!token.value) {
+    toast.error('请完成验证');
+    return;
+  }
   try {
     if (loginType.value === 'register') {
       // 注册
@@ -96,7 +100,7 @@ async function onSubmit(values: any) {
       <section class="loginCardLeft">
         <div class="loginCardLeftTitle">
           <CardHeader class="cardHeader">
-            <img :src="logoImage" alt="Logo" class="logo" />
+            <img :src="LOGO_IMAGE_URL" alt="Logo" class="logo" />
           </CardHeader>
           <div class="loginCardLeftTitleContent">
             <h1 class="loginCardLeftTitleText">欢迎使用</h1>

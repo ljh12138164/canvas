@@ -3,6 +3,12 @@ import CreatePop from '@/app/_components/Ai/CreatePop';
 import ColorCard from '@/app/_components/Comand/ColorCard';
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { AtomIcon } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'AI助手/ljh-design',
+  description: 'ljh-designAI助手',
+};
 
 const AI = () => {
   return (

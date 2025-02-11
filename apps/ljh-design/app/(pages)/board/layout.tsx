@@ -2,10 +2,17 @@ import NavBar from '@/app/_components/Board/Navbar';
 import SiderBar from '@/app/_components/Board/SiderBar';
 import { Providers } from '@/app/_provide/providers';
 import type { Metadata } from 'next';
-export const metadata: Metadata = {
-  title: '面板',
-  description: 'LJH Design',
-};
+
+export async function generateMetadata(): Promise<Metadata> {
+  // 这里可以进行异步操作，比如获取用户信息等
+  return {
+    title: '用户面板/ljh-design',
+    description: 'ljh-design面板',
+    // 可以添加更多元数据
+    keywords: ['ljh-design', '用户面板'],
+    // 其他元数据配置...
+  };
+}
 
 export default function RootLayout({
   children,

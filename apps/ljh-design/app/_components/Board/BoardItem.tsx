@@ -38,6 +38,7 @@ const BoardItem = ({
                     src={board.image || ''}
                     alt={board.name || ''}
                     // fill
+                    priority
                     width={50}
                     height={50}
                     className=" rounded-md border-2 border-gray-600"
@@ -76,8 +77,10 @@ const BoardItem = ({
       </TableCell>
       <TableCell className="text-ellipsis">
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <IoMenu className="size-6 cursor-pointer hover:text-blue-700 transition-colors" />
+          <DropdownMenuTrigger asChild aria-label="操作">
+            <Button type="button" variant="ghost" aria-label="操作">
+              <IoMenu className="size-6 cursor-pointer hover:text-blue-700 transition-colors" />
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="flex flex-col gap-2 w-full">
             <BoardEdit setChange={setChange} userId={userId} data={board} id={board.id}>
