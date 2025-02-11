@@ -754,9 +754,6 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
-      echarts:
-        specifier: ^5.6.0
-        version: 5.6.0
       embla-carousel-react:
         specifier: ^8.5.2
         version: 8.5.2(react@19.0.0-rc.1)
@@ -1420,9 +1417,6 @@ importers:
 
   server/ws:
     dependencies:
-      '@hocuspocus/extension-database':
-        specifier: ^2.15.0
-        version: 2.15.0(y-protocols@1.0.6(yjs@13.6.23))(yjs@13.6.23)
       '@hocuspocus/extension-webhook':
         specifier: ^2.15.0
         version: 2.15.0(@tiptap/pm@2.11.5)(y-prosemirror@1.2.15(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.2)(y-protocols@1.0.6(yjs@13.6.23))(yjs@13.6.23))(y-protocols@1.0.6(yjs@13.6.23))(yjs@13.6.23)
