@@ -20,6 +20,7 @@
     "rimraf:design": "cd apps/ljh-design && rimraf node_modules dist .next .turbo",
     "rimraf:test": "cd apps/test && rimraf node_modules dist .turbo",
     "dev:api": "turbo --filter=api dev",
+    "dev:mini": "cd mini/miniApp && pnpm run dev:h5",
     "dev:blob": "turbo --filter=blob dev",
     "dev:test": "turbo --filter=test dev",
     "dev:note": "turbo --filter=api --filter=note --filter=ws dev",
