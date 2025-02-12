@@ -1,0 +1,10 @@
+.index {
+  padding: 20px;
+  text-align: center;
+}
+
+.index Button {
+  margin-top: 20px;
+  background-color: #07c160;
+  color: white;
+}
