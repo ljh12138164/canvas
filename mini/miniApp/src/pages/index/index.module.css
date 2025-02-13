@@ -1,0 +1,40 @@
+.index {
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  width: 100dvw;
+}
+
+.index Button {
+  margin-top: 20px;
+  background-color: #07c160;
+  color: white;
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginTitle {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.loginSubtitle {
+  font-size: 16px;
+  color: #999;
+}
