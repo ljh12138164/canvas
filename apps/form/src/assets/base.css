@@ -71,3 +71,36 @@ body {
   text-rendering: optimizelegibility;
   transition: color 0.5s, background-color 0.5s;
 }
+
+.single-line {
+  /* 必要的属性 */
+  overflow: hidden; /* 隐藏溢出内容 */
+  text-overflow: ellipsis; /* 显示省略号 */
+  white-space: nowrap; /* 禁止换行 */
+
+  /* 建议的其他属性 */
+  width: 200px; /* 或者其他固定宽度 */
+  /* max-width: 100%; */ /* 或者最大宽度 */
+}
+.multi-line {
+  /* 方案一：使用 -webkit-line-clamp（推荐，兼容性较好） */
+  display: -webkit-box;
+  /* 垂直方向 (vertical)：
+┌────────────────┐
+│第一行文本      │
+│第二行文本      │
+│第三行文本...   │  ← 超出两行的文本被截断并显示省略号
+└────────────────┘
+
+水平方向 (horizontal)：
+┌────────────────┐
+│第一行文本 第二行文本 第三行文本...│  ← 文本会在一行内左右排列
+└────────────────┘ */
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* 显示行数 */
+  overflow: hidden;
+
+  /* 建议的其他属性 */
+  width: 200px;
+  line-height: 1.5; /* 控制行高 */
+}

@@ -83,6 +83,7 @@ new IndexeddbPersistence(
 // 文本编辑器
 
 // 创建ws
+// 'wss://localhost:8080
 const websocket = new HocuspocusProviderWebsocket({
   url: import.meta.env?.VITE_PUBLIC_WS_RENDER || 'wss://socket.ljhboard.cn',
   connect: true,
@@ -209,12 +210,7 @@ onBeforeUnmount(() => {
 
 <template>
   <main class="flex flex-col max-h-[calc(100dvh-250px)]" v-if="!isLoading">
-    <BubbleMenu
-      :editor="editor as Editor"
-      :tippy-options="{ duration: 100 }"
-      class="bubble-menu"
-      v-if="editor"
-    >
+    <BubbleMenu :editor="editor as Editor" :tippy-options="{ duration: 100 }" class="bubble-menu" v-if="editor">
       <StarterKitComponent :editor="editor as Editor" />
     </BubbleMenu>
     <!-- <StarterKitComponent :editor="editor as Editor" /> -->
@@ -320,13 +316,13 @@ onBeforeUnmount(() => {
       align-items: flex-start;
       display: flex;
 
-      > label {
+      >label {
         flex: 0 0 auto;
         margin-right: 0.5rem;
         user-select: none;
       }
 
-      > div {
+      >div {
         flex: 1 1 auto;
       }
     }
@@ -357,7 +353,7 @@ onBeforeUnmount(() => {
       position: relative;
       vertical-align: top;
 
-      > * {
+      >* {
         margin-bottom: 0;
       }
     }
@@ -636,6 +632,7 @@ onBeforeUnmount(() => {
 
   // 表格样式
   table {
+
     td,
     th {
       border-color: #374151;
