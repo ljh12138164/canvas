@@ -72,6 +72,8 @@ const Chat = observer(() => {
     if (!activeWorkSpace) return;
     if (chatStore.socket) return;
     // 生产环境
+    // wss://localhost:8088
+    // wss://jebetsocket.ljhboard.cn
     const socket = io('wss://jebetsocket.ljhboard.cn', {
       reconnection: true,
       reconnectionAttempts: 10,

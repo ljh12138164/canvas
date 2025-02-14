@@ -48,6 +48,7 @@ const navbar = (
 const footer = <Footer>MIT {new Date().getFullYear()} © ljh-blog.</Footer>;
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
+  const pageMap = await getPageMap();
   return (
     <html
       // Not required, but good for SEO
@@ -70,7 +71,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           }}
           editLink={null}
           navbar={navbar}
-          pageMap={await getPageMap()}
+          pageMap={pageMap}
           docsRepositoryBase="https://github.com/ljh12138164"
           footer={footer}
           navigation={{

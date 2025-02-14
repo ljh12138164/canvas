@@ -21,7 +21,7 @@
     "rimraf:test": "cd apps/test && rimraf node_modules dist .turbo",
     "dev:api": "turbo --filter=api dev",
     "dev:mini": "cd mini/miniApp && pnpm run dev:h5",
-    "dev:blob": "turbo --filter=blob dev",
+    "dev:blog": "turbo --filter=blog dev",
     "dev:test": "turbo --filter=test dev",
     "dev:note": "turbo --filter=api --filter=note --filter=ws dev",
     "dev:design": "turbo --filter=api --filter=design --filter=design-ws dev && turbo --filter=api api:dev",
