@@ -29,13 +29,13 @@ jobs:
           node-version: lts/*
 
       - name: Install step
-        run: "deno cache --reload https://deno.land/x/socket_io@0.2.1/mod.ts server/jebetChat/src/test.ts"
+        run: "de"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "ljh12138164-canvas-21"
+          project: "ljh12138164-canvas-77"
           entrypoint: "src/test.ts"
-          root: "server/jebetChat"
+          root: "server/ws"
           
           
