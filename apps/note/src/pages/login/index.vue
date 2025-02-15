@@ -132,8 +132,8 @@ async function onSubmit(values: any) {
             </div>
             <div class="formItem">
               <Icon @click="showPassword = !showPassword" :icon="!showPassword
-                  ? 'weui:eyes-off-outlined'
-                  : 'weui:eyes-on-outlined'
+                ? 'weui:eyes-off-outlined'
+                : 'weui:eyes-on-outlined'
                 " class="formEye" />
               <Field placeholder="请输入密码..." name="password" :type="showPassword ? 'text' : 'password'"
                 class="formInput dark:text-black" />

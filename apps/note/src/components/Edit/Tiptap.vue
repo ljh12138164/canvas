@@ -85,7 +85,8 @@ new IndexeddbPersistence(
 // 创建ws
 // 'wss://localhost:8080
 const websocket = new HocuspocusProviderWebsocket({
-  url: import.meta.env?.VITE_PUBLIC_WS_RENDER || 'wss://socket.ljhboard.cn',
+  // url: import.meta.env?.VITE_PUBLIC_WS_RENDER || 'wss://socket.ljhboard.cn',
+  url: 'wss://socket.ljhboard.cn/collaboration',
   connect: true,
 });
 // 协同
