@@ -30,7 +30,7 @@ const server = Server.configure({
   extensions: [
     new Webhook({
       url: 'https://ljhboard.cn/api/note/webhook/save',
-      secret: process.env.WEBHOOK_SECRET,
+      secret: '151515155151515',
       events: [Events.onChange, Events.onCreate],
       debounce: 5000,
       transformer: TiptapTransformer.extensions([
@@ -124,4 +124,4 @@ app.ws('/collaboration', (websocket, request) => {
   server.handleConnection(websocket, request, context);
 });
 // console.log('server start');
-app.listen(8080);
+app.listen(8400);
