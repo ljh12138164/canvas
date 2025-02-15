@@ -97,6 +97,7 @@ const nextConfig: NextConfig = {
     // 开启 Next.js 的实验性优化特性
     optimizeCss: true, // 优化 CSS
     scrollRestoration: true, // 滚动位置恢复
+    reactCompiler: true,
   },
 };
 

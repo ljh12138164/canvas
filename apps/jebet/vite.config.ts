@@ -1,5 +1,6 @@
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
+import reactCompiler from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 // import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
@@ -9,6 +10,7 @@ const plugins = [
   react({
     // fastRefresh: true,
   }), // 打包后压缩图片
+  reactCompiler(),
   // viteImagemin({
   //   gifsicle: {
   //     optimizationLevel: 7,
