@@ -98,6 +98,7 @@
     "@types/node": "^22.13.0",
     "@types/react-dom": "19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react-swc": "^3.7.2",
     "api": "workspace:^",
     "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",

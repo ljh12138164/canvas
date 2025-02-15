@@ -42,22 +42,38 @@ interface DrawerDialogProps {
  * @param children 子组件
  * @param onConfirm 确定回调
  * @param ref 引用
+ * @param variant 按钮类型
+ * @param myTrigger 自定义触发器
+ * @param showDescription 是否显示描述
+ * @param showFooter 是否显示底部
  * @returns
  * @example 
- * <Response
-     title="编辑"
-     description="确定编辑吗？"
- *   ref={responseRef}
- *   onConfirm={() => {
- *   console.log('编辑');
- *   responseRef.current?.closeModel();
- *   }}
- *  >
- *  <span className="flex items-center gap-2">
- *     <Pencil />
- *     <span> 编辑 </span>
- *  </span>
- * </Response>
+ *  <Response
+      title="新建对话"
+      description="新建ai对话"
+      disabled={createAiSessionPending}
+      ref={responseRef}
+      myTrigger={
+        <Button variant="outline">
+          <Plus className="h-4 w-4" />
+          <span>新建对话</span>
+        </Button>
+      }
+      onConfirm={() => {
+        createAiSession(
+          { json: { name } },
+          {
+            onSuccess: (data) => {
+              queryClient.invalidateQueries({ queryKey: ['aiSessionList'] });
+              responseRef.current?.closeModel();
+              router.push(`/board/ai/${data.id}`);
+            },
+          },
+        );
+      }}
+    >
+      <Input placeholder="请输入对话名称" value={name} onChange={(e) => setName(e.target.value)} />
+    </Response>
  */
 export function Response({
   title,
