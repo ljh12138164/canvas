@@ -31,9 +31,6 @@ jobs:
       - name: Install step
         run: "deno cache"
 
-      - name: Build step
-        run: "server/jebetChat"
-
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
@@ -41,4 +38,4 @@ jobs:
           entrypoint: "src/test.ts"
           root: "server/jebetChat"
           
-          exclude: node_modules/
+          
