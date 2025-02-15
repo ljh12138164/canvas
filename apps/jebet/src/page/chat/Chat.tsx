@@ -74,7 +74,7 @@ const Chat = observer(() => {
     // 生产环境
     // ws://localhost:8088
     // wss://jebetsocket.ljhboard.cn
-    const socket = io('ws://localhost:8088', {
+    const socket = io('wss://jebetsocket.ljhboard.cn', {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
