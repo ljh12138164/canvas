@@ -7,6 +7,8 @@ const io = new Server({
     origin: '*',
     credentials: true,
   },
+  addTrailingSlash: false,
+  path: '/socket.io/',
 });
 
 io.on('connection', (socket: any) => {
@@ -86,7 +88,11 @@ io.on('connection', (socket: any) => {
   });
 });
 // @ts-ignore
-Deno.serve({
-  handler: io.handler(),
-  port: 8088,
-});
+Deno.serve(
+  {
+    // @ts-ignore
+    port: Number(Deno.env.get('PORT')) || 8088,
+    hostname: '0.0.0.0',
+  },
+  io.handler(),
+);
