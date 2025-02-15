@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import Button from '@/components/ui/button/Button.vue';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { LOGO_IMAGE_URL } from '@/lib';
-import { toast } from '@/lib';
+import { LOGO_IMAGE_URL, toast } from '@/lib';
 import { login, signup } from '@/server/supabase/user';
 import { Icon } from '@iconify/vue';
 import { toTypedSchema } from '@vee-validate/zod';
