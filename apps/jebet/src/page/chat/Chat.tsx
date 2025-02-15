@@ -80,6 +80,7 @@ const Chat = observer(() => {
       reconnectionDelay: 1000,
       timeout: 10000,
       // 使用websocket连接
+      path: '/socket.io/',
       transports: ['websocket'],
     });
     // 连接成功
