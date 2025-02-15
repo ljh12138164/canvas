@@ -72,9 +72,9 @@ const Chat = observer(() => {
     if (!activeWorkSpace) return;
     if (chatStore.socket) return;
     // 生产环境
-    // wss://localhost:8088
+    // ws://localhost:8088
     // wss://jebetsocket.ljhboard.cn
-    const socket = io('wss://jebetsocket.ljhboard.cn', {
+    const socket = io('ws://localhost:8088', {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
