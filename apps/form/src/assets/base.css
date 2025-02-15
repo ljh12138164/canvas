@@ -98,8 +98,8 @@ body {
 └────────────────┘ */
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2; /* 显示行数 */
+  line-clamp: 2;
   overflow: hidden;
-
   /* 建议的其他属性 */
   width: 200px;
   line-height: 1.5; /* 控制行高 */

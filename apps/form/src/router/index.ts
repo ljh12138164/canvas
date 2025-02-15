@@ -190,6 +190,14 @@ const router = createRouter({
         title: 'demo',
       },
     },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      component: () => import('../views/not-found.vue'),
+      meta: {
+        title: '404',
+      },
+    },
   ],
 });
 export default router;

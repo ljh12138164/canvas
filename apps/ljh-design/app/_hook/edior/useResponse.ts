@@ -11,6 +11,7 @@ interface ResponseProps {
  * @param contain 容器ref
  */
 const useResponse = ({ canvas, contain }: ResponseProps) => {
+  // 确保画布内容在容器大小变化时能够正确缩放和居中显示。
   const authZoom = useCallback(async () => {
     if (!canvas || !contain) return;
     const width = contain.offsetWidth;
@@ -30,15 +31,22 @@ const useResponse = ({ canvas, contain }: ResponseProps) => {
     // 缩放
 
     if (!localWorkspace) return;
+    // 缩放比例
     const scale = fabric.util.findScaleToFit(localWorkspace, {
       width: width,
       height: height,
     });
 
+    // 缩放比例
     const zoom = zoomRation * scale;
+    // 设置新的矩阵
     canvas.setViewportTransform(fabric.iMatrix.concat() as fabric.TMat2D);
+
+    // 缩放画布
     canvas.zoomToPoint(new fabric.Point(center.x, center.y), zoom);
+    // 获取画布中心
     const workspace = localWorkspace.getCenterPoint();
+    // 获取画布视图
     const viewportTransform = canvas.viewportTransform;
     if (canvas.width === undefined || canvas.height === undefined || !viewportTransform) {
       return;
@@ -56,10 +64,12 @@ const useResponse = ({ canvas, contain }: ResponseProps) => {
   useEffect(() => {
     let resizeObserver: ResizeObserver | null = null;
     if (canvas && contain) {
+      // 创建 ResizeObserver
       resizeObserver = new ResizeObserver(async () => {
         await authZoom();
         //设置画布大小
       });
+      // 观察容器
       resizeObserver.observe(contain);
     }
     return () => {
