@@ -29,7 +29,7 @@ jobs:
           node-version: lts/*
 
       - name: Install step
-        run: "deno cache"
+        run: "deno cache --reload https://deno.land/x/socket_io@0.2.1/mod.ts server/jebetChat/src/test.ts"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
