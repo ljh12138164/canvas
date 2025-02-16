@@ -1,3 +1,6 @@
 {
-  "extends": ["package/lint/biome.json"]
+  "extends": ["package/lint/biome.json"],
+  "formatter": {
+    "ignore": ["node_modules"]
+  }
 }
