@@ -35,53 +35,48 @@ const nextConfig: NextConfig = {
         maxSize: 244000,
         cacheGroups: {
           // React 相关核心包
-          'react-vendor': {
-            test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom|@tanstack\/react-query)[\\/]/,
-            name: 'react-vendor',
-            priority: 30,
-            chunks: 'all',
-          },
-
-          // UI 组件相关
-          'ui-vendor': {
-            test: /[\\/]node_modules[\\/](@radix-ui.*|@hookform.*|class-variance-authority|tailwind-merge)[\\/]/,
-            name: 'ui-vendor',
-            priority: 20,
-            chunks: 'all',
-          },
-
-          // 图表相关
-          'chart-vendor': {
-            test: /[\\/]node_modules[\\/](recharts|d3-.*|react-smooth|victory.*)[\\/]/,
-            name: 'chart-vendor',
-            priority: 20,
-            chunks: 'all',
-          },
-
-          // 编辑器相关
-          'editor-vendor': {
-            test: /[\\/]node_modules[\\/](@tiptap.*|prosemirror.*|@hocuspocus.*)[\\/]/,
-            name: 'editor-vendor',
-            priority: 20,
-            chunks: 'all',
-          },
-
-          // 工具库
-          'utils-vendor': {
-            test: /[\\/]node_modules[\\/](dayjs|date-fns|lodash-es.*|crypto-js|zod)[\\/]/,
-            name: 'utils-vendor',
-            priority: 15,
-            chunks: 'all',
-          },
-
-          // 其他第三方库
-          vendors: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            priority: 10,
-            chunks: 'all',
-            reuseExistingChunk: true,
-          },
+          // 'react-vendor': {
+          //   test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom|@tanstack\/react-query)[\\/]/,
+          //   name: 'react-vendor',
+          //   priority: 30,
+          //   chunks: 'all',
+          // },
+          // // UI 组件相关
+          // 'ui-vendor': {
+          //   test: /[\\/]node_modules[\\/](@radix-ui.*|@hookform.*|class-variance-authority|tailwind-merge)[\\/]/,
+          //   name: 'ui-vendor',
+          //   priority: 20,
+          //   chunks: 'all',
+          // },
+          // // 图表相关
+          // 'chart-vendor': {
+          //   test: /[\\/]node_modules[\\/](recharts|d3-.*|react-smooth|victory.*)[\\/]/,
+          //   name: 'chart-vendor',
+          //   priority: 20,
+          //   chunks: 'all',
+          // },
+          // // 编辑器相关
+          // 'editor-vendor': {
+          //   test: /[\\/]node_modules[\\/](@tiptap.*|prosemirror.*|@hocuspocus.*)[\\/]/,
+          //   name: 'editor-vendor',
+          //   priority: 20,
+          //   chunks: 'all',
+          // },
+          // // 工具库
+          // 'utils-vendor': {
+          //   test: /[\\/]node_modules[\\/](dayjs|date-fns|lodash-es.*|crypto-js|zod)[\\/]/,
+          //   name: 'utils-vendor',
+          //   priority: 15,
+          //   chunks: 'all',
+          // },
+          // // 其他第三方库
+          // vendors: {
+          //   test: /[\\/]node_modules[\\/]/,
+          //   name: 'vendors',
+          //   priority: 10,
+          //   chunks: 'all',
+          //   reuseExistingChunk: true,
+          // },
         },
       };
     }

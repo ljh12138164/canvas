@@ -65,31 +65,6 @@ export default defineConfig({
     minify: 'terser',
     rollupOptions: {
       output: {
-        manualChunks: {
-          // 编辑器相关
-          'editor-vendor': [
-            '@tiptap/vue-3',
-            '@tiptap/starter-kit',
-            '@tiptap/extension-link',
-            '@tiptap/extension-image',
-            '@tiptap/extension-placeholder',
-            '@tiptap/extension-typography',
-            '@tiptap/extension-underline',
-            '@tiptap/extension-text-style',
-            '@tiptap/extension-text-align',
-            '@tiptap/extension-subscript',
-            '@tiptap/extension-superscript',
-            '@tiptap/extension-table',
-            '@tiptap/extension-table-cell',
-            '@tiptap/extension-table-header',
-            '@tiptap/extension-table-row',
-            '@tiptap/extension-task-item',
-            '@tiptap/extension-task-list',
-          ],
-
-          // 协同编辑相关
-          'collab-vendor': ['yjs', 'y-indexeddb', 'y-prosemirror', '@hocuspocus/provider'],
-        },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
