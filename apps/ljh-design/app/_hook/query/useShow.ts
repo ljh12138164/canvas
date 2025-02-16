@@ -1,3 +1,4 @@
+'use client';
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
 import { useUser } from '@/app/_store/auth';

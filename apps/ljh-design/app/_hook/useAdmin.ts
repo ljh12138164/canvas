@@ -1,5 +1,4 @@
 'use client';
-import { verify } from 'hono/jwt';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -32,6 +31,7 @@ export const useIsAdmin = ({ type }: { type: 'login' | 'logout' }) => {
       }
       return;
     }
+    // 检测token是否存在
     if (!token) {
       setLoading(false);
       router.push('/admin/login');
