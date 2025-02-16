@@ -87,13 +87,13 @@ export type GetShowResponseType = InferResponseType<(typeof client.showPublic.ge
  * @returns 展示
  */
 export const useGetShow = (id: string) => {
-  const { user } = useUser();
+  // const { user } = useUser();
   const {
     data: showData,
     isLoading: showLoading,
     isFetching: showFetching,
   } = useQuery<GetShowResponseType, Error, GetShowResponseType>({
-    queryKey: ['show', id, user?.user.user_metadata.sub],
+    queryKey: ['show', id],
     queryFn: async () => {
       const token = await getNewToken();
       const res = await client.showPublic.get.$get(
