@@ -46,7 +46,7 @@ onBeforeMount(async () => {
   <div class="home-container">
     <nav class="nav">
       <div class="nav-left">
-        <img :src="LOGO_IMAGE_URL" alt="Logo" class="logo" />
+        <img :src="LOGO_IMAGE_URL" alt="Logo" class="logo" height="20" width="20" />
         <span class="brand">ljh-note</span>
       </div>
       <div class="nav-right">
@@ -68,11 +68,7 @@ onBeforeMount(async () => {
 
       <section class="features">
         <div class="features-grid">
-          <div
-            v-for="feature in features"
-            :key="feature.title"
-            class="feature-card"
-          >
+          <div v-for="feature in features" :key="feature.title" class="feature-card">
             <div class="feature-icon">{{ feature.icon }}</div>
             <p>{{ feature.title }}</p>
             <p>{{ feature.description }}</p>

@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
 import removeConsole from 'vite-plugin-remove-console';
 // import viteImagemin from 'vite-plugin-imagemin';
-import vueDevTools from 'vite-plugin-vue-devtools';
+// import vueDevTools from 'vite-plugin-vue-devtools';
 const plugins = [
   vue(),
   // 打包后压缩图片
@@ -36,7 +36,7 @@ const plugins = [
   //     ],
   //   },
   // }),
-  vueDevTools(),
+  // vueDevTools(),
   // 打包后压缩
   viteCompression(),
   removeConsole(),
