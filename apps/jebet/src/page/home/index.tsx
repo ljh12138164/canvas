@@ -23,9 +23,9 @@ const NavLeft = styled.div`
   gap: 1rem;
 `;
 
-const Logo = styled.img`
-  height: 2rem;
-`;
+// const Logo = styled.img`
+//   height: 2rem;
+// `;
 
 const Brand = styled.span`
   font-size: 1.25rem;
@@ -81,7 +81,7 @@ const FeatureIcon = styled.div`
   margin-bottom: 1rem;
 `;
 
-const FeatureTitle = styled.h3`
+const FeatureTitle = styled.h2`
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -121,7 +121,7 @@ export default function Home() {
     <Container>
       <Nav>
         <NavLeft>
-          <Logo src={LOGO_URL} alt="Logo" height={20} width={20} />
+          <img src={LOGO_URL} loading="eager" alt="Logo" height={20} width={20} />
           <Brand>ljh-jebet</Brand>
         </NavLeft>
       </Nav>

@@ -1,4 +1,4 @@
-import { Toaster as ShaducnToast } from '@/components/ui/toaster';
+// import { Toaster as ShaducnToast } from '@/components/ui/toaster';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // import { ReactFlowProvider } from '@xyflow/react';
@@ -57,7 +57,7 @@ root.render(
           },
         }}
       />
-      <ShaducnToast />
+      {/* <ShaducnToast /> */}
       {/* </ReactFlowProvider> */}
     </QueryClientProvider>
   </ErrorBoundary>,

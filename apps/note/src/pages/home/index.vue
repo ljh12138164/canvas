@@ -98,9 +98,9 @@ onBeforeMount(async () => {
     align-items: center;
     gap: 1rem;
 
-    .logo {
-      height: 2rem;
-    }
+    // .logo {
+    // height: 2rem;
+    // }
 
     .brand {
       font-size: 1.25rem;
