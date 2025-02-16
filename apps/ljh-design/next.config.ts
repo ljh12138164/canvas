@@ -68,7 +68,7 @@ const nextConfig: NextConfig = {
 
           // 工具库
           'utils-vendor': {
-            test: /[\\/]node_modules[\\/](dayjs|date-fns|lodash.*|crypto-js|zod)[\\/]/,
+            test: /[\\/]node_modules[\\/](dayjs|date-fns|lodash-es.*|crypto-js|zod)[\\/]/,
             name: 'utils-vendor',
             priority: 15,
             chunks: 'all',

@@ -4,6 +4,7 @@ import reactCompiler from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 // import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
+import removeConsole from 'vite-plugin-remove-console';
 // import viteImagemin from 'vite-plugin-imagemin';
 
 const plugins = [
@@ -40,6 +41,7 @@ const plugins = [
   // }),
   // 打包后压缩
   viteCompression(),
+  removeConsole(),
   // visualizer({
   //   open: true,
   // }),
