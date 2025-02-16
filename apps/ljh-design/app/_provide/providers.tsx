@@ -8,7 +8,7 @@ import { myFont } from '../_lib/font';
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <Suspense fallback={<div>加载中...</div>}>
-      <div className={`${myFont.variable} h-[100dvh] overflow-hidden`}>
+      <div className={`${myFont.className} h-[100dvh] overflow-hidden`}>
         <QueryProvedie>
           <ReactQueryDevtools initialIsOpen={false} />
           <ThemeProvider
