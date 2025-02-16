@@ -66,12 +66,6 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Vue 核心库
-          'vue-vendor': ['vue', 'vue-router', 'pinia'],
-
-          // UI 组件库
-          'ui-vendor': ['radix-vue', 'vaul-vue', 'vuetify', 'v-calendar', 'vue3-toastify'],
-
           // 编辑器相关
           'editor-vendor': [
             '@tiptap/vue-3',
@@ -95,23 +89,6 @@ export default defineConfig({
 
           // 协同编辑相关
           'collab-vendor': ['yjs', 'y-indexeddb', 'y-prosemirror', '@hocuspocus/provider'],
-
-          // 数据处理相关
-          'data-vendor': ['@tanstack/vue-query', '@tanstack/vue-table', '@unovis/vue'],
-
-          // 工具库
-          'utils-vendor': [
-            'lodash-es',
-            'dayjs',
-            'date-fns',
-            'nanoid',
-            'clsx',
-            'tailwind-merge',
-            'class-variance-authority',
-          ],
-
-          // 表单验证相关
-          'form-vendor': ['vee-validate', '@vee-validate/zod', 'zod'],
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',

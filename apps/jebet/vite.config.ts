@@ -71,22 +71,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': [
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-alert-dialog',
-            '@radix-ui/react-avatar',
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-label',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-select',
-            '@radix-ui/react-separator',
-            '@radix-ui/react-slot',
-          ],
-          'utils-vendor': ['date-fns', 'zod', 'styled-components', 'tailwind-merge'],
-          'query-vendor': ['@tanstack/react-query', '@tanstack/react-query-devtools'],
-          'dnd-vendor': ['@dnd-kit/core', '@dnd-kit/modifiers'],
+          'query-vendor': ['@tanstack/react-query'],
+          'echarts-vendor': ['echarts'],
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
