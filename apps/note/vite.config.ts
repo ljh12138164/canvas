@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue';
 // import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
+import removeConsole from 'vite-plugin-remove-console';
 // import viteImagemin from 'vite-plugin-imagemin';
 import vueDevTools from 'vite-plugin-vue-devtools';
 const plugins = [
@@ -38,6 +39,7 @@ const plugins = [
   vueDevTools(),
   // 打包后压缩
   viteCompression(),
+  removeConsole(),
   // visualizer({
   //   // 打包完成后自动打开浏览器，显示产物体积报告
   //   open: true,
@@ -60,6 +62,7 @@ export default defineConfig({
     },
   },
   build: {
+    minify: 'terser',
     rollupOptions: {
       output: {
         manualChunks: {

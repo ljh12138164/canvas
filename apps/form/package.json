@@ -36,6 +36,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "embla-carousel-vue": "^8.5.2",
+    "exceljs": "^4.4.0",
     "hono": "^4.6.20",
     "i18next": "^24.2.2",
     "localforage": "^1.10.0",

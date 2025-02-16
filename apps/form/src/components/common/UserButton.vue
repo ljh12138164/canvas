@@ -34,7 +34,7 @@ const logoutClick = async () => {
     <DropdownMenuTrigger as-child>
       <Button variant="secondary" size="icon" class="rounded-full">
         <Avatar>
-          <AvatarImage :src="userData!.session.user.user_metadata?.image || DEFAULT_AVATAR" />
+          <AvatarImage :src="userData!.session.user.user_metadata?.image || DEFAULT_AVATAR" alt="用户头像" />
           <AvatarFallback>
             <Skeleton class="h-full w-full" />
           </AvatarFallback>

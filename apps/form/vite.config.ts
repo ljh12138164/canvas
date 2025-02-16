@@ -84,6 +84,8 @@ export default defineConfig({
 
           // 工具库
           'utils-vendor': ['dayjs', 'nanoid', 'clsx', 'tailwind-merge', 'class-variance-authority'],
+
+          'excel-vendor': ['exceljs'],
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
