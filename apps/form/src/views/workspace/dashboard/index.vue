@@ -92,7 +92,7 @@ const jumpToForm = (item: GetDashboardDataResponse[number]['submit'][number]) =>
                   </CardHeader>
                   <CardContent>
                     <Avatar>
-                      <AvatarImage :src="item.profiles.image" />
+                      <AvatarImage :src="item.profiles.image" alt="用户头像" />
                       <AvatarFallback>{{ item.profiles.name }}</AvatarFallback>
                     </Avatar>
                   </CardContent>

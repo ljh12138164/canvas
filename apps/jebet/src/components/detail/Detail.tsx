@@ -365,7 +365,7 @@ const Detail = ({
             <CommentSection>
               <CommentInput>
                 <Avatar>
-                  <AvatarImage src={userData.image || DEFAULT_AVATAR} />
+                  <AvatarImage src={userData.image || DEFAULT_AVATAR} alt="用户头像" />
                   <AvatarFallback>{userData.name?.[0] || 'U'}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 flex gap-2">

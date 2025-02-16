@@ -101,7 +101,7 @@ export default defineConfig({
         drop_debugger: true,
       },
     },
-    sourcemap: false,
+    // sourcemap: true,
     chunkSizeWarningLimit: 1500,
   },
   resolve: {

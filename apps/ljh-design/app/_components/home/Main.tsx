@@ -41,7 +41,7 @@ const Main = () => {
           >
             前往工作区
           </Button>
-          <Link href={user ? '/board/forum' : '/sign-in'} className="cursor-pointer">
+          <Link href={user ? '/board/formue' : '/sign-in'} className="cursor-pointer">
             <Button variant="outline" size="lg" disabled={!user}>
               浏览作品
             </Button>

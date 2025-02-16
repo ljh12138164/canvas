@@ -90,7 +90,7 @@ export function ShowHead({
       <div className="flex items-center gap-4 text-sm text-gray-500 flex-wrap">
         <section className="flex items-center gap-2">
           <Avatar>
-            <AvatarImage src={showData.profiles.image} />
+            <AvatarImage src={showData.profiles.image} alt="用户头像" />
             <AvatarFallback>{showData.profiles.name}</AvatarFallback>
           </Avatar>
           <span className="text-sm whitespace-nowrap">
