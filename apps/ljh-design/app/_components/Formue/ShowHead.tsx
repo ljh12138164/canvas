@@ -1,3 +1,4 @@
+'use client';
 import { useClone } from '@/app/_hook/query/useClone';
 import { useCreateMaterial } from '@/app/_hook/query/useMaterial';
 import type { GetShowResponseType } from '@/app/_hook/query/useShow';
@@ -40,9 +41,9 @@ export function ShowHead({
           type: cloneType,
           name: data.name,
           id: v4(),
-          cloneId: showData.board.id,
+          cloneId: showData.board?.id,
           json: data,
-          image: showData.board.image,
+          image: showData.board?.image,
         },
       },
       {
@@ -127,7 +128,7 @@ export function ShowHead({
               defaultValues={showData.board}
               type="create"
               isClone={true}
-              userId={user?.user.user_metadata.sub}
+              userId={user?.user?.user_metadata?.sub}
               closeref={responseRef}
               mutate={mutate as any}
             >
