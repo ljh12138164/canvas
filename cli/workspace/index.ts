@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import chalk from 'chalk';
 import { Command } from 'commander';
 import { defaultConfig } from './src/env';
 import { generateEnvFiles } from './src/env/generate';
@@ -28,7 +27,7 @@ program
     if (options.validate) {
       const errors = validateEnvConfig(defaultConfig);
       if (errors.length > 0) {
-        // errors.forEach((err) => );
+        console.error(errors);
       }
     }
   });

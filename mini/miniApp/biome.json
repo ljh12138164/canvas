@@ -1,0 +1,6 @@
+{
+  "extends": ["package/lint/biome.json", "taro/react"],
+  "formatter": {
+    "ignore": ["node_modules", "dist", "../../node_modules/**"]
+  }
+}
