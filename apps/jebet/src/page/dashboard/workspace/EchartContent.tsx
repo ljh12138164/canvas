@@ -337,7 +337,7 @@ const EchartContent = ({
                     onClick={() => navigator(`/dashboard/${workspaceId}/${item.id}`)}
                   >
                     <Avatar>
-                      <AvatarImage src={item.imageUrl} />
+                      <AvatarImage src={item.imageUrl} alt="用户头像" />
                       <AvatarFallback>{item.name.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                     <p>{item.name}</p>
@@ -363,7 +363,7 @@ const EchartContent = ({
                     className="bg-[#fff]  dark:bg-black cursor-pointer flex gap-2 items-center justify-center flex-col"
                   >
                     <Avatar>
-                      <AvatarImage src={item.userImage} />
+                      <AvatarImage src={item.userImage} alt="用户头像" />
                       <AvatarFallback>{item.username}</AvatarFallback>
                     </Avatar>
                     <InfoContainer>

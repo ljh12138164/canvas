@@ -16,7 +16,7 @@ const UserBox = observer(({ user }: UserBoxProps) => {
   return (
     <UserBoxContainer>
       <Avatar>
-        <AvatarImage src={user.image} />
+        <AvatarImage src={user.image} alt="用户头像" />
         <AvatarFallback>{user.name}</AvatarFallback>
       </Avatar>
     </UserBoxContainer>

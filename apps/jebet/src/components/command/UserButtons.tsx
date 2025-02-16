@@ -20,7 +20,7 @@ const UserButtons = ({ user }: UserButtonsProps) => {
   return (
     <UserAvatarContainer>
       <Avatar>
-        <AvatarImage src={user?.avatar} />
+        <AvatarImage src={user?.avatar} alt="用户头像" />
         <AvatarFallback>{user?.username}</AvatarFallback>
       </Avatar>
       <Description>

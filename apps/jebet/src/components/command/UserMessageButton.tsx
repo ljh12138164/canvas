@@ -10,7 +10,7 @@ const UserMessageButton = ({ user }: UserMessageButtonProps) => {
   return (
     <div>
       <Avatar>
-        <AvatarImage src={user.userImage} />
+        <AvatarImage src={user.userImage} alt="用户头像" />
         <AvatarFallback>{user.username.slice(0, 2)}</AvatarFallback>
       </Avatar>
     </div>
