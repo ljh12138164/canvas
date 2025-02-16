@@ -6,9 +6,9 @@
 
 ## 项目结构
 
-### 后端服务 (8000 端口)
+### 后端服务 (8000 端口) （部署到 vercel 中变成无服务器的边缘函数，边缘函数）:以上线（https://www.ljhboard.cn）
 
-这个后端服务是要打包后通过单仓库导入其他项目，去解析类型调用接口的是 hono 的特点 ![alt text](/public/后端部署到边缘函数的探索/hc解析类型通过类型调用api.png)
+这个后端服务是要打包后通过单仓库导入其他项目，去解析类型调用接口的是 hono 的特点 ，具体看我博客
 
 基于 Hono + Supabase（云数据库） 构建的后端服务(**最后是部署到 vercel 中变成无服务器的边缘函数**),位于 `server/api` 目录:
 
@@ -43,9 +43,9 @@
   - 数据库操作
   - AI 对话(完成)
 
-#### Socket.io 聊天服务 (8088 端口)----已上线（wss://jebetsocket.ljhboard.cn）
+#### Socket.io 聊天服务 (8088 端口)----已上线（wss://jebetsocket.ljhboard.cn）在deno的边缘函数上
 
-基于 Bun 构建的实聊天服务，基于`socket.io`实现的,位于 `server/jebetChat` 目录:
+基于 Deno 构建的实聊天服务，基于`socket.io`实现的,位于 `server/jebetChat` 目录:
 
 - **目录结构**:
 
@@ -56,11 +56,11 @@
   - 数据的分发
   - 房间的概念
 
-#### note 项目的 tiptap 协同服务 (8080 端口)----已上线（wss://socket.ljhboard.cn/）
+#### note 项目的 tiptap 协同服务 (8080 端口)----已上线（wss://socket.ljhboard.cn/）在deno的边缘函数上
 
 主要通过`@hocuspocus/server`服务实现的服务器功能，再通过 webhook 接入已有的 api 路由实现云端的自动保存
 
-基于 Bun 构建的实时协作服务,位于 `server/ws` 目录:
+基于 Deno 构建的实时协作服务,位于 `server/ws` 目录:
 
 - **目录结构**:
 
@@ -74,7 +74,7 @@
   - 协同编辑支持
   - 在线状态管理
 
-#### design 项目的协同实现 (8888 端口)----开发中（从 0 写 yjs 的东西，可能要点时间）毕设
+#### design 项目的协同实现 (8888 端口)----开发中（从 0 写 yjs 的东西，可能要点时间）毕设:暂时搁置
 
 基于 Bun 构建的实时协作服务,位于 `server/ws` 目录:
 
@@ -92,7 +92,7 @@
 
 ### 前端应用
 
-#### 1. 设计应用 (8400 端口) - 毕设选题
+#### 1. 设计应用 (8400 端口) - 毕设选题 已上线（https://design.ljhboard.cn）
 
 基于 Next.js 15 + React 19 构建:
 
@@ -119,7 +119,7 @@
     - 图片处理
     - 协同编辑
 
-#### 2. 管理应用 (8100 端口)
+#### 2. 管理应用 (8100 端口) 已上线（https://jebet.ljhboard.cn）
 
 基于 React 19 构建，概括了多个业务场景:
 
@@ -175,7 +175,7 @@
     - 笔记分享
     - 实时协作
 
-#### 4. 表单生成器 (8300 端口)
+#### 4. 表单生成器 (8300 端口) 已上线（https://form.ljhboard.cn）
 
 基于 Vue3 构建使用了 vue-draggable-plus 和 auth-form(做过贡献)实现的
 
@@ -233,7 +233,7 @@ auth-form 是基于 zod 检验来生成表单，具体实现看`public/自定义
 
 - Hono - 后端框架
 - Supabase - 数据库和认证
-- Bun - WebSocket 服务
+- Deno - WebSocket 服务
 - TypeScript - 开发语言
 
 ### 前端
@@ -242,38 +242,5 @@ auth-form 是基于 zod 检验来生成表单，具体实现看`public/自定义
 - Zustand/MobX/Pinia - 状态管理
 - Tailwind - 样式框架
 - Shadcn - UI 组件库
-
-## 开发指南
-
-### 安装依赖
-
-```bash
-pnpm install
-```
-
-### 启动开发服务
-
-```bash
-# 后端服务
-pnpm --filter api dev
-
-# 设计应用
-pnpm --filter design dev
-
-# 管理应用
-pnpm --filter jebet dev
-
-# 笔记应用
-pnpm --filter note dev
-
-# 表单应用
-pnpm --filter form dev
-
-# WebSocket服务
-pnpm --filter ws dev
-
-# 测试点子
-pnpm --filter test dev
-```
 
 # 作者：李建辉
