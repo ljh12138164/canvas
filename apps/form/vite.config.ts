@@ -60,16 +60,11 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'excel-vendor': ['exceljs'],
-        },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
       },
     },
-    target: 'es2015',
-    cssTarget: 'chrome80',
     minify: 'terser',
     terserOptions: {
       compress: {
