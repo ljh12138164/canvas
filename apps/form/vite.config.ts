@@ -61,30 +61,6 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Vue 核心库
-          'vue-vendor': ['vue', 'vue-router', 'pinia', '@vueuse/core'],
-
-          // UI 组件相关
-          'ui-vendor': ['radix-vue', 'lucide-vue-next', '@iconify/vue', 'vaul-vue'],
-
-          // 表单相关
-          'form-vendor': [
-            '@formkit/addons',
-            '@formkit/auto-animate',
-            'vee-validate',
-            '@vee-validate/zod',
-            'zod',
-          ],
-
-          // 数据处理相关
-          'data-vendor': ['@tanstack/vue-query', '@tanstack/vue-table', '@unovis/vue'],
-
-          // 国际化相关
-          'i18n-vendor': ['vue-i18n', 'i18next', 'zod-i18n-map'],
-
-          // 工具库
-          'utils-vendor': ['dayjs', 'nanoid', 'clsx', 'tailwind-merge', 'class-variance-authority'],
-
           'excel-vendor': ['exceljs'],
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
