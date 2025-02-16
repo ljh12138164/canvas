@@ -99,7 +99,7 @@ async function onSubmit(values: any) {
       <section class="loginCardLeft">
         <div class="loginCardLeftTitle">
           <CardHeader class="cardHeader">
-            <img :src="LOGO_IMAGE_URL" alt="Logo" class="logo" />
+            <img :src="LOGO_IMAGE_URL" alt="Logo" class="logo" height="20" width="20" />
           </CardHeader>
           <div class="loginCardLeftTitleContent">
             <h1 class="loginCardLeftTitleText">欢迎使用</h1>

@@ -9,6 +9,9 @@ import removeConsole from 'vite-plugin-remove-console';
 
 const plugins = [
   react({
+    babel: {
+      plugins: [['babel-plugin-react-compiler', { targe: 19 }]],
+    },
     // fastRefresh: true,
   }), // 打包后压缩图片
   reactCompiler(),

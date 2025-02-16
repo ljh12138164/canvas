@@ -2,21 +2,21 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import './assets/index.css';
 // toast
-import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
+// import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
 import { VueQueryPlugin, type VueQueryPluginOptions } from '@tanstack/vue-query';
 import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
 import { routers } from './router';
 import pinia from './store';
 import 'vue3-toastify/dist/index.css';
 // Vuetify
-import 'vuetify/styles';
-import { createVuetify } from 'vuetify';
-import * as components from 'vuetify/components';
-import * as directives from 'vuetify/directives';
-const vuetify = createVuetify({
-  components,
-  directives,
-});
+// import 'vuetify/styles';
+// import { createVuetify } from 'vuetify';
+// import * as components from 'vuetify/components';
+// import * as directives from 'vuetify/directives';
+// const vuetify = createVuetify({
+//   components,
+//   directives,
+// });
 const vueQueryPluginOptions: VueQueryPluginOptions = {
   queryClientConfig: {
     defaultOptions: {
@@ -41,8 +41,8 @@ app
     autoClose: 3000,
     // ...
   } as ToastContainerOptions)
-  .use(VueQueryPlugin, vueQueryPluginOptions)
-  .use(autoAnimatePlugin)
-  .use(vuetify);
+  .use(VueQueryPlugin, vueQueryPluginOptions);
+// .use(autoAnimatePlugin);
+// .use(vuetify);
 // 挂载
 app.mount('#root');

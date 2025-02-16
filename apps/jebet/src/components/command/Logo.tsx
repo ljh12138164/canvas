@@ -16,7 +16,7 @@ const Image = styled.img`
 const Logo = ({ height = 50 }: ContainerProps) => {
   return (
     <Container height={height}>
-      <Image src={LOGO_URL} alt="logo" />
+      <Image src={LOGO_URL} alt="logo" height={height} width={height} />
     </Container>
   );
 };

@@ -3,6 +3,7 @@ import { addMonths, format, getDay, parse, startOfWeek, subMonths } from 'date-f
 import { zhCN } from 'date-fns/locale';
 import { useState } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { EventCard } from './EventCard';
 import { ToolbarCard } from './ToolbarCard';
 const locales = {

@@ -121,7 +121,7 @@ export default function Home() {
     <Container>
       <Nav>
         <NavLeft>
-          <Logo src={LOGO_URL} alt="Logo" />
+          <Logo src={LOGO_URL} alt="Logo" height={20} width={20} />
           <Brand>ljh-jebet</Brand>
         </NavLeft>
       </Nav>

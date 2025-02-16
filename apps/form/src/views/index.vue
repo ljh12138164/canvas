@@ -5,7 +5,7 @@
       <div class="container flex h-16 items-center justify-between">
         <div class="flex items-center gap-2">
           <!-- <FormInput class="h-6 w-6" /> -->
-          <img :src="LOGO_URL" alt="logo" class="h-6 w-6" />
+          <img :src="LOGO_URL" alt="logo" height="20" width="20" />
           <span class="font-bold">ljh-form</span>
         </div>
         <nav class="flex items-center gap-6">
