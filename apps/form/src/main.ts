@@ -1,4 +1,3 @@
-import 'viewerjs/dist/viewer.css';
 import VueViewer from 'v-viewer';
 import './assets/index.css';
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue';

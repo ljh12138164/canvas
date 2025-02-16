@@ -4,6 +4,7 @@ import type { FileType } from '@/types/form';
 import { Download as DownLoad } from 'lucide-vue-next';
 import { Badge } from '../ui/badge';
 import Button from '../ui/button/Button.vue';
+import 'viewerjs/dist/viewer.css';
 
 defineProps<{ submit: FileType }>();
 
