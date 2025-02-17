@@ -76,10 +76,12 @@
     "api": "workspace:*",
     "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",
+    "lightningcss": "^1.29.1",
     "rollup-plugin-external-globals": "^0.13.0",
     "rollup-plugin-visualizer": "^5.14.0",
     "stylelint": "^16.14.1",
     "tailwindcss": "^3.4.17",
+    "terser": "^5.37.0",
     "typescript": "~5.7.3",
     "vite": "^6.0.11",
     "vite-plugin-compression": "^0.5.1"

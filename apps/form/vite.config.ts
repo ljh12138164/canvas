@@ -9,41 +9,25 @@ import viteCompression from 'vite-plugin-compression';
 // import viteImagemin from 'vite-plugin-imagemin';
 const plugins = [
   vue(),
-  // 打包后压缩图片
-  // viteImagemin({
-  //   gifsicle: {
-  //     optimizationLevel: 7,
-  //     interlaced: false,
-  //   },
-  //   optipng: {
-  //     optimizationLevel: 7,
-  //   },
-  //   mozjpeg: {
-  //     quality: 20,
-  //   },
-  //   pngquant: {
-  //     quality: [0.8, 0.9],
-  //     speed: 4,
-  //   },
-  //   svgo: {
-  //     plugins: [
-  //       {
-  //         name: 'removeViewBox',
-  //       },
-  //       {
-  //         name: 'removeEmptyAttrs',
-  //         active: false,
-  //       },
-  //     ],
-  //   },
-  // }),
-  // vueDevTools(),
+  viteCompression({
+    verbose: true, // 是否在控制台输出压缩结果
+    disable: false, // 默认 false, 设置为 true 来禁用压缩
+    threshold: 10240, // 只处理大于此大小的资源（单位：字节）。默认值为 0。
+    algorithm: 'gzip', // 使用 gzip 压缩
+    ext: '.gz', // 输出文件的扩展名
+    deleteOriginFile: false,
+  }),
+  viteCompression({
+    verbose: true, // 是否在控制台输出压缩结果
+    disable: false, // 默认 false, 设置为 true 来禁用压缩
+    threshold: 10240, // 只处理大于此大小的资源（单位：字节）。默认值为 0。
+    algorithm: 'brotliCompress', // 使用 brotli 压缩
+    ext: '.br', // 输出文件的扩展名
+    deleteOriginFile: false,
+  }),
   // visualizer({
-  //   // 打包完成后自动打开浏览器，显示产物体积报告
   //   open: true,
   // }),
-  // 打包后压缩
-  // viteCompression(),
 ];
 if (process.env.NODE_ENV === 'test') {
   plugins.push();
@@ -56,16 +40,34 @@ export default defineConfig({
       plugins: [tailwind(), autoprefixer()],
     },
   },
-
   build: {
     rollupOptions: {
       output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            // ui-libs
+            if (
+              id.includes('vue') ||
+              id.includes('radix-vue') ||
+              id.includes('vuetify') ||
+              id.includes('@floating-ui')
+            ) {
+              return 'ui-libs';
+            }
+            // excel
+            if (id.includes('exceljs')) {
+              return 'exceljs';
+            }
+            return 'vendors';
+          }
+        },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
       },
     },
     minify: 'terser',
+    cssMinify: 'lightningcss',
     terserOptions: {
       compress: {
         drop_console: true,
@@ -73,7 +75,7 @@ export default defineConfig({
       },
     },
     // sourcemap: true,
-    chunkSizeWarningLimit: 1500,
+    chunkSizeWarningLimit: 935,
   },
   resolve: {
     alias: {
