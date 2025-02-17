@@ -38,7 +38,22 @@ const plugins = [
   // }),
   // vueDevTools(),
   // 打包后压缩
-  viteCompression(),
+  viteCompression({
+    verbose: true, // 是否在控制台输出压缩结果
+    disable: false, // 默认 false, 设置为 true 来禁用压缩
+    threshold: 10240, // 只处理大于此大小的资源（单位：字节）。默认值为 0。
+    algorithm: 'gzip', // 使用 gzip 压缩
+    ext: '.gz', // 输出文件的扩展名
+    deleteOriginFile: false,
+  }),
+  viteCompression({
+    verbose: true, // 是否在控制台输出压缩结果
+    disable: false, // 默认 false, 设置为 true 来禁用压缩
+    threshold: 10240, // 只处理大于此大小的资源（单位：字节）。默认值为 0。
+    algorithm: 'brotliCompress', // 使用 brotli 压缩
+    ext: '.br', // 输出文件的扩展名
+    deleteOriginFile: false,
+  }),
   removeConsole(),
   // visualizer({
   //   // 打包完成后自动打开浏览器，显示产物体积报告
@@ -65,6 +80,21 @@ export default defineConfig({
     minify: 'terser',
     rollupOptions: {
       output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            // Vue 相关依赖单独打包
+            if (id.includes('vue') || id.includes('@vue')) {
+              return 'vue-vendor';
+            }
+
+            // 工具库打包
+            if (id.includes('tiptap') || id.includes('prosemirror') || id.includes('tanstack')) {
+              return 'editor-vendor';
+            }
+            // 其他依赖打包
+            return 'vendors';
+          }
+        },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
