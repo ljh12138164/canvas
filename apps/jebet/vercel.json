@@ -1,23 +1,26 @@
 {
   "rewrites": [{ "source": "/:path*", "destination": "/index.html" }],
-  "buildCommand": "pnpm run build",
-  "outputDirectory": "dist",
   "headers": [
     {
       "source": "/(.*)",
-      "headers  ": [{ "key": "X-Frame-Options", "value": "DENY" }]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [{ "key": "ETag", "value": "strong" }]
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "ETag",
+          "value": "strong"
+        }
+      ]
     }
   ]
 }
