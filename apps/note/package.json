@@ -103,6 +103,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@ljh/lint": "workspace:*",
+    "@mojojoejo/vite-plugin-purgecss": "^1.1.0",
     "@rsbuild/core": "^1.2.3",
     "@rsbuild/plugin-vue": "^1.0.5",
     "@types/lodash-es": "^4.17.12",

@@ -4,10 +4,13 @@ import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
 import removeConsole from 'vite-plugin-remove-console';
+// import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
+
 // import viteImagemin from 'vite-plugin-imagemin';
 // import vueDevTools from 'vite-plugin-vue-devtools';
 const plugins = [
   vue(),
+  // pluginPurgeCss(),
   // 打包后压缩图片
   // viteImagemin({
   //   gifsicle: {

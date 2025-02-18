@@ -6,9 +6,15 @@ import tailwind from 'tailwindcss';
 import { defineConfig } from 'vite';
 // import vueDevTools from 'vite-plugin-vue-devtools';
 import viteCompression from 'vite-plugin-compression';
+// import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
 // import viteImagemin from 'vite-plugin-imagemin';
 const plugins = [
   vue(),
+  // pluginPurgeCss({
+  //   content: ['**/*.vue', '**/*.js', '**/*.ts'],
+  //   css: ['**/*.css'],
+  //   safelist: ['body'],
+  // }),
   viteCompression({
     verbose: true, // 是否在控制台输出压缩结果
     disable: false, // 默认 false, 设置为 true 来禁用压缩
