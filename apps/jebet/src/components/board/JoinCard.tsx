@@ -71,7 +71,7 @@ export default function JoinCard() {
   if (isModile)
     return (
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger>
+        <DrawerTrigger asChild>
           <Button>加入工作区</Button>
         </DrawerTrigger>
         <DrawerContent>

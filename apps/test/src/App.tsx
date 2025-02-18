@@ -89,7 +89,7 @@ function App() {
         }}
       /> */}
       <AutoForm
-        onSubmit={(data) => {
+        onSubmit={() => {
           // console.log(data);
         }}
         schema={zodSchemaProvider}

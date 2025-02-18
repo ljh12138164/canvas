@@ -1,6 +1,6 @@
 // import { Toaster as ShaducnToast } from '@/components/ui/toaster';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // import { ReactFlowProvider } from '@xyflow/react';
 // import '@xyflow/react/dist/style.css';
 // import 'quill/dist/quill.core.css';
@@ -36,7 +36,7 @@ root.render(
   <ErrorBoundary fallback={<Index />}>
     <QueryClientProvider client={queryclinet}>
       {/* <ReactFlowProvider> */}
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <RouterProvider router={router} />
       </ThemeProvider>
