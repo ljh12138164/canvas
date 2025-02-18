@@ -112,3 +112,21 @@ function deepClone(obj: any): any {
 
   return clonedObj;
 }
+
+// function allPromise(promises: Promise<any>[]) {
+//   return new Promise((resolve, reject) => {
+//     const results: any[] = [];
+//     let len = 0;
+//     promises.forEach((promise, index) => {
+//       Promise.resolve(promise)
+//         .then((result) => {
+//           results[index] = result;
+//           len++;
+//           if (len === promises.length) {
+//             resolve(results);
+//           }
+//         })
+//         .catch(reject);
+//     });
+//   });
+// }

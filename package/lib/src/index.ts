@@ -1,10 +1,10 @@
 export * from './auth';
-
+export * from './plugin';
 /**
  * ## fandou
  */
 export const debounce = <T extends (...args: any[]) => any>(fn: T, delay = 1000) => {
-  let timeoutId: number;
+  let timeoutId: number | NodeJS.Timeout;
   return function (this: any, ...args: Parameters<T>) {
     if (timeoutId) clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn.apply(this, args), delay);
@@ -105,16 +105,16 @@ bianli(data);
 // - 下标 4 的元素 --> 右侧最大元素是下标 5 的元素 (1)
 // - 下标 5 的元素 --> 右侧没有其他元素，替换为 -1
 
-const change = (arr: number[]) => {
-  for (let i = 1; i < arr.length - 1; i++) {
-    if (i <= arr.length - 1) {
-      let max = arr[i];
-      for (let j = i + 1; j < arr.length - 1; j++) {
-        if (arr[j] > max) max = arr[j];
-      }
-      arr[i] = max;
-    } else {
-      arr[i] = -1;
-    }
-  }
-};
+// const change = (arr: number[]) => {
+//   for (let i = 1; i < arr.length - 1; i++) {
+//     if (i <= arr.length - 1) {
+//       let max = arr[i];
+//       for (let j = i + 1; j < arr.length - 1; j++) {
+//         if (arr[j] > max) max = arr[j];
+//       }
+//       arr[i] = max;
+//     } else {
+//       arr[i] = -1;
+//     }
+//   }
+// };

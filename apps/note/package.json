@@ -1,7 +1,7 @@
 {
   "name": "note",
+  "version": "0.1.0",
   "private": true,
-  "version": "1.0.0",
   "scripts": {
     "build": "cd ../../server/api && pnpm run tsup && cd ../../apps/note && tsc -b && vite build",
     "build:report": "cross-env NODE_ENV=test vite build",
@@ -103,6 +103,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@ljh/lint": "workspace:*",
+    "@ljh/lib": "workspace:*",
     "@mojojoejo/vite-plugin-purgecss": "^1.1.0",
     "@rsbuild/core": "^1.2.3",
     "@rsbuild/plugin-vue": "^1.0.5",

@@ -77,6 +77,7 @@
     "api": "workspace:*",
     "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",
+    "@ljh/lib": "workspace:*",
     "lightningcss": "^1.29.1",
     "rollup-plugin-external-globals": "^0.13.0",
     "rollup-plugin-visualizer": "^5.14.0",
