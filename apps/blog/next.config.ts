@@ -57,8 +57,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: true, // CSS 优化
     mdxRs: true, // 使用 Rust 编译 MDX
-    // 使用 lightningcss 优化 CSS
-    useLightningcss: true,
   },
 };
 const withNextra = nextra({

@@ -106,7 +106,7 @@ const nextConfig: NextConfig = {
     // 使用 lightningcss 优化 CSS
     mdxRs: true, // 使用 Rust 编译 MDX
     // 使用 lightningcss 优化 CSS
-    useLightningcss: true,
+    // useLightningcss: true,
     // 启用早期提示
     // enableEarlyHints: true,
   },
