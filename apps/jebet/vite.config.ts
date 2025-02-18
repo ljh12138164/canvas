@@ -1,15 +1,15 @@
 import path from 'node:path';
-import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
+import { preloadAnalyzerPlugin } from '@ljh/lib';
+// import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
 import react from '@vitejs/plugin-react';
 // import reactCompiler from '@vitejs/plugin-react-swc';
 // import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig } from 'vite';
+import { type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
 import removeConsole from 'vite-plugin-remove-console';
-
 // import viteImagemin from 'vite-plugin-imagemin';
 
-const plugins = [
+const plugins: PluginOption[] = [
   react({
     babel: {
       plugins: [['babel-plugin-react-compiler', { targe: 19 }]],
@@ -62,10 +62,12 @@ const plugins = [
     deleteOriginFile: false,
   }),
   removeConsole(),
-  pluginPurgeCss({ variables: true }),
+  // pluginPurgeCss(),
   // visualizer({
   //   open: true,
   // }),
+  // @ts-ignore
+  preloadAnalyzerPlugin(),
 ];
 if (process.env.ANYES === 'test') {
   // 打包完成后自动打开浏览器，显示产物体积报告

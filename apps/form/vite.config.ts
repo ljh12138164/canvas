@@ -1,14 +1,15 @@
 import { URL, fileURLToPath } from 'node:url';
+import { preloadAnalyzerPlugin } from '@ljh/lib';
 import vue from '@vitejs/plugin-vue';
 import autoprefixer from 'autoprefixer';
 // import { visualizer } from 'rollup-plugin-visualizer';
 import tailwind from 'tailwindcss';
-import { defineConfig } from 'vite';
+import { type Plugin, defineConfig } from 'vite';
 // import vueDevTools from 'vite-plugin-vue-devtools';
 import viteCompression from 'vite-plugin-compression';
 // import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
 // import viteImagemin from 'vite-plugin-imagemin';
-const plugins = [
+const plugins: Plugin[] = [
   vue(),
   // pluginPurgeCss({
   //   content: ['**/*.vue', '**/*.js', '**/*.ts'],
@@ -34,6 +35,8 @@ const plugins = [
   // visualizer({
   //   open: true,
   // }),
+  // @ts-ignore
+  preloadAnalyzerPlugin(),
 ];
 if (process.env.NODE_ENV === 'test') {
   plugins.push();

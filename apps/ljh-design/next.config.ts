@@ -97,11 +97,18 @@ const nextConfig: NextConfig = {
     removeConsole: true,
   },
 
+  // 实验性功能
   experimental: {
     // 开启 Next.js 的实验性优化特性
     optimizeCss: true, // 优化 CSS
     scrollRestoration: true, // 滚动位置恢复
     reactCompiler: true,
+    // 使用 lightningcss 优化 CSS
+    mdxRs: true, // 使用 Rust 编译 MDX
+    // 使用 lightningcss 优化 CSS
+    useLightningcss: true,
+    // 启用早期提示
+    // enableEarlyHints: true,
   },
   headers: async () => {
     return [

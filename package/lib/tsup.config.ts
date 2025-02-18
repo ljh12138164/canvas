@@ -4,8 +4,11 @@ export default defineConfig({
   // 入口文件 或者可以使用 entryPoints 底层是 esbuild
   entryPoints: ['src/index.ts'],
 
+  // 排除的库
+  external: ['react', 'react-dom', 'vite'],
+
   // 打包类型  支持以下几种 'cjs' | 'esm' | 'iife'
-  format: ['cjs', 'esm'],
+  format: ['esm'],
 
   // 生成类型文件 xxx.d.ts
   dts: true,
