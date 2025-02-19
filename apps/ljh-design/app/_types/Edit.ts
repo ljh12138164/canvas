@@ -1011,7 +1011,7 @@ export const ToolItem = {
   '': '',
 };
 
-export const FilterItem = {
+export const FilterItem: Record<Filter, string> = {
   none: '无',
   polaroid: '偏振',
   sepia: '棕褐色',
@@ -1024,7 +1024,7 @@ export const FilterItem = {
   invert: '反色',
   technicolor: '科技',
   pixelate: '像素化',
-  blur: '模糊',
+  'blur-sm': '模糊',
   sharpen: '锐化',
   emboss: '滤波',
   removecolor: '去色',

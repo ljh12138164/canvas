@@ -18,12 +18,15 @@
     "api": "vercel dev --listen=8000",
     "local": "bun run --hot ./local.ts",
     "deploy:prod": "vercel --prod",
-    "doc": "bun run --hot --port=6666 ./src/hono/doc/index.ts",
+    "doc": "bun run --hot --port=6666 ./src/docs/index.ts",
     "deploy": "vercel",
     "zhipu": "bun run --hot --port=1234 ./zhipu.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
+    "@hono/node-server": "1.13.7",
+    "@hono/swagger-ui": "^0.5.0",
+    "@hono/zod-openapi": "^0.18.4",
     "@hono/zod-validator": "^0.4.2",
     "@supabase/supabase-js": "^2.48.1",
     "await-to-js": "^3.0.0",

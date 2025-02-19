@@ -1,4 +1,3 @@
-// import { swaggerUI } from '@hono/swagger-ui';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { ai } from './ai';
@@ -23,6 +22,7 @@ const app = new Hono()
   //   })
   // )
   .basePath('/api')
+  // 自动生成OpenAPI文档
   .route('/design', design)
   .route('/jebt', jebt)
   .route('/note', note)
