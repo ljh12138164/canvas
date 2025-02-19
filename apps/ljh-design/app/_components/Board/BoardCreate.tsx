@@ -36,7 +36,7 @@ const BoardCreate = ({
       <ColorCard
         title={data?.length ? '创建你的画布以开始使用' : '创建第一个画布'}
         icon={<FaStar className="text-yellow-500 text-[2rem] animate-pulse hover:animate-spin" />}
-        className="bg-gradient-to-r from-blue-700 to-blue-300 border-none shadow-lg hover:shadow-xl transition-all duration-300"
+        className="bg-linear-to-r from-blue-700 to-blue-300 border-none shadow-lg hover:shadow-xl transition-all duration-300"
       >
         <main className="flex flex-col justify-center gap-2">
           <div className="flex gap-2">

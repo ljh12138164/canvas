@@ -79,7 +79,7 @@ const onSaveText = () => {
 <template>
   <nav class="nav-container">
     <header v-if="useEditor().editorDatas"
-      class="flex h-14 w-full shrink-0 items-center justify-between gap-2 px-2 sm:px-4 transition-all duration-200 ease-in-out group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+      class="flex h-14 w-full shrink-0 items-center justify-between gap-2 px-2 sm:px-4 transition-all duration-200 ease-in-out group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
       <div class="flex items-center gap-2 sm:gap-3">
         <SidebarTrigger class="hover:bg-muted/60 rounded-md p-1 transition-colors" />
         <Separator orientation="vertical" class="h-5 hidden sm:block" />
@@ -137,7 +137,7 @@ const onSaveText = () => {
 
 <style scoped lang="scss">
 .nav-container {
-  @apply w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60;
+  @apply w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60;
 }
 
 .btn-item {

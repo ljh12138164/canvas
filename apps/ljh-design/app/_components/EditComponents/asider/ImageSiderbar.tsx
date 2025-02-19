@@ -72,7 +72,7 @@ const ImageSiderbar = ({ activeTool, onChangeActive, editor, userId }: ImageSide
   return (
     <aside
       className={cn(
-        'z-[100] bg-white dark:bg-background  relative transition  h-full flex flex-col',
+        'z-100 bg-white dark:bg-background  relative transition  h-full flex flex-col',
         activeTool === Tool.Image ? 'visible' : 'hidden',
       )}
       style={{ flexBasis: '300px' }}

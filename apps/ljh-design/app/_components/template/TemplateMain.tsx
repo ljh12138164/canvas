@@ -49,7 +49,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
           icon={
             <LayoutTemplate className="text-blue-500 text-[2rem] animate-pulse hover:animate-spin" />
           }
-          className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 border-none shadow-lg hover:shadow-xl transition-all duration-300"
+          className="bg-linear-to-r from-blue-600 via-cyan-500 to-teal-400 border-none shadow-lg hover:shadow-xl transition-all duration-300"
         >
           <div className="flex justify-between items-center mb-6">
             <Response

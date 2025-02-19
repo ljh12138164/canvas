@@ -20,7 +20,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool, type, login = true }: Sider
   return (
     <aside
       id="editSider"
-      className="w-[100px] z-[40]  border-r bg-[#fff] dark:bg-background overflow-y-auto"
+      className="w-[100px] z-40  border-r bg-[#fff] dark:bg-background overflow-y-auto"
       style={{ flexBasis: '100px' }}
     >
       <ScrollArea>

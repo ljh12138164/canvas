@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ThemeChange from '@/components/common/ThemeChange.vue';
-import UserButton from '@/components/common/UserButton.vue';
+// import UserButton from '@/components/common/UserButton.vue';
 import { Button } from '@/components/ui/button';
 import { LOGO_IMAGE_URL } from '@/lib';
 import { getCurrentUser } from '@/server/supabase/user';
@@ -51,7 +51,7 @@ onBeforeMount(async () => {
       </div>
       <div class="nav-right">
         <ThemeChange />
-        <UserButton :isLoading="loading" :user="user" />
+        <!-- <UserButton :isLoading="loading" :user="user" /> -->
       </div>
     </nav>
 
@@ -62,7 +62,7 @@ onBeforeMount(async () => {
           简单、强大、安全的笔记应用，助你更好地整理思维和知识
         </p>
         <RouterLink to="/workspace">
-          <Button class="cta-btn">开始使用</Button>
+          <Button class="cta-btn text-black dark:text-white">开始使用</Button>
         </RouterLink>
       </section>
 
@@ -126,7 +126,7 @@ onBeforeMount(async () => {
     font-weight: 700;
     margin-bottom: 1.5rem;
     background: linear-gradient(to right, #007cf0, #00dfd8);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 

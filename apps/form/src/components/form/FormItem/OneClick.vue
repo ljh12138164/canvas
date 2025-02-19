@@ -142,7 +142,7 @@ const updateList = (
           <Icon icon="material-symbols-light:drag-pan-rounded" />
         </span>
         <input
-          class="flex h-9 border-0 w-full rounded-md dark:hover:bg-white/5 hover:bg-gray-500/15 border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          class="flex h-9 border-0 w-full rounded-md dark:hover:bg-white/5 hover:bg-gray-500/15 border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           type="text"
           :value="item.name"
           @focus="activeItem = item.id"
@@ -155,7 +155,7 @@ const updateList = (
       </Button>
       <div class="flex gap-2">
         <input
-          class="flex h-9 w-full rounded-md border border-input bg-transparent px-6 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          class="flex h-9 w-full rounded-md border border-input bg-transparent px-6 py-1 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           type="text"
           placeholder="请输入选项值"
           v-model="newItem"
@@ -167,7 +167,7 @@ const updateList = (
     <div class="flex w-full items-center gap-2">
       <input
         type="checkbox"
-        class="peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+        class="peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow-sm focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
         v-model="defaultIsHidden"
       />
       隐藏标签

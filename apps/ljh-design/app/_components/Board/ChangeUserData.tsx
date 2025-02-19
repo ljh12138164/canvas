@@ -174,7 +174,7 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
             >
               <Avatar>
                 <AvatarImage
-                  className="cursor-pointer aspect-[1/1] hover:scale-110 transition-all border-1 border-gray-200 rounded-full"
+                  className="cursor-pointer aspect-1/1 hover:scale-110 transition-all border-1 border-gray-200 rounded-full"
                   src={
                     image instanceof File
                       ? URL.createObjectURL(image)
@@ -191,7 +191,7 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
                   image instanceof File ? URL.createObjectURL(image) : data.user.user_metadata.image
                 }
                 alt="用户图片"
-                className="cursor-pointer aspect-[1/1] hover:scale-110 transition-all border-1 border-gray-200 rounded-full"
+                className="cursor-pointer aspect-1/1 hover:scale-110 transition-all border-1 border-gray-200 rounded-full"
                 width={100}
                 height={100}
                 priority={true}

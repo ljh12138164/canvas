@@ -40,7 +40,7 @@ const MaterialMain = () => {
         <ColorCard
           title="素材中心来开始构建你的画布"
           icon={<Image className="text-blue-500 text-[2rem] animate-pulse hover:animate-spin" />}
-          className="bg-gradient-to-r from-pink-600 via-orange-500 to-yellow-400 border-none shadow-lg hover:shadow-xl transition-all duration-300"
+          className="bg-linear-to-r from-pink-600 via-orange-500 to-yellow-400 border-none shadow-lg hover:shadow-xl transition-all duration-300"
         >
           <div className="flex flex-col items-center mb-6">
             <Button variant="outline" onClick={() => router.push('/EditMaterial')}>

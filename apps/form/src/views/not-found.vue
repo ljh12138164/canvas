@@ -19,7 +19,7 @@ const goHome = () => {
         <p class="mt-4 text-base text-gray-500">抱歉,我们找不到您要访问的页面。</p>
         <div class="mt-10 flex items-center justify-center gap-x-6">
             <button @click="goHome"
-                class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 返回首页
             </button>
             <button @click="goBack" class="text-sm font-semibold text-gray-900 hover:text-gray-500">

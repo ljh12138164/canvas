@@ -40,14 +40,14 @@ const Tools = ({ editor, activeTool, onChangeActiveTool }: ToolBarProps) => {
   //字体
   if (!editor?.selectedObject?.length) {
     return (
-      <section className="h-[3.3rem]  p-[0.1rem] space-x-4 dark:bg-background items-center flex w-full z-[50]" />
+      <section className="h-[3.3rem]  p-[0.1rem] space-x-4 dark:bg-background items-center flex w-full z-50" />
     );
   }
   const seltectedObject = editor?.canvas?.getActiveObjects()[0];
   const textYype = isText(seltectedObject);
   const isImage = selectedObject?.type === 'image';
   return (
-    <ScrollArea className="h-[3.3rem]  p-[0.1rem]  space-x-4 bg-[#fff] dark:bg-background items-center flex w-full z-[50]">
+    <ScrollArea className="h-[3.3rem]  p-[0.1rem]  space-x-4 bg-[#fff] dark:bg-background items-center flex w-full z-50">
       <div className="flex items-center h-full  gap-2 w-full  overflow-y-hidden">
         <section className="flex items-center gap-2">
           {!isImage && (

@@ -171,7 +171,7 @@ const TiptapToolbar = observer(({ editor, workspace, tiptapToolBar }: TiptapTool
                     }
                   }}
                 >
-                  <X className="border rounded-full hover:bg-zinc-100 transition-all hover:dark:bg-zinc-800" />
+                  <X className="border rounded-full hover:bg-zinc-100 transition-all dark:hover:bg-zinc-800" />
                 </div>
               )}
             </UploadContainer>
