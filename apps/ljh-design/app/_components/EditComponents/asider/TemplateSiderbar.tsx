@@ -29,7 +29,7 @@ export const TemplateSiderbar = ({
   return (
     <aside
       className={cn(
-        'z-[40] bg-white dark:bg-background  border-black/10 relative transition w-[300px] h-full flex flex-col',
+        'z-40 bg-white dark:bg-background  border-black/10 relative transition w-[300px] h-full flex flex-col',
         onShow() ? 'visible' : 'hidden',
       )}
     >

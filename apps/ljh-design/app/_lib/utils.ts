@@ -104,7 +104,7 @@ export function createFilter(value: string): Effect {
       effect = new fabric.filters.Pixelate();
       break;
     // 模糊
-    case 'blur':
+    case 'blur-sm':
       effect = new fabric.filters.Blur({ blur: 0.5 });
       break;
     // 锐化

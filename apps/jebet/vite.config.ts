@@ -1,12 +1,13 @@
 import path from 'node:path';
 import { preloadAnalyzerPlugin } from '@ljh/lib';
-// import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-// import reactCompiler from '@vitejs/plugin-react-swc';
-// import { visualizer } from 'rollup-plugin-visualizer';
 import { type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
 import removeConsole from 'vite-plugin-remove-console';
+// import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
+// import reactCompiler from '@vitejs/plugin-react-swc';
+// import { visualizer } from 'rollup-plugin-visualizer';
 // import viteImagemin from 'vite-plugin-imagemin';
 
 const plugins: PluginOption[] = [
@@ -16,6 +17,7 @@ const plugins: PluginOption[] = [
     },
     // fastRefresh: true,
   }), // 打包后压缩图片
+  tailwindcss(),
   // reactCompiler(),
   // viteImagemin({
   //   gifsicle: {
@@ -61,6 +63,7 @@ const plugins: PluginOption[] = [
     ext: '.br', // 输出文件的扩展名
     deleteOriginFile: false,
   }),
+  // @ts-ignore
   removeConsole(),
   // pluginPurgeCss(),
   // visualizer({

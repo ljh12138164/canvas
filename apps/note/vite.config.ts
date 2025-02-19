@@ -1,9 +1,10 @@
 import { URL, fileURLToPath } from 'node:url';
+import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
-// import { visualizer } from 'rollup-plugin-visualizer';
 import { type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
 import removeConsole from 'vite-plugin-remove-console';
+// import { visualizer } from 'rollup-plugin-visualizer';
 // import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
 
 // import viteImagemin from 'vite-plugin-imagemin';

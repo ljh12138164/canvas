@@ -79,7 +79,7 @@ const onSaveText = () => {
 <template>
   <nav class="nav-container">
     <header v-if="useEditor().editorDatas"
-      class="flex h-14 w-full shrink-0 items-center justify-between gap-2 px-2 sm:px-4 transition-all duration-200 ease-in-out group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+      class="flex h-14 w-full shrink-0 items-center justify-between gap-2 px-2 sm:px-4 transition-all duration-200 ease-in-out group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
       <div class="flex items-center gap-2 sm:gap-3">
         <SidebarTrigger class="hover:bg-muted/60 rounded-md p-1 transition-colors" />
         <Separator orientation="vertical" class="h-5 hidden sm:block" />
@@ -137,24 +137,42 @@ const onSaveText = () => {
 
 <style scoped lang="scss">
 .nav-container {
-  @apply w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60;
+  width: 100%;
+  border-bottom: 1px solid rgba(var(--border), 0.4);
+  background-color: rgba(var(--background), 0.95);
+  backdrop-filter: blur(8px);
+
+  @supports (backdrop-filter: blur(0px)) {
+    background-color: rgba(var(--background), 0.6);
+  }
+
+  @media (max-width: 640px) {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
 }
 
 .btn-item {
-  @apply flex items-center gap-1.5 sm:gap-2 px-2 py-1.5 text-xs sm:text-sm transition-colors;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  transition: colors 0.2s;
+  gap: 0.375rem;
+
+  @media (min-width: 640px) {
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
 
   &:hover {
-    @apply bg-muted/60;
+    background-color: rgba(var(--muted), 0.6);
   }
 
   .iconify {
-    @apply h-4 w-4;
-  }
-}
-
-@media (max-width: 640px) {
-  .nav-container {
-    @apply sticky top-0 z-50;
+    height: 1rem;
+    width: 1rem;
   }
 }
 </style>

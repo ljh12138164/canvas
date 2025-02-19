@@ -20,7 +20,7 @@ const TooltipComponents = ({
       <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent
-          className="text-white bg-slate-800 border-slate-800 z-[1000]"
+          className="text-white bg-slate-800 border-slate-800 z-1000"
           side={side}
           sideOffset={sideOffset}
           align={align}

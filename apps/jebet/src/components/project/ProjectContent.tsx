@@ -238,7 +238,7 @@ const ProjectContent = ({
                 <PopoverTrigger asChild>
                   <button
                     type="button"
-                    className="w-full px-2 h-8 border border-input bg-background shadow-sm cursor-pointer"
+                    className="w-full px-2 h-8 border border-input bg-background shadow-xs cursor-pointer"
                   >
                     <div className="flex items-center gap-2">
                       <CalendarIcon className=" h-4 w-4 opacity-50" />

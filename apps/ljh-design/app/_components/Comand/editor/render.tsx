@@ -21,7 +21,7 @@ export default function Render({ answer }: RenderProps) {
   }, [answer.answer]);
 
   return (
-    <div className="flex flex-col  p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="flex flex-col  p-4 bg-white rounded-lg shadow-xs border border-gray-200">
       {/* 评论者信息 */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">

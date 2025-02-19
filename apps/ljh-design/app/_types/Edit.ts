@@ -79,7 +79,7 @@ interface CanFilterChangeType {
 export const canfilterArr = [
   'contrast',
   'brightness',
-  'blur',
+  'blur-sm',
   'removecolor',
   'blendcolor',
   'pixelate',
@@ -129,12 +129,12 @@ export const CanfilterSetting: CanFilterChangeType[] = [
   },
   // ok
   {
-    name: 'blur',
+    name: 'blur-sm',
     title: '模糊',
     change: [
       {
-        id: 'blur',
-        name: 'blur',
+        id: 'blur-sm',
+        name: 'blur-sm',
         type: 'slider',
         title: '模糊强度',
         value: (value: number) => new fabric.filters.Blur({ blur: value }),
@@ -809,7 +809,7 @@ export type Filter =
   | 'invert'
   | 'technicolor'
   | 'pixelate'
-  | 'blur'
+  | 'blur-sm'
   | 'sharpen'
   | 'emboss'
   | 'removecolor'
@@ -833,7 +833,7 @@ export const filters: Filter[] = [
   'invert',
   'technicolor',
   'pixelate',
-  'blur',
+  'blur-sm',
   'sharpen',
   'emboss',
   'removecolor',

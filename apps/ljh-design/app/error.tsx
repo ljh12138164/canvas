@@ -11,7 +11,7 @@ export default function GlobalError() {
     <html lang="zh-CN" suppressHydrationWarning>
       <body>
         <Providers>
-          <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-background to-default-100">
+          <div className="min-h-screen w-full flex flex-col items-center justify-center bg-linear-to-b from-background to-default-100">
             <div className="text-center space-y-6 p-8 rounded-xl">
               <div className="space-y-2">
                 <h1 className="text-4xl font-bold text-danger">出错了</h1>

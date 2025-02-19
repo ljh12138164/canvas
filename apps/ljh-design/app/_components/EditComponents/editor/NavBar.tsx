@@ -318,7 +318,7 @@ const NavBar = ({
                   <LuDownload size="18" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-40 z-[1000]">
+              <DropdownMenuContent align="end" className="min-w-40 z-1000">
                 <DropdownMenuItem
                   className="flex items-center gap-2"
                   onClick={() => editor?.saveJson()}
@@ -369,7 +369,7 @@ const NavBar = ({
                   <LuChevronDown size={20} className="ml-2" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="min-w-60 z-[1000]">
+              <DropdownMenuContent align="start" className="min-w-60 z-1000">
                 <DropdownMenuItem
                   onClick={() => {
                     openFilePicker();
@@ -377,7 +377,7 @@ const NavBar = ({
                   className="flex items-center gap-2 px-4 cursor-pointer"
                 >
                   <BsFiletypeJson size={30} />
-                  <div className="z-[1000]">
+                  <div className="z-1000">
                     <p>打开</p>
                     <p className="text-xs  opacity-45">请选择json文件</p>
                   </div>
@@ -389,7 +389,7 @@ const NavBar = ({
                   className="flex items-center gap-2 px-4 cursor-pointer"
                 >
                   <BsFiletypeSvg size={30} />
-                  <div className="z-[1000]">
+                  <div className="z-1000">
                     <p>打开</p>
                     <p className="text-xs  opacity-45">请选择svg文件</p>
                   </div>
@@ -417,7 +417,7 @@ export default NavBar;
 //           {userState.length}
 //         </p>
 //       </TooltipTrigger>
-//       <TooltipContent className="z-[1000] max-h-[200px] overflow-y-scroll" asChild>
+//       <TooltipContent className="z-1000 max-h-[200px] overflow-y-scroll" asChild>
 //         <ScrollArea className="max-h-[200px]">
 //           <section className="flex flex-col gap-2">
 //             {userId &&

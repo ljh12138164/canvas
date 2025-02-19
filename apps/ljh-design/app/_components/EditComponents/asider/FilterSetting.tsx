@@ -106,7 +106,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
           <SelectTrigger className="w-full">
             <SelectValue placeholder="选择模式" />
           </SelectTrigger>
-          <SelectContent className="z-[9999999999]">
+          <SelectContent className="z-9999999999">
             <SelectGroup>
               <SelectLabel>选择模式</SelectLabel>
               {filter?.change[0].options.map((option) => (
@@ -179,7 +179,7 @@ const FilterSetting = ({ editor, filterSetting }: FilterSettingProps) => {
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="选择模式" />
                     </SelectTrigger>
-                    <SelectContent className="z-[9999999999]">
+                    <SelectContent className="z-9999999999">
                       <SelectGroup>
                         <SelectLabel>选择模式</SelectLabel>
                         {item.options.map((option) => (

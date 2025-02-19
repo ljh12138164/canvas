@@ -393,7 +393,7 @@ const handleUpdateBoardSchema = () => {
           <div
             v-for="item in list1"
             :key="item.id"
-            class="cursor-move rounded-md p-4 border border-gray-200 dark:border-gray-800 hover:border-primary hover:shadow-sm transition-all duration-200 bg-white dark:bg-gray-800/50 flex items-center gap-2"
+            class="cursor-move rounded-md p-4 border border-gray-200 dark:border-gray-800 hover:border-primary hover:shadow-xs transition-all duration-200 bg-white dark:bg-gray-800/50 flex items-center gap-2"
           >
             <component :is="item.icon" class="w-4 h-4 text-gray-500" />
             <span class="text-sm">{{ item.name }}</span>
@@ -420,7 +420,7 @@ const handleUpdateBoardSchema = () => {
               @click="handleActiveArea(item.id)"
               class="cursor-move rounded-md p-4 border border-gray-200 dark:border-gray-800 relative transition-all duration-200 bg-white dark:bg-gray-800/50"
               :class="[
-                'hover:border-primary hover:shadow-sm',
+                'hover:border-primary hover:shadow-xs',
                 activeArea === item.id && item.type !== 'obj'
                   ? 'border-primary bg-primary/5'
                   : ''

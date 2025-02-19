@@ -1,15 +1,16 @@
 import { URL, fileURLToPath } from 'node:url';
 import { preloadAnalyzerPlugin } from '@ljh/lib';
+import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
-import autoprefixer from 'autoprefixer';
-// import { visualizer } from 'rollup-plugin-visualizer';
-import tailwind from 'tailwindcss';
-import { type Plugin, defineConfig } from 'vite';
-// import vueDevTools from 'vite-plugin-vue-devtools';
+// import autoprefixer from 'autoprefixer';
+// import tailwind from 'tailwindcss';
+import { type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
+// import vueDevTools from 'vite-plugin-vue-devtools';
+// import { visualizer } from 'rollup-plugin-visualizer';
 // import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
 // import viteImagemin from 'vite-plugin-imagemin';
-const plugins: Plugin[] = [
+const plugins: PluginOption[] = [
   vue(),
   // pluginPurgeCss({
   //   content: ['**/*.vue', '**/*.js', '**/*.ts'],
@@ -37,6 +38,7 @@ const plugins: Plugin[] = [
   // }),
   // @ts-ignore
   preloadAnalyzerPlugin(),
+  tailwindcss(),
 ];
 if (process.env.NODE_ENV === 'test') {
   plugins.push();
@@ -46,7 +48,7 @@ export default defineConfig({
   plugins: plugins,
   css: {
     postcss: {
-      plugins: [tailwind(), autoprefixer()],
+      plugins: [],
     },
   },
   build: {
@@ -54,19 +56,34 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
-            // ui-libs
             if (
-              id.includes('vue') ||
-              id.includes('radix-vue') ||
+              id.includes('nanoid') ||
+              id.includes('dayjs') ||
+              id.includes('zod') ||
+              id.includes('hono') ||
+              id.includes('clsx') ||
               id.includes('vuetify') ||
               id.includes('@floating-ui')
             ) {
+              return 'vendors-common';
+            }
+            // ui-libs
+            if (id.includes('vue')) {
               return 'ui-libs';
             }
             // excel
             if (id.includes('exceljs')) {
               return 'exceljs';
             }
+            // console.log(id);
+            if (
+              id.includes('supabase') ||
+              id.includes('internationalized') ||
+              id.includes('tanstack')
+            ) {
+              return 'supabase';
+            }
+
             return 'vendors';
           }
         },

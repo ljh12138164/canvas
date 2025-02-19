@@ -17,7 +17,7 @@ const AI = () => {
         <ColorCard
           title="创建你的AI对话"
           icon={<AtomIcon className="" />}
-          className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-none shadow-lg hover:shadow-xl transition-all duration-300"
+          className="bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 border-none shadow-lg hover:shadow-xl transition-all duration-300"
         >
           <div className="flex flex-col gap-4">
             <div className="flex justify-between gap-2 w-full">

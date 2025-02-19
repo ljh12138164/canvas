@@ -25,7 +25,7 @@ const UserButton = () => {
       ) : (
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger>
-            <Avatar className="size-10 hover:opacity-80 transition-all duration-300 ">
+            <Avatar className="size-10 hover:opacity-80 transition-all duration-300 cursor-pointer">
               <AvatarImage alt="用户头像" src={user?.user.user_metadata.image} />
               <AvatarFallback>{user?.user.user_metadata.name}</AvatarFallback>
             </Avatar>

@@ -61,7 +61,7 @@ export default function AiList({
               }
             }}
             key={chat.id}
-            className="flex items-center justify-between rounded-lg border p-3 hover:bg-gray-100 cursor-pointer"
+            className="flex items-center justify-between rounded-lg border p-3 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
           >
             <p className="line-clamp-1 flex flex-col gap-1">
               <span className="font-bold">{chat.name || '新对话'}</span>

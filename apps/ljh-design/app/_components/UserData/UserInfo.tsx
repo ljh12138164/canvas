@@ -65,14 +65,14 @@ export default function UserInfo() {
             <section className="flex gap-2   w-[200px] items-center justify-center p-2 rounded-md border">
               <Button
                 variant="ghost"
-                className={`flex items-center justify-center transition-all duration-300  ${collection ? 'bg-slate-100' : ''}`}
+                className={`flex items-center justify-center transition-all duration-300 dark:bg-transparent dark:hover:bg-gray-800 ${collection ? 'bg-slate-100 dark:bg-gray-800' : ''}`}
                 onClick={() => setCollection(true)}
               >
                 我的点赞
               </Button>
               <Button
                 variant="ghost"
-                className={`flex items-center justify-center transition-all duration-300  ${!collection ? 'bg-slate-100' : ''}`}
+                className={`flex items-center justify-center transition-all duration-300 dark:bg-transparent dark:hover:bg-gray-800 ${!collection ? 'bg-slate-100 dark:bg-gray-800' : ''}`}
                 onClick={() => setCollection(false)}
               >
                 我的收藏

@@ -10,7 +10,7 @@ const ColorCard = ({
     <section className="p-2 h-[200px] flex justify-center items-center">
       <div
         className={cn(
-          ' bg-gradient-to-r grid  grid-cols-[168px,1fr]  w-full h-full rounded-lg p-2 ',
+          ' bg-linear-to-r grid  grid-cols-[168px_1fr]  w-full h-full rounded-lg p-2 ',
           className,
         )}
       >

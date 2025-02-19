@@ -26,7 +26,7 @@ const MindMapNode = observer(({ id, data }: NodeProps<Node<NodeData>>) => {
           onChange={(evt) => {
             flowStore.updateNodeLabel(id, evt.target.value);
           }}
-          className="nodrag text-sm px-2 py-1 rounded bg-transparent outline-none border border-transparent hover:border-gray-200 focus:border-blue-500"
+          className="nodrag text-sm px-2 py-1 rounded bg-transparent outline-hidden border border-transparent hover:border-gray-200 focus:border-blue-500"
         />
       </div>
       <Handle type="target" position={Position.Top} className="w-2 h-2 bg-blue-500" />

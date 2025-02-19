@@ -60,7 +60,7 @@ const headingLevel = computed(() => {
 .font-family-btn {
   height: 30px;
   width: 100px;
-  flex-shrink: 0;
+  shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +73,7 @@ const headingLevel = computed(() => {
 .font-family-item {
   height: 30px;
   width: 100px;
-  flex-shrink: 0;
+  shrink: 0;
   gap: 4px;
   padding: 0 8px;
   border-radius: 4px;

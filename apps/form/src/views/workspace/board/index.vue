@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router';
     <h1 class="text-lg font-semibold md:text-2xl">表单</h1>
   </div>
   <div
-    class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+    class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-xs"
   >
     <div class="flex flex-col items-center gap-1 text-center">
       <h3 class="text-2xl font-bold tracking-tight">您没有表单</h3>
