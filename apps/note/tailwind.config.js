@@ -1,9 +1,8 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-require-imports */
-const animate = require('tailwindcss-animate');
-
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import animate from 'tailwindcss-animate';
+// const animate = require('tailwindcss-animate');
+export default {
   darkMode: ['class'],
   safelist: ['dark'],
   prefix: '',
@@ -93,3 +92,5 @@ module.exports = {
   },
   plugins: [animate],
 };
+/** @type {import('tailwindcss').Config} */
+// module.exports =

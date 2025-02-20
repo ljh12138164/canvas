@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { Toast } from '@/components/ui/toast';
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
 </script>
 <template>
   <main>
     <RouterView />
     <VueQueryDevtools />
+    <Toast />
   </main>
 </template>
 <style lang="scss">
@@ -17,10 +19,12 @@ html {
   width: 100dvw;
   overflow: hidden;
 }
+
 body {
   height: 100%;
   width: 100%;
 }
+
 #root {
   height: 100%;
   width: 100%;

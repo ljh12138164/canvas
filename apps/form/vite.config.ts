@@ -2,10 +2,11 @@ import { URL, fileURLToPath } from 'node:url';
 import { preloadAnalyzerPlugin } from '@ljh/lib';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
-// import autoprefixer from 'autoprefixer';
-// import tailwind from 'tailwindcss';
 import { type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
+import { createHtmlPlugin } from 'vite-plugin-html';
+// import autoprefixer from 'autoprefixer';
+// import tailwind from 'tailwindcss';
 // import vueDevTools from 'vite-plugin-vue-devtools';
 // import { visualizer } from 'rollup-plugin-visualizer';
 // import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
@@ -39,6 +40,23 @@ const plugins: PluginOption[] = [
   // @ts-ignore
   preloadAnalyzerPlugin(),
   tailwindcss(),
+  createHtmlPlugin({
+    minify: true,
+    /**
+     * ### 在这里配置需要处理的 HTML 文件
+     */
+    pages: [
+      {
+        filename: 'index.html',
+        template: 'index.html',
+        injectOptions: {
+          data: {
+            title: 'index',
+          },
+        },
+      },
+    ],
+  }),
 ];
 if (process.env.NODE_ENV === 'test') {
   plugins.push();

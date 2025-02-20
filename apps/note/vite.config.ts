@@ -1,15 +1,13 @@
 import { URL, fileURLToPath } from 'node:url';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
-import { type PluginOption, defineConfig } from 'vite';
+import visualizer from 'rollup-plugin-visualizer';
+import { type Plugin, type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
+import { createHtmlPlugin } from 'vite-plugin-html';
 import removeConsole from 'vite-plugin-remove-console';
-// import { visualizer } from 'rollup-plugin-visualizer';
-// import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
-
-// import viteImagemin from 'vite-plugin-imagemin';
-// import vueDevTools from 'vite-plugin-vue-devtools';
-const plugins: PluginOption[] = [
+// import UnoCSS from 'unocss/vite';
+const plugins: PluginOption | Plugin[] = [
   vue(),
   // pluginPurgeCss(),
   // 打包后压缩图片
@@ -58,18 +56,38 @@ const plugins: PluginOption[] = [
     ext: '.br', // 输出文件的扩展名
     deleteOriginFile: false,
   }),
-  removeConsole(),
-  // visualizer({
-  //   // 打包完成后自动打开浏览器，显示产物体积报告
-  //   open: true,
+  // UnoCSS({
+  //   mode: 'global',
   // }),
+  tailwindcss(),
+  removeConsole(),
+  // 压缩html
+  createHtmlPlugin({
+    minify: true,
+    /**
+  
+     * 在这里配置需要处理的 HTML 文件
+     */
+    pages: [
+      {
+        filename: 'index.html',
+        template: 'index.html',
+        injectOptions: {
+          data: {
+            title: 'index',
+          },
+        },
+      },
+    ],
+  }),
 ];
 if (process.env.NODE_ENV === 'test') {
   plugins.push(
-    // visualizer({
-    //   // 打包完成后自动打开浏览器，显示产物体积报告
-    //   open: true,
-    // }),
+    // @ts-ignore
+    visualizer({
+      // 打包完成后自动打开浏览器，显示产物体积报告
+      open: true,
+    }),
   );
 }
 // https://vite.dev/config/

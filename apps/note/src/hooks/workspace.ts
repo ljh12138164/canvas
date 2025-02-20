@@ -115,7 +115,7 @@ export const useGetWorkspaceById = (id: string) => {
       if (!res.ok) {
         const error = (await res.json()) as { message: string };
         if (error.message === '无权限') {
-          toast.error('无权限');
+          toast.error('错误');
           router.push('/workspace');
         }
         throw new Error(error.message);

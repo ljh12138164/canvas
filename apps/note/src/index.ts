@@ -1,13 +1,11 @@
+import { VueQueryPlugin, type VueQueryPluginOptions } from '@tanstack/vue-query';
 import { createApp } from 'vue';
+// import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
+// import 'vue3-toastify/dist/index.css';
 import App from './App.vue';
 import './assets/index.css';
-// toast
-// import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
-import { VueQueryPlugin, type VueQueryPluginOptions } from '@tanstack/vue-query';
-import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
 import { routers } from './router';
 import pinia from './store';
-import 'vue3-toastify/dist/index.css';
 // Vuetify
 // import 'vuetify/styles';
 // import { createVuetify } from 'vuetify';
@@ -37,10 +35,10 @@ const app = createApp(App);
 app
   .use(routers)
   .use(pinia)
-  .use(Vue3Toastify, {
-    autoClose: 3000,
-    // ...
-  } as ToastContainerOptions)
+  // .use(Vue3Toastify, {
+  //   autoClose: 3000,
+  //   // ...
+  // } as ToastContainerOptions)
   .use(VueQueryPlugin, vueQueryPluginOptions);
 // .use(autoAnimatePlugin);
 // .use(vuetify);
