@@ -1,43 +1,39 @@
+import { useToast } from '@/components/ui/toast';
 import { getCurrentUser } from '@/server/supabase/user';
 import useUser from '@/store/user';
 import type { Sessions } from '@/types/user';
 import type { Updater } from '@tanstack/vue-table';
 import type { Ref } from 'vue';
 import type { RouteLocationNormalized } from 'vue-router';
-import {
-  type ToastPosition,
-  type ToastTheme,
-  type ToastTransition,
-  toast as toastify,
-} from 'vue3-toastify';
+// import {
+//   type ToastPosition,
+//   type ToastTheme,
+//   type ToastTransition,
+//   toast as toastify,
+// } from 'vue3-toastify';
 
 export const DEFAULT_AVATAR =
   'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/USER_IMAGE/avatar.svg';
 export const USER_IMAGE_URL = 'https://dtdgcdckrehydymmxhng.supabase.co/storage/v1/object/public/';
 // toast 实例
-const toastOption = {
-  theme: 'auto' as ToastTheme,
-  position: 'top-center' as ToastPosition,
-  transition: 'flip' as ToastTransition,
-  dangerouslyHTMLString: true,
-  hideProgressBar: true,
-};
+const toastInstance = useToast();
+const { toast: toastClass } = toastInstance;
 class Toast {
   // 使用 useToast 创建 toast 实例
   success(message: string) {
-    toastify.success(message, toastOption);
+    toastClass({ title: message });
   }
   error(message: string) {
-    toastify.error(message, toastOption);
+    toastClass({ title: message });
   }
   warning(message: string) {
-    toastify.warning(message, toastOption);
+    toastClass({ title: message });
   }
   loading(message: string) {
-    toastify.loading(message, toastOption);
+    toastClass({ title: message });
   }
   dismiss() {
-    toastify.clearAll();
+    toastInstance.dismiss();
   }
 }
 export const toast = new Toast();

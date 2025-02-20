@@ -6,6 +6,9 @@ body {
   /* background-image: linear-gradient(to bottom, #020917, #101725); */
 }
 
+:root {
+  --spacing: ;
+}
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-track {
   background-clip: padding-box;

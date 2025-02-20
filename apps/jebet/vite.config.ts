@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
+import { createHtmlPlugin } from 'vite-plugin-html';
 import removeConsole from 'vite-plugin-remove-console';
 // import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
 // import reactCompiler from '@vitejs/plugin-react-swc';
@@ -71,6 +72,23 @@ const plugins: PluginOption[] = [
   // }),
   // @ts-ignore
   preloadAnalyzerPlugin(),
+  createHtmlPlugin({
+    minify: true,
+    /**
+     * ### 在这里配置需要处理的 HTML 文件
+     */
+    pages: [
+      {
+        filename: 'index.html',
+        template: 'index.html',
+        injectOptions: {
+          data: {
+            title: 'index',
+          },
+        },
+      },
+    ],
+  }),
 ];
 if (process.env.ANYES === 'test') {
   // 打包完成后自动打开浏览器，显示产物体积报告

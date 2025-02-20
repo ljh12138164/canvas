@@ -2,6 +2,7 @@
   "name": "note",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "cd ../../server/api && pnpm run tsup && cd ../../apps/note && tsc -b && vite build",
     "build:report": "cross-env NODE_ENV=test vite build",
@@ -102,6 +103,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "@fullhuman/postcss-purgecss": "^7.0.2",
     "@ljh/lib": "workspace:*",
     "@ljh/lint": "workspace:*",
     "@mojojoejo/vite-plugin-purgecss": "^1.1.0",
@@ -116,8 +118,11 @@
     "stylelint": "^16.14.1",
     "terser": "^5.30.4",
     "typescript": "^5.7.3",
+    "uncss": "^0.17.3",
+    "unocss": "^66.0.0",
     "vite": "^6.0.11",
     "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-html": "^3.2.2",
     "vite-plugin-remove-console": "^2.2.0",
     "vite-plugin-vue-devtools": "^7.7.1"
   }
