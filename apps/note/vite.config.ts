@@ -1,4 +1,5 @@
 import { URL, fileURLToPath } from 'node:url';
+import { preloadAnalyzerPlugin } from '@ljh/lib';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import visualizer from 'rollup-plugin-visualizer';
@@ -7,7 +8,43 @@ import viteCompression from 'vite-plugin-compression';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import removeConsole from 'vite-plugin-remove-console';
 // import UnoCSS from 'unocss/vite';
-const plugins: PluginOption | Plugin[] = [
+// function earlyHintsPlugin(): Plugin {
+//   return {
+//     name: 'vite-plugin-early-hints',
+//     configureServer(server) {
+//       server.middlewares.use((req, res, next) => {
+//         // 收集需要预加载的资源
+//         const earlyHintResources = new Set<string>();
+
+//         // 添加关键资源
+//         earlyHintResources.add('/src/main.ts');
+//         earlyHintResources.add('/src/App.vue');
+
+//         // Vue 相关资源
+//         earlyHintResources.add('/node_modules/vue/dist/vue.runtime.esm-bundler.js');
+
+//         // 样式资源
+//         earlyHintResources.add('/src/assets/main.css');
+
+//         // 构建 Link header
+//         const linkHeaders = Array.from(earlyHintResources).map((resource) => {
+//           const type = resource.endsWith('.css') ? 'style' : 'script';
+//           return `<${resource}>; rel=preload; as=${type}`;
+//         });
+
+//         // 发送 Early Hints
+//         if (linkHeaders.length > 0) {
+//           res.writeHead(103, {
+//             Link: linkHeaders.join(', '),
+//           });
+//         }
+
+//         next();
+//       });
+//     },
+//   };
+// }
+const plugins: (PluginOption | Plugin)[] = [
   vue(),
   // pluginPurgeCss(),
   // 打包后压缩图片
@@ -56,6 +93,11 @@ const plugins: PluginOption | Plugin[] = [
     ext: '.br', // 输出文件的扩展名
     deleteOriginFile: false,
   }),
+
+  // @ts-ignore
+  preloadAnalyzerPlugin({
+    async: ['other-vendors', 'editor-vendor', 'vue-vendor'],
+  }),
   // UnoCSS({
   //   mode: 'global',
   // }),
@@ -65,7 +107,7 @@ const plugins: PluginOption | Plugin[] = [
   createHtmlPlugin({
     minify: true,
     /**
-  
+
      * 在这里配置需要处理的 HTML 文件
      */
     pages: [
@@ -98,6 +140,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+
   build: {
     minify: 'terser',
     rollupOptions: {
@@ -111,10 +154,11 @@ export default defineConfig({
 
             // 工具库打包
             if (id.includes('tiptap') || id.includes('prosemirror') || id.includes('tanstack')) {
-              return 'editor-vendor';
+              return 'no-preload-editor-vendor';
             }
+
             // 其他依赖打包
-            return 'vendors';
+            return 'no-preload-other-vendors';
           }
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',

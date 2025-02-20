@@ -32,59 +32,57 @@ const nextConfig: NextConfig = {
     if (!isServer) {
       config.optimization.splitChunks = {
         minSize: 20000,
-        maxSize: 248000,
+        maxSize: 240000,
         chunks: 'all',
         cacheGroups: {
           // React 相关核心包
           'react-vendor': {
             test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom|@tanstack|supabase)[\\/]/,
             name: 'react-vendor',
-            priority: 30,
-            chunks: 'all',
+            priority: 40,
+            enforce: true,
           },
           // UI 组件相关
           'ui-vendor': {
             test: /[\\/]node_modules[\\/](@radix-ui.*|@hookform.*|class-variance-authority|tailwind-merge|dayjs|date-fns|lodash-es.*|crypto-js|zod|react-icons)[\\/]/,
             name: 'ui-vendor',
-            priority: 20,
-            chunks: 'all',
+            priority: 30,
+            chunks: 'async', // 改为异步加载
           },
           // 图表相关
           'chart-vendor': {
             test: /[\\/]node_modules[\\/](recharts|d3-.*|react-smooth|victory.*|react-day-picker)[\\/]/,
             name: 'chart-vendor',
-            priority: 20,
-            chunks: 'all',
+            chunks: 'async', // 改为异步加载
+            minChunks: 2, // 至少被引用2次才会被打包
           },
           // 编辑器相关
           'editor-vendor': {
             test: /[\\/]node_modules[\\/](@tiptap.*|prosemirror.*|@hocuspocus.*)[\\/]/,
             name: 'editor-vendor',
             priority: 20,
-            chunks: 'all',
+            chunks: 'async',
           },
-
           'fabric-vendor': {
             test: /[\\/]node_modules[\\/](fabric.*|quill.*)[\\/]/,
             name: 'fabric-vendor',
             priority: 20,
-            chunks: 'all',
+            chunks: 'async',
           },
           // react-markdown-editor-lite
           'refactor-vendor': {
             test: /[\\/]node_modules[\\/](@refactor.* | react-markdown | localforage)[\\/]/,
             name: 'refactor-vendor',
             priority: 20,
-            chunks: 'all',
+            chunks: 'async',
           },
-
-          // // 其他第三方库
-          'node-vendors': {
+          // 其他第三方库
+          vendors: {
             test: /[\\/]node_modules[\\/]/,
-            name: 'node-vendors',
+            name: 'vendors',
             priority: 10,
-            chunks: 'all',
-            reuseExistingChunk: true,
+            chunks: 'async', // 改为异步加载
+            minChunks: 2, // 至少被引用2次才会被打包
           },
         },
       };
