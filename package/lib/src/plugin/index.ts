@@ -1,5 +1,7 @@
 import { parse } from 'node-html-parser';
 import type { PluginOption } from 'vite';
+import type { AnalyzePreloadResourcesOption } from './type';
+// import type { AnalyzePreloadResourcesOption } from './type';
 
 interface PreloadResource {
   url: string;
@@ -71,28 +73,53 @@ function analyzePreloadResources(html: string): PreloadResource[] {
     }
   });
 
+  // 分析分包配置
+  // const moduleProload = root.querySelectorAll('link[rel=modulepreload]');
+  // moduleProload.forEach((module) => {
+  //   const href = module.getAttribute('href');
+  //   if (href) {
+  //     resources.push({
+  //       url: href,
+  //       type: 'script',
+  //       priority: module.hasAttribute('async') ? 'low' : 'high',
+  //     });
+  //   }
+  // });
+
   return resources;
 }
 
-function preloadAnalyzerPlugin(): PluginOption {
+function preloadAnalyzerPlugin(options: AnalyzePreloadResourcesOption): PluginOption {
   return {
     name: 'preload-analyzer',
-    transformIndexHtml(html) {
-      // 分析并收集需要预加载的资源
-      const preloadResources = analyzePreloadResources(html);
+    enforce: 'post',
+    transformIndexHtml: {
+      enforce: 'post', // transformIndexHtml 钩子也需要在后置阶段执行
+      transform(html) {
+        // 分析并收集需要预加载的资源
+        const preloadResources = analyzePreloadResources(html);
 
-      return {
-        html,
-        tags: preloadResources.map((resource) => ({
-          tag: 'link',
-          attrs: {
-            rel: 'preload',
-            href: resource.url,
-            as: resource.type,
-          },
-          injectTo: 'head',
-        })),
-      };
+        // 检查URL是否匹配异步加载的chunks
+        const isAsyncChunk = (url: string) => {
+          return options?.async?.some((chunk) => url.includes(chunk)) ?? false;
+        };
+        // 删除分包的应用、
+        return {
+          html,
+          tags: preloadResources.map((resource) => ({
+            tag: 'link',
+            attrs: {
+              rel: 'preload',
+              href: resource.url,
+              as: resource.type,
+              priority: resource.priority,
+              ...(isAsyncChunk(resource.url) ? { async: '' } : {}),
+              crossorigin: resource.type === 'script' || resource.type === 'style' ? '' : undefined,
+            },
+            injectTo: 'head',
+          })),
+        };
+      },
     },
   };
 }
