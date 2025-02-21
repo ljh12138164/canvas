@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://design.ljhboard.cn
+
+# Sitemaps
+Sitemap: https://design.ljhboard.cn/sitemap.xml

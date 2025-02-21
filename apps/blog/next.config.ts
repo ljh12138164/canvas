@@ -24,6 +24,8 @@ const nextConfig: NextConfig = {
             test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
             name: 'react-vendor',
             priority: 30,
+            chunks: 'async', // 改为异步加载
+            minChunks: 2, // 至少被引用2次才会被打包
           },
 
           // Nextra 相关
@@ -31,6 +33,8 @@ const nextConfig: NextConfig = {
             test: /[\\/]node_modules[\\/](nextra|nextra-theme-docs)[\\/]/,
             name: 'nextra-vendor',
             priority: 20,
+            chunks: 'async', // 改为异步加载
+            minChunks: 2, // 至少被引用2次才会被打包
           },
 
           // MDX 相关
@@ -38,6 +42,8 @@ const nextConfig: NextConfig = {
             test: /[\\/]node_modules[\\/](@mdx-js|remark|rehype|unified|mdast|hast)[\\/]/,
             name: 'mdx-vendor',
             priority: 15,
+            chunks: 'async', // 改为异步加载
+            minChunks: 2, // 至少被引用2次才会被打包
           },
 
           // 其他依赖
@@ -46,6 +52,8 @@ const nextConfig: NextConfig = {
             name: 'vendors',
             priority: 10,
             reuseExistingChunk: true,
+            chunks: 'async', // 改为异步加载
+            minChunks: 2, // 至少被引用2次才会被打包
           },
         },
       };

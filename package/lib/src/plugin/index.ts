@@ -1,6 +1,6 @@
 import { parse } from 'node-html-parser';
 import type { PluginOption } from 'vite';
-import type { AnalyzePreloadResourcesOption } from './type';
+// import type { AnalyzePreloadResourcesOption } from './type';
 // import type { AnalyzePreloadResourcesOption } from './type';
 
 interface PreloadResource {
@@ -14,12 +14,12 @@ interface PreloadResource {
  * @param html
  * @returns
  */
-function analyzePreloadResources(html: string): PreloadResource[] {
-  const resources: PreloadResource[] = [];
+function analyzePreloadResources(html: string): (PreloadResource & { headType?: string })[] {
+  const resources: (PreloadResource & {
+    headType?: 'link' | 'script' | 'font' | 'image' | 'vendor';
+  })[] = [];
 
   // 解析 HTML 字符串
-  // const parser = new DOMParser();
-  // const doc = parser.parseFromString(html, 'text/html');
   const root = parse(html);
   // 分析 CSS 文件
   const styleLinks = root.querySelectorAll('link[rel="stylesheet"]');
@@ -29,7 +29,7 @@ function analyzePreloadResources(html: string): PreloadResource[] {
       resources.push({
         url: href,
         type: 'style',
-        priority: 'high', // CSS 通常是高优先级
+        headType: 'link',
       });
     }
   });
@@ -42,7 +42,7 @@ function analyzePreloadResources(html: string): PreloadResource[] {
       resources.push({
         url: src,
         type: 'script',
-        priority: script.hasAttribute('async') ? 'low' : 'high',
+        headType: 'script',
       });
     }
   });
@@ -55,7 +55,7 @@ function analyzePreloadResources(html: string): PreloadResource[] {
       resources.push({
         url: href,
         type: 'font',
-        priority: 'high',
+        headType: 'font',
       });
     }
   });
@@ -68,53 +68,51 @@ function analyzePreloadResources(html: string): PreloadResource[] {
       resources.push({
         url: src,
         type: 'image',
-        priority: 'high',
+        headType: 'image',
       });
     }
   });
 
   // 分析分包配置
-  // const moduleProload = root.querySelectorAll('link[rel=modulepreload]');
-  // moduleProload.forEach((module) => {
-  //   const href = module.getAttribute('href');
-  //   if (href) {
-  //     resources.push({
-  //       url: href,
-  //       type: 'script',
-  //       priority: module.hasAttribute('async') ? 'low' : 'high',
-  //     });
-  //   }
-  // });
+  const moduleProload = root.querySelectorAll('link[rel=modulepreload]');
+  moduleProload.forEach((module) => {
+    const href = module.getAttribute('href');
+    if (href) {
+      resources.push({
+        url: href,
+        type: 'script',
+        headType: 'vendor',
+      });
+    }
+  });
 
   return resources;
 }
 
-function preloadAnalyzerPlugin(options: AnalyzePreloadResourcesOption): PluginOption {
+function preloadAnalyzerPlugin(): PluginOption {
   return {
     name: 'preload-analyzer',
     enforce: 'post',
     transformIndexHtml: {
-      enforce: 'post', // transformIndexHtml 钩子也需要在后置阶段执行
+      enforce: 'post',
       transform(html) {
         // 分析并收集需要预加载的资源
         const preloadResources = analyzePreloadResources(html);
-
-        // 检查URL是否匹配异步加载的chunks
-        const isAsyncChunk = (url: string) => {
-          return options?.async?.some((chunk) => url.includes(chunk)) ?? false;
-        };
-        // 删除分包的应用、
+        // 使用 node-html-parser 处理 HTML
+        const root = parse(html);
+        // rel="modulepreload"
+        const modulepreloads = root.querySelectorAll('link[rel="modulepreload"]');
+        modulepreloads.forEach((link) => link.remove());
+        const newhtml = root.toString();
         return {
-          html,
+          html: newhtml,
           tags: preloadResources.map((resource) => ({
-            tag: 'link',
+            tag: resource?.headType === 'vendor' ? 'script' : 'link',
             attrs: {
               rel: 'preload',
               href: resource.url,
               as: resource.type,
-              priority: resource.priority,
-              ...(isAsyncChunk(resource.url) ? { async: '' } : {}),
-              crossorigin: resource.type === 'script' || resource.type === 'style' ? '' : undefined,
+              async: resource?.headType === 'vendor',
             },
             injectTo: 'head',
           })),
