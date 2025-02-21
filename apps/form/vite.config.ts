@@ -5,6 +5,8 @@ import vue from '@vitejs/plugin-vue';
 import { type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
 import { createHtmlPlugin } from 'vite-plugin-html';
+import VitePluginSitemap from 'vite-plugin-sitemap';
+
 // import autoprefixer from 'autoprefixer';
 // import tailwind from 'tailwindcss';
 // import vueDevTools from 'vite-plugin-vue-devtools';
@@ -57,6 +59,62 @@ const plugins: PluginOption[] = [
       },
     ],
   }),
+  VitePluginSitemap({
+    hostname: 'https://form.ljhboard.cn',
+    dynamicRoutes: [
+      '/', // 首页
+      '/workspace', // 工作区主页
+      '/workspace/board', // 看板
+      '/workspace/form', // 表单列表
+      '/workspace/form/detail/:id', // 表单详情
+      '/workspace/form/edit/:id', // 表单编辑
+      '/workspace/create', // 创建表单
+      '/workspace/create/:id', // 根据ID创建表单
+      '/workspace/create/preview/:id', // 预览创建的表单
+      '/workspace/preview', // 预览表单
+      '/workspace/sum', // 提交总结
+      '/workspace/sum/:id', // 特定提交总结
+      '/workspace/sum/:id/:detail', // 提交详情
+      '/workspace/submit', // 表单总结
+      '/workspace/my-submit', // 我的提交
+      '/workspace/my-submit/:id', // 我的特定提交
+      '/workspace/submit/:inviteCode', // 提交特定表单
+      '/workspace/table', // 表单管理
+    ],
+    exclude: [
+      '/404', // 排除404页面
+      '/:pathMatch(.*)*', // 排除所有未匹配路径
+    ],
+    // 更新频率设置
+    lastmod: new Date(),
+    changefreq: {
+      '/': 'daily',
+      '/workspace': 'daily',
+      '/workspace/board': 'daily',
+      '/workspace/form': 'hourly',
+      '/workspace/submit/*': 'always',
+      '/workspace/my-submit/*': 'hourly',
+      '/workspace/sum/*': 'hourly',
+      default: 'weekly',
+    },
+    priority: {
+      '/': 1.0,
+      '/workspace': 0.9,
+      '/workspace/board': 0.8,
+      '/workspace/form': 0.8,
+      '/workspace/create': 0.7,
+      '/workspace/submit/*': 0.6,
+      '/workspace/sum/*': 0.6,
+      default: 0.5,
+    },
+    robots: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+    ],
+    generateRobotsTxt: true,
+  }),
 ];
 if (process.env.NODE_ENV === 'test') {
   plugins.push();
@@ -105,12 +163,21 @@ export default defineConfig({
             return 'vendors';
           }
         },
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        chunkFileNames: 'static/js/[name].[hash].js',
+        entryFileNames: 'static/js/[name].[hash].js',
+        assetFileNames: 'static/[ext]/[name].[hash].[ext]',
       },
     },
     minify: 'terser',
+    // 生成 manifest.json
+    // 生成 manifest.json
+    manifest: true,
+    // 指定静态资源目录
+    assetsDir: 'static',
+    // 是否生成 sourcemap
+    sourcemap: false,
+    // 是否清空输出目录
+    emptyOutDir: true,
     cssMinify: 'lightningcss',
     terserOptions: {
       compress: {
@@ -118,8 +185,6 @@ export default defineConfig({
         drop_debugger: true,
       },
     },
-    // sourcemap: true,
-    chunkSizeWarningLimit: 935,
   },
   resolve: {
     alias: {

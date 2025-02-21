@@ -7,6 +7,7 @@ import { type Plugin, type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import removeConsole from 'vite-plugin-remove-console';
+import VitePluginSitemap from 'vite-plugin-sitemap';
 // import UnoCSS from 'unocss/vite';
 // function earlyHintsPlugin(): Plugin {
 //   return {
@@ -95,9 +96,7 @@ const plugins: (PluginOption | Plugin)[] = [
   }),
 
   // @ts-ignore
-  preloadAnalyzerPlugin({
-    async: ['other-vendors', 'editor-vendor', 'vue-vendor'],
-  }),
+  preloadAnalyzerPlugin(),
   // UnoCSS({
   //   mode: 'global',
   // }),
@@ -121,6 +120,47 @@ const plugins: (PluginOption | Plugin)[] = [
         },
       },
     ],
+  }),
+  VitePluginSitemap({
+    hostname: 'https://note.ljhboard.cn',
+    dynamicRoutes: [
+      '/', // 首页
+      '/workspace', // 工作区
+      '/workspace/home', // 工作区首页
+      '/workspace/:workspaceId', // 特定工作区
+      '/workspace/:workspaceId/member', // 工作区成员
+      '/workspace/:workspaceId/detail/:folderId', // 文件夹详情
+      '/workspace/:workspaceId/folders/:folderId', // 文件夹
+      '/workspace/:workspaceId/folders/:folderId/files/:fileId', // 文件详情
+    ],
+    exclude: [],
+    lastmod: new Date(),
+    changefreq: {
+      '/': 'daily',
+      '/workspace': 'daily',
+      '/workspace/home': 'daily',
+      '/workspace/:workspaceId': 'hourly',
+      '/workspace/:workspaceId/folders/*': 'always',
+      '/workspace/:workspaceId/detail/*': 'hourly',
+      default: 'weekly',
+    },
+    priority: {
+      '/': 1.0,
+      '/workspace': 0.9,
+      '/workspace/home': 0.9,
+      '/workspace/:workspaceId': 0.8,
+      '/workspace/:workspaceId/folders/*': 0.7,
+      '/workspace/:workspaceId/detail/*': 0.6,
+      default: 0.5,
+    },
+    robots: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+    ],
+
+    generateRobotsTxt: true,
   }),
 ];
 if (process.env.NODE_ENV === 'test') {
@@ -154,17 +194,26 @@ export default defineConfig({
 
             // 工具库打包
             if (id.includes('tiptap') || id.includes('prosemirror') || id.includes('tanstack')) {
-              return 'no-preload-editor-vendor';
+              return 'editor-vendor';
             }
 
             // 其他依赖打包
-            return 'no-preload-other-vendors';
+            return 'other-vendors';
           }
         },
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        chunkFileNames: 'static/js/[name].[hash].js',
+        entryFileNames: 'static/js/[name].[hash].js',
+        assetFileNames: 'static/[ext]/[name].[hash].[ext]',
       },
     },
+
+    // 生成 manifest.json
+    manifest: true,
+    // 指定静态资源目录
+    assetsDir: 'static',
+    // 是否生成 sourcemap
+    sourcemap: false,
+    // 是否清空输出目录
+    emptyOutDir: true,
   },
 });

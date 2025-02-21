@@ -6,6 +6,7 @@ import { type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import removeConsole from 'vite-plugin-remove-console';
+import VitePluginSitemap from 'vite-plugin-sitemap';
 // import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
 // import reactCompiler from '@vitejs/plugin-react-swc';
 // import { visualizer } from 'rollup-plugin-visualizer';
@@ -88,6 +89,53 @@ const plugins: PluginOption[] = [
         },
       },
     ],
+  }),
+  VitePluginSitemap({
+    hostname: 'https://jebet.ljhboard.cn',
+    dynamicRoutes: [
+      '/', // 首页
+      '/dashboard', // 仪表盘
+      '/dashboard/home', // 仪表盘首页
+      '/dashboard/create', // 创建
+      '/dashboard/:workspaceId', // 工作区
+      '/dashboard/:workspaceId/home', // 工作区首页
+      '/dashboard/:workspaceId/setting', // 工作区设置
+      '/dashboard/:workspaceId/member', // 工作区成员
+      '/dashboard/:workspaceId/chat', // 工作区聊天
+      '/dashboard/:workspaceId/storage', // 工作区存储
+      '/dashboard/:workspaceId/:projectId/home', // 项目首页
+      '/dashboard/:workspaceId/:projectId/setting', // 项目设置
+      '/dashboard/:workspaceId/:projectId/home/:taskId', // 项目任务详情
+      '/dashboard/:workspaceId/:projectId/:taskId', // 任务页面
+    ],
+    exclude: ['/admin/*'], // 排除不需要收录的路由
+    lastmod: new Date(),
+    changefreq: {
+      '/': 'daily',
+      '/dashboard': 'daily',
+      '/dashboard/home': 'daily',
+      '/dashboard/:workspaceId/home': 'hourly',
+      '/dashboard/:workspaceId/:projectId/home': 'hourly',
+      '/dashboard/:workspaceId/:projectId/:taskId': 'always',
+      '/dashboard/:workspaceId/chat': 'always',
+      default: 'weekly',
+    },
+    priority: {
+      '/': 1.0,
+      '/dashboard': 0.9,
+      '/dashboard/home': 0.9,
+      '/dashboard/:workspaceId/home': 0.8,
+      '/dashboard/:workspaceId/:projectId/home': 0.7,
+      '/dashboard/:workspaceId/:projectId/:taskId': 0.6,
+      default: 0.5,
+    },
+    robots: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+    ],
+    generateRobotsTxt: true,
   }),
 ];
 if (process.env.ANYES === 'test') {
@@ -187,11 +235,18 @@ export default defineConfig({
             return 'vendors';
           }
         },
-
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        chunkFileNames: 'static/js/[name].[hash].js',
+        entryFileNames: 'static/js/[name].[hash].js',
+        assetFileNames: 'static/[ext]/[name].[hash].[ext]',
       },
     },
+    // 生成 manifest.json
+    manifest: true,
+    // 指定静态资源目录
+    assetsDir: 'static',
+    // 是否生成 sourcemap
+    sourcemap: false,
+    // 是否清空输出目录
+    emptyOutDir: true,
   },
 });

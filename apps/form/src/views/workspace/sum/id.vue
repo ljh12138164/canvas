@@ -9,6 +9,7 @@ import { downLoad } from '@/lib';
 import type { FileType } from '@/types/form';
 import { encode } from 'base64-arraybuffer';
 import dayjs from 'dayjs';
+import exceljs from 'exceljs';
 import { LucideDownload } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -23,23 +24,14 @@ watch(
 );
 
 const { data, isLoading } = useGetSubmitFormById(id.value);
-let excelWorkbook: any = null;
-// 动态导入exceljs
-const getExcelWorkbook = async () => {
-  if (!excelWorkbook) {
-    const module = await import('exceljs');
-    excelWorkbook = module.Workbook;
-  }
-  return excelWorkbook;
-};
+
 /**
  * ### 导出
  */
 async function exports() {
   if (!data.value) return;
   // 动态导入
-  const { Workbook } = await getExcelWorkbook();
-  const workbook = new Workbook();
+  const workbook = new exceljs.Workbook();
   for (const item of data.value.submit) {
     // 创建工作表
     const worksheet = workbook.addWorksheet(

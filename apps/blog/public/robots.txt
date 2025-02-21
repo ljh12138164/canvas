@@ -1,3 +1,9 @@
+# *
 User-agent: *
-Disallow: /private/
 Allow: /
+
+# Host
+Host: https://blog.ljhboard.cn
+
+# Sitemaps
+Sitemap: https://blog.ljhboard.cn/sitemap.xml
