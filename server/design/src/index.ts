@@ -1,31 +1,35 @@
-import http from 'node:http';
-import ws from 'ws';
-// @ts-ignore
-import { setupWSConnection } from '../node_modules/y-websocket/bin/utils';
+/// <reference path="../deno.json" />
 
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 8888;
 // @ts-ignore
-const wss = new ws.Server({ noServer: true });
-const server = http.createServer((_, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/plain' });
-  response.end('okay');
-});
-
-// 处理连接
-wss.on('connection', setupWSConnection);
-
-// 处理升级
-server.on('upgrade', (request, socket, head) => {
-  // 处理权限
-  const handleAuth = (ws: any) => {
-    // 权限管理
-    wss.emit('connection', ws, request);
-  };
-  // 处理升级
-  wss.handleUpgrade(request, socket, head, handleAuth);
-});
+import { serve } from 'https://deno.land/std/http/server.ts';
+import { WebSocketServer } from 'ws';
 // @ts-ignore
-server.listen(port, host, () => {
-  // console.log(`running at '${host}' on port ${port}`);
-});
+import { setupWSConnection } from 'y-websocket/bin/utils';
+
+// @ts-ignore
+const host = Deno.env.get('HOST') || 'localhost';
+// @ts-ignore
+const port = Number.parseInt(Deno.env.get('PORT') || '8888');
+
+new WebSocketServer({ noServer: true });
+
+const handler = (request: Request): Response => {
+  if (request.headers.get('upgrade') === 'websocket') {
+    // @ts-ignore
+    const { socket, response } = Deno.upgradeWebSocket(request);
+
+    // 处理WebSocket连接
+    socket.onopen = () => {
+      setupWSConnection(socket, request);
+    };
+
+    return response;
+  }
+
+  return new Response('okay', {
+    status: 200,
+    headers: { 'Content-Type': 'text/plain' },
+  });
+};
+
+await serve(handler, { port, hostname: host });

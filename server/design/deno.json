@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "start": "deno run --allow-net src/index.ts",
+    "dev": "deno run --allow-net --watch src/index.ts"
+  },
+  "compilerOptions": {
+    "lib": ["deno.ns"]
+  }
+}
