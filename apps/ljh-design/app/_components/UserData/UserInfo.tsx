@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/app/_components/ui/Avatar';
+import AvatarImage from '@/app/_components/Comand/AvatarImage';
 import { Button } from '@/app/_components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/app/_components/ui/card';
 import { useUserCollection, useUserLike } from '@/app/_hook/query/useUser';
@@ -28,15 +28,14 @@ export default function UserInfo() {
       <Card className="w-full  mx-auto">
         <CardContent className="pt-6">
           <div className="flex items-start space-x-8">
-            <Avatar className="h-20 w-20">
-              <AvatarImage
-                src={user?.user.user_metadata.image}
-                alt={user?.user.user_metadata.name || '用户'}
-              />
-              <AvatarFallback>
-                <UserIcon className="h-10 w-10" />
-              </AvatarFallback>
-            </Avatar>
+            <AvatarImage
+              className="size-20 rounded-full"
+              src={user?.user.user_metadata.image || ''}
+              alt={user?.user.user_metadata.name || '用户'}
+              width={30}
+              height={30}
+              priority
+            />
 
             <div className="space-y-4">
               <div>

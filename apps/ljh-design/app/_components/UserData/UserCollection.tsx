@@ -1,7 +1,7 @@
 import type { UserCollectionResponseType } from '@/app/_hook/query/useUser';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
+import AvatarImage from '../Comand/AvatarImage';
 import { Loading } from './Loading';
 
 interface UserCollectionProps {
@@ -39,13 +39,13 @@ export const UserColleciton = ({ data, loading }: UserCollectionProps) => {
             </div>
             <div className="flex items-center gap-2">
               <p className="text-sm text-gray-500 max-w-[100px] ">发布者：</p>
-              <Avatar>
-                <AvatarImage
-                  src={item.show.profiles.image}
-                  alt={item.show.profiles.name || '用户'}
-                />
-                <AvatarFallback>{item.show.profiles.name.slice(0, 2)}</AvatarFallback>
-              </Avatar>
+              <AvatarImage
+                src={item.show.profiles.image || ''}
+                alt={item.show.profiles.name || '用户'}
+                width={30}
+                height={30}
+                priority
+              />
             </div>
           </Link>
         </div>

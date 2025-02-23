@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaClone, FaComment, FaThumbsUp } from 'react-icons/fa';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
+import AvatarImage from '../Comand/AvatarImage';
 import { Badge } from '../ui/badge';
 import { Skeleton } from '../ui/skeleton';
 
@@ -68,10 +68,13 @@ export const FormueItem = ({ item }: FormueItemProps) => {
             </section>
             <div className="flex items-center gap-2 mt-auto">
               <p className="text-sm text-gray-500">发布者:</p>
-              <Avatar>
-                <AvatarImage src={item.profiles.image} alt={item.profiles.name || '用户'} />
-                <AvatarFallback>{item.profiles.name}</AvatarFallback>
-              </Avatar>
+              <AvatarImage
+                src={item.profiles.image || ''}
+                alt={item.profiles.name || '用户'}
+                width={100}
+                height={100}
+                priority
+              />
               <p className="text-sm text-gray-500">{item.profiles.name}</p>
               {user?.user.user_metadata.sub === item.profiles.id && <span>我</span>}
             </div>
@@ -126,10 +129,13 @@ export const FormueItem = ({ item }: FormueItemProps) => {
           </section>
           <div className="flex items-center gap-2 mt-auto">
             <p className="text-sm text-gray-500">发布者:</p>
-            <Avatar>
-              <AvatarImage src={item.profiles.image} alt={item.profiles.name || '用户'} />
-              <AvatarFallback>{item.profiles.name}</AvatarFallback>
-            </Avatar>
+            <AvatarImage
+              src={item.profiles.image || ''}
+              alt={item.profiles.name || '用户'}
+              width={30}
+              height={30}
+              priority
+            />
             <p className="text-sm text-gray-500">{item.profiles.name}</p>
             {user?.user.user_metadata.sub === item.profiles.id && <span>我</span>}
           </div>

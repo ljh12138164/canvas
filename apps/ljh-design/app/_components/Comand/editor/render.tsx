@@ -2,8 +2,7 @@ import type { GetAnswerResponseType } from '@/app/_hook/query/useAnswer';
 import { useUser } from '@/app/_store/auth';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '../../ui/Avatar';
-
+import AvatarImage from '../AvatarImage';
 interface RenderProps {
   answer: GetAnswerResponseType[number];
 }
@@ -25,10 +24,13 @@ export default function Render({ answer }: RenderProps) {
       {/* 评论者信息 */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-          <Avatar>
-            <AvatarImage src={answer.profiles?.image} alt="用户头像" />
-            <AvatarFallback>{answer.profiles?.name?.slice(0, 2)}</AvatarFallback>
-          </Avatar>
+          <AvatarImage
+            src={answer.profiles?.image || ''}
+            alt="用户头像"
+            width={30}
+            height={30}
+            priority
+          />
         </div>
         <div>
           <div className="font-medium text-gray-900">
