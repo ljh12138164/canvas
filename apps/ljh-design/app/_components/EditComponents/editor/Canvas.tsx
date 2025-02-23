@@ -84,25 +84,25 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
       }) => {
         if (isPending) return;
         // 保存
-        mutate(
-          {
-            json: {
-              json: newData.json,
-              defaultImage: defaultImage.current,
-              image: newData.image,
-              width: newData.width,
-              height: newData.height,
-              id: data.id,
-            },
-          },
-          {
-            onSuccess: (data) => {
-              // 更新
-              defaultImage.current = data.image;
-              setCloudSave(true);
-            },
-          },
-        );
+        // mutate(
+        //   {
+        //     json: {
+        //       json: newData.json,
+        //       defaultImage: defaultImage.current,
+        //       image: newData.image,
+        //       width: newData.width,
+        //       height: newData.height,
+        //       id: data.id,
+        //     },
+        //   },
+        //   {
+        //     onSuccess: (data) => {
+        //       // 更新
+        //       defaultImage.current = data.image;
+        //       setCloudSave(true);
+        //     },
+        //   },
+        // );
       },
       5000,
     );

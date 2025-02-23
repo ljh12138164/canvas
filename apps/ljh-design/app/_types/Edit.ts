@@ -524,6 +524,7 @@ export enum Tool {
   FilterSetting = 26,
   Ai = 27,
   Template = 28,
+  Emoji = 29,
 }
 export type FontWeightType = 'normal' | 'bold';
 //返回
@@ -970,6 +971,7 @@ export interface Edit {
   addImage: (url: string) => void;
   delete: () => void;
   addText: (text: string, option?: fabric.Textbox | object) => void;
+  addEmoji: (emoji: string) => void;
   bringForward: () => void;
   getActiveFontLineThrough: () => boolean;
   getActiveFontUnderline: () => boolean;
@@ -1008,6 +1010,7 @@ export const ToolItem = {
   [Tool.Settings]: '设置',
   [Tool.Draw]: '画笔',
   [Tool.FilterSetting]: '滤镜设置',
+  [Tool.Emoji]: '表情',
   '': '',
 };
 
