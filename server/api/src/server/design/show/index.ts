@@ -152,3 +152,14 @@ export const getShow = async (
   if (error) throw new Error('服务器错误');
   return data[0];
 };
+
+/**
+ * ### 获取seo
+ * @param id
+ * @returns
+ */
+export const getSeo = async (): Promise<{ id: string }[]> => {
+  const { data, error } = await supabaseDesignPublic.from('show').select('id');
+  if (error) throw new Error('服务器错误');
+  return data;
+};

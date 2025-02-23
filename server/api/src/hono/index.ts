@@ -12,7 +12,18 @@ import { note } from './note';
 const app = new Hono()
   .use(
     cors({
-      origin: 'http://ljhboard.cn',
+      // origin: [
+      //   'https://design.ljhboard.cn/',
+      //   'https://jebet.ljhboard.cn/',
+      //   'https://www.ljhboard.cn/',
+      //   'https://node.ljhboard.cn/',
+      //   'https://form.ljhboard.cn/',
+      //   'http://localhost:8400',
+      //   'http://localhost:8300',
+      //   'http://localhost:8200',
+      //   'http://localhost:8100',
+      // ],
+      origin: '*',
       credentials: true,
     }),
   )
