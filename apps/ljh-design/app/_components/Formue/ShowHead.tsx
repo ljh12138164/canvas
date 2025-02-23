@@ -10,8 +10,8 @@ import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { v4 } from 'uuid';
 import BoardCreateFrom from '../Board/BoardCreateFrom';
+import AvatarImage from '../Comand/AvatarImage';
 import { Response } from '../Comand/Response';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -89,10 +89,13 @@ export function ShowHead({
       <h2 className="text-2xl font-bold">{showData.title}</h2>
       <div className="flex items-center gap-4 text-sm text-gray-500 flex-wrap">
         <section className="flex items-center gap-2">
-          <Avatar>
-            <AvatarImage src={showData.profiles.image} alt="用户头像" />
-            <AvatarFallback>{showData.profiles.name}</AvatarFallback>
-          </Avatar>
+          <AvatarImage
+            src={showData.profiles.image || ''}
+            alt="用户头像"
+            width={30}
+            height={30}
+            priority
+          />
           <span className="text-sm whitespace-nowrap">
             {showData.profiles.name}
             {user?.user.user_metadata.sub === showData.profiles.id && (

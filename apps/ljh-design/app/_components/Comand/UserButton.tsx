@@ -1,5 +1,4 @@
 'use client';
-import { Avatar, AvatarFallback, AvatarImage } from '@/app/_components/ui/Avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LuLogOut } from 'react-icons/lu';
 import { Skeleton } from '../ui/skeleton';
+import AvatarImage from './AvatarImage';
 
 const UserButton = () => {
   const { user, loading } = useUsers({ redirects: false });
@@ -25,10 +25,14 @@ const UserButton = () => {
       ) : (
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger>
-            <Avatar className="size-10 hover:opacity-80 transition-all duration-300 cursor-pointer">
-              <AvatarImage alt="用户头像" src={user?.user.user_metadata.image} />
-              <AvatarFallback>{user?.user.user_metadata.name}</AvatarFallback>
-            </Avatar>
+            <AvatarImage
+              className="size-10 hover:opacity-80 transition-all duration-300 cursor-pointer"
+              src={user?.user.user_metadata.image || ''}
+              alt="用户头像"
+              width={30}
+              height={30}
+              priority
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-60">
             <DropdownMenuItem

@@ -14,7 +14,7 @@ import { to } from 'await-to-js';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
+import AvatarImage from '../Comand/AvatarImage';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -172,20 +172,16 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
                 }
               }}
             >
-              <Avatar>
-                <AvatarImage
-                  className="cursor-pointer aspect-1/1 hover:scale-110 transition-all border-1 border-gray-200 rounded-full"
-                  src={
-                    image instanceof File
-                      ? URL.createObjectURL(image)
-                      : data.user.user_metadata.image
-                  }
-                  width={100}
-                  height={100}
-                  alt="用户图片"
-                />
-                <AvatarFallback> {name?.slice(0, 2)} </AvatarFallback>
-              </Avatar>
+              <AvatarImage
+                className="cursor-pointer aspect-1/1 hover:scale-110 transition-all border-1 border-gray-200 rounded-full"
+                src={
+                  image instanceof File ? URL.createObjectURL(image) : data.user.user_metadata.image
+                }
+                width={30}
+                height={30}
+                alt="用户图片"
+                priority
+              />
               {/* <Image
                 src={
                   image instanceof File ? URL.createObjectURL(image) : data.user.user_metadata.image
