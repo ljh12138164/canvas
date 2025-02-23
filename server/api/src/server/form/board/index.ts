@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import type { Form, SumbitForm } from '../../../types/form';
 import type { Profiles } from '../../../types/note/workspace';
-import { supabaseForm } from '../../supabase/form';
+import { supabaseForm, supabaseFormPublic } from '../../supabase/form';
 
 /**
  * ## 创建白板
@@ -224,6 +224,17 @@ export const getDashboardData = async ({
     .from('form')
     .select('*,submit(*,profiles(*))')
     .eq('userId', userId);
+  if (error) throw new Error('服务器错误');
+  return data;
+};
+
+/**
+ * ## 获取seo
+ * @param param0
+ * @returns
+ */
+export const getSeo = async (): Promise<{ inviteCode: string }[]> => {
+  const { data, error } = await supabaseFormPublic.from('form').select('inviteCode');
   if (error) throw new Error('服务器错误');
   return data;
 };

@@ -9,3 +9,5 @@ export const supabaseForm = (token?: string) =>
       },
     },
   });
+
+export const supabaseFormPublic = createClient(supabaseUrl!, supabaseKey!);

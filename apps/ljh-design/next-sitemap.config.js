@@ -15,6 +15,19 @@ module.exports = {
       },
     ],
   },
+  additionalPaths: async () => {
+    const result = [];
+    const response = await fetch('https://www.ljhboard.cn/api/design/showPublic/seo');
+    const posts = await response.json();
+    posts.forEach((post) => {
+      result.push({
+        loc: `/board/formue/${post.id}`,
+        lastmod: new Date().toISOString(),
+        priority: 0.7,
+      });
+    });
+    return result;
+  },
   changefreq: 'daily',
   priority: 0.7,
   sitemapSize: 5000,

@@ -5,7 +5,7 @@ import { verify } from 'hono/jwt';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
-import { createShow, getRandomShow, getShow } from '../../../server/design/show/index';
+import { createShow, getRandomShow, getSeo, getShow } from '../../../server/design/show/index';
 
 const show = new Hono()
   .use(checkToken(process.env.SUPABASE_DESIGN_JWT!))
@@ -82,6 +82,11 @@ const showPublic = new Hono()
       return c.json(data);
     }
     const [error, data] = await to(getShow(id));
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+    return c.json(data);
+  })
+  .get('/seo', async (c) => {
+    const [error, data] = await to(getSeo());
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(data);
   });
