@@ -9,3 +9,7 @@ packages:
   - "package/*"
   # taro小程序
   - "mini/*"
+  # 移动端项目
+  - "mobile/*"
+  # 桌面端项目
+  - "desktop/*"
