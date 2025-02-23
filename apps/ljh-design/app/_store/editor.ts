@@ -681,6 +681,17 @@ export const buildEditor = ({
       canvas.setActiveObject(textObj);
       canvas.renderAll();
     },
+    // 添加表情
+    addEmoji: (emoji: string) => {
+      const textObj = new fabric.Textbox(emoji, {
+        ...TEXTBOX_OPTION,
+        fontSize: 80,
+        id: nanoid(),
+      });
+      addToCanvas(textObj);
+      canvas.setActiveObject(textObj);
+      canvas.renderAll();
+    },
     // 透明度
     changeOpacty: (opacity: number) => {
       setOpacity(opacity);

@@ -7,6 +7,7 @@ import {
   LuPencil,
   LuSettings,
   LuShapes,
+  LuSmile,
   LuType,
 } from 'react-icons/lu';
 import SiderBarItem from '../asider/SiderBarItem';
@@ -83,6 +84,15 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool, type, login = true }: Sider
               }}
             />
           )}
+          {/* 表情 */}
+          <SiderBarItem
+            icon={LuSmile}
+            label="表情"
+            isActive={acitiveTool === Tool.Emoji}
+            onClick={() => {
+              onChangeActiveTool(Tool.Emoji);
+            }}
+          />
           {/* 设置 */}
           <SiderBarItem
             icon={LuSettings}

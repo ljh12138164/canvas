@@ -21,6 +21,7 @@ import {
 } from '@/app/_types/Edit';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import Emoji from '../../Comand/Emoji';
 import {
   Dialog,
   DialogClose,
@@ -70,7 +71,8 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
       activeTool === Tool.Draw ||
       activeTool === Tool.Settings ||
       activeTool === Tool.FilterSetting ||
-      activeTool === Tool.Ai
+      activeTool === Tool.Ai ||
+      activeTool === Tool.Emoji
     )
       return activeTool;
     return '';
@@ -101,7 +103,12 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
         }
       />
       <ScrollArea className="z-601 h-[calc(100vh-10rem)] dark:bg-background">
-        <div className={cn('p-4 space-y-4 ', onShow() === Tool.Ai && 'p-0')}>
+        <div
+          className={cn(
+            'p-4 space-y-4 ',
+            onShow() === Tool.Ai || (onShow() === Tool.Emoji && 'p-0'),
+          )}
+        >
           {onShow() === Tool.Fill && (
             <ColorPicker
               value={value}
@@ -265,6 +272,8 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
           )}
           {/* ai */}
           {onShow() === Tool.Ai && <AiChatSider />}
+          {/* 表情 */}
+          {onShow() === Tool.Emoji && <Emoji editor={editor} />}
           {/* 设置 */}
           {onShow() === Tool.Settings && (
             <form className="flex flex-col gap-2">
