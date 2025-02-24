@@ -8,7 +8,10 @@ export default function UserProfilePage() {
   const router = useRouter();
   const { user, loading } = useUser({ redirects: true });
   if (loading) return <></>;
-  if (!user) return router.push('/sign-in');
+  if (!user) {
+    router.push('/sign-in');
+    return <></>;
+  }
   return (
     <ScrollArea className="p-6">
       <UserInfo />

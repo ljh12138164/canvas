@@ -44,7 +44,7 @@ import type { Board } from '@/app/_types/board';
 import type { Sessions } from '@/app/_types/user';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
-import { debounce } from 'lodash-es';
+import { debounce, throttle } from 'lodash-es';
 // import { debounce } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TemplateSiderbar } from '../asider/TemplateSiderbar';
@@ -75,38 +75,40 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
   const debounceMutate = useMemo(() => {
     if (type === 'material') return;
     if (!data?.id) return;
-    return debounce(
-      (newData: {
-        json: string;
-        width: number;
-        height: number;
-        image: string;
-      }) => {
+
+    // 使用节流来确保至少每10秒保存一次
+    const throttledSave = throttle(
+      (newData) => {
         if (isPending) return;
-        // 保存
-        // mutate(
-        //   {
-        //     json: {
-        //       json: newData.json,
-        //       defaultImage: defaultImage.current,
-        //       image: newData.image,
-        //       width: newData.width,
-        //       height: newData.height,
-        //       id: data.id,
-        //     },
-        //   },
-        //   {
-        //     onSuccess: (data) => {
-        //       // 更新
-        //       defaultImage.current = data.image;
-        //       setCloudSave(true);
-        //     },
-        //   },
-        // );
+        mutate(
+          {
+            json: {
+              json: newData.json,
+              defaultImage: defaultImage.current,
+              image: newData.image,
+              width: newData.width,
+              height: newData.height,
+              id: data.id,
+            },
+          },
+          {
+            onSuccess: (data) => {
+              defaultImage.current = data.image;
+              setCloudSave(true);
+            },
+          },
+        );
       },
-      5000,
+      10000,
+      // 节流 先执行一次，再每隔10秒执行一次
+      { leading: true, trailing: true },
     );
-  }, []);
+
+    // 使用防抖来合并频繁的更新
+    const debouncedSave = debounce(throttledSave, 5000, { maxWait: 10000 });
+
+    return debouncedSave;
+  }, [data?.id, isPending, mutate, type]);
 
   // 画布初始化
   const { init } = useCanvas({
@@ -311,6 +313,13 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [init]);
+
+  // 在组件卸载时清理
+  useEffect(() => {
+    return () => {
+      debounceMutate?.cancel?.();
+    };
+  }, [debounceMutate]);
 
   return (
     <div
