@@ -19,7 +19,7 @@ export default function MaterialPage() {
       return;
     }
   }, [user, loading]);
-  if (loading) return;
-  if (!user) return;
+  if (loading) return <></>;
+  if (!user) return <></>;
   return <MaterialMain />;
 }

@@ -7,7 +7,10 @@ const CreateShow = () => {
   const router = useRouter();
   const { user, loading } = useUsers({ redirects: true });
   if (loading) return <></>;
-  if (!user) router.push('/sign-in');
+  if (!user) {
+    router.push('/sign-in');
+    return <></>;
+  }
 
   return <Form userId={user!.user.id} />;
 };

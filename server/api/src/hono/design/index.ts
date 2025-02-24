@@ -4,6 +4,7 @@ import { ai } from './route/ai';
 import { answers } from './route/answers';
 import board from './route/board';
 import { collections } from './route/collections';
+import { friend } from './route/friend';
 // import user from './route/user';
 import image from './route/image';
 import { material } from './route/material';
@@ -26,5 +27,6 @@ export const design = new Hono()
   .route('/answers', answers)
   .route('/material', material)
   .route('/ai', ai)
+  .route('/friend', friend)
   .route('/admin', admin);
 // .route('/clone', clone);
