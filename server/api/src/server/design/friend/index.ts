@@ -18,7 +18,7 @@ export const addFriend = async ({
 }): Promise<Frident> => {
   const { data, error } = await supabaseDesign(token)
     .from('frident')
-    .insert([{ userId, addUserId }])
+    .insert([{ userId, adduser: addUserId }])
     .select('*');
   if (error) throw new Error('添加好友失败');
   return data[0];
@@ -43,8 +43,8 @@ export const getFriendList = async ({
       user_profile:profiles!frident_usedId_fkey(*),
       friend_profile:profiles!frident_adduser_fkey(*)
     `)
-    .or(`usedId.eq.${userId},adduser.eq.${userId}`)
-    .eq('isInvite', true);
+    .or(`userId.eq.${userId},adduser.eq.${userId}`);
+  // .eq('isInvite', true);
   if (error) throw new Error('获取好友列表失败');
   return data;
 };
@@ -68,4 +68,22 @@ export const searchFriend = async ({
     .limit(10);
   if (error) throw new Error('搜索好友失败');
   return data;
+};
+
+/**
+ * ### 同意添加好友
+ */
+export const addFrident = async ({
+  token,
+  id,
+  adduser,
+}: { token: string; id: string; adduser: string }): Promise<boolean> => {
+  const { error } = await supabaseDesign(token)
+    .from('frident')
+    .update([{ isInvite: true }])
+    .eq('userId', id)
+    .eq('adduser', adduser)
+    .select('*');
+  if (error) throw new Error('添加好友失败');
+  return true;
 };

@@ -71,8 +71,8 @@ export const FormueItem = ({ item }: FormueItemProps) => {
               <AvatarImage
                 src={item.profiles.image || ''}
                 alt={item.profiles.name || '用户'}
-                width={100}
-                height={100}
+                width={30}
+                height={30}
                 priority
               />
               <p className="text-sm text-gray-500">{item.profiles.name}</p>

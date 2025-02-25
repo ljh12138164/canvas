@@ -74,7 +74,7 @@ export const useAddFriend = () => {
 };
 
 type SearchFriendResponseType = InferResponseType<(typeof client.friend.searchFriend)['$get'], 200>;
-type SearchFriendRequestType = InferRequestType<(typeof client.friend.searchFriend)['$get']>;
+// type SearchFriendRequestType = InferRequestType<(typeof client.friend.searchFriend)['$get']>;
 /***
  * ### 搜索好友
  * @returns
@@ -109,4 +109,38 @@ export const useSearchFriend = (search: string) => {
     },
   });
   return { data, isLoading, error };
+};
+
+type AddFridentResponseType = InferResponseType<(typeof client.friend.add)['$post'], 200>;
+type AddFridentRequestType = InferRequestType<(typeof client.friend.add)['$post']>;
+/**
+ * ### 同意添加好友
+ * @returns
+ */
+export const useAddFrident = () => {
+  const router = useRouter();
+  const { mutate: addFridentMutate, isPending: addFridentLoading } = useMutation<
+    AddFridentResponseType,
+    Error,
+    AddFridentRequestType
+  >({
+    mutationFn: async (data) => {
+      const token = await getNewToken();
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+      const response = await client.friend.add.$post(data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return response.json();
+    },
+  });
+  return { addFridentMutate, addFridentLoading };
 };

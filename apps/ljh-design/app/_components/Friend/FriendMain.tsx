@@ -14,15 +14,10 @@ export default function FriendMain({ children }: { children: ReactNode }) {
     router.push('/sign-in');
     return <></>;
   }
-  // return (
-  //   <div className="grid grid-cols-[200px_1fr] h-[calc(100vh-100px)] w-full">
-  //     <FridenSider />
-  //     {/* chatMain */}
-  //   </div>
-  // );
+
   return (
     <main className="h-[calc(100dvh-100px)] w-full relative bg-amber-100">
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={false}>
         <AppSidebar className="absolute top-0 left-0 h-[calc(100dvh-100px)]" />
         <SidebarInset>{children}</SidebarInset>
       </SidebarProvider>

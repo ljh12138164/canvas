@@ -309,7 +309,7 @@ importers:
         version: link:../../server/api
       autoprefixer:
         specifier: ^10.4.20
-        version: 10.4.20(postcss@8.5.1)
+        version: 10.4.20(postcss@8.5.2)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -671,9 +671,6 @@ importers:
       '@emoji-mart/react':
         specifier: ^1.1.1
         version: 1.1.1(emoji-mart@5.6.0)(react@19.0.0-rc.1)
-      '@hono/zod-validator':
-        specifier: ^0.4.2
-        version: 0.4.2(hono@4.6.20)(zod@3.24.1)
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.54.2(react@19.0.0-rc.1))
@@ -947,6 +944,12 @@ importers:
       remark-gfm:
         specifier: ^4.0.0
         version: 4.0.0
+      socket.io:
+        specifier: ^4.8.1
+        version: 4.8.1
+      socket.io-client:
+        specifier: ^4.8.1
+        version: 4.8.1
       sonner:
         specifier: ^1.7.4
         version: 1.7.4(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
@@ -1432,7 +1435,7 @@ importers:
         specifier: ^5.7.3
         version: 5.7.3
 
-  desktop/dify:
+  desktop/design:
     dependencies:
       '@tauri-apps/api':
         specifier: ^2
@@ -1623,8 +1626,8 @@ importers:
   server/api:
     dependencies:
       '@google/generative-ai':
-        specifier: ^0.21.0
-        version: 0.21.0
+        specifier: ^0.22.0
+        version: 0.22.0
       '@hono/node-server':
         specifier: 1.13.7
         version: 1.13.7(hono@4.6.20)
@@ -3254,8 +3257,8 @@ packages:
   '@gar/promisify@1.1.3':
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
 
-  '@google/generative-ai@0.21.0':
-    resolution: {integrity: sha512-7XhUbtnlkSEZK15kN3t+tzIMxsbKm/dSkKBFalj+20NvPKe1kBY7mR2P7vuijEn+f06z5+A8bVGKO0v39cr6Wg==}
+  '@google/generative-ai@0.22.0':
+    resolution: {integrity: sha512-mLR3PDWCk5O/BWNyDvFDIiwKeXQmFGZ+kJFd9m73QrUPCFREttJyVbBPTW4y9CwTbaltLMDaLDfroCrRv5Bl8Q==}
     engines: {node: '>=18.0.0'}
 
   '@hapi/hoek@9.3.0':
@@ -20446,7 +20449,7 @@ snapshots:
   '@gar/promisify@1.1.3':
     optional: true
 
-  '@google/generative-ai@0.21.0': {}
+  '@google/generative-ai@0.22.0': {}
 
   '@hapi/hoek@9.3.0': {}
 
@@ -24946,7 +24949,7 @@ snapshots:
 
   '@types/postcss-url@10.0.4':
     dependencies:
-      '@types/node': 22.13.0
+      '@types/node': 22.13.4
       postcss: 8.5.2
 
   '@types/prop-types@15.7.14': {}
@@ -26449,6 +26452,16 @@ snapshots:
       normalize-range: 0.1.2
       picocolors: 1.1.1
       postcss: 8.5.1
+      postcss-value-parser: 4.2.0
+
+  autoprefixer@10.4.20(postcss@8.5.2):
+    dependencies:
+      browserslist: 4.24.4
+      caniuse-lite: 1.0.30001692
+      fraction.js: 4.3.7
+      normalize-range: 0.1.2
+      picocolors: 1.1.1
+      postcss: 8.5.2
       postcss-value-parser: 4.2.0
 
   autoprefixer@6.7.7:
@@ -28995,7 +29008,7 @@ snapshots:
     dependencies:
       '@types/cookie': 0.4.1
       '@types/cors': 2.8.17
-      '@types/node': 22.13.0
+      '@types/node': 22.13.4
       accepts: 1.3.8
       base64id: 2.0.0
       cookie: 0.7.2
