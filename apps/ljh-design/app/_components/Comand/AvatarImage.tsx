@@ -23,7 +23,7 @@ const AvatarImage = ({
       width={width}
       height={height}
       priority={priority}
-      className={cn('rounded-full', className)}
+      className={cn('rounded-full aspect-square', className)}
     />
   );
 };

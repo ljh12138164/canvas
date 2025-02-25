@@ -24,7 +24,7 @@ const SiderBarRoutes = ({
         <Separator />
       </div>
       <ul className="flex flex-col h-full">
-        <li className="flex-1 p-4 flex flex-col gap-6">
+        <li className="flex-1 p-4 flex flex-col gap-4">
           <SiderBarItem
             href="/board"
             label="主页"
@@ -61,12 +61,15 @@ const SiderBarRoutes = ({
             closeRef={closeRef}
           />
           <SiderBarItem
-            href="/board/friend"
+            href="/board/friend/home"
             label="好友列表"
             Icon={Users}
             isActive={pathname.split('/').includes('friend')}
             closeRef={closeRef}
           />
+        </li>
+        <li>
+          <Separator />
         </li>
         <li className="p-4 flex flex-col gap-4">
           <SiderBarItem

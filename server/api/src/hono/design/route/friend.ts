@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
-import { addFriend, getFriendList, searchFriend } from '../../../server/design/friend';
+import { addFrident, addFriend, getFriendList, searchFriend } from '../../../server/design/friend';
 
 export const friend = new Hono()
   .use(checkToken(process.env.SUPABASE_DESIGN_JWT!))
@@ -28,6 +28,14 @@ export const friend = new Hono()
     const { auth, token } = getSupabaseAuth(c);
     const { search } = c.req.valid('query');
     const [error, data] = await to(searchFriend({ userId: auth.sub!, token, search }));
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+    return c.json(data);
+  })
+  // 添加好友
+  .post('add', zValidator('json', z.object({ id: z.string(), adduser: z.string() })), async (c) => {
+    const { token } = getSupabaseAuth(c);
+    const { id, adduser } = c.req.valid('json');
+    const [error, data] = await to(addFrident({ id, token, adduser }));
     if (error) return c.json({ message: error.message }, errorCheck(error));
     return c.json(data);
   });
