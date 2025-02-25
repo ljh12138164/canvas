@@ -16,7 +16,7 @@
     "dev:test": "turbo --filter=test dev",
     "dev:note": "turbo --filter=api --filter=note --filter=ws dev",
     "dev:blog": "turbo --filter=blog dev",
-    "dev:design": "turbo --filter=api --filter=design --filter=design-ws dev && turbo --filter=api api:dev",
+    "dev:design": "turbo --filter=api --filter=design  dev && turbo --filter=api api:dev",
     "dev:jebet": "turbo --filter=api --filter=chat --filter=jebet dev",
     "dev:form": "turbo --filter=api --filter=forms dev",
 

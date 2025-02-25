@@ -3,6 +3,7 @@ import { admin } from './route/admin';
 import { ai } from './route/ai';
 import { answers } from './route/answers';
 import board from './route/board';
+import { chat } from './route/chat';
 import { collections } from './route/collections';
 import { friend } from './route/friend';
 // import user from './route/user';
@@ -28,5 +29,6 @@ export const design = new Hono()
   .route('/material', material)
   .route('/ai', ai)
   .route('/friend', friend)
-  .route('/admin', admin);
+  .route('/admin', admin)
+  .route('/chat', chat);
 // .route('/clone', clone);

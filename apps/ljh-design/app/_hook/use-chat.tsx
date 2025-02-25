@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { type Socket, io } from 'socket.io-client';
+import { useSocket } from '../_store/chat';
 // import socket
 
 /**
  * ### 聊天
  */
 export const useChat = () => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const { setSocket } = useSocket();
   useEffect(() => {
     const socketInstance = io('ws://localhost:8088/', {
       reconnection: true,
@@ -35,5 +36,4 @@ export const useChat = () => {
     });
     socketInstance.on('disconnect', () => {});
   }, []);
-  return { socket };
 };
