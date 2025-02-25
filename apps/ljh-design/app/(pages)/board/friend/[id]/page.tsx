@@ -1,10 +1,5 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from '@/app/_components/ui/breadcrumb';
+import ChatMain from '@/app/_components/Friend/ChatMain';
+import ChatState from '@/app/_components/Friend/ChatState';
 import { Separator } from '@/app/_components/ui/separator';
 import { SidebarTrigger } from '@/app/_components/ui/sidebar';
 import type { Metadata } from 'next';
@@ -21,17 +16,11 @@ export default async function Home() {
       <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/board/friend/home">主页</BreadcrumbLink>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbLink href="/board/friend/home">好友</BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <ChatState />
       </header>
-      <div className="flex flex-1 flex-col gap-4 p-4">4</div>
+      <div className="flex flex-1 flex-col gap-4 p-4">
+        <ChatMain />
+      </div>
     </main>
   );
 }
