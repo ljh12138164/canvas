@@ -5,4 +5,5 @@ export interface ChatMessage {
   converId: string;
   message: string;
   type: 'message' | 'url';
+  conversationId?: string;
 }

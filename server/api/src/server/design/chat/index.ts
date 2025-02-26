@@ -1,6 +1,6 @@
 import to from 'await-to-js';
 import type { ChatMessage, MessageType } from '../../../types/design/chat';
-import { supabaseJebtToken } from '../../supabase/jebt';
+import { supabaseDesign } from '../../supabase/design';
 // import { checkUser, uploadImageclound } from '../board';
 
 const PAGE_SIZE = 10;
@@ -13,8 +13,8 @@ const PAGE_SIZE = 10;
  * @returns
  */
 export const checkUser = async (sendId: string, converId: string, token: string) => {
-  const { data, error } = await supabaseJebtToken(token)
-    .from('friend')
+  const { data, error } = await supabaseDesign(token)
+    .from('frident')
     .select('*')
     .or(
       `and(userId.eq.${sendId},adduser.eq.${converId}),and(userId.eq.${converId},adduser.eq.${sendId})`,
@@ -31,26 +31,30 @@ export const checkUser = async (sendId: string, converId: string, token: string)
  * @returns
  */
 export const getChatMessage = async (
-  workspaceId: string,
   userId: string,
+  sendId: string,
   pageTo: number,
   token: string,
 ): Promise<{ data: ChatMessage[]; count: number | null; pageTo: number }> => {
-  const [error] = await to(checkUser(userId, workspaceId, token));
+  const [error] = await to(checkUser(userId, sendId, token));
   if (error) throw new Error(error.message);
 
   const {
     data,
     error: supabaseError,
     count,
-  } = await supabaseJebtToken(token)
+  } = await supabaseDesign(token)
     .from('chat')
     .select('*', {
       count: 'exact',
     })
+    .or(
+      `and(converId.eq.${userId},sendId.eq.${sendId}),and(converId.eq.${sendId},sendId.eq.${userId})`,
+    )
     .order('created_at', { ascending: false })
     // 通过游标返回页数，因为用了socket.io，所以需要通过游标返回页数
     .range(pageTo, pageTo + PAGE_SIZE - 1);
+
   if (supabaseError) throw new Error('服务器错误');
   return {
     data,
@@ -82,7 +86,7 @@ export const sendChatMessage = async ({
   const [error] = await to(checkUser(sendId, converId, token));
   if (error) throw new Error(error.message);
 
-  const { data, error: supabaseError } = await supabaseJebtToken(token)
+  const { data, error: supabaseError } = await supabaseDesign(token)
     .from('chat')
     .insert([{ sendId, converId, message, type }])
     .select('*');

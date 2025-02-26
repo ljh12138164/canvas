@@ -108,7 +108,6 @@ const nextConfig: NextConfig = {
     // 启用早期提示
     // enableEarlyHints: true,
   },
-  optimizeFonts: true,
   headers: async () => {
     return [
       {
@@ -129,6 +128,3 @@ const nextConfig: NextConfig = {
 
 // 添加打包分析工具
 export default nextConfig;
-// export default withBundleAnalyzer({
-//   enabled: true,
-// })(nextConfig);

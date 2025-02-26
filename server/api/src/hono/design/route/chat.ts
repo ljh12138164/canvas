@@ -14,18 +14,19 @@ export const chat = new Hono()
     zValidator(
       'query',
       z.object({
-        workspaceId: z.string(),
+        userId: z.string(),
+        sendId: z.string(),
         pageTo: z.string(),
       }),
     ),
     async (c) => {
-      const { workspaceId, pageTo } = c.req.valid('query');
-      const { token, auth } = getSupabaseAuth(c);
+      const { userId, sendId, pageTo } = c.req.valid('query');
+      const { token } = getSupabaseAuth(c);
       const [error, messages] = await to(
-        getChatMessage(workspaceId, auth.sub, Number.isNaN(+pageTo) ? 0 : +pageTo, token),
+        getChatMessage(userId, sendId, Number.isNaN(+pageTo) ? 0 : +pageTo, token),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
-      return c.json({ messages });
+      return c.json(messages);
     },
   )
   // 发送消息q
@@ -53,6 +54,6 @@ export const chat = new Hono()
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));
-      return c.json({ message: data });
+      return c.json(data);
     },
   );
