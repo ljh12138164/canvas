@@ -22,7 +22,7 @@ import {
   TableRow,
 } from '../ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
-import ResponsePop from '../workspace/Respone.vue';
+import ResponsePop from './Respone.vue';
 
 const queryClient = useQueryClient();
 const router = useRouter();

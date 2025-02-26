@@ -1,7 +1,6 @@
 'use client';
 import { useBoardUpdateQuery } from '@/app/_hook/query/useBoardQuery';
-import type { Board, BoardResponse } from '@/app/_types/board';
-import type { UseMutateFunction } from '@tanstack/react-query';
+import type { Board } from '@/app/_types/board';
 import { useRef } from 'react';
 import { Button } from '../ui/button';
 import {

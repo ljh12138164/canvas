@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack  --port=8400 ",
+    "dev": "next dev --turbopack --port=8400  ",
     "build": "cd ../../server/api && pnpm run tsup && cd ../../apps/ljh-design && pnpm run lint && next build && pnpm run sitemap",
     "analyze": "cross-env ANALYZE=true next build",
     "start": "next start",

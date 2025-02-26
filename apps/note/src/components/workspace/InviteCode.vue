@@ -11,7 +11,7 @@ import { CardContent, CardHeader, CardTitle } from '../ui/card';
 import Card from '../ui/card/Card.vue';
 import { PinInput, PinInputGroup, PinInputInput } from '../ui/pin-input';
 import { Skeleton } from '../ui/skeleton';
-import ResponsePop from '../workspace/Respone.vue';
+import ResponsePop from './Respone.vue';
 const router = useRouter();
 const queryClient = useQueryClient();
 const props = defineProps<{

@@ -1,14 +1,21 @@
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
+import { useSocket } from '@/app/_store/chat';
 import { PAGE_SIZE } from '@/app/_types/Edit';
-import type { ChatMessage, MessageType } from '@/app/_types/chat';
+import type { ChatMessage } from '@/app/_types/chat';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
 import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
 
-export const useGetMessage = (workspaceId: string, isConnected: boolean) => {
+type GetMessageResponseType = InferResponseType<(typeof client.chat.message)['$get'], 200>;
+export const useGetMessage = (userId: string | undefined, sendId: string) => {
+  const { socket } = useSocket();
+  // 判断是否连接
+  const isConnected = useMemo(() => socket?.connected, [socket?.connected]);
   const queryClient = useQueryClient();
   const router = useRouter();
+
   const {
     data: message,
     isLoading: messageLoading,
@@ -19,16 +26,22 @@ export const useGetMessage = (workspaceId: string, isConnected: boolean) => {
     fetchNextPage,
     fetchPreviousPage,
   } = useInfiniteQuery({
-    queryKey: ['chat', workspaceId],
+    queryKey: ['chat', userId, sendId],
+    enabled: !!userId && !!sendId,
     queryFn: async () => {
+      if (!userId) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
       const token = await getNewToken();
       if (!token) {
         router.push('/sign-in');
-        return;
+        throw new Error('请先登录');
       }
+      // 如果连接了，则获取当前的消息数量
       if (isConnected) {
         // 获取当前的消息数量
-        const pageTo = queryClient.getQueryData(['chat', workspaceId]) as {
+        const pageTo = queryClient.getQueryData(['chat', userId, sendId]) as {
           pageParams: number[];
           pages: {
             messages: {
@@ -44,7 +57,8 @@ export const useGetMessage = (workspaceId: string, isConnected: boolean) => {
           const data = await client.chat.message.$get(
             {
               query: {
-                workspaceId,
+                userId,
+                sendId,
                 pageTo: `${allData.length}`,
               },
             },
@@ -61,7 +75,8 @@ export const useGetMessage = (workspaceId: string, isConnected: boolean) => {
         const data = await client.chat.message.$get(
           {
             query: {
-              workspaceId,
+              userId,
+              sendId,
               pageTo: '0',
             },
           },
@@ -78,7 +93,8 @@ export const useGetMessage = (workspaceId: string, isConnected: boolean) => {
       const data = await client.chat.message.$get(
         {
           query: {
-            workspaceId,
+            userId,
+            sendId,
             pageTo: '0',
           },
         },
@@ -98,22 +114,22 @@ export const useGetMessage = (workspaceId: string, isConnected: boolean) => {
     initialPageParam: 0,
     //判断是否有下一页
     getNextPageParam: (lastPage) => {
-      if ((lastPage?.messages.count || 0) <= lastPage!.messages.pageTo) return undefined;
-      return lastPage!.messages.pageTo + PAGE_SIZE;
+      if ((lastPage?.count || 0) <= lastPage!.pageTo) return undefined;
+      return lastPage!.pageTo + PAGE_SIZE;
     },
   });
   // 如果没有错误和有下一页，则预取下一页数据·
-  if (messageHasNextPage && !messageError && message?.pageParams) {
+  if (messageHasNextPage && !messageError && message?.pages[0].data.length) {
     // 预取下一页数据
     queryClient.prefetchInfiniteQuery({
-      queryKey: [workspaceId],
+      queryKey: ['chat', userId, sendId],
       queryFn: async () => {
         const token = await getNewToken();
         if (!token) {
           router.push('/sign-in');
           return;
         }
-        const pageTo = queryClient.getQueryData(['chat', workspaceId]) as {
+        const pageTo = queryClient.getQueryData(['chat', userId, sendId]) as {
           pageParams: number[];
           pages: {
             messages: {
@@ -128,7 +144,8 @@ export const useGetMessage = (workspaceId: string, isConnected: boolean) => {
         const data = await client.chat.message.$get(
           {
             query: {
-              workspaceId,
+              userId: userId!,
+              sendId,
               pageTo: `${allData.length}`,
             },
           },
@@ -141,23 +158,10 @@ export const useGetMessage = (workspaceId: string, isConnected: boolean) => {
         if (!data.ok) throw new Error(data.statusText);
         return data.json();
       },
-      // @ts-ignore
-      getNextPageParam: (lastPage: {
-        messages: {
-          data: {
-            id: string;
-            created_at: string;
-            message: string;
-            userId: string;
-            workspaceId: string;
-            type: MessageType;
-          }[];
-          count: number | null;
-          pageTo: number;
-        };
-      }) => {
-        if ((lastPage.messages.count || 0) <= lastPage.messages.pageTo) return undefined;
-        return lastPage.messages.pageTo + PAGE_SIZE;
+      getNextPageParam: (lastPage: GetMessageResponseType | undefined) => {
+        if (!lastPage) return undefined;
+        if ((lastPage.count || 0) <= lastPage.pageTo) return undefined;
+        return lastPage.pageTo + PAGE_SIZE;
       },
       initialPageParam: 1,
     });
@@ -182,8 +186,7 @@ type AutoSaveRequestType = InferRequestType<(typeof client.chat)['send']['$post'
 export const useCreateMessage = () => {
   const router = useRouter();
   const { mutate: createMessage, isPending: messagePending } = useMutation<
-    // TODO:类型错误
-    any,
+    AutoSaveResponseType,
     Error,
     AutoSaveRequestType
   >({
@@ -191,14 +194,17 @@ export const useCreateMessage = () => {
       const token = await getNewToken();
       if (!token) {
         router.push('/sign-in');
-        return;
+        throw new Error('请先登录');
       }
       const data = await client.chat.send.$post(message, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (!data.ok) throw new Error(data.statusText);
+      if (!data.ok) {
+        const error = (await data.json()) as { message: string };
+        throw new Error(error.message);
+      }
       return data.json();
     },
   });
