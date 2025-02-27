@@ -1,6 +1,5 @@
 'use client';
 
-import { ThemedLivePreview } from '@/components/themed-live-preview';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,7 +16,7 @@ import Editor from '@monaco-editor/react';
 import { ChevronDown, Code2, Copy, Moon, Sun } from 'lucide-react';
 import { useTheme as useNextTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-import { LiveError, LiveProvider } from 'react-live';
+import { LiveError, LivePreview, LiveProvider } from 'react-live';
 
 const CodeExample1 = `
 () => {
@@ -606,11 +605,7 @@ export default function CodePlayground() {
               <div className="flex-grow overflow-auto p-4">
                 <TabsContent value="preview" className="h-full mt-0 border rounded-md p-4">
                   <LiveProvider code={code} noInline={false} scope={getShadcnUiScope()}>
-                    <div className={theme === 'vs-dark' ? 'dark' : ''}>
-                      <div className="bg-background text-foreground rounded-md h-full">
-                        <ThemedLivePreview />
-                      </div>
-                    </div>
+                    <LivePreview />
                   </LiveProvider>
                 </TabsContent>
 
