@@ -1,50 +1,46 @@
-import { invoke } from '@tauri-apps/api/core';
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+// import { convertFileSrc } from '@tauri-apps/api/tauri';
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState('');
-  const [name, setName] = useState('');
+  const [isProduction, setIsProduction] = useState(false);
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke('greet', { name }));
+  useEffect(() => {
+    // 检测是否为生产环境
+    // 在开发环境中使用localhost，在生产环境中使用本地文件
+    const isProd = process.env.NODE_ENV === 'production';
+    setIsProduction(isProd);
+  }, []);
+
+  if (isProduction) {
+    // 生产环境：加载本地静态文件
+    return (
+      <div className="tauri-container">
+        <iframe
+          src="index.html"
+          style={{
+            width: '100%',
+            height: '100vh',
+            border: 'none',
+          }}
+          title="Next.js Application"
+        />
+      </div>
+    );
   }
 
+  // 开发环境：加载开发服务器
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank" rel="noreferrer">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
+    <div className="tauri-container">
+      <iframe
+        src="http://localhost:8400"
+        style={{
+          width: '100%',
+          height: '100vh',
+          border: 'none',
         }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+        title="Next.js Application"
+      />
+    </div>
   );
 }
 
