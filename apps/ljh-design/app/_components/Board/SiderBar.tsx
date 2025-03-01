@@ -1,4 +1,4 @@
-import Logo from '../Comand/Logo';
+import { LogoWithText } from '../ui/Logo';
 import SiderBarRoutes from './SiderBarRoutes';
 
 const SiderBar = ({
@@ -16,8 +16,7 @@ const SiderBar = ({
     >
       {!hide && (
         <div className="m-2 flex items-center gap-x-4">
-          <Logo to="/" />
-          <span className="text-xl font-semibold text-primary">ljh-design</span>
+          <LogoWithText />
         </div>
       )}
       <SiderBarRoutes closeRef={closeRef} />

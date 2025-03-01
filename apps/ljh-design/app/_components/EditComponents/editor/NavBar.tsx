@@ -14,8 +14,7 @@ import { type Edit, type EditType, Tool } from '@/app/_types/Edit';
 import type * as Fabric from 'fabric';
 import { useRouter } from 'next/navigation';
 import { Fragment, useMemo, useRef } from 'react';
-import toast from 'react-hot-toast';
-import { BsCloud, BsCloudCheck, BsFiletypeJson, BsFiletypeSvg } from 'react-icons/bs';
+import { BsCloud, BsCloudCheck, BsFiletypeJson } from 'react-icons/bs';
 import {
   LuArrowLeft,
   LuChevronDown,
@@ -28,11 +27,11 @@ import {
   LuUndo2,
 } from 'react-icons/lu';
 import { useFilePicker } from 'use-file-picker';
-import Logo from '../../Comand/Logo';
 import { Response } from '../../Comand/Response';
 import { ThemeToggle } from '../../Comand/ThemeToggle';
 import UserButton from '../../Comand/UserButton';
 import { Form } from '../../Material/Form';
+import { Logo } from '../../ui/Logo';
 import {
   Dialog,
   DialogClose,
