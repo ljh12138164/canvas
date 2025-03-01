@@ -13,7 +13,10 @@ export const useChat = () => {
   useEffect(() => {
     if (!user?.user.id) return;
 
-    const socketInstance = io('ws://localhost:8088/', {
+    // designsocket.ljhboard.cn
+    // 本地测试
+    // const socketInstance = io('ws://localhost:8088/', {
+    const socketInstance = io('wss://designsocket.ljhboard.cn', {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
