@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "cd ../../server/api && pnpm run tsup && cd ../../apps/note && tsc -b && vite build",
+    "build": "cd ../../package/lib && pnpm build && cd ../../apps/note && tsc -b && vite build",
     "build:report": "cross-env NODE_ENV=test vite build",
     "check": "biome check --write",
     "dev": "rsbuild dev --port=8200",

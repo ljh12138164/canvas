@@ -38,7 +38,7 @@ const collaborators = new Hono()
   )
   // 获取协作者
   .get('/:workspaceId', async (c) => {
-    const { token, auth } = getSupabaseAuth(c);
+    const { token } = getSupabaseAuth(c);
     const workspaceId = c.req.param('workspaceId');
     const [error, collaborators] = await to(getCollaborators({ token, workspaceId }));
     if (error) return c.json({ message: error.message }, errorCheck(error));

@@ -12,6 +12,7 @@ import VitePluginSitemap from 'vite-plugin-sitemap';
 // import { visualizer } from 'rollup-plugin-visualizer';
 // import viteImagemin from 'vite-plugin-imagemin';
 
+// @ts-ignore
 const plugins: PluginOption[] = [
   react({
     babel: {

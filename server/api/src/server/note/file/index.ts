@@ -64,7 +64,6 @@ export const updateFile = async ({
   token,
   id,
   title,
-  inconId,
   workspaceId,
   userId,
 }: {

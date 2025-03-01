@@ -1,48 +1,46 @@
-import { MDXProvider } from '@mdx-js/react';
-import { useEffect, useState } from 'react';
 import type * as React from 'react';
-import * as runtime from 'react/jsx-runtime';
+import { useEffect, useState } from 'react';
 
 interface MDXRendererProps {
   content: string;
 }
 
-const components = {
-  h1: (props: any) => <h1 className="text-2xl font-bold my-4" {...props} />,
-  h2: (props: any) => <h2 className="text-xl font-bold my-3" {...props} />,
-  h3: (props: any) => <h3 className="text-lg font-bold my-2" {...props} />,
-  p: (props: any) => <p className="my-2" {...props} />,
-  ul: (props: any) => <ul className="list-disc pl-5 my-2" {...props} />,
-  ol: (props: any) => <ol className="list-decimal pl-5 my-2" {...props} />,
-  li: (props: any) => <li className="my-1" {...props} />,
-  code: (props: any) => {
-    const { className, children, ...rest } = props;
-    const isInline = typeof className !== 'string';
+// const components = {
+//   h1: (props: any) => <h1 className="text-2xl font-bold my-4" {...props} />,
+//   h2: (props: any) => <h2 className="text-xl font-bold my-3" {...props} />,
+//   h3: (props: any) => <h3 className="text-lg font-bold my-2" {...props} />,
+//   p: (props: any) => <p className="my-2" {...props} />,
+//   ul: (props: any) => <ul className="list-disc pl-5 my-2" {...props} />,
+//   ol: (props: any) => <ol className="list-decimal pl-5 my-2" {...props} />,
+//   li: (props: any) => <li className="my-1" {...props} />,
+//   code: (props: any) => {
+//     const { className, children, ...rest } = props;
+//     const isInline = typeof className !== 'string';
 
-    if (isInline) {
-      return (
-        <code className="bg-gray-100 px-1 rounded text-sm font-mono" {...rest}>
-          {children}
-        </code>
-      );
-    }
+//     if (isInline) {
+//       return (
+//         <code className="bg-gray-100 px-1 rounded text-sm font-mono" {...rest}>
+//           {children}
+//         </code>
+//       );
+//     }
 
-    return (
-      <pre className="bg-gray-100 p-3 rounded my-3 overflow-auto">
-        <code className="text-sm font-mono" {...rest}>
-          {children}
-        </code>
-      </pre>
-    );
-  },
-  a: (props: any) => <a className="text-blue-500 hover:underline" {...props} />,
-  blockquote: (props: any) => (
-    <blockquote className="border-l-4 border-gray-300 pl-4 italic my-3" {...props} />
-  ),
-  table: (props: any) => <table className="min-w-full border-collapse my-3" {...props} />,
-  th: (props: any) => <th className="border border-gray-300 px-4 py-2 bg-gray-100" {...props} />,
-  td: (props: any) => <td className="border border-gray-300 px-4 py-2" {...props} />,
-};
+//     return (
+//       <pre className="bg-gray-100 p-3 rounded my-3 overflow-auto">
+//         <code className="text-sm font-mono" {...rest}>
+//           {children}
+//         </code>
+//       </pre>
+//     );
+//   },
+//   a: (props: any) => <a className="text-blue-500 hover:underline" {...props} />,
+//   blockquote: (props: any) => (
+//     <blockquote className="border-l-4 border-gray-300 pl-4 italic my-3" {...props} />
+//   ),
+//   table: (props: any) => <table className="min-w-full border-collapse my-3" {...props} />,
+//   th: (props: any) => <th className="border border-gray-300 px-4 py-2 bg-gray-100" {...props} />,
+//   td: (props: any) => <td className="border border-gray-300 px-4 py-2" {...props} />,
+// };
 
 const MDXRenderer: React.FC<MDXRendererProps> = ({ content }) => {
   const [mdxContent, setMdxContent] = useState<string>('');
@@ -69,7 +67,7 @@ const MDXRenderer: React.FC<MDXRendererProps> = ({ content }) => {
     // 处理代码块，支持语言高亮
     const html = markdown
       // 处理带语言的代码块
-      .replace(/```(\w+)?\n([\s\S]*?)```/gim, (match, lang, code) => {
+      .replace(/```(\w+)?\n([\s\S]*?)```/gim, (_, lang, code) => {
         const language = lang || 'text';
         const highlightedCode = highlightCode(code, language);
         return `<pre class="bg-zinc-950 dark:bg-zinc-900 p-4 rounded-xl overflow-auto my-4"><code class="language-${language} text-sm font-mono text-white">${highlightedCode}</code></pre>`;

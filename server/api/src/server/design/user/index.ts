@@ -1,5 +1,3 @@
-import { PostgrestError } from '@supabase/supabase-js';
-import type { Board } from '../../../types/design/board';
 import type { Collections, Show, Upvote } from '../../../types/design/show';
 import type { Profiles } from '../../../types/note/workspace';
 import { supabaseDesign, supabaseServiceDesign } from '../../supabase/design/index';
@@ -55,7 +53,7 @@ export const updatePassword = async ({
   const { data, error } = await supabaseServiceDesign.auth.admin.updateUserById(userId, {
     password,
   });
-  if (error) throw Error(error.message, { cause: error });
+  if (error) throw Error(error.message);
   return data;
 };
 
