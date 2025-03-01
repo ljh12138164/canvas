@@ -54,9 +54,9 @@ function MyComponent() {
 }`);
 
   const [mode, setMode] = useState<'code' | 'mdx'>('mdx');
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
-  const [key, setKey] = useState(0);
+  const [, setKey] = useState(0);
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">

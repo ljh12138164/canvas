@@ -143,6 +143,6 @@ export const updatePassword = async ({
   const { data, error } = await supabaseJebt.auth.admin.updateUserById(userId, {
     password,
   });
-  if (error) throw Error(error.message, { cause: error });
+  if (error) throw Error(error.message);
   return data;
 };

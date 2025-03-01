@@ -45,6 +45,7 @@ import VitePluginSitemap from 'vite-plugin-sitemap';
 //     },
 //   };
 // }
+// @ts-ignore
 const plugins: (PluginOption | Plugin)[] = [
   vue(),
   // pluginPurgeCss(),
