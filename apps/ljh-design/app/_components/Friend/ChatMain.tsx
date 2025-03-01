@@ -1,8 +1,7 @@
 'use client';
 import Emoji from '@/app/_components/Comand/ChatEmoji';
-// @ts-ignore
-import { useCreateMessage, useGetMessage } from '@/app/_hook/query/useChat';
 import { useFrident } from '@/app/_hook/query/useFrident';
+import { useCreateMessage, useGetMessage } from '@/app/_hook/query/usechat';
 import { useChat } from '@/app/_hook/use-chat';
 import { useMessage } from '@/app/_hook/use-message';
 import { useUser } from '@/app/_store/auth';
