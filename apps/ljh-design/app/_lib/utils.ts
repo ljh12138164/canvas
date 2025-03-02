@@ -1,4 +1,4 @@
-import type { Board, BoardData } from '@/app/_types/board';
+import type { Board } from '@/app/_types/board';
 import { type ClassValue, clsx } from 'clsx';
 import dayjs from 'dayjs';
 import * as fabric from 'fabric';
@@ -6,6 +6,7 @@ import localforage from 'localforage';
 import { nanoid } from 'nanoid';
 import type { RGBColor } from 'react-color';
 import { twMerge } from 'tailwind-merge';
+import type { AiFabricObjects } from '../_components/EditComponents/asider/AiChatSider';
 import type { InitFabicObject } from '../_types/Edit';
 // declare module 'yjs' {
 //   interface AbstractStruct {
@@ -380,4 +381,79 @@ export const getDateNum = (startTime?: Date, endTime?: Date) => {
   }
   // date.push(endDate.format('YYYY-MM-DD'));
   return date;
+};
+
+/**
+ * ### 根据fabric.js的JSON数据生成fabric.js的对象
+ * @param json fabric.js的JSON数据
+ * @returns fabric.js的对象
+ */
+export const importJsonToFabricObject = (objects: AiFabricObjects[]) => {
+  const fabricObj: fabric.Object[] = [];
+  objects.forEach((obj) => {
+    // 从对象中移除 type 属性，因为它在 Fabric.js 中是只读的
+    const { type, ...objWithoutType } = obj;
+    switch (type) {
+      case 'Circle':
+        fabricObj.push(new fabric.Circle(objWithoutType));
+        break;
+      case 'Rect':
+        fabricObj.push(new fabric.Rect(objWithoutType));
+        break;
+      case 'Triangle':
+        fabricObj.push(new fabric.Triangle(objWithoutType));
+        break;
+      case 'Polygon':
+        if (obj.points) {
+          fabricObj.push(new fabric.Polygon(obj.points, objWithoutType));
+        }
+        break;
+      case 'Path':
+        if (obj.path) {
+          fabricObj.push(new fabric.Path(obj.path, objWithoutType));
+        }
+        break;
+      case 'Textbox':
+        if (obj.text) {
+          const newObj = { ...objWithoutType, path: undefined, points: undefined };
+          fabricObj.push(new fabric.Textbox(obj.text, newObj));
+        }
+        break;
+    }
+  });
+  return fabricObj;
+};
+/**
+ * ### 导入fabric.js的JSON数据
+ * @param objects
+ * @returns
+ */
+export const toFabricObject = (objects: AiFabricObjects) => {
+  const { type, ...objWithoutType } = objects;
+  switch (type) {
+    case 'Circle':
+      return new fabric.Circle(objWithoutType);
+    case 'Rect':
+      return new fabric.Rect(objWithoutType);
+    case 'Triangle':
+      return new fabric.Triangle(objWithoutType);
+    case 'Polygon':
+      if (objWithoutType.points) {
+        return new fabric.Polygon(objWithoutType.points, objWithoutType);
+      }
+      break;
+    case 'Path':
+      if (objWithoutType.path) {
+        return new fabric.Path(objWithoutType.path, objWithoutType);
+      }
+      break;
+    case 'Textbox':
+      if (objWithoutType.text) {
+        const newObj = { ...objWithoutType, path: undefined, points: undefined };
+        return new fabric.Textbox(objWithoutType.text, newObj);
+      }
+      break;
+    default:
+      return null;
+  }
 };

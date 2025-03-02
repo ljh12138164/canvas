@@ -28,7 +28,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import type { BoardData } from '../../_types/board';
 import { FriendTablePagination } from './FridendTablePagination';
@@ -39,7 +38,6 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function FriendTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
-  const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -126,11 +124,7 @@ export function FriendTable<TData, TValue>({ columns, data }: DataTableProps<TDa
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      onClick={() => router.push(`/Edit/${(row.original as BoardData).id}`)}
-                      className="cursor-pointer"
-                    >
+                    <TableCell key={cell.id} className="cursor-pointer">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
