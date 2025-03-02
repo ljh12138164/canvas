@@ -13,5 +13,4 @@ const model = genAi.getGenerativeModel({
   cachedContent: { contents: training_data },
 });
 
-// 图片生成模型
 export { model };

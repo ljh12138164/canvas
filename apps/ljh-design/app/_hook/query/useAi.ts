@@ -265,3 +265,62 @@ export const useAiSessionUpdate = () => {
   });
   return { getAiSessionUpdate, getAiSessionUpdatePending };
 };
+
+/**
+ * ### 使用AI生成Fabric.js对象配置
+ */
+type FabricRequestType = InferRequestType<typeof clientAi.design.fabric.$post>;
+type FabricObject = {
+  type: 'rect' | 'circle' | 'text' | 'image' | 'path' | 'polygon' | 'polyline' | 'ellipse';
+  left?: number;
+  top?: number;
+  width?: number;
+  height?: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  opacity?: number;
+  angle?: number;
+  scaleX?: number;
+  scaleY?: number;
+  flipX?: boolean;
+  flipY?: boolean;
+  radius?: number;
+  rx?: number;
+  ry?: number;
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  textAlign?: 'left' | 'center' | 'right';
+  src?: string;
+  path?: string;
+  points?: Array<{ x: number; y: number }>;
+};
+
+// type FabricResponseType = {
+//   objects: FabricObject[];
+//   background?: string;
+//   error?: string;
+// };
+
+/**
+ * ### 使用AI生成Fabric.js对象配置（流式响应）
+ */
+export const useAiFabricStream = () => {
+  const { mutate: getAiFabricStream, isPending: getAiFabricStreamPending } = useMutation<
+    ReadableStream<Buffer>,
+    Error,
+    FabricRequestType
+  >({
+    mutationFn: async (datas) => {
+      const response = await clientAi.design.fabric.$post(datas);
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return response.body as ReadableStream<Buffer>;
+    },
+  });
+
+  return { getAiFabricStream, getAiFabricStreamPending };
+};

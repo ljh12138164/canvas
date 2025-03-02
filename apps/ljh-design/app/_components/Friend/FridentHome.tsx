@@ -39,9 +39,20 @@ const FridentHome = () => {
       }, 1000),
     [],
   );
-
-  // 获取好友列表
   const { data: users, isLoading } = useFrident();
+
+  const userData = useMemo(() => {
+    if (!user || !users || isLoading) return [];
+    const set = new Map<string, Profiles>();
+    users
+      .filter((item) => item.isInvite)
+      .forEach((item) => {
+        if (item.user_profile.id !== user.user.id) set.set(item.id, item.user_profile);
+        if (item.friend_profile.id !== user.user.id) set.set(item.id, item.friend_profile);
+      });
+    return set;
+  }, [user, users, isLoading]);
+  // 获取好友列表
 
   const userList = useMemo(() => {
     if (!users || isLoading) return new Map<string, Profiles>();
@@ -80,7 +91,7 @@ const FridentHome = () => {
         <SidebarTrigger />
         <Separator className="my-2" />
         <ColorCard
-          title="添加好友,可以和好友分享画布"
+          title="添加好友,可以和好友交流"
           icon={<UserPlus className="text-blue-500 text-[2rem] animate-pulse hover:animate-spin" />}
           className="bg-linear-to-r from-blue-600 via-cyan-500 to-teal-400 border-none shadow-lg hover:shadow-xl transition-all duration-300"
         >
@@ -121,7 +132,7 @@ const FridentHome = () => {
           </Response>
         </div>
         <ScrollArea className="h-[calc(100vh-25rem)] p-4">
-          <FriendTable data={Array.from(userList.values())} columns={columns} />
+          <FriendTable data={Array.from(userData.values())} columns={columns} />
         </ScrollArea>
       </main>
     </div>

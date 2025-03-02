@@ -271,7 +271,7 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
             </section>
           )}
           {/* ai */}
-          {onShow() === Tool.Ai && <AiChatSider />}
+          {onShow() === Tool.Ai && <AiChatSider editor={editor} />}
           {/* 表情 */}
           {onShow() === Tool.Emoji && <Emoji editor={editor} />}
           {/* 设置 */}
