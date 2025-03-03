@@ -1,19 +1,5 @@
 'use client';
 
-import {
-  ChevronDown,
-  ChevronRight,
-  Code,
-  File,
-  FileText,
-  Folder,
-  FolderOpen,
-  Moon,
-  Sun,
-} from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { useCallback, useMemo, useState } from 'react';
-
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -29,6 +15,19 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/componen
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn, getShadcnUiScope } from '@/lib/utils';
 import { Editor } from '@monaco-editor/react';
+import {
+  ChevronDown,
+  ChevronRight,
+  Code,
+  File,
+  FileText,
+  Folder,
+  FolderOpen,
+  Moon,
+  Sun,
+} from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { useCallback, useMemo, useState } from 'react';
 import { LiveError, LivePreview, LiveProvider } from 'react-live';
 
 interface FileItem {
