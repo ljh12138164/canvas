@@ -1,8 +1,7 @@
 import { transform } from 'sucrase';
 // import React from 'react';
 
-export const CodeExample1 = `
-() => {
+export const CodeExample1 = `const CodeExample1=() => {
   const [display, setDisplay] = React.useState('0');
   const [firstOperand, setFirstOperand] = React.useState(null);
   const [operator, setOperator] = React.useState(null);
@@ -103,7 +102,7 @@ export const CodeExample1 = `
   );
 }
 `.trim();
-export const CodeExample = `() => {
+export const CodeExample = `const CodeExample= () => {
   const [tasks, setTasks] = React.useState([
     { id: 1, text: '学习 React', completed: true },
     { id: 2, text: '掌握 Shadcn UI', completed: false },
@@ -186,7 +185,7 @@ export const CodeExample = `() => {
     </Card>
   );
 }`.trim();
-export const CodeExample2 = `() => {
+export const CodeExample2 = `const CodeExample2=() => {
   const [count, setCount] = React.useState(0);
   const [isDarkMode, setIsDarkMode] = React.useState(false);
   
@@ -240,7 +239,7 @@ export const CodeExample2 = `() => {
   );
 }
 `.trim();
-export const CodeExample3 = `() => {
+export const CodeExample3 = `const CodeExample3=() => {
 
  const description = "An interactive bar chart"
 
@@ -446,22 +445,116 @@ const chartConfig = {
 `.trim();
 
 export const Codes = `
-  const [data,setData]=useState() 
+${CodeExample}
+${CodeExample1}
+${CodeExample2}
+${CodeExample3}
+const Componet = () => {
+  const [stata]=useState('q;asdasd')
   return (
-   <div className='bg-indigo-950'>ssdfdf</div>
+    <>
+       <CodeExample />
+       <Separator className='my-2' />
+       <CodeExample1 />
+       <Separator className='my-2' />
+       <CodeExample2 />
+       <Separator className='my-2' />
+       <CodeExample3 />
+    </>
   );
+};
+  export default Componet
 `.trim();
-
+export const CodesError = `
+// 这是一个包含多个错误的组件示例
+const ErrorComponent = () => {
+返回无效的 JSX
+  return (
+    <div>
+      <div>
+        <p>
+          <div>错误导入</div>
+        </p>
+      </div>
+    </div>
+  );
+};
+export default ErrorComponent
+`.trim();
 /**
  * ### 将代码转换为 React 组件
  * @param code
  * @returns
  */
-export const transformCode = (code: string) => {
-  const { code: transformedCode } = transform(code, {
-    transforms: ['typescript', 'jsx', 'imports'],
-    jsxImportSource: 'react',
-    // jsxPragma: 'React.createElement',
+export const transformCode = (
+  code: string,
+  customComponentsName?: string[],
+): Promise<{
+  code: string;
+  componentName: string;
+  imports: string[];
+  noImport: Record<string, string>;
+}> => {
+  return new Promise((res, rej) => {
+    try {
+      const importMatches = code.match(/import\s+.*?from\s+['"].*?['"]/g) || [];
+      const imports = importMatches;
+      const importNames = importMatches.reduce(
+        (acc, importStr) => {
+          // 处理默认导入
+          const defaultMatch = importStr.match(/import\s+(\w+)\s+from/);
+          if (defaultMatch) {
+            acc[defaultMatch[1]] = importStr;
+            return acc;
+          }
+
+          // 处理解构导入
+          const destructureMatch = importStr.match(/import\s*{\s*(.*?)\s*}\s*from/);
+          if (destructureMatch) {
+            destructureMatch[1].split(',').forEach((name) => {
+              acc[name.trim()] = importStr;
+            });
+            return acc;
+          }
+
+          // 处理全部导入
+          const namespaceMatch = importStr.match(/import\s*\*\s*as\s+(\w+)\s+from/);
+          if (namespaceMatch) {
+            acc[namespaceMatch[1]] = importStr;
+            return acc;
+          }
+
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
+      const noImport: Record<string, string> = {};
+      Object.keys(importNames).forEach((item) => {
+        if (!customComponentsName?.find((items) => items === item))
+          noImport[item] = importNames[item];
+      });
+      // 移除所有导入语句
+      const codeWithoutImports = code.replace(/import\s+.*?from\s+['"].*?['"]/g, '').trim();
+
+      // 提取导出的组件名
+      const exportMatch = code.match(/export\s+default\s+(\w+)/);
+      const componentName = exportMatch ? exportMatch[1] : '';
+      // 移除 export default 语句
+      const processedCode = codeWithoutImports.replace(/export\s+default\s+\w+/, '');
+      if (Object.keys(noImport).length) throw new Error('缺少导入文件');
+      const { code: transformedCode } = transform(processedCode, {
+        transforms: ['typescript', 'jsx', 'imports'],
+        jsxImportSource: 'react',
+      });
+
+      res({
+        code: transformedCode,
+        componentName,
+        imports,
+        noImport,
+      });
+    } catch (error) {
+      rej(error);
+    }
   });
-  return transformedCode;
 };
