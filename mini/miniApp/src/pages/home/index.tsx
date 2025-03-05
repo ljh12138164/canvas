@@ -71,7 +71,7 @@ const Home = () => {
 
       <View className={styles.productSection}>
         <View className={styles.sectionTitle}>
-          <Text>热门商品</Text>
+          <Text>热门商品111</Text>
         </View>
         <View className={styles.productList}>
           {products.map((product) => (
