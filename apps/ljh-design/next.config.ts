@@ -112,10 +112,6 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/(.*)',
-        headers: [{ key: 'X-Frame-Options', value: 'DENY' }],
-      },
-      {
-        source: '/(.*)',
         headers: [{ key: 'X-Content-Type-Options', value: 'nosniff' }],
       },
       {
