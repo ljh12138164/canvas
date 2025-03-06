@@ -11,28 +11,11 @@ function App() {
     setIsProduction(isProd);
   }, []);
 
-  if (isProduction) {
-    // 生产环境：加载本地静态文件
-    return (
-      <div className="tauri-container">
-        <iframe
-          src="index.html"
-          style={{
-            width: '100%',
-            height: '100vh',
-            border: 'none',
-          }}
-          title="Next.js Application"
-        />
-      </div>
-    );
-  }
-
-  // 开发环境：加载开发服务器
+  // 生产环境：加载本地静态文件
   return (
     <div className="tauri-container">
       <iframe
-        src="http://localhost:8400"
+        src="index.html"
         style={{
           width: '100%',
           height: '100vh',
