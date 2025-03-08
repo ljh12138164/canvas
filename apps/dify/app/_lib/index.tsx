@@ -1,7 +1,7 @@
 import { transform } from 'sucrase';
 // import React from 'react';
 
-export const CodeExample1 = `const CodeExample1=() => {
+export const CodeExample1 = `() => {
   const [display, setDisplay] = React.useState('0');
   const [firstOperand, setFirstOperand] = React.useState(null);
   const [operator, setOperator] = React.useState(null);
@@ -102,7 +102,7 @@ export const CodeExample1 = `const CodeExample1=() => {
   );
 }
 `.trim();
-export const CodeExample = `const CodeExample= () => {
+export const CodeExample = `() => {
   const [tasks, setTasks] = React.useState([
     { id: 1, text: '学习 React', completed: true },
     { id: 2, text: '掌握 Shadcn UI', completed: false },
@@ -185,7 +185,7 @@ export const CodeExample = `const CodeExample= () => {
     </Card>
   );
 }`.trim();
-export const CodeExample2 = `const CodeExample2=() => {
+export const CodeExample2 = `() => {
   const [count, setCount] = React.useState(0);
   const [isDarkMode, setIsDarkMode] = React.useState(false);
   
@@ -239,7 +239,7 @@ export const CodeExample2 = `const CodeExample2=() => {
   );
 }
 `.trim();
-export const CodeExample3 = `const CodeExample3=() => {
+export const CodeExample3 = `() => {
 
  const description = "An interactive bar chart"
 
@@ -444,22 +444,22 @@ const chartConfig = {
 }
 `.trim();
 
+// ${CodeExample}
+// ${CodeExample1}
+// ${CodeExample2}
+// ${CodeExample3}
 export const Codes = `
-${CodeExample}
-${CodeExample1}
-${CodeExample2}
-${CodeExample3}
 const Componet = () => {
   const [stata]=useState('q;asdasd')
   return (
     <>
-       <CodeExample />
-       <Separator className='my-2' />
-       <CodeExample1 />
-       <Separator className='my-2' />
-       <CodeExample2 />
-       <Separator className='my-2' />
-       <CodeExample3 />
+      //  <CodeExample />
+      //  <Separator className='my-2' />
+      //  <CodeExample1 />
+      //  <Separator className='my-2' />
+      //  <CodeExample2 />
+      //  <Separator className='my-2' />
+      //  <CodeExample3 />
     </>
   );
 };
