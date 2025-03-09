@@ -118,3 +118,40 @@ bianli(data);
 //     }
 //   }
 // };
+
+/***
+ * ### LRU 算法
+ */
+class LRU {
+  private capacity: number;
+  private cache: Map<number, number>;
+
+  constructor(capacity: number) {
+    this.capacity = capacity;
+    this.cache = new Map();
+  }
+  // 获取
+  get(key: number): number {
+    if (!this.cache.has(key)) return -1;
+    // 删除并重新插入，将键标记为最近使用
+    const value = this.cache.get(key)!;
+    this.cache.delete(key);
+    this.cache.set(key, value);
+    return value;
+  }
+  // 插入
+  put(key: number, value: number): void {
+    if (this.cache.has(key)) {
+      // 如果键已存在，先删除旧的，再插入新的以更新顺序
+      this.cache.delete(key);
+    } else if (this.cache.size >= this.capacity) {
+      // 如果容量已满，删除最久未使用的键（即 Map 的第一个键）
+      // next设置下一个
+      const lruKey = this.cache.keys().next().value;
+      // 删除第一个
+      if (lruKey) this.cache.delete(lruKey);
+    }
+    // 插入新键或更新后的键（自动移到末尾表示最近使用）
+    this.cache.set(key, value);
+  }
+}

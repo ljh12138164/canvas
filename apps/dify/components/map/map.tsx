@@ -148,6 +148,7 @@ export default function Maps() {
     echart?.on('click', (params) => {
       clearTimeout(tiemRef.current);
       //由于单击事件和双击事件冲突，故单击的响应事件延迟250毫秒执行
+      if (code) return;
       tiemRef.current = setTimeout(() => {
         const name = params.name; //地区name
         if (mapIndex.current?.[name]) {
@@ -166,7 +167,7 @@ export default function Maps() {
       echart?.off('click');
       echart?.off('dblclick');
     };
-  }, [echart]);
+  }, [echart, code]);
 
   useEffect(() => {
     if (isLoading || !echart) return;
@@ -183,10 +184,15 @@ export default function Maps() {
         name,
       });
     });
+    let min = Number.MAX_VALUE;
+    let max = Number.MIN_VALUE;
     allData = objs;
     // 更新数据
     for (let i = 0; i < allData.length; i++) {
-      allData[i].value = Math.round(Math.random() * 100);
+      const numbers = Math.round(Math.random() * 100);
+      allData[i].value = numbers;
+      max = Math.max(numbers, max);
+      min = Math.min(numbers, min);
     }
     const option: echarts.EChartsCoreOption = {
       tooltip: {
@@ -195,26 +201,47 @@ export default function Maps() {
           if (params.data) return `${params.name}：${params.data.value}`;
         },
       },
-      toolbox: {
-        show: true,
-        feature: {
-          myTool: {
-            show: !!code,
-            title: '返回全国',
-            icon: 'path://M512 128q69.675 0 135.51 21.163t115.498 54.997 93.483 74.837 74.837 93.483 54.997 115.498 21.163 135.51-21.163 135.51-54.997 115.498-74.837 93.483-93.483 74.837-115.498 54.997T512 896q-69.675 0-135.51-21.163t-115.498-54.997-93.483-74.837-74.837-93.483-54.997-115.498T16.384 512t21.163-135.51 54.997-115.498 74.837-93.483 93.483-74.837 115.498-54.997T512 16.384zM288 512q0 14.848 10.24 25.088t25.088 10.24h157.696v157.696q0 14.848 10.24 25.088t25.088 10.24 25.088-10.24 10.24-25.088V547.328h157.696q14.848 0 25.088-10.24t10.24-25.088-10.24-25.088-25.088-10.24H551.68V318.976q0-14.848-10.24-25.088t-25.088-10.24-25.088 10.24-10.24 25.088v157.696H323.328q-14.848 0-25.088 10.24t-10.24 25.088z',
+      graphic: {
+        elements: [
+          {
+            type: 'text',
+            right: 20,
+            top: 20,
+            style: {
+              text: '返回全国',
+              fontSize: 14,
+              fill: '#1890ff',
+              cursor: 'pointer',
+            },
             onclick: () => {
               setCode(0);
             },
+            invisible: !code, // 只在非全国地图时显示
           },
-        },
+          {
+            type: 'rect',
+            right: 20,
+            top: 20,
+            style: {
+              board: '10px',
+            },
+            onclick: () => {
+              setCode(0);
+            },
+            invisible: !code, // 只在非全国地图时显示
+          },
+        ],
       },
       visualMap: {
         type: 'continuous',
-        text: ['', ''],
+        text: [max, min],
         showLabel: true,
-        left: '50',
+        orient: 'horizontal',
+        bottom: '6%',
+        left: 'center', // 修改为居中
         min: 0,
         max: 100,
+        show: true,
         inRange: {
           color: ['#40a9ff', '#1890ff', '#096dd9', '#0050b3'],
         },
@@ -226,14 +253,15 @@ export default function Maps() {
           type: 'map',
           mapType: `${code}` ? `${code}` : 'china',
           selectedMode: 'false', //是否允许选中多个区域
-          label: {
-            normal: {
-              show: true,
-            },
-            emphasis: {
-              show: true,
-            },
-          },
+          // label: {
+          //   normal: {
+          //     show: true,
+          //   },
+          //   emphasis: {
+          //     show: true,
+          //   },
+          // },
+          roam: true,
           data: allData,
         },
       ],
@@ -254,7 +282,11 @@ export default function Maps() {
   }, [data, isLoading, code]);
 
   return (
-    <div className="w-full h-[800px]">
+    <div className="w-[100dvw] h-[100dvh] overflow-hidden flex relative">
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      />
       <div ref={chartRef} className="w-full h-full" />
     </div>
   );
