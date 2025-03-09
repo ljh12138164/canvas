@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@/components/theme-provider';
 import type { Metadata } from 'next';
-
+import Providers from './_provide/query-provide';
 import './globals.css';
 
 // const geistSans = Geist({
@@ -27,14 +27,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <meta charSet="utf-8" />
         </header>
         <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <Providers>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </Providers>
         </body>
       </html>
     </>
