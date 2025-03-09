@@ -122,7 +122,7 @@ bianli(data);
 /***
  * ### LRU 算法
  */
-class LRU {
+export class LRU {
   private capacity: number;
   private cache: Map<number, number>;
 
