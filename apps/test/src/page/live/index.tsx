@@ -1,8 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Editor from '@monaco-editor/react';
 import { useState } from 'react';
-import CodePreview from './components/CodePreview';
-import MDXRenderer from './components/MDXRenderer';
+import CodePreview from '../../components/CodePreview';
+import MDXRenderer from '../../components/MDXRenderer';
 
 export default function CodeEditorApp() {
   const [content, setContent] = useState<string>(`# MDX示例

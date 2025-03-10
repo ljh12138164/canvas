@@ -155,3 +155,17 @@ export class LRU {
     this.cache.set(key, value);
   }
 }
+const reactQueryConfig = {
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000 * 5,
+      retry: 3,
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+      refetchOnMount: true,
+      refetchInterval: 60 * 1000 * 5,
+      refetchIntervalInBackground: true,
+    },
+  },
+};
+export { reactQueryConfig };
