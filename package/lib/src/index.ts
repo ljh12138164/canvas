@@ -169,3 +169,128 @@ const reactQueryConfig = {
   },
 };
 export { reactQueryConfig };
+/**
+ * ### Promise.all
+ */
+// export const promiseAll = (arr: Promise<any>[]) => {
+//   return new Promise((res, rej) => {
+//     const newArr: Promise<any>[] = [];
+//     let completedCount = 0;
+
+//     // Handle empty array case
+//     if (arr.length === 0) return res([]);
+
+//     arr.forEach((promise, index) => {
+//       Promise.resolve(promise).then(
+//         (value) => {
+//           newArr[index] = value;
+//           completedCount++;
+//           if (arr.length === completedCount) res(newArr);
+//         },
+//         (reason) => rej(reason), // Error handling moved here
+//       );
+//     });
+//   });
+// };
+
+// const p1 = Promise.resolve(1);
+// const p2 = new Promise((resolve) => setTimeout(() => resolve(2), 1000));
+// const p3 = Promise.resolve(3);
+
+// promiseAll([p1, p2, p3]).then(
+//   (values) => console.log(values), // [1, 2, 3]
+//   (reason) => console.error(reason),
+// );
+/**
+ * 并发控制器类
+ * 用于限制同时执行的异步任务数量
+ */
+class ConcurrencyController {
+  private maxConcurrent: number; // 最大并发数
+  private queue: (() => Promise<any>)[]; // 任务队列
+  private activeCount: number; // 当前活跃的任务数
+
+  /**
+   * @param maxConcurrent 最大并发数
+   */
+  constructor(maxConcurrent: number) {
+    // 初始化队列数
+    this.maxConcurrent = maxConcurrent;
+    this.queue = []; // 初始化等待队列
+    this.activeCount = 0; // 初始化活跃任务数
+  }
+  /**
+   * ### 创建
+   * @returns Promise
+   */
+  add(task: () => Promise<any>) {
+    return new Promise((res, rej) => {
+      const wrappedTask = () => {
+        const taskResult = task()
+          .then(res)
+          .catch(rej)
+          .finally(() => {
+            this.activeCount--;
+            this._run();
+          });
+        return taskResult;
+      };
+
+      this.queue.push(wrappedTask);
+      this._run();
+    });
+  }
+
+  private _run() {
+    while (this.activeCount < this.maxConcurrent && this.queue.length > 0) {
+      this.activeCount++;
+      const task = this.queue.shift();
+      task?.();
+    }
+  }
+}
+
+/**
+ * 模拟异步请求函数
+ * @param id 请求ID
+ * @param delay 延迟时间(ms)
+ * @param shouldFail 是否模拟失败
+ * @returns 返回一个Promise
+ */
+const mockRequest =
+  (id: number, delay: number, shouldFail = false) =>
+  () =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (shouldFail) {
+          reject(`Request ${id} failed`);
+        } else {
+          console.warn(`Request ${id} succeeded`);
+          resolve(`Request ${id} succeeded`);
+        }
+      }, delay);
+    });
+
+// 使用示例：创建一个最大并发数为2的控制器
+const controller = new ConcurrencyController(2);
+// 添加三个任务，由于最大并发数为2，第三个任务会等待前面任务完成后执行
+controller.add(() => mockRequest(1, 1000)());
+controller.add(() => mockRequest(2, 1000)());
+controller.add(() => mockRequest(3, 500)());
+const lengthOfLIS = (nums: number[]) => {
+  const dp = new Array(nums.length).fill(1);
+  for (let i = 0; i < nums.length; i++) {
+    // i与i前面的元素比较
+    for (let j = 0; j < i; j++) {
+      // 找比i小的元素，找到一个，就让当前序列的最长子序列长度加1
+      if (nums[i] > nums[j]) {
+        dp[i] = Math.max(dp[i], dp[j] + 1);
+      }
+    }
+  }
+  // 找出最大的子序列
+  return Math.max(...dp);
+};
+
+const a = lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]);
+// console.log(a);
