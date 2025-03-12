@@ -162,16 +162,17 @@ function Index() {
         <section className="flex items-center justify-center ">
           <AutoForm
             schema={zodSchemaProvider}
-            onSubmit={(data) => {
-              setValue(data);
-            }}
+            // onSubmit={(data) => {
+            //   setValue(data);
+            // }}
             // Ant Design Form Props
             antFormProps={{
               layout: 'horizontal',
               className: 'no-margin-form',
-              // onFinish: (e) => {
-              //   console.log("onFinish", e);
-              // },
+              onFinish: (e) => {
+                // console.log("onFinish", e);
+                setValue(e);
+              },
             }}
           >
             <Button>123</Button>

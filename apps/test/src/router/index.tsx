@@ -1,7 +1,8 @@
 import { Suspense, lazy } from 'react';
-import { Outlet, createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 
 const Live = lazy(() => import('../page/live'));
+const Home = lazy(() => import('../page'));
 const Form = lazy(() => import('../page/autoform'));
 
 export const router = createBrowserRouter([
@@ -9,7 +10,7 @@ export const router = createBrowserRouter([
     path: '/',
     element: (
       <Suspense fallback={<div>Loading...</div>}>
-        <Outlet />
+        <Home />
       </Suspense>
     ),
     children: [

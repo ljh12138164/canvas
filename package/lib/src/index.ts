@@ -292,5 +292,5 @@ const lengthOfLIS = (nums: number[]) => {
   return Math.max(...dp);
 };
 
-const a = lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]);
+lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]);
 // console.log(a);
