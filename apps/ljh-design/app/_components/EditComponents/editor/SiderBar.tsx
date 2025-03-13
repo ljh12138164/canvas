@@ -1,5 +1,6 @@
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { type EditType, Tool } from '@/app/_types/Edit';
+import { Grape } from 'lucide-react';
 import {
   LuImage,
   LuLayoutDashboard,
@@ -84,6 +85,15 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool, type, login = true }: Sider
               }}
             />
           )}
+          {/* 图表 */}
+          <SiderBarItem
+            icon={Grape}
+            label="流程图"
+            isActive={acitiveTool === Tool.Grap}
+            onClick={() => {
+              onChangeActiveTool(Tool.Grap);
+            }}
+          />
           {/* 表情 */}
           <SiderBarItem
             icon={LuSmile}

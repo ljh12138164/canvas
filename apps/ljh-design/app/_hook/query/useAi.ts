@@ -324,3 +324,27 @@ export const useAiFabricStream = () => {
 
   return { getAiFabricStream, getAiFabricStreamPending };
 };
+
+type GrapType = InferRequestType<typeof clientAi.grap.mermaid.$post>;
+/**
+ * ### 使用AI生成Fabric.js对象配置（流式响应）
+ */
+export const useAiGrap = () => {
+  const { mutate: getAiFabricStream, isPending: getAiFabricStreamPending } = useMutation<
+    ReadableStream<Buffer>,
+    Error,
+    GrapType
+  >({
+    // @ts-ignore
+    mutationFn: async (datas) => {
+      const response = await clientAi.grap.mermaid.$post(datas);
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return response.body as ReadableStream<Buffer>;
+    },
+  });
+
+  return { getAiFabricStream, getAiFabricStreamPending };
+};

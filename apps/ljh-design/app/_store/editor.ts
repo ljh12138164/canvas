@@ -1,6 +1,5 @@
 import { center, getWorkspace } from '@/app/_lib/editor/editor';
 import { type Effect, createFilter, downloadImage, isText } from '@/app/_lib/utils';
-// import { loadSVGFromString } from 'fabric';
 import {
   type AddObject,
   type Edit,
@@ -18,6 +17,8 @@ import {
   type buildEditorProps,
 } from '@/app/_types/Edit';
 import * as fabric from 'fabric';
+// import { loadSVGFromString } from 'fabric';
+import html2canvas from 'html2canvas';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
 //输入
@@ -919,6 +920,20 @@ export const buildEditor = ({
 
       // 保存历史记录
       save();
+    },
+    // 添加图表
+    addGrap: (dom) => {
+      if (!dom) return;
+      html2canvas(dom).then(async (HTMLTOCANVAS) => {
+        const dataURL = HTMLTOCANVAS.toDataURL('image/png');
+        // 在 Fabric.js 中加载图片
+        const image = await fabric.FabricImage.fromURL(dataURL);
+        image.set({ left: 100, top: 100 });
+        canvas.add(image);
+        canvas.setActiveObject(image);
+        canvas._centerObject(image, canvas.getCenterPoint());
+        canvas.renderAll();
+      });
     },
   };
 };

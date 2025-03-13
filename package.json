@@ -7,34 +7,25 @@
     "doc": "cd server/api && pnpm run doc",
     "build:api": "cd server/api  && pnpm run tsup && pnpm run deploy",
     "---------------": "--------------------------后端服务-------------------------------------",
-
     "dev:api": "turbo --filter=api dev",
     "dev:ws": "turbo --filter=api --filter=ws dev",
-
     "----------------": "-------------------------前端服务----------------------------------",
-
     "dev:test": "turbo --filter=test dev",
     "dev:note": "turbo --filter=api --filter=note --filter=ws dev",
     "dev:blog": "turbo --filter=blog dev",
     "dev:design": "turbo --filter=api --filter=design  dev && turbo --filter=api api:dev",
     "dev:jebet": "turbo --filter=api --filter=chat --filter=jebet dev",
     "dev:form": "turbo --filter=api --filter=forms dev",
-
+    "dev:dify": "turbo --filter=api --filter=dify dev",
     "------------------": "------------------------移动服务----------------------------------",
-
     "dev:mini": "cd mini/miniApp && pnpm run dev:h5",
     "dev:rn": "",
-
     "--------------": "----------------------------桌面服务----------------------------------",
-
     "dev:desktop": "cd desktop && pnpm run dev",
-
     "-----------------": "-------------------------打包服务----------------------------------",
-
     "build:jebet": "turbo --filter=jebet build",
     "build:design": "turbo --filter=design build",
     "deploy": "cd server/api && pnpm run tsup && pnpm run deploy:prod",
-
     "-------------------": "-----------------------校验----------------------------------",
     "lint:all": "turbo lint",
     "lint": "biome check --fix --unsafe && biome lint .&& pnpm run lint:all"

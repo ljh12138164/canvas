@@ -34,6 +34,7 @@ import {
 import { AiChatSider } from './AiChatSider';
 import ColorPicker from './ColorPicker';
 import FilterSetting from './FilterSetting';
+import Grap from './GrapSider';
 import ImageSetting from './ImageSetting';
 import StokeWidth from './StokeWidth';
 import ToolSiderbarClose from './ToolSiberbarClose';
@@ -72,7 +73,8 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
       activeTool === Tool.Settings ||
       activeTool === Tool.FilterSetting ||
       activeTool === Tool.Ai ||
-      activeTool === Tool.Emoji
+      activeTool === Tool.Emoji ||
+      activeTool === Tool.Grap
     )
       return activeTool;
     return '';
@@ -274,6 +276,8 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
           {onShow() === Tool.Ai && <AiChatSider editor={editor} />}
           {/* 表情 */}
           {onShow() === Tool.Emoji && <Emoji editor={editor} />}
+          {/* 图表 */}
+          {onShow() === Tool.Grap && <Grap editor={editor} />}
           {/* 设置 */}
           {onShow() === Tool.Settings && (
             <form className="flex flex-col gap-2">

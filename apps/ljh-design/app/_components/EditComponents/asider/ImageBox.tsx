@@ -28,9 +28,7 @@ export const ImageBox = ({
     <>
       {imageData?.map((item) => {
         return (
-          <button
-            type="button"
-            disabled={getImageLoading}
+          <div
             key={item.id}
             onClick={() => {
               if (!getImageLoading || !getImageError) editor?.addImage(item.urls.regular);
@@ -87,7 +85,7 @@ export const ImageBox = ({
                 )}
               </button>
             )}
-          </button>
+          </div>
         );
       })}
     </>

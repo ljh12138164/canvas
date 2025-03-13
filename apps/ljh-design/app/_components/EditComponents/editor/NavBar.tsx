@@ -137,11 +137,11 @@ const NavBar = ({
           </TooltipComponents>
         )}
         {!isMobile && (
-          <h1 className="text-2xl font-bold line-clamp-1">
+          <p className="text-2xl font-bold line-clamp-1">
             <TooltipComponents label={titles[type]}>
-              <h1 className="text-2xl font-bold line-clamp-1">{titles[type]}</h1>
+              <span className="text-2xl font-bold line-clamp-1">{titles[type]}</span>
             </TooltipComponents>
-          </h1>
+          </p>
         )}
 
         <Separator orientation="vertical" className="mx-2 h-[60%]" />
@@ -161,7 +161,7 @@ const NavBar = ({
         {/* 清空画布 */}
         <TooltipComponents label="清空画布">
           <Dialog>
-            <DialogTrigger>
+            <DialogTrigger asChild>
               <Button variant={'ghost'} size={'icon'} aria-label="清空画布">
                 <LuTrash size="20" />
               </Button>

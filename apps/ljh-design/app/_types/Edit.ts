@@ -525,6 +525,7 @@ export enum Tool {
   Ai = 27,
   Template = 28,
   Emoji = 29,
+  Grap = 30,
 }
 export type FontWeightType = 'normal' | 'bold';
 //返回
@@ -999,6 +1000,7 @@ export interface Edit {
   setStrokeColor: (color: string) => void;
   addObject: (value: AddObject) => void;
   clear: () => void;
+  addGrap: (dom: HTMLDivElement | null) => void;
 }
 export const ToolItem = {
   [Tool.Fill]: '填充颜色',
@@ -1011,6 +1013,7 @@ export const ToolItem = {
   [Tool.Draw]: '画笔',
   [Tool.FilterSetting]: '滤镜设置',
   [Tool.Emoji]: '表情',
+  [Tool.Grap]: '流程图',
   '': '',
 };
 
