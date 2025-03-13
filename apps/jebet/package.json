@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=8100",
-    "build": "tsc -b && vite build",
+    "build": "cd ../../package/lib && pnpm build && cd ../../apps/jebet && tsc -b && vite build",
     "build:report": "cross-env ANYES=true && vite build",
     "build:prod": " vite build",
     "lint": "tsc --noEmit && biome check --fix --unsafe --no-errors-on-unmatched   && biome check --write --no-errors-on-unmatched && biome check --write --organize-imports-enabled=false --no-errors-on-unmatched && biome check --write --unsafe --no-errors-on-unmatched && biome check --files-ignore-unknown=true&& biome lint --write --no-errors-on-unmatched",
@@ -114,7 +114,7 @@
     "tailwindcss-animate": "^1.0.7",
     "terser": "^5.30.4",
     "typescript": "~5.7.3",
-    "vite": "^6.0.11",
+    "vite": "^6.2.1",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-remove-console": "^2.2.0"

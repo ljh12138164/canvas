@@ -101,7 +101,9 @@ const plugins: (PluginOption | Plugin)[] = [
   // UnoCSS({
   //   mode: 'global',
   // }),
+  // @ts-ignore
   tailwindcss(),
+  // @ts-ignore
   removeConsole(),
   // 压缩html
   createHtmlPlugin({

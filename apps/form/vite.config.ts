@@ -42,6 +42,7 @@ const plugins: PluginOption[] = [
   // }),
   // @ts-ignore
   preloadAnalyzerPlugin(),
+  // @ts-ignore
   tailwindcss(),
   createHtmlPlugin({
     minify: true,
@@ -188,6 +189,7 @@ export default defineConfig({
     },
   },
   resolve: {
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },

@@ -17,7 +17,7 @@ export default defineConfig({
   splitting: true,
 
   // sourcemap
-  sourcemap: true,
+  sourcemap: false,
 
   // 每次打包先删除dist
   clean: true,

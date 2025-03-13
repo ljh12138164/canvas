@@ -94,8 +94,8 @@ function preloadAnalyzerPlugin(): PluginOption {
     name: 'preload-analyzer',
     enforce: 'post',
     transformIndexHtml: {
-      enforce: 'post',
-      transform(html) {
+      order: 'post',
+      handler(html) {
         // 分析并收集需要预加载的资源
         const preloadResources = analyzePreloadResources(html);
         // 使用 node-html-parser 处理 HTML
