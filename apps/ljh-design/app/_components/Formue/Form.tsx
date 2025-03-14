@@ -17,7 +17,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { useMedia } from 'react-use';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 import { Response } from '../Comand/Response';
 import Edit from '../Comand/RiceEdit/Edit';
 import { Button } from '../ui/button';

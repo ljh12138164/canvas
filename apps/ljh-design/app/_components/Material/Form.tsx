@@ -8,7 +8,7 @@ import type * as Fabric from 'fabric';
 import type { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 export const zodSchema = z.object({

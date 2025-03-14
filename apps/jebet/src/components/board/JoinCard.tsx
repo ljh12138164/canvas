@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/InputOtp';
 import { Button } from '../ui/button';
 import {

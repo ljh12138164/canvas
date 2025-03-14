@@ -6,7 +6,7 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 import { Button } from '../ui/button';
 import { DialogClose, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Input } from '../ui/input';

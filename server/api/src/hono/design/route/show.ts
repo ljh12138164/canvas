@@ -2,7 +2,7 @@ import { zValidator } from '@hono/zod-validator';
 import to from 'await-to-js';
 import { Hono } from 'hono';
 import { verify } from 'hono/jwt';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
 import { createShow, getRandomShow, getSeo, getShow } from '../../../server/design/show/index';

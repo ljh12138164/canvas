@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Navigate, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 const Container = styled.div`
   min-height: 100vh;
   display: flex;

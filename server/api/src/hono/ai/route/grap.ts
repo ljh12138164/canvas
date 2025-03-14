@@ -2,7 +2,7 @@ import { zValidator } from '@hono/zod-validator';
 import to from 'await-to-js';
 import { Hono } from 'hono';
 import { streamSSE } from 'hono/streaming';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 import { model } from '../../../server/ai';
 
 // 定义请求体验证模式
@@ -98,7 +98,7 @@ export const grap = new Hono()
 2. 中文渲染标准：
    ✅ 节点ID：拼音缩写（例：XSJL["销售记录"]）
    ✅ 连接描述：使用中文动词（例：-->|"提交"|）
-   ✅ 样式注释：/* 中文样式注释 */
+   ✅ 节点样式：使用十六进制颜色码
 
 3. 自适应增强：
    ${[
@@ -107,9 +107,12 @@ export const grap = new Hono()
      '出现时间范围 → 自动计算甘特图时间段',
    ].join('\n   ')}
 4. 样式配置要求：
-style 节点必须使用十六进制颜色码，中文颜色会自动转换：
-✅ 正确示例：style A fill:#90EE90,stroke:#228B22 
-❌ 错误示例：style A fill:#浅绿" /* 浅绿色 */
+   style 节点必须使用十六进制颜色码，中文颜色会自动转换：
+   ✅ 正确示例：style A fill:#90EE90,stroke:#228B22 
+   ❌ 错误示例：style A fill:#浅绿"
+5. 输出格式：
+   ❌ 注释：/* 样式配置 */
+   ❌ 符号：不能出现中文标点
 
 # 输出示例
 输入："我们需要展示用户登录流程，包含密码验证和短信验证两种方式"

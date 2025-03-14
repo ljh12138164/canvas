@@ -10,7 +10,7 @@ import { MD5 } from 'crypto-js';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 
 const schema = z.object({
   username: z.string().min(2, '用户名长度至少为2位'),

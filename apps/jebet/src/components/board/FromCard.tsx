@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 import { Button } from '../ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';

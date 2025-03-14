@@ -16,7 +16,7 @@
   "dependencies": {
     "await-to-js": "^3.0.0",
     "bun": "^1.2.1",
-    "hono": "^4.6.20",
+    "hono": "^4.7.4",
     "nanoid": "^5.0.9",
     "ws": "^8.18.1",
     "y-protocols": "^1.0.6",

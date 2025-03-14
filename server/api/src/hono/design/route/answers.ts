@@ -1,7 +1,7 @@
 import { zValidator } from '@hono/zod-validator';
 import { to } from 'await-to-js';
 import { Hono } from 'hono';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
 import { createAnswer, getAnswers } from '../../../server/design/answers';

@@ -10,7 +10,7 @@ import type {
 } from '@/types/form';
 import type { Files } from '@/types/form';
 import type { Ref } from 'vue';
-import { z } from 'zod';
+import { z } from 'zod/lib';
 
 /**
  * ### zod的顺序说明 先用string和number等基础类型---required（min）必填---description标签---default默认---!required（optional）非必填

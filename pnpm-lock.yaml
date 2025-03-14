@@ -379,8 +379,8 @@ importers:
         specifier: ^4.4.0
         version: 4.4.0
       hono:
-        specifier: ^4.6.20
-        version: 4.6.20
+        specifier: ^4.7.4
+        version: 4.7.4
       i18next:
         specifier: ^24.2.2
         version: 24.2.2(typescript@5.7.3)
@@ -677,8 +677,8 @@ importers:
         specifier: ^12.0.6
         version: 12.0.6(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       hono:
-        specifier: ^4.6.20
-        version: 4.6.20
+        specifier: ^4.7.4
+        version: 4.7.4
       input-otp:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -1041,8 +1041,8 @@ importers:
         specifier: ^6.6.1
         version: 6.6.1(encoding@0.1.13)
       hono:
-        specifier: ^4.6.20
-        version: 4.6.20
+        specifier: ^4.7.4
+        version: 4.7.4
       html2canvas:
         specifier: ^1.4.1
         version: 1.4.1
@@ -1384,8 +1384,8 @@ importers:
         specifier: ^8.5.2
         version: 8.5.2(vue@3.5.13(typescript@5.7.3))
       hono:
-        specifier: 4.6.20
-        version: 4.6.20
+        specifier: 4.7.4
+        version: 4.7.4
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1676,8 +1676,8 @@ importers:
         specifier: ^8.5.2
         version: 8.5.2(react@19.0.0)
       hono:
-        specifier: ^4.6.20
-        version: 4.6.20
+        specifier: ^4.7.4
+        version: 4.7.4
       input-otp:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -2029,16 +2029,10 @@ importers:
         version: 0.22.0
       '@hono/node-server':
         specifier: 1.13.7
-        version: 1.13.7(hono@4.6.20)
-      '@hono/swagger-ui':
-        specifier: ^0.5.0
-        version: 0.5.0(hono@4.6.20)
-      '@hono/zod-openapi':
-        specifier: ^0.18.4
-        version: 0.18.4(hono@4.6.20)(zod@3.24.2)
+        version: 1.13.7(hono@4.7.4)
       '@hono/zod-validator':
         specifier: ^0.4.2
-        version: 0.4.2(hono@4.6.20)(zod@3.24.2)
+        version: 0.4.3(hono@4.7.4)(zod@3.24.2)
       '@supabase/supabase-js':
         specifier: ^2.48.1
         version: 2.48.1
@@ -2046,8 +2040,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       hono:
-        specifier: ^4.6.20
-        version: 4.6.20
+        specifier: ^4.7.4
+        version: 4.7.4
       nanoid:
         specifier: ^5.0.9
         version: 5.0.9
@@ -2089,8 +2083,8 @@ importers:
         specifier: ^1.2.1
         version: 1.2.2
       hono:
-        specifier: ^4.6.20
-        version: 4.6.20
+        specifier: ^4.7.4
+        version: 4.7.4
       nanoid:
         specifier: ^5.0.9
         version: 5.0.9
@@ -2327,11 +2321,6 @@ packages:
 
   '@asamuzakjp/css-color@2.8.3':
     resolution: {integrity: sha512-GIc76d9UI1hCvOATjZPyHFmE5qhRccp3/zGfMPapK3jBi+yocEzp6BBB0UnfRYP9NP4FANqUZYb0hnfs3TM3hw==}
-
-  '@asteasolutions/zod-to-openapi@7.3.0':
-    resolution: {integrity: sha512-7tE/r1gXwMIvGnXVUdIqUhCU1RevEFC4Jk6Bussa0fk1ecbnnINkZzj1EOAJyE/M3AI25DnHT/zKQL1/FPFi8Q==}
-    peerDependencies:
-      zod: ^3.20.2
 
   '@astrojs/compiler@2.10.4':
     resolution: {integrity: sha512-86B3QGagP99MvSNwuJGiYSBHnh8nLvm2Q1IFI15wIUJJsPeQTO3eb2uwBmrqRsXykeR/mBzH8XCgz5AAt1BJrQ==}
@@ -3910,20 +3899,8 @@ packages:
     peerDependencies:
       hono: ^4
 
-  '@hono/swagger-ui@0.5.0':
-    resolution: {integrity: sha512-MWYYSv9kC8IwFBLZdwgZZMT9zUq2C/4/ekuyEYOkHEgUMqu+FG3eebtBZ4ofMh60xYRxRR2BgQGoNIILys/PFg==}
-    peerDependencies:
-      hono: '*'
-
-  '@hono/zod-openapi@0.18.4':
-    resolution: {integrity: sha512-6NHMHU96Hh32B1yDhb94Z4Z5/POsmEu2AXpWLWcBq9arskRnOMt2752yEoXoADV8WUAc7H1IkNaQHGj1ytXbYw==}
-    engines: {node: '>=16.0.0'}
-    peerDependencies:
-      hono: '>=4.3.6'
-      zod: 3.*
-
-  '@hono/zod-validator@0.4.2':
-    resolution: {integrity: sha512-1rrlBg+EpDPhzOV4hT9pxr5+xDVmKuz6YJl+la7VCwK6ass5ldyKm5fD+umJdV2zhHD6jROoCCv8NbTwyfhT0g==}
+  '@hono/zod-validator@0.4.3':
+    resolution: {integrity: sha512-xIgMYXDyJ4Hj6ekm9T9Y27s080Nl9NXHcJkOvkXPhubOLj8hZkOL8pDnnXfvCf5xEE8Q4oMFenQUZZREUY2gqQ==}
     peerDependencies:
       hono: '>=3.9.0'
       zod: ^3.19.1
@@ -12739,6 +12716,10 @@ packages:
     resolution: {integrity: sha512-5qfNQeaIptMaJKyoJ6N/q4gIq0DBp2FCRaLNuUI3LlJKL4S37DY/rLL1uAxA4wrPB39tJ3s+f7kgI79O4ScSug==}
     engines: {node: '>=16.9.0'}
 
+  hono@4.7.4:
+    resolution: {integrity: sha512-Pst8FuGqz3L7tFF+u9Pu70eI0xa5S3LPUmrNd5Jm8nTHze9FxLTK9Kaj5g/k4UcwuJSXTP65SyHOPLrffpcAJg==}
+    engines: {node: '>=16.9.0'}
+
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
 
@@ -15161,9 +15142,6 @@ packages:
   open@8.4.2:
     resolution: {integrity: sha512-7x81NCL719oNbsq/3mh+hVrAWmFuEYUqrq/Iw3kUzH8ReypT9QQ0BLoJS7/G9k6N81XjW4qHWtjWwe/9eLy1EQ==}
     engines: {node: '>=12'}
-
-  openapi3-ts@4.4.0:
-    resolution: {integrity: sha512-9asTNB9IkKEzWMcHmVZE7Ts3kC9G7AFHfs8i7caD8HbI76gEjdkId4z/AkP83xdZsH7PLAnnbl47qZkXuxpArw==}
 
   opener@1.5.2:
     resolution: {integrity: sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==}
@@ -20292,11 +20270,6 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.3
       lru-cache: 10.4.3
 
-  '@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.2)':
-    dependencies:
-      openapi3-ts: 4.4.0
-      zod: 3.24.2
-
   '@astrojs/compiler@2.10.4': {}
 
   '@astrojs/internal-helpers@0.6.0': {}
@@ -22073,24 +22046,13 @@ snapshots:
     dependencies:
       hono: 4.6.16
 
-  '@hono/node-server@1.13.7(hono@4.6.20)':
+  '@hono/node-server@1.13.7(hono@4.7.4)':
     dependencies:
-      hono: 4.6.20
+      hono: 4.7.4
 
-  '@hono/swagger-ui@0.5.0(hono@4.6.20)':
+  '@hono/zod-validator@0.4.3(hono@4.7.4)(zod@3.24.2)':
     dependencies:
-      hono: 4.6.20
-
-  '@hono/zod-openapi@0.18.4(hono@4.6.20)(zod@3.24.2)':
-    dependencies:
-      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.2)
-      '@hono/zod-validator': 0.4.2(hono@4.6.20)(zod@3.24.2)
-      hono: 4.6.20
-      zod: 3.24.2
-
-  '@hono/zod-validator@0.4.2(hono@4.6.20)(zod@3.24.2)':
-    dependencies:
-      hono: 4.6.20
+      hono: 4.7.4
       zod: 3.24.2
 
   '@hookform/resolvers@3.10.0(react-hook-form@7.54.2(react@19.0.0))':
@@ -33048,6 +33010,8 @@ snapshots:
 
   hono@4.6.20: {}
 
+  hono@4.7.4: {}
+
   hookable@5.5.3: {}
 
   hookified@1.7.0: {}
@@ -36131,10 +36095,6 @@ snapshots:
       define-lazy-prop: 2.0.0
       is-docker: 2.2.1
       is-wsl: 2.2.0
-
-  openapi3-ts@4.4.0:
-    dependencies:
-      yaml: 2.7.0
 
   opener@1.5.2: {}
 
