@@ -281,8 +281,9 @@ const TrtCanvas = ({ data }: { data?: Board }) => {
         <SiderBar
           acitiveTool={tool}
           onChangeActiveTool={onChangeActive}
-          type={'board'}
+          type="board"
           login={false}
+          editor={editor()}
         />
         <TextSidebar editor={editor()} activeTool={tool} onChangeActive={onChangeActive} />
         <ShapeSidle
