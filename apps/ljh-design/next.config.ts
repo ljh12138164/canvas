@@ -92,7 +92,7 @@ const nextConfig: NextConfig = {
 
   // 生产环境移除 console 和 debugger
   compiler: {
-    removeConsole: true,
+    // removeConsole: true,
   },
 
   // 实验性功能

@@ -1,5 +1,5 @@
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
-import { type EditType, Tool } from '@/app/_types/Edit';
+import { type Edit, type EditType, Tool } from '@/app/_types/Edit';
 import { Grape } from 'lucide-react';
 import {
   LuImage,
@@ -11,14 +11,22 @@ import {
   LuSmile,
   LuType,
 } from 'react-icons/lu';
+import Grap from '../asider/GrapSider';
 import SiderBarItem from '../asider/SiderBarItem';
 interface SiderBarProps {
   acitiveTool: Tool;
   onChangeActiveTool: (tool: Tool) => void;
   type: EditType;
   login?: boolean;
+  editor: Edit | undefined;
 }
-const SiderBar = ({ acitiveTool, onChangeActiveTool, type, login = true }: SiderBarProps) => {
+const SiderBar = ({
+  acitiveTool,
+  onChangeActiveTool,
+  type,
+  login = true,
+  editor,
+}: SiderBarProps) => {
   return (
     <aside
       id="editSider"
@@ -94,6 +102,7 @@ const SiderBar = ({ acitiveTool, onChangeActiveTool, type, login = true }: Sider
               onChangeActiveTool(Tool.Grap);
             }}
           />
+          <Grap editor={editor} acitiveTool={acitiveTool} onChangeActiveTool={onChangeActiveTool} />
           {/* 表情 */}
           <SiderBarItem
             icon={LuSmile}

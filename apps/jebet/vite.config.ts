@@ -26,7 +26,7 @@ const plugins: PluginOption[] = [
   //     interlaced: false,
   //   },
   //   optipng: {
-  //     optimizationLevel: 7,
+  //     optimizationLevel:
   //   },
   //   mozjpeg: {
   //     quality: 20,

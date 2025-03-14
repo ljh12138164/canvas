@@ -1000,7 +1000,7 @@ export interface Edit {
   setStrokeColor: (color: string) => void;
   addObject: (value: AddObject) => void;
   clear: () => void;
-  addGrap: (dom: HTMLDivElement | null) => void;
+  addGrap: (dom: HTMLDivElement | null) => Promise<boolean>;
 }
 export const ToolItem = {
   [Tool.Fill]: '填充颜色',

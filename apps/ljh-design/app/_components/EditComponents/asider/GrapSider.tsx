@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/app/_components/ui/button';
 import {
   Dialog,
@@ -8,19 +6,54 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/app/_components/ui/dialog';
 import { Textarea } from '@/app/_components/ui/textarea';
 import { useAiGrap } from '@/app/_hook/query/useAi';
-import type { Edit } from '@/app/_types/Edit';
+import { type Edit, Tool } from '@/app/_types/Edit';
 import { Bot, Send } from 'lucide-react';
 import mermaid from 'mermaid';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
-export default function Grap({ editor }: { editor: Edit | undefined }) {
+export default function Grap({
+  editor,
+  acitiveTool,
+  onChangeActiveTool,
+}: {
+  editor: Edit | undefined;
+  acitiveTool: Tool;
+  onChangeActiveTool: (tool: Tool) => void;
+}) {
   const [code, setCode] = useState(
-    'graph TD\n    A[Client] --> B[Load Balancer]\n    B --> C[Server01]\n    B --> D[Server02]',
+    `erDiagram
+  客户 ||--o{ 订单 : 包含
+  订单 { 
+    int 订单ID PK
+    varchar 客户ID FK
+    date 订单日期
+    varchar 订单状态
+  }
+  客户 {
+    int 客户ID PK
+    varchar 客户姓名
+    varchar 客户地址
+    varchar 客户电话
+  }
+  订单 ||--|{ 订单明细 : 包含
+  产品 ||--|{ 订单明细 : 包含
+  订单明细 {
+    int 订单明细ID PK
+    int 订单ID FK
+    int 产品ID FK
+    int 数量
+    decimal 单价
+  }
+  产品 {
+    int 产品ID PK
+    varchar 产品名称
+    varchar 产品描述
+    decimal 产品价格
+  }`,
   );
   const [svg, setSvg] = useState('');
   const canvasRef = useRef<HTMLDivElement | null>(null);
@@ -271,13 +304,20 @@ export default function Grap({ editor }: { editor: Edit | undefined }) {
   };
 
   return (
-    <Dialog>
-      <DialogHeader>
-        <DialogTitle>生成图表</DialogTitle>
-        <DialogDescription>生成图表配置，添加到画布</DialogDescription>
-      </DialogHeader>
-      <DialogTrigger>新建</DialogTrigger>
+    <Dialog
+      open={acitiveTool === Tool.Grap}
+      onOpenChange={(open) => {
+        if (!open) {
+          onChangeActiveTool(Tool.Presentation);
+        }
+      }}
+    >
       <DialogContent className="w-full max-w-[90vw]">
+        <DialogHeader>
+          <DialogTitle>生成图表</DialogTitle>
+          <DialogDescription>生成图表配置，添加到画布</DialogDescription>
+        </DialogHeader>
+
         <div className="flex flex-col md:flex-row gap-6 w-full h-full overflow-hidden">
           {/* 左侧面板：输入区域和聊天历史 */}
           <div className="w-full md:w-1/2 space-y-6">
@@ -386,8 +426,8 @@ export default function Grap({ editor }: { editor: Edit | undefined }) {
                 <h3 className="text-base font-medium mb-4">生成的图表</h3>
                 {svg && (
                   <Button
-                    onClick={() => {
-                      editor?.addGrap(canvasRef.current);
+                    onClick={async () => {
+                      await editor?.addGrap(canvasRef.current);
                       if (closeRef.current?.click) closeRef.current.click();
                       toast.success('插入成功');
                     }}

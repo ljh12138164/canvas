@@ -444,11 +444,11 @@ export default function Grap() {
                     className="grid grid-cols-[40px_1fr] items-start gap-2 p-2 rounded-lg animate-fadeIn"
                   >
                     {msg.role === 'user' ? (
-                      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-gray-900 flex items-center justify-center">
                         <span className="text-blue-600 text-sm">用户</span>
                       </div>
                     ) : (
-                      <Bot className="w-8 h-8 p-1 rounded-full bg-green-100 text-green-600" />
+                      <Bot className="w-8 h-8 p-1 rounded-full bg-green-100 dark:bg-gray-900 text-green-600" />
                     )}
                     {msg.role === 'user' && <Markdown>{msg.content}</Markdown>}
                     {msg.code && (

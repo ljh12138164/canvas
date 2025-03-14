@@ -2035,10 +2035,10 @@ importers:
         version: 0.5.0(hono@4.6.20)
       '@hono/zod-openapi':
         specifier: ^0.18.4
-        version: 0.18.4(hono@4.6.20)(zod@3.24.1)
+        version: 0.18.4(hono@4.6.20)(zod@3.24.2)
       '@hono/zod-validator':
         specifier: ^0.4.2
-        version: 0.4.2(hono@4.6.20)(zod@3.24.1)
+        version: 0.4.2(hono@4.6.20)(zod@3.24.2)
       '@supabase/supabase-js':
         specifier: ^2.48.1
         version: 2.48.1
@@ -2067,8 +2067,8 @@ importers:
         specifier: ^7.0.19
         version: 7.0.19
       zod:
-        specifier: ^3.24.1
-        version: 3.24.1
+        specifier: ^3.24.2
+        version: 3.24.2
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
@@ -20175,6 +20175,9 @@ packages:
   zod@3.24.1:
     resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
 
+  zod@3.24.2:
+    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+
   zrender@5.6.1:
     resolution: {integrity: sha512-OFXkDJKcrlx5su2XbzJvj/34Q3m6PvyCZkVPHGYpcCJ52ek4U/ymZyfuV1nKE23AyBJ51E/6Yr0mhZ7xGTO4ag==}
 
@@ -20289,10 +20292,10 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.3
       lru-cache: 10.4.3
 
-  '@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.1)':
+  '@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.2)':
     dependencies:
       openapi3-ts: 4.4.0
-      zod: 3.24.1
+      zod: 3.24.2
 
   '@astrojs/compiler@2.10.4': {}
 
@@ -22078,17 +22081,17 @@ snapshots:
     dependencies:
       hono: 4.6.20
 
-  '@hono/zod-openapi@0.18.4(hono@4.6.20)(zod@3.24.1)':
+  '@hono/zod-openapi@0.18.4(hono@4.6.20)(zod@3.24.2)':
     dependencies:
-      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.1)
-      '@hono/zod-validator': 0.4.2(hono@4.6.20)(zod@3.24.1)
+      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.2)
+      '@hono/zod-validator': 0.4.2(hono@4.6.20)(zod@3.24.2)
       hono: 4.6.20
-      zod: 3.24.1
+      zod: 3.24.2
 
-  '@hono/zod-validator@0.4.2(hono@4.6.20)(zod@3.24.1)':
+  '@hono/zod-validator@0.4.2(hono@4.6.20)(zod@3.24.2)':
     dependencies:
       hono: 4.6.20
-      zod: 3.24.1
+      zod: 3.24.2
 
   '@hookform/resolvers@3.10.0(react-hook-form@7.54.2(react@19.0.0))':
     dependencies:
@@ -42334,6 +42337,8 @@ snapshots:
       zod: 3.24.1
 
   zod@3.24.1: {}
+
+  zod@3.24.2: {}
 
   zrender@5.6.1:
     dependencies:

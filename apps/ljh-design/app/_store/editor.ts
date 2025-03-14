@@ -923,16 +923,24 @@ export const buildEditor = ({
     },
     // 添加图表
     addGrap: (dom) => {
-      if (!dom) return;
-      html2canvas(dom).then(async (HTMLTOCANVAS) => {
-        const dataURL = HTMLTOCANVAS.toDataURL('image/png');
-        // 在 Fabric.js 中加载图片
-        const image = await fabric.FabricImage.fromURL(dataURL);
-        image.set({ left: 100, top: 100 });
-        canvas.add(image);
-        canvas.setActiveObject(image);
-        canvas._centerObject(image, canvas.getCenterPoint());
-        canvas.renderAll();
+      return new Promise((res, rej) => {
+        try {
+          if (!dom) return;
+          html2canvas(dom).then(async (HTMLTOCANVAS) => {
+            const dataURL = HTMLTOCANVAS.toDataURL('image/png');
+            // 在 Fabric.js 中加载图片
+            const image = await fabric.FabricImage.fromURL(dataURL);
+            // console.log(image);
+            image.set({ left: 100, top: 100 });
+            canvas.add(image);
+            canvas.setActiveObject(image);
+            canvas._centerObject(image, canvas.getCenterPoint());
+            canvas.renderAll();
+            res(true);
+          });
+        } catch (err) {
+          rej(false);
+        }
       });
     },
   };
