@@ -8,7 +8,6 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import removeConsole from 'vite-plugin-remove-console';
 import VitePluginSitemap from 'vite-plugin-sitemap';
 // import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
-// import reactCompiler from '@vitejs/plugin-react-swc';
 // import { visualizer } from 'rollup-plugin-visualizer';
 // import viteImagemin from 'vite-plugin-imagemin';
 
@@ -21,7 +20,6 @@ const plugins: PluginOption[] = [
     // fastRefresh: true,
   }), // 打包后压缩图片
   tailwindcss(),
-  // reactCompiler(),
   // viteImagemin({
   //   gifsicle: {
   //     optimizationLevel: 7,
