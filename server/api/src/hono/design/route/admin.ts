@@ -2,7 +2,7 @@ import { zValidator } from '@hono/zod-validator';
 import to from 'await-to-js';
 import { Hono } from 'hono';
 import { sign, verify } from 'hono/jwt';
-import { z } from 'zod/lib';
+import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import {
   getAiList,

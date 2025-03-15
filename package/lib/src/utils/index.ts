@@ -102,3 +102,24 @@ const quils = (arr: number[]): number[] => {
   return [...quils(left), base, ...quils(right)];
 };
 export default Obswer;
+
+/**
+ * ### 迭代器
+ */
+const myIterable = {
+  data: [10, 20, 30],
+  [Symbol.iterator]() {
+    let index = 0; // 内部状态：当前遍历的索引
+    return {
+      next: () => {
+        if (index < this.data.length) return { value: this.data[index++], done: false };
+        return { done: true }; // 遍历完成
+      },
+    };
+  },
+};
+
+// 测试
+// for (const num of myIterable) {
+//   console.log(num); // 输出 10, 20, 30
+// }

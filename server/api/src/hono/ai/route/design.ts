@@ -2,7 +2,7 @@ import { zValidator } from '@hono/zod-validator';
 import to from 'await-to-js';
 import { Hono } from 'hono';
 import { streamSSE } from 'hono/streaming';
-import { z } from 'zod/lib';
+import { z } from 'zod';
 import { model } from '../../../server/ai';
 
 // 定义Fabric.js 6版本对象类型的验证模式

@@ -1,7 +1,7 @@
 import { zValidator } from '@hono/zod-validator';
 import to from 'await-to-js';
 import { Hono } from 'hono';
-import { z } from 'zod/lib';
+import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import { getSupabaseAuth } from '../../../libs/middle';
 import { createFlow, deleteJebtFlow, getJebtFlow, updateJebtFlow } from '../../../server/jebt/flow';

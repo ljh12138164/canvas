@@ -1,7 +1,7 @@
 // import { zValidator } from '@hono/zod-validator';
 // import ExcelJS from 'exceljs';
 // import { Hono } from 'hono';
-// import { z } from 'zod/lib';
+// import { z } from 'zod';
 
 // export const xlxs = new Hono().post(
 //   '/gender',
