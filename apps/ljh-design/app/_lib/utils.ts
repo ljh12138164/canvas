@@ -457,3 +457,27 @@ export const toFabricObject = (objects: AiFabricObjects) => {
       return null;
   }
 };
+/**
+ * ### 获取选中文本
+ */
+export function getSelectedText() {
+  //   检查是否在输入框或文本域中
+  const activeElement = document.activeElement;
+  const isTextInput =
+    activeElement &&
+    (activeElement.tagName?.toLowerCase() === 'input' ||
+      activeElement.tagName?.toLowerCase() === 'textarea');
+
+  // 处理输入框或文本域中的选中文本
+  if (isTextInput && 'selectionStart' in activeElement && 'selectionEnd' in activeElement) {
+    const input = activeElement as HTMLInputElement | HTMLTextAreaElement;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    return start !== null && end !== null && start !== end ? input.value.substring(start, end) : '';
+  }
+  // 处理普通文本选择
+  if (window.getSelection) {
+    return window.getSelection()?.toString();
+  }
+  return '';
+}

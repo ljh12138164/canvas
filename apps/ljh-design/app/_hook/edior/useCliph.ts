@@ -1,3 +1,4 @@
+import { getSelectedText } from '@/app/_lib/utils';
 import type * as fabric from 'fabric';
 import { useRef } from 'react';
 import toast from 'react-hot-toast';
@@ -9,7 +10,12 @@ export const useClipboard = ({ canvas }: UserClipboard) => {
   const clipboard = useRef<fabric.FabricObject[]>([]);
 
   const copy = async () => {
-    if (!canvas?.getActiveObjects().length) return;
+    if (!canvas?.getActiveObjects().length) {
+      //
+      const text = getSelectedText();
+      navigator.clipboard.writeText(text ?? '');
+      return;
+    }
     toast.dismiss();
     clipboard.current = [];
     canvas?.getActiveObjects()?.forEach(async (item, index) => {
