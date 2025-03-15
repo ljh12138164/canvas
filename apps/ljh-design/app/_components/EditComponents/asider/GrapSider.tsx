@@ -320,65 +320,67 @@ export default function Grap({
 
         <div className="flex flex-col md:flex-row gap-6 w-full h-full overflow-hidden">
           {/* 左侧面板：输入区域和聊天历史 */}
-          <div className="w-full md:w-1/2 space-y-6">
-            {messages.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transition-all hover:shadow-xl">
-                <div className="flex justify-between items-center mb-3">
-                  <h3 className="text-base font-medium">聊天历史</h3>
-                  <Button variant="outline" size="sm" onClick={clearMessages} className="text-xs">
-                    清空聊天
-                  </Button>
-                </div>
-                <div className="space-y-3 max-h-[calc(100vh-450px)] overflow-y-auto custom-scrollbar">
-                  {messages.map((msg) => (
-                    <div
-                      key={msg.id}
-                      className="grid grid-cols-[40px_1fr] items-start gap-2 p-2 rounded-lg animate-fadeIn"
-                    >
-                      {msg.role === 'user' ? (
-                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                          <span className="text-blue-600 text-sm">用户</span>
-                        </div>
-                      ) : (
-                        <Bot className="w-8 h-8 p-1 rounded-full bg-green-100 text-green-600" />
-                      )}
-                      {msg.role === 'user' && <div>{msg.content}</div>}
-                      {msg.code && (
-                        <div className="col-span-2 bg-gray-100 dark:bg-gray-900 p-2 rounded-lg relative">
-                          <pre className="text-sm font-mono whitespace-pre-wrap">{msg.code}</pre>
-                          <Button
-                            className=" absolute right-5 top-2"
-                            onClick={() => {
-                              setCode(msg.code);
-                              updateDiagram(msg.code);
-                            }}
-                          >
-                            应用
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  {isLoading && (
-                    <div className="text-center mt-2 flex items-center justify-center gap-2">
-                      <div className="animate-pulse h-2 w-2 rounded-full bg-primary" />
+          <div className="w-full md:w-1/2 space-y-6 flex-1 flex flex-col">
+            <section className="flex-1">
+              {messages.length > 0 && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transition-all hover:shadow-xl">
+                  <div className="flex justify-between items-center mb-3">
+                    <h3 className="text-base font-medium">聊天历史</h3>
+                    <Button variant="outline" size="sm" onClick={clearMessages} className="text-xs">
+                      清空聊天
+                    </Button>
+                  </div>
+                  <div className="space-y-3 max-h-[calc(100vh-450px)] overflow-y-auto custom-scrollbar">
+                    {messages.map((msg) => (
                       <div
-                        className="animate-pulse h-2 w-2 rounded-full bg-primary"
-                        style={{ animationDelay: '0.2s' }}
-                      />
-                      <div
-                        className="animate-pulse h-2 w-2 rounded-full bg-primary"
-                        style={{ animationDelay: '0.4s' }}
-                      />
-                      <span className="text-sm text-muted-foreground ml-1">
-                        {streamStatus || 'AI正在思考...'}
-                      </span>
-                    </div>
-                  )}
-                  <div ref={messagesEndRef} />
+                        key={msg.id}
+                        className="grid grid-cols-[40px_1fr] items-start gap-2 p-2 rounded-lg animate-fadeIn"
+                      >
+                        {msg.role === 'user' ? (
+                          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                            <span className="text-blue-600 text-sm">用户</span>
+                          </div>
+                        ) : (
+                          <Bot className="w-8 h-8 p-1 rounded-full bg-green-100 text-green-600" />
+                        )}
+                        {msg.role === 'user' && <div>{msg.content}</div>}
+                        {msg.code && (
+                          <div className="col-span-2 bg-gray-100 dark:bg-gray-900 p-2 rounded-lg relative">
+                            <pre className="text-sm font-mono whitespace-pre-wrap">{msg.code}</pre>
+                            <Button
+                              className=" absolute right-5 top-2"
+                              onClick={() => {
+                                setCode(msg.code);
+                                updateDiagram(msg.code);
+                              }}
+                            >
+                              应用
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    {isLoading && (
+                      <div className="text-center mt-2 flex items-center justify-center gap-2">
+                        <div className="animate-pulse h-2 w-2 rounded-full bg-primary" />
+                        <div
+                          className="animate-pulse h-2 w-2 rounded-full bg-primary"
+                          style={{ animationDelay: '0.2s' }}
+                        />
+                        <div
+                          className="animate-pulse h-2 w-2 rounded-full bg-primary"
+                          style={{ animationDelay: '0.4s' }}
+                        />
+                        <span className="text-sm text-muted-foreground ml-1">
+                          {streamStatus || 'AI正在思考...'}
+                        </span>
+                      </div>
+                    )}
+                    <div ref={messagesEndRef} />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </section>
 
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transition-all hover:shadow-xl">
               <div className="flex mb-4">
@@ -438,7 +440,7 @@ export default function Grap({
               </section>
               <div
                 ref={canvasRef}
-                className="mermaid-output flex items-center justify-center "
+                className="mermaid-output flex items-center justify-center min-h-[425px]"
                 // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                 dangerouslySetInnerHTML={{ __html: svg }}
               />
