@@ -1,5 +1,5 @@
 export * from './auth';
-export * from './plugin';
+export * from './vite';
 /**
  * ## fandou
  */
@@ -28,12 +28,13 @@ export const throttle = <T extends (...args: any[]) => any>(fn: T, delay = 1000)
  */
 export const kelihua = (fn: Function) => {
   return function curried(...args: any[]) {
-    // 如果传入参数
+    // 如果传入参数大于函数的接受参数数量，直接执行函数
     if (args.length >= fn.length) {
       // @ts-ignore
       return fn.apply(this, args);
     }
-    // 如果传入参数大于默认
+
+    //  递归调用
     return function (...nextArgs: any[]) {
       // @ts-ignore
       return curried.apply(this, [...args, ...nextArgs]);
