@@ -32,7 +32,7 @@ const Hero = () => {
               size="lg"
               disabled={loading}
               onClick={() => (user ? router.push('/board') : router.push('/sign-in'))}
-              className="rounded-full px-8 bg-blue-600 hover:bg-blue-700"
+              className="rounded-full px-8 bg-blue-600 text-white hover:bg-blue-700"
             >
               开始设计
             </Button>

@@ -42,7 +42,7 @@ const CallToAction = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-white text-white hover:bg-white/10 rounded-full px-8"
+                  className="border-white text-black dark:text-black dark:bg-zinc-200 hover:dark:bg-zinc-300 rounded-full px-8"
                 >
                   登录账号
                 </Button>

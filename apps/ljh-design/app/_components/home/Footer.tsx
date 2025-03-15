@@ -1,45 +1,6 @@
 'use client';
 
 import { LogoWithText } from '@/app/_components/ui/Logo';
-import { Facebook, Github, Instagram, Linkedin, Twitter } from 'lucide-react';
-
-const footerLinks = [
-  {
-    title: '产品',
-    links: [
-      { label: '功能介绍', href: '#' },
-      { label: '定价方案', href: '#' },
-      { label: '更新日志', href: '#' },
-      { label: '常见问题', href: '#' },
-    ],
-  },
-  {
-    title: '资源',
-    links: [
-      { label: '设计模板', href: '/board/template' },
-      { label: '素材库', href: '/board/material' },
-      { label: '教程中心', href: '#' },
-      { label: '设计论坛', href: '/board/formue' },
-    ],
-  },
-  {
-    title: '公司',
-    links: [
-      { label: '关于我们', href: '#' },
-      { label: '联系我们', href: '#' },
-      { label: '加入我们', href: '#' },
-      { label: '隐私政策', href: '#' },
-    ],
-  },
-];
-
-const socialLinks = [
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Facebook, href: '#', label: 'Facebook' },
-  { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: Github, href: '#', label: 'GitHub' },
-];
 
 const Footer = () => {
   return (

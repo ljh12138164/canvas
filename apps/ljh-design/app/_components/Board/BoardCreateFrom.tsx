@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import type { RefObject } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { z } from 'zod/lib';
+import { z } from 'zod';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 export interface Board {

@@ -1,18 +1,17 @@
+import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
 import VueViewer from 'v-viewer';
 import './assets/index.css';
-import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
 // import { createCalendar } from '@internationalized/date';
 import { VueQueryPlugin, type VueQueryPluginOptions } from '@tanstack/vue-query';
 import i18next from 'i18next';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
+import { z } from 'zod';
 import { zodI18nMap } from 'zod-i18n-map';
-import { z } from 'zod/lib';
 import App from './App.vue';
 import translation from './lib/error.json';
 import router from './router';
-// ... existing code ...
 
 // 在 app.mount('#app') 之前添加以下配置
 // const calendar = createCalendar('gregory');

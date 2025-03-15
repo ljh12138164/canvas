@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
-import { z } from 'zod/lib';
+import { z } from 'zod';
 
 const schema = z.object({
   // 设置name为可选，且可以为空字符串

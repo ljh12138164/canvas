@@ -4,7 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { AutoForm } from '@autoform/ant';
 import { ZodProvider, fieldConfig } from '@autoform/zod';
 import { useState } from 'react';
-import { z } from 'zod/lib';
+import { z } from 'zod';
 
 enum Sports {
   Football = 'Football/Soccer',
