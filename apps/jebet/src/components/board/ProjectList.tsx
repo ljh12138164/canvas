@@ -31,9 +31,6 @@ const ProjectItem = styled.div`
   padding: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
-  &:hover {
-    background-color: white;
-  }
 `;
 const ProjecttList = styled.div`
   display: flex;
