@@ -42,7 +42,7 @@ import type { Board } from '@/app/_types/board';
 import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
 // import { debounce } from 'lodash';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TemplateSiderbar } from '../asider/TemplateSiderbar';
 // 画布服务器
 const TrtCanvas = ({ data }: { data?: Board }) => {

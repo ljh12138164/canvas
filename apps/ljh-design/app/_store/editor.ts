@@ -930,7 +930,6 @@ export const buildEditor = ({
             const dataURL = HTMLTOCANVAS.toDataURL('image/png');
             // 在 Fabric.js 中加载图片
             const image = await fabric.FabricImage.fromURL(dataURL);
-            // console.log(image);
             image.set({ left: 100, top: 100 });
             canvas.add(image);
             canvas.setActiveObject(image);
