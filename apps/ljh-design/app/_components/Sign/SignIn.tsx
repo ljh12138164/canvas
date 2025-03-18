@@ -8,9 +8,9 @@ import useUsers from '@/app/_hook/useUser';
 import { indexDBChange } from '@/app/_lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 // import { useUser } from '@/app/_store/auth';
-import { Turnstile } from '@marsidev/react-turnstile';
+// import { Turnstile } from '@marsidev/react-turnstile';
 import { nanoid } from 'nanoid';
-import { useTheme } from 'next-themes';
+// import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -26,12 +26,11 @@ const schema = z.object({
 });
 
 const SignIn = () => {
-  const { theme } = useTheme();
+  // const { theme } = useTheme();
   const { loading: UserLoading, setUser } = useUsers({
     redirects: true,
     type: 'goLoading',
   });
-  const [token, setToken] = useState<string>('');
   // const turnstileContainer = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const addTryToIndexDB = async () => {
@@ -49,9 +48,6 @@ const SignIn = () => {
     });
     router.push(`/try/Edit/${id}`);
   };
-  const handleSuccess = (token: string) => {
-    setToken(token);
-  };
 
   const [login, setLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -61,10 +57,6 @@ const SignIn = () => {
   });
   const onSubmit = async (data: z.infer<typeof schema>) => {
     toast.dismiss();
-    if (!token) {
-      toast.error('提交失败');
-      return;
-    }
     setLoading(true);
     if (login) {
       toast.loading('登录中...');
@@ -147,7 +139,6 @@ const SignIn = () => {
                   className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2  hover:text-blue-500    transition-colors duration-300  "
                 />
               )}
-
               <Input
                 {...register('password')}
                 placeholder="密码"
@@ -159,14 +150,14 @@ const SignIn = () => {
                 <span className="text-red-500 text-sm">{formState.errors.password.message}</span>
               )}
             </div>
-            <Turnstile
+            {/*<Turnstile
               siteKey="0x4AAAAAAA8NncDcOl1Duk3E" // 替换成你的 site key
               onSuccess={handleSuccess}
               options={{
                 theme: theme === 'dark' ? 'dark' : 'light', // 或 'dark'
                 language: 'zh-cn',
               }}
-            />
+            />*/}
             <Button type="submit" className="w-full mt-2.5" disabled={loading}>
               {login ? `登录${loading ? '中...' : ''}` : `注册${loading ? '中...' : ''}`}
             </Button>
