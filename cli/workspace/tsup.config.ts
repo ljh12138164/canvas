@@ -16,5 +16,7 @@ export default defineConfig({
   // 生成 sourcemap
   sourcemap: true,
 
+  // 生成 d.ts 文件
+  dts: true,
   // 打包时复制 shebang
 });

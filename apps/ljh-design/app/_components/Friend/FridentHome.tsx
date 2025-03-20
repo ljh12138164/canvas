@@ -132,7 +132,7 @@ const FridentHome = () => {
           </Response>
         </div>
         <ScrollArea className="h-[calc(100vh-25rem)] p-4">
-          <FriendTable data={Array.from(userData.values())} columns={columns} />
+          {!isLoading && <FriendTable data={Array.from(userData.values())} columns={columns} />}
         </ScrollArea>
       </main>
     </div>

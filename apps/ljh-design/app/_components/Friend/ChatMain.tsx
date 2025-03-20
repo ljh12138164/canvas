@@ -240,9 +240,9 @@ const ChatMain = () => {
   return (
     <section className="flex flex-col h-[calc(100dvh-200px)]">
       <ScrollArea className="flex-1 border-b-2 p-2" ref={messageRef}>
-        <div className="h-[30px] bg-gray-100 mb-2" ref={topRef} />
+        <div className="h-[30px]mb-2" ref={topRef} />
         {messageHasNextPage && (
-          <div className="flex justify-center my-2 sticky top-0 bg-white z-10 py-2">
+          <div className="flex justify-center my-2  bg-white z-10 py-2">
             <Button
               variant="outline"
               size="sm"

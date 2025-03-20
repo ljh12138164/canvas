@@ -53,7 +53,7 @@ export const useGetMessage = (userId: string | undefined, sendId: string) => {
         };
         // 如果当前消息数量大于0，则获取下一页数据
         if (pageTo) {
-          const allData = pageTo.pages.flatMap((page) => page.messages.data);
+          const allData = pageTo.pages.flatMap((page) => page.data);
           const data = await client.chat.message.$get(
             {
               query: {

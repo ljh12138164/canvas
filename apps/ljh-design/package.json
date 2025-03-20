@@ -46,7 +46,7 @@
     "@supabase/supabase-js": "^2.48.1",
     "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-query-devtools": "^5.65.1",
-    "@tanstack/react-table": "^8.20.6",
+    "@tanstack/react-table": "^8.0.0",
     "@tiptap/extension-placeholder": "^2.11.5",
     "@tiptap/extension-task-item": "^2.11.3",
     "@tiptap/extension-task-list": "^2.11.5",

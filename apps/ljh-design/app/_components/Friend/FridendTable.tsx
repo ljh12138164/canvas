@@ -29,7 +29,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
-import type { BoardData } from '../../_types/board';
 import { FriendTablePagination } from './FridendTablePagination';
 
 interface DataTableProps<TData, TValue> {
@@ -44,12 +43,12 @@ export function FriendTable<TData, TValue>({ columns, data }: DataTableProps<TDa
   const table = useReactTable({
     data,
     columns,
-    onColumnVisibilityChange: setColumnVisibility,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
@@ -59,21 +58,24 @@ export function FriendTable<TData, TValue>({ columns, data }: DataTableProps<TDa
   });
   const BoardType = useMemo(() => {
     return {
-      name: '用户',
-      created_at: '创建时间',
-      updated_at: '更新时间',
+      image: '用户头像',
+      name: '用户名字',
       actions: '操作',
+      email: '邮箱',
     };
   }, []);
 
+  const [searchValue, setSearchValue] = useState<string>('');
   return (
-    <div>
+    <div className="w-full">
       <div className="flex items-center py-4">
         <Input
           placeholder="搜索面板名字"
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+          value={searchValue}
           onChange={(event) => {
-            return table.getColumn('name')?.setFilterValue(event.target.value);
+            const value = event.target.value;
+            setSearchValue(value);
+            table.getColumn('name')?.setFilterValue(value);
           }}
           className="max-w-sm"
         />

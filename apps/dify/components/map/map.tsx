@@ -1,292 +1,232 @@
 'use client';
 
-import { useMap } from '@/hooks/use-map';
 import * as echarts from 'echarts';
 import { useEffect, useRef, useState } from 'react';
 
 const geoCoordMap: Record<string, number[]> = {};
+const planePath =
+  'path://M683.436973 788.16173H317.495351c-28.86573 0-52.279351-23.164541-52.279351-51.753514V296.627892c0-28.575135 23.413622-51.739676 52.279351-51.739676h39.202595v12.938379c0 35.715459 29.267027 64.678054 65.356108 64.678054h156.824216c36.075243 0 65.34227-28.962595 65.342271-64.678054v-12.938379h39.216432c28.86573 0 52.265514 23.164541 52.265513 51.753514v439.794162c0 28.575135-23.399784 51.739676-52.265513 51.739676zM631.143784 425.970162H369.747027a26.015135 26.015135 0 0 0-26.125838 25.876757 26.015135 26.015135 0 0 0 26.139676 25.876757H631.143784a26.015135 26.015135 0 0 0 26.139675-25.876757 26.015135 26.015135 0 0 0-26.153513-25.876757z m0 90.554811H369.747027a26.015135 26.015135 0 0 0-26.125838 25.876757 26.015135 26.015135 0 0 0 26.139676 25.862919H631.143784a26.015135 26.015135 0 0 0 26.139675-25.876757 26.015135 26.015135 0 0 0-26.153513-25.876757z m0 90.540973H369.747027a26.015135 26.015135 0 0 0-26.125838 25.876757 26.015135 26.015135 0 0 0 26.139676 25.876756H631.143784a26.015135 26.015135 0 0 0 26.139675-25.876756 26.015135 26.015135 0 0 0-26.153513-25.876757z m-78.419027-310.451892H448.207568c-28.879568 0-52.279351-23.164541-52.279352-51.739676s23.399784-51.739676 52.279352-51.739675h104.544864c28.86573 0 52.279351 23.164541 52.279352 51.753513 0 28.561297-23.413622 51.725838-52.279352 51.725838z';
 
-let allData: { name: string; value?: number }[] = [
-  {
-    name: '北京',
-  },
-  {
-    name: '天津',
-  },
-  {
-    name: '上海',
-  },
-  {
-    name: '重庆',
-  },
-  {
-    name: '河北',
-  },
-  {
-    name: '河南',
-  },
-  {
-    name: '云南',
-  },
-  {
-    name: '辽宁',
-  },
-  {
-    name: '黑龙江',
-  },
-  {
-    name: '湖南',
-  },
-  {
-    name: '安徽',
-  },
-  {
-    name: '山东',
-  },
-  {
-    name: '新疆',
-  },
-  {
-    name: '江苏',
-  },
-  {
-    name: '浙江',
-  },
-  {
-    name: '江西',
-  },
-  {
-    name: '湖北',
-  },
-  {
-    name: '广西',
-  },
-  {
-    name: '甘肃',
-  },
-  {
-    name: '山西',
-  },
-  {
-    name: '内蒙古',
-  },
-  {
-    name: '陕西',
-  },
-  {
-    name: '吉林',
-  },
-  {
-    name: '福建',
-  },
-  {
-    name: '贵州',
-  },
-  {
-    name: '广东',
-  },
-  {
-    name: '青海',
-  },
-  {
-    name: '西藏',
-  },
-  {
-    name: '四川',
-  },
-  {
-    name: '宁夏',
-  },
-  {
-    name: '海南',
-  },
-  {
-    name: '台湾',
-  },
-  {
-    name: '香港',
-  },
-  {
-    name: '澳门',
-  },
-];
-
-for (let i = 0; i < allData.length; i++) {
-  allData[i].value = Math.round(Math.random() * 100);
-}
-
+const convertData = (data: { name: string; value: number }[]) => {
+  const res: Record<'name' & 'value', number[]>[] = [];
+  for (let i = 0; i < data.length; i++) {
+    const geoCoord = geoCoordMap[data[i].name];
+    if (geoCoord) {
+      res.push({
+        name: data[i].name,
+        value: [...geoCoord, Number(data[i].value)], // 将字符串类型的value转换为数字类型并与geoCoord数组合并
+      });
+    }
+  }
+  return res;
+};
 export default function Maps() {
-  const [echart, setEchart] = useState<echarts.ECharts>();
-  const [code, setCode] = useState<number>(0);
-  const { data, isLoading } = useMap(code);
+  const [, setEchart] = useState<echarts.ECharts>();
   const chartRef = useRef<HTMLDivElement>(null);
-  const tiemRef = useRef<NodeJS.Timeout | string | number | undefined>(undefined);
-
-  const mapIndex = useRef<Record<string, number>>(null);
 
   // 初始化
   useEffect(() => {
     if (!chartRef.current) return;
-    const abort = new AbortController();
-    const chart = echarts.init(chartRef.current);
-    setEchart(chart);
-    // 添加窗口大小变化的响应
-    window.addEventListener(
-      'resize',
-      () => {
-        chart.resize();
-      },
-      { signal: abort.signal },
-    );
-    return () => {
-      abort.abort();
-      echart?.dispose();
-    };
+    fetch('/china.json')
+      .then((res) => res.json())
+      .then((res) => {
+        // @ts-ignore
+        echarts.registerMap('china', { geoJSON: res });
+        const mapFeatures = echarts.getMap('china').geoJson.features;
+
+        mapFeatures.forEach((v: { properties: { name: string; cp: [] } }) => {
+          // 地区名称
+          const name = v.properties.name;
+          // 地区经纬度
+          geoCoordMap[name] = v.properties.cp;
+        });
+        const chart = echarts.init(chartRef.current);
+        setEchart(chart);
+        // 示例数据
+        const data: { name: string; value: number }[] = [
+          { name: '北京', value: 100 },
+          { name: '上海', value: 200 },
+          { name: '广州', value: 300 },
+          { name: '深圳', value: 400 },
+          { name: '杭州', value: 250 },
+          { name: '成都', value: 350 },
+          { name: '武汉', value: 280 },
+          { name: '西安', value: 220 },
+        ];
+
+        const option: echarts.EChartsCoreOption = {
+          backgroundColor: '#070827',
+          visualMap: {
+            show: true,
+            min: 0,
+            max: 200,
+            left: '10%',
+            top: 'bottom',
+            calculable: true,
+            seriesIndex: [1],
+            inRange: {
+              color: [
+                'rgba(0, 107, 255, 0.1)',
+                'rgba(0, 107, 255, 0.3)',
+                'rgba(0, 107, 255, 0.5)',
+                'rgba(0, 107, 255, 0.7)',
+                'rgba(0, 107, 255, 1)',
+              ], // 数值从小到大，蓝色分5个层级渐变
+            },
+          },
+          geo: {
+            show: true,
+            map: 'china',
+            label: {
+              normal: {
+                show: false,
+              },
+              emphasis: {
+                show: false,
+              },
+            },
+            roam: false,
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'cross',
+              },
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+
+              extraCssText: 'width: 170px',
+            },
+            itemStyle: {
+              normal: {
+                areaColor: 'rgba(0, 107, 255, 0.3)',
+                borderColor: '#006BFF',
+                borderWidth: 2,
+              },
+              emphasis: {
+                areaColor: '#4499d0',
+              },
+              select: {
+                color: '#ee6666', // 点击后的颜色   color: '#ff0000', // 扇形选中颜色
+                borderColor: '#333', // 边框颜色
+                borderWidth: 2,
+              },
+            },
+          },
+          series: [
+            {
+              name: '散点',
+              type: 'scatter',
+              coordinateSystem: 'geo',
+              data: convertData(data),
+              symbol: planePath,
+              // symbol:'path://M505.468541 505.468541m-505.468541 0a505.468541 505.468541 0 1 0 1010.937081 0 505.468541 505.468541 0 1 0-1010.937081 0Z',
+              symbolSize: (val: [number, number, number]) => {
+                return val[2] / 10;
+              },
+              symbolKeepAspect: true,
+              itemStyle: {
+                normal: {
+                  color: '#FFFFFF',
+                },
+                select: {
+                  color: '#ee6666', // 点击后的颜色
+                  borderColor: '#333', // 边框颜色
+                  borderWidth: 2,
+                },
+              },
+              zlevel: 6,
+            },
+            {
+              type: 'map',
+              map: 'china',
+              geoIndex: 0,
+              aspectScale: 0.75, //长宽比
+              showLegendSymbol: false, // 存在legend时显示
+              label: {
+                normal: {
+                  show: true,
+                },
+                emphasis: {
+                  show: false,
+                  textStyle: {
+                    color: '#fff',
+                    select: {
+                      color: '#ee6666', // 点击后的颜色
+                      borderColor: '#333', // 边框颜色
+                      borderWidth: 2,
+                    },
+                  },
+                },
+              },
+              tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                  type: 'cross',
+                },
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                extraCssText: 'width: 170px',
+              },
+              roam: true,
+              itemStyle: {
+                normal: {
+                  areaColor: '#006BFF',
+                  borderColor: '#3B5077',
+                },
+                emphasis: {
+                  areaColor: '#2B91B7',
+                  borderColor: '#006BFF',
+                  borderWidth: 2,
+                  shadowBlur: 10,
+                  shadowColor: 'rgba(0, 107, 255, 0.5)',
+                },
+                select: {
+                  color: '#ee6666', // 点击后的颜色
+                  borderColor: '#333', // 边框颜色
+                  backGoundColor: '#006BFF', // 扇形选中颜色
+                  borderWidth: 2,
+                },
+              },
+              animation: false,
+              data,
+            },
+
+            {
+              name: 'Top 5',
+              // type: 'effectScatter',
+              // coordinateSystem: 'geo',
+              type: 'scatter',
+              coordinateSystem: 'geo',
+              data: convertData(data),
+              symbolSize: (val: [number, number, number]) => {
+                return val[2] / 6;
+              },
+              symbolKeepAspect: true,
+              itemStyle: {
+                normal: {
+                  color: '#E26851',
+                },
+                select: {
+                  color: '#ee6666', // 点击后的颜色
+                  borderColor: '#333', // 边框颜色
+                  borderWidth: 2,
+                },
+              },
+
+              zlevel: 5,
+            },
+          ],
+        };
+
+        chart.setOption(option);
+
+        // 添加窗口大小变化的响应
+        window.addEventListener('resize', () => {
+          chart.resize();
+        });
+      });
   }, []);
 
-  useEffect(() => {
-    echart?.on('click', (params) => {
-      clearTimeout(tiemRef.current);
-      //由于单击事件和双击事件冲突，故单击的响应事件延迟250毫秒执行
-      if (code) return;
-      tiemRef.current = setTimeout(() => {
-        const name = params.name; //地区name
-        if (mapIndex.current?.[name]) {
-          setCode(mapIndex.current[name]);
-        }
-      }, 250);
-      echart.on('dblclick', () => {
-        //当双击事件发生时，清除单击事件，仅响应双击事件
-        clearTimeout(tiemRef.current);
-        //返回全国地图
-        setCode(0);
-      });
-    });
-    return () => {
-      clearTimeout(tiemRef.current);
-      echart?.off('click');
-      echart?.off('dblclick');
-    };
-  }, [echart, code]);
-
-  useEffect(() => {
-    if (isLoading || !echart) return;
-    // @ts-ignore
-    echarts.registerMap(`${code}` ? `${code}` : 'china', { geoJSON: data });
-    const mapFeatures = echarts.getMap(`${code}` ? `${code}` : 'china').geoJson.features;
-    const objs: { name: string }[] = [];
-    mapFeatures.forEach((v: { properties: { name: string; cp: [] } }) => {
-      // 地区名称
-      const name = v.properties.name;
-      // 地区经纬度
-      geoCoordMap[name] = v.properties.cp;
-      objs.push({
-        name,
-      });
-    });
-    let min = Number.MAX_VALUE;
-    let max = Number.MIN_VALUE;
-    allData = objs;
-    // 更新数据
-    for (let i = 0; i < allData.length; i++) {
-      const numbers = Math.round(Math.random() * 100);
-      allData[i].value = numbers;
-      max = Math.max(numbers, max);
-      min = Math.min(numbers, min);
-    }
-    const option: echarts.EChartsCoreOption = {
-      tooltip: {
-        show: true,
-        formatter: (params: { data: { value: number }; name: string }) => {
-          if (params.data) return `${params.name}：${params.data.value}`;
-        },
-      },
-      graphic: {
-        elements: [
-          {
-            type: 'text',
-            right: 20,
-            top: 20,
-            style: {
-              text: '返回全国',
-              fontSize: 14,
-              fill: '#1890ff',
-              cursor: 'pointer',
-            },
-            onclick: () => {
-              setCode(0);
-            },
-            invisible: !code, // 只在非全国地图时显示
-          },
-          {
-            type: 'rect',
-            right: 20,
-            top: 20,
-            style: {
-              board: '10px',
-            },
-            onclick: () => {
-              setCode(0);
-            },
-            invisible: !code, // 只在非全国地图时显示
-          },
-        ],
-      },
-      visualMap: {
-        type: 'continuous',
-        text: [max, min],
-        showLabel: true,
-        orient: 'horizontal',
-        bottom: '6%',
-        left: 'center', // 修改为居中
-        min: 0,
-        max: 100,
-        show: true,
-        inRange: {
-          color: ['#40a9ff', '#1890ff', '#096dd9', '#0050b3'],
-        },
-        splitNumber: 0,
-      },
-      series: [
-        {
-          name: 'MAP',
-          type: 'map',
-          mapType: `${code}` ? `${code}` : 'china',
-          selectedMode: 'false', //是否允许选中多个区域
-          // label: {
-          //   normal: {
-          //     show: true,
-          //   },
-          //   emphasis: {
-          //     show: true,
-          //   },
-          // },
-          roam: true,
-          data: allData,
-        },
-      ],
-    };
-    echart.setOption(option);
-  }, [data, isLoading, echart, code]);
-
-  useEffect(() => {
-    if (data && !isLoading && !mapIndex.current && code !== 0) return;
-    if (data?.features) {
-      data.features.forEach((v: { properties: { name: string; code: number } }) => {
-        // 地区名称
-        const name = v.properties.name;
-        // 地区经纬度
-        mapIndex.current = { ...mapIndex.current, [name]: v.properties.code };
-      });
-    }
-  }, [data, isLoading, code]);
-
   return (
-    <div className="w-[100dvw] h-[100dvh] overflow-hidden flex relative">
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-      />
+    <div className="w-full h-[800px]">
       <div ref={chartRef} className="w-full h-full" />
     </div>
   );
