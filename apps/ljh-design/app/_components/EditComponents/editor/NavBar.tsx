@@ -14,7 +14,7 @@ import { type Edit, type EditType, Tool } from '@/app/_types/Edit';
 import type * as Fabric from 'fabric';
 import { useRouter } from 'next/navigation';
 import { Fragment, useMemo, useRef } from 'react';
-import { BsCloud, BsCloudCheck, BsFiletypeJson } from 'react-icons/bs';
+import { BsCloud, BsCloudCheck, BsFiletypeJson, BsFiletypePdf } from 'react-icons/bs';
 import {
   LuArrowLeft,
   LuChevronDown,
@@ -86,6 +86,14 @@ const NavBar = ({
         const json = reader.result;
         editor?.loadFromJson(json as string);
       };
+    },
+  });
+  const { openFilePicker: onPDFPicker } = useFilePicker({
+    accept: '.pdf',
+    onFilesSelected: ({ plainFiles }) => {
+      const file = plainFiles[0];
+      if (!file) return;
+      editor?.importPDFFILE(file);
     },
   });
 
@@ -381,18 +389,18 @@ const NavBar = ({
                     <p className="text-xs  opacity-45">请选择json文件</p>
                   </div>
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem
+                <DropdownMenuItem
                   onClick={() => {
-                    openSvgPicker();
+                    onPDFPicker();
                   }}
                   className="flex items-center gap-2 px-4 cursor-pointer"
                 >
-                  <BsFiletypeSvg size={30} />
+                  <BsFiletypePdf size={30} />
                   <div className="z-1000">
                     <p>打开</p>
-                    <p className="text-xs  opacity-45">请选择svg文件</p>
+                    <p className="text-xs  opacity-45">请选择pdf文件</p>
                   </div>
-                </DropdownMenuItem> */}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             <ThemeToggle />

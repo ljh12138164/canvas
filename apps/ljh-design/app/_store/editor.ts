@@ -1,5 +1,12 @@
-import { center, getWorkspace } from '@/app/_lib/editor/editor';
-import { type Effect, createFilter, downloadImage, isText } from '@/app/_lib/utils';
+import { center } from '@/app/_lib/editor/editor';
+import {
+  type Effect,
+  createFilter,
+  downloadImage,
+  getWorkspace,
+  importPDF,
+  isText,
+} from '@/app/_lib/utils';
 import {
   type AddObject,
   type Edit,
@@ -915,8 +922,9 @@ export const buildEditor = ({
       // 将素材添加到画布中心
       canvas.add(group[0] as fabric.Group);
       canvas.setActiveObject(group[0] as fabric.Group);
-      canvas._centerObject(group[0] as fabric.Group, canvas.getCenterPoint());
-      canvas.renderAll();
+      center(group[0] as fabric.Group, canvas);
+      // canvas._centerObject(group[0] as fabric.Group, canvas.getCenterPoint());
+      // canvas.renderAll();
 
       // 保存历史记录
       save();
@@ -929,18 +937,48 @@ export const buildEditor = ({
           html2canvas(dom).then(async (HTMLTOCANVAS) => {
             const dataURL = HTMLTOCANVAS.toDataURL('image/png');
             // 在 Fabric.js 中加载图片
-            const image = await fabric.FabricImage.fromURL(dataURL);
-            image.set({ left: 100, top: 100 });
+            const image = await fabric.FabricImage.fromURL(dataURL, {
+              crossOrigin: 'anonymous', // 添加跨域属性
+            });
+            image.set({
+              // globalCompositeOperation: 'destination-over', // 保留混合模式设置
+            });
             canvas.add(image);
             canvas.setActiveObject(image);
-            canvas._centerObject(image, canvas.getCenterPoint());
+            const board = getWorkspace(canvas);
+            if (!board) return;
+            // 将图片添加到画布中心
+            center(image, canvas);
             canvas.renderAll();
+            save();
             res(true);
           });
         } catch (err) {
           rej(false);
         }
       });
+    },
+    // 导入pdf
+    importPDFFILE: async (File) => {
+      const images = await importPDF(File);
+      // 遍历所有图片
+      for (const image of images) {
+        // 创建fabric图片对象
+        const fabricImage = await fabric.FabricImage.fromURL(image);
+        // 设置图片id
+        fabricImage.id = nanoid();
+        // 添加到画布
+        canvas.add(fabricImage);
+        // 设置为当前选中对象
+        canvas.setActiveObject(fabricImage);
+        // 修复图片大小
+        fixImageSize(fabricImage);
+      }
+      // 重新渲染画布
+      canvas.renderAll();
+      // 保存历史记录
+      toast.success(`导入成功${images.length}张图片`);
+      save();
     },
   };
 };

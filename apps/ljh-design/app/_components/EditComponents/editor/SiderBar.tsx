@@ -33,7 +33,7 @@ const SiderBar = ({
       className="w-[100px] z-40  border-r bg-[#fff] dark:bg-background overflow-y-auto"
       style={{ flexBasis: '100px' }}
     >
-      <ScrollArea>
+      <ScrollArea className="h-[90dvh]" style={{ scrollbarWidth: 'none' }}>
         <ul className="flex flex-col w-[6.2rem]">
           {/* 设计 */}
           {type !== 'material' && (

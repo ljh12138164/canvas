@@ -1,10 +1,9 @@
-import type { AddFabicObject, InitFabicObject, UserState } from '@/app/_types/Edit';
-import type { Sessions } from '@/app/_types/user';
+import type { AddFabicObject, InitFabicObject } from '@/app/_types/Edit';
 import * as fabric from 'fabric';
 // import type { WebsocketProvider } from 'y-websocket';
 // import type * as Y from 'yjs';
 //获取画布工作区
-export const getWorkspace = (canvas: fabric.Canvas) =>
+export const getWorkspace = (canvas: fabric.Canvas): fabric.FabricObject | undefined =>
   canvas
     .getObjects()
     .find(

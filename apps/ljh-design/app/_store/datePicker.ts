@@ -14,6 +14,11 @@ interface DatePickerStore {
   setStartTime: (time: Date | undefined) => void;
   setEndTime: (time: Date | undefined) => void;
 }
+/**
+ * ### useDatePicker
+ * @description 封装的日期选择器的状态管理
+ * @returns {DatePickerStore}
+ */
 export const useDatePicker = create<DatePickerStore>((set) => ({
   startDate: undefined,
   endDate: undefined,

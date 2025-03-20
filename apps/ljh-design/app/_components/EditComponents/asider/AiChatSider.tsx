@@ -276,26 +276,7 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
   };
 
   return (
-    <div className="flex flex-col h-full p-4 bg-background">
-      {/* <div className="flex justify-between items-center mb-3"> */}
-      {/* <div className="flex items-center gap-2">
-          <FaRobot className="h-5 w-5 text-primary" />
-          <h4 className="text-lg font-semibold m-0">AI 设计助手</h4>
-        </div> */}
-      {/* <Button
-          variant="ghost"
-          size="icon"
-          onClick={clearMessages}
-          disabled={messages.length === 0}
-          className="hover:bg-destructive/10 hover:text-destructive"
-          title="清空聊天记录"
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button> */}
-      {/* </div> */}
-
-      {/* <Separator className="my-2" /> */}
-
+    <div className="flex flex-col h-[70dvh] p-4 bg-background">
       {/* 消息列表 */}
       <div className="flex-1 overflow-y-auto py-2 flex flex-col gap-4 pr-1 custom-scrollbar">
         {messages.length === 0 ? (

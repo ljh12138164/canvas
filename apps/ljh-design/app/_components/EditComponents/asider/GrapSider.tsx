@@ -312,7 +312,7 @@ export default function Grap({
         }
       }}
     >
-      <DialogContent className="w-full max-w-[90vw]">
+      <DialogContent className="w-full max-w-[80dvw] max-h-[90dvh]">
         <DialogHeader>
           <DialogTitle>生成图表</DialogTitle>
           <DialogDescription>生成图表配置，添加到画布</DialogDescription>
@@ -330,7 +330,7 @@ export default function Grap({
                       清空聊天
                     </Button>
                   </div>
-                  <div className="space-y-3 max-h-[calc(100vh-450px)] overflow-y-auto custom-scrollbar">
+                  <div className="space-y-3 max-h-[70dvh] overflow-y-auto custom-scrollbar">
                     {messages.map((msg) => (
                       <div
                         key={msg.id}
@@ -423,7 +423,7 @@ export default function Grap({
               placeholder="输入Mermaid语法..."
               spellCheck="false"
             />
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all hover:shadow-xl sticky top-6  overflow-auto max-h-[500px]">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all hover:shadow-xl sticky top-6  overflow-auto max-h-[300px]">
               <section className="flex items-center justify-between">
                 <h3 className="text-base font-medium mb-4">生成的图表</h3>
                 {svg && (
@@ -440,7 +440,7 @@ export default function Grap({
               </section>
               <div
                 ref={canvasRef}
-                className="mermaid-output flex items-center justify-center min-h-[425px]"
+                className="mermaid-output flex items-center justify-center min-h-[300px]"
                 // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                 dangerouslySetInnerHTML={{ __html: svg }}
               />

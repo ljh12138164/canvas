@@ -4,10 +4,14 @@ import dayjs from 'dayjs';
 import * as fabric from 'fabric';
 import localforage from 'localforage';
 import { nanoid } from 'nanoid';
+import * as pdfjsLib from 'pdfjs-dist';
+import { GlobalWorkerOptions } from 'pdfjs-dist';
 import type { RGBColor } from 'react-color';
 import { twMerge } from 'tailwind-merge';
 import type { AiFabricObjects } from '../_components/EditComponents/asider/AiChatSider';
 import type { InitFabicObject } from '../_types/Edit';
+// 设置 pdf.js 工作器路径
+GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 // declare module 'yjs' {
 //   interface AbstractStruct {
 //     content: {
@@ -480,4 +484,49 @@ export function getSelectedText() {
     return window.getSelection()?.toString();
   }
   return '';
+}
+
+/**
+ * ### 导入PDF文件并转换为图片
+ * @param file PDF文件对象
+ * @returns Promise<string[]> 返回PDF每页转换后的base64图片数组
+ */
+export async function importPDF(file: File): Promise<string[]> {
+  try {
+    // 读取文件
+    const arrayBuffer = await file.arrayBuffer();
+    // 加载PDF文档
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const totalPages = pdf.numPages;
+    const images: string[] = [];
+
+    // 遍历每一页
+    for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+      const page = await pdf.getPage(pageNumber);
+      const viewport = page.getViewport({ scale: 1.5 });
+
+      // 创建canvas
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      if (!context) continue;
+
+      // 渲染PDF页面到canvas
+      await page.render({
+        canvasContext: context,
+        viewport: viewport,
+      }).promise;
+
+      // 转换为图片
+      const image = canvas.toDataURL('image/png');
+      images.push(image);
+    }
+
+    return images;
+  } catch (error) {
+    console.error('PDF导入错误:', error);
+    throw new Error('PDF导入失败');
+  }
 }
