@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack --port=8400  ",
+    "dev:desktop": "cross-env ENV=TAURI next dev --turbopack --port=8400  ",
     "build": " next build && pnpm run sitemap",
+    "build:desktop": "cross-env ENV=TAURI next build && pnpm run sitemap",
     "analyze": "cross-env ANALYZE=true next build",
     "start": "next start",
     "sitemap": "next-sitemap",

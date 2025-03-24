@@ -23,13 +23,14 @@
     }
   },
   "include": [
-    "next-env.d.ts",
-    "public.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
+    "app/_worker/getDateNum.js",
     "components/Try/a",
-    "app/_worker/getDateNum.js"
+    "next-env.d.ts",
+    "public.d.ts",
+    "dist-desktop/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
