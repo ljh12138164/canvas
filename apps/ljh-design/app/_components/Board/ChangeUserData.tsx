@@ -173,6 +173,8 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
               }}
             >
               <AvatarImage
+                jump={false}
+                userInfo={data.user.user_metadata}
                 className="cursor-pointer aspect-1/1 hover:scale-110 transition-all border-1 border-gray-200 rounded-full"
                 src={
                   image instanceof File ? URL.createObjectURL(image) : data.user.user_metadata.image

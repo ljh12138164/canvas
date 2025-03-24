@@ -298,6 +298,7 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
             <div key={msg.id} className="grid grid-cols-[50px_1fr] items-start mb-1 animate-fadeIn">
               {msg.role === 'user' ? (
                 <AvatarImage
+                  userInfo={user?.user.user_metadata!}
                   src={user?.user.user_metadata?.image || ''}
                   alt="用户头像"
                   priority

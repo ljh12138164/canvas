@@ -1,5 +1,7 @@
 import { cn } from '@/app/_lib/utils';
+import type { Profiles, Sessions } from '@/app/_types/user';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const AvatarImage = ({
   src,
@@ -8,6 +10,8 @@ const AvatarImage = ({
   priority,
   className,
   height,
+  userInfo,
+  jump = true,
 }: {
   src: string;
   alt: string;
@@ -15,7 +19,10 @@ const AvatarImage = ({
   priority: boolean;
   className?: string;
   height: number;
+  userInfo: Sessions['user']['user_metadata'] | Profiles;
+  jump?: boolean;
 }) => {
+  const router = useRouter();
   return (
     <Image
       src={src}
@@ -24,6 +31,11 @@ const AvatarImage = ({
       height={height}
       priority={priority}
       className={cn('rounded-full aspect-square', className)}
+      onClick={() => {
+        if (userInfo.id && jump) {
+          router.push(`/user/${userInfo.id}`);
+        }
+      }}
     />
   );
 };

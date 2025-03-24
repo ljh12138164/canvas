@@ -132,3 +132,47 @@ export const useUserData = (enabled: boolean, startTime?: Date, endTime?: Date) 
   });
   return { userData, userDataLoading };
 };
+
+export type UserProfileResponseType = InferResponseType<(typeof client.user.profile)['$get'], 200>;
+
+/**
+ * ### 获取用户个人资料（包含基本信息、发帖、点赞、收藏）
+ * @param userId 用户ID
+ * @returns
+ */
+export const useUserProfile = (userId: string) => {
+  const router = useRouter();
+  const {
+    data: userProfile,
+    isLoading: userProfileLoading,
+    isError,
+    error,
+  } = useQuery<UserProfileResponseType, Error, UserProfileResponseType>({
+    queryKey: ['userProfile', userId],
+    enabled: !!userId,
+    queryFn: async () => {
+      const token = await getNewToken();
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+      const response = await client.user.profile.$get(
+        {
+          query: { userId },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return await response.json();
+    },
+  });
+  return { userProfile, userProfileLoading, isError, error };
+};

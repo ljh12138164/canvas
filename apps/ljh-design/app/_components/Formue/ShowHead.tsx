@@ -90,6 +90,7 @@ export function ShowHead({
       <div className="flex items-center gap-4 text-sm text-gray-500 flex-wrap">
         <section className="flex items-center gap-2">
           <AvatarImage
+            userInfo={showData.profiles!}
             src={showData.profiles.image || ''}
             alt="用户头像"
             width={30}

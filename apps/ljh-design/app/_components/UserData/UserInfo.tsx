@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/app/_components/ui/
 import { useUserCollection, useUserLike } from '@/app/_hook/query/useUser';
 import { useUser } from '@/app/_store/auth';
 import { debounce } from 'lodash-es';
-import { PencilIcon, UserIcon } from 'lucide-react';
+import { PencilIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { Input } from '../ui/input';
@@ -30,6 +30,7 @@ export default function UserInfo() {
           <div className="flex items-start space-x-8">
             <AvatarImage
               className="size-20 rounded-full"
+              userInfo={user?.user.user_metadata!}
               src={user?.user.user_metadata.image || ''}
               alt={user?.user.user_metadata.name || '用户'}
               width={30}
@@ -64,14 +65,18 @@ export default function UserInfo() {
             <section className="flex gap-2   w-[200px] items-center justify-center p-2 rounded-md border">
               <Button
                 variant="ghost"
-                className={`flex items-center justify-center transition-all duration-300 dark:bg-transparent dark:hover:bg-gray-800 ${collection ? 'bg-slate-100 dark:bg-gray-800' : ''}`}
+                className={`flex items-center justify-center transition-all duration-300 dark:bg-transparent dark:hover:bg-gray-800 ${
+                  collection ? 'bg-slate-100 dark:bg-gray-800' : ''
+                }`}
                 onClick={() => setCollection(true)}
               >
                 我的点赞
               </Button>
               <Button
                 variant="ghost"
-                className={`flex items-center justify-center transition-all duration-300 dark:bg-transparent dark:hover:bg-gray-800 ${!collection ? 'bg-slate-100 dark:bg-gray-800' : ''}`}
+                className={`flex items-center justify-center transition-all duration-300 dark:bg-transparent dark:hover:bg-gray-800 ${
+                  !collection ? 'bg-slate-100 dark:bg-gray-800' : ''
+                }`}
                 onClick={() => setCollection(false)}
               >
                 我的收藏

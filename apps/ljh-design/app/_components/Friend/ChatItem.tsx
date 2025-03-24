@@ -14,6 +14,7 @@ const ChatItem = ({ item, other }: { item: ChatMessage; other: Profiles }) => {
     <>
       <div className={cn('flex items-start gap-2 p-2', isSelf ? 'flex-row-reverse' : 'flex-row')}>
         <AvatarImage
+          userInfo={isSelf ? user?.user.user_metadata! : other}
           src={isSelf ? user?.user.user_metadata.image || '' : other.image}
           alt={isSelf ? user?.user.user_metadata.name || '' : other.name}
           width={40}

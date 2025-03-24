@@ -25,6 +25,7 @@ export default function Render({ answer }: RenderProps) {
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
           <AvatarImage
+            userInfo={answer.profiles!}
             src={answer.profiles?.image || ''}
             alt="用户头像"
             width={30}

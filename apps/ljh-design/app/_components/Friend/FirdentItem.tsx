@@ -42,7 +42,14 @@ export function FirdentItem({
     <div className="space-y-2 flex flex-col justify-between">
       <div className="flex items-center gap-2 p-2">
         <div className="flex items-center gap-2">
-          <AvatarImage src={item.image} alt={item.name} priority width={30} height={30} />
+          <AvatarImage
+            userInfo={item}
+            src={item.image}
+            alt={item.name}
+            priority
+            width={30}
+            height={30}
+          />
           <div className="flex flex-col">
             <p className="text-sm font-medium">{item.name}</p>
             <p className="text-xs text-gray-500">{item.email}</p>

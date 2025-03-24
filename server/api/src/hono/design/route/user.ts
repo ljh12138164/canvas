@@ -6,6 +6,12 @@ import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
 import { getUserData, updatePassword, updateUser } from '../../../server/design/user/index';
 import { getUserCollect, getUserLike } from '../../../server/design/user/index';
+import {
+  getUserCollectByOther,
+  getUserLikeByOther,
+  getUserPosts,
+  getUserProfile,
+} from '../../../server/design/user/index';
 
 export const user = new Hono()
   .use(checkToken(process.env.SUPABASE_DESIGN_JWT!))
@@ -57,12 +63,101 @@ export const user = new Hono()
     '/data',
     zValidator(
       'query',
-      z.object({ startTime: z.coerce.date().optional(), endTime: z.coerce.date().optional() }),
+      z.object({
+        startTime: z.coerce.date().optional(),
+        endTime: z.coerce.date().optional(),
+      }),
     ),
     async (c) => {
       const { auth, token } = getSupabaseAuth(c);
       const { startTime, endTime } = c.req.valid('query');
       const [error, data] = await to(getUserData({ token, userId: auth.sub!, startTime, endTime }));
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    },
+  )
+  // 获取用户完整个人资料
+  .get(
+    '/profile',
+    zValidator(
+      'query',
+      z.object({
+        userId: z.string(),
+      }),
+    ),
+    async (c) => {
+      const { userId } = c.req.valid('query');
+      const [error, data] = await to(
+        getUserProfile({
+          userId,
+        }),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    },
+  )
+  // 获取其他用户发送的帖子
+  .get(
+    '/otherPosts',
+    zValidator(
+      'query',
+      z.object({
+        userId: z.string(),
+        search: z.string().optional(),
+      }),
+    ),
+    async (c) => {
+      const { userId, search } = c.req.valid('query');
+      const [error, data] = await to(
+        getUserPosts({
+          userId,
+          search: search ?? '',
+        }),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    },
+  )
+  // 获取其他用户点赞的帖子
+  .get(
+    '/otherLikes',
+    zValidator(
+      'query',
+      z.object({
+        userId: z.string(),
+        search: z.string().optional(),
+      }),
+    ),
+    async (c) => {
+      const { userId, search } = c.req.valid('query');
+      const [error, data] = await to(
+        getUserLikeByOther({
+          userId,
+          search: search ?? '',
+        }),
+      );
+      if (error) return c.json({ message: error.message }, errorCheck(error));
+      return c.json(data);
+    },
+  )
+  // 获取其他用户收藏的帖子
+  .get(
+    '/otherCollections',
+    zValidator(
+      'query',
+      z.object({
+        userId: z.string(),
+        search: z.string().optional(),
+      }),
+    ),
+    async (c) => {
+      const { userId, search } = c.req.valid('query');
+      const [error, data] = await to(
+        getUserCollectByOther({
+          userId,
+          search: search ?? '',
+        }),
+      );
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },

@@ -70,6 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <TooltipProvider>
                         {
                           <AvatarImage
+                            userInfo={item}
                             priority
                             className={cn('aspect-square')}
                             src={item.image}

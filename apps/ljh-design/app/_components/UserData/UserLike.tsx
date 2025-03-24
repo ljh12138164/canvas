@@ -40,6 +40,7 @@ export const UserLike = ({ data, loading }: UserLike) => {
             <div className="flex items-center gap-2">
               <p className="text-sm text-gray-500 max-w-[100px] ">发布者：</p>
               <AvatarImage
+                userInfo={item.show.profiles}
                 src={item.show.profiles.image || ''}
                 alt={item.show.profiles.name || '用户'}
                 width={30}

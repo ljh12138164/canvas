@@ -69,6 +69,7 @@ export const FormueItem = ({ item }: FormueItemProps) => {
             <div className="flex items-center gap-2 mt-auto">
               <p className="text-sm text-gray-500">发布者:</p>
               <AvatarImage
+                userInfo={item.profiles!}
                 src={item.profiles.image || ''}
                 alt={item.profiles.name || '用户'}
                 width={30}
@@ -130,6 +131,7 @@ export const FormueItem = ({ item }: FormueItemProps) => {
           <div className="flex items-center gap-2 mt-auto">
             <p className="text-sm text-gray-500">发布者:</p>
             <AvatarImage
+              userInfo={item.profiles!}
               src={item.profiles.image || ''}
               alt={item.profiles.name || '用户'}
               width={30}
