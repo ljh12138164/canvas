@@ -9,6 +9,11 @@ interface ViewToggleProps {
   setViewMode: (mode: ViewMode) => void;
 }
 
+/**
+ * ### 视图切换
+ * @param param0 参数
+ * @returns 视图切换
+ */
 const ViewToggle = ({ viewMode, setViewMode }: ViewToggleProps) => {
   return (
     <div className="flex items-center gap-2 mb-4">

@@ -11,6 +11,10 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import AvatarImage from '../Comand/AvatarImage';
 
+/**
+ * ### 用户统计
+ * @returns 用户统计
+ */
 const Page = () => {
   const { isLoading } = useIsAdmin({ type: 'logout' });
   const { startTime, endTime, dates } = useDatePicker();

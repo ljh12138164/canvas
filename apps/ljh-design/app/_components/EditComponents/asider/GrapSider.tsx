@@ -1,4 +1,5 @@
 import { Button } from '@/app/_components/ui/button';
+import { Card } from '@/app/_components/ui/card';
 import {
   Dialog,
   DialogClose,
@@ -7,10 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/app/_components/ui/dialog';
+import { Separator } from '@/app/_components/ui/separator';
 import { Textarea } from '@/app/_components/ui/textarea';
 import { useAiGrap } from '@/app/_hook/query/useAi';
 import { type Edit, Tool } from '@/app/_types/Edit';
-import { Bot, Send } from 'lucide-react';
+import { Bot, Code, RefreshCw, Send, Trash2 } from 'lucide-react';
 import mermaid from 'mermaid';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -312,83 +314,31 @@ export default function Grap({
         }
       }}
     >
-      <DialogContent className="w-full max-w-[80dvw] max-h-[90dvh]">
-        <DialogHeader>
-          <DialogTitle>生成图表</DialogTitle>
-          <DialogDescription>生成图表配置，添加到画布</DialogDescription>
+      <DialogContent className="w-full max-w-[80dvw] h-[95dvh] p-5">
+        <DialogHeader className="pb-2">
+          <DialogTitle className="flex items-center gap-2 text-xl">
+            <Code className="h-5 w-5 text-primary" />
+            图表生成工具
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground text-sm hidden">
+            描述您想要的图表，AI会自动生成对应的Mermaid代码并渲染图表
+          </DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col md:flex-row gap-6 w-full h-full overflow-hidden">
-          {/* 左侧面板：输入区域和聊天历史 */}
-          <div className="w-full md:w-1/2 space-y-6 flex-1 flex flex-col">
-            <section className="flex-1">
-              {messages.length > 0 && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transition-all hover:shadow-xl">
-                  <div className="flex justify-between items-center mb-3">
-                    <h3 className="text-base font-medium">聊天历史</h3>
-                    <Button variant="outline" size="sm" onClick={clearMessages} className="text-xs">
-                      清空聊天
-                    </Button>
-                  </div>
-                  <div className="space-y-3 max-h-[70dvh] overflow-y-auto custom-scrollbar">
-                    {messages.map((msg) => (
-                      <div
-                        key={msg.id}
-                        className="grid grid-cols-[40px_1fr] items-start gap-2 p-2 rounded-lg animate-fadeIn"
-                      >
-                        {msg.role === 'user' ? (
-                          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                            <span className="text-blue-600 text-sm">用户</span>
-                          </div>
-                        ) : (
-                          <Bot className="w-8 h-8 p-1 rounded-full bg-green-100 text-green-600" />
-                        )}
-                        {msg.role === 'user' && <div>{msg.content}</div>}
-                        {msg.code && (
-                          <div className="col-span-2 bg-gray-100 dark:bg-gray-900 p-2 rounded-lg relative">
-                            <pre className="text-sm font-mono whitespace-pre-wrap">{msg.code}</pre>
-                            <Button
-                              className=" absolute right-5 top-2"
-                              onClick={() => {
-                                setCode(msg.code);
-                                updateDiagram(msg.code);
-                              }}
-                            >
-                              应用
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                    {isLoading && (
-                      <div className="text-center mt-2 flex items-center justify-center gap-2">
-                        <div className="animate-pulse h-2 w-2 rounded-full bg-primary" />
-                        <div
-                          className="animate-pulse h-2 w-2 rounded-full bg-primary"
-                          style={{ animationDelay: '0.2s' }}
-                        />
-                        <div
-                          className="animate-pulse h-2 w-2 rounded-full bg-primary"
-                          style={{ animationDelay: '0.4s' }}
-                        />
-                        <span className="text-sm text-muted-foreground ml-1">
-                          {streamStatus || 'AI正在思考...'}
-                        </span>
-                      </div>
-                    )}
-                    <div ref={messagesEndRef} />
-                  </div>
-                </div>
-              )}
-            </section>
+        <Separator className="my-2" />
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transition-all hover:shadow-xl">
-              <div className="flex mb-4">
+        <div className="flex flex-col md:flex-row gap-5 w-full h-full overflow-hidden">
+          {/* 左侧面板：输入区域和聊天历史 */}
+          <div className="w-full md:w-1/2 flex flex-col gap-4">
+            {/* 输入区域 */}
+            <Card className="p-4 shadow-sm border-border/50 bg-card">
+              <div className="flex mb-2">
                 <Textarea
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="描述您想要的图表..."
-                  className="flex-1 p-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg mr-2 bg-gray-50 dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+                  placeholder="描述您想要的图表，例如：'创建一个订单管理系统的ER图'"
+                  className="flex-1 resize-none border-muted focus-visible:ring-1 focus-visible:ring-primary/50 shadow-sm text-sm rounded-md mr-2"
+                  rows={3}
                   disabled={isLoading}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -398,9 +348,10 @@ export default function Grap({
                   }}
                 />
                 <Button
+                  size="icon"
                   onClick={handleSendMessage}
                   disabled={isLoading}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors disabled:bg-gray-400"
+                  className="h-10 w-10 bg-primary hover:bg-primary/90 self-end"
                 >
                   {isLoading ? (
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-t-transparent border-white" />
@@ -410,41 +361,159 @@ export default function Grap({
                 </Button>
               </div>
 
-              {error && <div className="text-red-500 mt-2">{error}</div>}
-            </div>
+              {error && (
+                <div className="text-destructive text-xs mt-1 flex items-center gap-1.5 bg-destructive/10 p-2 rounded">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-destructive" />
+                  {error}
+                </div>
+              )}
+
+              {isLoading && (
+                <div className="text-center mt-2 flex items-center justify-center gap-2 bg-muted/30 py-1 px-2 rounded-full">
+                  <div className="animate-pulse h-1.5 w-1.5 rounded-full bg-primary" />
+                  <div
+                    className="animate-pulse h-1.5 w-1.5 rounded-full bg-primary"
+                    style={{ animationDelay: '0.2s' }}
+                  />
+                  <div
+                    className="animate-pulse h-1.5 w-1.5 rounded-full bg-primary"
+                    style={{ animationDelay: '0.4s' }}
+                  />
+                  <span className="text-xs text-muted-foreground ml-1">
+                    {streamStatus || 'AI正在思考...'}
+                  </span>
+                </div>
+              )}
+            </Card>
+
+            {/* 聊天历史 */}
+            {messages.length > 0 && (
+              <Card className="flex-1 border-border/50 shadow-sm overflow-hidden">
+                <div className="flex justify-between items-center p-3 border-b border-border/30 bg-muted/20">
+                  <h3 className="text-sm font-medium flex items-center gap-1.5">
+                    <span className="inline-block w-2 h-2 rounded-full bg-primary" />
+                    聊天历史
+                  </h3>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={clearMessages}
+                    className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                    title="清空聊天"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="space-y-3 p-3 max-h-[35vh] overflow-y-auto custom-scrollbar">
+                  {messages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className="grid grid-cols-[32px_1fr] gap-2 items-start animate-in slide-in-from-bottom-2 duration-200"
+                    >
+                      {msg.role === 'user' ? (
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-medium">
+                          用户
+                        </div>
+                      ) : (
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-green-500/10">
+                          <Bot className="h-4 w-4 text-green-500" />
+                        </div>
+                      )}
+                      {msg.role === 'user' && (
+                        <div className="bg-primary/10 p-2 rounded-lg text-sm">
+                          {msg.content}
+                          <p className="text-[10px] text-muted-foreground mt-1">
+                            {new Date(msg.timestamp).toLocaleTimeString()}
+                          </p>
+                        </div>
+                      )}
+                      {msg.role === 'assistant' && !msg.code && (
+                        <div className="bg-green-500/10 border border-green-200/20 p-2 rounded-lg text-sm">
+                          {msg.content}
+                          <p className="text-[10px] text-muted-foreground mt-1">
+                            {new Date(msg.timestamp).toLocaleTimeString()}
+                          </p>
+                        </div>
+                      )}
+                      {msg.code && (
+                        <div className="col-span-2 bg-muted/50 p-3 rounded-lg relative mt-1 border border-border/40">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs font-medium text-muted-foreground">
+                              生成的Mermaid代码
+                            </span>
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              className="h-7 text-xs gap-1"
+                              onClick={() => {
+                                setCode(msg.code);
+                                updateDiagram(msg.code);
+                              }}
+                            >
+                              <RefreshCw className="h-3 w-3" /> 应用
+                            </Button>
+                          </div>
+                          <pre className="text-xs font-mono bg-muted/80 p-2 rounded-md overflow-x-auto whitespace-pre-wrap max-h-[150px] custom-scrollbar">
+                            {msg.code}
+                          </pre>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
+              </Card>
+            )}
           </div>
 
           {/* 右侧面板：图表显示区域 */}
-          <div className="w-full md:w-1/2">
-            <textarea
-              value={code}
-              onChange={handleCodeChange}
-              className="w-full h-40 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg font-mono text-sm bg-gray-50 dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
-              placeholder="输入Mermaid语法..."
-              spellCheck="false"
-            />
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all hover:shadow-xl sticky top-6  overflow-auto max-h-[300px]">
-              <section className="flex items-center justify-between">
-                <h3 className="text-base font-medium mb-4">生成的图表</h3>
+          <div className="w-full md:w-1/2 flex flex-col gap-4">
+            <Card className="border-border/50 shadow-sm bg-card p-4 h-[200px]">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-medium flex items-center gap-1.5">
+                  <span className="inline-block w-2 h-2 rounded-full bg-blue-500" />
+                  图表代码
+                </h3>
+              </div>
+              <Textarea
+                value={code}
+                onChange={handleCodeChange}
+                className="w-full h-[150px] p-3 border-muted focus-visible:ring-1 focus-visible:ring-primary/50 shadow-inner text-sm bg-muted/30 font-mono resize-none"
+                placeholder="输入Mermaid语法..."
+                spellCheck="false"
+              />
+            </Card>
+
+            <Card className="border-border/50 shadow-sm flex-1">
+              <div className="flex items-center justify-between p-3 border-b border-border/30 bg-muted/20">
+                <h3 className="text-sm font-medium flex items-center gap-1.5">
+                  <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
+                  生成的图表
+                </h3>
                 {svg && (
                   <Button
+                    size="sm"
+                    variant="default"
+                    className="h-7 text-xs bg-primary/90 hover:bg-primary"
                     onClick={async () => {
                       await editor?.addGrap(canvasRef.current);
                       if (closeRef.current?.click) closeRef.current.click();
-                      toast.success('插入成功');
+                      toast.success('图表已成功添加到画布');
                     }}
                   >
                     保存到画布
                   </Button>
                 )}
-              </section>
-              <div
-                ref={canvasRef}
-                className="mermaid-output flex items-center justify-center min-h-[300px]"
-                // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-                dangerouslySetInnerHTML={{ __html: svg }}
-              />
-            </div>
+              </div>
+              <div className="p-4 overflow-auto h-[250px] bg-white dark:bg-gray-900 rounded-b-lg">
+                <div
+                  ref={canvasRef}
+                  className="mermaid-output flex items-center justify-center "
+                  // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                  dangerouslySetInnerHTML={{ __html: svg }}
+                />
+              </div>
+            </Card>
           </div>
         </div>
       </DialogContent>

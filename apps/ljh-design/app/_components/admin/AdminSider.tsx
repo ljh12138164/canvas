@@ -17,6 +17,10 @@ import SiderBarItem from '../Board/SiderBarItem';
 import { Separator } from '../ui/separator';
 // Menu items.
 
+/**
+ * ### 菜单项
+ * @returns 菜单项
+ */
 const menuItems = [
   {
     title: '仪表盘',
@@ -60,6 +64,11 @@ const menuItems = [
   },
 ];
 
+/**
+ * ### 管理员侧边栏
+ * @param param0 参数
+ * @returns 管理员侧边栏
+ */
 export function AdminSidebar({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   return (

@@ -85,6 +85,11 @@ interface EchartContentProps {
   }[];
 }
 
+/**
+ * ### 图表内容
+ * @param param0 参数
+ * @returns 图表内容
+ */
 const EchartContent = ({
   startTime,
   endTime,

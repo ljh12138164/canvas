@@ -12,6 +12,10 @@ import { useMemo } from 'react';
 import AvatarImage from '../Comand/AvatarImage';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
+/**
+ * ### 点赞统计
+ * @returns 点赞统计
+ */
 const UpvotesPage = () => {
   const { isLoading } = useIsAdmin({ type: 'logout' });
 

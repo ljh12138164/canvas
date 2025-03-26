@@ -18,6 +18,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/
 //   description: 'ljh-design画布统计',
 //   keywords: ['ljh-design', '画布统计', '画布'],
 // };
+
+/**
+ * ### 画布统计
+ * @returns 画布统计
+ */
 const Page = () => {
   const { isLoading } = useIsAdmin({ type: 'logout' });
   const { startTime, endTime, dates } = useDatePicker();

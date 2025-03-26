@@ -85,6 +85,11 @@ interface DataTableProps {
   caption?: string;
 }
 
+/**
+ * ### 表格内容
+ * @param param0 参数
+ * @returns 表格内容
+ */
 const DataTable = ({ data, columns, caption }: DataTableProps) => {
   const renderCell = (record: Record<string, any>, column: (typeof columns)[0]) => {
     if (column.render) {

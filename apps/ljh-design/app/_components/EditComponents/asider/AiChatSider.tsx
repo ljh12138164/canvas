@@ -276,17 +276,36 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
   };
 
   return (
-    <div className="flex flex-col h-[70dvh] p-4 bg-background">
+    <div className="flex flex-col h-[70dvh] p-4 bg-background border-l border-border/40">
+      {/* 标题栏 */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <FaRobot className="h-5 w-5 text-primary" />
+          <h2 className="font-medium text-sm">AI 设计助手</h2>
+        </div>
+        {messages.length > 0 && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-muted-foreground hover:text-destructive"
+            onClick={clearMessages}
+            title="清空聊天记录"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+
       {/* 消息列表 */}
-      <div className="flex-1 overflow-y-auto py-2 flex flex-col gap-4 pr-1 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto py-2 flex flex-col gap-3 pr-1 custom-scrollbar">
         {messages.length === 0 ? (
-          <div className="text-center text-muted-foreground mt-8 space-y-3 bg-muted/30 p-6 rounded-lg">
-            <FaRobot className="mx-auto h-10 w-10 mb-3 text-primary/60" />
+          <div className="text-center text-muted-foreground mt-4 space-y-3 bg-muted/30 p-5 rounded-lg shadow-sm">
+            <FaRobot className="mx-auto h-10 w-10 mb-2 text-primary/70" />
             <h3 className="text-base font-medium">AI 设计助手</h3>
             <p className="text-sm">您可以描述您想要的设计，AI将为您生成对应的图形对象</p>
-            <div className="bg-muted/50 p-3 rounded-md text-sm mt-2 text-left">
+            <div className="bg-muted/60 p-4 rounded-md text-sm mt-2 text-left shadow-inner">
               <p className="font-medium mb-2">示例提示:</p>
-              <ul className="list-disc pl-5 space-y-1">
+              <ul className="list-disc pl-5 space-y-2">
                 <li>"绘制一个红色的圆和一个蓝色的矩形"</li>
                 <li>"创建一个带有渐变填充的五角星"</li>
                 <li>"设计一个简单的标志，包含圆形和文字"</li>
@@ -295,69 +314,80 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
           </div>
         ) : (
           messages.map((msg) => (
-            <div key={msg.id} className="grid grid-cols-[50px_1fr] items-start mb-1 animate-fadeIn">
-              {msg.role === 'user' ? (
-                <AvatarImage
-                  userInfo={user?.user.user_metadata!}
-                  src={user?.user.user_metadata?.image || ''}
-                  alt="用户头像"
-                  priority
-                  width={40}
-                  height={40}
-                />
-              ) : (
-                <FaRobot style={{ color: '#000', width: '40px', height: '40px' }} />
-              )}
-              <div
-                className={`p-3 rounded-lg ${
-                  msg.role === 'user'
-                    ? 'bg-primary/10 text-foreground'
-                    : 'bg-green-500/10 text-foreground'
-                }`}
-              >
-                {msg.content}
+            <div
+              key={msg.id}
+              className="grid grid-cols-[40px_1fr] gap-2 items-start mb-1 animate-in slide-in-from-bottom-2 duration-200"
+            >
+              <div className="self-start mt-1">
+                {msg.role === 'user' ? (
+                  <AvatarImage
+                    userInfo={user?.user.user_metadata!}
+                    src={user?.user.user_metadata?.image || ''}
+                    alt="用户头像"
+                    priority
+                    width={32}
+                    height={32}
+                    className="rounded-full border border-border/30"
+                  />
+                ) : (
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                    <FaRobot className="h-4 w-4 text-primary" />
+                  </div>
+                )}
               </div>
-              <div className="flex-1 space-y-1 pt-0.5 col-span-full">
+              <div className="flex flex-col">
+                <div
+                  className={`p-3 rounded-lg ${
+                    msg.role === 'user'
+                      ? 'bg-primary/10 text-foreground'
+                      : 'bg-green-500/10 text-foreground border border-green-200/20'
+                  } text-sm leading-relaxed`}
+                >
+                  {msg.content}
+                </div>
+
                 {/* 如果消息包含对象，显示对象卡片 */}
                 {msg?.objects && msg?.objects?.length > 0 && (
-                  <Card className="mt-2 p-3 border border-border/50 shadow-sm ">
+                  <Card className="mt-2 p-3 border border-border/50 bg-card/80 shadow-sm">
                     <div className="flex flex-col w-full">
                       <div className="flex items-center justify-between mb-2">
-                        <p className="font-medium text-sm flex items-center gap-1">
-                          <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
+                        <p className="font-medium text-xs flex items-center gap-1.5">
+                          <span className="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                           生成的对象 ({msg.objects.length})
                         </p>
                       </div>
-                      <div className="flex flex-col mt-1 mb-2">
+                      <div className="grid grid-cols-1 gap-2 mt-1 mb-2">
                         {msg.objects.slice(0, 3).map((obj) => (
                           <div
                             key={nanoid()}
-                            className="bg-muted/40 p-2 rounded text-xs truncate"
+                            className="bg-muted/50 p-2 rounded text-xs flex items-center justify-between hover:bg-muted/80 transition-colors"
                             title={obj.type}
                           >
-                            {objName[obj.type as keyof typeof objName]}
-                            {obj?.fill && (
-                              <span
-                                className="inline-block w-2 h-2 ml-1 rounded-full"
-                                style={{ backgroundColor: obj?.fill }}
-                              />
-                            )}
+                            <div className="flex items-center gap-1.5">
+                              {objName[obj.type as keyof typeof objName]}
+                              {obj?.fill && (
+                                <span
+                                  className="inline-block w-3 h-3 rounded-full border border-border/30"
+                                  style={{ backgroundColor: obj?.fill }}
+                                />
+                              )}
+                            </div>
                             {/* 预览图 */}
                             <AiPreview objects={obj as AiFabricObjects} editor={editor} />
                           </div>
                         ))}
                         {msg.objects.length > 3 && (
-                          <div className="bg-muted/40 p-2 rounded text-xs truncate">
-                            +{msg.objects.length - 3} 更多
+                          <div className="bg-muted/40 p-2 rounded text-xs text-center text-muted-foreground">
+                            +{msg.objects.length - 3} 更多对象
                           </div>
                         )}
                       </div>
 
                       <Button
                         size="sm"
-                        className="w-full"
+                        variant="default"
+                        className="w-full mt-1 text-xs bg-primary/90 hover:bg-primary"
                         onClick={() => addObjectsToCanvas(msg?.objects || ([] as any))}
-                        // disabled={!canvas}
                       >
                         应用到画布
                       </Button>
@@ -365,7 +395,7 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
                   </Card>
                 )}
 
-                <p className="text-xs text-muted-foreground">
+                <p className="text-[10px] text-muted-foreground mt-1 ml-1">
                   {new Date(msg.timestamp).toLocaleTimeString()}
                 </p>
               </div>
@@ -384,7 +414,7 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInputValue(e.target.value)}
           placeholder="描述您想要的设计..."
           rows={2}
-          className="pr-10 resize-none border-muted focus-visible:ring-primary"
+          className="pr-10 resize-none border-muted focus-visible:ring-1 focus-visible:ring-primary/50 shadow-sm text-sm rounded-md"
           onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
@@ -395,30 +425,30 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
         />
         <Button
           size="icon"
-          className="absolute right-2 bottom-2 bg-primary hover:bg-primary/90"
+          className="absolute right-2 bottom-2 bg-primary hover:bg-primary/90 h-7 w-7 shadow-sm"
           onClick={handleSendMessage}
           disabled={isLoading || getAiFabricStreamPending}
         >
           {isLoading || getAiFabricStreamPending ? (
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-t-transparent border-white" />
+            <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-t-transparent border-white" />
           ) : (
-            <Send className="h-4 w-4" />
+            <Send className="h-3.5 w-3.5" />
           )}
         </Button>
       </div>
 
       {(isLoading || getAiFabricStreamPending) && (
-        <div className="text-center mt-2 flex items-center justify-center gap-2">
-          <div className="animate-pulse h-2 w-2 rounded-full bg-primary" />
+        <div className="text-center mt-2 flex items-center justify-center gap-2 bg-muted/30 py-1 px-2 rounded-full">
+          <div className="animate-pulse h-1.5 w-1.5 rounded-full bg-primary" />
           <div
-            className="animate-pulse h-2 w-2 rounded-full bg-primary"
+            className="animate-pulse h-1.5 w-1.5 rounded-full bg-primary"
             style={{ animationDelay: '0.2s' }}
           />
           <div
-            className="animate-pulse h-2 w-2 rounded-full bg-primary"
+            className="animate-pulse h-1.5 w-1.5 rounded-full bg-primary"
             style={{ animationDelay: '0.4s' }}
           />
-          <span className="text-sm text-muted-foreground ml-1">
+          <span className="text-xs text-muted-foreground ml-1">
             {streamStatus || 'AI正在思考...'}
           </span>
         </div>

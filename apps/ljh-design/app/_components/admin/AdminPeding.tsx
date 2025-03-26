@@ -1,6 +1,11 @@
 import { Separator } from '../ui/separator';
 import { Skeleton } from '../ui/skeleton';
 
+/**
+ * ### 管理员加载中
+ * @param param0 参数
+ * @returns 管理员加载中
+ */
 const AdminPeding = ({ title }: { title: string }) => {
   return (
     <div className="w-full h-full flex flex-col gap-4">

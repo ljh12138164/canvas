@@ -37,6 +37,11 @@ interface DashboardContentProps {
   loading: boolean;
 }
 
+/**
+ * ### 仪表盘内容
+ * @param param0 参数
+ * @returns 仪表盘内容
+ */
 const DashboardContent = ({
   genData,
   picGenData,

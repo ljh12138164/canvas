@@ -12,6 +12,10 @@ import { useMemo } from 'react';
 import AvatarImage from '../Comand/AvatarImage';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
+/**
+ * ### 素材统计
+ * @returns 素材统计
+ */
 const Page = () => {
   const { isLoading } = useIsAdmin({ type: 'logout' });
   const { startTime, endTime, dates } = useDatePicker();

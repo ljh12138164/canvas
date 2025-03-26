@@ -13,6 +13,10 @@ import AvatarImage from '../Comand/AvatarImage';
 import { Badge } from '../ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
+/**
+ * ### 话题统计
+ * @returns 话题统计
+ */
 const Page = () => {
   const { isLoading } = useIsAdmin({ type: 'logout' });
   const { startTime, endTime, dates } = useDatePicker();
