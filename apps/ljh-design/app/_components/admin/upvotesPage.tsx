@@ -3,7 +3,7 @@ import AdminPeding from '@/app/_components/admin/AdminPeding';
 import DateContent from '@/app/_components/admin/DateContent';
 import EchartContent from '@/app/_components/admin/EchartContent';
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
-import { useCollectionsList } from '@/app/_hook/query/useAdmin';
+import { useUpvotesList } from '@/app/_hook/query/useAdmin';
 import { useIsAdmin } from '@/app/_hook/useAdmin';
 import { useDatePicker } from '@/app/_store/datePicker';
 import type { Profiles } from '@/app/_types/user';
@@ -12,10 +12,11 @@ import { useMemo } from 'react';
 import AvatarImage from '../Comand/AvatarImage';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
-const Page = () => {
+const UpvotesPage = () => {
   const { isLoading } = useIsAdmin({ type: 'logout' });
+
   const { startTime, endTime, dates } = useDatePicker();
-  const { data, isPending } = useCollectionsList(startTime, endTime);
+  const { data, isPending } = useUpvotesList(startTime, endTime);
 
   const genData: Record<'datas' | 'date', number | string>[] = useMemo(() => {
     if (!data) return [];
@@ -24,20 +25,20 @@ const Page = () => {
       date,
     }));
   }, [dates, data]);
-  if (isPending || isLoading) return <AdminPeding title="收藏统计" />;
+  if (isPending || isLoading) return <AdminPeding title="点赞统计" />;
   return (
-    <DateContent title="收藏统计">
+    <DateContent title="点赞统计">
       <ScrollArea className="w-full h-[calc(100dvh-30px)] flex flex-col gap-4 px-4 pb-[7rem]">
         <EchartContent
-          allData={data}
           startTime={startTime}
           endTime={endTime}
           genData={genData}
-          label="收藏统计"
+          label="点赞统计"
+          allData={data}
           columns={[
             {
-              key: 'showId',
-              label: '收藏id',
+              key: 'id',
+              label: '点赞id',
             },
             {
               key: 'created_at',
@@ -76,4 +77,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default UpvotesPage;

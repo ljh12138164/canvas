@@ -24,9 +24,9 @@ const SiderBarItem = ({ label, Icon, href, isActive, closeRef, onClick }: SiderB
           : '',
       )}
     >
-      <section className="flex items-center gap-x-2 ">
-        <Icon className="size-6" />
-        <span className="test-sm ">{label}</span>
+      <section className="flex items-center gap-x-2 w-full">
+        <Icon className="size-6 flex-shrink-0" />
+        <span className="text-sm whitespace-nowrap">{label}</span>
       </section>
     </Link>
   );

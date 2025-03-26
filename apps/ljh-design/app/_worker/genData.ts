@@ -21,9 +21,11 @@ self.onmessage = (e: MessageEvent<{ data: string[]; userData: DashboardListRespo
     };
   const totalUser = userData.length;
   const totalLike = userData
+    // @ts-ignore
     .map((item) => item.show.map((item) => item.upvotes.length).reduce((a, b) => a + b, 0))
     .reduce((a, b) => a + b, 0);
   const totalCollect = userData
+    // @ts-ignore
     .map((item) => item.show.map((item) => item.collections.length).reduce((a, b) => a + b, 0))
     .reduce((a, b) => a + b, 0);
   const totalDesign = userData.map((item) => item.show.length).reduce((a, b) => a + b, 0);

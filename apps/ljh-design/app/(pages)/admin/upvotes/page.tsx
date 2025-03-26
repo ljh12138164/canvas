@@ -1,4 +1,4 @@
-import UpvotesPage from '@/app/_components/upvotes/upvotesPage';
+import UpvotesPage from '@/app/_components/admin/upvotesPage';
 
 import type { Metadata } from 'next';
 

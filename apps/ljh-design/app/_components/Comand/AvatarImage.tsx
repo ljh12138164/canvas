@@ -19,7 +19,7 @@ const AvatarImage = ({
   priority: boolean;
   className?: string;
   height: number;
-  userInfo: Sessions['user']['user_metadata'] | Profiles;
+  userInfo?: Sessions['user']['user_metadata'] | Profiles;
   jump?: boolean;
 }) => {
   const router = useRouter();
@@ -32,7 +32,7 @@ const AvatarImage = ({
       priority={priority}
       className={cn('rounded-full aspect-square', className)}
       onClick={() => {
-        if (userInfo.id && jump) {
+        if (userInfo?.id && jump) {
           router.push(`/user/${userInfo.id}`);
         }
       }}

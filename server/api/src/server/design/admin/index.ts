@@ -1,3 +1,8 @@
+import type { Ai } from '../../../types/design/ai';
+import type { Board } from '../../../types/design/board';
+import type { Collections, Show } from '../../../types/design/show';
+import type { Material } from '../../../types/design/template';
+import type { User } from '../../../types/design/user';
 import type { Profiles } from '../../../types/note/workspace';
 import { supabaseDesignPublic } from '../../supabase/design';
 
@@ -12,8 +17,8 @@ export const validateAdmin = async (accounte: string, password: string) => {
   return !!data.length;
 };
 
-const filterDate = (
-  data: { created_at: Date; id: string }[],
+const filterDate = <T extends { created_at: string }>(
+  data: T[],
   startDate: Date | undefined,
   endDate: Date | undefined,
 ) => {
@@ -39,9 +44,9 @@ const filterDate = (
  * @returns 话题列表
  */
 export const getShowList = async (startDate: Date | undefined, endDate: Date | undefined) => {
-  const { data, error } = await supabaseDesignPublic.from('show').select('created_at,id');
+  const { data, error } = await supabaseDesignPublic.from('show').select('*,profiles(*)');
   if (error) throw new Error('服务器错误');
-  return filterDate(data, startDate, endDate);
+  return filterDate<Show & { profiles: Profiles }>(data, startDate, endDate);
 };
 
 /**
@@ -53,10 +58,10 @@ export const getShowList = async (startDate: Date | undefined, endDate: Date | u
 export const getBoardList = async (startDate: Date | undefined, endDate: Date | undefined) => {
   const { data, error } = await supabaseDesignPublic
     .from('board')
-    .select('created_at,id')
+    .select('*,profiles(*)')
     .eq('isTemplate', false);
   if (error) throw new Error('服务器错误');
-  return filterDate(data, startDate, endDate);
+  return filterDate<Board & { profiles: Profiles }>(data, startDate, endDate);
 };
 
 /**
@@ -66,9 +71,9 @@ export const getBoardList = async (startDate: Date | undefined, endDate: Date | 
  * @returns 素材列表
  */
 export const getMaterialList = async (startDate: Date | undefined, endDate: Date | undefined) => {
-  const { data, error } = await supabaseDesignPublic.from('material').select('created_at,id');
+  const { data, error } = await supabaseDesignPublic.from('material').select('*,profiles(*)');
   if (error) throw new Error('服务器错误');
-  return filterDate(data, startDate, endDate);
+  return filterDate<Material & { profiles: Profiles }>(data, startDate, endDate);
 };
 
 /**
@@ -78,9 +83,9 @@ export const getMaterialList = async (startDate: Date | undefined, endDate: Date
  * @returns 点赞列表
  */
 export const getUpvotesList = async (startDate: Date | undefined, endDate: Date | undefined) => {
-  const { data, error } = await supabaseDesignPublic.from('upvotes').select('created_at,id');
+  const { data, error } = await supabaseDesignPublic.from('upvotes').select('*,profiles(*)');
   if (error) throw new Error('服务器错误');
-  return filterDate(data, startDate, endDate);
+  return filterDate<Collections & { profiles: Profiles }>(data, startDate, endDate);
 };
 
 /**
@@ -93,9 +98,9 @@ export const getCollectionsList = async (
   startDate: Date | undefined,
   endDate: Date | undefined,
 ) => {
-  const { data, error } = await supabaseDesignPublic.from('collections').select('created_at,id');
+  const { data, error } = await supabaseDesignPublic.from('collections').select('*,profiles(*)');
   if (error) throw new Error('服务器错误');
-  return filterDate(data, startDate, endDate);
+  return filterDate<Collections & { profiles: Profiles }>(data, startDate, endDate);
 };
 
 /**
@@ -105,9 +110,9 @@ export const getCollectionsList = async (
  * @returns 用户列表
  */
 export const getUserList = async (startDate: Date | undefined, endDate: Date | undefined) => {
-  const { data, error } = await supabaseDesignPublic.from('profiles').select('created_at,id');
+  const { data, error } = await supabaseDesignPublic.from('profiles').select('*');
   if (error) throw new Error('服务器错误');
-  return filterDate(data, startDate, endDate);
+  return filterDate<User>(data, startDate, endDate);
 };
 
 /**
@@ -119,10 +124,10 @@ export const getUserList = async (startDate: Date | undefined, endDate: Date | u
 export const getUserDataList = async (startDate: Date | undefined, endDate: Date | undefined) => {
   const { data, error } = await supabaseDesignPublic
     .from('board')
-    .select('created_at,id')
+    .select('*,profiles(*)')
     .eq('isTemplate', true);
   if (error) throw new Error('服务器错误');
-  return filterDate(data, startDate, endDate);
+  return filterDate<Board & { profiles: Profiles }>(data, startDate, endDate);
 };
 
 /**
@@ -132,9 +137,9 @@ export const getUserDataList = async (startDate: Date | undefined, endDate: Date
  * @returns AI列表
  */
 export const getAiList = async (startDate: Date | undefined, endDate: Date | undefined) => {
-  const { data, error } = await supabaseDesignPublic.from('ai').select('created_at,id');
+  const { data, error } = await supabaseDesignPublic.from('ai').select('*,profiles(*)');
   if (error) throw new Error('服务器错误');
-  return filterDate(data, startDate, endDate);
+  return filterDate<Ai & { profiles: Profiles }>(data, startDate, endDate);
 };
 
 /**
@@ -146,20 +151,10 @@ export const getAiList = async (startDate: Date | undefined, endDate: Date | und
 export const getDashboardList = async (startDate: Date | undefined, endDate: Date | undefined) => {
   const { data, error } = await supabaseDesignPublic
     .from('profiles')
-    .select(
-      '*,show(type,clone,title,created_at,upvotes(*),collections(*)),upvotes(*),collections(*),material(created_at,id),board(id,isTemplate,created_at)',
-    );
+    .select('*,show(*,upvotes(*),collections(*)),upvotes(*),collections(*),material(*),board(*)');
   if (error) throw new Error('服务器错误');
   const sumData = data as (Profiles & {
-    show: {
-      id: string;
-      type: 'template' | 'material';
-      clone: boolean;
-      title: string;
-      created_at: Date;
-      upvotes: { id: string; created_at: Date }[];
-      collections: { id: string; created_at: Date }[];
-    }[];
+    show: Show[];
     upvotes: { id: string; created_at: Date }[];
     collections: { id: string; created_at: Date }[];
     material: { id: string; created_at: Date }[];

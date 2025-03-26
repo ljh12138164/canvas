@@ -1,12 +1,7 @@
 'use client';
-import { AreaChart } from '@/app/_components/Echarts/AreaChart';
-import { LegendChart } from '@/app/_components/Echarts/LegendChart';
-import { LineCharts } from '@/app/_components/Echarts/LineCharts';
-import { PicChart } from '@/app/_components/Echarts/PicChart';
-import { PicChartCounte } from '@/app/_components/Echarts/PicChartCounte';
 import AdminPeding from '@/app/_components/admin/AdminPeding';
+import DashboardContent from '@/app/_components/admin/DashboardContent';
 import DateContent from '@/app/_components/admin/DateContent';
-import { ScrollArea } from '@/app/_components/ui/scroll-area';
 
 import { useDashboardList } from '@/app/_hook/query/useAdmin';
 import { useIsAdmin } from '@/app/_hook/useAdmin';
@@ -61,7 +56,12 @@ const Page = () => {
 
   const picGenData = useMemo(() => {
     return [
-      { label: '画板', type: 'board', visitors: genData?.totalBoard, fill: 'hsl(var(--chart-1))' },
+      {
+        label: '画板',
+        type: 'board',
+        visitors: genData?.totalBoard,
+        fill: 'hsl(var(--chart-1))',
+      },
       {
         label: '模板',
         type: 'templates',
@@ -97,87 +97,13 @@ const Page = () => {
   if (isPending || isLoading) return <AdminPeding title="仪表盘统计" />;
   return (
     <DateContent title="仪表盘统计">
-      <ScrollArea className="w-full h-[calc(100dvh-10rem)] px-2 flex flex-col gap-4">
-        {!loading ? (
-          <main className="flex flex-col gap-4">
-            <section className="flex gap-4 justify-between">
-              <PicChartCounte
-                startTime={startTime}
-                endTime={endTime}
-                genData={picGenData}
-                type="any"
-              />
-              <PicChart startTime={startTime} endTime={endTime} genData={picGenData} type="any" />
-            </section>
-            <section className="flex flex-col gap-4">
-              {/* 数据统计卡片 */}
-              <AreaChart
-                genData={genData.filterData}
-                startTime={startTime}
-                endTime={endTime}
-                selectedType={['upvotes', 'collections', 'show', 'templates', 'material', 'board']}
-              />
-              <LineCharts
-                startTime={startTime}
-                endTime={endTime}
-                selectedType={['upvotes', 'collections', 'show', 'templates', 'material', 'board']}
-                genData={genData.filterData}
-              />
-              <LegendChart
-                startTime={startTime}
-                endTime={endTime}
-                genData={genData.filterData}
-                selectedType={[
-                  {
-                    dataKey: 'upvotes',
-                    type: 'natural',
-                    fill: 'hsl(var(--chart-1))',
-                    stroke: 'hsl(var(--chart-1))',
-                    stackId: 'a',
-                  },
-                  {
-                    dataKey: 'collections',
-                    type: 'natural',
-                    fill: 'hsl(var(--chart-2))',
-                    stroke: 'hsl(var(--chart-2))',
-                    stackId: 'a',
-                  },
-                  {
-                    dataKey: 'show',
-                    type: 'natural',
-                    fill: 'hsl(var(--chart-3))',
-                    stroke: 'hsl(var(--chart-3))',
-                    stackId: 'a',
-                  },
-                  {
-                    dataKey: 'templates',
-                    type: 'natural',
-                    fill: 'hsl(var(--chart-4))',
-                    stroke: 'hsl(var(--chart-4))',
-                    stackId: 'a',
-                  },
-                  {
-                    dataKey: 'material',
-                    type: 'natural',
-                    fill: 'hsl(var(--chart-5))',
-                    stroke: 'hsl(var(--chart-5))',
-                    stackId: 'a',
-                  },
-                  {
-                    dataKey: 'board',
-                    type: 'natural',
-                    fill: 'hsl(var(--chart-6))',
-                    stroke: 'hsl(var(--chart-6))',
-                    stackId: 'a',
-                  },
-                ]}
-              />
-            </section>
-          </main>
-        ) : (
-          <></>
-        )}
-      </ScrollArea>
+      <DashboardContent
+        genData={genData}
+        picGenData={picGenData}
+        startTime={startTime}
+        endTime={endTime}
+        loading={loading}
+      />
     </DateContent>
   );
 };

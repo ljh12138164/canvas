@@ -11,29 +11,29 @@ const internalHost = process.env.TAURI_DEV_HOST || 'localhost';
 if (nodeEnv !== 'TAURI') {
   nextConfig = {
     // 图片配置
-    // images: {
-    //   remotePatterns: [
-    //     {
-    //       protocol: 'https',
-    //       hostname: 'images.unsplash.com',
-    //     },
-    //     {
-    //       protocol: 'https',
-    //       hostname: 'joxicbgouobvvfdxavbc.supabase.co',
-    //     },
-    //     {
-    //       protocol: 'https',
-    //       hostname: 'osdawghfaoyysblfsexp.supabase.co',
-    //     },
-    //     {
-    //       protocol: 'https',
-    //       hostname: 'challenges.cloudflare.com',
-    //     },
-    //   ],
-    //   minimumCacheTTL: 60,
-    //   deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    //   imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // },
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'images.unsplash.com',
+        },
+        {
+          protocol: 'https',
+          hostname: 'joxicbgouobvvfdxavbc.supabase.co',
+        },
+        {
+          protocol: 'https',
+          hostname: 'osdawghfaoyysblfsexp.supabase.co',
+        },
+        {
+          protocol: 'https',
+          hostname: 'challenges.cloudflare.com',
+        },
+      ],
+      minimumCacheTTL: 60,
+      deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+      imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    },
     eslint: {
       ignoreDuringBuilds: true,
     },

@@ -1,18 +1,17 @@
 'use client';
-import { usePathname } from 'next/navigation';
-import { type ReactNode, useState } from 'react';
-import { AreaChart, type AreaChartType } from '../AdminEchart/AreaChart';
-import { LegendChart } from '../AdminEchart/LegendChart';
-import { LineCharts } from '../AdminEchart/LineCharts';
-import DataTable from './DataTable';
-import ViewToggle, { type ViewMode } from './ViewToggle';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/app/_components/ui/table';
+import { nanoid } from 'nanoid';
 
-interface EchartContentProps {
-  startTime: Date | undefined;
-  endTime: Date | undefined;
-  genData: Record<AreaChartType | 'date', number | string>[];
-  label: string;
-  allData:
+interface DataTableProps {
+  data:
     | (
         | {
             id: string;
@@ -83,35 +82,48 @@ interface EchartContentProps {
     label: string;
     render?: (value: any, record: Record<string, any>) => React.ReactNode;
   }[];
+  caption?: string;
 }
 
-const EchartContent = ({
-  startTime,
-  endTime,
-  genData,
-  label,
-  allData,
-  columns,
-}: EchartContentProps) => {
-  const [viewMode, setViewMode] = useState<ViewMode>('chart');
-  const pathName = usePathname();
-  // 表格列定义
+const DataTable = ({ data, columns, caption }: DataTableProps) => {
+  const renderCell = (record: Record<string, any>, column: (typeof columns)[0]) => {
+    if (column.render) {
+      return column.render(record[column.key], record);
+    }
+    return record[column.key] || '-';
+  };
 
   return (
-    <div className="flex flex-col gap-4">
-      <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
-
-      {viewMode === 'chart' ? (
-        <>
-          <AreaChart startTime={startTime} endTime={endTime} genData={genData} label={label} />
-          <LineCharts startTime={startTime} endTime={endTime} genData={genData} label={label} />
-          <LegendChart startTime={startTime} endTime={endTime} genData={genData} />
-        </>
-      ) : (
-        <>{pathName !== '/admin' && <DataTable data={allData} columns={columns} caption="" />}</>
-      )}
+    <div className="rounded-md border">
+      <Table>
+        {caption && <TableCaption>{caption}</TableCaption>}
+        <TableHeader>
+          <TableRow>
+            {columns.map((column) => (
+              <TableHead key={column.key}>{column.label}</TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data?.length && data?.length > 0 ? (
+            data?.map((record, index) => (
+              <TableRow key={nanoid()}>
+                {columns.map((column) => (
+                  <TableCell key={`${index}-${column.key}`}>{renderCell(record, column)}</TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="text-center py-4">
+                暂无数据
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 };
 
-export default EchartContent;
+export default DataTable;

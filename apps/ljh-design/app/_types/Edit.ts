@@ -1,6 +1,5 @@
 import type { Effect } from '@/app/_lib/utils';
 import * as fabric from 'fabric';
-import { SerializedGroupProps } from 'fabric';
 import material from 'material-colors';
 import type { IconType } from 'react-icons';
 import { FaCircle, FaDiamond, FaSquare, FaSquareFull } from 'react-icons/fa6';

@@ -64,14 +64,16 @@ export function AdminSidebar({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   return (
     <>
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={true}>
         <Sidebar>
           <SidebarContent>
             <SidebarGroup>
-              <SidebarGroupLabel className="text-2xl font-bold">ljh-design</SidebarGroupLabel>
+              <SidebarGroupLabel className="text-2xl font-bold px-4 py-2">
+                ljh-design
+              </SidebarGroupLabel>
               <Separator className="my-2" />
               <SidebarGroupContent>
-                <SidebarMenu className="flex flex-col gap-2">
+                <SidebarMenu className="flex flex-col gap-2 px-2">
                   {menuItems.map((item) => (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>

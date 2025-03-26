@@ -47,7 +47,7 @@ export const useShowList = (startDate: Date | undefined, endDate: Date | undefin
   return { data, isPending };
 };
 
-type BoardListResponseType = InferResponseType<typeof client.admin.board.$post, 200>;
+export type BoardListResponseType = InferResponseType<typeof client.admin.board.$post, 200>;
 /**
  * ### 获取作品统计
  * @returns 作品统计结果
