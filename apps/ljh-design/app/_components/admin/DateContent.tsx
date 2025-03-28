@@ -9,16 +9,21 @@ import { Button } from '../ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Separator } from '../ui/separator';
 import AdminPeding from './AdminPeding';
+import Watcher from './Watcher';
+
 export default function DateContent({
   children,
   title,
+  main = false,
 }: {
   children: React.ReactNode;
   title: string;
+  main?: boolean;
 }) {
   const { startTime, endTime, setStartTime, setEndTime, setDates, setLoading, loading } =
     useDatePicker();
   // web worker
+  const [show, setShow] = useState(true);
   const [dateWorker, setDateWorker] = useState<Worker>();
   // 自定义ref
   const handleStartSelect = (date: Date | undefined) => {
@@ -80,6 +85,16 @@ export default function DateContent({
     <main className="w-full h-full flex flex-col gap-4 px-4 py-2">
       <nav className="h-10 flex p-2">
         <h2 className="text-2xl font-bold">{title}</h2>
+        {main && (
+          <div className="ml-2 flex gap-2">
+            <Button variant={show ? 'default' : 'outline'} onClick={() => setShow(true)}>
+              可视化大屏
+            </Button>
+            <Button variant={!show ? 'default' : 'outline'} onClick={() => setShow(false)}>
+              图表大屏
+            </Button>
+          </div>
+        )}
         {/* 时间选择 */}
         <section className="ml-auto">
           <Popover>
@@ -151,7 +166,7 @@ export default function DateContent({
         </section>
       </nav>
       <Separator />
-      {children}
+      {!show ? children : <Watcher startTime={startTime} endTime={endTime} />}
     </main>
   );
 }

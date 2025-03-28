@@ -32,4 +32,5 @@ export interface Profiles {
   name: string;
   image: string;
   email: string;
+  region?: string;
 }

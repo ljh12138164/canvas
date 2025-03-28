@@ -31,6 +31,7 @@ export interface Meta {
   sub: string;
   image: string;
   email: string;
+  region: string;
 }
 
 export type Sessions = {

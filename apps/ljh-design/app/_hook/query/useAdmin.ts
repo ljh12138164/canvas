@@ -246,16 +246,20 @@ export type DashboardListResponseType = InferResponseType<typeof client.admin.da
  * ### 获取仪表盘统计
  * @returns 仪表盘统计结果
  */
-export const useDashboardList = (startDate: Date | undefined, endDate: Date | undefined) => {
+export const useDashboardList = (
+  startDate: Date | undefined,
+  endDate: Date | undefined,
+  code?: number,
+) => {
   const router = useRouter();
   const { data, isPending } = useQuery<DashboardListResponseType, Error, DashboardListResponseType>(
     {
-      queryKey: ['ADMIN_DASHBOARD_LIST', startDate, endDate],
+      queryKey: ['ADMIN_DASHBOARD_LIST', startDate, endDate, code],
       queryFn: async () => {
         const token = localStorage.getItem('ljh-admin-token');
         if (!token) router.push('/admin/login');
         const response = await client.admin.dashboard.$post(
-          { json: { startDate, endDate } },
+          { json: { startDate, endDate, code } },
           {
             headers: {
               Authorization: `Bearer ${token}`,

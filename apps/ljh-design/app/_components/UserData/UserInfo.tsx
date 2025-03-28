@@ -38,7 +38,7 @@ export default function UserInfo() {
               priority
             />
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div>
                 <p className="text-sm text-muted-foreground">用户名</p>
                 <p className="text-lg font-medium">{user?.user.user_metadata.name}</p>
@@ -47,6 +47,10 @@ export default function UserInfo() {
               <div>
                 <p className="text-sm text-muted-foreground">邮箱</p>
                 <p className="text-lg">{user?.user.user_metadata.email}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">地区</p>
+                <p className="text-lg">{user?.user.user_metadata.regionStr || '无地区'}</p>
               </div>
             </div>
           </div>

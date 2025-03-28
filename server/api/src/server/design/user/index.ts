@@ -19,7 +19,14 @@ export const updateUser = async ({
   id,
   name,
   image,
-}: { token: string; id: string; name: string | undefined; image: string | undefined }) => {
+  region,
+}: {
+  token: string;
+  id: string;
+  name: string | undefined;
+  image: string | undefined;
+  region: string | undefined;
+}) => {
   if (name) {
     const { data, error } = await supabaseDesign(token)
       .from('profiles')
@@ -33,6 +40,20 @@ export const updateUser = async ({
     if (error) throw new Error('服务器错误');
     return data;
   }
+  if (region) {
+    const { data, error } = await supabaseDesign(token)
+      .from('profiles')
+      .update([
+        {
+          region,
+        },
+      ])
+      .eq('id', id)
+      .select('*');
+    if (error) throw new Error('服务器错误');
+    return data;
+  }
+
   if (image) {
     const { data, error } = await supabaseDesign(token)
       .from('profiles')

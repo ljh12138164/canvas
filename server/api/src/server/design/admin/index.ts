@@ -148,10 +148,19 @@ export const getAiList = async (startDate: Date | undefined, endDate: Date | und
  * @param endDate 结束时间
  * @returns 仪表盘列表
  */
-export const getDashboardList = async (startDate: Date | undefined, endDate: Date | undefined) => {
-  const { data, error } = await supabaseDesignPublic
+export const getDashboardList = async (
+  startDate: Date | undefined,
+  endDate: Date | undefined,
+  code: number | undefined,
+) => {
+  let supbases = supabaseDesignPublic
     .from('profiles')
-    .select('*,show(*,upvotes(*),collections(*)),upvotes(*),collections(*),material(*),board(*)');
+    .select(
+      '*,show(created_at,id,upvotes(created_at,id),collections(created_at,id)),upvotes(created_at,id),collections(created_at,id),material(created_at,id),board(created_at,id)',
+    );
+  // .like('region', `%${code}%`);
+  if (code) supbases = supbases.like('region', `%${code}%`);
+  const { data, error } = await supbases;
   if (error) throw new Error('服务器错误');
   const sumData = data as (Profiles & {
     show: Show[];

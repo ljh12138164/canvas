@@ -1031,6 +1031,9 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
+      echarts:
+        specifier: ^5.6.0
+        version: 5.6.0
       electron:
         specifier: ^35.0.3
         version: 35.0.3

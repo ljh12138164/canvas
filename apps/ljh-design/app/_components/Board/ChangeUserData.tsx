@@ -6,7 +6,25 @@ import {
   CardHeader,
   CardTitle,
 } from '@/app/_components/ui/card';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/app/_components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/app/_components/ui/select';
 import { logout, updateCurrentUser } from '@/app/_database/user';
+import { useMap } from '@/app/_hook/query/useMap';
 import { useUserChange, useUserChangePassword } from '@/app/_hook/query/useUserChange';
 import { useUser } from '@/app/_store/auth';
 import type { Sessions } from '@/app/_types/user';
@@ -27,8 +45,12 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
   const ImageRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState<string>(defaultData.current.name);
   const [image, setImage] = useState<File | string>(defaultData.current.image);
+  const [region, setRegion] = useState<string[]>(
+    (defaultData.current.region ?? '').split(',') || [],
+  );
   const { mutate, isPending } = useUserChange();
   const { changePassword, changePasswordPending } = useUserChangePassword();
+  const { data: mapData } = useMap();
   const [password, setPassword] = useState<string>('');
   const [repetPassword, setRepetPassword] = useState<string>('');
 
@@ -39,7 +61,7 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
     e.target.value = '';
   }
 
-  async function change(type: 'name' | 'password' | 'image') {
+  async function change(type: 'name' | 'password' | 'image' | 'region') {
     // 昵称不能超过20个字
     if (type === 'name') {
       if (name.length > 20) return toast.error('昵称不能超过20个字');
@@ -57,6 +79,33 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
         {
           json: {
             name: name,
+          },
+        },
+        {
+          onSuccess: () => {
+            toast.success('修改成功');
+          },
+        },
+      );
+    }
+    if (type === 'region') {
+      if (region.length > 20) return toast.error('地区不能超过20个字');
+      if (!region) return toast.error('地区不能为空');
+      const regionStr = `${mapData?.districts.find((item) => item.adcode === region[0])?.name},${mapData?.districts.find((item) => item.adcode === region[0])?.districts.find((item) => item.adcode === region[1])?.name}`;
+      const [error] = await to(
+        updateCurrentUser({
+          datas: {
+            type: 'region',
+            regionStr: regionStr,
+            region,
+          },
+        }),
+      );
+      if (error) return toast.error('修改失败');
+      mutate(
+        {
+          json: {
+            region: region.join(','),
           },
         },
         {
@@ -122,6 +171,7 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
       if (error) return toast.error('修改失败');
     }
   }
+
   return (
     <ScrollArea>
       <section className="flex flex-col gap-2">
@@ -148,6 +198,107 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
             <div className="text-sm ">昵称不能超过20个字</div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => change('name')} disabled={isPending}>
+                保存
+              </Button>
+            </div>
+          </CardFooter>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>用户地区</CardTitle>
+            <CardDescription>
+              你在本站的地区
+              {data && (
+                <>
+                  {region[0] && (
+                    <span className="font-bold mx-2">
+                      {mapData?.districts.find((item) => item.adcode === region[0])?.name}
+                    </span>
+                  )}
+                  {region[1] && (
+                    <span className="font-bold">
+                      {
+                        mapData?.districts
+                          .find((item) => item.adcode === region[0])
+                          ?.districts.find((item) => item.adcode === region[1])?.name
+                      }
+                    </span>
+                  )}
+                </>
+              )}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {data && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline">选择地区</Button>
+                </DialogTrigger>
+                <DialogContent className="top-[30%]">
+                  <DialogHeader>
+                    <DialogTitle>选择地区</DialogTitle>
+                  </DialogHeader>
+                  <DialogDescription className="flex gap-2">
+                    {region.length >= 1 && (
+                      <Select
+                        onValueChange={(value) => setRegion([value, region[1]])}
+                        value={region[0]}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="选择省" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {mapData?.districts.map((item) => (
+                            <SelectItem key={item.adcode} value={item.adcode}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                    {region.length >= 2 && (
+                      <Select
+                        onValueChange={(value) => setRegion([region[0], value])}
+                        value={region[1]}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="选择市" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {mapData?.districts
+                            ?.find((item) => item.adcode === region[0])
+                            ?.districts?.map((item) => (
+                              <SelectItem key={item.adcode} value={item.adcode}>
+                                {item.name}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </DialogDescription>
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          if (!region[1]) setRegion([]);
+                        }}
+                      >
+                        保存
+                      </Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            )}
+          </CardContent>
+          <CardFooter className="flex  bg-[#fafafa] dark:bg-gray-900 items-center py-4 justify-between border-t-1">
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => change('region')}
+                disabled={isPending && !region[0] && !region[1]}
+              >
                 保存
               </Button>
             </div>

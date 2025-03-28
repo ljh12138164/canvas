@@ -96,7 +96,7 @@ const Page = () => {
   }, [genData]);
   if (isPending || isLoading) return <AdminPeding title="仪表盘统计" />;
   return (
-    <DateContent title="仪表盘统计">
+    <DateContent title="仪表盘统计" main>
       <DashboardContent
         genData={genData}
         picGenData={picGenData}

@@ -23,12 +23,13 @@ export const user = new Hono()
       z.object({
         name: z.string().optional(),
         image: z.string().optional(),
+        region: z.string().optional(),
       }),
     ),
     async (c) => {
       const { auth, token } = getSupabaseAuth(c);
-      const { name, image } = c.req.valid('json');
-      const [error, data] = await to(updateUser({ token, id: auth.sub!, name, image }));
+      const { name, image, region } = c.req.valid('json');
+      const [error, data] = await to(updateUser({ token, id: auth.sub!, name, image, region }));
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },

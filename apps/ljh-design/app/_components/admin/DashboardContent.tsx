@@ -5,12 +5,8 @@ import { LineCharts } from '@/app/_components/Echarts/LineCharts';
 import { PicChart } from '@/app/_components/Echarts/PicChart';
 import { PicChartCounte } from '@/app/_components/Echarts/PicChartCounte';
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
-import dayjs from 'dayjs';
-import { useState } from 'react';
-import DataTable from './DataTable';
-import ViewToggle, { type ViewMode } from './ViewToggle';
 
-type GenData = {
+export type GenData = {
   filterData: {
     date: string;
     templates: number;
@@ -49,26 +45,6 @@ const DashboardContent = ({
   endTime,
   loading,
 }: DashboardContentProps) => {
-  // 定义表格列
-  const summaryColumns = [
-    { key: 'label', label: '类型' },
-    { key: 'visitors', label: '总数' },
-  ];
-
-  const detailColumns = [
-    {
-      key: 'date',
-      label: '日期',
-      render: (value: string) => dayjs(value).format('YYYY-MM-DD'),
-    },
-    { key: 'templates', label: '模板' },
-    { key: 'material', label: '素材' },
-    { key: 'board', label: '画板' },
-    { key: 'upvotes', label: '点赞' },
-    { key: 'collections', label: '收藏' },
-    { key: 'show', label: '发布' },
-  ];
-
   if (loading) return null;
 
   return (

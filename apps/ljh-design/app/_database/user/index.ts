@@ -139,6 +139,19 @@ export async function updateImage(imageUrl: string | File, oldImageUrl: string) 
 }
 
 /**
+ * ### 更新用户地区
+ * @param region
+ * @returns
+ */
+export async function updateRegion(regionStr: string, region: string[]) {
+  const { data, error } = await supabase.auth.updateUser({
+    data: { regionStr, region: region.join(',') },
+  });
+  if (error) throw new Error('服务器错误');
+  return data;
+}
+
+/**
  * 更新用户信息
  * @param param0
  * @returns
@@ -155,6 +168,11 @@ export async function updateCurrentUser({
         type: 'image';
         image: string | File;
         oldImageUrl: string;
+      }
+    | {
+        type: 'region';
+        region: string[];
+        regionStr: string;
       };
 }) {
   if (datas.type === 'image') {
@@ -164,6 +182,11 @@ export async function updateCurrentUser({
   }
   if (datas.type === 'name') {
     const [error, data] = await to(updateName(datas.name));
+    if (error) throw new Error('修改失败');
+    return data;
+  }
+  if (datas.type === 'region') {
+    const [error, data] = await to(updateRegion(datas.regionStr, datas.region));
     if (error) throw new Error('修改失败');
     return data;
   }

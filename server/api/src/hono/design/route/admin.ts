@@ -157,11 +157,15 @@ export const admin = new Hono()
     '/dashboard',
     zValidator(
       'json',
-      z.object({ startDate: z.coerce.date().optional(), endDate: z.coerce.date().optional() }),
+      z.object({
+        startDate: z.coerce.date().optional(),
+        endDate: z.coerce.date().optional(),
+        code: z.number().optional(),
+      }),
     ),
     async (c) => {
-      const { startDate, endDate } = c.req.valid('json');
-      const [error, data] = await to(getDashboardList(startDate, endDate));
+      const { startDate, endDate, code } = c.req.valid('json');
+      const [error, data] = await to(getDashboardList(startDate, endDate, code));
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },
