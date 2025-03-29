@@ -45,57 +45,57 @@ if (nodeEnv !== 'TAURI') {
           minSize: 20000,
           maxSize: 240000,
           chunks: 'all',
-          // cacheGroups: {
-          //   // React 相关核心包
-          //   'react-vendor': {
-          //     test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom|@tanstack|supabase)[\\/]/,
-          //     name: 'react-vendor',
-          //     priority: 40,
-          //     enforce: true,
-          //   },
-          //   // UI 组件相关
-          //   'ui-vendor': {
-          //     test: /[\\/]node_modules[\\/](@radix-ui.*|@hookform.*|class-variance-authority|tailwind-merge|dayjs|date-fns|lodash-es.*|crypto-js|zod|react-icons)[\\/]/,
-          //     name: 'ui-vendor',
-          //     priority: 30,
-          //     chunks: 'async', // 改为异步加载
-          //   },
-          //   // 图表相关
-          //   'chart-vendor': {
-          //     test: /[\\/]node_modules[\\/](recharts|d3-.*|react-smooth|victory.*|react-day-picker)[\\/]/,
-          //     name: 'chart-vendor',
-          //     chunks: 'async', // 改为异步加载
-          //     minChunks: 2, // 至少被引用2次才会被打包
-          //   },
-          //   // 编辑器相关
-          //   'editor-vendor': {
-          //     test: /[\\/]node_modules[\\/](@tiptap.*|prosemirror.*|@hocuspocus.*)[\\/]/,
-          //     name: 'editor-vendor',
-          //     priority: 20,
-          //     chunks: 'async',
-          //   },
-          //   'fabric-vendor': {
-          //     test: /[\\/]node_modules[\\/](fabric.*|quill.*)[\\/]/,
-          //     name: 'fabric-vendor',
-          //     priority: 20,
-          //     chunks: 'async',
-          //   },
-          //   // react-markdown-editor-lite
-          //   'refactor-vendor': {
-          //     test: /[\\/]node_modules[\\/](@refactor.* | react-markdown | localforage)[\\/]/,
-          //     name: 'refactor-vendor',
-          //     priority: 20,
-          //     chunks: 'async',
-          //   },
-          //   // 其他第三方库
-          //   vendors: {
-          //     test: /[\\/]node_modules[\\/]/,
-          //     name: 'vendors',
-          //     priority: 10,
-          //     chunks: 'async', // 改为异步加载
-          //     minChunks: 2, // 至少被引用2次才会被打包
-          //   },
-          // },
+          cacheGroups: {
+            // React 相关核心包
+            'react-vendor': {
+              test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom|@tanstack|supabase)[\\/]/,
+              name: 'react-vendor',
+              priority: 40,
+              enforce: true,
+            },
+            // UI 组件相关
+            'ui-vendor': {
+              test: /[\\/]node_modules[\\/](@radix-ui.*|@hookform.*|class-variance-authority|tailwind-merge|dayjs|date-fns|lodash-es.*|crypto-js|zod|react-icons)[\\/]/,
+              name: 'ui-vendor',
+              priority: 30,
+              chunks: 'async', // 改为异步加载
+            },
+            // 图表相关
+            'chart-vendor': {
+              test: /[\\/]node_modules[\\/](recharts|d3-.*|react-smooth|victory.*|react-day-picker)[\\/]/,
+              name: 'chart-vendor',
+              chunks: 'async', // 改为异步加载
+              minChunks: 2, // 至少被引用2次才会被打包
+            },
+            // 编辑器相关
+            'editor-vendor': {
+              test: /[\\/]node_modules[\\/](@tiptap.*|prosemirror.*|@hocuspocus.*)[\\/]/,
+              name: 'editor-vendor',
+              priority: 20,
+              chunks: 'async',
+            },
+            'fabric-vendor': {
+              test: /[\\/]node_modules[\\/](fabric.*|quill.*)[\\/]/,
+              name: 'fabric-vendor',
+              priority: 20,
+              chunks: 'async',
+            },
+            // react-markdown-editor-lite
+            'refactor-vendor': {
+              test: /[\\/]node_modules[\\/](@refactor.* | react-markdown | localforage)[\\/]/,
+              name: 'refactor-vendor',
+              priority: 20,
+              chunks: 'async',
+            },
+            // 其他第三方库
+            vendors: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              priority: 10,
+              chunks: 'async', // 改为异步加载
+              minChunks: 2, // 至少被引用2次才会被打包
+            },
+          },
         };
       }
       return config;
