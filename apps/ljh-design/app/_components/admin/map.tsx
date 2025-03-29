@@ -91,9 +91,9 @@ export default function Maps({
         code,
         value: 0,
       });
-
       // 添加主要城市数据点
-      if (v.properties.cp && v.properties.cp.length === 2) {
+      // @ts-ignore
+      if (v.properties.cp && Array.isArray(v.properties.cp) && v.properties.cp.length === 2) {
         majorCities.push({
           name,
           value: v.properties.cp,
@@ -123,7 +123,7 @@ export default function Maps({
         }
       } else {
         // 如果是嵌套的路由
-        const lastCode = item.region.split(',')?.[1];
+        const lastCode = item.region?.split(',')?.[1];
         const regionObj = objs.find((items) => {
           return items.code === Number(lastCode);
         });
