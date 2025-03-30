@@ -51,6 +51,7 @@ const AiPreview = ({
     // 获取容器尺寸
     const containerWidth = ref.current?.clientWidth ?? 79 - 10;
     const containerHeight = ref.current?.clientHeight ?? 150 - 10;
+    // console.log(containerWidth, containerHeight);
     // 计算缩放比例
     const scaleX = containerWidth / obj.width!;
     const scaleY = containerHeight / obj.height!;

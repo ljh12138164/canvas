@@ -345,60 +345,60 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
                 >
                   {msg.content}
                 </div>
-
-                {/* 如果消息包含对象，显示对象卡片 */}
-                {msg?.objects && msg?.objects?.length > 0 && (
-                  <Card className="mt-2 p-3 border border-border/50 bg-card/80 shadow-sm">
-                    <div className="flex flex-col w-full">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="font-medium text-xs flex items-center gap-1.5">
-                          <span className="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                          生成的对象 ({msg.objects.length})
-                        </p>
-                      </div>
-                      <div className="grid grid-cols-1 gap-2 mt-1 mb-2">
-                        {msg.objects.slice(0, 3).map((obj) => (
-                          <div
-                            key={nanoid()}
-                            className="bg-muted/50 p-2 rounded text-xs flex items-center justify-between hover:bg-muted/80 transition-colors"
-                            title={obj.type}
-                          >
-                            <div className="flex items-center gap-1.5">
-                              {objName[obj.type as keyof typeof objName]}
-                              {obj?.fill && (
-                                <span
-                                  className="inline-block w-3 h-3 rounded-full border border-border/30"
-                                  style={{ backgroundColor: obj?.fill }}
-                                />
-                              )}
-                            </div>
-                            {/* 预览图 */}
-                            <AiPreview objects={obj as AiFabricObjects} editor={editor} />
-                          </div>
-                        ))}
-                        {msg.objects.length > 3 && (
-                          <div className="bg-muted/40 p-2 rounded text-xs text-center text-muted-foreground">
-                            +{msg.objects.length - 3} 更多对象
-                          </div>
-                        )}
-                      </div>
-
-                      <Button
-                        size="sm"
-                        variant="default"
-                        className="w-full mt-1 text-xs bg-primary/90 hover:bg-primary"
-                        onClick={() => addObjectsToCanvas(msg?.objects || ([] as any))}
-                      >
-                        应用到画布
-                      </Button>
-                    </div>
-                  </Card>
-                )}
-
-                <p className="text-[10px] text-muted-foreground mt-1 ml-1">
-                  {new Date(msg.timestamp).toLocaleTimeString()}
-                </p>
               </div>
+
+              {/* 如果消息包含对象，显示对象卡片 */}
+              {msg?.objects && msg?.objects?.length > 0 && (
+                <Card className="col-span-full mt-2 p-3 border border-border/50 bg-card/80 shadow-sm">
+                  <div className="flex flex-col w-full">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="font-medium text-xs flex items-center gap-1.5">
+                        <span className="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        生成的对象 ({msg.objects.length})
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2 mt-1 mb-2">
+                      {msg.objects.slice(0, 3).map((obj) => (
+                        <div
+                          key={nanoid()}
+                          className="bg-muted/50 p-2 rounded text-xs flex flex-col items-center justify-between hover:bg-muted/80 transition-colors"
+                          title={obj.type}
+                        >
+                          <div className="flex items-center gap-1.5">
+                            {objName[obj.type as keyof typeof objName]}
+                            {obj?.fill && (
+                              <span
+                                className="inline-block w-3 h-3 rounded-full border border-border/30"
+                                style={{ backgroundColor: obj?.fill }}
+                              />
+                            )}
+                          </div>
+                          {/* 预览图 */}
+                          <AiPreview objects={obj as AiFabricObjects} editor={editor} />
+                        </div>
+                      ))}
+                      {msg.objects.length > 3 && (
+                        <div className="bg-muted/40 p-2 rounded text-xs text-center text-muted-foreground">
+                          +{msg.objects.length - 3} 更多对象
+                        </div>
+                      )}
+                    </div>
+
+                    <Button
+                      size="sm"
+                      variant="default"
+                      className="w-full mt-1 text-xs bg-primary/90 hover:bg-primary"
+                      onClick={() => addObjectsToCanvas(msg?.objects || ([] as any))}
+                    >
+                      应用到画布
+                    </Button>
+                  </div>
+                </Card>
+              )}
+
+              <p className="text-[10px] text-muted-foreground mt-1 ml-1">
+                {new Date(msg.timestamp).toLocaleTimeString()}
+              </p>
             </div>
           ))
         )}
