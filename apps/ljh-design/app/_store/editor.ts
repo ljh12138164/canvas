@@ -1,6 +1,7 @@
 import { center } from '@/app/_lib/editor/editor';
 import {
   type Effect,
+  convertImagesToPDF,
   createFilter,
   downloadImage,
   getWorkspace,
@@ -23,6 +24,7 @@ import {
   TEXTBOX_OPTION,
   type buildEditorProps,
 } from '@/app/_types/Edit';
+import dayjs from 'dayjs';
 import * as fabric from 'fabric';
 // import { loadSVGFromString } from 'fabric';
 import html2canvas from 'html2canvas';
@@ -979,6 +981,21 @@ export const buildEditor = ({
       // 保存历史记录
       toast.success(`导入成功${images.length}张图片`);
       save();
+    },
+    // 保存pdf
+    savePdf: async () => {
+      const option = genertateSaveOption();
+      // 设置画布缩放
+      canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+      const dataUrl = canvas.toDataURL({ ...option, format: 'png' });
+      const workspace = getWorkspace(canvas);
+      const pdfDataUri = await convertImagesToPDF(dataUrl, workspace.width, workspace.height);
+      const downloadLink = document.createElement('a');
+      downloadLink.href = pdfDataUri;
+      downloadLink.download = '文档.pdf';
+      // 确保在用户交互中触发点击
+      downloadLink.click();
+      authZoom();
     },
   };
 };

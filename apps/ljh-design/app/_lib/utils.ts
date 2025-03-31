@@ -2,6 +2,7 @@ import type { Board } from '@/app/_types/board';
 import { type ClassValue, clsx } from 'clsx';
 import dayjs from 'dayjs';
 import * as fabric from 'fabric';
+import { jsPDF } from 'jspdf';
 import localforage from 'localforage';
 import { nanoid } from 'nanoid';
 import * as pdfjsLib from 'pdfjs-dist';
@@ -528,5 +529,34 @@ export async function importPDF(file: File): Promise<string[]> {
   } catch (error) {
     console.error('PDF导入错误:', error);
     throw new Error('PDF导入失败');
+  }
+}
+
+/**
+ * ### 将图片转换为PDF
+ * @param images 图片base64
+ * @returns Promise<string> 返回PDF文件的base64数据
+ */
+export async function convertImagesToPDF(
+  images: string,
+  width: number,
+  height: number,
+): Promise<string> {
+  try {
+    // 创建一个新的PDF文档
+    const pdf = new jsPDF({
+      orientation: width > height ? 'landscape' : 'portrait',
+      unit: 'px',
+      format: [width, height],
+    });
+
+    // 添加图片到PDF
+    pdf.addImage(images, 'PNG', 0, 0, width, height);
+
+    // 返回PDF文件的base64数据
+    return pdf.output('datauristring');
+  } catch (error) {
+    console.error('图片转换为PDF失败:', error);
+    throw new Error('图片转换为PDF失败');
   }
 }

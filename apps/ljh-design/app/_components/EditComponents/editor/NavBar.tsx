@@ -358,6 +358,16 @@ const NavBar = ({
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="flex items-center gap-2"
+                  onClick={() => editor?.savePdf()}
+                >
+                  <BsFiletypePdf size={20} />
+                  <div className="flex flex-col">
+                    <p className="text-xs font-bold">PDF</p>
+                    <p className="text-xs text-muted-foreground">可以分享给别人看</p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex items-center gap-2"
                   onClick={() => editor?.saveSvg()}
                 >
                   <LuFile size={20} />
