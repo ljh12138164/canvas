@@ -166,7 +166,11 @@ export default function DateContent({
         </section>
       </nav>
       <Separator />
-      {!show ? children : <Watcher startTime={startTime} endTime={endTime} />}
+      {!main ? (
+        children
+      ) : (
+        <>{show ? <Watcher startTime={startTime} endTime={endTime} /> : children}</>
+      )}
     </main>
   );
 }
