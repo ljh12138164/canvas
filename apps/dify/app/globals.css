@@ -287,3 +287,8 @@ li {
 .monaco-editor .mtk7.attribute.value {
   color: #ce9178 !important;
 }
+
+#mermaid-diagram .attributeBoxEven {
+  fill: #fff !important;
+  stroke: #000000;
+}

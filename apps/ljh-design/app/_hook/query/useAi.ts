@@ -335,8 +335,8 @@ export const useAiGrap = () => {
     Error,
     GrapType
   >({
-    // @ts-ignore
     mutationFn: async (datas) => {
+      // 通过调用方法可直接发起请求
       const response = await clientAi.grap.mermaid.$post(datas);
       if (!response.ok) {
         const error = (await response.json()) as { message: string };

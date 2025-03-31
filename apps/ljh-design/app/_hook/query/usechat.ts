@@ -9,6 +9,13 @@ import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
 type GetMessageResponseType = InferResponseType<(typeof client.chat.message)['$get'], 200>;
+
+/**
+ * ##
+ * @param userId
+ * @param sendId
+ * @returns
+ */
 export const useGetMessage = (userId: string | undefined, sendId: string) => {
   const { socket } = useSocket();
   // 判断是否连接

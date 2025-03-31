@@ -2,13 +2,12 @@
 
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import html2canvas from 'html2canvas';
 import { Bot, Send } from 'lucide-react';
 import mermaid from 'mermaid';
-import { nanoid } from 'nanoid';
 import { useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useAiFabricStream } from '../_hooks/useAi';
-import { getIndexDB, indexDBChange } from '../_lib/indexDB';
 // 定义图表数据类型
 interface GrapData {
   id: string;
@@ -31,123 +30,55 @@ export default function Grap() {
   const { getAiFabricStream } = useAiFabricStream();
   const [error, setError] = useState('');
   const [savedGraphs, setSavedGraphs] = useState<GrapData[]>([]);
-  const [currentGraphId, setCurrentGraphId] = useState<string>('');
-  const [showSavedGraphs, setShowSavedGraphs] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const readerRef = useRef<ReadableStreamDefaultReader<Uint8Array> | null>(null);
   // 加载保存的图表数据
   useEffect(() => {
-    loadSavedGraphs();
-    mermaid.initialize({ startOnLoad: true });
-    updateDiagram();
-  }, []);
-
-  // 加载保存的图表
-  const loadSavedGraphs = async () => {
-    try {
-      const data = await getIndexDB();
-      const graphData = data.filter((item) => item.role === 'graph') as GrapData[];
-      setSavedGraphs(graphData);
-    } catch (error) {
-      console.error('加载保存的图表失败:', error);
-    }
-  };
-
-  // 保存当前图表
-  const saveCurrentGraph = async () => {
-    try {
-      const id = currentGraphId || nanoid();
-      const graphName = prompt('请输入图表名称', `图表 ${new Date().toLocaleString()}`);
-
-      if (!graphName) return null; // 用户取消了输入
-
-      const graphData: GrapData = {
-        id,
-        name: graphName,
-        role: 'graph',
-        code,
-        messages,
-        timestamp: new Date(),
-      };
-
-      await indexDBChange({
-        type: currentGraphId ? 'edit' : 'add',
-        data: currentGraphId ? undefined : graphData,
-        editData: currentGraphId ? graphData : undefined,
-      });
-
-      setCurrentGraphId(id);
-      await loadSavedGraphs();
-      return id;
-    } catch (error) {
-      console.error('保存图表失败:', error);
-      setError('保存图表失败，请稍后重试');
-      return null;
-    }
-  };
-
-  // 加载指定图表
-  // const loadGraph = async (id: string) => {
-  //   try {
-  //     const graphData = (await getTryBoardById(id)) as GrapData;
-  //     if (graphData?.code) {
-  //       setCode(graphData.code);
-  //       setMessages(graphData.messages || []);
-  //       setCurrentGraphId(id);
-  //       updateDiagram(graphData.code);
-  //       setShowSavedGraphs(false);
-  //     }
-  //   } catch (error) {
-  //     console.error('加载图表失败:', error);
-  //     setError('加载图表失败，请稍后重试');
-  //   }
-  // };
-
-  // // 删除保存的图表
-  // const deleteGraph = async (id: string, event?: React.MouseEvent) => {
-  //   if (event) {
-  //     event.stopPropagation();
-  //   }
-
-  //   if (!confirm('确定要删除此图表吗？')) {
-  //     return;
-  //   }
-
-  //   try {
-  //     await indexDBChange({
-  //       type: 'delete',
-  //       deletItem: id,
-  //     });
-
-  //     if (id === currentGraphId) {
-  //       setCurrentGraphId('');
-  //       setCode(
-  //         'graph TD\n    A[Client] --> B[Load Balancer]\n    B --> C[Server01]\n    B --> D[Server02]'
-  //       );
-  //       setMessages([]);
-  //       updateDiagram();
-  //     }
-
-  //     await loadSavedGraphs();
-  //   } catch (error) {
-  //     console.error('删除图表失败:', error);
-  //     setError('删除图表失败，请稍后重试');
-  //   }
-  // };
-
-  // 创建新图表
-  const createNewGraph = () => {
-    setCurrentGraphId('');
-    setCode(
-      'graph TD\n    A[Client] --> B[Load Balancer]\n    B --> C[Server01]\n    B --> D[Server02]',
-    );
-    setMessages([]);
-    updateDiagram();
-    setShowSavedGraphs(false);
-  };
-
-  useEffect(() => {
-    mermaid.initialize({ startOnLoad: true });
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        background: '#FFFFFF',
+        primaryColor: '#000000',
+        primaryBorderColor: '#000000',
+        primaryTextColor: '#000000',
+        secondaryColor: '#FFFFFF',
+        secondaryBorderColor: '#000000',
+        secondaryTextColor: '#000000',
+        tertiaryColor: '#FFFFFF',
+        tertiaryBorderColor: '#000000',
+        tertiaryTextColor: '#000000',
+        noteBkgColor: '#FFFFFF',
+        noteBorderColor: '#000000',
+        noteTextColor: '#000000',
+        nodeBkg: '#FFFFFF',
+        nodeBorder: '#000000',
+        nodeTextColor: '#000000',
+        mainBkg: '#FFFFFF',
+        lineColor: '#000000',
+        textColor: '#000000',
+        labelColor: '#000000',
+        edgeLabelBackground: '#FFFFFF',
+        clusterBkg: '#FFFFFF',
+        clusterBorder: '#000000',
+        titleColor: '#000000',
+        arrowheadColor: '#000000',
+        relationLabelColor: '#000000',
+        nodeBorderWidth: '1px',
+        fontFamily: 'arial',
+        fontSize: '18px',
+      },
+      er: {
+        diagramPadding: 20,
+        layoutDirection: 'TB',
+        minEntityWidth: 100,
+        minEntityHeight: 75,
+        entityPadding: 15,
+        stroke: '#000000',
+        fill: '#FFFFFF',
+        fontSize: 18,
+      },
+    });
     updateDiagram();
   }, []);
 
@@ -386,48 +317,6 @@ export default function Grap() {
     <div className="container mx-auto p-6 max-w-7xl">
       <div className="flex flex-col md:flex-row gap-6">
         {/* 左侧面板：输入区域和聊天历史 */}
-        {/* <div className='w-full md:w-1/2 space-y-6'>
-          <div className='bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transition-all hover:shadow-xl'>
-            <div className='flex justify-between items-center mb-3'>
-              <h3 className='text-base font-medium'>
-                {currentGraphId
-                  ? `当前图表: ${savedGraphs.find(
-                      (g) => g.id === currentGraphId
-                    )?.name || '未命名'}`
-                  : '新建图表'}
-              </h3>
-              <div className='flex gap-2'>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={() => setShowSavedGraphs(!showSavedGraphs)}
-                  className='text-xs flex items-center gap-1'
-                >
-                  <FolderOpen className='h-3 w-3' />
-                  {showSavedGraphs ? '隐藏' : '查看'}
-                </Button>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={saveCurrentGraph}
-                  className='text-xs flex items-center gap-1'
-                >
-                  <Save className='h-3 w-3' />
-                  保存
-                </Button>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={createNewGraph}
-                  className='text-xs flex items-center gap-1'
-                >
-                  <Plus className='h-3 w-3' />
-                  新建
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div> */}
         <div className="w-full md:w-1/2 space-y-6">
           {messages.length > 0 && (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transition-all hover:shadow-xl">
@@ -530,7 +419,26 @@ export default function Grap() {
             spellCheck="false"
           />
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all hover:shadow-xl sticky top-6 h-[calc(100vh-250px)] overflow-auto">
-            <h3 className="text-base font-medium mb-4">生成的图表</h3>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-base font-medium">生成的图表</h3>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const element = document.querySelector('.mermaid-output');
+                  if (element) {
+                    html2canvas(element as HTMLElement).then((canvas) => {
+                      const link = document.createElement('a');
+                      link.download = 'mermaid-diagram.png';
+                      link.href = canvas.toDataURL('image/png');
+                      link.click();
+                    });
+                  }
+                }}
+              >
+                导出图片
+              </Button>
+            </div>
             <div
               className="mermaid-output flex items-center justify-center min-h-[400px]"
               // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
