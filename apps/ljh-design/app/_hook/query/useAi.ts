@@ -348,3 +348,39 @@ export const useAiGrap = () => {
 
   return { getAiFabricStream, getAiFabricStreamPending };
 };
+
+/**
+ * ### 使用AI生成图像
+ */
+type GenerateImageRequestType = InferRequestType<typeof clientAi.image.generateImage.$post>;
+
+export const useAiGenerateImage = () => {
+  const { mutate: generateImage, isPending: generateImagePending } = useMutation<
+    {
+      success: boolean;
+      data: {
+        imageBase64: string;
+      };
+    },
+    Error,
+    GenerateImageRequestType
+  >({
+    mutationFn: async (data) => {
+      const response = await clientAi.image.generateImage.$post(data);
+
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
+
+      return response.json() as Promise<unknown> as Promise<{
+        success: boolean;
+        data: {
+          imageBase64: string;
+        };
+      }>;
+    },
+  });
+
+  return { generateImage, generateImagePending };
+};

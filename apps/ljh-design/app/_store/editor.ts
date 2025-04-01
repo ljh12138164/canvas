@@ -997,5 +997,21 @@ export const buildEditor = ({
       downloadLink.click();
       authZoom();
     },
+    addAiImage: async (dataURL) => {
+      const image = await fabric.FabricImage.fromURL(dataURL, {
+        crossOrigin: 'anonymous', // 添加跨域属性
+      });
+      image.set({
+        // globalCompositeOperation: 'destination-over', // 保留混合模式设置
+      });
+      canvas.add(image);
+      canvas.setActiveObject(image);
+      const board = getWorkspace(canvas);
+      if (!board) return;
+      // 将图片添加到画布中心
+      center(image, canvas);
+      canvas.renderAll();
+      save();
+    },
   };
 };

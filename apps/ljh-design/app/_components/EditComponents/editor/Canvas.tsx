@@ -80,6 +80,7 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
     const throttledSave = throttle(
       (newData) => {
         if (isPending) return;
+        // 调用保存的接口
         mutate(
           {
             json: {

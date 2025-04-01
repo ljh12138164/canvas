@@ -101,7 +101,7 @@ if (nodeEnv !== 'TAURI') {
       return config;
     },
 
-    // 生产环境移除 console 和 debugger
+    // 生产环境移除 console
     compiler: {
       // removeConsole: true,
     },

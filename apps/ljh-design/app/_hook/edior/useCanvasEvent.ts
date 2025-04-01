@@ -1,9 +1,7 @@
 import { useSave } from '@/app/_store/save';
-import { Tool, type UserState } from '@/app/_types/Edit';
+import { Tool } from '@/app/_types/Edit';
 import type * as fabric from 'fabric';
 import { useEffect } from 'react';
-// import type { WebsocketProvider } from 'y-websocket';
-// import type * as Y from 'yjs';
 import type { Sessions } from '../../_types/user';
 interface CanvasEventProps {
   canvas: fabric.Canvas | null;
@@ -13,9 +11,6 @@ interface CanvasEventProps {
   save: (skip?: boolean, des?: string) => void;
   isLoading: boolean;
   user: Sessions | undefined;
-  // websockets: WebsocketProvider | null;
-  // userData?: RefObject<DefalutUser>;
-  // yMaps?: Y.Map<string>;
 }
 
 /***

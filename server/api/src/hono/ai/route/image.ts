@@ -1,7 +1,9 @@
+import { GoogleGenAI } from '@google/genai';
+import { HarmBlockThreshold, HarmCategory } from '@google/generative-ai';
 import { zValidator } from '@hono/zod-validator';
 import to from 'await-to-js';
 import { Hono } from 'hono';
-import { stream } from 'hono/streaming';
+import { stream, streamSSE } from 'hono/streaming';
 import { z } from 'zod';
 import { model } from '../../../server/ai';
 
@@ -9,11 +11,11 @@ import { model } from '../../../server/ai';
 const DEFAULT_PROMPT = '请用专业的中文详细解释这张图片的内容，包括图片中的主要元素、场景、特点等。';
 
 // 错误处理函数
-const handleError = (error: any) => {
-  console.error('AI处理错误:', error);
-  return { error: true, message: '处理图片时发生错误，请稍后重试' };
+const handleError = (c: any, error: any, message: string, statusCode = 500) => {
+  console.error(`${message}:`, error);
+  return c.json({ success: false, error: message }, statusCode);
 };
-
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 /**
  * 使用谷歌ai多模态输入
  * 读取图片和生成图片
@@ -31,16 +33,16 @@ export const image = new Hono()
       }),
     ),
     async (c) => {
-      const { image, prompt, filetype } = c.req.valid('json');
+      const { image: imageUrl, prompt, filetype } = c.req.valid('json');
 
       const [fetchErr, imageResp] = await to(
-        fetch(image).then((response) => {
-          if (!response.ok) throw new Error('获取图片失败');
+        fetch(imageUrl).then((response) => {
+          if (!response.ok) throw new Error(`获取图片失败: ${response.statusText}`);
           return response.arrayBuffer();
         }),
       );
 
-      if (fetchErr) return c.json(handleError(fetchErr), 500);
+      if (fetchErr || !imageResp) return handleError(c, fetchErr, '无法获取图片资源');
 
       const [genErr, result] = await to(
         model.generateContent([
@@ -54,7 +56,7 @@ export const image = new Hono()
         ]),
       );
 
-      if (genErr) return c.json(handleError(genErr), 500);
+      if (genErr || !result?.response) return handleError(c, genErr, 'AI生成内容失败');
       return c.json({ success: true, result: result.response.text() });
     },
   )
@@ -77,24 +79,24 @@ export const image = new Hono()
       }),
     ),
     async (c) => {
-      const { image, prompt, history } = c.req.valid('json');
+      const { image: imageUrl, prompt, history } = c.req.valid('json');
       let filetype = '';
       const [fetchErr, imageResp] = await to(
-        fetch(image).then((response) => {
+        fetch(imageUrl).then((response) => {
           filetype = response.headers.get('Content-Type') || '';
-          if (!response.ok) throw new Error('获取图片失败');
+          if (!response.ok) throw new Error(`获取图片失败: ${response.statusText}`);
+          if (!filetype) throw new Error('无法确定图片类型');
           return response.arrayBuffer();
         }),
       );
-      if (fetchErr) return c.json(handleError(fetchErr), 500);
+      if (fetchErr || !imageResp) return handleError(c, fetchErr, '无法获取图片资源或类型');
+
       const historyList =
-        history?.map((item) => {
-          return {
-            role: item.role,
-            parts: item.parts,
-          };
-        }) ?? [];
-      // 创建聊天
+        history?.map((item) => ({
+          role: item.role,
+          parts: item.parts,
+        })) ?? [];
+
       const chats = model.startChat({
         history: [
           {
@@ -120,6 +122,24 @@ export const image = new Hono()
           topK: 40,
           topP: 0.95,
         },
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+        ],
       });
       const imageData = {
         inlineData: {
@@ -130,10 +150,27 @@ export const image = new Hono()
       const [streamErr, streamResult] = await to(
         chats.sendMessageStream([imageData, `${prompt || DEFAULT_PROMPT}。请务必使用中文回答。`]),
       );
-      if (streamErr) return c.json(handleError(streamErr), 500);
-      return stream(c, async (stream) => {
-        for await (const chunk of streamResult.stream) {
-          stream.write(chunk.text());
+      if (streamErr || !streamResult?.stream)
+        return handleError(c, streamErr, 'AI生成流式内容失败');
+
+      return stream(c, async (s) => {
+        try {
+          for await (const chunk of streamResult.stream) {
+            if (chunk.candidates && chunk.candidates[0].finishReason === 'SAFETY') {
+              await s.write('抱歉，由于安全原因，无法生成所请求的内容。');
+              break;
+            }
+            await s.write(chunk.text());
+          }
+        } catch (error) {
+          console.error('Error writing to stream:', error);
+          try {
+            await s.write('在处理流时发生错误。');
+          } catch (writeError) {
+            console.error('Error writing error message to stream:', writeError);
+          }
+        } finally {
+          await s.close();
         }
       });
     },
@@ -150,13 +187,18 @@ export const image = new Hono()
     ),
     async (c) => {
       const { image, prompt } = c.req.valid('form');
-      const fileBuffer = Buffer.from(await image.arrayBuffer());
+      if (!image.type) {
+        return handleError(c, null, '无法确定上传文件的类型', 400);
+      }
+      const [bufferErr, fileBuffer] = await to(image.arrayBuffer());
+
+      if (bufferErr || !fileBuffer) return handleError(c, bufferErr, '读取上传文件失败');
 
       const [genErr, result] = await to(
         model.generateContent([
           {
             inlineData: {
-              data: fileBuffer.toString('base64'),
+              data: Buffer.from(fileBuffer).toString('base64'),
               mimeType: image.type,
             },
           },
@@ -164,7 +206,7 @@ export const image = new Hono()
         ]),
       );
 
-      if (genErr) return c.json(handleError(genErr), 500);
+      if (genErr || !result?.response) return handleError(c, genErr, 'AI生成内容失败');
       return c.json({ success: true, result: result.response.text() });
     },
   )
@@ -176,21 +218,44 @@ export const image = new Hono()
       z.object({
         image: z.instanceof(File),
         prompt: z.string().optional(),
-        history: z
-          .array(
-            z.object({
-              role: z.enum(['user', 'model']),
-              parts: z.array(z.object({ text: z.string() })),
-            }),
-          )
-          .optional(),
+        history: z.preprocess(
+          (val) => {
+            try {
+              return typeof val === 'string' ? JSON.parse(val) : val;
+            } catch (e) {
+              return undefined;
+            }
+          },
+          z
+            .array(
+              z.object({
+                role: z.enum(['user', 'model']),
+                parts: z.array(z.object({ text: z.string() })),
+              }),
+            )
+            .optional(),
+        ),
       }),
     ),
     async (c) => {
       const { image, prompt, history } = c.req.valid('form');
+      if (!image.type) {
+        return handleError(c, null, '无法确定上传文件的类型', 400);
+      }
+
+      const [bufferErr, fileBuffer] = await to(image.arrayBuffer());
+      if (bufferErr || !fileBuffer) return handleError(c, bufferErr, '读取上传文件失败');
 
       const chats = model.startChat({
         history: [
+          {
+            role: 'user',
+            parts: [
+              {
+                text: '你是一个专业的AI助手，你会始终使用中文回答你的问题，并专业地分析图片内容。',
+              },
+            ],
+          },
           {
             role: 'model',
             parts: [
@@ -206,121 +271,105 @@ export const image = new Hono()
           topK: 40,
           topP: 0.95,
         },
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+        ],
       });
 
-      const fileBuffer = Buffer.from(await image.arrayBuffer());
       const imageData = {
         inlineData: {
-          data: fileBuffer.toString('base64'),
+          data: Buffer.from(fileBuffer).toString('base64'),
           mimeType: image.type,
         },
       };
 
       const [streamErr, streamResult] = await to(
-        chats
-          ? chats.sendMessageStream([
-              imageData,
-              `${prompt || DEFAULT_PROMPT}。请务必使用中文回答。`,
-            ])
-          : model.generateContentStream([
-              imageData,
-              `${prompt || DEFAULT_PROMPT}。请务必使用中文回答。`,
-            ]),
+        chats.sendMessageStream([imageData, `${prompt || DEFAULT_PROMPT}。请务必使用中文回答。`]),
       );
 
-      if (streamErr) return c.json(handleError(streamErr), 500);
+      if (streamErr || !streamResult?.stream)
+        return handleError(c, streamErr, 'AI生成流式内容失败');
 
-      return stream(c, async (stream) => {
-        for await (const chunk of streamResult.stream) {
-          stream.write(chunk.text());
+      return stream(c, async (s) => {
+        try {
+          for await (const chunk of streamResult.stream) {
+            if (chunk.candidates && chunk.candidates[0].finishReason === 'SAFETY') {
+              await s.write('抱歉，由于安全原因，无法生成所请求的内容。');
+              break;
+            }
+            await s.write(chunk.text());
+          }
+        } catch (error) {
+          console.error('Error writing to stream:', error);
+          try {
+            await s.write('在处理流时发生错误。');
+          } catch (writeError) {
+            console.error('Error writing error message to stream:', writeError);
+          }
+        } finally {
+          await s.close();
         }
       });
     },
   )
+  // --- AI 图像生成 ---
   .post(
     '/generateImage',
     zValidator(
       'json',
       z.object({
         prompt: z.string().min(1, '请提供有效的图片描述'),
-        negative_prompt: z.string().optional(),
       }),
     ),
     async (c) => {
-      const { prompt, negative_prompt } = c.req.valid('json');
+      const { prompt } = c.req.valid('json');
+      const apiKey = process.env.GEMINI_API_KEY;
 
-      try {
-        // 使用Gemini 2.0模型生成图片
-        const promptText = `请根据以下描述生成一张图片，以图片格式返回，不要输出文字解释：${prompt}${
-          negative_prompt ? `。请避免在图片中出现：${negative_prompt}` : ''
-        }。能否生成该图片？如果可以，请直接生成图片，不要返回任何文字。`;
+      if (!apiKey) {
+        return handleError(c, null, '缺少 GEMINI_API_KEY 配置', 500);
+      }
 
-        // 使用整合模型的标准方式调用API
-        const [genErr, result] = await to(
-          model.generateContent({
-            contents: [
-              {
-                role: 'user',
-                parts: [{ text: promptText }],
+      // 使用 streamSSE 包装器
+
+      // 调用 Google AI API
+      const [genErr, response] = await to(
+        ai.models.generateContent({
+          model: 'gemini-2.0-flash-exp-image-generation',
+          contents: prompt,
+          config: {
+            responseModalities: ['Text', 'Image'],
+          },
+        }),
+      );
+      if (genErr) return handleError(c, null, '调用失败', 500);
+      if (response?.candidates?.[0]?.content?.parts) {
+        for (const part of response.candidates[0].content.parts) {
+          // Based on the part type, either show the text or save the image
+          if (part.inlineData) {
+            const imageData = part.inlineData.data!;
+            return c.json({
+              success: true,
+              data: {
+                imageBase64: `data:image/png;base64,${imageData}`,
               },
-            ],
-            generationConfig: {
-              temperature: 0.9,
-              topK: 40,
-              topP: 0.95,
-              maxOutputTokens: 2048,
-            },
-          }),
-        );
-
-        if (genErr) {
-          console.error('生成图片API错误:', genErr);
-          return c.json(handleError(genErr), 500);
-        }
-
-        // 从响应中提取图片数据
-        const images = [];
-        const response = result.response;
-
-        // 检查响应中是否有候选内容
-        if (response.candidates && response.candidates.length > 0) {
-          const candidate = response.candidates[0];
-
-          // 检查候选内容中是否有parts
-          if (candidate.content?.parts) {
-            for (const part of candidate.content.parts) {
-              // 检查part中是否有inlineData（图片数据）
-              if (part.inlineData) {
-                images.push({
-                  mimeType: part.inlineData.mimeType,
-                  data: part.inlineData.data,
-                });
-              }
-            }
-          } else {
+            });
           }
         }
-        if (images.length > 0) {
-          // 返回生成的图片数据
-          return c.json({
-            success: true,
-            images: images,
-          });
-        }
-
-        // 如果没有生成图片，使用mock数据返回一个示例图片
-        return c.json({
-          success: true,
-          images: [
-            {
-              mimeType: 'image/png',
-              data: 'base64_encoded_image_data',
-              result: result.response.text(),
-            },
-          ],
-        });
-      } catch (error) {
-        return c.json(handleError(error), 500);
       }
     },
   );

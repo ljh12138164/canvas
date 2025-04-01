@@ -1002,6 +1002,7 @@ export interface Edit {
   addGrap: (dom: HTMLDivElement | null) => Promise<boolean>;
   importPDFFILE: (FILE: File) => void;
   savePdf: () => void;
+  addAiImage: (data: string) => void;
 }
 export const ToolItem = {
   [Tool.Fill]: '填充颜色',

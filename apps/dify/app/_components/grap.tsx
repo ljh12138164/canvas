@@ -418,7 +418,7 @@ export default function Grap() {
             placeholder="输入Mermaid语法..."
             spellCheck="false"
           />
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all hover:shadow-xl sticky top-6 h-[calc(100vh-250px)] overflow-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg  p-6 transition-all hover:shadow-xl sticky top-6  overflow-auto">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-base font-medium">生成的图表</h3>
               <Button
@@ -427,10 +427,18 @@ export default function Grap() {
                 onClick={() => {
                   const element = document.querySelector('.mermaid-output');
                   if (element) {
-                    html2canvas(element as HTMLElement).then((canvas) => {
+                    const scale = 2; // 增加分辨率
+                    html2canvas(element as HTMLElement, {
+                      scale: scale, // 使用2倍缩放来提高分辨率
+                      backgroundColor: '#FFFFFF', // 确保背景为白色
+                      logging: false,
+                      useCORS: true, // 允许跨域
+                      allowTaint: true, // 允许污染
+                      imageTimeout: 0, // 不超时
+                    }).then((canvas) => {
                       const link = document.createElement('a');
                       link.download = 'mermaid-diagram.png';
-                      link.href = canvas.toDataURL('image/png');
+                      link.href = canvas.toDataURL('image/png', 1.0); // 使用最高质量
                       link.click();
                     });
                   }
