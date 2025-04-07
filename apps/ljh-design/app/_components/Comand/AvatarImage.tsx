@@ -30,7 +30,7 @@ const AvatarImage = ({
       width={width}
       height={height}
       priority={priority}
-      className={cn('rounded-full aspect-square', className)}
+      className={cn('rounded-full aspect-square object-cover', className)}
       onClick={() => {
         if (userInfo?.id && jump) {
           router.push(`/user/${userInfo.id}`);

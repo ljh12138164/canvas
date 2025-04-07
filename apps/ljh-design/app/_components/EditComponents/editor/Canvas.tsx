@@ -75,7 +75,6 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
   const debounceMutate = useMemo(() => {
     if (type === 'material') return;
     if (!data?.id) return;
-
     // 使用节流来确保至少每10秒保存一次
     const throttledSave = throttle(
       (newData) => {
@@ -276,7 +275,7 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
   //初始化
   useEffect(() => {
     if (!canvasEl.current) return;
-    const canvas = new fabric.Canvas(canvasEl.current as HTMLCanvasElement, {
+    const canvas = new fabric.Canvas(canvasEl.current, {
       //保持对象的堆叠顺序
       preserveObjectStacking: true,
       // 控制点（如旋转、缩放的手柄）会显示在画布覆盖层的上方

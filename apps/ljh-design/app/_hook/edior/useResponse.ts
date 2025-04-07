@@ -6,7 +6,7 @@ interface ResponseProps {
   contain: HTMLDivElement | null;
 }
 /**
- *
+ * ### 初始化
  * @param param 0 canvas 画布ref
  * @param contain 容器ref
  */

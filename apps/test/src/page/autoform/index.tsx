@@ -14,20 +14,6 @@ enum Sports {
   None = "I don't like sports",
 }
 const zodFormSchema = z.object({
-  // hobbies: z
-  //   .string()
-  //   .optional()
-  //   .superRefine(
-  //     customFieldConfig({
-  //       description: "This uses a custom field component",
-  //       order: 1,
-  //       fieldType: "custom",
-  //       customData: {
-  //         // You can define custom data here
-  //         isImportant: true,
-  //       },
-  //     })
-  //   ),
   username: z
     .string({
       required_error: 'Username is required.',

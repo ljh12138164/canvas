@@ -130,6 +130,7 @@ const NavBar = ({
         {isMobile && (
           <TooltipComponents label="返回">
             <Button
+              aria-label="返回"
               variant={'ghost'}
               size={'icon'}
               onClick={() => {
@@ -250,14 +251,14 @@ const NavBar = ({
               ) : isPending ? (
                 <Fragment>
                   <BsCloud size={20} />
-                  <p className="text-xs w-[100px] text-muted-foreground line-clamp-1">
+                  <p className="text-xs w-[100px]  line-clamp-1">
                     {type === 'board' ? '画布保存中' : '模板保存中'}
                   </p>
                 </Fragment>
               ) : (
                 <Fragment>
                   <BsCloudCheck size={20} />
-                  <p className="text-xs w-[100px] text-muted-foreground line-clamp-1">
+                  <p className="text-xs w-[100px]  line-clamp-1">
                     {type === 'board' ? '画布保存成功' : '模板保存成功'}
                   </p>
                 </Fragment>
@@ -333,7 +334,7 @@ const NavBar = ({
                   <LuFile size={20} />
                   <div className="flex flex-col">
                     <p className="text-xs font-bold">JSON</p>
-                    <p className="text-xs text-muted-foreground">保存最后一次编辑</p>
+                    <p className="text-xs ">保存最后一次编辑</p>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem
@@ -343,7 +344,7 @@ const NavBar = ({
                   <LuFile size={20} />
                   <div className="flex flex-col">
                     <p className="text-xs font-bold">PNG</p>
-                    <p className="text-xs text-muted-foreground">可以分享给别人看</p>
+                    <p className="text-xs ">可以分享给别人看</p>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem

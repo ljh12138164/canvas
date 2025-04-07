@@ -27,7 +27,7 @@ const UserButton = () => {
           <DropdownMenuTrigger>
             <AvatarImage
               userInfo={user?.user.user_metadata!}
-              className="size-10 hover:opacity-80 transition-all duration-300 cursor-pointer"
+              className="size-10 hover:opacity-80 transition-all duration-300 cursor-pointer w-[30px] h-[30px]"
               src={user?.user.user_metadata.image || ''}
               alt="用户头像"
               width={30}

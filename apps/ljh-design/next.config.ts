@@ -1,7 +1,13 @@
 // import withBundleAnalyzer from '@next/bundle-analyzer';
+import withBundleAnalyzer from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
 
 const nodeEnv = process.env.ENV as 'TAURI' | undefined;
+
+// 创建bundle-analyzer包装器
+const withBundleAnalyzerWrapper = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 let nextConfig: NextConfig;
 
@@ -41,10 +47,14 @@ if (nodeEnv !== 'TAURI') {
     // 自定义webpack配置
     webpack: (config, { isServer }) => {
       if (!isServer) {
+        // 优化模块ID生成方式
+        config.optimization.moduleIds = 'deterministic';
+
+        // 增强代码拆分配置
         config.optimization.splitChunks = {
-          minSize: 20000,
-          maxSize: 240000,
           chunks: 'all',
+          minSize: 20000,
+          maxSize: 200000, // 降低最大块大小以更好地分割代码
           cacheGroups: {
             // React 相关核心包
             'react-vendor': {
@@ -52,20 +62,31 @@ if (nodeEnv !== 'TAURI') {
               name: 'react-vendor',
               priority: 40,
               enforce: true,
+              reuseExistingChunk: true,
             },
             // UI 组件相关
             'ui-vendor': {
               test: /[\\/]node_modules[\\/](@radix-ui.*|@hookform.*|class-variance-authority|tailwind-merge|dayjs|date-fns|lodash-es.*|crypto-js|zod|react-icons)[\\/]/,
               name: 'ui-vendor',
               priority: 30,
-              chunks: 'async', // 改为异步加载
+              chunks: 'async',
+              reuseExistingChunk: true,
             },
             // 图表相关
             'chart-vendor': {
               test: /[\\/]node_modules[\\/](recharts|d3-.*|react-smooth|victory.*|react-day-picker)[\\/]/,
               name: 'chart-vendor',
-              chunks: 'async', // 改为异步加载
-              minChunks: 2, // 至少被引用2次才会被打包
+              chunks: 'async',
+              minChunks: 2,
+              reuseExistingChunk: true,
+            },
+            // Mermaid图表相关 - 添加专门的分块配置
+            'mermaid-vendor': {
+              test: /[\\/]node_modules[\\/](mermaid|d3|dagre|cytoscape|khroma|internmap)[\\/]/,
+              name: 'mermaid-vendor',
+              priority: 25,
+              chunks: 'async',
+              reuseExistingChunk: true,
             },
             // 编辑器相关
             'editor-vendor': {
@@ -73,37 +94,65 @@ if (nodeEnv !== 'TAURI') {
               name: 'editor-vendor',
               priority: 20,
               chunks: 'async',
+              reuseExistingChunk: true,
             },
             'fabric-vendor': {
-              test: /[\\/]node_modules[\\/](fabric.*|quill.*)[\\/]/,
+              test: /[\\/]node_modules[\\/](fabric.*)[\\/]/,
               name: 'fabric-vendor',
               priority: 20,
               chunks: 'async',
+              reuseExistingChunk: true,
+            },
+            // 将quill单独打包
+            'quill-vendor': {
+              test: /[\\/]node_modules[\\/](quill.*|react-quill.*)[\\/]/,
+              name: 'quill-vendor',
+              priority: 20,
+              chunks: 'async',
+              reuseExistingChunk: true,
             },
             // react-markdown-editor-lite
             'refactor-vendor': {
-              test: /[\\/]node_modules[\\/](@refactor.* | react-markdown | localforage)[\\/]/,
+              test: /[\\/]node_modules[\\/](@refactor.*|react-markdown|localforage)[\\/]/,
               name: 'refactor-vendor',
               priority: 20,
               chunks: 'async',
+              reuseExistingChunk: true,
+            },
+            'loader-pdf': {
+              test: /[\\/]node_modules[\\/](pdf.*)[\\/]/,
+              name: 'loader-pdf',
+              priority: 20,
+              chunks: 'async',
+              reuseExistingChunk: true,
             },
             // 其他第三方库
             vendors: {
               test: /[\\/]node_modules[\\/]/,
               name: 'vendors',
               priority: 10,
-              chunks: 'async', // 改为异步加载
-              minChunks: 2, // 至少被引用2次才会被打包
+              chunks: 'async',
+              minChunks: 2,
+              reuseExistingChunk: true,
             },
           },
         };
+
+        // 添加路由优化
+        config.optimization.runtimeChunk = 'single';
+
+        // 优化tree-shaking
+        if (isProd) {
+          config.optimization.usedExports = true;
+          config.optimization.sideEffects = true;
+        }
       }
       return config;
     },
 
     // 生产环境移除 console
     compiler: {
-      // removeConsole: true,
+      removeConsole: isProd,
     },
 
     // 实验性功能
@@ -114,16 +163,19 @@ if (nodeEnv !== 'TAURI') {
       reactCompiler: true,
       // 使用 lightningcss 优化 CSS
       mdxRs: true, // 使用 Rust 编译 MDX
-      // 使用 lightningcss 优化 CSS
-      // useLightningcss: true,
-      // 启用早期提示
-      // enableEarlyHints: true,
     },
     headers: async () => {
       return [
         {
           source: '/(.*)',
-          headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }],
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: isProd
+                ? 'public, max-age=31536000, immutable' // 生产环境使用更积极的缓存策略
+                : 'public, max-age=0, must-revalidate',
+            },
+          ],
         },
       ];
     },
@@ -146,24 +198,6 @@ if (nodeEnv !== 'TAURI') {
       return config;
     },
     distDir: 'dist-desktop',
-    // 添加这个配置来处理动态路由
-    // exportPathMap: async () => {
-    //   return {
-    //     '/': { page: '/' },
-    //     '/board': { page: '/board' },
-    //     '/sign-in': { page: '/sign-in' },
-    //     '/admin': { page: '/admin' },
-    //     '/adminlogin': { page: '/adminlogin' },
-    //     '/board/template': { page: '/board/template' },
-    //     // 为动态路由添加默认路径
-    //     '/board/ai/default': { page: '/board/ai/[id]', query: { id: 'default' } },
-    //     '/board/formue/default': { page: '/board/formue/[id]', query: { id: 'default' } },
-    //     '/Edit/default': { page: '/Edit/[Id]', query: { Id: 'default' } },
-    //     '/EditTemplate/default': { page: '/EditTemplate/[Id]', query: { Id: 'default' } },
-    //     '/try/Edit/default': { page: '/try/Edit/[id]', query: { id: 'default' } },
-    //     '/user/default': { page: '/user/[id]', query: { id: 'default' } },
-    //   };
-    // },
     images: {
       unoptimized: true,
     },

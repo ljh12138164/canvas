@@ -102,7 +102,13 @@ const SiderBar = ({
               onChangeActiveTool(Tool.Grap);
             }}
           />
-          <Grap editor={editor} acitiveTool={acitiveTool} onChangeActiveTool={onChangeActiveTool} />
+          <li>
+            <Grap
+              editor={editor}
+              acitiveTool={acitiveTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+          </li>
           {/* 表情 */}
           <SiderBarItem
             icon={LuSmile}

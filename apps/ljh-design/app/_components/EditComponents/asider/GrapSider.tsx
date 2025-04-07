@@ -13,9 +13,19 @@ import { Textarea } from '@/app/_components/ui/textarea';
 import { useAiGrap } from '@/app/_hook/query/useAi';
 import { type Edit, Tool } from '@/app/_types/Edit';
 import { Bot, Code, RefreshCw, Send, Trash2 } from 'lucide-react';
-import mermaid from 'mermaid';
+import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+
+// 使用动态导入
+const MermaidComponent = dynamic(() => import('./MermaidComponent'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center h-full">
+      <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" />
+    </div>
+  ),
+});
 
 export default function Grap({
   editor,
@@ -65,15 +75,23 @@ export default function Grap({
   const [streamStatus, setStreamStatus] = useState<string>('');
   const { getAiFabricStream } = useAiGrap();
   const [error, setError] = useState('');
+  const [mermaidInstance, setMermaidInstance] = useState<any>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const readerRef = useRef<ReadableStreamDefaultReader<Uint8Array> | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
 
-  useEffect(() => {
-    mermaid.initialize({ startOnLoad: true });
-    updateDiagram();
-  }, []);
+  // // 动态导入mermaid库
+  // useEffect(() => {
+  //   if (acitiveTool === Tool.Grap) {
+  //     import('mermaid').then((mermaidModule) => {
+  //       const mermaid = mermaidModule.default;
+  //       mermaid.initialize({ startOnLoad: true });
+  //       setMermaidInstance(mermaid);
+  //       updateDiagram(mermaid);
+  //     });
+  //   }
+  // }, [acitiveTool]);
 
   useEffect(() => {
     return () => {
@@ -85,9 +103,14 @@ export default function Grap({
     };
   }, []);
 
-  const updateDiagram = async (codes?: string) => {
+  // 修改updateDiagram以接受mermaid实例
+  const updateDiagram = async (mermaidLib?: any, codes?: string) => {
+    if (!mermaidLib && !mermaidInstance) return;
+
+    const activeMermaid = mermaidLib || mermaidInstance;
+
     try {
-      const abc = await mermaid.render('mermaid-diagram', codes ?? code);
+      const abc = await activeMermaid.render('mermaid-diagram', codes ?? code);
       setSvg(abc.svg);
       setError('');
     } catch (error) {
@@ -99,7 +122,7 @@ export default function Grap({
   const handleCodeChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newCode = e.target.value;
     setCode(newCode);
-    updateDiagram();
+    updateDiagram(undefined, newCode);
   };
 
   // 处理SSE事件数据
@@ -133,7 +156,7 @@ export default function Grap({
 
                 setMessages((prev) => [...prev, aiMessage]);
                 setCode(eventData.code);
-                updateDiagram();
+                updateDiagram(undefined, eventData.code);
               }
               break;
 
@@ -447,7 +470,7 @@ export default function Grap({
                               className="h-7 text-xs gap-1"
                               onClick={() => {
                                 setCode(msg.code);
-                                updateDiagram(msg.code);
+                                updateDiagram(undefined, msg.code);
                               }}
                             >
                               <RefreshCw className="h-3 w-3" /> 应用
@@ -506,18 +529,19 @@ export default function Grap({
                 )}
               </div>
               <div className="p-4 overflow-auto h-[250px] bg-white dark:bg-gray-900 rounded-b-lg">
-                <div
+                {/* <div
                   ref={canvasRef}
                   className="mermaid-output flex items-center justify-center "
                   // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                   dangerouslySetInnerHTML={{ __html: svg }}
-                />
+                /> */}
+                <MermaidComponent code={code} />
               </div>
             </Card>
           </div>
         </div>
       </DialogContent>
-      <DialogClose ref={closeRef} />
+      <DialogClose ref={closeRef} aria-label="关闭" />
     </Dialog>
   );
 }

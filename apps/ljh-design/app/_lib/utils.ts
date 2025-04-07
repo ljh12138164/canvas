@@ -505,21 +505,17 @@ export async function importPDF(file: File): Promise<string[]> {
     for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
       const page = await pdf.getPage(pageNumber);
       const viewport = page.getViewport({ scale: 1.5 });
-
       // 创建canvas
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
       canvas.height = viewport.height;
       canvas.width = viewport.width;
-
       if (!context) continue;
-
       // 渲染PDF页面到canvas
       await page.render({
         canvasContext: context,
         viewport: viewport,
       }).promise;
-
       // 转换为图片
       const image = canvas.toDataURL('image/png');
       images.push(image);
@@ -559,4 +555,180 @@ export async function convertImagesToPDF(
     console.error('图片转换为PDF失败:', error);
     throw new Error('图片转换为PDF失败');
   }
+}
+
+/*
+ * ============================================================================
+ * Fabric.js 基本对象操作实现原理 (伪代码注释)
+ * ============================================================================
+ * 以下注释旨在概念性地解释Fabric.js内部如何处理常见的对象操作。
+ * 注意：这些是原理描述，并非实际的Fabric.js源代码。
+ */
+
+/*
+ * --- 精确定位 (Positioning) ---
+ *
+ * // 1. 用户交互 (拖拽):
+ * function onObjectMouseDown(event) {
+ *   targetObject = event.target;
+ *   initialMousePos = getMousePosition(event);
+ *   initialObjectPos = { left: targetObject.left, top: targetObject.top };
+ *   isDragging = true;
+ * }
+ *
+ * function onMouseMove(event) {
+ *   if (isDragging && targetObject) {
+ *     currentMousePos = getMousePosition(event);
+ *     deltaX = currentMousePos.x - initialMousePos.x;
+ *     deltaY = currentMousePos.y - initialMousePos.y;
+ *     newLeft = initialObjectPos.left + deltaX;
+ *     newTop = initialObjectPos.top + deltaY;
+ *
+ *     // (可选) 应用对齐逻辑
+ *     alignedPosition = calculateAlignment(newLeft, newTop, targetObject);
+ *
+ *     // 更新对象属性
+ *     targetObject.set({ left: alignedPosition.left, top: alignedPosition.top });
+ *     requestRenderAll(); // 请求画布重绘
+ *   }
+ * }
+ *
+ * function onMouseUp() {
+ *   if (isDragging) {
+ *     isDragging = false;
+ *     targetObject = null;
+ *     // (可选) 触发 'object:modified' 事件
+ *   }
+ * }
+ *
+ * // 2. 编程方式设置:
+ * function setObjectPosition(object, newLeft, newTop) {
+ *   object.set({ left: newLeft, top: newTop });
+ *   canvas.renderAll(); // 直接触发画布重绘
+ * }
+ */
+
+/*
+ * --- 缩放 (Scaling) ---
+ *
+ * // 1. 用户交互 (拖动控制点):
+ * function onControlPointMouseDown(event, controlPoint) {
+ *   targetObject = event.target;
+ *   // ... 记录初始状态 (鼠标位置, 对象尺寸, 缩放比例, 控制点类型)
+ *   isScaling = true;
+ * }
+ *
+ * function onMouseMove(event) {
+ *   if (isScaling && targetObject) {
+ *     // ... 计算鼠标位移
+ *     // ... 根据控制点类型和鼠标位移计算新的尺寸或缩放比例
+ *     // ... (可选) 如果按住Shift键，保持等比例缩放 (scaleX = scaleY)
+ *
+ *     newScaleX = calculateNewScaleX(...);
+ *     newScaleY = calculateNewScaleY(...);
+ *
+ *     // 更新对象属性
+ *     targetObject.set({ scaleX: newScaleX, scaleY: newScaleY });
+ *     requestRenderAll();
+ *   }
+ * }
+ *
+ * function onMouseUp() {
+ *   if (isScaling) {
+ *     isScaling = false;
+ *     // ...
+ *   }
+ * }
+ *
+ * // 2. 编程方式设置:
+ * function scaleObject(object, factor) {
+ *   object.scale(factor); // 应用缩放因子
+ *   canvas.renderAll();
+ * }
+ * function setObjectScale(object, newScaleX, newScaleY) {
+ *   object.set({ scaleX: newScaleX, scaleY: newScaleY });
+ *   canvas.renderAll();
+ * }
+ */
+
+/*
+ * --- 旋转 (Rotating) ---
+ *
+ * // 1. 用户交互 (拖动旋转控制点):
+ * function onRotationControlMouseDown(event) {
+ *   targetObject = event.target;
+ *   // ... 记录初始状态 (中心点, 初始鼠标角度)
+ *   isRotating = true;
+ * }
+ *
+ * function onMouseMove(event) {
+ *   if (isRotating && targetObject) {
+ *     // ... 计算当前鼠标相对于对象中心的角度
+ *     currentAngle = calculateAngle(getMousePosition(event), targetObject.getCenterPoint());
+ *     // ... 计算旋转角度变化量
+ *     deltaAngle = currentAngle - initialMouseAngle;
+ *     newAngle = initialObjectAngle + deltaAngle;
+ *
+ *     // 更新对象属性
+ *     targetObject.set({ angle: newAngle });
+ *     requestRenderAll();
+ *   }
+ * }
+ *
+ * function onMouseUp() {
+ *   if (isRotating) {
+ *     isRotating = false;
+ *     // ...
+ *   }
+ * }
+ *
+ * // 2. 编程方式设置:
+ * function rotateObject(object, angleIncrement) {
+ *   currentAngle = object.get('angle');
+ *   object.rotate(currentAngle + angleIncrement); // Fabric.js 提供了 rotate 方法
+ *   // 或者: object.set({ angle: newAngle });
+ *   canvas.renderAll();
+ * }
+ */
+
+/*
+ * --- 填充 (Filling) ---
+ *
+ * // 编程方式设置:
+ * function setObjectFill(object, newFill) {
+ *   // newFill 可以是颜色字符串 ('#ff0000', 'rgba(...)'),
+ *   // 也可以是 fabric.Gradient 或 fabric.Pattern 实例
+ *   object.set({ fill: newFill });
+ *   canvas.renderAll();
+ * } */
+
+/*
+ * --- 描边 (Stroking) ---
+ *
+ * // 编程方式设置:
+ * function setObjectStroke(object, options) {
+ *   // options 可以包含:
+ *   // stroke: 'color'       (描边颜色)
+ *   // strokeWidth: number    (描边宽度)
+ *   // strokeDashArray: [...] (虚线样式)
+ *   // strokeLineCap: 'butt'|'round'|'square'
+ *   // strokeLineJoin: 'miter'|'round'|'bevel'
+ *   // ... 其他描边属性
+ *   object.set(options);
+ *   canvas.renderAll();
+ * }
+ */
+
+// --- 辅助函数 (示意) ---
+function getMousePosition(event: MouseEvent) {
+  /* ... 获取鼠标在画布上的坐标 ... */
+}
+function calculateAlignment(x: number, y: number, object: fabric.Object) {
+  /* ... 实现吸附逻辑 ... */ return { left: x, top: y };
+}
+function calculateAngle(point: { x: number; y: number }, center: { x: number; y: number }) {
+  /* ... 计算点相对于中心的角度 ... */
+}
+function requestRenderAll() {
+  /* ... 请求在下一帧重绘画布 (优化性能) ... */
 }

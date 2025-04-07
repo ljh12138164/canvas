@@ -1,7 +1,7 @@
 import { type InitFabicObject, JSON_KEY } from '@/app/_types/Edit';
 import { useMemoizedFn } from 'ahooks';
 import type * as farbir from 'fabric';
-import { useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 interface HistoryProps {
   canvas: farbir.Canvas | null;
   authZoom: () => Promise<void>;
@@ -13,7 +13,7 @@ interface HistoryProps {
     updated_at: Date;
   }) => void;
 }
-
+const MAX_HISTORY_STEPS = 100;
 /**
  * ### 历史记录
  * @param canvas 画布
@@ -23,7 +23,9 @@ interface HistoryProps {
 const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
   // 历史记录索引
   const [historyIndex, setHitoryIndex] = useState(0);
+  // 历史记录
   const canvasHistory = useRef<farbir.FabricObject[]>([]);
+
   const skipSave = useRef(false);
   const canUndo = () => {
     return historyIndex > 0;
@@ -34,6 +36,10 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
   const save = useMemoizedFn((skip = false) => {
     if (!canvas) return;
     const currentState = canvas.toObject(JSON_KEY);
+    if (canvasHistory.current.length > MAX_HISTORY_STEPS) {
+      canvasHistory.current.shift();
+      setHitoryIndex((prev) => Math.max(prev - 1, 0));
+    }
     //
     if (!skipSave.current && !skip) {
       canvasHistory.current.push(currentState);
@@ -60,6 +66,7 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
         multiplier: 1,
       });
       authZoom();
+      // 保存
       debounceMutate?.({
         json: currentState,
         width,
@@ -73,9 +80,6 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
   const undo = useMemoizedFn(async () => {
     if (canUndo()) {
       skipSave.current = true;
-      //清空
-      // canvas?.clear();
-      // canvas?.renderAll();
       const previousIndex = historyIndex - 1;
       //获取上一部的json
       const previousState = canvasHistory.current[previousIndex];
@@ -90,9 +94,6 @@ const useHistoty = ({ canvas, authZoom, debounceMutate }: HistoryProps) => {
   const redo = useMemoizedFn(async () => {
     if (canRedo()) {
       skipSave.current = true;
-      //清空
-      // canvas?.clear();
-      // canvas?.renderAll();
       const nextIndex = historyIndex + 1;
       //获取上一部的json
       const nextState = canvasHistory.current[nextIndex];

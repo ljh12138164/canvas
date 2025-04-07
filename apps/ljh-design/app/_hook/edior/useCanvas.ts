@@ -34,6 +34,7 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       initCanvas: fabric.Canvas;
       initContainer: HTMLDivElement;
     }) => {
+      // 初始化对象
       fabric.FabricObject.prototype.set({
         cornerColor: theme === 'dark' ? '#fff' : '#3b82f6',
         cornerStyle: 'circle',
@@ -43,6 +44,8 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
         borderOpacityWhenMoving: 1,
         cornerStrokeColor: theme === 'dark' ? '#fff' : '#3b82f6',
       });
+      //添加滤镜数组
+      fabric.FabricImage.prototype.filtersArray = [];
       //初始化画布笔画
       initCanvas.freeDrawingBrush = new fabric.PencilBrush(initCanvas);
       initCanvas.freeDrawingBrush.width = STROKE_WIDTH;
@@ -62,9 +65,7 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
           blur: 5,
         }),
       });
-      //添加滤镜数组
-      fabric.FabricImage.prototype.filtersArray = [];
-      // initAligningGuidelines
+      //
       initCanvas.add(initRect);
       initCanvas.centerObject(initRect);
       // 设置画布尺寸
@@ -73,7 +74,7 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
         height: initContainer.offsetHeight,
       });
       // 设置画布背景颜色
-      //溢出不显示
+      // 溢出不显示
       initCanvas.clipPath = initRect;
     },
   );

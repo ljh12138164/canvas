@@ -24,7 +24,6 @@ import {
   TEXTBOX_OPTION,
   type buildEditorProps,
 } from '@/app/_types/Edit';
-import dayjs from 'dayjs';
 import * as fabric from 'fabric';
 // import { loadSVGFromString } from 'fabric';
 import html2canvas from 'html2canvas';
@@ -800,7 +799,7 @@ export const buildEditor = ({
       }
       return selectedObj.get('stroke') || strokeColor;
     },
-    //颜色
+    // 颜色
     setFillColor: (color: string) => {
       setFillColor(color);
       canvas.getActiveObjects()?.forEach((obj) => {

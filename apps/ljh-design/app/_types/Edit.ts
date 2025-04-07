@@ -719,6 +719,10 @@ export const addObject: AddObject[] = [
         x: 0,
         y: DIAMOD_WIDTH / 2,
       },
+      {
+        x: 0,
+        y: 0,
+      },
     ],
   },
   {
