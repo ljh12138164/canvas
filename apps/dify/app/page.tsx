@@ -178,7 +178,6 @@ export default function CodePlayground() {
       </div>
 
       <footer className="mt-6 text-center text-sm text-muted-foreground">
-        <p>© 2023 代码编译平台</p>
         <p>使用 React、Monaco Editor 和 Shadcn UI 构建</p>
       </footer>
     </div>

@@ -3,12 +3,13 @@ import { HarmBlockThreshold, HarmCategory } from '@google/generative-ai';
 import { zValidator } from '@hono/zod-validator';
 import to from 'await-to-js';
 import { Hono } from 'hono';
-import { stream, streamSSE } from 'hono/streaming';
+import { stream } from 'hono/streaming';
 import { z } from 'zod';
 import { model } from '../../../server/ai';
 
 // 默认提示词
 const DEFAULT_PROMPT = '请用专业的中文详细解释这张图片的内容，包括图片中的主要元素、场景、特点等。';
+const apiKey = process.env.GEMINI_API_KEY;
 
 // 错误处理函数
 const handleError = (c: any, error: any, message: string, statusCode = 500) => {
@@ -338,13 +339,6 @@ export const image = new Hono()
     ),
     async (c) => {
       const { prompt } = c.req.valid('json');
-      const apiKey = process.env.GEMINI_API_KEY;
-
-      if (!apiKey) {
-        return handleError(c, null, '缺少 GEMINI_API_KEY 配置', 500);
-      }
-
-      // 使用 streamSSE 包装器
 
       // 调用 Google AI API
       const [genErr, response] = await to(

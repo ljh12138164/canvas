@@ -5,6 +5,7 @@ import type { IconType } from 'react-icons';
 import { FaCircle, FaDiamond, FaSquare, FaSquareFull } from 'react-icons/fa6';
 import { IoIosStar } from 'react-icons/io';
 import { IoTriangle } from 'react-icons/io5';
+import type { AiFabricObjects } from '../_components/EditComponents/asider/AiChatSider';
 
 export const IMAGE_BLUSK = 'https://osdawghfaoyysblfsexp.supabase.co/storage/v1/object/public/';
 // import type * as Y from 'yjs';
@@ -1007,6 +1008,7 @@ export interface Edit {
   importPDFFILE: (FILE: File) => void;
   savePdf: () => void;
   addAiImage: (data: string) => void;
+  addObjectsToCanvas: (objects: AiFabricObjects[]) => void;
 }
 export const ToolItem = {
   [Tool.Fill]: '填充颜色',

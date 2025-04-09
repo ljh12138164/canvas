@@ -22,7 +22,6 @@ const FridentHome = () => {
   const [addFriend, setAddFriend] = useState('');
   const { user } = useUser();
   const addFriendRef = useRef<{ closeModel: () => void } | null>(null);
-  const manageFriendRef = useRef<{ closeModel: () => void } | null>(null);
 
   const friendApplyRef = useRef<{ closeModel: () => void } | null>(null);
   // 搜索好友

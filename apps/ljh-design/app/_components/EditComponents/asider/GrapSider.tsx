@@ -13,19 +13,9 @@ import { Textarea } from '@/app/_components/ui/textarea';
 import { useAiGrap } from '@/app/_hook/query/useAi';
 import { type Edit, Tool } from '@/app/_types/Edit';
 import { Bot, Code, RefreshCw, Send, Trash2 } from 'lucide-react';
-import dynamic from 'next/dynamic';
+import mermaid from 'mermaid';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-
-// 使用动态导入
-const MermaidComponent = dynamic(() => import('./MermaidComponent'), {
-  ssr: false,
-  loading: () => (
-    <div className="flex items-center justify-center h-full">
-      <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" />
-    </div>
-  ),
-});
 
 export default function Grap({
   editor,
@@ -75,23 +65,59 @@ export default function Grap({
   const [streamStatus, setStreamStatus] = useState<string>('');
   const { getAiFabricStream } = useAiGrap();
   const [error, setError] = useState('');
-  const [mermaidInstance, setMermaidInstance] = useState<any>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const readerRef = useRef<ReadableStreamDefaultReader<Uint8Array> | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
 
-  // // 动态导入mermaid库
-  // useEffect(() => {
-  //   if (acitiveTool === Tool.Grap) {
-  //     import('mermaid').then((mermaidModule) => {
-  //       const mermaid = mermaidModule.default;
-  //       mermaid.initialize({ startOnLoad: true });
-  //       setMermaidInstance(mermaid);
-  //       updateDiagram(mermaid);
-  //     });
-  //   }
-  // }, [acitiveTool]);
+  useEffect(() => {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        background: '#FFFFFF',
+        primaryColor: '#000000',
+        primaryBorderColor: '#000000',
+        primaryTextColor: '#000000',
+        secondaryColor: '#FFFFFF',
+        secondaryBorderColor: '#000000',
+        secondaryTextColor: '#000000',
+        tertiaryColor: '#FFFFFF',
+        tertiaryBorderColor: '#000000',
+        tertiaryTextColor: '#000000',
+        noteBkgColor: '#FFFFFF',
+        noteBorderColor: '#000000',
+        noteTextColor: '#000000',
+        nodeBkg: '#FFFFFF',
+        nodeBorder: '#000000',
+        nodeTextColor: '#000000',
+        mainBkg: '#FFFFFF',
+        lineColor: '#000000',
+        textColor: '#000000',
+        labelColor: '#000000',
+        edgeLabelBackground: '#FFFFFF',
+        clusterBkg: '#FFFFFF',
+        clusterBorder: '#000000',
+        titleColor: '#000000',
+        arrowheadColor: '#000000',
+        relationLabelColor: '#000000',
+        nodeBorderWidth: '1px',
+        fontFamily: 'arial',
+        fontSize: '18px',
+      },
+      er: {
+        diagramPadding: 20,
+        layoutDirection: 'TB',
+        minEntityWidth: 100,
+        minEntityHeight: 75,
+        entityPadding: 15,
+        stroke: '#000000',
+        fill: '#FFFFFF',
+        fontSize: 18,
+      },
+    });
+    updateDiagram();
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -103,14 +129,9 @@ export default function Grap({
     };
   }, []);
 
-  // 修改updateDiagram以接受mermaid实例
-  const updateDiagram = async (mermaidLib?: any, codes?: string) => {
-    if (!mermaidLib && !mermaidInstance) return;
-
-    const activeMermaid = mermaidLib || mermaidInstance;
-
+  const updateDiagram = async (codes?: string) => {
     try {
-      const abc = await activeMermaid.render('mermaid-diagram', codes ?? code);
+      const abc = await mermaid.render('mermaid-diagram', codes ?? code);
       setSvg(abc.svg);
       setError('');
     } catch (error) {
@@ -122,7 +143,7 @@ export default function Grap({
   const handleCodeChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newCode = e.target.value;
     setCode(newCode);
-    updateDiagram(undefined, newCode);
+    updateDiagram();
   };
 
   // 处理SSE事件数据
@@ -156,7 +177,7 @@ export default function Grap({
 
                 setMessages((prev) => [...prev, aiMessage]);
                 setCode(eventData.code);
-                updateDiagram(undefined, eventData.code);
+                updateDiagram();
               }
               break;
 
@@ -470,7 +491,7 @@ export default function Grap({
                               className="h-7 text-xs gap-1"
                               onClick={() => {
                                 setCode(msg.code);
-                                updateDiagram(undefined, msg.code);
+                                updateDiagram(msg.code);
                               }}
                             >
                               <RefreshCw className="h-3 w-3" /> 应用
@@ -529,19 +550,18 @@ export default function Grap({
                 )}
               </div>
               <div className="p-4 overflow-auto h-[250px] bg-white dark:bg-gray-900 rounded-b-lg">
-                {/* <div
+                <div
                   ref={canvasRef}
                   className="mermaid-output flex items-center justify-center "
                   // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                   dangerouslySetInnerHTML={{ __html: svg }}
-                /> */}
-                <MermaidComponent code={code} />
+                />
               </div>
             </Card>
           </div>
         </div>
       </DialogContent>
-      <DialogClose ref={closeRef} aria-label="关闭" />
+      <DialogClose ref={closeRef} />
     </Dialog>
   );
 }

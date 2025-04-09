@@ -1,6 +1,4 @@
 'use client';
-import { Button } from '@/app/_components/ui/button';
-import { useUser } from '@/app/_store/auth';
 import type { ColumnDef } from '@tanstack/react-table';
 import Image from 'next/image';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
@@ -51,16 +49,16 @@ export const columns: ColumnDef<Profiles>[] = [
       return <div>{row.original.email}</div>;
     },
   },
-  {
-    accessorKey: 'actions',
-    header: () => {
-      return <div>操作</div>;
-    },
-    cell: ({ row }) => {
-      const payment = row.original;
-      const { user } = useUser();
+  // {
+  //   accessorKey: 'actions',
+  //   header: () => {
+  //     return <div>操作</div>;
+  //   },
+  //   cell: ({ row }) => {
+  //     const payment = row.original;
+  //     const { user } = useUser();
 
-      return <Button>11</Button>;
-    },
-  },
+  //     return <Button>11</Button>;
+  //   },
+  // },
 ];

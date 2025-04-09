@@ -5,6 +5,7 @@ import {
   createFilter,
   downloadImage,
   getWorkspace,
+  importJsonToFabricObject,
   importPDF,
   isText,
 } from '@/app/_lib/utils';
@@ -29,6 +30,7 @@ import * as fabric from 'fabric';
 import html2canvas from 'html2canvas';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
+import { AiFabricObjects } from '../_components/EditComponents/asider/AiChatSider';
 //输入
 
 interface FilterArrayEffect {
@@ -719,19 +721,20 @@ export const buildEditor = ({
       }
       return selected?.get('opacity') || OPACITY;
     },
-    // 向前
+    // 图层向前
     bringForward: () => {
       canvas.getActiveObjects().forEach((item) => canvas.bringObjectForward(item));
       const workspace = getWorkspace(canvas);
+      // 设置到最前面
       if (workspace) canvas.sendObjectBackwards(workspace);
       canvas.renderAll();
     },
-    // 向后
+    // 图层向后
     sendBackwards: () => {
       canvas.getActiveObjects().forEach((item) => canvas.sendObjectBackwards(item));
       const workspace = getWorkspace(canvas);
+      // 设置到最前面
       if (workspace) canvas.sendObjectBackwards(workspace);
-
       canvas.renderAll();
     },
     // 清除滤镜
@@ -1003,14 +1006,40 @@ export const buildEditor = ({
       image.set({
         // globalCompositeOperation: 'destination-over', // 保留混合模式设置
       });
+      // 将图片添加到画布中心
+      center(image, canvas);
       canvas.add(image);
       canvas.setActiveObject(image);
       const board = getWorkspace(canvas);
       if (!board) return;
-      // 将图片添加到画布中心
-      center(image, canvas);
       canvas.renderAll();
       save();
+    },
+    // 添加对象到画布
+    addObjectsToCanvas: (objects) => {
+      try {
+        // 将对象转换为fabric.js的对象
+        const fabricObjects = importJsonToFabricObject(objects);
+        if (!fabricObjects || fabricObjects.length === 0) {
+          toast.error('无法解析对象数据');
+          return;
+        }
+        if (Array.isArray(fabricObjects)) {
+          // editor.canvas?.add(...fabricObjects);
+          fabricObjects.forEach((item) => {
+            center(item, canvas);
+            canvas.add(item);
+          });
+        } else {
+          // editor.canvas?.add(fabricObjects);
+          center(fabricObjects, canvas);
+          canvas.add(fabricObjects);
+        }
+        toast.success('已将对象添加到画布');
+      } catch (error) {
+        console.error('添加到画布失败:', error);
+        toast.error('添加到画布时出错');
+      }
     },
   };
 };

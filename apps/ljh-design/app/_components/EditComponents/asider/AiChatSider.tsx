@@ -3,7 +3,6 @@ import { Card } from '@/app/_components/ui/card';
 import { Separator } from '@/app/_components/ui/separator';
 import { Textarea } from '@/app/_components/ui/textarea';
 import { useAiFabricStream, useAiGenerateImage } from '@/app/_hook/query/useAi';
-import { importJsonToFabricObject } from '@/app/_lib/utils';
 import { useUser } from '@/app/_store/auth';
 import type { Edit } from '@/app/_types/Edit';
 import type * as fabric from 'fabric';
@@ -376,23 +375,7 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
   // 添加对象到画布的辅助函数
   const addObjectsToCanvas = (objects: AiFabricObjects[]) => {
     if (!editor || !objects || objects.length === 0) return;
-    try {
-      const fabricObjects = importJsonToFabricObject(objects);
-      if (!fabricObjects || fabricObjects.length === 0) {
-        toast.error('无法解析对象数据');
-        return;
-      }
-      if (Array.isArray(fabricObjects)) {
-        editor.canvas?.add(...fabricObjects);
-      } else {
-        editor.canvas?.add(fabricObjects);
-      }
-      editor.canvas?.requestRenderAll();
-      toast.success('已将对象添加到画布');
-    } catch (error) {
-      console.error('添加到画布失败:', error);
-      toast.error('添加到画布时出错');
-    }
+    editor.addObjectsToCanvas(objects);
   };
 
   // 清空聊天记录
@@ -660,7 +643,7 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
               <TooltipTrigger asChild>
                 <Button
                   size="icon"
-                  className="bg-primary hover:bg-primary/90 h-7 w-7 shadow-sm"
+                  className="h-8 w-8"
                   onClick={handleSendMessage}
                   disabled={isLoading || getAiFabricStreamPending || generateImagePending}
                 >
