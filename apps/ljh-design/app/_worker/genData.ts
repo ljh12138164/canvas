@@ -8,8 +8,8 @@ import type { DashboardListResponseType } from '../_hook/query/useAdmin';
  */
 self.onmessage = (e: MessageEvent<{ data: string[]; userData: DashboardListResponseType }>) => {
   const { data, userData } = e.data;
-  if (!userData)
-    return {
+  if (!userData || !userData) {
+    self.postMessage({
       filterData: [],
       totalUser: 0,
       totalLike: 0,
@@ -18,7 +18,9 @@ self.onmessage = (e: MessageEvent<{ data: string[]; userData: DashboardListRespo
       totalTemplate: 0,
       totalBoard: 0,
       totalMaterial: 0,
-    };
+    });
+    return;
+  }
   const totalUser = userData.length;
   const totalLike = userData
     // @ts-ignore

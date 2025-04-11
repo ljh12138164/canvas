@@ -8,7 +8,7 @@ import AvatarImage from '../Comand/AvatarImage';
 
 const ChatItem = ({ item, other }: { item: ChatMessage; other: Profiles }) => {
   const { user } = useUser();
-  const isSelf = useMemo(() => user?.user.id === item.sendId, [user?.user.id, item.sendId]);
+  const isSelf = useMemo(() => user?.user.id === item.sendId, [user?.user?.id, item.sendId]);
 
   return (
     <>

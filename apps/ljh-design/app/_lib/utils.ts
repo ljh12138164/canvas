@@ -343,7 +343,10 @@ export const HIGHLIGHT_COLORS = [
  * @returns
  */
 export const randomColor = () => {
-  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+  // 使用padStart确保总是生成6位十六进制值
+  return `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, '0')}`;
 };
 
 /**

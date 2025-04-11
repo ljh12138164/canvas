@@ -55,87 +55,87 @@ if (nodeEnv !== 'TAURI') {
           chunks: 'all',
           minSize: 20000,
           maxSize: 200000, // 降低最大块大小以更好地分割代码
-          cacheGroups: {
-            // React 相关核心包
-            'react-vendor': {
-              test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom|@tanstack|supabase)[\\/]/,
-              name: 'react-vendor',
-              priority: 40,
-              enforce: true,
-              reuseExistingChunk: true,
-            },
-            // UI 组件相关
-            'ui-vendor': {
-              test: /[\\/]node_modules[\\/](@radix-ui.*|@hookform.*|class-variance-authority|tailwind-merge|dayjs|date-fns|lodash-es.*|crypto-js|zod|react-icons)[\\/]/,
-              name: 'ui-vendor',
-              priority: 30,
-              chunks: 'async',
-              reuseExistingChunk: true,
-            },
-            // 图表相关
-            'chart-vendor': {
-              test: /[\\/]node_modules[\\/](recharts|d3-.*|react-smooth|victory.*|react-day-picker)[\\/]/,
-              name: 'chart-vendor',
-              chunks: 'async',
-              minChunks: 2,
-              reuseExistingChunk: true,
-            },
-            // Mermaid图表相关 - 添加专门的分块配置
-            'mermaid-vendor': {
-              test: /[\\/]node_modules[\\/](mermaid|d3|dagre|cytoscape|khroma|internmap)[\\/]/,
-              name: 'mermaid-vendor',
-              priority: 25,
-              chunks: 'async',
-              reuseExistingChunk: true,
-            },
-            // 编辑器相关
-            'editor-vendor': {
-              test: /[\\/]node_modules[\\/](@tiptap.*|prosemirror.*|@hocuspocus.*)[\\/]/,
-              name: 'editor-vendor',
-              priority: 20,
-              chunks: 'async',
-              reuseExistingChunk: true,
-            },
-            'fabric-vendor': {
-              test: /[\\/]node_modules[\\/](fabric.*)[\\/]/,
-              name: 'fabric-vendor',
-              priority: 20,
-              chunks: 'async',
-              reuseExistingChunk: true,
-            },
-            // 将quill单独打包
-            'quill-vendor': {
-              test: /[\\/]node_modules[\\/](quill.*|react-quill.*)[\\/]/,
-              name: 'quill-vendor',
-              priority: 20,
-              chunks: 'async',
-              reuseExistingChunk: true,
-            },
-            // react-markdown-editor-lite
-            'refactor-vendor': {
-              test: /[\\/]node_modules[\\/](@refactor.*|react-markdown|localforage)[\\/]/,
-              name: 'refactor-vendor',
-              priority: 20,
-              chunks: 'async',
-              reuseExistingChunk: true,
-            },
-            'loader-pdf': {
-              test: /[\\/]node_modules[\\/](pdf.*)[\\/]/,
-              name: 'loader-pdf',
-              priority: 20,
-              chunks: 'async',
-              reuseExistingChunk: true,
-            },
-            // 其他第三方库
-            vendors: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              priority: 10,
-              chunks: 'async',
-              minChunks: 2,
-              reuseExistingChunk: true,
-            },
-          },
+          // cacheGroups: {
+          //   // React 相关核心包
+          //   'react-vendor': {
+          //     test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom|@tanstack|supabase)[\\/]/,
+          //     name: 'react-vendor',
+          //     priority: 40,
+          //     enforce: true,
+          //     reuseExistingChunk: true,
+          //   },
+          //   // UI 组件相关
+          //   'ui-vendor': {
+          //     test: /[\\/]node_modules[\\/](@radix-ui.*|@hookform.*|class-variance-authority|tailwind-merge|dayjs|date-fns|lodash-es.*|crypto-js|zod|react-icons)[\\/]/,
+          //     name: 'ui-vendor',
+          //     priority: 30,
+          //     chunks: 'async',
+          //     reuseExistingChunk: true,
+          //   },
+          //   // 图表相关
+          //   'chart-vendor': {
+          //     test: /[\\/]node_modules[\\/](recharts|d3-.*|react-smooth|victory.*|react-day-picker)[\\/]/,
+          //     name: 'chart-vendor',
+          //     chunks: 'async',
+          //     minChunks: 2,
+          //     reuseExistingChunk: true,
+          //   },
+          //   // Mermaid图表相关 - 添加专门的分块配置
+          //   'mermaid-vendor': {
+          //     test: /[\\/]node_modules[\\/](mermaid|d3|dagre|cytoscape|khroma|internmap)[\\/]/,
+          //     name: 'mermaid-vendor',
+          //     priority: 25,
+          //     chunks: 'async',
+          //     reuseExistingChunk: true,
+          //   },
+          //   // 编辑器相关
+          //   'editor-vendor': {
+          //     test: /[\\/]node_modules[\\/](@tiptap.*|prosemirror.*|@hocuspocus.*)[\\/]/,
+          //     name: 'editor-vendor',
+          //     priority: 20,
+          //     chunks: 'async',
+          //     reuseExistingChunk: true,
+          //   },
+          //   'fabric-vendor': {
+          //     test: /[\\/]node_modules[\\/](fabric.*)[\\/]/,
+          //     name: 'fabric-vendor',
+          //     priority: 20,
+          //     chunks: 'async',
+          //     reuseExistingChunk: true,
+          //   },
+          //   // 将quill单独打包
+          //   'quill-vendor': {
+          //     test: /[\\/]node_modules[\\/](quill.*|react-quill.*)[\\/]/,
+          //     name: 'quill-vendor',
+          //     priority: 20,
+          //     chunks: 'async',
+          //     reuseExistingChunk: true,
+          //   },
+          //   // react-markdown-editor-lite
+          //   'refactor-vendor': {
+          //     test: /[\\/]node_modules[\\/](@refactor.*|react-markdown|localforage)[\\/]/,
+          //     name: 'refactor-vendor',
+          //     priority: 20,
+          //     chunks: 'async',
+          //     reuseExistingChunk: true,
+          //   },
+          //   'loader-pdf': {
+          //     test: /[\\/]node_modules[\\/](pdf.*)[\\/]/,
+          //     name: 'loader-pdf',
+          //     priority: 20,
+          //     chunks: 'async',
+          //     reuseExistingChunk: true,
+          //   },
+          //   // 其他第三方库
+          //   vendors: {
+          //     test: /[\\/]node_modules[\\/]/,
+          //     name: 'vendors',
+          //     priority: 10,
+          //     chunks: 'async',
+          //     minChunks: 2,
+          //     reuseExistingChunk: true,
+          //   },
+          // },
         };
 
         // 添加路由优化

@@ -225,7 +225,13 @@ const BoardCreateFrom = ({
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-4"
+      data-is-template={isTemplate}
+      data-user-id={userId}
+      data-testid="board-create-form"
+    >
       <div className="flex flex-col gap-2">
         <Label htmlFor="name" aria-label="画布名称">
           画布名称
