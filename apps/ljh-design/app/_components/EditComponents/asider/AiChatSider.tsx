@@ -61,7 +61,9 @@ export const AiChatSider = ({ editor }: { editor?: Edit }) => {
 
   // 自动滚动到最新消息
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current && 'scrollIntoView' in messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   // 组件卸载时取消流读取

@@ -4,7 +4,12 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { errorCheck } from '../../../libs/error';
 import { checkToken, getSupabaseAuth } from '../../../libs/middle';
-import { createMaterial, editMaterial, getMaterial } from '../../../server/design/material';
+import {
+  createMaterial,
+  deleteMaterial,
+  editMaterial,
+  getMaterial,
+} from '../../../server/design/material';
 export const material = new Hono()
   .use(checkToken(process.env.SUPABASE_DESIGN_JWT!))
   // 获取素材
@@ -47,4 +52,12 @@ export const material = new Hono()
       if (error) return c.json({ message: error.message }, errorCheck(error));
       return c.json(data);
     },
-  );
+  )
+  // 删除素材
+  .delete('/material', zValidator('json', z.object({ id: z.string() })), async (c) => {
+    const { auth, token } = getSupabaseAuth(c);
+    const { id } = await c.req.json();
+    const [error, data] = await to(deleteMaterial({ userId: auth.sub, token, id }));
+    if (error) return c.json({ message: error.message }, errorCheck(error));
+    return c.json(data);
+  });

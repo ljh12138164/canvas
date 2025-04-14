@@ -1,6 +1,5 @@
 import { useGetFormue } from '@/app/_hook/query/useShow';
 import { useInformation } from '@/app/_hook/useInformation';
-import { ScrollArea } from '../ui/scroll-area';
 import { FormueItem } from './FormueItem';
 
 export default function FormueList() {

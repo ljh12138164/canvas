@@ -4,8 +4,6 @@ import Features from './_components/home/Features';
 import Footer from './_components/home/Footer';
 import Hero from './_components/home/Hero';
 import NavBar from './_components/home/Navbar';
-import Showcase from './_components/home/Showcase';
-import Testimonials from './_components/home/Testimonials';
 import { ScrollArea } from './_components/ui/scroll-area';
 
 export default async function Home() {

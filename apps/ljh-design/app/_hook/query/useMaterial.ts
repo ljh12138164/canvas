@@ -104,3 +104,37 @@ export const useEditMaterial = () => {
   });
   return { mutate, isPending };
 };
+
+type MaterialDeleteRequestType = InferRequestType<typeof client.material.material.$delete>;
+type MaterialDeleteResponseType = InferResponseType<typeof client.material.material.$delete, 200>;
+/**
+ * ### 删除素材
+ * @returns
+ */
+export const useDeleteMaterial = () => {
+  const router = useRouter();
+  const { mutate, isPending } = useMutation<
+    MaterialDeleteResponseType,
+    Error,
+    MaterialDeleteRequestType
+  >({
+    mutationFn: async (material) => {
+      const token = await getNewToken();
+      if (!token) {
+        router.push('/sign-in');
+        throw new Error('请先登录');
+      }
+      const response = await client.material.material.$delete(material, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        const error = (await response.json()) as { message: string };
+        throw new Error(error.message);
+      }
+      return response.json();
+    },
+  });
+  return { mutate, isPending };
+};

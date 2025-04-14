@@ -928,6 +928,7 @@ export interface Edit {
   drawWidth: number;
   canvasWidth: number;
   canvasHeight: number;
+  save: () => void;
   canvasColor: string;
   canvasHistory: fabric.FabricObject[];
   setMaterial: (material: fabric.FabricObject[]) => void;

@@ -41,7 +41,10 @@
       "biome check --write --unsafe --no-errors-on-unmatched",
       "biome lint --write --no-errors-on-unmatched"
     ],
-    "*": ["biome check --no-errors-on-unmatched --files-ignore-unknown=true"]
+    "*": [
+      "biome check --fix --unsafe",
+      "biome check --no-errors-on-unmatched --files-ignore-unknown=true"
+    ]
   },
   "packageManager": "pnpm@9.4.0",
   "devDependencies": {

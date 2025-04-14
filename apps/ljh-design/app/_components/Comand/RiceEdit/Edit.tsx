@@ -25,13 +25,15 @@ import TiptapToolbar from './TiptapToolbar';
 const Tiptap = ({
   content = '',
   setValue,
+  onUpdate,
   editorab = true,
   setError,
 }: {
   content: string;
-  setValue: any;
+  setValue?: any;
+  onUpdate?: (value: string) => void;
   editorab?: boolean;
-  setError: any;
+  setError?: any;
 }) => {
   const { theme } = useTheme();
   const [editor, setEditor] = useState<Editor | null>(null);
@@ -47,8 +49,9 @@ const Tiptap = ({
         },
       },
       onUpdate: ({ editor }) => {
-        if (!editor.getText()) return setError('explanation', { message: '不能为空' });
-        setValue('explanation', editor.getHTML());
+        if (!editor.getText()) return setError?.('explanation', { message: '不能为空' });
+        onUpdate?.(editor.getHTML());
+        setValue?.('explanation', editor.getHTML());
       },
       extensions: [
         StarterKit,
@@ -143,7 +146,7 @@ const Tiptap = ({
   return (
     <section className="h-full w-full">
       <main className="h-8">{editor && <TiptapToolbar tiptapToolBar={tiptapToolBar} />}</main>
-      <ScrollArea className="h-full w-full">
+      <ScrollArea className="h-full w-full Editor">
         {/* tiptap实例 */}
         <EditorContent className="h-full" placeholder="请输入内容" editor={editor} />
       </ScrollArea>

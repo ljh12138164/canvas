@@ -12,6 +12,7 @@ import { material } from './route/material';
 import { show, showPublic } from './route/show';
 import tap from './route/tap';
 import template from './route/template';
+import topic from './route/topic';
 import { upvotes } from './route/upvote';
 import { user } from './route/user';
 
@@ -30,5 +31,6 @@ export const design = new Hono()
   .route('/ai', ai)
   .route('/friend', friend)
   .route('/admin', admin)
-  .route('/chat', chat);
+  .route('/chat', chat)
+  .route('/topic', topic);
 // .route('/clone', clone);

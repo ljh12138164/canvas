@@ -14,7 +14,7 @@ interface TiptapToolbar {
 
 const TiptapToolbar = ({ tiptapToolBar }: TiptapToolbar) => {
   return (
-    <div className="flex border border-zinc-200 dark:border-zinc-800">
+    <div className="flex border ">
       {tiptapToolBar.map((item) => (
         <div key={item.key} className="flex items-center h-full gap-1">
           <TooltipProvider>

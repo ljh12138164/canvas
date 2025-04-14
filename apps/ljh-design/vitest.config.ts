@@ -60,7 +60,7 @@ export default defineConfig({
         '**/app/_components/Echarts/**',
         '**/app/_components/AdminEchart/**',
         '**/app/_components/Friend/**',
-        '**/app/_components/Sign/SignIn.tsx',
+        // '**/app/_components/Sign/SignIn.tsx',
         '**/app/_components/UserData/DataShow.tsx',
         '**/app/_components/UserData/UseCard.tsx',
         '**/app/_components/UserData/DesignCard.tsx',

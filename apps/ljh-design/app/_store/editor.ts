@@ -30,7 +30,6 @@ import * as fabric from 'fabric';
 import html2canvas from 'html2canvas';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
-import { AiFabricObjects } from '../_components/EditComponents/asider/AiChatSider';
 //输入
 
 interface FilterArrayEffect {
@@ -1041,5 +1040,6 @@ export const buildEditor = ({
         toast.error('添加到画布时出错');
       }
     },
+    save,
   };
 };

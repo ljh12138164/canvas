@@ -87,3 +87,22 @@ export const editMaterial = async ({
   if (error) throw error;
   return data[0];
 };
+
+/**
+ * ### 删除素材
+ * @param param0
+ * @returns
+ */
+export const deleteMaterial = async ({
+  userId,
+  token,
+  id,
+}: { userId: string; token: string; id: string }): Promise<boolean> => {
+  const { error } = await supabaseDesign(token)
+    .from('material')
+    .delete()
+    .eq('id', id)
+    .eq('userId', userId);
+  if (error) throw error;
+  return true;
+};

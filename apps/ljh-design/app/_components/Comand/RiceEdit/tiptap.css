@@ -439,3 +439,8 @@
     }
   }
 }
+.Editor .tiptap {
+  border-bottom: 1.5px solid #c7c7c7;
+  border-left: 1.5px solid #c7c7c7;
+  border-right: 1.5px solid #c7c7c7;
+}

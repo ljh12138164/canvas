@@ -1,8 +1,10 @@
 'use client';
-import { useEditMaterial, useMaterial } from '@/app/_hook/query/useMaterial';
+import { useDeleteMaterial, useEditMaterial, useMaterial } from '@/app/_hook/query/useMaterial';
+import { useQueryClient } from '@tanstack/react-query';
 import { Image, PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { type ElementType, useRef } from 'react';
+import toast from 'react-hot-toast';
 import type { IconBaseProps } from 'react-icons';
 import { FaCircle, FaDiamond, FaSquare, FaSquareFull } from 'react-icons/fa6';
 import { IoIosStar } from 'react-icons/io';
@@ -31,9 +33,12 @@ const metalIcon: IconType[] = [
 
 const MaterialMain = () => {
   const ref = useRef<{ closeModel: () => void } | null>(null);
+  const ref1 = useRef<{ closeModel: () => void } | null>(null);
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { data, isLoading } = useMaterial();
-  const { isPending } = useEditMaterial();
+  const { mutate, isPending: isDeletePending } = useDeleteMaterial();
+  const { mutate: editMutate, isPending: isEditPending } = useEditMaterial();
   return (
     <ScrollArea className="h-[calc(100vh-100px)]">
       <main className="min-w-[380px] p-6">
@@ -97,14 +102,46 @@ const MaterialMain = () => {
                           >
                             取消
                           </Button>
-                          <Button type="submit" disabled={isPending}>
-                            {isPending ? '编辑中...' : '编辑'}
+                          <Button type="submit" disabled={isEditPending}>
+                            {isEditPending ? '编辑中...' : '编辑'}
                           </Button>
                         </div>
                       </section>
                     </Form>
                   </Response>
-                  <Button variant="destructive">删除</Button>
+                  <Response
+                    title="删除素材"
+                    description="是否删除素材"
+                    variant="destructive"
+                    showDescription={true}
+                    myTrigger={<Button variant="destructive">删除</Button>}
+                    ref={ref1}
+                    showFooter={false}
+                  >
+                    <section className="flex gap-2 ml-auto">
+                      <Button variant="outline" onClick={() => ref1?.current?.closeModel()}>
+                        取消
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() =>
+                          mutate(
+                            { json: { id: item.id } },
+                            {
+                              onSuccess: () => {
+                                ref1?.current?.closeModel();
+                                toast.success('删除成功');
+                                queryClient.invalidateQueries({ queryKey: ['material'] });
+                              },
+                            },
+                          )
+                        }
+                        disabled={isDeletePending}
+                      >
+                        {isDeletePending ? '删除中...' : '删除'}
+                      </Button>
+                    </section>
+                  </Response>
                 </div>
               </footer>
             </section>

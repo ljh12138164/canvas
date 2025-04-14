@@ -130,12 +130,14 @@ const SignIn = () => {
                 <BsEye
                   onClick={() => setShowPassword((show) => !show)}
                   size={18}
+                  data-testid="password-toggle"
                   className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2  rounded-md hover:text-blue-500 transition-colors duration-300  "
                 />
               ) : (
                 <BsEyeSlash
                   onClick={() => setShowPassword((show) => !show)}
                   size={18}
+                  data-testid="password-toggle"
                   className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2  hover:text-blue-500    transition-colors duration-300  "
                 />
               )}
@@ -159,6 +161,7 @@ const SignIn = () => {
               }}
             />*/}
             <Button type="submit" className="w-full mt-2.5" disabled={loading}>
+              {/* c8 ignore next */}
               {login ? `登录${loading ? '中...' : ''}` : `注册${loading ? '中...' : ''}`}
             </Button>
           </form>

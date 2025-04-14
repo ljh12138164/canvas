@@ -56,11 +56,12 @@ export default function UserInfo() {
           </div>
         </CardContent>
 
-        <CardFooter className="justify-end">
+        <CardFooter className="justify-end gap-2 flex">
           <Button onClick={() => router.push('/board/user/change')} variant="outline">
             <PencilIcon className="mr-2 h-4 w-4" />
             编辑资料
           </Button>
+          <Button onClick={() => router.push('/board/user/topic')}>管理话题</Button>
         </CardFooter>
       </Card>
       <Card>

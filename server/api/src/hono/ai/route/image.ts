@@ -9,7 +9,7 @@ import { model } from '../../../server/ai';
 
 // 默认提示词
 const DEFAULT_PROMPT = '请用专业的中文详细解释这张图片的内容，包括图片中的主要元素、场景、特点等。';
-const apiKey = process.env.GEMINI_API_KEY;
+// const apiKey = process.env.GEMINI_API_KEY;
 
 // 错误处理函数
 const handleError = (c: any, error: any, message: string, statusCode = 500) => {
