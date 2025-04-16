@@ -1,14 +1,13 @@
 'use client';
 
 import { useBoardEditQuery } from '@/app/_hook/query/useBoardQuery';
-import type { EditType } from '@/app/_types/Edit';
 import type { Sessions } from '@/app/_types/user';
 import { Loader2, TriangleAlert } from 'lucide-react';
 import Link from 'next/link';
 import LoginProtect from '../../Sign/LoginProtect';
 import { Button } from '../../ui/button';
 import Canvas from './Canvas';
-
+type EditType = 'template' | 'board' | 'material';
 export default function Edit({
   id,
   user,

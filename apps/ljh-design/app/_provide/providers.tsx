@@ -4,11 +4,10 @@ import QueryProvedie from '@/app/_provide/query-provide';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
-// import { myFont } from '../_lib/font';
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <Suspense fallback={<div>加载中...</div>}>
-      <div className="h-[100dvh] overflow-hidden">
+      <div className="h-[100dvh] overflow-hidden ">
         <QueryProvedie>
           <ReactQueryDevtools initialIsOpen={false} />
           <ThemeProvider

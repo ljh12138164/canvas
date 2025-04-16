@@ -26,7 +26,7 @@ const NavBar = () => {
       {isMobile && (
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline">
+            <Button variant="outline" aria-label="打开侧边栏">
               <MenuIcon />
             </Button>
           </SheetTrigger>

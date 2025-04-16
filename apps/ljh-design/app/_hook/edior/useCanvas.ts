@@ -3,7 +3,7 @@ import { useMemoizedFn } from 'ahooks';
 import * as fabric from 'fabric';
 import { initAligningGuidelines } from 'fabric/extensions';
 import { useTheme } from 'next-themes';
-import { type RefObject, useMemo } from 'react';
+import type { RefObject } from 'react';
 
 interface CanvasProps {
   initWidth?: RefObject<number> | number;
@@ -11,20 +11,6 @@ interface CanvasProps {
 }
 const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
   const { theme } = useTheme();
-  const config = useMemo(
-    () => ({
-      /** At what distance from the shape does alignment begin? */
-      margin: 4,
-      /** Aligning line dimensions */
-      width: 1,
-      /** Aligning line color */
-      color: theme !== 'dark' ? '#071689' : '#051ed9',
-    }),
-    [theme],
-  );
-  const deactivate = useMemoizedFn((canvas: fabric.Canvas) =>
-    initAligningGuidelines(canvas, config),
-  );
 
   const init = useMemoizedFn(
     ({
@@ -50,8 +36,13 @@ const useCanvas = ({ initWidth, initHeight }: CanvasProps) => {
       initCanvas.freeDrawingBrush = new fabric.PencilBrush(initCanvas);
       initCanvas.freeDrawingBrush.width = STROKE_WIDTH;
       initCanvas.freeDrawingBrush.color = STROKE_COLOR;
+      const config = {
+        margin: 4,
+        width: 1,
+        color: theme !== 'dark' ? '#071689' : '#051ed9',
+      };
       // 初始化对齐线
-      deactivate(initCanvas);
+      initAligningGuidelines(initCanvas, config);
       //画布
       const initRect = new fabric.Rect({
         width: typeof initWidth === 'number' ? initWidth : initWidth?.current || 800,

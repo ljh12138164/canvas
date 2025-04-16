@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import type * as fabric from 'fabric';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cn, getDateNum, getUserColor, isText, randomColor, rgbaObjToString } from '../utils';
+import { describe, expect, it, vi } from 'vitest';
+import { isText } from '../editor/editor';
+import { cn, getDateNum, getUserColor, randomColor, rgbaObjToString } from '../utils';
 
 describe('cn 函数', () => {
   it('应该正确合并多个类名', () => {

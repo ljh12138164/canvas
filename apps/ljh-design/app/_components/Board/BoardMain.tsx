@@ -41,21 +41,19 @@ const BoardMain = ({ userId }: { userId: string }) => {
   return (
     <>
       <ScrollArea className="w-full h-full overflow-auto ">
+        {/*  @ts-ignore */}
+        <BoardCreate data={data?.pages || []} userId={userId} />
         {isLoading && (
-          <>
-            <Skeleton className="w-full h-[200px]" />
-            <div className="h-[28px]" />
-            <div className="flex flex-col gap-2">
-              <Skeleton className="w-full h-[96px]" />
-              <Skeleton className="w-full h-[96px]" />
-              <Skeleton className="w-full h-[96px]" />
-            </div>
-          </>
+          <div className="flex flex-col gap-2 mt-">
+            <Skeleton className="w-full h-[96px]" />
+            <Skeleton className="w-full h-[96px]" />
+            <Skeleton className="w-full h-[96px]" />
+          </div>
         )}
-        {!isLoading && !boardLoading && !error && (
+        {/* {!isLoading && !boardLoading && !error && (
           // @ts-ignore
           <BoardCreate data={data?.pages || []} userId={userId} />
-        )}
+        )} */}
         {error && <div className="h-[200px]" />}
         {/* 表格 */}
         <div className=" flex flex-col  gap-2 h-[calc(100dvh-300px)]   text-5xl">

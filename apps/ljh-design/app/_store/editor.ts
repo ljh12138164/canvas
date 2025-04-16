@@ -1,14 +1,11 @@
 import { center } from '@/app/_lib/editor/editor';
 import {
   type Effect,
-  convertImagesToPDF,
   createFilter,
-  downloadImage,
   getWorkspace,
   importJsonToFabricObject,
-  importPDF,
   isText,
-} from '@/app/_lib/utils';
+} from '@/app/_lib/editor/editor';
 import {
   type AddObject,
   type Edit,
@@ -30,6 +27,7 @@ import * as fabric from 'fabric';
 import html2canvas from 'html2canvas';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
+import { convertImagesToPDF, downloadImage, importPDF } from '../_lib/utils';
 //输入
 
 interface FilterArrayEffect {

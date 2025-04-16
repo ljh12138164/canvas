@@ -49,6 +49,7 @@ const ProjectOpacte = observer(
         {
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['taskList'] });
+            queryClient.invalidateQueries({ queryKey: ['board'] });
             toast.dismiss();
             toast.success('删除成功');
             closeRef.current?.click();

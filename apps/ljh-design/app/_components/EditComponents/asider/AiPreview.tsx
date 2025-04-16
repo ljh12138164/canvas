@@ -1,4 +1,4 @@
-import { toFabricObject } from '@/app/_lib/utils';
+import { toFabricObject } from '@/app/_lib/editor/editor';
 import type { Edit } from '@/app/_types/Edit';
 import * as fabric from 'fabric';
 import { useEffect, useRef } from 'react';

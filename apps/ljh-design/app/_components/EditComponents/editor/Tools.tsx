@@ -1,7 +1,8 @@
 import TooltipComponents from '@/app/_components/Comand/Tooltip';
 import { Button } from '@/app/_components/ui/button';
 import { ScrollArea, ScrollBar } from '@/app/_components/ui/scroll-area';
-import { cn, isText } from '@/app/_lib/utils';
+import { isText } from '@/app/_lib/editor/editor';
+import { cn } from '@/app/_lib/utils';
 import { type Edit, Tool } from '@/app/_types/Edit';
 import type * as fabric from 'fabric';
 import { BsBorderWidth, BsTransparency } from 'react-icons/bs';

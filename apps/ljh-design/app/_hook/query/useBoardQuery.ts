@@ -1,14 +1,14 @@
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
 import { useUser } from '@/app/_store/auth';
-import { type EditType, PAGE_SIZE } from '@/app/_types/Edit';
+// import { PAGE_SIZE } from '@/app/_types/Edit';
 import type { Board } from '@/app/_types/board';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
 import { isArray } from 'lodash-es';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-
+const PAGE_SIZE = 7;
 export type ResponseType = InferResponseType<typeof client.board.$post>;
 type RequestType = InferRequestType<typeof client.board.$post>['json'];
 
@@ -55,6 +55,7 @@ export const useBoardQuery = () => {
   });
   return { mutate, isPending, error };
 };
+type EditType = 'template' | 'board' | 'material';
 /**
  * 编辑器画布
  * @param id

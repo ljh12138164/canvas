@@ -54,7 +54,7 @@ if (nodeEnv !== 'TAURI') {
         config.optimization.splitChunks = {
           chunks: 'all',
           minSize: 20000,
-          maxSize: 200000, // 降低最大块大小以更好地分割代码
+          maxSize: 240000, // 降低最大块大小以更好地分割代码
           // cacheGroups: {
           //   // React 相关核心包
           //   'react-vendor': {

@@ -10,7 +10,7 @@ const ColorCard = ({
     <section className="p-2 h-[200px] flex justify-center items-center">
       <div
         className={cn(
-          ' bg-linear-to-r grid  grid-cols-[168px_1fr]  w-full h-full rounded-lg p-2 ',
+          'bg-linear-to-r grid  grid-cols-[168px_1fr]  w-full h-full rounded-lg p-2 ',
           className,
         )}
       >
@@ -22,7 +22,7 @@ const ColorCard = ({
           </div>
         </header>
         <main className="flex flex-col justify-center gap-2">
-          <h1 className="text-2xl font-bold text-[#fff] dark:text-[#000]">{title}</h1>
+          <span className="text-xl  text-[#fff] dark:text-[#000]">{title}</span>
           <div className="flex gap-2">{children}</div>
         </main>
       </div>

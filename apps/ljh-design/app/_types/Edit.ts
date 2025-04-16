@@ -1,4 +1,4 @@
-import type { Effect } from '@/app/_lib/utils';
+import type { Effect } from '@/app/_lib/editor/editor';
 import * as fabric from 'fabric';
 import material from 'material-colors';
 import type { IconType } from 'react-icons';

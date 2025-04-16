@@ -1,7 +1,6 @@
 import { Button } from '@/app/_components/ui/button';
 import { cn } from '@/app/_lib/utils';
 import type { Column } from '@tanstack/react-table';
-import dayjs from 'dayjs';
 import { ArrowUpDown } from 'lucide-react';
 
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {

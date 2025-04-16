@@ -1,6 +1,6 @@
 import * as fabric from 'fabric';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { createFilter, getWorkspace, importJsonToFabric } from '../utils';
+import { createFilter, getWorkspace, importJsonToFabric } from '../editor/editor';
 
 // 模拟 fabric.js 库
 vi.mock('fabric', () => {
