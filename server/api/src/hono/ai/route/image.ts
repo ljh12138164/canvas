@@ -98,6 +98,7 @@ export const image = new Hono()
           parts: item.parts,
         })) ?? [];
 
+      // 添加上下文
       const chats = model.startChat({
         history: [
           {
@@ -142,18 +143,20 @@ export const image = new Hono()
           },
         ],
       });
+      // 转化图片
       const imageData = {
         inlineData: {
           data: Buffer.from(imageResp).toString('base64'),
           mimeType: filetype,
         },
       };
+      // 获取流式结果
       const [streamErr, streamResult] = await to(
         chats.sendMessageStream([imageData, `${prompt || DEFAULT_PROMPT}。请务必使用中文回答。`]),
       );
       if (streamErr || !streamResult?.stream)
         return handleError(c, streamErr, 'AI生成流式内容失败');
-
+      // 流式返回
       return stream(c, async (s) => {
         try {
           for await (const chunk of streamResult.stream) {
@@ -353,9 +356,9 @@ export const image = new Hono()
       if (genErr) return handleError(c, null, '调用失败', 500);
       if (response?.candidates?.[0]?.content?.parts) {
         for (const part of response.candidates[0].content.parts) {
-          // Based on the part type, either show the text or save the image
           if (part.inlineData) {
             const imageData = part.inlineData.data!;
+            // 返回图片
             return c.json({
               success: true,
               data: {

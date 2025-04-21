@@ -19,9 +19,7 @@ export default function MermaidComponent({ code, id = 'mermaid-diagram' }: Merma
           const mermaid = mermaidModule.default;
           mermaid.initialize({
             startOnLoad: false,
-            // 设置主题为中性，减少CSS体积
             theme: 'neutral',
-            // 禁用不需要的图表类型以减小体积
             flowchart: { useMaxWidth: true },
             securityLevel: 'strict',
           });
@@ -33,7 +31,6 @@ export default function MermaidComponent({ code, id = 'mermaid-diagram' }: Merma
           setError('无法加载图表渲染库');
         });
     } else {
-      // 如果已经加载过，直接使用缓存的实例
       renderDiagram(mermaidInstanceRef.current);
     }
   }, []);

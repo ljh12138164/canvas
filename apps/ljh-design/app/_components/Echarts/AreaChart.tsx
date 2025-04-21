@@ -101,6 +101,7 @@ export function AreaChart({ startTime, endTime, selectedType, genData }: AreaCha
               <button
                 type="button"
                 key={chart}
+                aria-label={total[key as keyof typeof total].toLocaleString()}
                 data-active={activeChart === chart}
                 className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                 onClick={() => setActiveChart(chart)}
@@ -116,7 +117,7 @@ export function AreaChart({ startTime, endTime, selectedType, genData }: AreaCha
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
         <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
-          {/* 图表 */}
+          {/* 统计柱状图 */}
           <BarChart
             accessibilityLayer
             data={genData}

@@ -1,16 +1,16 @@
 'use client';
-import type { GetShowResponseType } from '@/app/_hook/query/useShow';
-import Quill from 'quill';
-import type { QuillOptions } from 'quill';
-import { useEffect, useRef, useState } from 'react';
-import './quil.css';
-import 'quill/dist/quill.snow.css';
 import { useAnswer, useGetAnswer } from '@/app/_hook/query/useAnswer';
+import type { GetShowResponseType } from '@/app/_hook/query/useShow';
 import { useQueryClient } from '@tanstack/react-query';
+import type { QuillOptions } from 'quill';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
+import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Button } from '../../ui/button';
 import { Separator } from '../../ui/separator';
 import { Skeleton } from '../../ui/skeleton';
+import './quil.css';
 import Render from './render';
 
 const ReactQuillEditor = ({ showData }: { showData: GetShowResponseType }) => {
@@ -23,8 +23,9 @@ const ReactQuillEditor = ({ showData }: { showData: GetShowResponseType }) => {
   useEffect(() => {
     if (!quillRef.current) return;
     const container = quillRef.current;
+    const div = container.ownerDocument.createElement('div');
     // 创建一个div元素，用于放置富文本编辑器
-    const editorContainer = container.appendChild(container.ownerDocument.createElement('div'));
+    const editorContainer = container.appendChild(div);
     const options: QuillOptions = {
       theme: 'snow',
     };
@@ -66,7 +67,13 @@ const ReactQuillEditor = ({ showData }: { showData: GetShowResponseType }) => {
       <section className="react-quill-wrap">
         <header className="flex justify-between items-center">
           <h2 className="text-lg font-bold my-2">评论 </h2>
-          <Button type="button" className="h-8" onClick={handelSubmit} disabled={isPending}>
+          <Button
+            type="button"
+            aria-label="取消"
+            className="h-8"
+            onClick={handelSubmit}
+            disabled={isPending}
+          >
             发布
           </Button>
         </header>

@@ -53,7 +53,7 @@ const CreateForm = ({
               >
                 <DialogFooter className="mt-6 flex gap-1">
                   <DialogClose asChild>
-                    <Button variant="outline" ref={ref} type="button">
+                    <Button variant="outline" ref={ref} type="button" aria-label="取消">
                       取消
                     </Button>
                   </DialogClose>

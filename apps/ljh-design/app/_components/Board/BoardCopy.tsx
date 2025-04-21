@@ -55,6 +55,7 @@ export const BoardCopy = ({
                   variant="outline"
                   ref={closeRef}
                   type="button"
+                  aria-label="取消"
                   onClick={(e) => {
                     e.stopPropagation();
                   }}

@@ -197,10 +197,11 @@ const board = new Hono()
         // base64或者url
         image: z.string(),
         defaultImage: z.string(),
+        isTemplate: z.boolean().default(false).optional(),
       }),
     ),
     async (c) => {
-      const { json, width, height, image, defaultImage, id } = c.req.valid('json');
+      const { json, width, height, image, defaultImage, id, isTemplate } = c.req.valid('json');
       const { auth, token } = getSupabaseAuth(c);
 
       const [error, board] = await to(
@@ -213,6 +214,7 @@ const board = new Hono()
           defaultImage,
           userId: auth.sub,
           token,
+          isTemplate: !!isTemplate,
         }),
       );
       if (error) return c.json({ message: error.message }, errorCheck(error));

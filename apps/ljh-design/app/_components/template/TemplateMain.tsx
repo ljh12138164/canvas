@@ -74,6 +74,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                   <Button
                     onClick={() => responseRef.current?.closeModel()}
                     variant="outline"
+                    aria-label="取消"
                     type="button"
                   >
                     取消
@@ -120,7 +121,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                   <div className="flex gap-2">
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="default" size="sm">
+                        <Button variant="default" size="sm" type="button" aria-label="使用">
                           使用模板
                         </Button>
                       </DialogTrigger>
@@ -137,10 +138,20 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                           templateData={template}
                         >
                           <DialogFooter className="flex gap-2 w-full">
-                            <Button onClick={() => closeref.current?.click()} variant="outline">
+                            <Button
+                              onClick={() => closeref.current?.click()}
+                              variant="outline"
+                              type="button"
+                              aria-label="取消"
+                            >
                               取消
                             </Button>
-                            <Button variant="default" type="submit" disabled={isPending}>
+                            <Button
+                              variant="default"
+                              type="submit"
+                              disabled={isPending}
+                              aria-label="使用"
+                            >
                               使用模板
                             </Button>
                           </DialogFooter>
@@ -149,7 +160,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                     </Dialog>
                     <PhotoProvider>
                       <PhotoView src={template.image}>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" type="button" aria-label="预览">
                           预览
                         </Button>
                       </PhotoView>
@@ -191,7 +202,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                   <div className="flex gap-2">
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="default" size="sm">
+                        <Button variant="default" size="sm" type="button" aria-label="使用">
                           使用模板
                         </Button>
                       </DialogTrigger>
@@ -208,10 +219,20 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                           templateData={template}
                         >
                           <DialogFooter className="flex gap-2 w-full">
-                            <Button onClick={() => closeref.current?.click()} variant="outline">
+                            <Button
+                              onClick={() => closeref.current?.click()}
+                              variant="outline"
+                              type="button"
+                              aria-label="取消"
+                            >
                               取消
                             </Button>
-                            <Button variant="default" type="submit" disabled={isPending}>
+                            <Button
+                              variant="default"
+                              type="submit"
+                              disabled={isPending}
+                              aria-label="使用"
+                            >
                               使用模板
                             </Button>
                           </DialogFooter>
@@ -220,7 +241,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                     </Dialog>
                     <PhotoProvider>
                       <PhotoView src={template.image}>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" type="button" aria-label="预览">
                           预览
                         </Button>
                       </PhotoView>
@@ -228,7 +249,7 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                     <section className="ml-auto">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" type="button" aria-label="更多">
                             <MoreHorizontal className="size-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -236,6 +257,8 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                           <Button
                             variant="ghost"
                             size="sm"
+                            type="button"
+                            aria-label="编辑"
                             className="w-full cursor-pointer"
                             onClick={() => {
                               router.push(`/EditTemplate/${template.id}`);
@@ -251,7 +274,13 @@ const TemplateMain = ({ userId }: { userId: string }) => {
                               disabled={deleteBoardPending}
                               ref={responseRef}
                               myTrigger={
-                                <Button variant="ghost" size="sm" className="w-full">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="w-full"
+                                  type="button"
+                                  aria-label="删除"
+                                >
                                   <Trash className="size-4" />
                                   删除
                                 </Button>

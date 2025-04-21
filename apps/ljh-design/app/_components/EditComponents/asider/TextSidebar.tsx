@@ -32,6 +32,7 @@ const TextSidebar = ({ activeTool, onChangeActive, editor }: TextSidebarProps) =
                 fontWeight: item.fontWeight,
                 fontFamily: item.fontFamily,
               }}
+              aria-label="字体"
               type="button"
               variant="outline"
               onClick={() => {

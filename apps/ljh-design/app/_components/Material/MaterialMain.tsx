@@ -98,6 +98,7 @@ const MaterialMain = () => {
                           <Button
                             onClick={() => ref?.current?.closeModel()}
                             variant="outline"
+                            aria-label="取消"
                             type="button"
                           >
                             取消

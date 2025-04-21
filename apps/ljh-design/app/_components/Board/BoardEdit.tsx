@@ -60,6 +60,7 @@ const BoardEdit = ({
                   variant="outline"
                   ref={ref}
                   type="button"
+                  aria-label="取消"
                   onClick={(e) => {
                     e.stopPropagation();
                   }}

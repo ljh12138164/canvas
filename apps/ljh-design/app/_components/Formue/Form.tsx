@@ -307,6 +307,7 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                   <span className="mr-2">{item}</span>
                   <button
                     type="button"
+                    aria-label="关闭"
                     className="hover:text-red-500 transition-all duration-300"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -345,11 +346,11 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                         </div>
                         <DialogFooter>
                           <DialogClose ref={closeRef1} asChild>
-                            <Button type="button" variant="outline">
+                            <Button type="button" variant="outline" aria-label="关闭">
                               取消
                             </Button>
                           </DialogClose>
-                          <Button type="button" onClick={createTapFn}>
+                          <Button type="button" onClick={createTapFn} aria-label="创建">
                             创建
                           </Button>
                         </DialogFooter>
@@ -358,7 +359,7 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                   ) : (
                     <Drawer open={open} onOpenChange={setOpen}>
                       <DrawerTrigger asChild>
-                        <Button type="button" variant="outline">
+                        <Button type="button" variant="outline" aria-label="创建">
                           <Plus />
                         </Button>
                       </DrawerTrigger>
@@ -376,7 +377,7 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                           <DrawerClose ref={closeRef1} asChild>
                             <Button variant="outline">关闭</Button>
                           </DrawerClose>
-                          <Button type="button" onClick={createTapFn}>
+                          <Button type="button" aria-label="创建" onClick={createTapFn}>
                             创建
                           </Button>
                         </DrawerFooter>
@@ -392,7 +393,12 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                 !isModal ? (
                   <Dialog open={tapOpen} onOpenChange={setTapOpen}>
                     <DialogTrigger asChild>
-                      <Button variant="outline" type="button" className="h-10 px-4 gap-2">
+                      <Button
+                        variant="outline"
+                        aria-label="选择"
+                        type="button"
+                        className="h-10 px-4 gap-2"
+                      >
                         <span>选择标签</span>
                       </Button>
                     </DialogTrigger>
@@ -535,7 +541,7 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                         </div>
                       </ScrollArea>
                       <DialogFooter>
-                        <Button type="button" onClick={() => setTapOpen(false)}>
+                        <Button aria-label="确认" type="button" onClick={() => setTapOpen(false)}>
                           确定
                         </Button>
                       </DialogFooter>
@@ -544,7 +550,7 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                 ) : (
                   <Drawer open={tapOpen} onOpenChange={setTapOpen}>
                     <DrawerTrigger asChild>
-                      <Button type="button" variant="outline">
+                      <Button type="button" aria-label="选择" variant="outline">
                         选择标签
                       </Button>
                     </DrawerTrigger>
@@ -679,7 +685,7 @@ const Form = ({ defaultValue, userId }: FormProps) => {
                         </div>
                       </ScrollArea>
                       <DrawerFooter>
-                        <Button type="button" onClick={() => setTapOpen(false)}>
+                        <Button type="button" onClick={() => setTapOpen(false)} aria-label="确定">
                           确定
                         </Button>
                       </DrawerFooter>

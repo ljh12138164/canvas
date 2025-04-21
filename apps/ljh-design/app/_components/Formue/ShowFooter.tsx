@@ -1,3 +1,4 @@
+'use client';
 import type { GetShowResponseType } from '@/app/_hook/query/useShow';
 import ReactQuill from '../Comand/editor/quill';
 

@@ -21,7 +21,7 @@ const SiderBarItem = ({ icon: Icon, label, isActive, onClick, className }: Sider
         )}
       >
         <Icon size={24} className="stroke-2 shrink-0" />
-        <span className="mt-2 text-[1rem]">{label}</span>
+        <span className="mt-2">{label}</span>
       </Button>
     </li>
   );

@@ -1,10 +1,6 @@
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { uploadImageclound } from '@/app/_database/image';
-import {
-  useBoardImageQuery,
-  useImageQuery,
-  useUserImageQuery,
-} from '@/app/_hook/query/useImageQuery';
+import { useImageQuery, useUserImageQuery } from '@/app/_hook/query/useImageQuery';
 import { cn } from '@/app/_lib/utils';
 import { type Edit, IMAGE_BLUSK, ImageType, Tool } from '@/app/_types/Edit';
 import { useRef, useState } from 'react';

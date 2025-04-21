@@ -15,10 +15,10 @@ export const MeterialList = ({
       controlsAboveOverlay: false,
       selectable: false,
       hasControls: false,
-      selection: false, // 禁止多选
-      hoverCursor: 'pointer', // 鼠标悬停时显示点击手型
+      selection: false,
+      hoverCursor: 'pointer',
       renderOnAddRemove: true,
-      interactive: true, // 禁止所有交互
+      interactive: true,
     });
     canvas.setDimensions({
       width: containerRef.current.clientWidth,

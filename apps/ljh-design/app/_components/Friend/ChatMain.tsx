@@ -14,7 +14,6 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { ScrollArea } from '../ui/scroll-area';
 import ChatItem from './ChatItem';
-// import { useQueryClient } from '@tanstack/react-query';
 
 const ChatMain = () => {
   const pathName = usePathname();
@@ -58,11 +57,10 @@ const ChatMain = () => {
     const conversationId = [user.user.id, sendId].sort().join('_');
     const chatChannel = `chat:${conversationId}`;
 
-    // 接收消息处理函数
+    // 添加会话
     const handleReceiveMessage = (newMessage: ChatMessage) => {
       setLocalMessages((prev) => [...prev, newMessage]);
     };
-
     // 注册特定会话的消息监听
     socket.on(chatChannel, handleReceiveMessage);
 
@@ -122,12 +120,10 @@ const ChatMain = () => {
         },
       },
       {
-        // @ts-ignore
         onSuccess: (data) => {
+          // 当消息发送成功后广播
           socket.emit('sendMessage', data);
-          setMessage(''); // 清空输入框
-
-          // 发送消息后滚动到底部，使用 'auto' 行为以立即滚动
+          setMessage('');
           setTimeout(() => {
             scrollToBottom({ behavior: 'auto' });
           }, 100);

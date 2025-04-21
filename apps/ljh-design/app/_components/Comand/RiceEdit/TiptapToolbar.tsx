@@ -23,6 +23,7 @@ const TiptapToolbar = ({ tiptapToolBar }: TiptapToolbar) => {
                 <Button
                   key={item.key + item.title}
                   variant="ghost"
+                  aria-label="取消"
                   type="button"
                   onClick={item.onClick}
                   disabled={!item.disabled}

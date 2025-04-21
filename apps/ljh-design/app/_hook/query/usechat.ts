@@ -1,13 +1,12 @@
 import { client } from '@/app/_database';
 import { getNewToken } from '@/app/_lib/sign';
 import { useSocket } from '@/app/_store/chat';
-import { PAGE_SIZE } from '@/app/_types/Edit';
 import type { ChatMessage } from '@/app/_types/chat';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { InferRequestType, InferResponseType } from 'hono';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
-
+const PAGE_SIZE = 7;
 type GetMessageResponseType = InferResponseType<(typeof client.chat.message)['$get'], 200>;
 
 /**

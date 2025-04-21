@@ -24,7 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning className={myFont.className}>
-      <head />
+      <head>
+        <link rel="preconnect" href="https://www.ljhboard.cn" />
+      </head>
       <body>{children}</body>
     </html>
   );

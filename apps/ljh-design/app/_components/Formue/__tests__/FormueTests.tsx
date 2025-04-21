@@ -441,10 +441,10 @@ vi.mock('../../Formue/ShowMain', () => ({
 vi.mock('../../Formue/ShowOption', () => ({
   ShowOption: vi.fn(({ showData, id }: any) => (
     <div data-testid="show-option">
-      <button type="button" disabled={false}>
+      <button type="button" disabled={false} aria-label="点赞">
         {showData.isUpvote ? '已点赞' : '点赞'}
       </button>
-      <button type="button" disabled={false}>
+      <button type="button" disabled={false} aria-label="收藏">
         {showData.isCollect ? '已收藏' : '收藏'}
       </button>
       {showData.comments?.map((comment: any) => (
@@ -454,7 +454,9 @@ vi.mock('../../Formue/ShowOption', () => ({
         </div>
       ))}
       <input placeholder="添加评论..." />
-      <button type="button">发送</button>
+      <button type="button" aria-label="发送">
+        发送
+      </button>
     </div>
   )),
 }));

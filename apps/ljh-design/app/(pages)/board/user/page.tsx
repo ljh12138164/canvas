@@ -13,7 +13,7 @@ export default function UserProfilePage() {
     return <></>;
   }
   return (
-    <ScrollArea className="p-6">
+    <ScrollArea className="p-6 h-[calc(100dvh-100px)]">
       <UserInfo />
     </ScrollArea>
   );

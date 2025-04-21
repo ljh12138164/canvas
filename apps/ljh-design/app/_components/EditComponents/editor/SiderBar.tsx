@@ -1,6 +1,7 @@
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { type Edit, type EditType, Tool } from '@/app/_types/Edit';
 import { Grape } from 'lucide-react';
+import { useRef } from 'react';
 import {
   LuImage,
   LuLayoutDashboard,
@@ -102,13 +103,6 @@ const SiderBar = ({
               onChangeActiveTool(Tool.Grap);
             }}
           />
-          <li>
-            <Grap
-              editor={editor}
-              acitiveTool={acitiveTool}
-              onChangeActiveTool={onChangeActiveTool}
-            />
-          </li>
           {/* 表情 */}
           <SiderBarItem
             icon={LuSmile}
@@ -129,6 +123,7 @@ const SiderBar = ({
           />
         </ul>
       </ScrollArea>
+      <Grap editor={editor} acitiveTool={acitiveTool} onChangeActiveTool={onChangeActiveTool} />
     </aside>
   );
 };

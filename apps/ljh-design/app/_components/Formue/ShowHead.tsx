@@ -115,7 +115,7 @@ export function ShowHead({
             ))}
           </div>
         )}
-        <Button onClick={onClick} type="button" variant="outline" className="h-8">
+        <Button onClick={onClick} type="button" variant="outline" className="h-8" aria-label="跳转">
           跳转到评论
         </Button>
         {user?.user.user_metadata.sub !== showData.profiles.id && showData.type === 'template' && (
@@ -156,6 +156,7 @@ export function ShowHead({
                   onClick={() => {
                     responseRef.current?.closeModel();
                   }}
+                  aria-label="取消"
                 >
                   取消
                 </Button>

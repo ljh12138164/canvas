@@ -490,3 +490,9 @@ export const toFabricObject = (objects: AiFabricObjects) => {
       return null;
   }
 };
+// new fabric.Rect(); // 矩形
+// new fabric.Circle(); //	圆形
+// new fabric.Triangle(); // 三角形
+// new fabric.Polygon(); // 多边形（多点闭合）
+// new fabric.Textbox(''); // 文本
+// new fabric.FabricImage('image.jpg'); // 图片

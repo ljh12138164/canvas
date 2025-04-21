@@ -102,6 +102,7 @@ export function LineCharts({ startTime, endTime, selectedType, genData }: AreaCh
               <button
                 key={chart}
                 type="button"
+                aria-label={total[key as keyof typeof total].toLocaleString()}
                 data-active={activeChart === chart}
                 className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6 cursor-pointer"
                 onClick={() => setActiveChart(chart)}

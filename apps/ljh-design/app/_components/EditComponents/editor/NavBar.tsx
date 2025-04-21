@@ -146,9 +146,9 @@ const NavBar = ({
           </TooltipComponents>
         )}
         {!isMobile && (
-          <p className="text-2xl font-bold line-clamp-1">
+          <p className="text-2xl  line-clamp-1">
             <TooltipComponents label={titles[type]}>
-              <span className="text-2xl font-bold line-clamp-1">{titles[type]}</span>
+              <span className="text-2xl  line-clamp-1">{titles[type]}</span>
             </TooltipComponents>
           </p>
         )}
@@ -239,7 +239,7 @@ const NavBar = ({
           </Button>
         </TooltipComponents>
         <Separator orientation="vertical" className="mx-2 h-[60%]" />
-        <div className="flex items-center gap-2 opacity-70 ">
+        <div className="flex items-center gap-2  ">
           {/* 只有用户登录后才显示 */}
           {type !== 'material' && userId && (
             <Fragment>
@@ -333,7 +333,7 @@ const NavBar = ({
                 >
                   <LuFile size={20} />
                   <div className="flex flex-col">
-                    <p className="text-xs font-bold">JSON</p>
+                    <p className="text-xs ">JSON</p>
                     <p className="text-xs ">保存最后一次编辑</p>
                   </div>
                 </DropdownMenuItem>
@@ -343,7 +343,7 @@ const NavBar = ({
                 >
                   <LuFile size={20} />
                   <div className="flex flex-col">
-                    <p className="text-xs font-bold">PNG</p>
+                    <p className="text-xs ">PNG</p>
                     <p className="text-xs ">可以分享给别人看</p>
                   </div>
                 </DropdownMenuItem>
@@ -353,7 +353,7 @@ const NavBar = ({
                 >
                   <LuFile size={20} />
                   <div className="flex flex-col">
-                    <p className="text-xs font-bold">JPG</p>
+                    <p className="text-xs ">JPG</p>
                     <p className="text-xs text-muted-foreground">可以分享给别人看</p>
                   </div>
                 </DropdownMenuItem>
@@ -363,7 +363,7 @@ const NavBar = ({
                 >
                   <BsFiletypePdf size={20} />
                   <div className="flex flex-col">
-                    <p className="text-xs font-bold">PDF</p>
+                    <p className="text-xs ">PDF</p>
                     <p className="text-xs text-muted-foreground">可以分享给别人看</p>
                   </div>
                 </DropdownMenuItem>
@@ -373,7 +373,7 @@ const NavBar = ({
                 >
                   <LuFile size={20} />
                   <div className="flex flex-col">
-                    <p className="text-xs font-bold">SVG</p>
+                    <p className="text-xs ">SVG</p>
                     <p className="text-xs text-muted-foreground">可在其他的矢量软件中使用</p>
                   </div>
                 </DropdownMenuItem>

@@ -14,7 +14,15 @@ export const myTrigger = (
   item: GetTemplateResponseType[number] | GetUserTemplateResponseType[number],
 ) => (
   <div>
-    <Image src={item.image} alt={item.name} fill className="object-cover" priority quality={60} />
+    <Image
+      src={item.image}
+      alt={item.name}
+      loading="lazy"
+      fill
+      className="object-cover"
+      // priority
+      quality={60}
+    />
     <div className="absolute bottom-0 left-0 w-full h-[40px] bg-black/50 flex items-center justify-center">
       <p className="text-white text-center">{item.name}</p>
     </div>

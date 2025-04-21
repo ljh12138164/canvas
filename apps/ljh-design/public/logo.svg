@@ -1,0 +1,24 @@
+ <svg
+          viewBox="0 0 100 100"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full"
+          aria-labelledby="logoTitle"
+          role="img"
+        >
+          <title id="logoTitle">ljh-design logo</title>
+          {/* 背景形状 - 圆角正方形 */}
+          <rect x="5" y="5" width="90" height="90" rx="20" fill="#EDF2F7" />
+
+          {/* L字母形状 */}
+          <path
+            d="M25 25 L25 75 L75 75"
+            strokeWidth="12"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            stroke="#2B6CB0"
+          />
+
+          {/* 点缀元素 */}
+          <circle cx="75" cy="25" r="8" fill="#3182CE" />
+        </svg>

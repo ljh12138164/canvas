@@ -14,6 +14,7 @@ const ToolSiderbar = ({ title, description, front, onChangeActive }: ToolSiderba
       {front && (
         <button
           type="button"
+          aria-label={title}
           onClick={() => onChangeActive?.(Tool.Filter)}
           className="absolute size-5 left-[1rem] top-1/2 -translate-y-1/2 flex items-center justify-center hover:bg-slate-50 rounded-sm"
         >

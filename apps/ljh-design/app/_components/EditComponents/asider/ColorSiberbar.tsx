@@ -315,6 +315,7 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
                 onClick={async () => {
                   await editor?.changeSize({ width: 800, height: 1100 });
                 }}
+                aria-label="重置"
                 type="button"
                 className="w-full"
               >

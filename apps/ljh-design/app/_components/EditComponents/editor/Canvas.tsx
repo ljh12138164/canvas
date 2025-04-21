@@ -18,6 +18,7 @@ import { useWindowEvent } from '@/app/_hook/edior/useWindowEvent';
 import { useBoardAutoSaveQuery } from '@/app/_hook/query/useBoardQuery';
 import { buildEditor } from '@/app/_store/editor';
 import { useSave } from '@/app/_store/save';
+import type { Edit, EditType } from '@/app/_types/Edit';
 import {
   CANVAS_COLOR,
   CANVAS_HEIGHT,
@@ -39,7 +40,6 @@ import {
   STROKE_WIDTH,
   Tool,
 } from '@/app/_types/Edit';
-import type { Edit, EditType } from '@/app/_types/Edit';
 import type { Board } from '@/app/_types/board';
 import type { Sessions } from '@/app/_types/user';
 import { useMemoizedFn } from 'ahooks';
@@ -84,6 +84,7 @@ const Canvas = ({ user, data, type }: { user: Sessions; data?: Board; type: Edit
           {
             json: {
               json: newData.json,
+              isTemplate: type === 'template',
               defaultImage: defaultImage.current,
               image: newData.image,
               width: newData.width,

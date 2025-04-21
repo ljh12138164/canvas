@@ -54,6 +54,7 @@ export const ImageBox = ({
             {userId && (
               <button
                 type="button"
+                aria-label="图片"
                 disabled={isPending}
                 onClick={(e) => {
                   e.stopPropagation();

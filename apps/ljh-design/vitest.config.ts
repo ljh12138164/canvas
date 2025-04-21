@@ -1,7 +1,7 @@
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
-
+// FormueTests.test.tsx AiModules.test.tsx  UserData.test.tsx Editor.test.tsx Template.test.tsx
 export default defineConfig({
   plugins: [react()],
 
@@ -63,7 +63,12 @@ export default defineConfig({
         // '**/app/_components/Sign/SignIn.tsx',
         '**/app/_components/UserData/DataShow.tsx',
         '**/app/_components/UserData/UseCard.tsx',
+        '**/app/_components/UserData/UserInfo.tsx',
         '**/app/_components/UserData/DesignCard.tsx',
+        '**/app/_components/_lib/**',
+        '**/app/_components/template/**',
+        '**/app/_store/**',
+        '**/app/_lib/**',
       ],
     },
   },

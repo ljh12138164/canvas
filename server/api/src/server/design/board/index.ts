@@ -185,6 +185,7 @@ interface AuthSaveBoard {
   height?: number;
   image: string;
   defaultImage: string;
+  isTemplate: boolean;
 }
 /**
  * 自动保存看板
@@ -199,15 +200,16 @@ export const authSaveBoard = async ({
   height,
   image,
   defaultImage,
+  isTemplate,
 }: AuthSaveBoard): Promise<Board> => {
   let imageUrl = '';
   // 删除原本的图片，如果默认图片是默认模板，则不
   if (defaultImage !== DEFAULT_TEMPLATE) {
     const response = await fetch(image);
+
     // 将base64转换为Blob
     const blob = await response.blob();
-
-    // 上传图片
+    // 上传图片到OSS中
     imageUrl = await uploadCustomType({
       base64: blob,
       fullType: 'image/webp',
@@ -218,7 +220,7 @@ export const authSaveBoard = async ({
   // 更新看板
   const { data, error } = await supabaseDesign(token)
     .from('board')
-    .update([{ id, userId, json, width, height, image: imageUrl }])
+    .update([{ id, userId, json, width, height, image: imageUrl, isTemplate }])
     .eq('id', id)
     .eq('userId', userId)
     .select('*');
