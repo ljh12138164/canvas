@@ -5,9 +5,9 @@ import type { NextConfig } from 'next';
 const nodeEnv = process.env.ENV as 'TAURI' | undefined;
 
 // 创建bundle-analyzer包装器
-const withBundleAnalyzerWrapper = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
+// const withBundleAnalyzerWrapper = withBundleAnalyzer({
+//   enabled: process.env.ANALYZE === 'true',
+// });
 
 let nextConfig: NextConfig;
 
@@ -40,6 +40,8 @@ if (nodeEnv !== 'TAURI') {
       deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
       imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     },
+
+    output: 'standalone',
     eslint: {
       ignoreDuringBuilds: true,
     },
