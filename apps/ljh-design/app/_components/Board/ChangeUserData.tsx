@@ -88,6 +88,7 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
         },
       );
     }
+    // 修改地区
     if (type === 'region') {
       if (region.length > 20) return toast.error('地区不能超过20个字');
       if (!region) return toast.error('地区不能为空');
@@ -144,6 +145,7 @@ const ChangeUserData = ({ data }: { data: Sessions }) => {
         },
       );
     }
+    // 修改头像
     if (type === 'image') {
       const [error, data] = await to(
         updateCurrentUser({
