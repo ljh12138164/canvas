@@ -1,0 +1,6 @@
+{
+  "extends": ["@ljh/lint/biome"],
+  "formatter": {
+    "ignore": ["**/public/**"]
+  }
+}

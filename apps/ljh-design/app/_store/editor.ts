@@ -935,14 +935,12 @@ export const buildEditor = ({
       return new Promise((res, rej) => {
         try {
           if (!dom) return;
+          // 使用html2canvas将dom转换为图片
           html2canvas(dom).then(async (HTMLTOCANVAS) => {
             const dataURL = HTMLTOCANVAS.toDataURL('image/png');
             // 在 Fabric.js 中加载图片
             const image = await fabric.FabricImage.fromURL(dataURL, {
               crossOrigin: 'anonymous', // 添加跨域属性
-            });
-            image.set({
-              // globalCompositeOperation: 'destination-over', // 保留混合模式设置
             });
             canvas.add(image);
             canvas.setActiveObject(image);

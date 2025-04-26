@@ -1,6 +1,7 @@
 {
   "tasks": {
     "start": "deno run --allow-net src/index.ts",
+    "build": "tsup",
     "dev": "deno run --allow-net --watch src/index.ts"
   },
   "compilerOptions": {
