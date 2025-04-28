@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
-
+import './index.css';
 /**
  * ### 快排
  */
@@ -65,6 +65,9 @@ const App = () => {
         123
       </button>
       <h2>{quickSort(arr)}</h2>
+      <div className="double-line" style={{ width: '100px' }}>
+        111111111111111111111111111111111111111111111111111111111111111
+      </div>
     </div>
   );
 };
@@ -73,7 +76,7 @@ const App = () => {
  * @param {number[][]} mat
  * @return {number[]}
  */
-const rowAndMaximumOnes = (mat: number[][]) => {
+const rowAndMaximumOnes = (mat: number[][]): number[] => {
   let max = 0;
   let index = 0;
   for (let i = 0; i < mat.length; i++) {
@@ -85,6 +88,10 @@ const rowAndMaximumOnes = (mat: number[][]) => {
   }
   return [index, max];
 };
+rowAndMaximumOnes([
+  [0, 1],
+  [1, 0],
+]);
 class Tree {
   public value: number;
   public left: Tree | null = null;
@@ -114,7 +121,7 @@ function inorederTraversal(root: Tree | null) {
   fn(root);
   return arr;
 }
-
+inorederTraversal(tree);
 if (rootEl) {
   const root = ReactDOM.createRoot(rootEl);
   root.render(
