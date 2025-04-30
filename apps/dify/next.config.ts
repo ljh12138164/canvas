@@ -2,6 +2,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  turbo: {},
   // 图片配置
   images: {
     remotePatterns: [
@@ -91,7 +92,9 @@ const nextConfig: NextConfig = {
   },
 
   // 生产环境移除 console 和 debugger
-  compiler: {},
+  compiler: {
+    removeConsole: true,
+  },
 
   // 实验性功能
   experimental: {

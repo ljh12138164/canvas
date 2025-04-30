@@ -49,6 +49,7 @@ const rootEl = document.getElementById('root');
 
 const App = () => {
   const [count, setCount] = React.useState(0);
+
   const click = useMemo(() => {
     return debounce(
       () => {
