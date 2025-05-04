@@ -2,7 +2,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  turbo: {},
   // 图片配置
   images: {
     remotePatterns: [

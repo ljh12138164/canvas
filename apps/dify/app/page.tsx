@@ -5,8 +5,44 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ArrowRight, Code2, ExternalLink, MapPin, PenTool } from 'lucide-react';
 import Link from 'next/link';
 
+type FeatureCard = {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  path: string;
+  color: string;
+  borderColor: string;
+};
+
+const FeatureCard = ({ card, index }: { card: FeatureCard; index: number }) => (
+  <div className="animate-fade-up" style={{ animationDelay: `${index * 100}ms` }}>
+    <Link href={card.path} className="block h-full">
+      <Card
+        className={`overflow-hidden h-full border ${card.borderColor} transition-all hover:shadow-lg hover:-translate-y-2 duration-300`}
+      >
+        <CardHeader className={`p-6 ${card.color}`}>
+          <div className="flex justify-between items-center">
+            {card.icon}
+            <div className="w-12 h-12 rounded-full bg-white/30 dark:bg-black/20 flex items-center justify-center">
+              <ArrowRight className="h-5 w-5 text-primary" />
+            </div>
+          </div>
+          <CardTitle className="text-2xl mt-4 font-bold">{card.title}</CardTitle>
+          <CardDescription className="text-base">{card.description}</CardDescription>
+        </CardHeader>
+        <CardContent className="p-6">
+          <p className="text-sm text-muted-foreground">
+            点击卡片访问{card.title}页面，体验相关功能。
+          </p>
+        </CardContent>
+      </Card>
+    </Link>
+  </div>
+);
+
 export default function HomePage() {
-  const pages = [
+  const features: FeatureCard[] = [
     {
       id: 'code',
       title: '代码编译平台',
@@ -41,19 +77,31 @@ export default function HomePage() {
       {/* 背景装饰 */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-50 via-white to-amber-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 opacity-70" />
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-200 dark:bg-purple-900 rounded-full blur-3xl opacity-20" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-200 dark:bg-blue-900 rounded-full blur-3xl opacity-20" />
+        <div
+          className="absolute -top-40 -right-40 w-80 h-80 bg-purple-200 dark:bg-purple-900 rounded-full blur-3xl opacity-0 animate-fade-in"
+          style={{ animationDelay: '300ms', animationFillMode: 'forwards' }}
+        />
+        <div
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-200 dark:bg-blue-900 rounded-full blur-3xl opacity-0 animate-fade-in"
+          style={{ animationDelay: '600ms', animationFillMode: 'forwards' }}
+        />
       </div>
 
       <div className="container mx-auto px-4 py-16">
-        <header className="text-center mb-16 animate-fade-in">
+        <header
+          className="text-center mb-16 opacity-0 animate-fade-down"
+          style={{ animationDelay: '100ms', animationFillMode: 'forwards' }}
+        >
           <h1 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600">
             我的测试平台
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             个人测试平台，提供代码编译、图像生成、地图展示等多种功能
           </p>
-          <div className="mt-8 flex justify-center space-x-4">
+          <div
+            className="mt-8 flex flex-col sm:flex-row justify-center gap-4 opacity-0 animate-fade-up"
+            style={{ animationDelay: '400ms', animationFillMode: 'forwards' }}
+          >
             <Button size="lg" className="rounded-full">
               开始探索
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -66,40 +114,14 @@ export default function HomePage() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-          {pages.map((page, index) => (
-            <div
-              key={page.id}
-              className="animate-slide-up"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <Link href={page.path} className="block h-full">
-                <Card
-                  className={`overflow-hidden h-full border ${page.borderColor} transition-all hover:shadow-lg hover:-translate-y-2 duration-300`}
-                >
-                  <CardHeader className={`p-6 ${page.color}`}>
-                    <div className="flex justify-between items-center">
-                      {page.icon}
-                      <div className="w-12 h-12 rounded-full bg-white/30 dark:bg-black/20 flex items-center justify-center">
-                        <ArrowRight className="h-5 w-5 text-primary" />
-                      </div>
-                    </div>
-                    <CardTitle className="text-2xl mt-4 font-bold">{page.title}</CardTitle>
-                    <CardDescription className="text-base">{page.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    <p className="text-sm text-muted-foreground">
-                      点击卡片访问{page.title}页面，体验相关功能。
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            </div>
+          {features.map((feature, index) => (
+            <FeatureCard key={feature.id} card={feature} index={index} />
           ))}
         </div>
 
         <footer
-          className="text-center mt-20 text-sm text-muted-foreground animate-fade-in"
-          style={{ animationDelay: '800ms' }}
+          className="text-center mt-20 text-sm text-muted-foreground opacity-0 animate-fade-in"
+          style={{ animationDelay: '800ms', animationFillMode: 'forwards' }}
         >
           <p>© {new Date().getFullYear()} 测试平台 - 版权所有</p>
         </footer>
