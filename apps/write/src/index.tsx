@@ -44,6 +44,21 @@ function debounce(fn: Function, delay = 1000, maxDelay = 5000) {
     }, delay);
   };
 }
+/**
+ * ### 柯里化
+ */
+export function curry(fn: Function) {
+  return function curried(...args: any[]) {
+    if (args.length >= fn.length) {
+      return fn(...args);
+    }
+    return function (...args2: any[]) {
+      // @ts-ignore
+      return curried.apply(this, args.concat(args2));
+    };
+  };
+}
+
 const arr = [1, 3, 2, 4, 5, 6, 7, 8, 9, 10];
 const rootEl = document.getElementById('root');
 

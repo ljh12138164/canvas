@@ -16,9 +16,6 @@ const email = ref('');
 const password = ref('');
 const name = ref('');
 const router = useRouter();
-// const supabase = useSupabaseClient()
-// const user = useSupabaseUser()
-// const theme =
 const token = ref('');
 
 onMounted(() => {
@@ -40,11 +37,11 @@ onMounted(() => {
 async function onSubmit() {
   isLoading.value = true;
 
-  if (!token.value) {
-    toast.error('请完成验证');
-    isLoading.value = false;
-    return;
-  }
+  // if (!token.value) {
+  //   toast.error('请完成验证');
+  //   isLoading.value = false;
+  //   return;
+  // }
 
   if (isLogin.value) {
     if (!email.value?.includes('@')) {
@@ -138,7 +135,7 @@ async function onSubmit() {
                   :disabled="isLoading" minlength="3" maxlength="10" />
               </div>
               <div id="turnstile-container" />
-              <Button type="submit" :disabled="isLoading || !token">
+              <Button type="submit" :disabled="isLoading">
                 {{ isLogin ? "登录" : "注册" }}
               </Button>
             </div>

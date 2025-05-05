@@ -26,6 +26,7 @@ import { Save } from 'lucide-vue-next';
 import { nanoid } from 'nanoid';
 import { useField, useForm } from 'vee-validate';
 import { onBeforeMount, ref, watch } from 'vue';
+import { onMounted } from 'vue';
 import { VueDraggable } from 'vue-draggable-plus';
 import { useRoute, useRouter } from 'vue-router';
 import * as z from 'zod';
@@ -240,7 +241,6 @@ const handleCopy = async (id: string) => {
   if (data) pushList2({ ...data, id: nanoidId });
   await handleUpdate();
 };
-// const fieldConfig = ref<Record<string, any>>({})
 const parmasClone = (
   element: Record<
     | 'name'
@@ -261,6 +261,7 @@ const parmasClone = (
   if (element.type === 'obj') return;
   return element;
 };
+// 拖拽组件
 const datas = ref<CreateFormItem | undefined>(undefined);
 
 watch(activeArea, () => {
@@ -360,6 +361,24 @@ const handleUpdateBoardSchema = () => {
     },
   );
 };
+
+onMounted(() => {
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 's' && e.ctrlKey) {
+      e.preventDefault();
+      handleUpdateBoardSchema();
+    }
+    if (e.key === 'v' && e.ctrlKey) {
+      e.preventDefault();
+      // 复制
+      if (datas.value) {
+        // @ts-ignore
+        pushList2(onClone(datas.value));
+        handleUpdate();
+      }
+    }
+  });
+});
 </script>
 <template>
   <nav class="flex items-center justify-between  pb-2 ">
@@ -368,126 +387,74 @@ const handleUpdateBoardSchema = () => {
       <span>返回</span>
     </Button>
   </nav>
-  <section
-    class="flex flex-col px-1 gap-2 w-full rounded h-[calc(100dvh-230px)] overflow-hidden"
-  >
-    <div
-      ref="parent"
-      class="grid grid-cols-2 gap-2"
-      v-auto-animate
-      :class="{ 'grid-cols-3': (activeArea || subId.length) && !isMobile }"
-    >
+  <section class="flex flex-col px-1 gap-2 w-full rounded h-[calc(100dvh-230px)] overflow-hidden">
+    <div ref="parent" class="grid grid-cols-2 gap-2" v-auto-animate
+      :class="{ 'grid-cols-3': (activeArea || subId.length) && !isMobile }">
       <!-- 左 -->
-      <ScrollArea
-        class="h-[calc(100dvh-250px)] w-full bg-gray-50 dark:bg-gray-900/50 rounded-lg"
-      >
-        <VueDraggable
-          v-model="list1"
-          :animation="150"
-          style="scrollbar-width: none"
-          :group="{ name: 'people', pull: 'clone', put: false }"
-          :sort="false"
-          class="flex flex-col gap-3 p-4 w-full"
-          :clone="onClone"
-        >
-          <div
-            v-for="item in list1"
-            :key="item.id"
-            class="cursor-move rounded-md p-4 border border-gray-200 dark:border-gray-800 hover:border-primary hover:shadow-xs transition-all duration-200 bg-white dark:bg-gray-800/50 flex items-center gap-2"
-          >
+      <ScrollArea class="h-[calc(100dvh-250px)] w-full bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+        <VueDraggable v-model="list1" :animation="150" style="scrollbar-width: none"
+          :group="{ name: 'people', pull: 'clone', put: false }" :sort="false" class="flex flex-col gap-3 p-4 w-full"
+          :clone="onClone">
+          <div v-for="item in list1" :key="item.id"
+            class="cursor-move rounded-md p-4 border border-gray-200 dark:border-gray-800 hover:border-primary hover:shadow-xs transition-all duration-200 bg-white dark:bg-gray-800/50 flex items-center gap-2">
             <component :is="item.icon" class="w-4 h-4 text-gray-500" />
             <span class="text-sm">{{ item.name }}</span>
           </div>
         </VueDraggable>
       </ScrollArea>
       <!-- 中 -->
-      <ScrollArea
-        class="relative pb-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg"
-      >
+      <ScrollArea class="relative pb-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
         <Drawer v-model:open="onOpen">
-          <VueDraggable
-            v-model="list2"
-            :animation="150"
-            :clone="parmasClone"
-            :change="handleUpdate"
-            style="scrollbar-width: none"
-            group="people"
-            class="flex h-[calc(100dvh-300px)] flex-col gap-3 p-4 w-full m-auto rounded-lg"
-          >
-            <div
-              v-for="item in list2"
-              :key="item.id"
-              @click="handleActiveArea(item.id)"
+          <VueDraggable v-model="list2" :animation="150" :clone="parmasClone" :change="handleUpdate"
+            style="scrollbar-width: none" group="people"
+            class="flex h-[calc(100dvh-300px)] flex-col gap-3 p-4 w-full m-auto rounded-lg">
+            <div v-for="item in list2" :key="item.id" @click="handleActiveArea(item.id)"
               class="cursor-move rounded-md p-4 border border-gray-200 dark:border-gray-800 relative transition-all duration-200 bg-white dark:bg-gray-800/50"
               :class="[
                 'hover:border-primary hover:shadow-xs',
                 activeArea === item.id && item.type !== 'obj'
                   ? 'border-primary bg-primary/5'
                   : ''
-              ]"
-            >
+              ]">
               <DrawerTrigger as-child>
                 <section>
                   <span v-if="item.type !== 'obj'">
                     {{ item.name }}
                   </span>
-                  <div
-                    v-else-if="item.type === 'obj'"
-                    @click.stop="handleActiveArea(item.id)"
-                  >
+                  <div v-else-if="item.type === 'obj'" @click.stop="handleActiveArea(item.id)">
                     <p>{{ item.name }}</p>
-                    <VueDraggable
-                      v-model="item.children"
-                      :animation="150"
-                      :clone="parmasClone"
-                      :change="parentHandleUpdate"
-                      style="scrollbar-width: none"
-                      group="people"
-                      class="flex flex-col gap-2 p-4 w-300px m-auto bg-gray-500/5 rounded overflow-auto"
-                    >
-                      <div
-                        v-for="el in item.children"
-                        :key="el.name"
-                        @click.stop="handleActiveSub(el.id, item.id)"
+                    <VueDraggable v-model="item.children" :animation="150" :clone="parmasClone"
+                      :change="parentHandleUpdate" style="scrollbar-width: none" group="people"
+                      class="flex flex-col gap-2 p-4 w-300px m-auto bg-gray-500/5 rounded overflow-auto">
+                      <div v-for="el in item.children" :key="el.name" @click.stop="handleActiveSub(el.id, item.id)"
                         :class="[
                           subId.includes(el.id)
                             ? 'bg-gray-500/20 border-indigo-500'
                             : ''
                         ]"
-                        class="cursor-move h-50px rounded p-3 border relative hover:border-indigo-500 transition-all duration-300"
-                      >
+                        class="cursor-move h-50px rounded p-3 border relative hover:border-indigo-500 transition-all duration-300">
                         <p>{{ el.name }}</p>
                       </div>
                     </VueDraggable>
                   </div>
-                  <div
-                    v-if="activeArea === item.id"
-                    @click.stop=""
+                  <div v-if="activeArea === item.id" @click.stop=""
                     class="absolute bg-indigo-600 p-[4px] cursor-pointer translate-y-[-50%] transition-all duration-300 translate-x-[-50%] right-[30px] rounded-full hover:bg-indigo-600/70"
                     :class="[
                       `${item.type !== 'obj' ? 'top-[50%]' : 'top-[15%]'}`
-                    ]"
-                  >
-                    <Copy
-                      @click="handleCopy(item.id)"
-                      class="w-4 h-4 text-white "
-                    />
+                    ]">
+                    <Copy @click="handleCopy(item.id)" class="w-4 h-4 text-white " />
                   </div>
                   <Dialog v-if="activeArea === item.id">
                     <DialogTrigger as-child>
-                      <div
-                        @click.stop=""
+                      <div @click.stop=""
                         class="absolute bg-indigo-600 p-[4px] cursor-pointer translate-y-[-50%] transition-all duration-300 translate-x-[-50%] right-0 rounded-full hover:bg-indigo-600/70"
-                        :class="
-                          `${item.type !== 'obj' ? 'top-[50%]' : 'top-[15%]'}`
-                        "
-                      >
+                        :class="`${item.type !== 'obj' ? 'top-[50%]' : 'top-[15%]'}`
+                          ">
                         <Trash class="w-4 h-4 text-white " />
                       </div>
                     </DialogTrigger>
                     <DialogContent>
-                      <DialogTitle
-                        >你确定要删除
+                      <DialogTitle>你确定要删除
                         <span class="text-red-500">{{ item.name }}</span>
                         吗？
                       </DialogTitle>
@@ -500,10 +467,7 @@ const handleUpdateBoardSchema = () => {
                             取消
                           </Button>
                         </DialogClose>
-                        <Button
-                          @click="handleDelete(item.id)"
-                          variant="destructive"
-                        >
+                        <Button @click="handleDelete(item.id)" variant="destructive">
                           删除
                         </Button>
                       </DialogFooter>
@@ -513,36 +477,19 @@ const handleUpdateBoardSchema = () => {
               </DrawerTrigger>
             </div>
           </VueDraggable>
-          <DrawerContent
-            v-if="isMobile"
-            class="scrollbar-none h-[calc(100dvh-120px)] flex flex-col"
-          >
+          <DrawerContent v-if="isMobile" class="scrollbar-none h-[calc(100dvh-120px)] flex flex-col">
             <ScrollArea class="h-full pb-10 bg-gray-500/5" v-if="activeArea">
-              <FormItemConfig
-                :data="datas"
-                :updateList2="updateList2"
-                :id="activeArea"
-              />
+              <FormItemConfig :data="datas" :updateList2="updateList2" :id="activeArea" />
             </ScrollArea>
             <ScrollArea class="h-full pb-10 bg-gray-500/5" v-if="subId.length">
-              <FormArrayConfig
-                :data="datas"
-                :list2="list2"
-                :updateList="updateArray"
-                :id="subId"
-              />
+              <FormArrayConfig :data="datas" :list2="list2" :updateList="updateArray" :id="subId" />
             </ScrollArea>
           </DrawerContent>
         </Drawer>
         <RouterLink :to="`/workspace/create/preview/${id}`">
-          <Button
-            variant="outline"
-            class="w-full hover:bg-white dark:hover:bg-gray-500/5 absolute bottom-0"
-            @click="handlePreview"
-          >
-            <span
-              class="text-sm flex items-center gap-2 hover:text-indigo-500/80 transition-all dark:hover:text-white"
-            >
+          <Button variant="outline" class="w-full hover:bg-white dark:hover:bg-gray-500/5 absolute bottom-0"
+            @click="handlePreview">
+            <span class="text-sm flex items-center gap-2 hover:text-indigo-500/80 transition-all dark:hover:text-white">
               <Link class="w-4 h-4" />
               <span>预览</span>
             </span>
@@ -550,20 +497,10 @@ const handleUpdateBoardSchema = () => {
         </RouterLink>
       </ScrollArea>
       <!-- 右 -->
-      <ScrollArea
-        class="h-[calc(100dvh-250px)] pb-10 bg-gray-500/5"
-        v-if="activeArea && !isMobile"
-      >
-        <FormItemConfig
-          :data="datas"
-          :updateList2="updateList2"
-          :id="activeArea"
-        />
+      <ScrollArea class="h-[calc(100dvh-250px)] pb-10 bg-gray-500/5" v-if="activeArea && !isMobile">
+        <FormItemConfig :data="datas" :updateList2="updateList2" :id="activeArea" />
       </ScrollArea>
-      <ScrollArea
-        class="h-[calc(100dvh-250px)] pb-10 bg-gray-500/5"
-        v-if="subId.length && !isMobile"
-      >
+      <ScrollArea class="h-[calc(100dvh-250px)] pb-10 bg-gray-500/5" v-if="subId.length && !isMobile">
         <FormArrayConfig :data="datas" :updateList="updateArray" :id="subId" />
       </ScrollArea>
     </div>
@@ -581,29 +518,19 @@ const handleUpdateBoardSchema = () => {
         <form @submit="onSubmit" class="space-y-4 mt-4">
           <div class="space-y-2">
             <label for="title" class="text-sm font-medium">标题</label>
-            <Input
-              v-model="title"
-              name="title"
-              type="text"
-              class="w-full px-3 py-2 border rounded-md"
-              placeholder="请输入表单标题"
-            />
+            <Input v-model="title" name="title" type="text" class="w-full px-3 py-2 border rounded-md"
+              placeholder="请输入表单标题" />
             <span v-if="errors.title" class="text-sm text-red-500">{{
               errors.title
-            }}</span>
+              }}</span>
           </div>
           <div class="space-y-2">
             <label for="description" class="text-sm font-medium">描述</label>
-            <Textarea
-              v-model="description"
-              name="description"
-              class="w-full px-3 py-2 border rounded-md"
-              placeholder="请输入表单描述"
-              rows="3"
-            />
+            <Textarea v-model="description" name="description" class="w-full px-3 py-2 border rounded-md"
+              placeholder="请输入表单描述" rows="3" />
             <span v-if="errors.description" class="text-sm text-red-500">{{
               errors.description
-            }}</span>
+              }}</span>
           </div>
         </form>
       </DialogHeader>
@@ -615,13 +542,8 @@ const handleUpdateBoardSchema = () => {
       </DialogFooter>
     </DialogContent>
   </Dialog>
-  <Button
-    variant="outline"
-    class="w-full"
-    v-else
-    @click="handleUpdateBoardSchema"
-    :disabled="isUpdateBoardSchemaPending"
-  >
+  <Button variant="outline" class="w-full" v-else @click="handleUpdateBoardSchema"
+    :disabled="isUpdateBoardSchemaPending">
     <Save class="mr-2 h-4 w-4" />
     <span>{{ isUpdateBoardSchemaPending ? "保存中..." : "保存" }}</span>
   </Button>
