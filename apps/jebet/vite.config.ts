@@ -7,9 +7,6 @@ import viteCompression from 'vite-plugin-compression';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import removeConsole from 'vite-plugin-remove-console';
 import VitePluginSitemap from 'vite-plugin-sitemap';
-// import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
-// import { visualizer } from 'rollup-plugin-visualizer';
-// import viteImagemin from 'vite-plugin-imagemin';
 
 // @ts-ignore
 const plugins: PluginOption[] = [
@@ -17,36 +14,8 @@ const plugins: PluginOption[] = [
     babel: {
       plugins: [['babel-plugin-react-compiler', { targe: 19 }]],
     },
-    // fastRefresh: true,
   }), // 打包后压缩图片
   tailwindcss(),
-  // viteImagemin({
-  //   gifsicle: {
-  //     optimizationLevel: 7,
-  //     interlaced: false,
-  //   },
-  //   optipng: {
-  //     optimizationLevel:
-  //   },
-  //   mozjpeg: {
-  //     quality: 20,
-  //   },
-  //   pngquant: {
-  //     quality: [0.8, 0.9],
-  //     speed: 4,
-  //   },
-  //   svgo: {
-  //     plugins: [
-  //       {
-  //         name: 'removeViewBox',
-  //       },
-  //       {
-  //         name: 'removeEmptyAttrs',
-  //         active: false,
-  //       },
-  //     ],
-  //   },
-  // }),
   // 打包后压缩
   viteCompression({
     verbose: true, // 是否在控制台输出压缩结果

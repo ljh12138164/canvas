@@ -7,12 +7,6 @@ import viteCompression from 'vite-plugin-compression';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import VitePluginSitemap from 'vite-plugin-sitemap';
 
-// import autoprefixer from 'autoprefixer';
-// import tailwind from 'tailwindcss';
-// import vueDevTools from 'vite-plugin-vue-devtools';
-// import { visualizer } from 'rollup-plugin-visualizer';
-// import pluginPurgeCss from '@mojojoejo/vite-plugin-purgecss';
-// import viteImagemin from 'vite-plugin-imagemin';
 // @ts-ignore
 const plugins: PluginOption[] = [
   vue(),
@@ -46,9 +40,6 @@ const plugins: PluginOption[] = [
   tailwindcss(),
   createHtmlPlugin({
     minify: true,
-    /**
-     * ### 在这里配置需要处理的 HTML 文件
-     */
     pages: [
       {
         filename: 'index.html',
@@ -121,7 +112,6 @@ const plugins: PluginOption[] = [
 if (process.env.NODE_ENV === 'test') {
   plugins.push();
 }
-// https://vite.dev/config/
 export default defineConfig({
   plugins: plugins,
   css: {
