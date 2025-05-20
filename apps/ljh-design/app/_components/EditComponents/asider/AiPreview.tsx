@@ -1,4 +1,4 @@
-import { toFabricObject } from '@/app/_lib/editor/editor';
+import { center, toFabricObject } from '@/app/_lib/editor/editor';
 import type { Edit } from '@/app/_types/Edit';
 import * as fabric from 'fabric';
 import { useEffect, useRef } from 'react';
@@ -18,6 +18,7 @@ const AiPreview = ({
     const obj = toFabricObject(objects);
 
     editor?.canvas?.add(obj as fabric.FabricObject);
+    center(obj as fabric.FabricObject, editor?.canvas!);
     editor?.canvas?.renderAll();
     editor?.canvas?.setActiveObject(obj as fabric.FabricObject);
     toast.success('已将对象添加到画布');

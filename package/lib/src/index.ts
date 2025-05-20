@@ -295,3 +295,15 @@ const lengthOfLIS = (nums: number[]) => {
 
 lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]);
 // console.log(a);
+
+const kuai = (arr: number[]): number[] => {
+  if (arr.length <= 1) return arr;
+  const libs = arr.pop() as number;
+  const arr1 = [];
+  const arr2 = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < libs) arr1.push(arr[i]);
+    else arr2.push(arr[i]);
+  }
+  return [...kuai(arr1), libs, ...kuai(arr2)];
+};
