@@ -1,0 +1,32 @@
+export const metadata = {
+  title: 'cdn加速',
+  description: 'Cloundflare 加速的cdn',
+};
+
+### 挂载阶段
+
+父组件：执行函数体（首次渲染）子组件：执行函数体（首次渲染）
+
+子组件：useEffect（挂载阶段）
+
+父组件：useEffect（挂载阶段）
+
+### 更新阶段
+
+父组件：执行函数体（重新渲染）
+
+子组件：执行函数体（重新渲染）
+
+子组件：useEffect 清理函数（如果依赖项变化）
+
+父组件：useEffect 清理函数（如果依赖项变化）
+
+子组件：useEffect（如果依赖项变化）
+
+父组件：useEffect（如果依赖项变化）
+
+### 卸载阶段
+
+父组件：useEffect 清理函数
+
+子组件：useEffect 清理函数
