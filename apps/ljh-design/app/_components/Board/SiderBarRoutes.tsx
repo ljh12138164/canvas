@@ -24,7 +24,7 @@ const SiderBarRoutes = ({
         <Separator />
       </div>
       <ul className="flex flex-col h-full">
-        <li className="flex-1 p-4 flex flex-col gap-2">
+        <li className="flex-1 p-4 flex flex-col gap-1">
           <SiderBarItem
             href="/board"
             label="主页"
@@ -71,7 +71,7 @@ const SiderBarRoutes = ({
         <li>
           <Separator />
         </li>
-        <li className="p-4 flex flex-col gap-2">
+        <li className="p-4 flex flex-col gap-1">
           <SiderBarItem
             href="/board/userData"
             label="数据统计"
