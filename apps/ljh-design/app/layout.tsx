@@ -26,6 +26,10 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning className={myFont.className}>
       <head>
         <link rel="preconnect" href="https://www.ljhboard.cn" />
+        <link
+          rel="preload"
+          href="https://cdn.jsdelivr.net/npm/@emoji-mart/data@latest/i18n/zh.json"
+        />
       </head>
       <body>{children}</body>
     </html>
