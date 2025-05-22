@@ -398,6 +398,16 @@ vi.mock('dayjs', () => {
   };
 });
 
+vi.mock('react-hot-toast', () => {
+  return {
+    default: {
+      success: vi.fn(),
+      error: vi.fn(),
+      loading: vi.fn(),
+      dismiss: vi.fn(),
+    },
+  };
+});
 // ==== 测试套件 ====
 
 describe('AI助手模块', () => {
