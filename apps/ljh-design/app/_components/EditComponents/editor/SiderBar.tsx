@@ -97,7 +97,7 @@ const SiderBar = ({
           {/* 图表 */}
           <SiderBarItem
             icon={Grape}
-            label="流程图"
+            label="图表"
             isActive={acitiveTool === Tool.Grap}
             onClick={() => {
               onChangeActiveTool(Tool.Grap);

@@ -376,11 +376,12 @@ export default function Grap({
           <div className="w-full md:w-1/2 flex flex-col gap-4">
             {/* 输入区域 */}
             <Card className="p-4 shadow-sm border-border/50 bg-card">
-              <div className="flex mb-2">
+              <div className="flex mb-2 flex-col gap-2">
+                <p className="text-sm ">Ai生成对话框</p>
                 <Textarea
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="描述您想要的图表，例如：'创建一个订单管理系统的ER图'"
+                  placeholder="描述您想要的图表"
                   className="flex-1 resize-none border-muted focus-visible:ring-1 focus-visible:ring-primary/50 shadow-sm text-sm rounded-md mr-2"
                   rows={3}
                   disabled={isLoading}
@@ -391,6 +392,7 @@ export default function Grap({
                     }
                   }}
                 />
+                <p className="text-sm text-muted-foreground">例如：创建一个仓库系统的实体图</p>
                 <Button
                   size="icon"
                   onClick={handleSendMessage}
@@ -540,8 +542,10 @@ export default function Grap({
                     variant="default"
                     className="h-7 text-xs bg-primary/90 hover:bg-primary"
                     onClick={async () => {
+                      toast.loading('正在保存到画布...');
                       await editor?.addGrap(canvasRef.current);
                       if (closeRef.current?.click) closeRef.current.click();
+                      toast.dismiss();
                       toast.success('图表已成功添加到画布');
                     }}
                   >
