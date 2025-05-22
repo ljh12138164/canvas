@@ -14,6 +14,7 @@ import { useRef } from 'react';
 import Logo from '../Comand/Logo';
 import { ThemeToggle } from '../Comand/ThemeToggle';
 import UserButton from '../Comand/UserButton';
+import { LogoWithText } from '../ui/Logo';
 import { Button } from '../ui/button';
 import SiderBar from './SiderBar';
 
@@ -34,8 +35,7 @@ const NavBar = () => {
             <SheetHeader className="flex ">
               <SheetTitle>
                 <div className="m-2 flex items-center gap-x-4">
-                  <Logo to="/" />
-                  <span className="text-xl font-semibold text-primary">ljh-design</span>
+                  <LogoWithText to="/" />
                 </div>
               </SheetTitle>
               <SheetDescription asChild>
