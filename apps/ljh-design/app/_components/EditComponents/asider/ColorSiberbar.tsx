@@ -104,10 +104,7 @@ const ColorSoiberbar = ({ activeTool, onChangeActive, editor }: ColorSoiberbarPr
       />
       <ScrollArea className="z-601 h-[calc(100vh-10rem)] dark:bg-background">
         <div
-          className={cn(
-            'p-4 space-y-4 ',
-            onShow() === Tool.Ai || (onShow() === Tool.Emoji && 'p-0'),
-          )}
+          className={cn('space-y-4 ', onShow() === Tool.Ai || (onShow() === Tool.Emoji && 'p-0'))}
         >
           {onShow() === Tool.Fill && (
             <ColorPicker
