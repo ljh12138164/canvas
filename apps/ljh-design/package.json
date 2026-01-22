@@ -11,7 +11,6 @@
     "start": "next start --port=8666",
     "sitemap": "next-sitemap",
     "lint": "tsc --noEmit && biome check --fix --unsafe --no-errors-on-unmatched   && biome check --write --no-errors-on-unmatched && biome check --write --organize-imports-enabled=false --no-errors-on-unmatched && biome check --write --unsafe --no-errors-on-unmatched && biome check --files-ignore-unknown=true&& biome lint --write --no-errors-on-unmatched",
-    "electron": "next build && electron .",
     "test": "bunx  vitest",
     "test:coverage": "bunx  vitest run --coverage",
     "test:ui": "vitest --ui"
@@ -79,7 +78,6 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "echarts": "^5.6.0",
-    "electron": "^35.0.3",
     "embla-carousel-react": "^8.5.2",
     "emoji-mart": "^5.6.0",
     "fabric": "^6.6.1",
