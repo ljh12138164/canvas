@@ -1,12 +1,12 @@
 import path from 'node:path';
-import mdx from '@mdx-js/rollup';
+// import mdx from '@mdx-js/rollup';
 import react from '@vitejs/plugin-react-swc';
 import { type PluginOption, defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
 // import { visualizer } from 'rollup-plugin-visualizer';
 const plugins: PluginOption = [
   // visualizer({ open: true }) as PluginOption,
-  mdx(),
+  // mdx(),
   react(), // 打包后压缩
   viteCompression({
     verbose: true, // 是否在控制台输出压缩结果

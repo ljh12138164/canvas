@@ -25,38 +25,50 @@ const useEditor = defineStore('editor', () => {
     {
       label: '撤销',
       icon: 'mdi:undo',
+      // @ts-ignore
       onClick: (editor: Editor) => editor?.chain().focus().undo().run(),
+      // @ts-ignore
       disabled: (editor: Editor) => !editor?.can().undo(),
     },
     {
       label: '重做',
       icon: 'mdi:redo',
+      // @ts-ignore
       onClick: (editor: Editor) => editor?.chain().focus().redo().run(),
+      // @ts-ignore
       disabled: (editor: Editor) => !editor?.can().redo(),
     },
     {
       label: '加粗',
       icon: 'tabler:bold',
+      // @ts-ignore
       isActive: (editor: Editor) => !!editor?.isActive('bold'),
+      // @ts-ignore
       onClick: (editor: Editor) => editor?.chain().focus().toggleBold().run(),
     },
     {
       label: '斜体',
       icon: 'tabler:italic',
+      // @ts-ignore
       isActive: (editor: Editor) => !!editor?.isActive('italic'),
+      // @ts-ignore
       onClick: (editor: Editor) => editor?.chain().focus().toggleItalic().run(),
     },
     {
       label: '下划线',
       icon: 'tabler:underline',
+      // @ts-ignore
       isActive: (editor: Editor) => !!editor?.isActive('underline'),
+      // @ts-ignore
       onClick: (editor: Editor) => editor?.chain().focus().toggleUnderline().run(),
     },
     //
     {
       label: '列表',
       icon: 'mdi:format-list-bulleted',
+      // @ts-ignore
       isActive: (editor: Editor) => !!editor?.isActive('bulletList'),
+      // @ts-ignore
       onClick: (editor: Editor) => editor?.chain().focus().toggleBulletList().run(),
     },
     //
@@ -64,12 +76,14 @@ const useEditor = defineStore('editor', () => {
       label: '代办',
       icon: 'tabler:checkbox',
       isActive: (editor: Editor) => !!editor?.isActive('taskList'),
+      // @ts-ignore
       onClick: (editor: Editor) => editor?.chain().focus().toggleTaskList().run(),
     },
     {
       label: '代码块',
       icon: 'tabler:code',
       isActive: (editor: Editor) => !!editor?.isActive('codeBlock'),
+      // @ts-ignore
       onClick: (editor: Editor) => editor?.chain().focus().toggleCodeBlock().run(),
     },
     {

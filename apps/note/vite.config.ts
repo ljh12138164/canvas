@@ -124,47 +124,47 @@ const plugins: (PluginOption | Plugin)[] = [
       },
     ],
   }),
-  VitePluginSitemap({
-    hostname: 'https://note.ljhboard.cn',
-    dynamicRoutes: [
-      '/', // 首页
-      '/workspace', // 工作区
-      '/workspace/home', // 工作区首页
-      '/workspace/:workspaceId', // 特定工作区
-      '/workspace/:workspaceId/member', // 工作区成员
-      '/workspace/:workspaceId/detail/:folderId', // 文件夹详情
-      '/workspace/:workspaceId/folders/:folderId', // 文件夹
-      '/workspace/:workspaceId/folders/:folderId/files/:fileId', // 文件详情
-    ],
-    exclude: [],
-    lastmod: new Date(),
-    changefreq: {
-      '/': 'daily',
-      '/workspace': 'daily',
-      '/workspace/home': 'daily',
-      '/workspace/:workspaceId': 'hourly',
-      '/workspace/:workspaceId/folders/*': 'always',
-      '/workspace/:workspaceId/detail/*': 'hourly',
-      default: 'weekly',
-    },
-    priority: {
-      '/': 1.0,
-      '/workspace': 0.9,
-      '/workspace/home': 0.9,
-      '/workspace/:workspaceId': 0.8,
-      '/workspace/:workspaceId/folders/*': 0.7,
-      '/workspace/:workspaceId/detail/*': 0.6,
-      default: 0.5,
-    },
-    robots: [
-      {
-        userAgent: '*',
-        allow: '/',
-      },
-    ],
+  // VitePluginSitemap({
+  //   hostname: 'https://note.ljhboard.cn',
+  //   dynamicRoutes: [
+  //     '/', // 首页
+  //     '/workspace', // 工作区
+  //     '/workspace/home', // 工作区首页
+  //     '/workspace/:workspaceId', // 特定工作区
+  //     '/workspace/:workspaceId/member', // 工作区成员
+  //     '/workspace/:workspaceId/detail/:folderId', // 文件夹详情
+  //     '/workspace/:workspaceId/folders/:folderId', // 文件夹
+  //     '/workspace/:workspaceId/folders/:folderId/files/:fileId', // 文件详情
+  //   ],
+  //   exclude: [],
+  //   lastmod: new Date(),
+  //   changefreq: {
+  //     '/': 'daily',
+  //     '/workspace': 'daily',
+  //     '/workspace/home': 'daily',
+  //     '/workspace/:workspaceId': 'hourly',
+  //     '/workspace/:workspaceId/folders/*': 'always',
+  //     '/workspace/:workspaceId/detail/*': 'hourly',
+  //     default: 'weekly',
+  //   },
+  //   priority: {
+  //     '/': 1.0,
+  //     '/workspace': 0.9,
+  //     '/workspace/home': 0.9,
+  //     '/workspace/:workspaceId': 0.8,
+  //     '/workspace/:workspaceId/folders/*': 0.7,
+  //     '/workspace/:workspaceId/detail/*': 0.6,
+  //     default: 0.5,
+  //   },
+  //   robots: [
+  //     {
+  //       userAgent: '*',
+  //       allow: '/',
+  //     },
+  //   ],
 
-    generateRobotsTxt: true,
-  }),
+  //   generateRobotsTxt: true,
+  // }),
 ];
 if (process.env.NODE_ENV === 'test') {
   plugins.push(

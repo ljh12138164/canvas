@@ -42,9 +42,6 @@ if (nodeEnv !== 'TAURI') {
     },
 
     output: 'standalone',
-    eslint: {
-      ignoreDuringBuilds: true,
-    },
 
     // 自定义webpack配置
     webpack: (config, { isServer }) => {
@@ -162,7 +159,6 @@ if (nodeEnv !== 'TAURI') {
       // 开启 Next.js 的实验性优化特性
       optimizeCss: true, // 优化 CSS
       scrollRestoration: true, // 滚动位置恢复
-      reactCompiler: true,
       // 使用 lightningcss 优化 CSS
       mdxRs: true, // 使用 Rust 编译 MDX
     },
@@ -186,9 +182,6 @@ if (nodeEnv !== 'TAURI') {
   // 桌面端配置
   nextConfig = {
     output: 'export',
-    eslint: {
-      ignoreDuringBuilds: true,
-    },
     webpack: (config, { isServer }) => {
       if (!isServer) {
         config.optimization.splitChunks = {
@@ -208,7 +201,6 @@ if (nodeEnv !== 'TAURI') {
     // 实验性功能
     experimental: {
       scrollRestoration: true, // 滚动位置恢复
-      reactCompiler: true,
       mdxRs: true, // 使用 Rust 编译 MDX
     },
   };

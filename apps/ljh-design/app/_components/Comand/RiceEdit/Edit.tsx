@@ -1,11 +1,11 @@
-'use client';
-import { ScrollArea } from '@/app/_components/ui/scroll-area';
-import Placeholder from '@tiptap/extension-placeholder';
-import TaskItem from '@tiptap/extension-task-item';
-import TaskList from '@tiptap/extension-task-list';
-import Underline from '@tiptap/extension-underline';
-import { Editor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+"use client";
+import { ScrollArea } from "@/app/_components/ui/scroll-area";
+import Placeholder from "@tiptap/extension-placeholder";
+import TaskItem from "@tiptap/extension-task-item";
+import TaskList from "@tiptap/extension-task-list";
+import Underline from "@tiptap/extension-underline";
+import { Editor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import {
   FaBold,
   FaItalic,
@@ -16,14 +16,14 @@ import {
   FaStrikethrough,
   FaUnderline,
   FaUndo,
-} from 'react-icons/fa';
-import './tiptap.css';
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
-import TiptapToolbar from './TiptapToolbar';
+} from "react-icons/fa";
+import "./tiptap.css";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import TiptapToolbar from "./TiptapToolbar";
 
 const Tiptap = ({
-  content = '',
+  content = "",
   setValue,
   onUpdate,
   editorab = true,
@@ -39,21 +39,25 @@ const Tiptap = ({
   const [editor, setEditor] = useState<Editor | null>(null);
   useEffect(() => {
     let activeTheme = theme;
-    if (theme === 'system') {
-      activeTheme = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+    if (theme === "system") {
+      activeTheme = window.matchMedia("(prefers-color-scheme:dark)").matches
+        ? "dark"
+        : "light";
     }
     const editor = new Editor({
       editorProps: {
         attributes: {
-          class: activeTheme === 'dark' ? 'tiptap dark' : 'tiptap light',
+          class: activeTheme === "dark" ? "tiptap dark" : "tiptap light",
         },
       },
       onUpdate: ({ editor }) => {
-        if (!editor.getText()) return setError?.('explanation', { message: '不能为空' });
+        if (!editor.getText())
+          return setError?.("explanation", { message: "不能为空" });
         onUpdate?.(editor.getHTML());
-        setValue?.('explanation', editor.getHTML());
+        setValue?.("explanation", editor.getHTML());
       },
       extensions: [
+        // @ts-ignore
         StarterKit,
         Underline,
         TaskList,
@@ -61,7 +65,7 @@ const Tiptap = ({
           nested: true,
         }),
 
-        Placeholder.configure({ placeholder: '请输入内容' }),
+        Placeholder.configure({ placeholder: "请输入内容" }),
       ],
       editable: editorab,
       content: content,
@@ -71,87 +75,148 @@ const Tiptap = ({
 
   const tiptapToolBar = [
     {
-      title: '加粗',
-      key: 'bold',
+      title: "加粗",
+      key: "bold",
       icon: <FaBold />,
-      onClick: () => editor?.chain().focus().toggleBold().run(),
-      active: editor?.isActive('bold') || false,
+      onClick: () =>
+        editor
+          ?.chain()
+          .focus()
+          // @ts-ignore
+          .toggleBold()
+          .run(),
+      active: editor?.isActive("bold") || false,
       disabled: true,
     },
     {
-      title: '斜体',
-      key: 'italic',
+      title: "斜体",
+      key: "italic",
       icon: <FaItalic />,
-      onClick: () => editor?.chain().focus().toggleItalic().run(),
-      active: editor?.isActive('italic') || false,
+      onClick: () =>
+        editor
+          ?.chain()
+          .focus()
+          // @ts-ignore
+          .toggleItalic()
+          .run(),
+      active: editor?.isActive("italic") || false,
       disabled: true,
     },
     {
-      title: '下划线',
-      key: 'underline',
+      title: "下划线",
+      key: "underline",
       icon: <FaUnderline />,
-      onClick: () => editor?.chain().focus().toggleUnderline().run(),
-      active: editor?.isActive('underline') || false,
+      onClick: () =>
+        editor
+          ?.chain()
+          .focus()
+          .toggleUnderline()
+          .run(),
+      active: editor?.isActive("underline") || false,
       disabled: true,
     },
     {
-      title: '删除线',
-      key: 'strike',
+      title: "删除线",
+      key: "strike",
       icon: <FaStrikethrough />,
-      onClick: () => editor?.chain().focus().toggleStrike().run(),
-      active: editor?.isActive('strike') || false,
+      onClick: () =>
+        editor
+          ?.chain()
+          .focus()
+          // @ts-ignore
+          .toggleStrike()
+          .run(),
+      active: editor?.isActive("strike") || false,
       disabled: true,
     },
     {
-      key: 'list',
-      title: '无序列表',
+      key: "list",
+      title: "无序列表",
       icon: <FaListUl />,
-      onClick: () => editor?.chain().focus().toggleBulletList().run(),
-      active: editor?.isActive('list') || false,
+      onClick: () =>
+        editor
+          ?.chain()
+          .focus()
+          // @ts-ignore
+          .toggleBulletList()
+          .run(),
+      active: editor?.isActive("list") || false,
       disabled: true,
     },
     {
-      key: 'ordered-list',
-      title: '有序列表',
+      key: "ordered-list",
+      title: "有序列表",
       icon: <FaListOl />,
-      onClick: () => editor?.chain().focus().toggleOrderedList().run(),
-      active: editor?.isActive('ordered-list') || false,
+      onClick: () =>
+        editor
+          ?.chain()
+          .focus()
+          // @ts-ignore
+          .toggleOrderedList()
+          .run(),
+      active: editor?.isActive("ordered-list") || false,
       disabled: true,
     },
     {
-      key: 'undo',
-      title: '撤销',
+      key: "undo",
+      title: "撤销",
       icon: <FaUndo />,
-      onClick: () => editor?.chain().focus().undo().run(),
-      active: editor?.isActive('undo') || false,
+      onClick: () =>
+        editor
+          ?.chain()
+          .focus()
+          // @ts-ignore
+          .undo()
+          .run(),
+      active: editor?.isActive("undo") || false,
+      // @ts-ignore
       disabled: editor?.can().undo() || false,
     },
     {
-      key: 'redo',
-      title: '重做',
+      key: "redo",
+      title: "重做",
       icon: <FaRedo />,
-      onClick: () => editor?.chain().focus().redo().run(),
-      active: editor?.isActive('redo') || false,
+      onClick: () =>
+        editor
+          ?.chain()
+          .focus()
+          // @ts-ignore
+          .redo()
+          .run(),
+      active: editor?.isActive("redo") || false,
+      // @ts-ignore
       disabled: editor?.can().redo() || false,
     },
     {
-      key: 'task-list',
-      title: '任务列表',
+      key: "task-list",
+      title: "任务列表",
       icon: <FaList />,
-      onClick: () => editor?.chain().focus().toggleTaskList().run(),
-      active: editor?.isActive('taskList') || false,
+      onClick: () =>
+        editor
+          ?.chain()
+          .focus()
+          .toggleTaskList()
+          .run(),
+      active: editor?.isActive("taskList") || false,
       disabled: true,
     },
   ];
   return (
     <section className="h-full w-full">
-      <main className="h-8">{editor && <TiptapToolbar tiptapToolBar={tiptapToolBar} />}</main>
+      <main className="h-8">
+        {editor && <TiptapToolbar tiptapToolBar={tiptapToolBar} />}
+      </main>
       <ScrollArea className="h-full w-full Editor">
         {/* tiptap实例 */}
-        <EditorContent className="h-full" placeholder="请输入内容" editor={editor} />
+        <EditorContent
+          className="h-full"
+          placeholder="请输入内容"
+          editor={editor}
+        />
       </ScrollArea>
     </section>
   );
 };
 
 export default Tiptap;
+

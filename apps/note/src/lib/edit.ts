@@ -41,6 +41,7 @@ export const list = [
     value: 'bulletList',
     iconName: 'mdi:format-list-bulleted',
     onClick: (editor: Editor) => {
+      // @ts-ignore
       editor?.chain().focus().toggleBulletList().run();
     },
   },
@@ -49,6 +50,7 @@ export const list = [
     value: 'orderedList',
     iconName: 'mdi:format-list-numbered',
     onClick: (editor: Editor) => {
+      // @ts-ignore
       editor?.chain().focus().toggleOrderedList().run();
     },
   },
