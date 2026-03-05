@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Code2, ExternalLink, MapPin, PenTool } from 'lucide-react';
+import { ArrowRight, Code2, ExternalLink, FileText, MapPin, PenTool } from 'lucide-react';
 import Link from 'next/link';
 
 type FeatureCard = {
@@ -69,6 +69,15 @@ export default function HomePage() {
       path: '/grap',
       color: 'bg-purple-100 dark:bg-purple-950',
       borderColor: 'border-purple-200 dark:border-purple-800',
+    },
+    {
+      id: 'html',
+      title: 'html回填',
+      description: 'html回填',
+      icon: <FileText className="h-8 w-8 text-green-600" />,
+      path: '/html',
+      color: 'bg-green-100 dark:bg-green-950',
+      borderColor: 'border-green-200 dark:border-green-800',
     },
   ];
 

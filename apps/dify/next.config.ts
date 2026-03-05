@@ -17,15 +17,16 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'osdawghfaoyysblfsexp.supabase.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'challenges.cloudflare.com',
+      },
     ],
-    domains: ['challenges.cloudflare.com'],
     minimumCacheTTL: 60,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+
 
   // 自定义webpack配置
   webpack: (config, { isServer }) => {
@@ -92,21 +93,16 @@ const nextConfig: NextConfig = {
 
   // 生产环境移除 console 和 debugger
   compiler: {
-    removeConsole: true,
+    removeConsole: process.env.NODE_ENV === "production",
   },
-
+  output: "standalone",
   // 实验性功能
   experimental: {
     // 开启 Next.js 的实验性优化特性
     optimizeCss: true, // 优化 CSS
     scrollRestoration: true, // 滚动位置恢复
-    reactCompiler: true,
     // 使用 lightningcss 优化 CSS
     mdxRs: true, // 使用 Rust 编译 MDX
-    // 使用 lightningcss 优化 CSS
-    // useLightningcss: true,
-    // 启用早期提示
-    // enableEarlyHints: true,
   },
   headers: async () => {
     return [
